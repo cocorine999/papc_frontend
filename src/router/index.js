@@ -1,37 +1,37 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import index from "../views/index.vue";
+import ano from "../views/dashboard/ano/index.vue";
+import demo from "../views/demo.vue";
 
 /* layouts */
-const DashboardLayout = () => import('../layouts/Dashboard.vue');
+//const DashboardLayout = () => import('../layouts/Dashboard.vue');
 
 /* componemts */
 // const BailleursClild = () => import('../components/dashboard/Bailleurs');
 
 Vue.use(VueRouter);
 
-const contentDashboards = (prop) => [
-  {
-    path: 'bailleurs',
-    name: prop + '.bailleurs',
-//     meta: { auth: true, name: 'Home 1', layout: 'mini-sidebar-right-fix' },
-    component: DashboardLayout,
-  },
-]
+
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "index",
+    component: index,
     meta: { auth: true },
-    children: contentDashboards('dashboard')
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: DashboardLayout,
+    path: "/demo",
+    name: "demo",
+    component: demo,
   },
+  {
+    path: "/dashboard/ano",
+    name: "ano",
+    component: ano,
+  },
+  
 ];
 
 const router = new VueRouter({

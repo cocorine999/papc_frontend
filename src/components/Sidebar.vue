@@ -1,15 +1,5 @@
-<script>
-import { mapState } from 'vuex'
-export default {
-  name: "sidebar",
-    computed: {
-      ...mapState(['sideBarOpen'])
-    }
-}
-</script>
-
 <template>
-  <div class="w-1/2 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter _scrollbar-w-2 _scrolling-touch  overflow-y-auto lg:block bg-primary z-30 no-scrollbar overflow-y-auto" :class="sideBarOpen ? '' : 'hidden'" id="main-nav">
+  <div class="w-1/2 md:w-1/3 lg:w-64 fixed md:top-0  md:left-0 h-screen scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter _scrollbar-w-2 _scrolling-touch  o lg:block bg-primary z-30 no-scrollbar overflow-y-auto" :class="sideBarOpen ? '' : 'hidden'" id="main-nav">
     <div class="w-full h-20  flex px-4 items-center mb-8">
       <p class="font-semibold text-3xl text-blue-400 pl-4">PAPC</p>
     </div>
@@ -226,7 +216,6 @@ export default {
       </div>
     </div>
 
-
     <div class="mb-1 px-4 flex items-center text-white  cursor-pointer">
       <router-link to="/dashboard/checklist" style="width:100%" class="flex space-x-3 items-center  px-2 py-2 z-10 relative   text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
         <span class=" ">
@@ -244,8 +233,6 @@ export default {
         <span class="font-semibold text-xs uppercase">Instutitions</span>
       </router-link>
     </div>
-
-    
 
     <div class="mb-1 px-4 flex items-center text-white  cursor-pointer">
       <router-link to="#" style="width:100%" class="flex space-x-3 items-center  px-2 py-2 z-10 relative   text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
@@ -334,6 +321,15 @@ export default {
     </div>
   </div>
 </template>
+<script>
+import { mapState } from 'vuex'
+export default {
+  name: "sidebar",
+    computed: {
+      ...mapState(['sideBarOpen'])
+    }
+}
+</script>
 
 <style scoped>
   .router-link-exact-active
