@@ -1,4 +1,5 @@
 <template>
+  <dashboard>
   <div class="p-4">
     <div v-if="showModal">
       <vmodal  title="Exporter les données"  v-on:close="showModal = false">
@@ -86,12 +87,21 @@
       <ptab></ptab>
     </div>
   </div>
+  </dashboard>
   
 </template>
 
 <script>
+
+ import Dashboard from '@/layouts/Dashboard'
+ import Ptab from '@/components/Ptab'
+ import Vmodal from '@/components/Vmodal'
 export default {
-  layout:'dashboard',
+  components: {
+    Ptab,
+    Dashboard,
+    Vmodal
+  },
   data() {
     return {
       seePta:true,
