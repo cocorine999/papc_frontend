@@ -1,4 +1,6 @@
 /* ./src/tailwind.css */
 @tailwind base;
 @tailwind components;
+/* import fonts from /assets/css/fonts.css */
+@import "./assets/css/fonts.css";
 @tailwind utilities;

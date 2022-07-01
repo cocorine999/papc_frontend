@@ -5,7 +5,10 @@ import router from "./router";
 import store from "./store";
 
 // custom import
-import './tailwind.css'
+import './main.css';
+import './assets/css/fonts.css';
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 
