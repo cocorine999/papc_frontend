@@ -38,7 +38,7 @@
 </template>
 
 <script>
-
+ import SearchBar from '@/components/SearchBar'
  import Vtable from '@/components/Vtable'
  import Vform from '@/components/Vform'
  import Vmodal from '@/components/Vmodal'
@@ -49,6 +49,7 @@ export default {
     Dashboard,
     Vmodal,
     Vform,
+    SearchBar
   },
   data() {
     return {

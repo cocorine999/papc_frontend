@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class=" flex" >
-      
       <div  class="bg-white relative  shadow-lg border hover:border hover:border-gray-300 w-full hover:shadow-inner transition-shadow duration-300" style="max-height:350px" >
         <div class="p-2">
           <div class="flex justify-between items-center">
@@ -26,6 +25,7 @@
 </template>
 
 <script>
+import Dropdown from '@/components/Dropdown'
 export default {
   props: ['sigle','libelle','description','pays','codePTA'],
   data() {
@@ -36,7 +36,9 @@ export default {
         {name:'dupliquer'},
       ],
     }
-  }
+  },
+  components: {Dropdown}
+
 }
 </script>
 

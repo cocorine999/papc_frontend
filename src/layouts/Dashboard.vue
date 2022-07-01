@@ -22,6 +22,7 @@
       Navbar,
       Sidebar,
     },
+    
     computed: {
       ...mapState(['sideBarOpen'])
     },

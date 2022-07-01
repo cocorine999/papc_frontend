@@ -69,8 +69,9 @@
 
 <script>
 import TrTable from '@/components/TrTable'
+import Pagination from '@/components/Pagination'
 export default {
-  components: { TrTable },
+  components: { TrTable,Pagination },
   props:['datas','headers','actions'],
   data() {
     return{

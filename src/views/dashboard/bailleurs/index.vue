@@ -1,158 +1,100 @@
 <template>
-  <div class="w-full p-4">
-    <div v-if="showModal">
-      <vmodal  :title="title"  v-on:close="closeModal">
-        <div style="width:60vw" class="px-4">
-          <div v-if="title =='Modifier un bailleur'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
-          </div>
-          <div v-if="title =='Ajouter un nouveau bailleur'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" ></vform>
-          </div>
-          <div v-if="title =='Dupliquer un bailleur'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Creer à partir de " @sendForm="sendForm" ></vform>
-          </div>
-         
-        </div>
-      </vmodal>
-    </div>
-    
-    <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-      <div>
-        <ol class="inline-flex p-0 list-none">
-          <li class="flex items-center text-blue-500">
-            <nuxt-link to="" class="text-gray-600">dashboard</nuxt-link>
-            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-          </li>
-          <li class="flex items-center ">
-            <nuxt-link to="" class="text-gray-600">bailleurs</nuxt-link>
-          </li>
-        </ol>
-      </div>
-      <div>
-        <search-bar ></search-bar>
-      </div>
-    </nav> 
-    
-    <div class="flex justify-start mt-2">
-      <div class="flex  items-center ">
-       <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
-        <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
-      </div>
-    </div>
-    <div class="flex items-center justify-between my-2">
-      <titre>Les bailleurs </titre>
-        <button @click="addBailleur" title="ajouter un bailleur"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">ajouter</span>
-        </button>
-    </div>
-    <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-<<<<<<< HEAD
-      <div v-for="(item, i) in list" :key="i">
-        <card>
-          <div class="p-2">
-            <div class="flex justify-between items-center">
-              <div class="flex space-x-2 items-center" >
-                <span class="border bg-gray-700 text-white border-gray-700 p-1 text-sm font-semibold">{{item.sigle}}</span>
-                <h1 class="font-base font-bold text-gray-900">{{item.nom}}</h1>
-              </div>
-              <div class="flex item-center justify-center">
-                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" @click="editer(item)">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                  </svg>
-                </div>
-                <div   class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" @click="deleter(item)">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </div>
-              </div>  
+  <dashboard>
+    <div class="w-full p-4">
+      <div v-if="showModal">
+        <vmodal  :title="title"  v-on:close="closeModal">
+          <div style="width:60vw" class="px-4">
+            <div v-if="title =='Modifier un bailleur'">
+              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
             </div>
-            <p class="text-justify font-semibold leading-6 text-sm my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda iste dignissimos quasi quos laborum sequi!</p>
-            <div class="my-2 flex justify-between">
-             <p class="text-sm font-semibold bg-gray-700 text-white p-2 border border-gray-700 "> <span class="font-bold">Pays:</span> <span class="text-white">{{item.pays}}</span> </p>
-             <p class="text-sm font-semibold bg-gray-700 text-white p-2 border border-gray-700 "> <span class="font-bold">Code PTA:</span> <span class="text-white">{{item.code}}</span> </p>
-           </div>
+            <div v-if="title =='Ajouter un nouveau bailleur'">
+              <vform template="default" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" ></vform>
+            </div>
+            <div v-if="title =='Dupliquer un bailleur'">
+              <vform template="default" :champs="champs" :cols="cols" submitText="Creer à partir de " @sendForm="sendForm" ></vform>
+            </div>
+          
           </div>
-           
-        </card>
+        </vmodal>
+      </div>
+      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+        <div>
+          <ol class="inline-flex p-0 list-none">
+            <li class="flex items-center text-blue-500">
+              <nuxt-link to="" class="text-gray-600">dashboard</nuxt-link>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+            </li>
+            <li class="flex items-center ">
+              <nuxt-link to="" class="text-gray-600">bailleurs</nuxt-link>
+            </li>
+          </ol>
+        </div>
+        <div>
+          <search-bar ></search-bar>
+        </div>
+      </nav> 
+      <div class="flex justify-start mt-2">
+        <div class="flex  items-center ">
+        <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
+          <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
+        </div>
+      </div>
+      <div class="flex items-center justify-between my-2">
+        <titre>Les bailleurs </titre>
+          <button @click="addBailleur" title="ajouter un bailleur"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+            <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+            <span class="mx-2 text-sm font-semibold">ajouter</span>
+          </button>
+      </div>
+      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+        <div v-for="i in 6" :key="i.id">
+          <card-bailleur 
+            sigle="BM"
+            libelle="Banque Mondiale" 
+            description="Lorem ipsum dolor sit" 
+            codePTA="1.3.3.2.1" 
+            pays="Benin" 
+            @supprimerBailleur="supprimer(5)"
+            @modifierBailleur="modifier(5)"
+            @dupliquerBailleur="dupliquer(5)"
+          ></card-bailleur>
+        </div>
+      </div>
+      <div v-if="line"  class="line my-4">
+        <vtable 
+        :headers="headers" 
+        :datas="dataTable"
+        :actions="actions" 
+        @supprimer="supprimer" 
+        @modifier="modifier"></vtable>
       </div>
     </div>
-    <div v-if="line"  class="line my-4">
-      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-        <table class="w-full">
-          <thead>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">sigle </th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">nom </th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Pays </th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Code pta </th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
-          </thead>
-          <tbody>
-            <tr class="bg-white" v-for="(item, i) in list" :key="i">
-              <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-              <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.sigle}} </td>
-              <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.nom}}</td>
-              <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.pays}}</td>
-              <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.code}} </td>
-
-              
-              <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                <div class="flex item-center justify-center">
-                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" @click="editer(item)">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                  </svg>
-                </div>
-                <div   class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" @click="deleter(item)">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </div>
-              </div>  
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-=======
-      <div v-for="i in 6" :key="i.id">
-        <card-bailleur 
-          sigle="BM"
-          libelle="Banque Mondiale" 
-          description="Lorem ipsum dolor sit" 
-          codePTA="1.3.3.2.1" 
-          pays="Benin" 
-          @supprimerBailleur="supprimer(5)"
-          @modifierBailleur="modifier(5)"
-          @dupliquerBailleur="dupliquer(5)"
-        ></card-bailleur>
-      </div>
-    </div>
-    <div v-if="line"  class="line my-4">
-      <vtable 
-      :headers="headers" 
-      :datas="dataTable"
-      :actions="actions" 
-      @supprimer="supprimer" 
-      @modifier="modifier"></vtable>
->>>>>>> 3db5b30c9c52dff532c0505e5444108e7934d393
-    </div>
-  </div>
+  </dashboard>
 </template>
 
 <script>
+import SearchBar from '@/components/SearchBar'
+import CardBailleur from '@/components/CardBailleur'
+import Titre from '@/components/Titre'
+import Vtable from '@/components/Vtable'
+import Vform from '@/components/Vform'
+import Vmodal from '@/components/Vmodal'
+import Dashboard from '@/layouts/Dashboard'
 import { mapState } from 'vuex'
 export default {
   modules: ['@nuxtjs/axios'],
   computed: {
-      ...mapState(['baseURL'])
+    ...mapState(['baseURL'])
   },
-  layout:'dashboard',
+  components: {
+    Vtable,
+    Dashboard,
+    Vmodal,
+    Vform,
+    CardBailleur,
+    Titre,
+    SearchBar
+  },
   data() {
     return {
       showModal:false,
