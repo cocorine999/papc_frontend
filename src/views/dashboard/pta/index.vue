@@ -96,10 +96,13 @@
  import Dashboard from '@/layouts/Dashboard'
  import Ptab from '@/components/Ptab'
  import Vmodal from '@/components/Vmodal'
+  import Vform from '@/components/Vform'
 export default {
   components: {
     Ptab,
     Dashboard,
+    Vmodal,
+    Vform,
     Vmodal
   },
   data() {

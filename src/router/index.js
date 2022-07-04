@@ -3,12 +3,12 @@ import VueRouter from "vue-router";
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
 // import bailleurs from "../views/dashboard/bailleurs/index.vue";
-// import checklist from "../views/dashboard/checklist/index.vue";
-// import entreprises from "../views/dashboard/entreprises/index.vue";
+import checklist from "../views/dashboard/checklist/index.vue";
+import entreprises from "../views/dashboard/entreprises/index.vue";
 // import fileManager from "../views/dashboard/fileManager/index.vue";
 // import indicateurs from "../views/dashboard/indicateurs/index.vue";
-// import missioncontrole from "../views/dashboard/mission-controle/index.vue";
-// import mod from "../views/dashboard/mod/index.vue";
+import missioncontrole from "../views/dashboard/mission-controle/index.vue";
+import mod from "../views/dashboard/mod/index.vue";
 // import ppm from "../views/dashboard/ppm/index.vue";
 // import profil from "../views/dashboard/profil/index.vue";
 // import programme from "../views/dashboard/programme/index.vue";
@@ -57,16 +57,16 @@ const routes = [
   //   name: "bailleurs",
   //   component: bailleurs,
   // },
-  // {
-  //   path: "/dashboard/checklist",
-  //   name: "checklist",
-  //   component: checklist,
-  // },
-  // {
-  //   path: "/dashboard/entreprises",
-  //   name: "entreprises",
-  //   component: entreprises,
-  // },
+  {
+    path: "/dashboard/checklist",
+    name: "checklist",
+    component: checklist,
+  },
+  {
+    path: "/dashboard/entreprises",
+    name: "entreprises",
+    component: entreprises,
+  },
   // {
   //   path: "/dashboard/fileManager",
   //   name: "fileManager",
@@ -77,16 +77,16 @@ const routes = [
   //   name: "indicateurs",
   //   component: indicateurs,
   // },
-  // {
-  //   path: "/dashboard/mission-controle",
-  //   name: "missioncontrole",
-  //   component: missioncontrole,
-  // },
-  // {
-  //   path: "/dashboard/mod",
-  //   name: "mod",
-  //   component: mod,
-  // },
+  {
+    path: "/dashboard/mission-controle",
+    name: "missioncontrole",
+    component: missioncontrole,
+  },
+  {
+    path: "/dashboard/mod",
+    name: "mod",
+    component: mod,
+  },
   // {
   //   path: "/dashboard/ppm",
   //   name: "ppm",

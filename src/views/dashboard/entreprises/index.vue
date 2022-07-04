@@ -1,10 +1,11 @@
 <template>
+  <dashboard>
   <div class="p-4">
    
-    <RouteName title="entreprises" />
+    <route-name title="entreprises" />
     <div v-if="showModal">
       <modal-top-right title="Ajouter un entreprise" v-on:close="close">
-        <FormComponent :form="form" @send="sender" />
+        <form-component :form="form" @send="sender" />
       </modal-top-right>
     </div>
     <div class="flex items-center justify-between">
@@ -58,15 +59,24 @@
       </table>
     </div>
   </div>
+  </dashboard>
 </template>
 
 <script>
-import RouteName from "../../../components/RouteName.vue";
-import FormComponent from "../../../components/FormComponent.vue";
+  import Dashboard from '@/layouts/Dashboard'
+  import RouteName from '@/components/RouteName'
+  import ModalTopRight from '@/components/ModalTopRight'
+  import FormComponent from '@/components/FormComponent'
+  import Titre from '@/components/Titre'
 
 export default {
-    layout: "dashboard",
-    components: { RouteName, FormComponent },
+  components: {
+    ModalTopRight,
+    Dashboard,
+    RouteName,
+    FormComponent,
+    Titre
+  },
     data() {
       return ({
         showModal:false,

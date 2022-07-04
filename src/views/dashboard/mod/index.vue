@@ -1,4 +1,5 @@
 <template>
+  <dashboard>
   <div class="p-4">
     <div v-if="showModal">
       <vmodal :title="title"  v-on:close="showModal = false">
@@ -59,11 +60,24 @@
       <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
     </div>
   </div>
+  </dashboard>
 </template>
 
 <script>
+  import Dashboard from '@/layouts/Dashboard'
+  import CardMod from '@/components/CardMod'
+  import Vtable from '@/components/Vtable'
+  import Vmodal from '@/components/Vmodal'
+  import Vform from '@/components/Vform'
+
 export default {
-  layout:'dashboard',
+  components: {
+    CardMod,
+    Dashboard,
+    Vtable,
+    Vform,
+    Vmodal
+  },
   data() {
     return {
       showModal:false,

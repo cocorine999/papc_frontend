@@ -1,4 +1,5 @@
 <template>
+  <dashboard>
   <div class="p-4">
     <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
@@ -37,11 +38,18 @@
       </div>
     </div>
   </div>
+  </dashboard>
 </template>
 
 <script>
+  import Dashboard from '@/layouts/Dashboard'
+  import CardChecklist from '@/components/CardChecklist'
+
 export default {
-  layout:'dashboard',
+  components: {
+    CardChecklist,
+    Dashboard,
+  },
   methods: {
     modifier(data) {
       alert(data+ " à ete bien modifier")

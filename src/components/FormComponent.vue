@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { emit } from "process"
 
 export default {
   props: ["form"],
