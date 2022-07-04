@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full p-4">
+  <dashboard>
+     <div class="w-full p-4">
     <modal-top-right v-if="showModal" :title="title" v-on:close="close">
       <form action="" @submit.prevent="save" class="p-4">
         <div class="form-group my-2">
@@ -297,7 +298,7 @@
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center">
-            <nuxt-link to="" class="text-gray-600">dashboard</nuxt-link>
+            <router-link to="" class="text-gray-600">dashboard</router-link>
             <svg
               class="w-3 h-3 mx-3 fill-current"
               xmlns="http://www.w3.org/2000/svg"
@@ -309,8 +310,8 @@
             </svg>
           </li>
           <li class="flex items-center">
-            <nuxt-link to="/dashboard/projets" class="text-gray-600"
-              >projets</nuxt-link
+            <router-link to="/dashboard/projets" class="text-gray-600"
+              >projets</router-link
             >
             <svg
               class="w-3 h-3 mx-3 fill-current"
@@ -323,8 +324,8 @@
             </svg>
           </li>
           <li class="flex items-center text-blue-500">
-            <nuxt-link to="/dashboard/projets/taches-globale" class=""
-              >taches</nuxt-link
+            <router-link to="/dashboard/projets/taches-globale" class=""
+              >taches</router-link
             >
           </li>
         </ol>
@@ -383,12 +384,7 @@
           class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
           >taches</span
         >
-        <span
-          :class="{ 'border-primary border-b-8 font-bold': seePlan }"
-          @click="gotoPlan()"
-          class="inline-block cursor-pointer text-lg uppercase py-2"
-          >Plan execution
-        </span>
+       
       </div>
 
       <button
@@ -434,70 +430,42 @@
         v-if="mosaique"
         class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5"
       >
-        <div v-for="(i, index) in 10" :key="index">
-          <card>
-            <div class="p-2">
-              <div class="flex justify-between">
-                <div class="flex space-x-4 items-center">
-                  <span class="bg-primary text-xs text-white p-1 uppercase"
-                    >Composante</span
-                  >
-                  <h1 class="font-base font-bold text-gray-900">
-                    Tache {{ index }}
-                  </h1>
-                </div>
+        <div v-for="(tache,index) in taches" :key="index">
+        <!-- cards Tâches -->
+          <div class="relative p-4 bg-white sm:rounded-lg overflow-hidden ">
+            <!-- dots -->
+            <span class="absolute right-0 cursor-pointer">
+              <i class='bx bx-dots-vertical-rounded bx-md pr-2'></i>
+              </span>
+            <!-- ./dots -->
+            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
+              <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+            <!--  -->
+            <div class="cursor-pointer">
+              <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{tache.Poids}} </span>
 
-                <div>
-                  <dropdown
-                    @modifier="modifier"
-                    @duplicate="dupliquer"
-                    :option="option"
-                  ></dropdown>
+              <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
+                cours<i class='bx bx-time-five ml-1'></i></span>
+
+              <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">
+                <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{tache.libelle}} </p>
+              <!--  -->
+              <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
+                <i class='bx bxs-wallet bx-sm'></i>
+                <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : 
+                  <span class="font-bold italic text-lg"> {{tache.MontantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
                 </div>
               </div>
-              <div class="border-b border-gray-300 relative">
-                <p class="text-justify font-semibold leading-6 text-sm my-2">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Assumenda iste dignissimos quasi quos laborum sequi!
-                </p>
-                <div class="absolute bottom-0 right-0">
-                  <span
-                    v-if="!isStateChange"
-                    @click="isStateChange = true"
-                    class="text-white cursor-pointer bg-green-500 rounded p-1"
-                    >en cours</span
-                  >
-                  <select
-                    v-else
-                    @change="isStateChange = false"
-                    class="outine-none"
-                    name=""
-                    id=""
-                  >
-                    <option value="">cree</option>
-                    <option value="">en attente</option>
-                    <option value="">en cours</option>
-                    <option value="">en terminer</option>
-                  </select>
+              <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
+                <i class='bx bxs-wallet bx-sm'></i>
+                <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">BN : 
+                  <span class="font-bold italic text-lg">{{tache.MontantNE}}</span>
+                  <span class="ml-2 uppercase font-bold">fcfa</span>
                 </div>
-              </div>
-
-              <div class="my-2">
-                <p class="text-sm font-semibold py-1">
-                  <span class="font-bold">Montant BN :</span>
-                  <span class="text-gray-700">100M</span>
-                </p>
-                <p class="text-sm font-semibold py-1">
-                  <span class="font-bold">Montant EPM-PRET :</span>
-                  <span class="text-gray-700">1000M</span>
-                </p>
-                <p class="text-sm font-semibold py-1">
-                  <span class="font-bold">Poids :</span>
-                  <span class="text-gray-700">100</span>
-                </p>
               </div>
             </div>
-          </card>
+          </div>
+      <!-- End cards Tâches -->
         </div>
       </div>
       <div v-if="line" class="line my-4">
@@ -619,154 +587,26 @@
       </div>
     </div>
 
-    <div v-if="seePlan">
-      <h1 class="p-4 text-4xl font-semibold">En cours de dev</h1>
-      <div v-if="mosaique && false" class="my-4 grid grid-cols-4 gap-4">
-        <div v-for="(i, index) in 4" :key="index">
-          <card>
-            <div class="p-2">
-              <div class="flex justify-between">
-                <h1 class="font-base font-bold text-gray-900">
-                  année {{ 2018 + index }}
-                </h1>
-                <span
-                  class="cursor-pointer text-gray-900 rounded p-1 font-semibold"
-                >
-                  Trimestre {{ index }}
-                </span>
-              </div>
-
-              <div class="my-2">
-                <p class="text-sm font-semibold py-1">
-                  <span class="font-bold">Activité :</span>
-                  <span class="text-gray-700"> {{ index }} </span>
-                </p>
-                <p class="text-sm font-semibold py-1">
-                  <span class="font-bold">Montant BN :</span>
-                  <span class="text-gray-700">100M</span>
-                </p>
-                <p class="text-sm font-semibold py-1">
-                  <span class="font-bold">Montant EPM-PRET :</span>
-                  <span class="text-gray-700">1000M</span>
-                </p>
-                <p class="text-sm font-semibold py-1">
-                  <span class="font-bold pr-2">De</span> 01/01/2019
-                  <span class="font-bold px-2">Au</span> 31/12/2025
-                </p>
-                <div class="flex justify-between">
-                  <div></div>
-
-                  <!-- <div class="flex space-x-2">
-                      <span title="supprimer" class="text-red-500 cursor-pointer "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z"></path></svg></span>
-                      <span title="modifer" class="text-blue-500 cursor-pointer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg></span>
-                      <span title="dupliquer" class="cursor-pointer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"></path></svg></span>
-                      <span title="continuer" class="cursor-pointer" ><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"></path></svg></span>
-                    </div> -->
-                  <div>
-                    <dropdown
-                      @modifier="modifierPlan"
-                      @duplicate="dupliquerPlan"
-                      :option="option"
-                    ></dropdown>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </card>
-        </div>
-      </div>
-      <div v-if="line && false" class="line my-4">
-        <div
-          class="align-middle inline-block w-full overflow-hidden pt-3 rounded-bl-lg rounded-br-lg"
-        >
-          <table class="w-full">
-            <thead>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                #
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Année
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Trimestre
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Activité
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                BN
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                EPM-PRET
-              </th>
-
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Actions
-              </th>
-            </thead>
-            <tbody>
-              <tr class="bg-white" v-for="(i, index) in 4" :key="index">
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  {{ i }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  {{ 2018 + index }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  trimestre {{ index }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  activité {{ index }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  100M
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  1000M
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  <dropdown :option="optionP"></dropdown>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+  
   </div>
+  </dashboard>
+ 
 </template>
 
 <script>
+import SearchBar from '@/components/SearchBar'
+import Titre from '@/components/Titre'
+import Vmodal from '@/components/Vmodal'
+import ModalTopRight from '@/components/ModalTopRight'
+import Dashboard from '@/layouts/Dashboard'
 export default {
-  layout: "dashboard",
+  components: {
+    Dashboard,
+    Vmodal,
+    Titre,
+    SearchBar,
+    ModalTopRight
+  },
   data() {
     return {
       showModal: false,
@@ -782,7 +622,32 @@ export default {
         { name: "modifier" },
         { name: "dupliquer" },
       ],
-
+      taches :[
+        {
+          libelle: "Suivi de l'exécution des travaux trimestre 1",
+          MontantNE : " ",
+          MontantEPM :"",
+          Poids : 19,
+        },
+          {
+            libelle: "Suivi de l'exécution des travaux trimestre 2",
+            MontantNE : " ",
+            MontantEPM :"",
+            Poids : 19,
+          },
+          {
+            libelle: "Suivi de l'exécution des travaux trimestre 3",
+            MontantNE : " ",
+            MontantEPM :"",
+            Poids : 19,
+          },
+          {
+            libelle: "Suivi de l'exécution des travaux trimestre 4",
+            MontantNE : " ",
+            MontantEPM :"",
+            Poids : 7,
+          },
+        ],
       dates: [{}],
     };
   },

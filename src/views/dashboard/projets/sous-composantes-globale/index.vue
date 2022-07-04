@@ -1,45 +1,48 @@
 <template>
-  <div class="w-full p-4">
+  <dashboard>
+    <div class="w-full p-4">
     <!-- Modal de sous composants -->
     <vmodal v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="sender" class="px-12" style="width:60vw !important" >
+      <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[0].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[1].value"  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
+            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
           </div>
         </div>
 
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Code PTA  <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[2].value"  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le poids" />
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
           </div>
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un composant <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select v-model="form[3].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option class="font-semibold" v-for="(item, i) in options" :key="i" :value="item.id"> {{item.nom}} </option>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option value="">En cours</option>
+              <option value="">En attente</option>
+              <option value="">En terminer</option>
             </select>
           </div>
         </div>
 
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
-          
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[4].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="i in 5" :key="i.id" value=""> {{i}} </option>
+            </select>
           </div>
 
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select v-model="form[5].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option value="En cours">En cours</option>
-              <option value="En attente">En attente</option>
-              <option value="En terminer">En terminer</option>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un composant <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="i in 5" :key="i.id" value=""> composant {{i}} </option>
+
             </select>
           </div>
         </div>
@@ -47,24 +50,14 @@
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[6].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
+            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[7].value"  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
+            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
           </div>
         </div>
 
-
-
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">tep Prevu <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[8].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
-          </div>
-        </div>
-        
-        
 
         <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
           <button v-if="title == 'Ajouter un sous composant' || title== 'Dupliquer un sous composant' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
@@ -213,15 +206,15 @@
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">
-            <nuxt-link to="/dashboard" class="text-gray-600">dashboard</nuxt-link>
+            <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center  ">
-            <nuxt-link to="/dashboard/projets" class="text-gray-600">projets</nuxt-link>
+            <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center text-blue-500 ">
-            <nuxt-link to="/dashboard/projets/sous-composantes-globale" class="">sous composante </nuxt-link>
+            <router-link to="/dashboard/projets/sous-composantes-globale" class="">sous composante </router-link>
             
           </li>
           
@@ -244,11 +237,11 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       <button v-if="seeSousComposantes" @click="addSousComposants" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
           <span class="mx-2 text-sm font-semibold">ajouter un sous composant</span>
       </button>
       <button v-if="seeActivite" @click="addActivite" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">ajouter une activite</span>
       </button>
       
@@ -257,46 +250,32 @@
     <div class="">
       <select class="px-11 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
         <option class="font-semibold"> Tous </option>
-        <option class="font-semibold"  v-for="(item, i) in options" :key="i" :value="item.id"> {{item.nom}} </option>
+        <option class="font-semibold"  v-for="i in 5" :key="i.id" value=""> composante {{i}} </option>
       </select>
     </div>
     <!-- fin le filtre -->
     <div v-if="seeSousComposantes">
       <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(item, i) in list" :key="i">
-            <card >
-          <div  class="p-2 ">
-              <div class="flex justify-between">
-                <div class="flex space-x-2 items-center">
-                  <span class="bg-primary text-xs text-white p-1 uppercase">composante</span>
-                  <h1 @click.stop="gotoNext" class="font-base font-bold cursor-pointer text-gray-900">{{item.nom}}</h1>
-                </div>
-                <div>
-                  <dropdown @gotoNext="gotoNext" @supprimer="deleter(item)" @modifier="editer(item)" @duplicate='dupliquer' :option="option"></dropdown>
-                </div>
-      
-              </div>
-              <div class="border-b border-gray-300 relative">
-                <p class="text-justify font-semibold leading-6 text-sm my-2">{{item.description}}</p>
-                <div class="absolute bottom-0 right-0">
-                  <span v-if="!isStateChange" @click.stop="isStateChange = true" class="text-white cursor-pointer bg-green-500 rounded p-1">{{item.statut}}</span>
-                  <select v-else  @change.stop="isStateChange = false" class="outine-none" name="" id="">
-                    <option value="">cree</option>
-                    <option value="">en attente</option>
-                    <option value="">en cours</option>
-                    <option value="">en terminer</option>
-                  </select>
-                </div>
-              </div>
-                   
-              <div class="my-2">
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant BN :</span>  <span class="text-gray-700">{{item.budgetNational}}</span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant EPM-PRET :</span> <span class="text-gray-700">{{item.pret}}</span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Poids :</span> <span class="text-gray-700">{{item.poids}}</span> </p>
-              </div>
-          </div>    
-        </card>
+        <div v-for="(composante,index) in sous_composantes" :key="index">
+        <!-- cards composantes -->
+        <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
+          <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
+          <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
+
+            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+            <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+
+          <!-- dots -->
+          <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
+          <!-- ./dots -->
+          <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
+          <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
+            <i class='bx bxs-wallet bx-md' ></i>
+            <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+          </div>
         </div>
+        <!-- End cards composantes -->
+      </div>
       </div>
       <div v-if="line"  class="line my-4">
         <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
@@ -312,17 +291,17 @@
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
               </thead>
               <tbody>
-                <tr class="bg-white" v-for="(item, i) in list" :key="i">
+                <tr class="bg-white" v-for="(i,index) in 10" :key="index">
                   <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.nom}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.description}}</td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.budgetNational}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.pret}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{item.poids}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">sous composante {{index}} ~ composante {{index *6}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">100M </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">1000M </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i*5}} </td>
                   <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                    <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">{{item.statut}}</span>
+                    <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
                   </td>
-                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" @supprimer="deleter(item)" @modifier="editer(item)" ></dropdown></td>
+                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
                 </tr>
               </tbody>
             </table>
@@ -332,53 +311,54 @@
 
     <div v-if="seeActivite">
       <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(i,index) in 10" :key="index">
-          <card>
-            <div  class="p-2">
-              <div class="flex justify-between">
-                <div class="flex space-x-2 items-center">
-                  <span class="bg-primary text-xs text-white p-1 uppercase">Composante</span>
-                  <h1 @click.stop="gotoNextActivite" class="font-base cursor-pointer font-bold text-gray-900">Activité {{index}} </h1>
-                </div>
-                 <div>
-                    <dropdown @gotoNext="gotoNextActivite" @modifier="modifier" @duplicate='dupliquer' :option="optionActivite"></dropdown>
-                  </div>
-              </div>
+        <div v-for="(activite,index) in activites" :key="index">
+          <!-- cards Activités -->
+          <div class="relative p-4 max-w-80 bg-white sm:rounded-lg overflow-hidden ">
+            <!-- dots -->
+            <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
+            <!-- ./dots -->
+            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
+              <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+            <div class="cursor-pointer">
+              <span class="absolute z-10 bottom-0 left-0 w-full h-10 text-white font-bold leading-3 px-8 py-3 text-left">
+                <span><i class='bx bxs-calendar mr-2'></i>{{activite.debut}}</span> au
+                <span><i class='bx bxs-calendar mr-2'></i>{{activite.fin}}</span></span>
+              <span
+                class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids
+                : {{activite.Poids}} </span>
 
-              <div class="border-b border-gray-300 relative ">
-                <p class="text-justify font-semibold leading-6 text-sm my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda iste dignissimos quasi quos laborum sequi!</p>
-                <div class="absolute bottom-0 right-0">
-                  <span v-if="!isStateChange" @click="isStateChange = true" class="text-white cursor-pointer bg-green-500 rounded p-1">en cours</span>
-                  <select v-else  @change="isStateChange = false" class="outine-none" name="" id="">
-                    <option value="">cree</option>
-                    <option value="">en attente</option>
-                    <option value="">en cours</option>
-                    <option value="">en terminer</option>
-                  </select>
+              <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
+                cours<i class='bx bx-time-five ml-1'></i></span>
+
+              <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span
+                  class="font-bold italic"><span class="underline mr-2">Activité</span>:</span> {{activite.libelle}} </p>
+              <!--  -->
+              <div class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
+                <i class='bx bxs-pin bx-sm'></i>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Responsable : 
+                  <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
+              </div>
+              <div class="flex items-center text-gray-600 dark:text-gray-400 mb-1">
+                <i class='bx bxs-pin bx-sm'></i>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Associée : 
+                  <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
+              </div>
+              <!--  -->
+              <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
+                <i class='bx bxs-wallet bx-sm'></i>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">EMP : 
+                  <span class="font-bold italic text-lg"> {{activite.montantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
                 </div>
               </div>
-              
-
-              <div class="my-2">
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant BN :</span>  <span class="text-gray-700">100M</span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant EPM-PRET :</span> <span class="text-gray-700">1000M</span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Poids :</span> <span class="text-gray-700">100</span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Struture responsable :</span> <span class="text-gray-700">Agetur</span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Struture associé :</span> <span class="text-gray-700">Non definit</span> </p>
-                  <div class="flex justify-between">
-                    <p class="text-sm font-semibold py-1"><span class="font-bold pr-2">De</span> 01/01/2019 <span class="font-bold px-2">Au</span> 31/12/2025 </p>
-                    
-                    <!-- <div class="flex space-x-2">
-                      <span title="supprimer" class="text-red-500 cursor-pointer "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z"></path></svg></span>
-                      <span title="modifer" class="text-blue-500 cursor-pointer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg></span>
-                      <span title="dupliquer" class="cursor-pointer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"></path></svg></span>
-                      <span title="continuer" class="cursor-pointer" ><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"></path></svg></span>
-                    </div> -->
-                     
-                  </div>
+              <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
+                <i class='bx bxs-wallet bx-sm'></i>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">BN : <span
+                    class="font-bold italic text-lg">{{activite.montantBN}}</span><span class="ml-2 uppercase font-bold">fcfa</span>
+                </div>
               </div>
             </div>
-          </card>
+          </div>
+      <!-- End cards Activités -->
         </div>
       </div>
       <div v-if="line"  class="line my-4">
@@ -490,19 +470,24 @@
       </div>
     </div>
     
-    
-    
-  </div>
+
+    </div>
+  </dashboard>
+ 
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import SearchBar from '@/components/SearchBar'
+import Titre from '@/components/Titre'
+import Vmodal from '@/components/Vmodal'
+import Dashboard from '@/layouts/Dashboard'
 export default {
-  modules: ['@nuxtjs/axios'],
-  computed: {
-      ...mapState(['baseURL', 'communes'])
+  components: {
+    Dashboard,
+    Vmodal,
+    Titre,
+    SearchBar,
   },
-  layout:'dashboard',
   data() {
     return {
       showModal:false,
@@ -527,44 +512,104 @@ export default {
         {name:"dupliquer"},
         {name:"continuer"},
       ],
+
+      activites:[
+            {
+              libelle: "Construire les collecteurs d'assainissement pluvial et aménager les voies connexes dans les bassins Pa3 et Y",
+              MontantNE : " ",
+              MontantEPM :"20,034,864.60",
+              Poids : 19,
+              StructureResponsable : "Pool PAP",
+              StructureAssociée : "Agetur",
+              debut: "01-01-2022",
+              fin: 31-12-2022
+            },
+            {
+              libelle: "Construire les collecteurs d'assainissement pluvial et aménager les voies connexes dans le bassin AAc",
+              MontantNE : " ",
+              MontantEPM :" 20,416,551.77",
+              Poids : 19,
+              StructureResponsable : "Pool PAP",
+              StructureAssociée : "Agetur",
+              debut: "01-03-2022",
+              fin: 31-12-2022
+            },
+          
+           
+              {
+                libelle: "Organiser des réunions d'information des parties populations riveraines sur les activités du projet",
+                MontantNE : " ",
+                MontantEPM :"",
+                Poids : 1,
+                StructureResponsable : "Pool PAP",
+                StructureAssociée : "Agetur",
+                debut: "01-01-2022",
+                fin: 31-12-2022
+              },
+              {
+                libelle: "Recruter une ONG en charge du développement et de la mise en œuvre de la stratégie de facilitation sociale pour l’engagement communautaire dans sa globalité y compris le plan IEC",
+                MontantNE : " ",
+                MontantEPM :"72,000.00",
+                Poids : 5,
+                StructureResponsable : "Pool PAP",
+                StructureAssociée : "",
+                debut: "01-01-2022",
+                fin: 31-12-2022
+              }
+       ],
+      sous_composantes: [
+              {
+                code: "4.1.1.3.2.1.1",
+                libelle: "Construction d’infrastructures de drainage et travaux connexes dans le Bassin Y, le Bassin Pa3 et le Bassin AAc de Cotonou ",
+                montantBN: "0.00",
+                montantEPM: " 26,521,859.40 ",
+                poids: "30.00",
+              },
+              {
+                code: "4.1.1.3.2.1.2",
+                libelle: "Construction d’infrastructures de drainage et connexes résilientes et pavage de rues dans le bassin QcQa",
+                montantBN: "0.00",
+                montantEPM: "8,601,209.60",
+                poids: "30.00",
+              },
+              {
+                code: "4.1.1.3.2.1.3",
+                libelle: "Sauvegarde environnementale dans les bassins Pa2 et QcQa",
+                montantBN: "0.00",
+                montantEPM: " 318,530.00 ",
+                poids: "12.00",
+              },
+            
+            
+              {
+                code: "4.1.1.3.2.2.1",
+                libelle: "Appui institutionnel, Communication et Renforcement des capacité",
+                montantBN: "0.00",
+                montantEPM: "1,873,991.60",
+                poids: "11.00",
+              },
+              {
+                code: "4.1.1.3.2.2.2",
+                libelle: "Plan complet de réinstallation des populations",
+                montantBN: "1,826,908.000",
+                montantEPM: "0.000",
+                poids: "7.00",
+              },
+              {
+                code: "4.1.1.3.2.2.3",
+                libelle: "Audit fiduciaire",
+                montantBN: "0.00",
+                montantEPM: " 100,136.00",
+                poids: "4.00",
+              },
+          
+      ],
       dates:[
         {}
       ],
-      form: [
-        { label: "nom", type: "text", value: null },
-        { label: "description", type: "text", value: null },
-        { label: "codePta", type: "text", value: null },
-        { label: "composanteId", type: "text", value: null },
-        { label: "poids", type: "text", value: null },
-        { label: "statut", type: "text", value: null },
-        { label: "budgetNational", type: "text", value: null },
-        { label: "pret", type: "text", value: null },
-        { label: "tepPrevu", type: "text", value: null },
-      ],
-      list: [],
-      options: [],
-      token: "",
-      key: ''
      
     }
     
-  },
-  mounted() {
-    this.$store.dispatch('setcommunes');
-    this.token  = localStorage.getItem("token");
-    this.$axios.setBaseURL(this.baseURL);
-    this.$axios.setToken(this.token, 'Bearer');
-    
-    this.getcomposantes().then((response)=>{
-      //console.log(response);
-      response.data.forEach(element => {
-        if (element.composanteId !== 0) {
-            this.list = this.list.concat(element);
-        }else{
-            this.options = this.options.concat(element);
-        }
-      });
-    })
   },
   methods: {
     addDate() {
@@ -630,89 +675,13 @@ export default {
     },
     editerSuivi(index) {
       this.showInput = false
-    },
-    sender(){
-      let data = {};
-
-      for (let i = 0; i < this.form.length; i++) {
-        data[this.form[i].label] = (this.form[i].label === 'debut' || this.form[i].label === 'fin') ? [this.form[i].value]: this.form[i].value;
-      }
-      //console.log(data);
-      switch (this.key) {
-        case 'put':
-          this.putcomposantes(data.id, data).then((response)=>{
-            console.log(response);
-          });
-          break;
-
-        case 'delete':
-          this.deletecomposantes(data.id).then((response)=>{
-            console.log(response);
-          });
-          break;
-      
-        default:
-          this.postcomposantes(data).then((response)=>{
-            console.log(response);
-          });
-          break;
-      }
-      this.getcomposantes().then((response)=>{
-        //console.log(response);
-        this.list = [];
-        response.data.forEach(element => {
-          if (element.composanteId !== 0) {
-            this.list = this.list.concat(element);
-          }
-        });
-        this.key = '';
-        this.close();
-      })
-
-    },
-    initform(){
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  null;
-      }
-    },
-    editer(data){
-      this.title ="Modifier un nouveau projet";
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      
-      this.showModal = true;
-      this.key = 'put';
-    },
-    deleter(data){
-      this.key = 'delete';
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      this.sender()
-    },
-    close() {
-      this.initform();
-      this.showModal = false
-    },
-    async postcomposantes(data) {
-      return await this.$axios.$post('/api/composantes', data)
-    },
-    async getcomposantes() {
-      return await this.$axios.$get('/api/composantes')
-    },
-    async putcomposantes(id, data) {
-      return await this.$axios.$put('/api/composantes/'+id, data)
-    },
-    async deletecomposantes(id) {
-      return await this.$axios.$delete('/api/composantes/'+id)
-    },
+    }
   }
 }
 </script>
 
 <style>
-
+.bx.bxs-pin {
+  transform: rotate(45deg);
+}
 </style>

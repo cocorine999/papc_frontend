@@ -7,9 +7,9 @@
       </h1>
       <span class="border-b-2 border-t-2 w-8 md:w-24 inline-block ml-2 rounded"></span>
     </div>
-    <nuxt-link to="/users/checklist" title="editer la checklist" class="cursor-pointeur bg-gray-300 p-2 rounded-md block absolute top-1 right-0 mx-4">
+    <router-link to="/users/checklist" title="editer la checklist" class="cursor-pointeur bg-gray-300 p-2 rounded-md block absolute top-1 right-0 mx-4">
       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="2.2em" width="2.2em" xmlns="http://www.w3.org/2000/svg"><path d="M8 5a1 1 0 1 0 0 2h5.586l-1.293 1.293a1 1 0 0 0 1.414 1.414l3-3a1 1 0 0 0 0-1.414l-3-3a1 1 0 1 0-1.414 1.414L13.586 5H8zm4 10a1 1 0 1 0 0-2H6.414l1.293-1.293a1 1 0 1 0-1.414-1.414l-3 3a1 1 0 0 0 0 1.414l3 3a1 1 0 0 0 1.414-1.414L6.414 15H12z" stroke="none"/></svg>
-    </nuxt-link>
+    </router-link>
     <form action="">
       <div class="my-4 px-10" v-for="checklist in checklists.data" :key="checklist.id">
         <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{checklist.question}}</label>
