@@ -1,29 +1,32 @@
 <template>
-  <div class="w-full p-4">
+  <dashboard>
+    <div class="w-full p-4">
     <vmodal v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="sender" class="px-12" style="width:60vw !important" >
+      <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[0].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[1].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
+            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
           </div>
         </div>
 
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Code PTA  <span class="px-2 text-lg font-black text-red-700">*</span></label>
-             <input required v-model="form[2].value"  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le poids" />
-
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="i in 5" :key="i.id" value=""> {{i}} </option>
+            </select>
           </div>
 
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un projet <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select v-model="form[3].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-             <option class="font-semibold" v-for="(item, i) in options" :key="i" :value="item.id"> {{item.nom}} </option>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
+
             </select>
           </div>
         </div>
@@ -31,14 +34,14 @@
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[4].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
+            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select v-model="form[5].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option value="En cours">En cours</option>
-              <option value="En attente">En attente</option>
-              <option value="En terminer">En terminer</option>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option value="">En cours</option>
+              <option value="">En attente</option>
+              <option value="">En terminer</option>
             </select>
           </div>
         </div>
@@ -46,20 +49,15 @@
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[6].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
+            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[7].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
+            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">tepPrevu <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="form[8].value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
-          </div>
-        </div>
+        
         
 
         <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
@@ -96,15 +94,15 @@
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">
-            <nuxt-link to="/dashboard" class="text-gray-600">dashboard</nuxt-link>
+            <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center text-blue-500 ">
-            <nuxt-link to="/dashboard/projets" class="text-gray-600">projets</nuxt-link>
+            <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center text-blue-500 ">
-            <nuxt-link to="/dashboard/projets/composantes-globale" class="">composantes</nuxt-link>
+            <router-link to="/dashboard/projets/composantes-globale" class="">composantes</router-link>
           </li>
         </ol>
       </div>
@@ -126,7 +124,7 @@
       </div>
       
       <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
           <span class="mx-2 text-sm font-semibold">ajouter un composant</span>
       </button>
      
@@ -134,46 +132,32 @@
     <!--Filtre sur projet -->
       <div class="">
         <select class="px-11 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-          <option class="font-semibold" value="TOUS"> Tous </option>
-          <option class="font-semibold"  v-for="(item, i) in options" :key="i" :value="item.id"> {{item.nom}} </option>
+          <option class="font-semibold"> Tous </option>
+          <option class="font-semibold"  v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
         </select>
       </div>
      <!--Filtre sur projet -->
     <div v-if="seeComposant">
       <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-      <div v-for="(item, i) in list" :key="i">
-        <card >
-          <div  class="p-2 ">
-              <div class="flex justify-between">
-                <div class="flex space-x-2 items-center">
-                  <span class="bg-primary text-xs text-white p-1 uppercase">projet</span>
-                  <h1 @click.stop="gotoNext" class="font-base font-bold  cursor-pointer text-gray-900">{{item.nom}} </h1>
-                </div>
-                <div>
-                  <dropdown @gotoNext="gotoNext" @supprimer="deleter(item)" @modifier="editer(item)" @duplicate='dupliquer' :option="option"></dropdown>
-                </div>
-      
-              </div>
-              <div class="border-b border-gray-300 relative">
-                <p class="text-justify font-semibold leading-6 text-sm my-2">{{item.description}} </p>
-                <div class="absolute bottom-0 right-0">
-                  <span v-if="!isStateChange" @click.stop="isStateChange = true" class="text-white cursor-pointer bg-green-500 rounded p-1">{{item.statut}} </span>
-                  <select v-else  @change.stop="isStateChange = false" class="outine-none" name="" id="">
-                    <option value="">cree</option>
-                    <option value="">en attente</option>
-                    <option value="">en cours</option>
-                    <option value="">en terminer</option>
-                  </select>
-                </div>
-              </div>
-                   
-              <div class="my-2">
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant BN :</span>  <span class="text-gray-700">{{item.budgetNational}} </span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant EPM-PRET :</span> <span class="text-gray-700">{{item.pret}} </span> </p>
-                <p class="text-sm font-semibold py-1"> <span class="font-bold">Poids :</span> <span class="text-gray-700">{{item.poids}} </span> </p>
-              </div>
-          </div>    
-        </card>
+      <div v-for="(composante,index) in composantes" :key="index">
+        <!-- cards composantes -->
+        <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
+          <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
+          <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
+
+            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+            <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+
+          <!-- dots -->
+          <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
+          <!-- ./dots -->
+          <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
+          <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
+            <i class='bx bxs-wallet bx-md' ></i>
+            <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+          </div>
+        </div>
+        <!-- End cards composantes -->
       </div>
     </div>
     <div v-if="line"  class="line my-4">
@@ -190,17 +174,17 @@
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
             </thead>
             <tbody>
-              <tr class="bg-white" v-for="(item, i) in list" :key="i">
+              <tr class="bg-white" v-for="(i,index) in 10" :key="index">
                 <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.nom}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.description}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.budgetNational}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{item.pret}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{item.poids}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{index}} ~ Projet {{index * 2}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">100M </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">1000M </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i*5}} </td>
                 <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                  <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">{{item.statut}}</span>
+                  <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
                 </td>
-                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" @supprimer="deleter(item)" @modifier="editer(item)" ></dropdown></td>
+                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
               </tr>
             </tbody>
           </table>
@@ -280,20 +264,24 @@
             </table>
       </div>
     </div>
-
-    
     
   </div>
+  </dashboard>
+ 
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import SearchBar from '@/components/SearchBar'
+import Titre from '@/components/Titre'
+import Vmodal from '@/components/Vmodal'
+import Dashboard from '@/layouts/Dashboard'
 export default {
-  modules: ['@nuxtjs/axios'],
-  computed: {
-      ...mapState(['baseURL', 'communes'])
+  components: {
+    Dashboard,
+    Vmodal,
+    Titre,
+    SearchBar,
   },
-  layout:'dashboard',
   data() {
     return {
       showModal:false,
@@ -311,58 +299,47 @@ export default {
         {name:"dupliquer"},
         {name:"continuer"},
       ],
+      composantes: [
+        {
+          code: "4.1.1.3.1.1",
+          libelle: " Investissement dans l’assainissement pluvial et engagement des communautés pour la réduction des risques d’inondation et l’adaptation au changement climatique ",
+          montantBN: "1,561,078.941",
+          montantEPM: "42,598,138.77",
+          poids: "72.00",
+        },
+        {
+          code: "4.1.1.3.1.2",
+          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
+          montantBN: "1,030,354.65",
+          montantEPM: "1,030,354.65",
+          poids: "13.00",
+        },
+         {
+          code: "4.1.1.3.1.3",
+          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
+          montantBN: "1,030,354.65",
+          montantEPM: "1,030,354.65",
+          poids: "13.00",
+        },
+      ],
       dates:[
         {}
       ],
-      form: [
-        { label: "nom", type: "text", value: null },
-        { label: "description", type: "text", value: null },
-        { label: "codePta", type: "text", value: null },
-        { label: "projetId", type: "text", value: null },
-        { label: "poids", type: "text", value: null },
-        { label: "statut", type: "text", value: null },
-        { label: "budgetNational", type: "text", value: null },
-        { label: "pret", type: "text", value: null },
-        { label: "tepPrevu", type: "text", value: null },
-      ],
-      list: [],
-      options: [],
-      token: "",
-      key: ''
      
     }
     
-  },
-  mounted() {
-    this.$store.dispatch('setcommunes');
-    this.token  = localStorage.getItem("token");
-    this.$axios.setBaseURL(this.baseURL);
-    this.$axios.setToken(this.token, 'Bearer');
-    
-    this.getcomposantes().then((response)=>{
-      //console.log(response);
-      response.data.forEach(element => {
-        if (element.composanteId === 0) {
-          this.list = this.list.concat(element);
-        }
-      });
-    })
-    this.getprojets().then((response)=>{
-      //console.log(response);
-      this.options = response.data;
-    })
   },
   methods: {
     addDate() {
       this.dates.push({})
     },
-    gotoComposante() {
-      this.seeSuivi = false
-      this.seeComposant = true
-    },
      gotoSuivi() {
       this.seeSuivi = true
       this.seeComposant = false
+    },
+    gotoComposante() {
+      this.seeSuivi = false
+      this.seeComposant = true
     },
     switch1() {
       this.mosaique = true
@@ -392,88 +369,7 @@ export default {
     },
      editerSuivi(index) {
       this.showInput = false
-    },
-    sender(){
-      let data = {};
-
-      for (let i = 0; i < this.form.length; i++) {
-        data[this.form[i].label] = (this.form[i].label === 'debut' || this.form[i].label === 'fin') ? [this.form[i].value]: this.form[i].value;
-      }
-      //console.log(data);
-      switch (this.key) {
-        case 'put':
-          this.putcomposantes(data.id, data).then((response)=>{
-            console.log(response);
-          });
-          break;
-
-        case 'delete':
-          this.deletecomposantes(data.id).then((response)=>{
-            console.log(response);
-          });
-          break;
-      
-        default:
-          this.postcomposantes(data).then((response)=>{
-            console.log(response);
-          });
-          break;
-      }
-      this.getcomposantes().then((response)=>{
-        //console.log(response);
-        this.list = [];
-        response.data.forEach(element => {
-        if (element.composanteId === 0) {
-          this.list = this.list.concat(element);
-        }
-      });
-        this.key = '';
-        this.close();
-      })
-
-    },
-    initform(){
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  null;
-      }
-    },
-    editer(data){
-      this.title ="Modifier un nouveau composant"
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      
-      this.showModal = true;
-      this.key = 'put';
-    },
-    deleter(data){
-      this.key = 'delete';
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      this.sender()
-    },
-    close() {
-      this.initform();
-      this.showModal = false
-    },
-    async postcomposantes(data) {
-      return await this.$axios.$post('/api/composantes', data)
-    },
-    async getcomposantes() {
-      return await this.$axios.$get('/api/composantes')
-    },
-    async putcomposantes(id, data) {
-      return await this.$axios.$put('/api/composantes/'+id, data)
-    },
-    async deletecomposantes(id) {
-      return await this.$axios.$delete('/api/composantes/'+id)
-    },
-    async getprojets() {
-      return await this.$axios.$get('/api/projets')
-    },
+    }
     
   }
 }

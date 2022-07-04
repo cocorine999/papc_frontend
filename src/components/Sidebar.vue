@@ -278,7 +278,7 @@
         <i class='bx bx-chevron-down bx-sm text-white'></i>
       </header>
       <div class="tab-content bg-white  mb-16  ">
-        <div class="mb-1 px-4 flex items-center text-gray-700  cursor-pointer my-1 ">
+        <!-- <div class="mb-1 flex items-center text-gray-700  cursor-pointer my-1 ">
           <router-link to="/dashboard/config" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4  hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
             <span class="font-semibold text-xs">Pays</span>
           </router-link>
@@ -290,13 +290,14 @@
           </router-link>
         </div>
 
+         -->
         <div class="mb-1  flex items-center  text-gray-700  cursor-pointer  ">
           <router-link to="/dashboard/config/unites" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
             <span class="font-semibold text-xs">Unité de mesures</span>
           </router-link>
         </div>
 
-        <div class="mb-10  flex items-center mt-2 text-gray-700  cursor-pointer  ">
+        <div class="mb-1  flex items-center mt-2 text-gray-700  cursor-pointer  ">
           <router-link to="/dashboard/config/categories" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4  hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
             <span class="font-semibold text-xs">Catégories</span>
           </router-link>

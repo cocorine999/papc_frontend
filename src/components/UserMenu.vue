@@ -18,14 +18,14 @@
     <div
       id="userDropDown"
       class="dropdownlist absolute top-2 right-0 bg-white  shadow-md pin-r mt-3 p-3 overflow-auto z-30 invisible">
-    <nuxt-link
+    <router-link
       to="/users/compte"
       class="p-2 hover:bg-grey-darkest  text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Mon compte
-    </nuxt-link>
-    <nuxt-link
+    </router-link>
+    <router-link
       to="/users/settings"
       class="p-2 hover:bg-grey-darkest  text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Parametre
-    </nuxt-link>
+    </router-link>
     <div class="border border-grey-darkest"></div>
       <span @click="logout"
         href="#"

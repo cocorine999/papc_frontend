@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full p-4">
+  <dashboard>
+    <div class="w-full p-4">
     <div v-if="showModal">
       <vmodal  :title="title"  v-on:close="closeModal">
         <div class="px-4 overflow-auto" style="width:60vw !important;height: 500px;" >
@@ -21,11 +22,11 @@
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
-            <nuxt-link to="" class="text-gray-600">dashboard</nuxt-link>
+            <router-link to="" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center ">
-            <nuxt-link to="" class="text-gray-600">programme</nuxt-link>
+            <router-link to="" class="text-gray-600">programme</router-link>
           </li>
         </ol>
       </div>
@@ -43,15 +44,15 @@
     </div>
     <div  class="grid grid-cols-3 gap-4">
 
-        <div v-for="programme in programmes" :key="programme.id">
+        <div v-for="i in 5" :key="i.id">
           <card-programme
-            :libelle="programme.nom"
-            :code="programme.code"
-            :dateDeb="programme.debut"
-            :montantBN="programme.budgetNational"
-            :dateFin="programme.fin"
-            :description="programme.description"
-            @supprimer="supprimer(programme.id)"
+            libelle="programme"
+            code="code"
+            dateDeb="debut"
+            montantBN="budgetNational"
+            dateFin="fin"
+            description="description"
+            @supprimer="supprimer(id)"
             @modifier="modifier"
             @dupliquer="dupliquer"
             > </card-programme>
@@ -59,14 +60,28 @@
 
     </div>
   </div>
+  </dashboard>
 </template>
 
 <script>
 
-import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-
+import SearchBar from '@/components/SearchBar'
+import Titre from '@/components/Titre'
+import Vtable from '@/components/Vtable'
+import Vform from '@/components/Vform'
+import Vmodal from '@/components/Vmodal'
+import Dashboard from '@/layouts/Dashboard'
+import CardProgramme from '@/components/CardProgramme'
 export default {
-  layout:'dashboard',
+  components: {
+    Vtable,
+    Dashboard,
+    Vmodal,
+    Vform,
+    Titre,
+    SearchBar,
+    CardProgramme,
+  },
   data() {
     return {
       errors : [],
@@ -93,17 +108,11 @@ export default {
     }
   },
   
-  computed: {
-    ...mapGetters('programmes', {programmes: "LISTS_PROGRAMME"})
-  },
+  
   methods: {
 
 
-    ...mapMutations({
-      setErrors: 'SET_ERRORS_MESSAGE' // map `this.add()` to `this.$store.commit('increment')`
-    }),
-
-    ...mapActions('programmes', {fetchProgrammes: "FETCH_LIST_PROGRAMME", saveProgramme: "STORE_PROGRAMME", deleteProgramme: "DESTROY_PROGRAMME"}),
+  
 
     switch1() {
       this.mosaique = true
@@ -114,80 +123,7 @@ export default {
       this.line = true
     },
     
-    closeModal() {
-      this.showModal=false
-    },       
-    
-    extractData(data, keys, values = null)
-    {
-        //let valeur = values ? item[values[y]] : item[key] != undefined ? item[key] : 'data'
 
-        //data.find((item) => item.key === key )['data']
-
-        let objet = new Object;
-
-        keys.map((key, y) => {
-
-            let valeur = data.find((item) => item.key === key )
-
-            let value = values ? valeur[values[y]] : valeur[key] != undefined ? valeur[key] : 'data'
-
-            objet[key] = valeur[value]
-
-            //return {[key] : valeur[value]}
-
-        })
-
-        return objet
-
-    },
-
-    formatDate(date, format) {
-      let d = new Date(date);
-      let month = (d.getMonth() + 1).toString();
-      let day = d.getDate().toString();
-      let year = d.getFullYear();
-      if (month.length < 2) {
-        month = '0' + month;
-      }
-      if (day.length < 2) {
-        day = '0' + day;
-      }
-
-      let dateFormat = [];
-
-      if(format?.year == 'year')
-        dateFormat.push(year)
-
-      if(format?.month == 'month')
-        dateFormat.push(month)
-
-      if(format?.day == 'day')
-        dateFormat.push(day)
-
-      return dateFormat.join('-');
-    },
-
-    sendForm() {
-
-      let programme = this.extractData(this.champs, ['nom', 'code', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational'])
-      
-      programme['debut'] = this.formatDate(programme['debut'], {'year' : 'year' , 'month': 'month' })
-      
-      programme['fin'] = this.formatDate(programme['fin'], {'year' : 'year' , 'month': 'month' })
-
-      this.saveProgramme(programme).then((response) => {
-        if(response.status == 200 || response.status == 201)
-          this.showModal = false
-      }).catch((error) => {
-
-        this.errors = error.response.data.errors
-
-        this.setErrors(this.errors)
-
-      })
-
-    },
 
     addProgramme() {
       this.title='Ajouter un programme'
@@ -213,8 +149,7 @@ export default {
   },
   
   mounted() {
-      console.log("fetch")
-      this.fetchProgrammes()
+     
   }
 
 }

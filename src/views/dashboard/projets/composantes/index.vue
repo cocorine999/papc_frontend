@@ -85,15 +85,15 @@
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">
-            <nuxt-link to="/dashboard" class="text-gray-600">dashboard</nuxt-link>
+            <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center text-blue-500 ">
-            <nuxt-link to="/dashboard/projets" class="text-gray-600">projets</nuxt-link>
+            <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center text-blue-500 ">
-            <nuxt-link to="/dashboard/projets/composantes" class="">composantes</nuxt-link>
+            <router-link to="/dashboard/projets/composantes" class="">composantes</router-link>
           </li>
         </ol>
       </div>
@@ -109,26 +109,26 @@
     </div>
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
-        <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
+        <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
+        <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
       <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
           <span class="mx-2 text-sm font-semibold">ajouter uncomposant</span>
       </button>
      
     </div>
     <div v-if="seeComposant">
       <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(item, i) in list" :key="i">
+        <div v-for="(i,index) in 10" :key="index">
           <card >
             <div  class="p-2 ">
               <div class="flex justify-between">
-                <h1 @click.stop="gotoNext" class="font-base font-bold cursor-pointer text-gray-900">Composante {{index}} </h1>
-                  <div>
-                    <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
-                </div>
+                      <h1 @click.stop="gotoNext" class="font-base font-bold cursor-pointer text-gray-900">Composante {{index}} </h1>
+                       <div>
+                          <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+                      </div>
       
               </div>
               <div class="border-b border-gray-300 relative">
@@ -167,7 +167,7 @@
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
               </thead>
               <tbody>
-                <tr class="bg-white" v-for="(item, i) in list" :key="i">
+                <tr class="bg-white" v-for="(i,index) in 10" :key="index">
                   <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
                   <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{index}} </td>
                   <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
@@ -262,12 +262,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
-  modules: ['@nuxtjs/axios'],
-  computed: {
-      ...mapState(['baseURL', 'communes'])
-  },
   layout:'dashboard',
   data() {
     return {
@@ -288,39 +283,9 @@ export default {
       dates:[
         {}
       ],
-      form: [
-        { label: "nom", type: "text", value: null },
-        { label: "description", type: "text", value: null },
-        { label: "ville", type: "text", value: null },
-        { label: "poids", type: "text", value: null },
-        { label: "couleur", type: "text", value: null },
-        { label: "userId", type: "text", value: null },
-        { label: "budgetNational", type: "text", value: null },
-        { label: "pret", type: "text", value: null },
-        { label: "statut", type: "text", value: null },
-        { label: "debut", type: "text", value: null },
-        { label: "fin", type: "text", value: null },
-      ],
-      list: [],
-      options: [],
-      token: "",
-      key: ''
+     
     }
-  },
-  mounted() {
-    this.$store.dispatch('setcommunes');
-    this.token  = localStorage.getItem("token");
-    this.$axios.setBaseURL(this.baseURL);
-    this.$axios.setToken(this.token, 'Bearer');
     
-    this.getcomposantes().then((response)=>{
-      //console.log(response);
-      this.list = response.data;
-    })
-    this.getprojets().then((response)=>{
-      //console.log(response);
-      this.options = response.data;
-    })
   },
   methods: {
     addDate() {
@@ -366,83 +331,7 @@ export default {
     },
     editerSuivi(index) {
       this.showInput = false
-    },
-    sender(){
-      let data = {};
-
-      for (let i = 0; i < this.form.length; i++) {
-        data[this.form[i].label] = (this.form[i].label === 'debut' || this.form[i].label === 'fin') ? [this.form[i].value]: this.form[i].value;
-      }
-      //console.log(data);
-      switch (this.key) {
-        case 'put':
-          this.putcomposantes(data.id, data).then((response)=>{
-            console.log(response);
-          });
-          break;
-
-        case 'delete':
-          this.deletecomposantes(data.id).then((response)=>{
-            console.log(response);
-          });
-          break;
-      
-        default:
-          this.postcomposantes(data).then((response)=>{
-            console.log(response);
-          });
-          break;
-      }
-      this.getcomposantes().then((response)=>{
-        //console.log(response);
-        this.list = response.data;
-        this.key = '';
-        this.close();
-      })
-
-    },
-    initform(){
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  null;
-      }
-    },
-    editer(data){
-      this.title ="Modifier un nouveau projet";
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      
-      this.showModal = true;
-      this.key = 'put';
-    },
-    deleter(data){
-      this.key = 'delete';
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      this.sender()
-    },
-    close() {
-      this.initform();
-      this.showModal = false
-    },
-    async postcomposantes(data) {
-      return await this.$axios.$post('/api/composantes', data)
-    },
-    async getcomposantes() {
-      return await this.$axios.$get('/api/composantes')
-    },
-    async putcomposantes(id, data) {
-      return await this.$axios.$put('/api/composantes/'+id, data)
-    },
-    async deletecomposantes(id) {
-      return await this.$axios.$delete('/api/composantes/'+id)
-    },
-    async getprojets() {
-      return await this.$axios.$get('/api/projets')
-    },
+    }
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
+ <dashboard>
   <div class="p-4">
-    
     <vmodal  v-if="showModal" title="Uploader des fichiers"  v-on:close="showModal=false">
         <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
           <div class="w-full mx-4">
@@ -54,12 +54,12 @@
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">
-            <nuxt-link to="/dashboard" class="text-gray-600">dashboard</nuxt-link>
+            <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
 
           <li class="flex items-center text-blue-500 ">
-            <nuxt-link to="#" class="">gestionnaire de fichier</nuxt-link>
+            <router-link to="#" class="">gestionnaire de fichier</router-link>
           </li>
         </ol>
       </div> 
@@ -228,6 +228,7 @@
     </div>
 
   </div>
+ </dashboard>
 </template>
 
 <script>
@@ -235,13 +236,17 @@
 import VuePdfApp from "vue-pdf-app";
 // import this to use default icons for buttons
 import "vue-pdf-app/dist/icons/main.css";
-import Dropzone from 'nuxt-dropzone'
-import 'nuxt-dropzone/dropzone.css'
+import Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import Multiselect from 'vue-multiselect'
-import Users from '~/components/Users'
+import Users from '@/components/Users'
+import Dashboard from '@/layouts/Dashboard'
+import SearchBar from '@/components/SearchBar'
+import Titre from '@/components/Titre'
+import Vmodal from '@/components/Vmodal'
 export default {
   layout:'dashboard',
-  components: {Dropzone,Multiselect,VuePdfApp,},
+  components: {Dropzone,Multiselect,VuePdfApp,Dashboard,Titre,Vmodal,SearchBar},
   data() {
     return {
       
