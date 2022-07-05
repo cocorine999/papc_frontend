@@ -92,10 +92,7 @@
 
 <script>
 
-<<<<<<< HEAD
 import router from '@/router';
-=======
->>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
 import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions } from 'vuex'
 
@@ -119,12 +116,9 @@ export default {
   methods: {
    
     save() {
-<<<<<<< HEAD
       this.soumettre = true;
       this.$router.push("/dashboard/bailleurs");
-=======
-      this.soumettre = true
->>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
+      this.soumettre = true;
     },
     visible () {
       this.statePassword = 'text'
@@ -132,13 +126,10 @@ export default {
     },
     invisible () {
       this.statePassword = 'password'
-      this.show = false
-<<<<<<< HEAD
+      this.show = false;
     },
-=======
-    }
->>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
   },
+
   validations: {
     login: {
       required,
@@ -153,11 +144,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-<<<<<<< HEAD
-=======
-* {
-  font-family: 'Inter', sans-serif;
-}
->>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
-</style>
