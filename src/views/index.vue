@@ -34,7 +34,11 @@
           </div>
           <div class="form-group">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500" @click="login">Se connecter</button>
+=======
+            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
+>>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
 =======
             <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
 >>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
@@ -88,7 +92,10 @@
 
 <script>
 
+<<<<<<< HEAD
 import router from '@/router';
+=======
+>>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
 import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions } from 'vuex'
 
@@ -112,8 +119,12 @@ export default {
   methods: {
    
     save() {
+<<<<<<< HEAD
       this.soumettre = true;
       this.$router.push("/dashboard/bailleurs");
+=======
+      this.soumettre = true
+>>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
     },
     visible () {
       this.statePassword = 'text'
@@ -122,7 +133,11 @@ export default {
     invisible () {
       this.statePassword = 'password'
       this.show = false
+<<<<<<< HEAD
     },
+=======
+    }
+>>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
   },
   validations: {
     login: {
@@ -139,4 +154,10 @@ export default {
 }
 </script>
 <style scoped>
+<<<<<<< HEAD
+=======
+* {
+  font-family: 'Inter', sans-serif;
+}
+>>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
 </style>
