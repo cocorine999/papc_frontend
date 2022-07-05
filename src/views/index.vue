@@ -33,15 +33,7 @@
             </div>
           </div>
           <div class="form-group">
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500" @click="login">Se connecter</button>
-=======
-            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
->>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
-=======
-            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
->>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
+         <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
           </div>
         </form>
 
