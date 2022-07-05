@@ -33,7 +33,11 @@
             </div>
           </div>
           <div class="form-group">
+<<<<<<< HEAD
             <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500" @click="login">Se connecter</button>
+=======
+            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
+>>>>>>> 7d073cd0e9291d09522a38eb8295681576adb904
           </div>
         </form>
 
@@ -119,9 +123,6 @@ export default {
       this.statePassword = 'password'
       this.show = false
     },
-    // login() {
-    //   this.soumettre= true;
-    // }
   },
   validations: {
     login: {
