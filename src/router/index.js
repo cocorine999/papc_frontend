@@ -37,6 +37,9 @@ import projets_id_details from "../views/dashboard/projets/_id/details.vue";
 import bailleurs from "../views/dashboard/bailleurs/index.vue";
 import fileManager from "../views/dashboard/fileManager/index.vue";
 import demo from "../views/demo.vue";
+import instutitions from "../views/dashboard/instutitions/index.vue";
+import paps from "../views/dashboard/paps/index.vue";
+import ong from "../views/dashboard/ong/index.vue";
 
 /* layouts */
 //const DashboardLayout = () => import('../layouts/Dashboard.vue');
@@ -83,6 +86,22 @@ const routes = [
     name: "entreprises",
     component: entreprises,
   },
+  {
+    path: "/dashboard/instutitions",
+    name: "instutitions",
+    component: instutitions,
+  },
+  {
+    path: "/dashboard/PAP",
+    name: "paps",
+    component: paps,
+  },
+  {
+    path: "/dashboard/ong",
+    name: "ong",
+    component: ong,
+  },
+  
   // {
   //   path: "/dashboard/fileManager",
   //   name: "fileManager",
