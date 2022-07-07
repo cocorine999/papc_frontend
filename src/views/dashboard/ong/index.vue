@@ -18,6 +18,13 @@
         </div>
       </vmodal>
     </div>
+    <div v-if="showModal2">
+      <vmodal :title="title2"  v-on:close="showModal2 = false">
+        <div style="width:60vw;height:450px" class="px-4 overflow-y-auto">
+          <vform template="default"  :champs="passationChamps" isAllPairSaufDescrip="true" :cols="colsPassation" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
+        </div>
+      </vmodal>
+    </div>
     
     <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
       <div>
@@ -43,14 +50,33 @@
       </div>
     </div>
     <div class="flex items-center justify-between my-2">
-      <titre>Les ONG/AGENCES DE COMMUNICATIONs </titre>
+       <div class="flex space-x-4">
+        <span @click="goOng" :class="{'border-primary border-b-8':seeOng}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Les ONG/AGENCES DE COMMUNICATIONs </span>
+        <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
+         <span @click="gochecklist" :class="{'border-primary border-b-8':seechecklist}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Mes checklist </span>
+       
+
+      </div>
       
-        <button @click="addBailleur" title="ajouter une instutitions"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+      
+        <button v-if="seeOng" @click="addBailleur" title="ajouter une instutitions"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
+        <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+            <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+            <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
+        </button>
+
+        <router-link v-if="seechecklist" to="/dashboard/checklist/create"  title="ajouter une checklist"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+        <span class="mx-2 text-sm font-semibold">Ajouter </span>
+      </router-link>
+
+        
     </div>
-    <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+    <div v-if="seeOng">
+     <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
       <div v-for="(bailleur,index) in bailleurs" :key="index">
            <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
               <span :class="bailleur.color" class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{bailleur.sigle}}</span>
@@ -91,6 +117,28 @@
       @supprimer="supprimer" 
       @modifier="modifier"></vtable>
     </div>
+    </div>
+    <div v-if="seePassation">
+       <div v-if="seePassation">
+      <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
+    </div>
+    </div>
+    <div v-if="seechecklist"> 
+         <div  class="grid grid-cols-3 gap-4">
+      <div v-for="i in 6" :key="i.id">
+        <card-checklist
+          libelle="checklist"
+          code="15555DC" 
+          activite="Nombre d'accident routiere" 
+          :unites="['personne','%','km']" 
+          @supprimer="supprimer"
+          @modifier="modifier"
+          @dupliquer="dupliquer"
+          > </card-checklist>
+      </div>
+    </div>
+    </div>
+   
   </div>
   </dashboard>
 </template>
@@ -105,6 +153,7 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import { mapState } from 'vuex'
 import CardMod from '@/components/CardMod'
+import CardChecklist from '@/components/CardChecklist'
   
   
   
@@ -120,14 +169,20 @@ export default {
     CardBailleur,
     Titre,
     SearchBar,
-    CardMod
+    CardMod,
+    CardChecklist,
+    
   },
   data() {
     return {
       showModal:false,
+      showModal2:false,
       loading:false,
       line:false,
       mosaique:true,
+      seeOng:true,
+      seePassation:false,
+      seechecklist:false,
       title: '',
       headers:[
         {name:'Bailleurs',props:'bailleur'},
@@ -186,9 +241,44 @@ export default {
         {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
         {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
         {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        
-          
       ],
+      passationChamps:[
+        {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},
+        {name:'Selectionnez Site',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:['calavi','cotonou'],required:true,},
+        {name:'Montant passation',type:'number',placeholdere:"Montant passation",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date obtention',type:'date',placeholdere:"Date obtention",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date signature',type:'date',placeholdere:"Date signature",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date Demarrage',type:'date',placeholdere:"Date de Demarrage",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date previsionnelle',type:'date',placeholdere:"Date de previsionnelle",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date  obtention avance',type:'date',placeholdere:"Date obtention avance",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Montant avance',type:'number',placeholdere:"Montant avance",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Estimation',type:'number',placeholdere:"Estimation",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Ordre de service',type:'text',placeholdere:"Ordre de service",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Travaux',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Responsable sociologue',type:'',placeholdere:"Selectionnez un responsable",isSelect:true,isTextArea:false,data:'',required:true,options:['Responsable','Responsable2']},
+      ],
+      cols:1,
+      colsPassation:2,
+      headers:[
+          {name:'Nom createur',props:'createur',width:"w-24"},
+          {name:'Site',props:'site',width:"w-36"},
+          {name:'MOD',props:'mod',width:"w-36"},
+          {name:'Montant passation',props:'montant_passation',width:"w-24"},
+          {name:'Date obtention',props:'date_obtention',width:"w-24"},
+          {name:'Date demarrage',props:'date_demarrage',width:"w-24"},
+          {name:'Date signature',props:'date_signature',width:"w-24"},
+          {name:'date previsionnelle',props:'date_previsionnelle',width:"w-24"},
+          {name:'Date obtention avance',props:'date_avance',width:"w-40"},
+          {name:'Montant avance',props:'montant_avance',width:"w-24"},
+          {name:'Estimation',props:'estimation',width:"w-24"},
+          {name:'Ordre de service',props:'ordre_service',width:"w-24"},
+          {name:'travaux',props:'travaux',width:"w-24"},
+          {name:'Responsable sociologue',props:'responsable_sociologue',width:"w-24"},
+          {name:'Date de creation',props:'created_at',width:"w-28"},
+         
+         
+        ],
+
       actions:[
         {name:'modifier',iconne:''},
         {name:'supprimer',iconne:''},
@@ -203,6 +293,9 @@ export default {
         {name:'supprimer'},
         {name:'modifier'},
       ]
+      
+
+
     }
   },
   methods: {
@@ -218,14 +311,25 @@ export default {
     closeModal() {
       this.showModal=false
     },
-    addBailleur() {
-      this.title='Ajouter une nouvelle ONG/AGENCES DE COMMUNICATION'
-      this.showModal = true
-    },
+   
     sendForm() {
       alert('donnée envoyer')
     },
-    
+     goOng() {
+      this.seeOng = true
+      this.seePassation = false
+      this.seechecklist = false
+    },
+    goPassation() {
+      this.seeOng = false
+      this.seePassation = true
+      this.seechecklist = false
+    },
+    gochecklist() {
+      this.seeOng = false
+      this.seePassation = false
+      this.seechecklist = true
+    },
     modifier(data) {
       this.title='Modifier une ONG/AGENCES DE COMMUNICATION'
       this.showModal = true
@@ -239,6 +343,19 @@ export default {
       this.title='Dupliquer une ONG/AGENCES DE COMMUNICATION'
       alert(data +" à ete bien dupliquer")
     },
+    supprimerPassation(data) {
+      alert(data+ " à ete bien supprimer")
+    },
+     addBailleur() {
+      this.title='Ajouter une nouvelle ONG/AGENCES DE COMMUNICATION'
+      this.showModal = true
+    },
+     addPassation() {
+      this.title2 = 'Ajouter une Passation'
+      this.showModal2 = true
+    },
+    
+
    
   }
 }
