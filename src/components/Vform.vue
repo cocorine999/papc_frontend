@@ -35,7 +35,7 @@
           <div  v-for="(error, key) in input.errors" :key="key">
               <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
               <div class="text-red-500 text-sm   py-2 font-semibold">
-                error
+                  {{ error }}
               </div>
           </div>
 
@@ -50,14 +50,14 @@
           <select :required="select.required" v-model='select.data'    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent">
             <option value=""> {{select.placeholdere}} </option>
             <option :value="data" v-for="(data,index) in  select.options" :key="index">
-              {{data}}
+              {{ data }}
             </option>
           </select>
 
           <div  v-for="(error, key) in select.errors" :key="key">
               <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
               <div class="text-red-500 text-sm   py-2 font-semibold">
-                error
+                {{ error }}
               </div>
           </div>
 
@@ -75,7 +75,7 @@
         <div  v-for="(error, key) in area.errors" :key="key">
             <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
             <div class="text-red-500 text-sm   py-2 font-semibold">
-              error
+              {{ error }}
             </div>
         </div>
     </div>
