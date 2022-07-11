@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full p-4">
     <div v-if="showModal">
-      <vmodal  :title="title"  v-on:close="closeModal">
+      <modal-top-right  :title="title"  v-on:close="showModal = false">
         <div class="px-4 overflow-auto" style="width:60vw !important;height: 500px;" >
           <div v-if="title =='Ajouter un programme'">
              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
@@ -15,7 +15,7 @@
           </div>
          
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
     
     <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
@@ -81,6 +81,7 @@ export default {
     Titre,
     SearchBar,
     CardProgramme,
+    ModalTopRight
   },
   data() {
     return {

@@ -19,7 +19,7 @@
       </nav> 
 
       <div v-if="showModal">
-        <vmodal :title="title"  v-on:close="showModal = false">
+        <modal-top-right :title="title"  v-on:close="showModal = false">
           <div style="width:60vw;height: 450px;" class="px-4 overflow-y-auto">
             <div v-if="title =='Modifier un indicateur'">
               <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
@@ -31,7 +31,7 @@
               <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer à partir de " @sendForm="sendForm" ></vform>
             </div>
           </div>
-        </vmodal>
+        </modal-top-right>
       </div>
 
       <div v-if="showModal2">
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
@@ -79,6 +80,7 @@ export default {
     Titre,
     SearchBar,
     CardProgramme,
+    ModalTopRight
   },
   data() {
       return ({

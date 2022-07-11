@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     <div class="w-full p-4">
-    <vmodal v-if="showModal" :title="title"  v-on:close="close">
+    <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
       <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
@@ -89,7 +89,8 @@
           </button>
         </div>
       </form>
-    </vmodal>
+    </modal-top-right>
+    
     <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
@@ -124,41 +125,82 @@
       </div>
       
       <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">ajouter un composant</span>
+        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+        <span class="mx-2 text-sm font-semibold">ajouter un composant</span>
       </button>
      
     </div>
-    <!--Filtre sur projet -->
-      <div class="">
-        <select class="px-11 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-          <option class="font-semibold"> Tous </option>
-          <option class="font-semibold"  v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
-        </select>
-      </div>
-     <!--Filtre sur projet -->
+    
     <div v-if="seeComposant">
-      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-      <div v-for="(composante,index) in composantes" :key="index">
-        <!-- cards composantes -->
-        <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-          <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
-          <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
-
-            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
-            <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
-
-          <!-- dots -->
-          <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-          <!-- ./dots -->
-          <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
-          <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
-            <i class='bx bxs-wallet bx-md' ></i>
-            <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="flex items-center justify-between ">
+        <!--Filtre sur projet -->
+        <div class="w-2/5 flex items-center space-x-2">
+          <multiselect v-model="valueFiltre" :options="options" :custom-label="selectProjet"  placeholder="selectionnez un projet" label="name" track-by="name"></multiselect>
+          <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
+            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            <span>filtre</span>
+          </button>
+          <div v-else  class="px-6 w-full">
+            <div class="bg-gray-300 h-2 w-full rounded-full relative">
+              <span class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer" :style="`left:${rangeValue}%`"></span>
+              <span class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"  :style="`width:${rangeValue}%`"></span>
+            </div>
+            <div class="flex justify-between mt-2 text-xs text-gray-600">
+              <span @click="filtreRange(0)" class="w-8 cursor-pointer text-left">0%</span>
+              <span @click="filtreRange(25)" class="w-8 cursor-pointer text-center">25%</span>
+              <span @click="filtreRange(50)" class="w-8 cursor-pointer text-center">50%</span>
+              <span @click="filtreRange(75)" class="w-8 cursor-pointer text-center">75%</span>
+              <span @click="filtreRange(100)" class="w-8 cursor-pointer text-right">100%</span>
+              <button @click="showFiltre = false" class="text-white bg-blue-300 p-1">revenir</button>
+            </div>
+          
           </div>
         </div>
-        <!-- End cards composantes -->
+      <!--Filtre sur projet -->
+          <nav class="flex text-sm align-middle justify-evenly">
+          <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+            attentes 
+              <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined">
+              5
+              </span>
+            </span>
+            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+              validés 
+              <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
+              9
+              </span>
+            </span>
+            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+              rejetés
+              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
+              8
+              </span>
+            </span>
+          </nav>
+        </div>
       </div>
+      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+        <div v-for="(composante,index) in composantes" :key="index">
+          <!-- cards composantes -->
+          <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
+            <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
+            <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
+
+              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+              <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+
+            <!-- dots -->
+            <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
+            <!-- ./dots -->
+            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
+            <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
+              <i class='bx bxs-wallet bx-md' ></i>
+              <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+            </div>
+          </div>
+          <!-- End cards composantes -->
+        </div>
     </div>
     <div v-if="line"  class="line my-4">
       <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
@@ -271,6 +313,8 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
+import Multiselect from 'vue-multiselect'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
@@ -281,9 +325,24 @@ export default {
     Vmodal,
     Titre,
     SearchBar,
+    Multiselect,
+    ModalTopRight
   },
   data() {
     return {
+      valueFiltre:'',
+      pending:false,
+      success:true,
+      rejected:false,
+      rangeValue:0,
+      showFiltre:false,
+      options:[
+        {name:'projet1'},
+        {name:'projet2'},
+        {name:'projet3'},
+        {name:'projet4'},
+        {name:'projet5'},
+      ],
       showModal:false,
       loading:false,
       line:false,
@@ -330,6 +389,12 @@ export default {
     
   },
   methods: {
+    filtreRange(value){
+      this.rangeValue = value
+    },
+    selectProjet ({ name}) {
+      return `${name}`
+    },
     addDate() {
       this.dates.push({})
     },
@@ -369,12 +434,28 @@ export default {
     },
      editerSuivi(index) {
       this.showInput = false
-    }
+    },
+    toggle() {
+      this.pending = false
+      this.rejected = false
+      this.success = true
+
+    },
+    toggle2() {
+      this.success = false
+      this.rejected = false
+      this.pending = true
+    },
+    toggle3() {
+      this.pending = false
+      this.success = false
+      this.rejected = true
+    },
     
   }
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 
 </style>

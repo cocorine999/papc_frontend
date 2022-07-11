@@ -2,8 +2,8 @@
   <dashboard>
     <div class="w-full p-4">
       <div v-if="showModal">
-        <vmodal :title="title" v-on:close="close">
-          <form style="width:60vw;height: 450px;" class="p-4 overflow-auto">
+        <modal-top-right :title="title" v-on:close="close">
+          <form  class="p-4 overflow-auto">
             <div v-if="title =='Ajouter un nouveau projet'">
               <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
             </div>
@@ -14,7 +14,7 @@
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
             </div>
           </form>
-        </vmodal>
+        </modal-top-right>
       </div>
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
@@ -100,6 +101,7 @@ export default {
     Vform,
     Titre,
     SearchBar,
+    ModalTopRight
    
   },
   data() {

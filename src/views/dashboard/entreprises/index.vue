@@ -61,12 +61,13 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import RouteName from "../../../components/RouteName.vue";
 import FormComponent from "../../../components/FormComponent.vue";
 
 export default {
     layout: "dashboard",
-    components: { RouteName, FormComponent },
+    components: { RouteName, FormComponent,ModalTopRight },
     data() {
       return ({
         showModal:false,

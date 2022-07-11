@@ -1,11 +1,11 @@
 <template>
   <div class="p-4">
     <div v-if="showModal">
-      <vmodal :title="title"  v-on:close="showModal = false">
+      <modal-top-right :title="title"  v-on:close="showModal = false">
         <div style="width:60vw;" class="px-4 overflow-y-auto">
           <vform template="default"  :champs="champs" :cols="cols" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
     <div v-if="showModal2">
       <vmodal :title="title2"  v-on:close="showModal2 = false">

@@ -18,8 +18,8 @@
         </div>
       </nav> 
       <div v-if="showModal">
-        <vmodal :title="title" v-on:close="close">
-        <div style="width:60vw" class="px-4">
+        <modal-top-right :title="title" v-on:close="close">
+        <div  class="px-4">
           <div v-if="title =='Ajouter une unité de gestion'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
@@ -28,7 +28,7 @@
           </div>
           
         </div>
-        </vmodal>
+        </modal-top-right>
       </div>
       <div class="flex items-center justify-between">
         <titre>Unites de gestions </titre>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
@@ -55,7 +56,8 @@ import Dashboard from '@/layouts/Dashboard'
       Vmodal,
       Vform,
       Titre,
-      SearchBar
+      SearchBar,
+      ModalTopRight
     },
     data() {
         return {

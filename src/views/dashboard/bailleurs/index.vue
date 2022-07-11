@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full p-4">
       <div v-if="showModal">
-        <vmodal  :title="title"  v-on:close="closeModal">
+        <modal-top-right  :title="title"  v-on:close="closeModal">
           <div style="width:60vw" class="px-4">
             <div v-if="title =='Modifier un bailleur'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
@@ -15,7 +15,7 @@
             </div>
           
           </div>
-        </vmodal>
+        </modal-top-right>
       </div>
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import CardBailleur from '@/components/CardBailleur'
 import Titre from '@/components/Titre'
@@ -93,7 +94,9 @@ export default {
     Vform,
     CardBailleur,
     Titre,
-    SearchBar
+    SearchBar,
+    ModalTopRight
+
   },
   data() {
     return {

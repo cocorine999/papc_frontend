@@ -2,11 +2,11 @@
   <dashboard>
     <div class="p-4">
       <div v-if="showModal">
-        <vmodal :title="title"  v-on:close="showModal = false">
-          <div style="width:60vw;height: 450px;" class="px-4 overflow-y-auto">
+        <modal-top-right :title="title"  v-on:close="showModal = false">
+          <div  class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer un ano" @sendForm="sendForm" ></vform>
           </div>
-        </vmodal>
+        </modal-top-right>
       </div>
       <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
         <div>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
  import SearchBar from '@/components/SearchBar'
  import Vtable from '@/components/Vtable'
  import Vform from '@/components/Vform'
@@ -49,7 +50,8 @@ export default {
     Dashboard,
     Vmodal,
     Vform,
-    SearchBar
+    SearchBar,
+    ModalTopRight
   },
   data() {
     return {
@@ -66,7 +68,7 @@ export default {
         {name:'Description',type:'',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:true,},
         {name:'Status',type:'',placeholdere:"Selectionnez une valeur",isSelect:true,isTextArea:false,data:'',options:['En cours','En attente','terminer'],required:true,},
       ],
-      cols:2,
+      cols:1,
       headers:[
         {name:'Nom',props:'nom'},
         {name:'Bailleur',props:'bailleur'},
