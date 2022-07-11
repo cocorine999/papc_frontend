@@ -9,13 +9,15 @@
     </div>
     <div class="flex items-center justify-between">
       <titre>Les utilisateurs </titre>
-        <button @click="showModal=true" title="ajouter un bailleur" class="p-2 overflow-hidden text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <button @click="showModal=true" title="ajouter un bailleur" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
           <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
     </div>
     <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
       <table class="w-full">
         <thead>
+
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">#</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Nom</th>
@@ -25,6 +27,7 @@
 
             <th class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider">Actions</th>
           </tr>
+          
         </thead>
         <tbody class="bg-white">
           <tr v-for="i in 10" :key="i.id">

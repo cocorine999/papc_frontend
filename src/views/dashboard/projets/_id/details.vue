@@ -45,7 +45,12 @@
           <div class="flex space-x-2 items-center ">
             <button  title="filtre" @click="showModal= true" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
               <button title="editer un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-              <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg></span>
+             
+             <span>
+                <svg class="mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="none" d="M0 0h24v24H0z"></path><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                </svg>
+              </span>
               <span class="mx-2 text-xs font-semibold uppercase">editer un projet</span>
             </button>
           </div>
@@ -193,7 +198,7 @@
             <div>
               <h1 class="text-lg uppercase p-4 font-bold bg-white ">Projet de recyclage des eaux du benin</h1>
             </div>
-            <div style="height:50vh" class="p-4 overflow-auto content">
+            <div style="height:50vh" class="p-4 overflow-auto content border-b border-gray-3 ">
               <h2 class="text-lg font-semibold py-2">Description du projet</h2>
               <p class="text-sm font-semibold  leading-6 text-justify">
                 I didn't ask for a completely reasonable excuse! I asked you to get busy!
@@ -238,6 +243,41 @@
 
               </p>
             </div>
+            <div style="height:23vh" class="p-4 overflow-auto content border-b border-gray-3">
+              <h2 class="text-lg font-semibold py-2">Objectifs globaux</h2>
+              <p class="text-sm font-semibold  leading-6 text-justify">
+                I didn't ask for a completely reasonable excuse! I asked you to get busy!
+                Hey, tell me something. You've got all this money. 
+              </p>
+            </div>
+            <div style="height:23vh" class="p-4 overflow-auto content border-b border-gray-3">
+              <h2 class="text-lg font-semibold py-2">Objectifs Spécifiques</h2>
+              <p class="text-sm font-semibold  leading-6 text-justify">
+                I didn't ask for a completely reasonable excuse! I asked you to get busy!
+                Hey, tell me something. You've got all this money. 
+              </p>
+            </div>
+            <div style="height:23vh" class="p-4 overflow-auto content border-b border-gray-3">
+              <h2 class="text-lg font-semibold py-2">Risques et hypothèses</h2>
+              <p class="text-sm font-semibold  leading-6 text-justify">
+                I didn't ask for a completely reasonable excuse! I asked you to get busy!
+                Hey, tell me something. You've got all this money. 
+              </p>
+            </div>
+            <div style="height:23vh" class="p-4 overflow-auto content border-b border-gray-3">
+              <h2 class="text-lg font-semibold py-2">Cadre logique</h2>
+              <p class="text-sm font-semibold  leading-6 text-justify">
+                I didn't ask for a completely reasonable excuse! I asked you to get busy!
+                Hey, tell me something. You've got all this money. 
+              </p>
+            </div> 
+            <div style="height:23vh" class="p-4 overflow-auto content border-b border-gray-3">
+              <h2 class="text-lg font-semibold py-2">Indicateurs</h2>
+              <p class="text-sm font-semibold  leading-6 text-justify">
+                I didn't ask for a completely reasonable excuse! I asked you to get busy!
+                Hey, tell me something. You've got all this money. 
+              </p>
+            </div>
 
             <div style="" class="mt-2 mb-4 p-4 absolute bottom-4 left-4 right-4">
               <p class="text-sm border-b border-gray-300 font-semibold py-2 flex justify-between items-center"> 
@@ -251,9 +291,21 @@
               <div class="text-sm border-b border-gray-300 font-semibold py-2 flex justify-between items-center">
                 <span class="font-bold pr-2">Durée :</span> 
                 <p class="flex items-center space-x-2">
-                  <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"></path><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"></path></svg></span>
-                  <span class="text-white bg-primary p-1 text-sm">    28-06-20200  </span>
-                  au <span class="text-white border bg-primary p-1 text-sm">28-06-2025 </span>
+                
+                  <span class="p-2 mr-2  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">  
+                    <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+                      <path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm-1 15h-6v-6h6v6zm1-10H5V7h14v2z">
+                      </path>
+                    </svg>   28-06-2020 
+                 </span>
+                   au  
+                   
+                   <span class="p-2 overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"> 
+                     <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+                      <path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm6-3.586-3.707-3.707 1.414-1.414L11 15.586l4.293-4.293 1.414 1.414L11 18.414zM5 7h14v2H5V7z">
+                      </path>
+                     </svg>   28-06-2025
+                </span>
                 </p>  
               </div>
               <p class="text-sm font-semibold py-2 border-b border-gray-300 flex justify-between items-center "> 

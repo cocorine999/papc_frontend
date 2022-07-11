@@ -43,13 +43,14 @@
     </div>
     <div class="flex items-center justify-between my-2">
       <titre>Les bailleurs </titre>
-        <button @click="addBailleur" title="ajouter un bailleur"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+        <button @click="addBailleur" title="ajouter un bailleur"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+          <span class="mx-2 text-sm font-semibold">Ajouter </span>
         </button>
     </div>
     <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
       <div v-for="(bailleur,index) in bailleurs" :key="index">
+
            <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
               <span :class="bailleur.color" class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p>Code : {{bailleur.code}} </p></span>
               <span :class="bailleur.color" class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{bailleur.sigle}}</span>
@@ -79,7 +80,7 @@
                 </svg>
                 <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">info@demo.com</div>
               </div>
-            </div>
+           </div>
       </div>
     </div>
     <div v-if="line"  class="line my-4">
