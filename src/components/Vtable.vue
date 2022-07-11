@@ -17,7 +17,7 @@
             </thead>
           
             <tbody>
-              <tr  class="border-b border-gray-300" v-for="(data ,index) in listes" :key="index">
+              <tr  class="border-b border-gray-300" v-for="(data, index) in listes" :key="index">
                 <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="getRowDetail($event, index,index)">
@@ -25,12 +25,12 @@
                 </td>
                 <td  v-for="head in headers" :key="head.id" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   <div class="text-xs w-full" v-if="head.cle != undefined"> 
-                    <tr-table :id="index" :data="data[head.props][head.cle]"></tr-table>
+                    <tr-table :data="data[head.props][head.cle]" :objet="{ id: data.id, attribut:head.cle }" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table>
                   </div>
                   <div class="text-xs w-full" v-if="head.cle == undefined "> 
-                    <tr-table :id="index" :status="head.status" :data="data[head.props]"> </tr-table>
+                    <tr-table :status="head.status" :data="data[head.props]" :objet="{ id: data.id, attribut:head.props }" :isEditable="head.edit != undefined ? head.edit : true" @update="update"> </tr-table>
                   </div>
-            
+
                 </td>
                 
                 <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -40,7 +40,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
                     </div> -->
-                    <div v-if="action.name =='supprimer' " @click="$emit('supprimer', index)" class=" mr-2 cursor-pointer transform hover:text-red-500 hover:scale-110">
+                    <div v-if="action.name =='supprimer' " @click="$emit('supprimer', data)" class=" mr-2 cursor-pointer transform hover:text-red-500 hover:scale-110">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path></svg>
                     </div>
                     </div>      
@@ -82,6 +82,7 @@ export default {
     }
   },
   computed: {
+
     totalPages() {
       if(this.datas != undefined) {
         return this.datas.length
@@ -102,6 +103,12 @@ export default {
     },
   },
   methods: {
+
+    update(id, input, value)
+    {
+      this.$emit('updateInputData', id, input, value)
+    },
+
     onPageChange(page) {
       if( page ===this.totalPages) {
         page = this.totalPages / this.perPage

@@ -36,7 +36,7 @@
             <span class="mx-2 text-sm font-semibold">ajouter</span>
           </button>
       </div>
-      <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+      <vtable :headers="headers" :datas="uniteeDeGestions" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
 </template>
@@ -48,6 +48,10 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+
+import { mapActions, mapMutations, mapGetters} from "vuex";
+import extractFormData from '@/utils/extract-data'
+
   export default {
     components: {
       Vtable,
@@ -59,34 +63,24 @@ import Dashboard from '@/layouts/Dashboard'
     },
     data() {
         return {
+          uniteeDeGestionAttributs : ['nom', 'email', 'contact', 'programmeId'],
           showModal:false,
           title:'',
           champs:[
-          {name:'Nom',type:'text',placeholdere:"Nom de  l'unité de gestion",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Email',type:'email',placeholdere:"Votre Email",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Contact',type:'',placeholdere:'Votre contact',isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Programme',type:'',placeholdere:'Choisir un programme',isSelect:true,isTextArea:false,data:'',options:['pool papc','gouvernement'],required:true,},
+          {name:'Nom', key: 'nom', type:'text', placeholdere:"Nom de  l'unité de gestion", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
+          {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
+          {name:'Contact', key: 'contact', type:'number', placeholdere:'Votre contact', isSelect:false, isTextArea:false, data:'', required:true, errors : []},
+          {name:'Programme', key: 'programmeId', type:'', placeholdere:'Choisir un programme', isSelect:true, isTextArea:false, data:'', options: this.programmes, cle: 'id', value: 'nom', required:true, errors : []}
         ],
         cols:1,
           
         headers:[
-          {name:'Nom',props:'firstName'},
-          {name:'Prenoms',props:'lastName'},
-          {name:'Email',props:'email'},
-          {name:'Contact',props:'contact',cle:'tel'},
-          {name:'Date de creation',props:'created_at'},
-        ],
-        dataTable:[
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          {firstName:'Gomez ',lastName:'Jacob',email:"jacobgomez@gmail.com",contact:{tel:"96001200"},created_at:"22-06-2022"},
-          
+
+          {name:'Nom', props:'user', cle:'nom'},
+          {name:'Email', props:'user', cle:'email', edit : false},
+          {name:'Contact', props:'user', cle:'contact'},
+          {name:'Date de creation', props:'created_at', edit : false},
+
         ],
         actions:[
          
@@ -94,28 +88,135 @@ import Dashboard from '@/layouts/Dashboard'
         ]
       };
     },
+  
+    computed: {
+
+      //importation des variables du module auths
+
+      ...mapGetters({
+        hasErrors : "GET_ERREURS",
+        isLoading : "IS_LOADING",
+        uniteeDeGestion: "uniteeDeGestions/getUniteeDeGestion",
+        uniteeDeGestions: "uniteeDeGestions/getUniteeDeGestions",
+        programmes: "programmes/getProgrammes"
+      })
+    },
+
+    methods: {
+
+      ...mapMutations({
+        setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+        setUniteeDeGestion: 'uniteeDeGestions/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      }),
+
+      ...mapActions('uniteeDeGestions', {
+        fetchUniteeDeGestions: "FETCH_LIST_UNITEE_DE_GESTION",
+        saveUniteeDeGestion: "STORE_UNITEE_DE_GESTION",
+        updateUniteeDeGestion: "UPDATE_UNITEE_DE_GESTION",
+        deleteUniteeDeGestion: "DESTROY_UNITEE_DE_GESTION"
+      }),
+
+      ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
+    
+      addUnite() {
+        this.title='Ajouter une unité de gestion'
+
+        let formData = this.champs.map((value) => {
+          if(value.key === 'programmeId'){ 
+            value['options'] = this.programmes
+          }
+
+          return value
+        })
+
+        this.champs = [...formData]
+
+        this.showCloseModal(true)
+      },
+
+      async supprimer(uniteeDeGestion) {
+        if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + uniteeDeGestion.nom))
+          await this.deleteUniteeDeGestion(uniteeDeGestion.id)
+      },
+    
+      close() {
+        this.showCloseModal()
+
+        this.resetForm()
+      }, 
+    
+      showCloseModal(value = false) {
+        this.showModal = value
+      },
+
+      resetForm(){
+
+        this.champs = this.champs.map(item => { item.data = ''; return item})
+        
+        window.document.getElementById('vform')?.reset()
+
+        this.setUniteeDeGestion({})
+      },
+
+      async updateInputData(id, attribut, value) {
+          await this.updateUniteeDeGestion({uniteeDeGestion: {[attribut] : value}, id : id}).catch((value, status) => {
+            alert(this.hasErrors[attribut])            
+          })
+      },
+
+      sendForm() {
+
+        this.champs = this.champs.map(item => { item.errors = []; return item})
+
+        let uniteeDeGestion = extractFormData(this.champs, this.uniteeDeGestionAttributs)
+
+        if(this.uniteeDeGestion?.id)
+        {
+
+          this.updateProgramme({uniteeDeGestion: uniteeDeGestion, id : this.uniteeDeGestion?.id}).then(response => {
+            
+            if(response.status == 200 || response.status == 201){
+
+              this.close()
+            }
+
+          })
+
+        }
+        else
+        {
+          
+          this.saveUniteeDeGestion(uniteeDeGestion).then(response => {
+            if(response.status == 200 || response.status == 201){
+                this.close()
+            }
+
+          })
+        }
+      }
+  
+    },
+
+    watch: {
+      isLoading: function(value) {
+          //this.loading = value
+      },
+
+      hasErrors: function(errors) {
+        this.champs.forEach((value) => {value.errors = errors[value.key]})
+        //this.errors = errors
+      }
+
+    },
 
     mounted() {
-    },
-    methods: {
-      sendForm() {
-        alert('donnée envoyer')
-      },
-      close() {
-        this.showModal = false
-      },
-      addUnite() {
-        this.title ="Ajouter une unité de gestion"
-        this.showModal = true
-      },
-      modifier(data) {
-        this.title ="Modifier une unité de gestion"
-        this.showModal = true
-        alert(data +" à ete modifier")
-      },
-      supprimer(data) {
-        alert(data +" à ete bien supprimer")
-      }
+      console.log("Fetching unitees de gestion ...")
+      this.fetchUniteeDeGestions().then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of programmes...")
+          this.fetchProgrammes()
+        }, 1000);
+      })
     }
   }
 </script>

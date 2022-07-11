@@ -49,8 +49,8 @@
           </label>
           <select :required="select.required" v-model='select.data'    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent">
             <option value=""> {{select.placeholdere}} </option>
-            <option :value="data" v-for="(data,index) in  select.options" :key="index">
-              {{ data }}
+            <option v-for="(option,index) in  select.options" :key="index" :value="select.data != '' ? select.data : option[select.cle]">
+               {{ option[select.value] }}
             </option>
           </select>
 

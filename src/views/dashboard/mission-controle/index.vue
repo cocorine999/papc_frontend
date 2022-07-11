@@ -35,7 +35,7 @@
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
       </div>
       
-      <button  v-if="seeMo" @click="addMo" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seeMo" @click="addMissionDeControle" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">Ajouter un MOD</span>
       </button>
@@ -45,15 +45,20 @@
       </button>
     </div>
     <div v-if="seeMo" class="grid grid-cols-3 gap-4 my-6">
-      <div v-for="i in 6" :key="i.id">
+      
+      <div
+        v-for="missionDeControle in missionDeControles"
+        :key="missionDeControle.id"
+      >
         <card-mod
-          libelle="programme"
-          contact="96000000" 
-          email="adresseEmail@gmail.com" 
-          @supprimer="supprimerMod"
-          @modifier="modifierMod"
-          @dupliquer="dupliquer"
-          > </card-mod>
+          :libelle="missionDeControle.user.nom"
+          :contact="missionDeControle.user.contact"
+          :email="missionDeControle.user.email"
+          @supprimer="supprimerMissionDeControle(missionDeControle)"
+          @modifier="modifierMissionDeControle(missionDeControle)"
+          @dupliquer="dupliquerMissionDeControle(missionDeControle)"
+        >
+        </card-mod>
       </div>
     </div>
     <div v-if="seePassation">
@@ -69,6 +74,8 @@
   import Vtable from '@/components/Vtable'
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
+  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+  import extractFormData from "@/utils/extract-data";
 
 export default {
   components: {
@@ -82,17 +89,17 @@ export default {
     return {
       showModal:false,
       showModal2:false,
-      loading:false,
       seeMo:true,
       seePassation:false,
       showInput:true,
       uploadFile:false,
       title:'',
       title2:'',
+      missionDeControleAttributs: ["nom", "email", "contact"],
       champs:[
-        {name:'Nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
       ],
       passationChamps:[
         {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},
@@ -146,11 +153,31 @@ export default {
     }
     
   },
+
+  computed:{
+      ...mapGetters({
+        hasErrors : "GET_ERREURS",
+        isLoading : "IS_LOADING",
+        missionDeControle: "missionDeControles/getMissionDeControle",
+        missionDeControles: "missionDeControles/getMissionDeControles",
+        currentUser : 'auths/GET_AUTHENTICATE_USER'
+      })
+  },
+
   methods: {
-    addMo() {
-      this.title = 'Ajouter un mission de controle'
-      this.showModal = true
-    },
+
+      ...mapMutations({
+        setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+        setMissionDeControle: 'missionDeControles/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      }),
+
+      ...mapActions('missionDeControles', {
+        fetchMissionDeControles: "FETCH_LIST_MISSION_DE_CONTROLE",
+        saveMissionDeControle: "STORE_MISSION_DE_CONTROLE",
+        updateMissionDeControle: "UPDATE_MISSION_DE_CONTROLE",
+        deleteMissionDeControle: "DESTROY_MISSION_DE_CONTROLE"
+      }),
+
     addPassation() {
       this.title2 = 'Ajouter une Passation'
       this.showModal2 = true
@@ -164,22 +191,122 @@ export default {
       this.seeMo = false
       this.seePassation = true
     },
-    supprimerMod(data) {
-      alert(data+ " à ete bien supprimer")
-    },
-
-    modifierMod(data) {
-      alert(data+ " à ete bien modifier")
-    },
 
     supprimerPassation(data) {
       alert(data+ " à ete bien supprimer")
     },
 
-    close() {
-      this.showModal = false
-    },
     
+    addMissionDeControle() {
+      this.title='Ajouter un MOD'
+      this.showCloseModal(true)
+    },
+
+    modifierMissionDeControle(missionDeControle) {
+
+      this.title = 'Modifier une mission de controle'
+
+      this.setMissionDeControle(missionDeControle)
+
+      this.missionDeControleAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            if(item === "nom" || item === "email" || item === "contact" )
+              this.champs[index]['data'] = this.missionDeControle.user[item]
+            else
+              this.champs[index]['data'] = this.missionDeControle[item]
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
+    },
+
+    supprimerMissionDeControle(missionDeControle) {
+      if(window.confirm("Voulez-vous supprimer la mission de controle " + missionDeControle.user.nom))
+        this.deleteMissionDeControle(missionDeControle.id)
+    },
+
+    dupliquerMissionDeControle() {
+      this.title='Dupliquer une mission de controle'
+      this.showCloseModal()
+    },
+      
+    close() {
+      this.showCloseModal()
+
+      this.resetForm()
+    }, 
+    
+    showCloseModal(value = false) {
+      this.showModal = value
+    },
+
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+        
+      window.document.getElementById('vform')?.reset()
+
+      this.setMod({})
+    },
+
+    sendForm() {
+
+        this.champs = this.champs.map(item => { item.errors = []; return item})
+
+        let missionDeControle = extractFormData(this.champs, this.missionDeControleAttributs)
+
+        console.log(missionDeControle)
+
+        missionDeControle.programmeId = this.currentUser?.programme.id
+
+        if(this.missionDeControle?.id)
+        {
+
+          this.updateMissionDeControle({missionDeControle: missionDeControle, id : this.missionDeControle?.id}).then(response => {
+            
+            if(response.status == 200 || response.status == 201){
+
+              this.close()
+            }
+
+          })
+
+        }
+        else
+        {
+          
+          this.saveMissionDeControle(missionDeControle).then(response => {
+            if(response.status == 200 || response.status == 201){
+                this.close()
+            }
+
+          })
+        }
+    }
+    
+  },
+
+  watch: {
+    isLoading: function(value) {
+      //this.loading = value
+    },
+
+    hasErrors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    }
+
+  },
+  
+  mounted() {
+    console.log("Fetching missions de controle ...")
+    this.fetchMissionDeControles()
   }
 }
 </script>

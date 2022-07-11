@@ -3,15 +3,18 @@ import Vuex from "vuex";
 
 import auths from "@/store/modules/auths/index";
 
+import bailleurs from "@/store/modules/bailleurs/index";
+
 import programmes from "@/store/modules/programmes/index";
 
+import uniteeDeGestions from "@/store/modules/uniteeDeGestions/index";
+
+
+import mods from "./modules/mods/index";
+
+import missionDeControles from "./modules/missionDeControles/index";
+
 /*
-    import bailleurs from "./modules/bailleurs/index";
-
-    import mods from "./modules/mods/index";
-
-    import missionDeControles from "./modules/missionDeControles/index";
-
     import projets from "./modules/projets/index";
 
     import uniteeDeGestions from "./modules/uniteeDeGestions/index"; 
@@ -80,8 +83,11 @@ export default new Vuex.Store({
   modules: {
     auths,
     programmes,
+    uniteeDeGestions,
+    bailleurs,
+    mods,
+    missionDeControles,
     /* ,
-      bailleurs,
       mods,
       missionDeControles,
       programmes,

@@ -196,7 +196,7 @@ export default {
     close() {
       this.showCloseModal()
 
-      this.resetForm
+      this.resetForm()
     }, 
     
     showCloseModal(value = false) {
@@ -207,9 +207,9 @@ export default {
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
       
-      window.document.getElementById('vform').reset()
+      window.document.getElementById('vform')?.reset()
 
-      this.programme = {}
+      setProgramme({})
     },
 
     sendForm() {
@@ -232,12 +232,6 @@ export default {
             this.close()
           }
 
-        }).catch((error) => {
-
-          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-          this.champs.map(value => value.errors = this.erreurs[value.key])
-
         })
 
       }
@@ -251,8 +245,7 @@ export default {
 
         })
       }
-
-    },
+    }
 
   },
 

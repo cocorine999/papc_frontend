@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const ModsService = {
+const ModService = {
 
     query(type, params) {
       return ApiService.query("mods", {
@@ -31,5 +31,5 @@ const ModsService = {
 
   };
 
-  export default ModsService;
+  export default ModService;
   
