@@ -32,7 +32,7 @@
                       
                       <button @click="openMenu = !openMenu" type="button" class=" text-sm rounded-full outline-none " id="user-menu" aria-expanded="false" aria-haspopup="true">
                         <div class="flex items-center  mx-2 justify-center w-10 h-10 bg-blue-400 rounded-full shadow-lg cursor-pointer"  >
-                          <span class="text-sm font-bold text-white uppercase"> JD </span>
+                          <span class="text-sm font-bold text-white uppercase"> {{ cigle }} </span>
                         </div>
 
               
@@ -52,32 +52,65 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
+import getCigle from '../utils/get-cigle'
 export default {
     name: 'Navbar',
     computed: {
-        ...mapState(['sideBarOpen'])
+        ...mapState(['sideBarOpen']),
+        ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
     data() {
         return {
+            cigle : null,
             dropDownOpen: false,
             openMenu:false
         }
     },
     methods: {
-        toggleSidebar() {
-            this.$store.dispatch('toggleSidebar')
-        }
+      //Charger les fonctions 
+      ...mapActions('auths', { logout: "LOGOUT" }),
+
+      toggleSidebar() {
+          this.$store.dispatch('toggleSidebar')
+      },
+
+      deconnecter() {
+
+        this.logout().then((response) => {
+          
+          if (response.statut === "success" || response.status === 200) {
+            
+            window.location.href ='/'
+
+            this.$toast.show({
+              type: 'success',
+              title: 'Success',
+              message: "Vous etes deconnecter"
+            })
+
+          }else{
+            this.$toast.show({
+              type: 'error',
+              title: 'Erreur de déconnexion',
+              message: response.message
+            })
+          }
+        })
+      }
+ 
     },
+
     mounted() {
-    const usersInfo = JSON.parse(localStorage.getItem('usersInfos'))
+    this.cigle = getCigle(this.currentUser?.nom + ' ' + this.currentUser?.prenom)
+    /* const usersInfo = JSON.parse(localStorage.getItem('usersInfos'))
       if(usersInfo) {
         this.currentUsers = usersInfo
          this.userRule = this.currentUsers.role
         
         console.log('role', this.userRule)
         
-      }
+      } */
     
   },
 }

@@ -1,7 +1,7 @@
 
-import ApiService from '@/services/configs/api.service'
+import ApiService from "@/services/configs/api.service"
 
-const UniteeDeGestionsService = {
+const UniteeDeGestionService = {
 
     query(type, params) {
       return ApiService.query("unitee-de-gestions", {
@@ -31,4 +31,4 @@ const UniteeDeGestionsService = {
 
   };
 
-  export default UniteeDeGestionsService;
+  export default UniteeDeGestionService;

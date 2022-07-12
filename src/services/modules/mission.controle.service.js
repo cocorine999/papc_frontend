@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const MissionDeControlesService = {
+const MissionDeControleService = {
 
     query(type, params) {
       return ApiService.query("mission-de-controles", {
@@ -31,5 +31,5 @@ const MissionDeControlesService = {
 
   };
 
-  export default MissionDeControlesService;
+  export default MissionDeControleService;
   

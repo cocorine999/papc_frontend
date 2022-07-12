@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full p-4">
       <div v-if="showModal">
-        <vmodal  :title="title"  v-on:close="closeModal">
+        <vmodal  :title="title"  v-on:close="close">
           <div style="width:60vw" class="px-4">
             <div v-if="title =='Modifier un bailleur'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
@@ -46,27 +46,20 @@
             <span class="mx-2 text-sm font-semibold">ajouter</span>
           </button>
       </div>
-      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="i in 6" :key="i.id">
+      <div class="grid grid-cols-3 gap-4">
+        
+      <div v-for="(bailleur, i) in bailleurs" :key="i">
           <card-bailleur 
-            sigle="BM"
-            libelle="Banque Mondiale" 
+            :sigle="bailleur.sigle"
+            :libelle="bailleur.user.nom" 
             description="Lorem ipsum dolor sit" 
-            codePTA="1.3.3.2.1" 
-            pays="Benin" 
-            @supprimerBailleur="supprimer(5)"
-            @modifierBailleur="modifier(5)"
-            @dupliquerBailleur="dupliquer(5)"
+            :codePTA="bailleur.code" 
+            :pays="bailleur.user.pays" 
+            @supprimer="supprimer(bailleur)"
+            @modifier="modifier(bailleur)"
+            @dupliquer="dupliquer(bailleur)"
           ></card-bailleur>
-        </div>
       </div>
-      <div v-if="line"  class="line my-4">
-        <vtable 
-        :headers="headers" 
-        :datas="dataTable"
-        :actions="actions" 
-        @supprimer="supprimer" 
-        @modifier="modifier"></vtable>
       </div>
     </div>
   </dashboard>
@@ -80,12 +73,10 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import extractFormData from "@/utils/extract-data";
 export default {
-  modules: ['@nuxtjs/axios'],
-  computed: {
-    ...mapState(['baseURL'])
-  },
+  
   components: {
     Vtable,
     Dashboard,
@@ -97,165 +88,243 @@ export default {
   },
   data() {
     return {
-      showModal:false,
-      loading:false,
-      line:false,
-      mosaique:true,
+      bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
+      showModal: false,
+      loading: false,
+      line: false,
+      mosaique: true,
       title: '',
-      headers:[
-        {name:'Bailleurs',props:'bailleur'},
-        {name:'Sigle',props:'sigle'},
-        {name:'Code PTA',props:'code'},
-        {name:'Date creation',props:'created_at'},
+      headers: [
+        { name: "Bailleurs", props: "user", cle: "nom" },
+        { name: "Sigle", props: "sigle" },
+        { name: "Code PTA", props: "code" },
+        { name: "Pays", props: "pays", edit: true },
+        { name: "Date creation", props: "created_at" },
       ],
-      dataTable:[
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        
-          
-      ],
+
       actions:[
         {name:'modifier',iconne:''},
         {name:'supprimer',iconne:''},
       ],
-      champs:[
-        {name:'Nom',type:'text',placeholdere:"Nom du bailleur",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Email',type:'email',placeholdere:"Votre Email",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Contact',type:'',placeholdere:'Votre contact',isSelect:false,isTextArea:false,data:'',required:true,},
+
+      champs: [
+        {
+          name: "Nom",
+          type: "text",
+          key: "nom",
+          placeholdere: "Nom du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Code",
+          type: "number",
+          key: "code",
+          placeholdere: "Code du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Sigle",
+          type: "text",
+          key: "sigle",
+          placeholdere: "Sigle du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Email",
+          type: "email",
+          key: "email",
+          placeholdere: "Votre Email",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Contact",
+          type: "number",
+          key: "contact",
+          placeholdere: "Votre contact",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Pays",
+          type: "text",
+          key: "pays",
+          placeholdere: "Pays du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
       ],
-      cols:1,
+      cols: 1,
+
       option:[
         {name:'supprimer'},
         {name:'modifier'},
       ]
     }
   },
-  mounted() {
-    this.token  = localStorage.getItem("token");
-    this.$axios.setBaseURL(this.baseURL);
-    this.$axios.setToken(this.token, 'Bearer');
-    
-    this.getusers().then((response)=>{
-      //console.log(response);
-      this.list = response.data;
-    })
-  },
-  methods: {
-    switch1() {
-      this.mosaique = true
-      this.line = false
-    },
-    switch2() {
-      this.mosaique = false
-      this.line = true
-    },
-    
-    closeModal() {
-      this.showModal=false
-    },
-    addBailleur() {
-      this.title='Ajouter un nouveau bailleur'
-      this.showModal = true
-    },
-    sendForm() {
-      alert('donnée envoyer')
-    },
-    
-    modifier(data) {
-      this.title='Modifier un bailleur'
-      this.showModal = true
-    },
 
-    sender(){
-      let data = {};
-
-      for (let i = 0; i < this.form.length; i++) {
-        data[this.form[i].label] = this.form[i].label === 'code' ? ""+this.form[i].value+"": this.form[i].value;
-      }
-      //console.log(data);
-      switch (this.key) {
-        case 'put':
-          this.putuser(data.id, data).then((response)=>{
-            console.log(response);
-          });
-          break;
-
-        case 'delete':
-          this.deleteuser(data.id).then((response)=>{
-            console.log(response);
-          });
-          break;
-      
-        default:
-          this.postuser(data).then((response)=>{
-            console.log(response);
-          });
-          break;
-      }
-      this.getusers().then((response)=>{
-        //console.log(response);
-        this.list = response.data;
-        this.key = '';
-        this.close();
+  computed:{
+      ...mapGetters({
+        hasErrors : "GET_ERREURS",
+        isLoading : "IS_LOADING",
+        bailleur: "bailleurs/getBailleur",
+        bailleurs: "bailleurs/getBailleurs"
       })
+  },
 
-    },
-    initform(){
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  null;
-      }
-    },
-    editer(data){
-      this.title='Modifier un bailleur'
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      let tab = [];
-      data.roles.forEach(element => {
-        tab = tab.concat(element.id)
-      });
-      this.form = this.form.concat({ label: "roles", type: "hidden", value: tab })
-      this.showModal = true;
-      this.key = 'put';
-    },
-    deleter(data){
-      this.key = 'delete';
-      for (let i = 0; i < this.form.length; i++) {
-        this.form[i].value =  data[this.form[i].label];
-      }
-      this.form = this.form.concat({ label: "id", type: "hidden", value: data.id });
-      this.sender()
-    },
-    close() {
-      this.initform();
-      this.showModal = false
-    },
-    async postuser(data) {
-      return await this.$axios.$post('/api/utilisateurs/creation-de-compte-bailleur', data)
-    },
-    async getusers() {
-      return await this.$axios.$get('/api/utilisateurs/bailleurs')
-    },
+  methods: {
 
-    async putuser(id, data) {
-      return await this.$axios.$put('/api/utilisateurs/mis-à-jour-de-compte-bailleur/'+id, data)
-    },
+      ...mapMutations({
+        setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+        setBailleur: 'bailleurs/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      }),
 
-    async deleteuser(id) {
-      return await this.$axios.$delete('/api/utilisateurs/'+id)
-    },
+      ...mapActions('bailleurs', {
+        fetchBailleurs: "FETCH_LIST_BAILLEUR",
+        saveBailleur: "STORE_BAILLEUR",
+        updateBailleur: "UPDATE_BAILLEUR",
+        deleteBailleur: "DESTROY_BAILLEUR"
+      }),
+
+      switch1() {
+        this.mosaique = true
+        this.line = false
+      },
+      
+      switch2() {
+        this.mosaique = false
+        this.line = true
+      },
     
-    supprimer(data) {
-      alert(data +" à ete bien supprimer")
+      addBailleur() {
+        this.title='Ajouter un bailleur'
+        this.showCloseModal(true)
+      },
+
+      modifier(bailleur) {
+
+        this.title = 'Modifier un bailleur'
+
+        this.setBailleur(bailleur)
+
+        this.bailleurAttributs.forEach((item) => {
+
+          this.champs.find((value, index) => {
+
+            if(value.key === item){
+              if(item === "nom" || item === "email" || item === "contact" )
+                this.champs[index]['data'] = this.bailleur.user[item]
+              else
+                this.champs[index]['data'] = this.bailleur[item]
+            }
+
+          })
+
+        })
+
+        this.showCloseModal(true)
+      },
+
+      supprimer(bailleur) {
+        if(window.confirm("Voulez-vous supprimer le bailleur " + bailleur.user.nom))
+          this.deleteBailleur(bailleur.id)
+      },
+
+      dupliquer() {
+        this.title='Dupliquer un bailleur'
+        this.showCloseModal()
+      },
+      
+      close() {
+        this.showCloseModal()
+
+        this.resetForm()
+      }, 
+    
+      showCloseModal(value = false) {
+        this.showModal = value
+      },
+
+      resetForm(){
+
+        this.champs = this.champs.map(item => { item.data = ''; return item})
+        
+        window.document.getElementById('vform')?.reset()
+
+        this.setBailleur({})
+      },
+
+      sendForm() {
+
+        this.champs = this.champs.map(item => { item.errors = []; return item})
+
+        let bailleur = extractFormData(this.champs, this.bailleurAttributs)
+
+        if(this.bailleur?.id)
+        {
+
+          this.updateBailleur({bailleur: bailleur, id : this.bailleur?.id}).then(response => {
+            
+            if(response.status == 200 || response.status == 201){
+
+              this.close()
+            }
+
+          })
+
+        }
+        else
+        {
+          
+          this.saveBailleur(bailleur).then(response => {
+            if(response.status == 200 || response.status == 201){
+                this.close()
+            }
+
+          })
+        }
+      }
+
+  },
+
+  watch: {
+    isLoading: function(value) {
+      //this.loading = value
     },
-    dupliquer(data) {
-      this.showModal = true
-      this.title='Dupliquer un bailleur'
-      alert(data +" à ete bien dupliquer")
-    },
-   
+
+    hasErrors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    }
+
+  },
+  
+  mounted() {
+    console.log("Fetching bailleurs ...")
+    this.fetchBailleurs().then((value) => {
+      console.log(value)
+    })
   }
 }
 </script>

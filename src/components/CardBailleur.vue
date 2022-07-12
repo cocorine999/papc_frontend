@@ -9,7 +9,7 @@
                 <h1 class="font-base font-bold text-gray-900">{{libelle}}</h1>
               </div>
               <div>
-                <dropdown @gotoNext="gotoNext" @supprimer="$emit('supprimerBailleur')" @modifier="$emit('modifierBailleur')"  @duplicate="$emit('dupliquerBailleur')" :option="option"></dropdown>
+                <dropdown @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"  @duplicate="$emit('dupliquer')" :option="option"></dropdown>
               </div>
           </div>
           <p class="text-justify font-semibold leading-6 text-sm my-2">{{description}}</p>

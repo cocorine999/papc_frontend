@@ -2,9 +2,9 @@
   <dashboard>
   <div class="p-4">
     <div v-if="showModal">
-      <vmodal :title="title"  v-on:close="showModal = false">
+      <vmodal :title="title"  v-on:close="close">
         <div style="width:60vw;" class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs" :cols="cols" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
+          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
         </div>
       </vmodal>
     </div>
@@ -45,15 +45,18 @@
       </button>
     </div>
     <div v-if="seeMod" class="grid grid-cols-3 gap-4 my-6">
-      <div v-for="i in 6" :key="i.id">
+      <div v-for="mod in mods" :key="mod.id">
+
         <card-mod
-          libelle="programme"
-          contact="96000000" 
-          email="adresseEmail@gmail.com" 
-          @supprimer="supprimerMod"
-          @modifier="modifierMod"
-          @dupliquer="dupliquer"
-          > </card-mod>
+          :libelle="mod.user.nom"
+          :contact="mod.user.contact"
+          :email="mod.user.email"
+          @supprimer="supprimerMod(mod)"
+          @modifier="modifierMod(mod)"
+          @dupliquer="dupliquerMod(mod)"
+        >
+        </card-mod>
+
       </div>
     </div>
     <div v-if="seePassation">
@@ -69,6 +72,8 @@
   import Vtable from '@/components/Vtable'
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
+  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+  import extractFormData from "@/utils/extract-data";
 
 export default {
   components: {
@@ -82,17 +87,18 @@ export default {
     return {
       showModal:false,
       showModal2:false,
-      loading:false,
       seeMod:true,
       seePassation:false,
       showInput:true,
       uploadFile:false,
       title:'',
       title2:'',
+      submitText: "Enrégistrer le mod",
+      modAttributs: ["nom", "email", "contact"],
       champs:[
-        {name:'Nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
       ],
       passationChamps:[
         {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},
@@ -146,11 +152,31 @@ export default {
     }
     
   },
+
+  computed:{
+      ...mapGetters({
+        hasErrors : "GET_ERREURS",
+        isLoading : "IS_LOADING",
+        mod: "mods/getMod",
+        mods: "mods/getMods",
+        currentUser : 'auths/GET_AUTHENTICATE_USER'
+      })
+  },
+
   methods: {
-    addMod() {
-      this.title = 'Ajouter un MOD'
-      this.showModal = true
-    },
+
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setMod: 'mods/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+    }),
+
+    ...mapActions('mods', {
+      fetchMods: "FETCH_LIST_MOD",
+      saveMod: "STORE_MOD",
+      updateMod: "UPDATE_MOD",
+      deleteMod: "DESTROY_MOD"
+    }),
+
     addPassation() {
       this.title2 = 'Ajouter une Passation'
       this.showModal2 = true
@@ -160,26 +186,135 @@ export default {
       this.seeMod = true
       this.seePassation = false
     },
+
     goPassation() {
       this.seeMod = false
       this.seePassation = true
-    },
-    supprimerMod(data) {
-      alert(data+ " à ete bien supprimer")
-    },
-
-    modifierMod(data) {
-      alert(data+ " à ete bien modifier")
     },
 
     supprimerPassation(data) {
       alert(data+ " à ete bien supprimer")
     },
 
-    close() {
-      this.showModal = false
-    },
     
+    addMod() {
+      this.title='Ajouter un MOD'
+
+      this.submitText = "Enrégistrer le MOD"
+
+      this.showCloseModal(true)
+    },
+
+    modifierMod(mod) {
+
+      this.title = 'Modifier le MOD'
+
+      this.submitText = "Modifier le MOD"
+
+      this.setMod(mod)
+
+      this.modAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            this.champs[index]['data'] = this.mod.user[item]
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
+    },
+
+    supprimerMod(mod) {
+      if(window.confirm("Voulez-vous supprimer le mod " + mod.user.nom))
+        this.deleteMod(mod.id)
+    },
+
+    dupliquerMod() {
+      this.title='Dupliquer un mod'
+      this.showCloseModal()
+    },
+      
+    close() {
+      this.showCloseModal()
+
+      this.resetForm()
+    }, 
+    
+    showCloseModal(value = false) {
+      this.showModal = value
+    },
+
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+        
+      window.document.getElementById('vform')?.reset()
+
+      this.setMod({})
+    },
+
+    sendForm() {
+
+        this.champs = this.champs.map(item => { item.errors = []; return item})
+
+        let mod = extractFormData(this.champs, this.modAttributs)
+
+        mod.programmeId = this.currentUser?.programme.id
+
+        if(this.mod?.id)
+        {
+
+          this.updateMod({mod: mod, id : this.mod?.id})
+            .then(response => {
+              
+              if(response.status == 200 || response.status == 201){
+
+                this.close()
+              }
+
+            })
+            .catch((value) => {
+              alert(value.response.data.errors.programmeId[0])
+            })
+
+        }
+        else
+        {
+          
+          this.saveMod(mod)
+            .then(response => {
+              if(response.status == 200 || response.status == 201){
+                  this.close()
+              }
+
+            })
+            .catch((value) => {
+              alert(value.response.data.errors.programmeId[0])
+            })
+        }
+    }
+
+  },
+
+  watch: {
+    isLoading: function(value) {
+      //this.loading = value
+    },
+
+    hasErrors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    }
+
+  },
+  
+  mounted() {
+    console.log("Fetching mods ...")
+    this.fetchMods()
   }
 }
 </script>

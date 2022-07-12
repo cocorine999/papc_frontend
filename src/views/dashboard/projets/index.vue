@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full p-4">
       <div v-if="showModal">
-        <vmodal :title="title" v-on:close="close">
+        <vmodal :title="title" v-on:close="showCloseModal">
           <form style="width:60vw;height: 450px;" class="p-4 overflow-auto">
             <div v-if="title =='Ajouter un nouveau projet'">
               <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
@@ -107,22 +107,25 @@ export default {
   data() {
     return {
       showModal:false,
+      line:false,
+      mosaique:true,
+      title: '',
+      programmeAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville'],
       champs:[
-        {name:'Nom du projet',type:'text',placeholdere:"Nom du projet",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Poids',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Pret',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Budget Nationnal',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Couleurs',type:'color',placeholdere:'Choississez une couleur',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Piece jointe',type:'file',placeholdere:'Choississez une couverture',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Ville',type:'',placeholdere:'Selectionnez une ville',isSelect:true,isTextArea:false,data:'',required:true,options:['cotonou','calavi','bohicon']},
-        {name:'Bailleurs',type:'',placeholdere:'Selectionnez un bailleur',isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA','Unesco']},
-        {name:'Status',type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:['en cours','terminer','en attente']},
-        {name:'Objectifs globaux',type:'',placeholdere:'',isSelect:false,isTextArea:true,data:'',required:true,},
-        {name:'Description',type:'',placeholdere:'Description du projet',isSelect:false,isTextArea:true,data:'',required:true,},
-        {name:'Objectif globaux',type:'text',placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Budget national',type:'number',placeholdere:'Definir un budget',isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Nom du projet',key:"nom",type:'text',placeholdere:"Nom du projet",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Poids',type:'number',key:"poids",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Pret',type:'number',key:"pret",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Budget Nationnal',key:"budgetNational",type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date debut',key:"debut",type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date fin',type:'date',key:"fin",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Couleur',type:'color',key:"couleur",placeholdere:'Choississez une couleur',isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Piece jointe',type:'file',placeholdere:'Choississez une couverture',isSelect:false,isTextArea:false,data:'',required:false,},
+        {name:'Ville',key:"ville",type:'',placeholdere:'Selectionnez une ville',isSelect:true,isTextArea:false,data:'',required:true,options:['cotonou','calavi','bohicon']},
+        {name:'Bailleurs',key:"bailleurId",type:'',placeholdere:'Selectionnez un bailleur',isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA','Unesco']},
+        {name:'Status',key:"statut",type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:['en cours','terminer','en attente']},
+        {name:'Objectifs globaux',key:"objectifGlobaux",type:'',placeholdere:'',isSelect:false,isTextArea:true,data:'',required:false,},
+        {name:'Description',type:'',key:"description",placeholdere:'Description du projet',isSelect:false,isTextArea:true,data:'',required:true,},
+        {name:'Objectif specifique',key:"objectifSpecifique",type:'text',placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'',required:false,},
       ],
      
       option:[
@@ -176,10 +179,16 @@ export default {
     },
     
     close() {
-      this.showModal = false
+      this.showCloseModal()
+
+      this.resetForm
+    }, 
+    
+    showCloseModal(value = false) {
+      this.showModal = value
     },
     addProjet() {
-      this.title='Ajouter un projet'
+      this.title='Ajouter un nouveau projet'
       this.showCloseModal(true)
     },
 
@@ -219,16 +228,7 @@ export default {
       this.showModal = true
     },
 
-    close() {
-      this.showCloseModal()
-
-      this.resetForm
-    }, 
     
-    showCloseModal(value = false) {
-      this.showModal = value
-    },
-
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
@@ -239,19 +239,6 @@ export default {
     },
     gotoNext() {
       this.$router.push('/dashboard/projets/composantes')
-    },
-
-    showCloseModal(value = false) {
-      this.showModal = value
-    },
-
-    resetForm(){
-
-      this.champs = this.champs.map(item => { item.data = ''; return item})
-      
-      window.document.getElementById('vform').reset()
-
-      this.projet = {}
     },
 
     sendForm() {
