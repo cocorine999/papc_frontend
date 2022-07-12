@@ -5,12 +5,12 @@
     <route-name title="entreprises" />
     <div v-if="showModal">
       <modal-top-right title="Ajouter un entreprise" v-on:close="close">
-        <form-component :form="form" @send="sender" />
+        <form-component :form="form" @send="sendForm" />
       </modal-top-right>
     </div>
     <div class="flex items-center justify-between">
       <titre>Les entreprises </titre>
-        <button @click="showModal=true" title="ajouter un bailleur" class="p-2 overflow-hidden text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <button @click="addEntrepriseExecutante" title="ajouter un bailleur" class="p-2 overflow-hidden text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span class="mx-2 text-sm font-semibold">ajouter</span>
         </button>
     </div>
@@ -27,12 +27,12 @@
           </tr>
         </thead>
         <tbody class="bg-white">
-          <tr v-for="i in 5" :key="i.id">
+          <tr v-for="entrepriseExecutante in entreprisesExecutante" :key="entrepriseExecutante.id">
             
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{i}} </td>
-            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> AGETUR </td>
+            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{ entrepriseExecutante.user.nom }} </td>
             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis, modi...</td>
-            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">johndoe@gmail.com </td>
+            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"> {{ entrepriseExecutante.user.email }} </td>
             
             <td class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5">
               <div class="flex item-center justify-center">
@@ -42,7 +42,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
                 </div> -->
-                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="editer({nom: 'John', description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis, modi..', email: 'johndoe@gmail.com', password: '123'})">
+                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="modifierEntrepriseExecutante(entrepriseExecutante)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
@@ -68,6 +68,8 @@
   import ModalTopRight from '@/components/ModalTopRight'
   import FormComponent from '@/components/FormComponent'
   import Titre from '@/components/Titre'
+  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+  import extractFormData from "@/utils/extract-data"
 
 export default {
   components: {
@@ -79,38 +81,208 @@ export default {
   },
     data() {
       return ({
+        title: 'Ajouter une nouvelle entreprise executante',
+        submitText: 'Ajouter',
         showModal:false,
+        entrepriseExecutanteAttributs: ["nom", "email", "contact"],
+
+        champs:[
+          {name: 'Nom', key: 'nom', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: []},
+          {name: 'Email', key: 'email', type: 'email', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: []},
+          {name: 'Contact', key: 'contact', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: []}
+        ],
+
         form: [
           { label: "nom", type: "text", value: null },
-          { label: "description", type: "text", value: null },
+          { label: "contact", type: "number", value: null },
           { label: "email", type: "email", value: null },
-          { label: "password", type: "password", value: null },
+          { label: "mod", type: "select", value: null, options: this.mods, cle: 'id', text: 'nom' }
         ]
       });
     },
-    mounted() {
-    },
-    methods: {
-      sender(){
-        let data = {};
 
-        for (let i = 0; i < this.form.length; i++) {
-          data[this.form[i].label] = this.form[i].value;
-        }
-        alert(JSON.stringify(data))
+    computed:{
+        ...mapGetters({
+          hasErrors : "GET_ERREURS",
+          isLoading : "IS_LOADING",
+          entrepriseExecutante: "entreprisesExecutante/getEntrepriseExecutante",
+          entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
+          mods: "mods/getMods",
+          currentUser : 'auths/GET_AUTHENTICATE_USER'
+        })
+    },
+
+    methods: {
+
+      ...mapMutations({
+        setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+        setEntrepriseExecutante: 'entreprisesExecutante/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      }),
+
+      ...mapActions('entreprisesExecutante', {
+        fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
+        saveEntrepriseExecutante: "STORE_ENTREPRISE_EXECUTANTE",
+        updateEntrepriseExecutante: "UPDATE_ENTREPRISE_EXECUTANTE",
+        deleteEntrepriseExecutante: "DESTROY_ENTREPRISE_EXECUTANTE"
+      }),
+      
+      ...mapActions('mods', {
+        fetchMods: "FETCH_LIST_MOD"
+      }),
+    
+      addEntrepriseExecutante() {
+        this.title = "Ajouter une nouvelle entreprise executante"
+
+        this.submitText = "Enrégistrer l'entreprise executante"
+
+        console.log(this.form)
+
+        /* this.champs.push(
+          {name:'Mod', key: 'modId', type:'', placeholdere:'Choisir un mod', isSelect:true, isTextArea:false, data:'', options: this.mods.map((value, index, array) => {return {"id": value.id, "nom": value.user.nom,}}), cle: 'id', value: 'nom', required:true, errors : []}
+        ) */
+
+        this.showCloseModal(true)
       },
-      editer(data){
-        for (let i = 0; i < this.form.length; i++) {
-          this.form[i].value =  data[this.form[i].label];
-        }
-        this.showModal = true;
+
+      modifierEntrepriseExecutante(entrepriseExecutante) {
+
+        this.title = "Modifier une entreprise executante"
+
+        this.submitText = "Modifier l'entreprise executante"
+
+        this.setEntrepriseExecutante(entrepriseExecutante)
+
+        this.entrepriseExecutanteAttributs.forEach((item) => {
+
+          this.champs.find((value, index) => {
+
+            if(value.key === item){
+              if(item === "nom" || item === "email" || item === "contact" )
+                this.champs[index]['data'] = this.entrepriseExecutante.user[item]
+              else
+                this.champs[index]['data'] = this.entrepriseExecutante[item]
+            }
+
+          })
+
+        })
+
+        this.showCloseModal(true)
+      },
+
+      supprimerEntrepriseExecutante(entrepriseExecutante) {
+        if(window.confirm("Voulez-vous supprimer l'entreprise executante " + entrepriseExecutante.user.nom))
+          this.deleteEntrepriseExecutante(entrepriseExecutante.id)
+      },
+
+      dupliquerEntrepriseExecutante() {
+
+        this.title = "Dupliquer l'entreprise executante"
+
+        this.showCloseModal()
       },
       
       close() {
-        this.showModal = false
+        this.showCloseModal()
+
+        this.resetForm()
+      }, 
+      
+      showCloseModal(value = false) {
+        this.showModal = value
+      },
+
+      resetForm(){
+
+        this.champs = this.champs.map(item => { item.data = ''; return item})
+          
+        window.document.getElementById('vform')?.reset()
+
+        this.setEntrepriseExecutante({})
+      },
+
+      sendForm() {
+
+          this.champs = this.champs.map(item => { item.errors = []; return item})
+
+          let entrepriseExecutante = {}
+
+          this.form.forEach((item) => {
+            entrepriseExecutante = Object.assign(entrepriseExecutante, {[item.label] : item.value});
+          })
+
+          entrepriseExecutante.programmeId = this.currentUser?.programme.id
+
+          if(this.entrepriseExecutante?.id)
+          {
+
+            this.updateEntrepriseExecutante({entrepriseExecutante: entrepriseExecutante, id : this.entrepriseExecutante?.id})
+              .then(response => {
+                
+                if(response.status == 200 || response.status == 201){
+
+                  this.close()
+                }
+
+              })
+              .catch((value) => {
+                alert(value.response.data.errors.programmeId[0])
+              })
+
+          }
+          else
+          {
+            
+            this.saveEntrepriseExecutante(entrepriseExecutante)
+              .then(response => {
+                if(response.status == 200 || response.status == 201){
+                    this.close()
+                }
+              })
+              .catch((value) => {
+                alert(value.response.data.errors.programmeId[0])
+              })
+          }
       }
+      
+    },
+
+    watch: {
+      isLoading: function(value) {
+        //this.loading = value
+      },
+
+      mods: function(mods) {
+        this.form.map((item) => {
+          if(item.label === "mod"){
+            item.value = mods.map((mod) => {
+              return {
+                "id" : mod.id,
+                "nom" : mod.user.nom
+              }
+            })
+          }
+          return item
+        })
+      },
+
+      hasErrors: function(errors) {
+        this.champs.forEach((value) => {value.errors = errors[value.key]})
+      }
+    },
+  
+    mounted() {
+      console.log("Fetching entreprises executantes ...")
+
+      this.fetchEntreprisesExecutante().then((value) => {
+          if(this.currentUser.role.some(role => role.name !== 'mod')){
+            setTimeout(() => {
+              this.fetchMods()
+            }, 500);
+          }
+      })
     }
-}
+  }
 </script>
 
 <style scoped>

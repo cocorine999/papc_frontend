@@ -5,7 +5,7 @@
       <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">{{item.label}}<span class="px-2 text-lg font-black text-red-700">*</span></label>
       <input v-if="item.type !== 'select'" v-model="item.value" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full focus:border-transparent" :type="item.type" :placeholder="'Entrer '+item.label" />
       <select multiple v-if="item.type === 'select'" v-model="item.value" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent">
-         <option v-for="(ite, j) in item.options" :key="j" :value="ite.value">{{ite.label}}</option>
+         <option v-for="option in item.options" :key="option[item.cle]" :value="option[item.cle]">{{ option[item.text] }}</option>
       </select>
     </div>
 

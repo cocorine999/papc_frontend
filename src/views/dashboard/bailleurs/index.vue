@@ -4,16 +4,7 @@
       <div v-if="showModal">
         <vmodal  :title="title"  v-on:close="close">
           <div style="width:60vw" class="px-4">
-            <div v-if="title =='Modifier un bailleur'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
-            </div>
-            <div v-if="title =='Ajouter un nouveau bailleur'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" ></vform>
-            </div>
-            <div v-if="title =='Dupliquer un bailleur'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Creer à partir de " @sendForm="sendForm" ></vform>
-            </div>
-          
+            <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>          
           </div>
         </vmodal>
       </div>
@@ -90,10 +81,10 @@ export default {
     return {
       bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
       showModal: false,
-      loading: false,
       line: false,
       mosaique: true,
-      title: '',
+      title: 'Ajouter un nouveau bailleur',
+      submitText: "Enrégistrer",
       headers: [
         { name: "Bailleurs", props: "user", cle: "nom" },
         { name: "Sigle", props: "sigle" },
@@ -218,13 +209,19 @@ export default {
       },
     
       addBailleur() {
-        this.title='Ajouter un bailleur'
+
+        this.title = "Ajouter un bailleur"
+
+        this.submitText = "Enrégistrer"
+
         this.showCloseModal(true)
       },
 
       modifier(bailleur) {
+        
+        this.title = "Modifier le bailleur"
 
-        this.title = 'Modifier un bailleur'
+        this.submitText = "Modifier"
 
         this.setBailleur(bailleur)
 
@@ -322,9 +319,7 @@ export default {
   
   mounted() {
     console.log("Fetching bailleurs ...")
-    this.fetchBailleurs().then((value) => {
-      console.log(value)
-    })
+    this.fetchBailleurs()
   }
 }
 </script>
