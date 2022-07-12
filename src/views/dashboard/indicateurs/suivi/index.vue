@@ -20,7 +20,7 @@
         
         <div v-if="showModal">
           <modal-top-right :title="title"  v-on:close="showModal = false">
-            <div style="width:60vw;" class="px-4 overflow-y-auto">
+            <div  class="px-4 overflow-y-auto">
               <div v-if="title =='Modifier un suivi'">
                 <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
               </div>

@@ -3,7 +3,7 @@
     <div class="w-full p-4">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="showModal = false">
-        <div class="px-4 overflow-auto" style="width:60vw !important;height: 500px;" >
+        <div class="px-4 overflow-auto" >
           <div v-if="title =='Ajouter un programme'">
              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>

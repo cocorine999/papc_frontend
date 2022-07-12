@@ -2,8 +2,8 @@
   <dashboard>
     <div class="w-full p-4">
     <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+      <form action="" @submit.prevent="save" class="px-4"  >
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
@@ -70,7 +70,7 @@
             </svg>
           </button>
 
-          <button v-if="title == 'Modifier un nouveau composant'  " type="submit" class='w-full mx-4 px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
+          <button v-if="title == 'Modifier un nouveau composant'  " type="submit" class='w-full px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
             <span  class="mx-2 text-xs font-semibold uppercase" v-if="loading == false">
               Modifier
             </span>
