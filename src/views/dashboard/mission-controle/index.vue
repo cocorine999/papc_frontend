@@ -2,9 +2,9 @@
   <dashboard>
   <div class="p-4">
     <div v-if="showModal">
-      <vmodal :title="title"  v-on:close="showModal = false">
+      <vmodal :title="title"  v-on:close="close">
         <div style="width:60vw;" class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs" :cols="cols" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
+          <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
         </div>
       </vmodal>
     </div>
@@ -31,15 +31,15 @@
     </nav>
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span @click="goMo" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MOD </span>
+        <span @click="goMo" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
       </div>
       
-      <button  v-if="seeMo" @click="addMissionDeControle" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seeMo" @click="addMissionDeControle" title="Ajouter un MO"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-        <span class="mx-2 text-sm font-semibold">Ajouter un MOD</span>
+        <span class="mx-2 text-sm font-semibold">Ajouter un MO</span>
       </button>
-      <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seePassation" @click="addPassation" title="Ajouter un MO"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
       </button>
@@ -93,7 +93,8 @@ export default {
       seePassation:false,
       showInput:true,
       uploadFile:false,
-      title:'',
+      title: "Ajouter une nouvelle mission de controle",
+      submitText: "Enrégistrer la mission de controle",
       title2:'',
       missionDeControleAttributs: ["nom", "email", "contact"],
       champs:[
@@ -198,13 +199,18 @@ export default {
 
     
     addMissionDeControle() {
-      this.title='Ajouter un MOD'
+      this.title = "Ajouter une nouvelle mission de controle"
+
+      this.submitText = "Enrégistrer la mission de controle"
+
       this.showCloseModal(true)
     },
 
     modifierMissionDeControle(missionDeControle) {
 
-      this.title = 'Modifier une mission de controle'
+      this.title = "Modifier une mission de controle"
+
+      this.submitText = "Modifier la mission de controle"
 
       this.setMissionDeControle(missionDeControle)
 
@@ -232,7 +238,9 @@ export default {
     },
 
     dupliquerMissionDeControle() {
-      this.title='Dupliquer une mission de controle'
+
+      this.title = "Dupliquer la mission de controle"
+
       this.showCloseModal()
     },
       
@@ -252,7 +260,7 @@ export default {
         
       window.document.getElementById('vform')?.reset()
 
-      this.setMod({})
+      this.setMissionDeControle({})
     },
 
     sendForm() {
@@ -261,32 +269,37 @@ export default {
 
         let missionDeControle = extractFormData(this.champs, this.missionDeControleAttributs)
 
-        console.log(missionDeControle)
-
         missionDeControle.programmeId = this.currentUser?.programme.id
 
         if(this.missionDeControle?.id)
         {
 
-          this.updateMissionDeControle({missionDeControle: missionDeControle, id : this.missionDeControle?.id}).then(response => {
-            
-            if(response.status == 200 || response.status == 201){
+          this.updateMissionDeControle({missionDeControle: missionDeControle, id : this.missionDeControle?.id})
+            .then(response => {
+              
+              if(response.status == 200 || response.status == 201){
 
-              this.close()
-            }
+                this.close()
+              }
 
-          })
+            })
+            .catch((value) => {
+              alert(value.response.data.errors.programmeId[0])
+            })
 
         }
         else
         {
           
-          this.saveMissionDeControle(missionDeControle).then(response => {
-            if(response.status == 200 || response.status == 201){
-                this.close()
-            }
-
-          })
+          this.saveMissionDeControle(missionDeControle)
+            .then(response => {
+              if(response.status == 200 || response.status == 201){
+                  this.close()
+              }
+            })
+            .catch((value) => {
+              alert(value.response.data.errors.programmeId[0])
+            })
         }
     }
     

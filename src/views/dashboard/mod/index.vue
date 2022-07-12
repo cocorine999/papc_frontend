@@ -2,9 +2,9 @@
   <dashboard>
   <div class="p-4">
     <div v-if="showModal">
-      <vmodal :title="title"  v-on:close="showModal = false">
+      <vmodal :title="title"  v-on:close="close">
         <div style="width:60vw;" class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs" :cols="cols" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
+          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
         </div>
       </vmodal>
     </div>
@@ -93,6 +93,7 @@ export default {
       uploadFile:false,
       title:'',
       title2:'',
+      submitText: "Enrégistrer le mod",
       modAttributs: ["nom", "email", "contact"],
       champs:[
         {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
@@ -198,12 +199,17 @@ export default {
     
     addMod() {
       this.title='Ajouter un MOD'
+
+      this.submitText = "Enrégistrer le MOD"
+
       this.showCloseModal(true)
     },
 
     modifierMod(mod) {
 
-      this.title = 'Modifier un MOD'
+      this.title = 'Modifier le MOD'
+
+      this.submitText = "Modifier le MOD"
 
       this.setMod(mod)
 
@@ -212,10 +218,7 @@ export default {
         this.champs.find((value, index) => {
 
           if(value.key === item){
-            if(item === "nom" || item === "email" || item === "contact" )
-              this.champs[index]['data'] = this.mod.user[item]
-            else
-              this.champs[index]['data'] = this.mod[item]
+            this.champs[index]['data'] = this.mod.user[item]
           }
 
         })
@@ -260,30 +263,38 @@ export default {
 
         let mod = extractFormData(this.champs, this.modAttributs)
 
-        console.log(mod)
+        mod.programmeId = this.currentUser?.programme.id
 
         if(this.mod?.id)
         {
 
-          this.updateMod({mod: mod, id : this.mod?.id}).then(response => {
-            
-            if(response.status == 200 || response.status == 201){
+          this.updateMod({mod: mod, id : this.mod?.id})
+            .then(response => {
+              
+              if(response.status == 200 || response.status == 201){
 
-              this.close()
-            }
+                this.close()
+              }
 
-          })
+            })
+            .catch((value) => {
+              alert(value.response.data.errors.programmeId[0])
+            })
 
         }
         else
         {
           
-          this.saveMod(mod).then(response => {
-            if(response.status == 200 || response.status == 201){
-                this.close()
-            }
+          this.saveMod(mod)
+            .then(response => {
+              if(response.status == 200 || response.status == 201){
+                  this.close()
+              }
 
-          })
+            })
+            .catch((value) => {
+              alert(value.response.data.errors.programmeId[0])
+            })
         }
     }
 
