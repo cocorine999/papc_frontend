@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
+         <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
           </div>
         </form>
 
@@ -84,6 +84,7 @@
 
 <script>
 
+import router from '@/router';
 import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions } from 'vuex'
 
@@ -107,7 +108,9 @@ export default {
   methods: {
    
     save() {
-      this.soumettre = true
+      this.soumettre = true;
+      this.$router.push("/dashboard/bailleurs");
+      this.soumettre = true;
     },
     visible () {
       this.statePassword = 'text'
@@ -115,9 +118,10 @@ export default {
     },
     invisible () {
       this.statePassword = 'password'
-      this.show = false
-    }
+      this.show = false;
+    },
   },
+
   validations: {
     login: {
       required,
@@ -132,8 +136,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-* {
-  font-family: 'Inter', sans-serif;
-}
-</style>
