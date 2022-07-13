@@ -20,8 +20,9 @@
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">#</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Nom</th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description</th>
+            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Contact</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Email</th>
+            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Mod</th>
 
             <th class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider">Actions</th>
           </tr>
@@ -31,7 +32,8 @@
             
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{i}} </td>
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{ entrepriseExecutante.user.nom }} </td>
-            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis, modi...</td>
+            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{ entrepriseExecutante.user.contact }} </td>
+            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"> {{ entrepriseExecutante.user.email }} </td>
             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"> {{ entrepriseExecutante.user.email }} </td>
             
             <td class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5">
@@ -47,7 +49,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
                 </div>
-                <div   class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
+                <div   class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="supprimerEntrepriseExecutante(entrepriseExecutante)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
@@ -93,10 +95,10 @@ export default {
         ],
 
         form: [
-          { label: "nom", type: "text", value: null },
-          { label: "contact", type: "number", value: null },
-          { label: "email", type: "email", value: null },
-          { label: "mod", type: "select", value: null, options: this.mods, cle: 'id', text: 'nom' }
+          { label: "nom", type: "text", value: null, errors: [] },
+          { label: "contact", type: "number", value: null, errors: [] },
+          { label: "email", type: "email", value: null, errors: [] },
+          { label: "mod", type: "select", value: null, errors: [], options: [], cle: 'id', text: 'nom' }
         ]
       });
     },
@@ -134,13 +136,7 @@ export default {
         this.title = "Ajouter une nouvelle entreprise executante"
 
         this.submitText = "Enrégistrer l'entreprise executante"
-
-        console.log(this.form)
-
-        /* this.champs.push(
-          {name:'Mod', key: 'modId', type:'', placeholdere:'Choisir un mod', isSelect:true, isTextArea:false, data:'', options: this.mods.map((value, index, array) => {return {"id": value.id, "nom": value.user.nom,}}), cle: 'id', value: 'nom', required:true, errors : []}
-        ) */
-
+        
         this.showCloseModal(true)
       },
 
@@ -212,7 +208,7 @@ export default {
           })
 
           entrepriseExecutante.programmeId = this.currentUser?.programme.id
-
+          entrepriseExecutante.modId = entrepriseExecutante.mod
           if(this.entrepriseExecutante?.id)
           {
 
@@ -255,7 +251,7 @@ export default {
       mods: function(mods) {
         this.form.map((item) => {
           if(item.label === "mod"){
-            item.value = mods.map((mod) => {
+            item.options = mods.map((mod) => {
               return {
                 "id" : mod.id,
                 "nom" : mod.user.nom
@@ -264,10 +260,11 @@ export default {
           }
           return item
         })
+
       },
 
       hasErrors: function(errors) {
-        this.champs.forEach((value) => {value.errors = errors[value.key]})
+        this.form.forEach((value) => {value.errors = errors[value.label]})
       }
     },
   

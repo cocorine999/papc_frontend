@@ -3,18 +3,11 @@
   <div class="w-full p-4">
     
     <div v-if="showModal">
-      <vmodal  :title="title"  v-on:close="closeModal">
+      <vmodal  :title="title"  v-on:close="close">
         <div style="width:60vw" class="px-4">
-          <div v-if="title =='Modifier une ONG/AGENCES DE COMMUNICATION'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
-          </div>
-          <div v-if="title =='Ajouter une nouvelle ONG/AGENCES DE COMMUNICATION'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" ></vform>
-          </div>
-          <div v-if="title =='Dupliquer une ONG/AGENCES DE COMMUNICATION'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Creer à partir de " @sendForm="sendForm" ></vform>
-          </div>
-         
+          <div>
+            <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
+          </div>         
         </div>
       </vmodal>
     </div>
@@ -59,7 +52,7 @@
       </div>
       
       
-        <button v-if="seeOng" @click="addBailleur" title="ajouter une instutitions"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="seeOng" @click="addOngOrAgence" title="ajouter une instutitions"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
@@ -144,221 +137,347 @@
 </template>
 
 <script>
-import SearchBar from '@/components/SearchBar'
-import CardBailleur from '@/components/CardBailleur'
-import Titre from '@/components/Titre'
-import Vtable from '@/components/Vtable'
-import Vform from '@/components/Vform'
-import Vmodal from '@/components/Vmodal'
-import Dashboard from '@/layouts/Dashboard'
-import { mapState } from 'vuex'
-import CardMod from '@/components/CardMod'
-import CardChecklist from '@/components/CardChecklist'
-  
-  
-  
+  import SearchBar from '@/components/SearchBar'
+  import CardBailleur from '@/components/CardBailleur'
+  import Titre from '@/components/Titre'
+  import Vtable from '@/components/Vtable'
+  import Vform from '@/components/Vform'
+  import Vmodal from '@/components/Vmodal'
+  import Dashboard from '@/layouts/Dashboard'
+  import CardMod from '@/components/CardMod'
+  import CardChecklist from '@/components/CardChecklist'
+  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+  import extractFormData from "@/utils/extract-data";
 
 
-
-export default {
-  components: {
-    Vtable,
-    Dashboard,
-    Vmodal,
-    Vform,
-    CardBailleur,
-    Titre,
-    SearchBar,
-    CardMod,
-    CardChecklist,
-    
-  },
-  data() {
-    return {
-      showModal:false,
-      showModal2:false,
-      loading:false,
-      line:false,
-      mosaique:true,
-      seeOng:true,
-      seePassation:false,
-      seechecklist:false,
-      title: '',
-      headers:[
-        {name:'Bailleurs',props:'bailleur'},
-        {name:'Sigle',props:'sigle'},
-        {name:'Code PTA',props:'code'},
-        {name:'Date creation',props:'created_at'},
-      ],
-       
-
-      bailleurs:[
-         {
-          bailleur:'',
-          sigle:'ACVDT',
-          code:"4.1.1.3.1",
-          created_at:"22-06-2022",
-          color:' bg-yellow-500'
-          },
-        {
-        bailleur:'',
-        sigle:'SIRAT',
-        code:"4.1.1.3.2",
-        created_at:"22-06-2022",
-        color:' bg-red-500'
-        },
-        {
-        bailleur:'',
-        sigle:'MEF',
-        code:"4.1.1.3.3",
-        created_at:"22-06-2022",
-        color:' bg-pink-500'
-        },
-        {
-        bailleur:"",
-        sigle:'CAA',
-        code:"4.1.1.3.4",
-        created_at:"22-06-2022",
-        color:' bg-blue-500'
-        },
-        {
-        bailleur:"",
-        sigle:'ANSI',
-        code:"4.1.1.3.5",
-        created_at:"22-06-2022",
-        color:' bg-yellow-900'
-        },
-        {
-        bailleur:"",
-        sigle:'GOUV',
-        code:"4.1.1.3.6",
-        created_at:"22-06-2022",
-        color:' bg-indigo-500'
-        },
-
-      ],
-      dataTable:[
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-      ],
-      passationChamps:[
-        {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},
-        {name:'Selectionnez Site',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:['calavi','cotonou'],required:true,},
-        {name:'Montant passation',type:'number',placeholdere:"Montant passation",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date obtention',type:'date',placeholdere:"Date obtention",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date signature',type:'date',placeholdere:"Date signature",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date Demarrage',type:'date',placeholdere:"Date de Demarrage",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date previsionnelle',type:'date',placeholdere:"Date de previsionnelle",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date  obtention avance',type:'date',placeholdere:"Date obtention avance",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Montant avance',type:'number',placeholdere:"Montant avance",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Estimation',type:'number',placeholdere:"Estimation",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Ordre de service',type:'text',placeholdere:"Ordre de service",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Travaux',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Responsable sociologue',type:'',placeholdere:"Selectionnez un responsable",isSelect:true,isTextArea:false,data:'',required:true,options:['Responsable','Responsable2']},
-      ],
-      cols:1,
-      colsPassation:2,
-      headers:[
-          {name:'Nom createur',props:'createur',width:"w-24"},
-          {name:'Site',props:'site',width:"w-36"},
-          {name:'MOD',props:'mod',width:"w-36"},
-          {name:'Montant passation',props:'montant_passation',width:"w-24"},
-          {name:'Date obtention',props:'date_obtention',width:"w-24"},
-          {name:'Date demarrage',props:'date_demarrage',width:"w-24"},
-          {name:'Date signature',props:'date_signature',width:"w-24"},
-          {name:'date previsionnelle',props:'date_previsionnelle',width:"w-24"},
-          {name:'Date obtention avance',props:'date_avance',width:"w-40"},
-          {name:'Montant avance',props:'montant_avance',width:"w-24"},
-          {name:'Estimation',props:'estimation',width:"w-24"},
-          {name:'Ordre de service',props:'ordre_service',width:"w-24"},
-          {name:'travaux',props:'travaux',width:"w-24"},
-          {name:'Responsable sociologue',props:'responsable_sociologue',width:"w-24"},
-          {name:'Date de creation',props:'created_at',width:"w-28"},
-         
-         
-        ],
-
-      actions:[
-        {name:'modifier',iconne:''},
-        {name:'supprimer',iconne:''},
-      ],
-      champs:[
-        {name:'Nom',type:'text',placeholdere:"Nom de  l'ONG/AGENCES DE COMMUNIMATION",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Email',type:'email',placeholdere:"Votre Email",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Contact',type:'',placeholdere:'Votre contact',isSelect:false,isTextArea:false,data:'',required:true,},
-      ],
-      cols:1,
-      option:[
-        {name:'supprimer'},
-        {name:'modifier'},
-      ]
+  export default {
+    components: {
+      Vtable,
+      Dashboard,
+      Vmodal,
+      Vform,
+      CardBailleur,
+      Titre,
+      SearchBar,
+      CardMod,
+      CardChecklist,
       
-
-
-    }
-  },
-  methods: {
-    switch1() {
-      this.mosaique = true
-      this.line = false
     },
-    switch2() {
-      this.mosaique = false
-      this.line = true
+    data() {
+      return {
+        showModal:false,
+        showModal2:false,
+        line:false,
+        mosaique:true,
+        ongOrAgence: {},
+        seeOng:true,
+        seePassation:false,
+        seechecklist:false,
+        title: '',
+        ongOrAgenceAttributs: ["nom", "email", "contact", "type"],
+        headers:[
+          {name:'Bailleurs',props:'bailleur'},
+          {name:'Sigle',props:'sigle'},
+          {name:'Code PTA',props:'code'},
+          {name:'Date creation',props:'created_at'},
+        ],
+        
+
+        bailleurs:[
+          {
+            bailleur:'',
+            sigle:'ACVDT',
+            code:"4.1.1.3.1",
+            created_at:"22-06-2022",
+            color:' bg-yellow-500'
+            },
+          {
+          bailleur:'',
+          sigle:'SIRAT',
+          code:"4.1.1.3.2",
+          created_at:"22-06-2022",
+          color:' bg-red-500'
+          },
+          {
+          bailleur:'',
+          sigle:'MEF',
+          code:"4.1.1.3.3",
+          created_at:"22-06-2022",
+          color:' bg-pink-500'
+          },
+          {
+          bailleur:"",
+          sigle:'CAA',
+          code:"4.1.1.3.4",
+          created_at:"22-06-2022",
+          color:' bg-blue-500'
+          },
+          {
+          bailleur:"",
+          sigle:'ANSI',
+          code:"4.1.1.3.5",
+          created_at:"22-06-2022",
+          color:' bg-yellow-900'
+          },
+          {
+          bailleur:"",
+          sigle:'GOUV',
+          code:"4.1.1.3.6",
+          created_at:"22-06-2022",
+          color:' bg-indigo-500'
+          },
+
+        ],
+        dataTable:[
+          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
+          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
+          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
+        ],
+        passationChamps:[
+          {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},
+          {name:'Selectionnez Site',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:['calavi','cotonou'],required:true,},
+          {name:'Montant passation',type:'number',placeholdere:"Montant passation",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date obtention',type:'date',placeholdere:"Date obtention",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date signature',type:'date',placeholdere:"Date signature",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date Demarrage',type:'date',placeholdere:"Date de Demarrage",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date previsionnelle',type:'date',placeholdere:"Date de previsionnelle",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date  obtention avance',type:'date',placeholdere:"Date obtention avance",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Montant avance',type:'number',placeholdere:"Montant avance",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Estimation',type:'number',placeholdere:"Estimation",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Ordre de service',type:'text',placeholdere:"Ordre de service",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Travaux',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Responsable sociologue',type:'',placeholdere:"Selectionnez un responsable",isSelect:true,isTextArea:false,data:'',required:true,options:['Responsable','Responsable2']},
+        ],
+        cols:1,
+        colsPassation:2,
+        headers:[
+            {name:'Nom createur',props:'createur',width:"w-24"},
+            {name:'Site',props:'site',width:"w-36"},
+            {name:'MOD',props:'mod',width:"w-36"},
+            {name:'Montant passation',props:'montant_passation',width:"w-24"},
+            {name:'Date obtention',props:'date_obtention',width:"w-24"},
+            {name:'Date demarrage',props:'date_demarrage',width:"w-24"},
+            {name:'Date signature',props:'date_signature',width:"w-24"},
+            {name:'date previsionnelle',props:'date_previsionnelle',width:"w-24"},
+            {name:'Date obtention avance',props:'date_avance',width:"w-40"},
+            {name:'Montant avance',props:'montant_avance',width:"w-24"},
+            {name:'Estimation',props:'estimation',width:"w-24"},
+            {name:'Ordre de service',props:'ordre_service',width:"w-24"},
+            {name:'travaux',props:'travaux',width:"w-24"},
+            {name:'Responsable sociologue',props:'responsable_sociologue',width:"w-24"},
+            {name:'Date de creation',props:'created_at',width:"w-28"},
+          
+          
+          ],
+
+        actions:[
+          {name:'modifier',iconne:''},
+          {name:'supprimer',iconne:''},
+        ],
+      champs:[
+        {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Type', key: 'type', type:'', placeholdere:'Choisir un type', isSelect:true, isTextArea:false, data:'', options: [{id: "ong", nom: "Ong"}, {id: "agence", nom: "Agence de communication"}], cle: 'id', value: 'nom', required:true, errors : []}
+
+      ],
+        cols:1,
+        option:[
+          {name:'supprimer'},
+          {name:'modifier'},
+        ]
+
+      }
     },
+    methods: {
+
+        ...mapMutations({
+          setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+          setOng: 'ongs/FILL', // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+          setAgenceDeCommunication: 'agencesDeCommunication/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+        }),
+
+        ...mapActions('ongs', {
+          fetchOngs: "FETCH_LIST_ONG",
+          saveOng: "STORE_ONG",
+          updateOng: "UPDATE_ONG",
+          deleteOng: "DESTROY_ONG"
+        }),
+
+        ...mapActions('agencesDeCommunication', {
+          fetchAgencesDeCommunication: "FETCH_LIST_AGENCE_DE_COMMUNICATION",
+          saveAgenceDeCommunication: "STORE_AGENCE_DE_COMMUNICATION",
+          updateAgenceDeCommunication: "UPDATE_AGENCE_DE_COMMUNICATION",
+          deleteAgenceDeCommunication: "DESTROY_AGENCE_DE_COMMUNICATION"
+        }),
+
+        switch1() {
+          this.mosaique = true
+          this.line = false
+        },
+        switch2() {
+          this.mosaique = false
+          this.line = true
+        },
+        
+        goOng() {
+          this.seeOng = true
+          this.seePassation = false
+          this.seechecklist = false
+        },
+
+        goPassation() {
+          this.seeOng = false
+          this.seePassation = true
+          this.seechecklist = false
+        },
+
+        gochecklist() {
+          this.seeOng = false
+          this.seePassation = false
+          this.seechecklist = true
+        },
+        
+        supprimerPassation(data) {
+          alert(data+ " à ete bien supprimer")
+        },
+
+        addPassation() {
+          this.title2 = 'Ajouter une Passation'
+          this.showModal2 = true
+        },
+      
+        addOngOrAgence() {
+          this.title = 'Ajouter une nouvelle ONG/AGENCES DE COMMUNICATION'
+
+          this.submitText = "Enrégistrer"
+
+          this.showCloseModal(true)
+        },
+
+        modifierOngOrAgence(ongOrAgence) {
+
+          this.title = "Modification de l'institution {ongOrAgence.nom}"
+
+          this.submitText = "Modifier"
+
+          this.ongOrAgence = ongOrAgence
+
+          this.ongOrAgenceAttributs.forEach((item) => {
+
+            this.champs.find((value, index) => {
+
+              if(value.key === item){
+                this.champs[index]['data'] = this.ongOrAgence.user[item]
+              }
+
+            })
+
+          })
+
+          this.showCloseModal(true)
+        },
+
+        supprimerOngOrAgence(ongOrAgence) {
+          if(window.confirm("Voulez-vous vraiment supprimer " + ongOrAgence.nom))
+            ongOrAgence.type === 'ong' ? this.deleteOng(ongOrAgence.id) : this.deleteAgenceDeCommunication(ongOrAgence.id)
+        },
+
+        dupliquerOngOrAgence() {
+          this.title = "Duplication"
+          this.showCloseModal()
+        },
+          
+        close() {
+          this.showCloseModal()
+
+          this.resetForm()
+        }, 
+      
+        showCloseModal(value = false) {
+          this.showModal = value
+        },
+
+        resetForm(){
+
+          this.champs = this.champs.map(item => { item.data = ''; return item})
+            
+          window.document.getElementById('vform')?.reset()
+
+          this.setOng({})
+
+          this.setAgenceDeCommunication({})
+        },
+
+        sendForm() {
+
+            this.champs = this.champs.map(item => { item.errors = []; return item})
+
+            let id = this.ongOrAgence?.id
+
+            this.ongOrAgence = extractFormData(this.champs, this.ongOrAgenceAttributs, ['data', 'data', 'data', 'data'])
+
+            this.ongOrAgence.programmeId = this.currentUser?.programme.id
+            
+            if(id)
+            {
+              this.ongOrAgence?.type === 'ong' 
+                ? this.updateOng({ong: this.ongOrAgence, id : id})
+                : this.updateAgenceDeCommunication({agenceDeCommunication: this.ongOrAgence, id : this.ongOrAgence.id})
+                .then(response => {
+                  
+                  if(response.status == 200 || response.status == 201){
+
+                    this.close()
+                  }
+
+                })
+                .catch((value) => {
+                  alert(value.response.data.errors.programmeId[0])
+                })
+
+            }
+            else
+            {
+
+                this.ongOrAgence?.type === 'ong' 
+                ? this.saveOng(this.ongOrAgence)
+                : this.saveAgenceDeCommunication(this.ongOrAgence)
+
+                .then(response => {
+                  if(response.status == 200 || response.status == 201){
+                      this.close()
+                  }
+
+                })
+                .catch((value) => {
+                  alert(value.response.data.errors.programmeId[0])
+                })
+            }
+        }
+
     
-    closeModal() {
-      this.showModal=false
-    },
-   
-    sendForm() {
-      alert('donnée envoyer')
-    },
-     goOng() {
-      this.seeOng = true
-      this.seePassation = false
-      this.seechecklist = false
-    },
-    goPassation() {
-      this.seeOng = false
-      this.seePassation = true
-      this.seechecklist = false
-    },
-    gochecklist() {
-      this.seeOng = false
-      this.seePassation = false
-      this.seechecklist = true
-    },
-    modifier(data) {
-      this.title='Modifier une ONG/AGENCES DE COMMUNICATION'
-      this.showModal = true
-      alert(data +" à ete modifier")
-    },
-    supprimer(data) {
-      alert(data +" à ete bien supprimer")
-    },
-    dupliquer(data) {
-      this.showModal = true
-      this.title='Dupliquer une ONG/AGENCES DE COMMUNICATION'
-      alert(data +" à ete bien dupliquer")
-    },
-    supprimerPassation(data) {
-      alert(data+ " à ete bien supprimer")
-    },
-     addBailleur() {
-      this.title='Ajouter une nouvelle ONG/AGENCES DE COMMUNICATION'
-      this.showModal = true
-    },
-     addPassation() {
-      this.title2 = 'Ajouter une Passation'
-      this.showModal2 = true
-    },
-    
+      },
+      
+      watch: {
+        isLoading: function(value) {
+          //this.loading = value
+        },
 
-   
+        hasErrors: function(errors) {
+          this.champs.forEach((value) => {value.errors = errors[value.key]})
+          //this.errors = errors
+        }
+
+      },
+      
+      mounted() {
+        console.log("Fetching ongs or agences de communication ...")
+        this.fetchOngs()
+        this.fetchAgencesDeCommunication()
+        
+      }
   }
-}
 </script>
 
 <style>

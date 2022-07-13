@@ -3,6 +3,8 @@ import Vuex from "vuex";
 
 import auths from "@/store/modules/auths/index";
 
+import agencesDeCommunication from "./modules/agencesDeCommunication/index";
+
 import bailleurs from "@/store/modules/bailleurs/index";
 
 import entreprisesExecutante from "./modules/entreprisesExecutante/index";
@@ -11,17 +13,13 @@ import institutions from "./modules/institutions/index";
 
 import mods from "./modules/mods/index";
 
+import ongs from "./modules/ongs/index";
+
 import missionDeControles from "./modules/missionDeControles/index";
 
 import programmes from "@/store/modules/programmes/index";
 
 import uniteeDeGestions from "@/store/modules/uniteeDeGestions/index";
-
-/*
-    import projets from "./modules/projets/index";
-
-    import uniteeDeGestions from "./modules/uniteeDeGestions/index"; 
-*/
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -85,10 +83,12 @@ export default new Vuex.Store({
 
   modules: {
     auths,
+    agencesDeCommunication,
     bailleurs,
     entreprisesExecutante,
     institutions,
     mods,
+    ongs,
     missionDeControles,
     programmes,
     uniteeDeGestions

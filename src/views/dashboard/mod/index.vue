@@ -72,7 +72,7 @@
   import Vtable from '@/components/Vtable'
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
-  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
 
 export default {

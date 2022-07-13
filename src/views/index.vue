@@ -161,11 +161,7 @@ export default {
     loading: function(params) {
       this.loading = params
     }
-  },
-
-  mounted() {
-    console.log(this.identifiant)
-  },
+  }
 
 }
 </script>

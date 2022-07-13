@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="save">
+  <form @submit.prevent="save" id="vform">
     <div v-if="isAllPairSaufDescrip">
       <div :class="`grid grid-cols-${cols} gap-4`">
         <div  v-for="input in Inputs" :key="input.id">
@@ -49,7 +49,7 @@
           </label>
           <select :required="select.required" v-model='select.data'    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent">
             <option value=""> {{select.placeholdere}} </option>
-            <option v-for="(option,index) in  select.options" :key="index" :value="select.data != '' ? select.data : option[select.cle]">
+            <option :selected="select.data === option[select.value]" v-for="(option,index) in  select.options" :key="index" :value="option[select.cle]">
                {{ option[select.value] }}
             </option>
           </select>
