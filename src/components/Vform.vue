@@ -1,75 +1,35 @@
 <template>
   <form @submit.prevent="save">
-    <div v-if="isAllPairSaufDescrip">
+    <div v-for="champ in champs" :key="champ.id">
       <div :class="`grid grid-cols-1 gap-4`">
-        <div  v-for="input in Inputs" :key="input.id">
+         <div v-if="champ.isSelect ===false && champ.isTextArea ===false" >
           <label   class=" block py-2 text-sm font-semibold " for="">
-          {{input.name}} <span v-if="input.required" class="px-2 text-lg font-black text-red-700">*</span>
+          {{champ.name}} <span v-if="champ.required" class="px-2 w-full text-lg font-black text-red-700">*</span>
           </label>
-          <input :required="input.required" v-model='input.data'  :placeholder="input.placeholdere" :type="input.type"    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
+          <input :required="champ.required" v-model='champ.data'  :placeholder="champ.placeholdere" :type="champ.type"    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
         </div>
 
-        <div class="" v-for="select in Selects" :key="select.id">
+        <div v-else-if="champ.isSelect ===true && champ.isTextArea ===false">
           <label  class=" block py-2 text-sm font-semibold " for="">
-          {{select.name}}  <span v-if="select.required" class="px-2 text-lg font-black text-red-700">*</span>
+          {{champ.name}}  <span v-if="champ.required" class="px-2 text-lg font-black text-red-700">*</span>
           </label>
-          <multiselect v-model="select.data" :required="select.required" :options="select.options" :custom-label="select.methode"  :placeholder="select.placeholdere" label="name" track-by="name"></multiselect>
+          <multiselect v-model="champ.data" :required="champ.required" :options="champ.options" :custom-label="champ.methode"  :placeholder="champ.placeholdere" label="name" track-by="name"></multiselect>
         </div>
-      </div>
-    </div>
-    <div v-else>
-      <div :class="`grid grid-cols-1 gap-4`">
-        <div  v-for="input in Inputs" :key="input.id">
-          <label   class=" block py-2 text-sm font-semibold " for="">
-          {{input.name}} <span v-if="input.required" class="px-2 text-lg font-black text-red-700">*</span>
-          </label>
-          <input required v-model='input.data'  :placeholder="input.placeholdere" :type="input.type"    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
-
-
-          <div  v-for="(error, key) in input.errors" :key="key">
-              <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
-              <div class="text-red-500 text-sm   py-2 font-semibold">
-                error
-              </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div :class="`grid grid-cols-1 gap-4`">
-        <div class="my-2" v-for="select in Selects" :key="select.id">
+        <div v-else-if="champ.isSelect ===false && champ.isTextArea ===true">
           <label  class=" block py-2 text-sm font-semibold " for="">
-            {{select.name}}  <span v-if="select.required" class="px-2 text-lg font-black text-red-700">*</span>
+            {{champ.name}} <span v-if="champ.required" class="px-2 text-lg font-black text-red-700">*</span>
           </label>
-          <multiselect v-model="select.data" :required="select.required"  :options="select.options" :custom-label="select.methode"  :placeholder="select.placeholdere" label="name" track-by="name"></multiselect>
-          
-          <div  v-for="(error, key) in select.errors" :key="key">
-              <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
-              <div class="text-red-500 text-sm   py-2 font-semibold">
-                error
-              </div>
+          <textarea v-model='champ.data' class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" required rows="3"></textarea>
+        </div>
+        <div v-else-if="champ.isCheckbox ===true">
+          <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Attributaires <span class="px-2 text-lg font-black text-red-700">*</span></label>
+          <div class="flex items-center  justify-evenly">
+            <label v-for="item in champ.items" :key="item.id" class=""> <input  class="px-3 mx-2 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="lot" id="travaux" :value="item.name" type="radio" /> {{item.name}} </label>
           </div>
-
         </div>
       </div>
-
     </div>
 
-    <div v-for="area in TextArea" :key="area.id">
-        <label  class=" block py-2 text-sm font-semibold " for="">
-          {{area.name}} <span v-if="area.required" class="px-2 text-lg font-black text-red-700">*</span>
-        </label>
-        <textarea v-model='area.data' class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" required rows="3"></textarea>
-        
-        <div  v-for="(error, key) in area.errors" :key="key">
-            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
-            <div class="text-red-500 text-sm   py-2 font-semibold">
-              error
-            </div>
-        </div>
-    </div>
-
-    
 
     <div class="py-2 my-2 flex justify-center space-x-8">
       <vbutton  type="submit" template="success"> {{submitText}} </vbutton>
