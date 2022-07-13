@@ -55,7 +55,7 @@
             </div>
             <div class="relative mb-2">
               <img class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
-                :src="projet.link"
+                :src="link"
                 alt="">
                 <div class="absolute bottom-0 right-0">
                   <div v-if="projet.statut == 0 " class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></div>
@@ -63,12 +63,12 @@
                   <div v-if="projet.statut == -1 " class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En attente <i class='bx bx-time-five ml-1'></i></div>
                 </div>
                 <div class="absolute top-2 left-2">
-                  <div :class="projet.couleur" class="uppercase rounded-lg text-sm flex items-center text-white  px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{projet.bailleur.sigle}}
+                  <div :class="projet.couleur" :style="`background-color:${projet.couleur}`" class="uppercase rounded-lg text-sm flex items-center text-white  px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{projet.bailleur.sigle}}
                   </div>
                 </div>
             </div>
             <div class="block px-4 pb-4">
-              <span :class="projet.couleur" class="absolute bottom-0 left-0 w-full  h-2"></span>
+              <span :class="projet.couleur" :style="`background-color:${projet.couleur}`" class="absolute bottom-0 left-0 w-full  h-2"></span>
               <h3 class="font-medium text-xl">
                 <a href="#2"
                   class="block uppercase relative group-hover:text-gray-800 transition-colors duration-200 line-clamp-2 text-lg">{{projet.nom}}
@@ -110,6 +110,7 @@ export default {
       showModal:false,
       line:false,
       mosaique:true,
+       link:"https://mapiwee.com/wp-content/uploads/2020/07/Mapiwee-by-Maped-limportance-de-leau-expliqu%C3%A9-aux-enfants.jpeg",
       title: '',
       projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'poids', 'bailleurId'],
       champs:[
