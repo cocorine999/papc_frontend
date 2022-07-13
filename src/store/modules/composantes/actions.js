@@ -1,0 +1,74 @@
+import {
+    FETCH_LIST as FETCH_LIST_COMPOSANTE,
+    GET as GET_COMPOSANTE,
+    STORE as STORE_COMPOSANTE,
+    UPDATE as UPDATE_COMPOSANTE,
+    DESTROY as DESTROY_COMPOSANTE,
+} from "@/store/actions.type"
+
+import {
+    SET_LIST as SET_LIST_COMPOSANTE,
+    FIND as findComposante,
+    ADD as ADD_COMPOSANTE,
+    MODIFY as MODIFY_COMPOSANTE,
+    REMOVE as REMOVE_COMPOSANTE
+} from "@/store/mutations.type"
+
+import ComposanteService from "@/services/modules/composante.service";
+
+export default {
+    
+    FETCH_LIST_COMPOSANTE : async ({ commit }) => {
+
+        const { data, status } = await ComposanteService.get();
+
+        commit(SET_LIST_COMPOSANTE, data.data);
+
+        return { data, status };
+    },
+    
+
+    async GET_COMPOSANTE ({ commit, getters }, {key, value }) {
+
+        let composante = getters.findComposante({key: key, value : value})
+
+        if((composante === null || composante || undefined) && typeof value === "int"){
+
+            const { data, status } = await ComposanteService.get(value);
+
+            composante = data.data
+
+            return composante
+        }
+    },
+
+    async STORE_COMPOSANTE ({ commit }, payload) {
+        
+        const { data, status } = await ComposanteService.create(payload);
+
+        commit(ADD_COMPOSANTE, data.data);
+
+        return { data, status };
+
+    },
+
+    async UPDATE_COMPOSANTE ({ commit }, {composante, id}) {
+        
+        const { data, status } = await ComposanteService.update(id, composante);
+
+        commit(MODIFY_COMPOSANTE, data.data);
+
+        return { data, status };
+
+    },
+
+    async DESTROY_COMPOSANTE ({ commit }, idComposante) {
+        
+        const { data, status } = await ComposanteService.destroy(idComposante);
+
+        commit(REMOVE_COMPOSANTE, idComposante);
+
+        return { data, status };
+
+    }
+}

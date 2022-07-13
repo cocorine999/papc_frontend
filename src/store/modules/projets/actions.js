@@ -26,6 +26,7 @@ export default {
 
         return { data, status };
     },
+    
 
     async GET_PROJET ({ commit, getters }, {key, value }) {
 
