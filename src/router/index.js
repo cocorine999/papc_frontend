@@ -35,6 +35,7 @@ import dashboard_projets_taches_globale from "../views/dashboard/projets/taches-
 import dashboard_projets_composantes_globale from "../views/dashboard/projets/composantes-globale/index.vue";
 import dashboard_projets_sous_composantes_globale from "../views/dashboard/projets/sous-composantes-globale/index.vue";
 import projets_id_details from "../views/dashboard/projets/_id/details.vue";
+import projets_id_cadreLogique from "../views/dashboard/projets/_id/cadre-logique.vue";
 import bailleurs from "../views/dashboard/bailleurs/index.vue";
 import fileManager from "../views/dashboard/fileManager/index.vue";
 import demo from "../views/demo.vue";
@@ -108,7 +109,7 @@ const routes = [
     name: "ong",
     component: ong,
   },
-  
+
   // {
   //   path: "/dashboard/fileManager",
   //   name: "fileManager",
@@ -171,7 +172,7 @@ const routes = [
   //   name: "config",
   //   component: config,
   // },
-  
+
   {
     path: "/dashboard/bailleurs",
     name: "bailleurs",
@@ -185,7 +186,7 @@ const routes = [
   {
     path: "/dashboard/programme",
     name: "programme",
-    component:programme,
+    component: programme,
   },
   {
     path: "/dashboard/unite-gestion",
@@ -205,68 +206,72 @@ const routes = [
   {
     path: "/dashboard/projets/:id/details",
     component: projets_id_details,
-    name: "projets_id_details"
+    name: "projets_id_details",
   },
-  , 
+  {
+    path: "/dashboard/projets/:id/cadreLogique",
+    component: projets_id_cadreLogique,
+    name: "projets_id_cadreLogique",
+  },
+  ,
   {
     path: "/dashboard/projets/activites-globale",
     component: dashboard_projets_activites_globale,
-    name: "dashboard_projets_activites_globale"
-  }, 
-   {
+    name: "dashboard_projets_activites_globale",
+  },
+  {
     path: "/dashboard/projets/composantes-globale",
-    component:dashboard_projets_composantes_globale,
-    name: "dashboard_projets_composantes_globale"
-  }, 
+    component: dashboard_projets_composantes_globale,
+    name: "dashboard_projets_composantes_globale",
+  },
   {
     path: "/dashboard/projets/sous-composantes-globale",
-    component:dashboard_projets_sous_composantes_globale,
-    name: "dashboard_projets_sous_composantes_globale"
-  }, 
+    component: dashboard_projets_sous_composantes_globale,
+    name: "dashboard_projets_sous_composantes_globale",
+  },
   {
     path: "/dashboard/projets/taches-globale",
     component: dashboard_projets_taches_globale,
-    name: "dashboard_projets_taches_globale"
+    name: "dashboard_projets_taches_globale",
   },
   {
     path: "/dashboard/indicateurs",
     component: indicateurs,
-    name: "indicateurs"
-  }, 
+    name: "indicateurs",
+  },
   {
     path: "/dashboard/indicateurs/suivi",
-    component:indicateurs_suivi,
-    name: "indicateurs_suivi"
-  }, 
+    component: indicateurs_suivi,
+    name: "indicateurs_suivi",
+  },
   {
     path: "/dashboard/finances/decaissement",
-    component:finances_decaissement,
-    name: "finances_decaissement"
-  }, 
+    component: finances_decaissement,
+    name: "finances_decaissement",
+  },
   {
     path: "/dashboard/finances/suivi",
-    component:finances_suivi,
-    name: "finances_suivi"
-  }, 
+    component: finances_suivi,
+    name: "finances_suivi",
+  },
   {
     path: "/dashboard/finances/plan_decaissement",
-    component:finances_plan_decaissement,
-    name: "finances_plan_decaissement"
+    component: finances_plan_decaissement,
+    name: "finances_plan_decaissement",
   },
   {
     path: "/dashboard/config/categories",
     component: config_categories,
-    name: "config_categories"
+    name: "config_categories",
   },
   {
     path: "/dashboard/config/unites",
     component: config_unites,
-    name: "config_unites"
+    name: "config_unites",
   },
-
 ];
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   routes,
 });
 

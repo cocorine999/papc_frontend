@@ -93,6 +93,7 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 
+
 export default {
   components: {
     Vtable,
@@ -101,7 +102,8 @@ export default {
     Vform,
     Titre,
     SearchBar,
-    ModalTopRight
+    ModalTopRight,
+    
    
   },
   data() {
@@ -117,7 +119,8 @@ export default {
         {name:'Date fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Couleurs',type:'color',placeholdere:'Choississez une couleur',isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Piece jointe',type:'file',placeholdere:'Choississez une couverture',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Ville',type:'',placeholdere:'Selectionnez une ville',isSelect:true,isTextArea:false,data:'',required:true,options:['cotonou','calavi','bohicon']},
+        {name:'Pays',type:'',placeholdere:'Selectionnez un Pays',isSelect:true,isTextArea:false, data:'',required:true,options:['Benin']},
+        {name:'Ville',type:'',placeholdere:'Selectionnez une ville',isSelect:false,isTextArea:false,data:'',required:true,options:['cotonou','calavi','bohicon']},
         {name:'Bailleurs',type:'',placeholdere:'Selectionnez un bailleur',isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA','Unesco']},
         {name:'Status',type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:['en cours','terminer','en attente']},
         {name:'Objectifs globaux',type:'',placeholdere:'',isSelect:false,isTextArea:true,data:'',required:true,},

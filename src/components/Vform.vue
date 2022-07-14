@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="save">
+  <form @submit.prevent="save" class="px-4">
     <div v-if="isAllPairSaufDescrip">
       <div :class="`grid grid-cols-1 gap-4`">
         <div  v-for="input in Inputs" :key="input.id">
@@ -68,6 +68,9 @@
             </div>
         </div>
     </div>
+
+    
+    
 
     
 
