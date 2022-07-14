@@ -14,28 +14,31 @@ import {
     REMOVE as REMOVE_ONG
 } from "@/store/mutations.type"
 
-import OngService from "@/services/modules/ong.service";
+import OngService from "@/services/modules/ong.service"
+import Ong from "./ong"
 
 export default {
     
     FETCH_LIST_ONG : async ({ commit }) => {
 
-        const { data, status } = await OngService.get();
+        const { data, status } = await OngService.get()
 
-        commit(SET_LIST_ONG, data.data);
+        if(status === 200 || status === 201) commit(SET_LIST_ONG, data.data)
 
-        return { data, status };
+        return { data, status }
     },
 
     async GET_ONG ({ commit, getters }, {key, value }) {
 
-        let ong = getters.findOng({key: key, value : value})
+        let ong = new Ong()
+        
+        ong = getters.findOng({key: key, value : value})
 
         if((ong === null || ong || undefined) && typeof value === "int"){
 
-            const { data, status } = await OngService.get(value);
+            const { data, status } = await OngService.get(value)
 
-            ong = data.data
+            if(status === 200 || status === 201) ong = data.data
 
             return ong
         }
@@ -45,31 +48,31 @@ export default {
 
         console.log(payload)
         
-        const { data, status } = await OngService.create(payload);
+        const { data, status } = await OngService.create(payload)
 
-        commit(ADD_ONG, data.data);
-
-        return { data, status };
+        if(status === 200 || status === 201) commit(ADD_ONG, data.data)
+        
+        return { data, status }
 
     },
 
     async UPDATE_ONG ({ commit }, {ong, id}) {
         
-        const { data, status } = await OngService.update(id, ong);
+        const { data, status } = await OngService.update(id, ong)
 
-        commit(MODIFY_ONG, data.data);
+        if(status === 200 || status === 201) commit(MODIFY_ONG, data.data)
 
-        return { data, status };
+        return { data, status }
 
     },
 
     async DESTROY_ONG ({ commit }, idOng) {
         
-        const { data, status } = await OngService.destroy(idOng);
+        const { data, status } = await OngService.destroy(idOng)
 
-        commit(REMOVE_ONG, idOng);
-
-        return { data, status };
+        if(status === 200 || status === 201 || status === 204) commit(REMOVE_ONG, idOng)
+        
+        return { data, status }
 
     }
 }

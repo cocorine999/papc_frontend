@@ -70,13 +70,13 @@
     </div>
     <div v-if="seeOng">
      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-      <div v-for="(bailleur,index) in bailleurs" :key="index">
+      <div v-for="(ongOrAgence,index) in ongsOrAgences" :key="index">
            <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
-              <span :class="bailleur.color" class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{bailleur.sigle}}</span>
+              <span class="absolute bg-yellow-500 text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{ ongOrAgence.user.nom }}</span>
               <!-- dots -->
               <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
               <!-- ./dots -->
-              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">{{bailleur.bailleur}}</p>
+              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">{{ ongOrAgence.user.nom }}</p>
     
               <div class="flex items-center mt-8 text-gray-600">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
@@ -90,14 +90,14 @@
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">+880 1234567890</div>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ ongOrAgence.user.contact }}</div>
               </div>
     
               <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">info@demo.com</div>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ ongOrAgence.user.email }}</div>
               </div>
             </div>
       </div>
@@ -148,6 +148,7 @@
   import CardChecklist from '@/components/CardChecklist'
   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
+  import sortData from "@/utils/sort-data";
 
 
   export default {
@@ -170,6 +171,7 @@
         line:false,
         mosaique:true,
         ongOrAgence: {},
+        ongsOrAgences: [],
         seeOng:true,
         seePassation:false,
         seechecklist:false,
@@ -289,6 +291,23 @@
 
       }
     },
+
+    computed:{
+        ...mapGetters({
+          hasErrors : "GET_ERREURS",
+          isLoading : "IS_LOADING",
+          ong: "ongs/getOng",
+          ongs: "ongs/getOngs",
+          agenceDeCommunication: "agencesDeCommunication/getAgenceDeCommunication",
+          agencesDeCommunication: "agencesDeCommunication/getAgencesDeCommunication",
+          currentUser : 'auths/GET_AUTHENTICATE_USER'
+        }),
+
+        loadData() {
+          return this.ongs, this.agencesDeCommunication
+        }
+    },
+
     methods: {
 
         ...mapMutations({
@@ -467,13 +486,52 @@
         hasErrors: function(errors) {
           this.champs.forEach((value) => {value.errors = errors[value.key]})
           //this.errors = errors
-        }
+        },
+
+        agencesDeCommunication: function(agences) {
+
+          let data = [...this.ongs, ...agences]
+
+          sortData({ data: data })
+
+          this.ongsOrAgences = data
+
+        },
+
+        ongs: function(ongs) {
+          
+          let data = [...ongs, ...this.agencesDeCommunication]
+
+          sortData({ data: data, param: 'id',  })
+          
+          this.ongsOrAgences = data
+
+        },
+
+        /*ongsOrAgences: function (data) {
+
+          
+          const sortByDate = data => {
+            const sorter = (a, b) => {
+                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+            }
+            data.sort(sorter)
+          }
+
+          sortByDate(data)
+        
+          //sortData({ data:data })
+
+        } */
 
       },
       
-      mounted() {
+      async mounted() {
+        
         console.log("Fetching ongs or agences de communication ...")
+        
         this.fetchOngs()
+
         this.fetchAgencesDeCommunication()
         
       }
