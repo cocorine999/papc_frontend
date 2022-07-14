@@ -33,17 +33,20 @@
             
                 </td>
                 
-                <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                <td  class="text-sm text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
                   <div v-for="(action,index) in actions" :key="index" class="flex item-center justify-center">
                     <!-- <div class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110" @click="$emit('modifier', index)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
                     </div> -->
-                    <div v-if="action.name =='supprimer' " @click="$emit('supprimer', index)" class=" mr-2 cursor-pointer transform hover:text-red-500 hover:scale-110">
-                      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path></svg>
+                      <div v-if="action.name =='supprimer'" title="supprimer" @click="$emit('supprimer', index)" class=" mr-2 cursor-pointer transform text-red-500 hover:text-red-700 hover:scale-110">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path></svg>
+                      </div>
                     </div>
-                    </div>      
+                    <div @click="$emit('commentairer', index)" title="lacher un commentaire" class=" mr-2 cursor-pointer transform text-blue-500 hover:text-blue-700 hover:scale-110">
+                      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path></svg>
+                    </div>    
                   </td>
               </tr>              
             </tbody>
