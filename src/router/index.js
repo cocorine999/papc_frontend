@@ -35,6 +35,7 @@ import dashboard_projets_taches_globale from "../views/dashboard/projets/taches-
 import dashboard_projets_composantes_globale from "../views/dashboard/projets/composantes-globale/index.vue";
 import dashboard_projets_sous_composantes_globale from "../views/dashboard/projets/sous-composantes-globale/index.vue";
 import projets_id_details from "../views/dashboard/projets/_id/details.vue";
+import projets_id_cadreLogique from "../views/dashboard/projets/_id/cadre-logique.vue";
 import bailleurs from "../views/dashboard/bailleurs/index.vue";
 import fileManager from "../views/dashboard/fileManager/index.vue";
 import demo from "../views/demo.vue";
@@ -131,7 +132,7 @@ const routes = [
     name: "ong",
     component: ong,
   },
-  
+
   // {
   //   path: "/dashboard/fileManager",
   //   name: "fileManager",
@@ -189,8 +190,15 @@ const routes = [
   //   name: "utilisateurs",
   //   component: utilisateurs,
   // },
-  // 
-  
+
+  // {
+  //   path: "/dashboard/config",
+  //   name: "config",
+  //   component: config,
+  // },
+
+  //
+
   {
     path: "/dashboard/bailleurs",
     name: "bailleurs",
@@ -204,7 +212,7 @@ const routes = [
   {
     path: "/dashboard/programme",
     name: "programme",
-    component:programme,
+    component: programme,
   },
   {
     path: "/dashboard/unite-gestion",
@@ -224,64 +232,70 @@ const routes = [
   {
     path: "/dashboard/projets/:id/details",
     component: projets_id_details,
-    name: "projets_id_details"
+    name: "projets_id_details",
   },
-  , 
+  {
+    path: "/dashboard/projets/:id/cadreLogique",
+    component: projets_id_cadreLogique,
+    name: "projets_id_cadreLogique",
+  },
+  ,
   {
     path: "/dashboard/projets/activites-globale",
     component: dashboard_projets_activites_globale,
-    name: "dashboard_projets_activites_globale"
-  }, 
-   {
+    name: "dashboard_projets_activites_globale",
+  },
+  {
     path: "/dashboard/projets/composantes-globale",
-    component:dashboard_projets_composantes_globale,
-    name: "dashboard_projets_composantes_globale"
-  }, 
+    component: dashboard_projets_composantes_globale,
+    name: "dashboard_projets_composantes_globale",
+  },
   {
     path: "/dashboard/projets/sous-composantes-globale",
-    component:dashboard_projets_sous_composantes_globale,
-    name: "dashboard_projets_sous_composantes_globale"
-  }, 
+    component: dashboard_projets_sous_composantes_globale,
+    name: "dashboard_projets_sous_composantes_globale",
+  },
   {
     path: "/dashboard/projets/taches-globale",
     component: dashboard_projets_taches_globale,
-    name: "dashboard_projets_taches_globale"
+    name: "dashboard_projets_taches_globale",
   },
   {
     path: "/dashboard/indicateurs",
     component: indicateurs,
-    name: "indicateurs"
-  }, 
+    name: "indicateurs",
+  },
   {
     path: "/dashboard/indicateurs/suivi",
-    component:indicateurs_suivi,
-    name: "indicateurs_suivi"
-  }, 
+    component: indicateurs_suivi,
+    name: "indicateurs_suivi",
+  },
   {
     path: "/dashboard/finances/decaissement",
-    component:finances_decaissement,
-    name: "finances_decaissement"
-  }, 
+    component: finances_decaissement,
+    name: "finances_decaissement",
+  },
   {
     path: "/dashboard/finances/suivi",
-    component:finances_suivi,
-    name: "finances_suivi"
-  }, 
+    component: finances_suivi,
+    name: "finances_suivi",
+  },
   {
     path: "/dashboard/finances/plan_decaissement",
-    component:finances_plan_decaissement,
-    name: "finances_plan_decaissement"
+    component: finances_plan_decaissement,
+    name: "finances_plan_decaissement",
   },
   {
     path: "/dashboard/config/categories",
     component: config_categories,
-    name: "config_categories"
+    name: "config_categories",
   },
   {
     path: "/dashboard/config/unites",
     component: config_unites,
-    name: "config_unites"
+    name: "config_unites",
   },
+
   // espace bailleurs
   {
     path: "/bailleurs/dashboard",
@@ -296,47 +310,47 @@ const routes = [
   {
     path: "/bailleurs/activites",
     component: activites_bailleur,
-    name: "activites_bailleur"
-  }, 
-   {
+    name: "activites_bailleur",
+  },
+  {
     path: "/bailleurs/composantes",
-    component:composantes_bailleur,
-    name: "composantes_bailleur"
-  }, 
+    component: composantes_bailleur,
+    name: "composantes_bailleur",
+  },
   {
     path: "/bailleurs/sous-composantes",
-    component:sous_composantes_bailleur,
-    name: "sous_composantes_bailleur,"
-  }, 
+    component: sous_composantes_bailleur,
+    name: "sous_composantes_bailleur,",
+  },
   {
     path: "/bailleurs/taches",
     component: taches_bailleur,
-    name: "taches_bailleur"
+    name: "taches_bailleur",
   },
   {
     path: "/bailleurs/indicateurs",
-    component:indicateurs_bailleur,
-    name: "indicateurs_bailleur"
-  }, 
+    component: indicateurs_bailleur,
+    name: "indicateurs_bailleur",
+  },
   {
     path: "/bailleurs/indicateurs/suivi",
-    component:suivi_indicateur_bailleur,
-    name: "suivi_indicateur_bailleur"
-  }, 
+    component: suivi_indicateur_bailleur,
+    name: "suivi_indicateur_bailleur",
+  },
   {
     path: "/bailleurs/finances/decaissement",
-    component:finances_decaissement_bailleur,
-    name: "finances_decaissement"
-  }, 
+    component: finances_decaissement_bailleur,
+    name: "finances_decaissement",
+  },
   {
     path: "/bailleurs/finances/suivi",
-    component:finances_suivi_bailleur,
-    name: "finances_suivi_bailleur"
-  }, 
+    component: finances_suivi_bailleur,
+    name: "finances_suivi_bailleur",
+  },
   {
     path: "/bailleurs/finances/plan_decaissement",
-    component:finances_plan_decaissement_bailleur,
-    name: "finances_plan_decaissement_bailleur"
+    component: finances_plan_decaissement_bailleur,
+    name: "finances_plan_decaissement_bailleur",
   },
   {
     path: "/bailleurs/mission-controle",
@@ -368,22 +382,22 @@ const routes = [
     name: "pta_bailleur",
     component: pta_bailleur,
   },
-   // espace Mod
-   {
+  // espace Mod
+  {
     path: "/mod/collecteur",
     name: "collecteur_mod",
     component: collecteur_mod,
   },
   {
     path: "/mod/indicateurs",
-    component:indicateurs_mod,
-    name: "indicateurs_mod"
-  }, 
+    component: indicateurs_mod,
+    name: "indicateurs_mod",
+  },
   {
     path: "/mod/indicateurs/suivi",
-    component:suivi_indicateur_mod,
-    name: "suivi_indicateur_mod"
-  }, 
+    component: suivi_indicateur_mod,
+    name: "suivi_indicateur_mod",
+  },
   {
     path: "/mod/mission-controle",
     name: "missioncontrole_mod",
@@ -401,10 +415,9 @@ const routes = [
     name: "ong_mod",
     component: ong_mod,
   },
-
 ];
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   routes,
 });
 
