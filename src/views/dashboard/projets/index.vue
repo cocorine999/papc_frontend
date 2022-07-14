@@ -44,11 +44,11 @@
         </button>
       </div>
       <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(projet,index) in projets" :key="index">
+        <div v-for="projet in projets" :key="projet.id">
           <div @click="gotoDetails(index)" class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
             <!-- <a href="#1" class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a> -->
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
-              <p class="max-h-48 line-clamp-7 px-2">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis ipsam culpa aliquam repellat officiis sed voluptatem? Dolor similique,! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam cumque mollitia fugiat error dolorum corporis et neque corrupti fugit quos? Enim deleniti nostrum iusto adipisci eaque, ex possimus, maiores esse, ipsam qui ea. Excepturi placeat quisquam voluptates cupiditate quibusdam, recusandae repudiandae. Accusantium mollitia eos beatae velit fugit, error commodi iste! </p>
+              <p class="max-h-48 line-clamp-7 px-2">{{projet.description}} </p>
               <div class="absolute bottom-5 ">
                   <div class="uppercase text-sm flex items-center text-white bg-white text-primary px-4 py-3 font-bold">Voir plus<i class='bx bx-right-arrow-alt ml-1 icon-bold'></i></div>
                 </div>
@@ -58,20 +58,20 @@
                 :src="projet.link"
                 alt="">
                 <div class="absolute bottom-0 right-0">
-                  <div v-if="projet.status=='en cours' " class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></div>
-                  <div v-if="projet.status=='terminer' " class=" text-sm flex items-center text-white bg-green-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></div>
-                  <div v-if="projet.status=='en attente' " class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En attente <i class='bx bx-time-five ml-1'></i></div>
+                  <div v-if="projet.statut == 0 " class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></div>
+                  <div v-if="projet.statut == 2 " class=" text-sm flex items-center text-white bg-green-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></div>
+                  <div v-if="projet.statut == -1 " class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En attente <i class='bx bx-time-five ml-1'></i></div>
                 </div>
                 <div class="absolute top-2 left-2">
-                  <div :class="projet.color" class="uppercase rounded-lg text-sm flex items-center text-white  px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{projet.bailleur}}
+                  <div :class="projet.couleur" class="uppercase rounded-lg text-sm flex items-center text-white  px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{projet.bailleur.sigle}}
                   </div>
                 </div>
             </div>
             <div class="block px-4 pb-4">
-              <span :class="projet.color" class="absolute bottom-0 left-0 w-full  h-2"></span>
+              <span :class="projet.couleur" class="absolute bottom-0 left-0 w-full  h-2"></span>
               <h3 class="font-medium text-xl">
                 <a href="#2"
-                  class="block uppercase relative group-hover:text-gray-800 transition-colors duration-200 line-clamp-2 text-lg">{{projet.libelle}}
+                  class="block uppercase relative group-hover:text-gray-800 transition-colors duration-200 line-clamp-2 text-lg">{{projet.nom}}
                 </a>
               </h3>
             </div>
@@ -92,6 +92,8 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+
 export default {
   components: {
     Vtable,
@@ -105,7 +107,6 @@ export default {
   data() {
     return {
       showModal:false,
-      loading:false,
       champs:[
         {name:'Nom du projet',type:'text',placeholdere:"Nom du projet",isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Poids',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
@@ -123,93 +124,6 @@ export default {
         {name:'Objectif globaux',type:'text',placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Budget national',type:'number',placeholdere:'Definir un budget',isSelect:false,isTextArea:false,data:'',required:true,},
       ],
-      cols:2,
-      projets:[ {
-        code: ":4.1.1.3.1" ,
-        bailleur: "BM",
-        nomBailleur: "Banque Mondiale",
-        libelle: "PROJET DE GESTION DES EAUX PLUVIALES ET DE RÉSILIENCE URBAINE AU BÉNIN (BANQUE MONDIALE)",
-        montant: "1,561,078.941",
-        montantEPM: " 45,833,473.42",
-        debut: "01-01-2022",
-        fin: "31-12-2022",
-        pays: "Benin",
-        color:' bg-green-500',
-        link:"https://mapiwee.com/wp-content/uploads/2020/07/Mapiwee-by-Maped-limportance-de-leau-expliqu%C3%A9-aux-enfants.jpeg",
-        status:"en cours"
-      },
-{
-          code: ":4.1.1.3.2" ,
-          bailleur: "BAD & AGTPF",
-          nomBailleur: "BANQUE AFRICAINE DE DEVELOPPEMENT-BAD",
-          libelle: "PROJET D'APPUI AU PROGRAMME D'ASSAINISSEMENT PLUVIAL DE LA VILLE DE COTONOU (BANQUE AFRICAINE DE DEVELOPPEMENT-BAD)",
-          montant: "1,826,908.000",
-          montantEPM: "37,860,726.60",
-          debut: "01-01-2022",
-          fin: "31-12-2022",
-          pays: "Benin",
-          color:' bg-pink-500',
-          link:"https://cappfm.com/wp-content/uploads/2021/06/Lignes-MCA03.jpg",
-          status:"terminer"
-        },
-          {
-            code: ":4.1.1.3.3" ,
-            bailleur: "BOAD",
-            nomBailleur: "BANQUE OUEST-AFRICAINE DE DEVELOPPEMENT-BOAD",
-            libelle: "TRANCHE D'URGENCE DU PROGRAMME D'ASSAINISSEMENT PLUVIAL DE LA VILLE DE COTONOU (BANQUE OUEST-AFRICAINE DE DEVELOPPEMENT-BOAD)",
-            montant: "328,000.000",
-            montantEPM: "17,559,584.75",
-            debut: "01-01-2022",
-            fin: "31-12-2022",
-            pays: "Benin",
-            color:' bg-purple-500',
-            link:"https://i0.wp.com/netafrique.net/wp-content/uploads/2020/05/caniveaux.jpg?w=650&ssl=1",
-            status:"en attente"
-          },
-          {
-            code: ":4.1.1.3.4" ,
-            bailleur: "BEI",
-            nomBailleur: "BANQUE EUROPEENNE D'INVESTISSEMENT-BEI",
-            libelle: "DRAINAGE EAUX PLUVIALES COTONOU (BANQUE EUROPEENNE D'INVESTISSEMENT-BEI)",
-            montant: "200,756.000",
-            montantEPM: "25,420,255.50",
-            debut: "01-01-2022",
-            fin: "31-12-2022",
-            pays: "Benin",
-            color:' bg-blue-500',
-            link:"https://upload.wikimedia.org/wikipedia/commons/a/a9/Avlopp_-_Ystad-2018.jpg",
-            status:"en cours"
-          },
-          {
-            code: ":4.1.1.3.5" ,
-            bailleur: "AFD",
-            nomBailleur: "AGENCE FRANCAISE DE DEVELOPPEMENT-AFD",
-            libelle: "PROJET D'APPUI AU PROGRAMME D'ASSAINISSEMENT PLUVIAL DE LA VILLE DE COTONOU (AGENCE FRANCAISE DE DEVELOPPEMENT-AFD)",
-            montant: "300,000.000",
-            montantEPM: "26,493,910.00",
-            debut: "01-01-2022",
-            fin: "31-12-2022",
-            pays: "Benin",
-            color:' bg-red-500',
-            link:"https://images.lpcdn.ca/924x615/201004/29/166792-lafrique-toujours-continent-plus-concerne.jpg",
-            status:"terminer"
-          },
-          {
-            code: ":4.1.1.3.6" ,
-            bailleur: "BID",
-            nomBailleur: "BANQUE BANQUE ISLAMIQUE DE DEVELOPPEMENT-BID",
-            libelle: "PROJET DE DRAINAGE DES EAUX PLUVIALES DE COTONOU (BANQUE BANQUE ISLAMIQUE DE DEVELOPPEMENT-BID)",
-            montant: "1,100,000.00",
-            montantEPM: "55,285,665.13",
-            debut: "01-01-2022",
-            fin: "31-12-2022",
-            pays: "Benin",
-            color:' bg-yellow-500',
-            link:"https://img.lemde.fr/2019/08/16/348/0/5472/2732/1440/720/60/0/fd35104_60h03rsCX47a59hsCnfKINuv.jpg",
-            status:"terminer"
-          },
-
-      ],
      
       option:[
         {name:'supprimer'},
@@ -222,7 +136,37 @@ export default {
     }
     
   },
+
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      projet: state => state.projets.projet,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters('projets', {
+      projets: "getProjets", projet: "getProjet"
+    })
+    
+  },
+
   methods: {
+    //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setProjet: 'projets/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('projets', {
+      fetchProjets: "FETCH_LIST_PROJET",
+      saveProjet: "STORE_PROJET",
+      updateProjet: "UPDATE_PROJET",
+      deleteProjet: "DESTROY_PROJET"
+    }),
+
     gotoDetails(id) {
       this.$router.push({name:'projets_id_details',params:{id:id}})
      
@@ -235,20 +179,139 @@ export default {
       this.showModal = false
     },
     addProjet() {
-      this.title ="Ajouter un nouveau projet"
-      this.showModal = true
+      this.title='Ajouter un projet'
+      this.showCloseModal(true)
     },
-    modifier() {
-      this.title ="Modifier un nouveau projet"
-      this.showModal = true
+
+    modifier(projet) {
+
+      this.title = 'Modifier un projet'
+
+      this.setProjet(projet)
+
+      this.programmeAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            if(value.key === 'debut' || value.key === 'fin')
+            {
+              this.champs[index]['data'] = this.projet[item] + "-01"
+            }else{
+                this.champs[index]['data'] = this.projet[item]
+            }
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
     },
+
+    async supprimer(projet) {
+      if(window.confirm("Voulez-vous supprimer ce projet " + projet.nom))
+        await this.deleteProjet(projet.id)
+    },
+
     dupliquer() {
       this.title ="Dupliquer projet existant"
       this.showModal = true
     },
+
+    close() {
+      this.showCloseModal()
+
+      this.resetForm
+    }, 
+    
+    showCloseModal(value = false) {
+      this.showModal = value
+    },
+
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.projet = {}
+    },
     gotoNext() {
       this.$router.push('/dashboard/projets/composantes')
+    },
+
+    showCloseModal(value = false) {
+      this.showModal = value
+    },
+
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.projet = {}
+    },
+
+    sendForm() {
+
+      this.champs = this.champs.map(item => { item.errors = []; return item})
+
+      let projet = utils.extractFormData(this.champs, this.programmeAttributs)
+      
+      projet['debut'] = utils.formatDate(projet['debut'], {'year' : 'year' , 'month': 'month' })
+      
+      projet['fin'] = utils.formatDate(projet['fin'], {'year' : 'year' , 'month': 'month' })
+
+      if(this.projet?.id)
+      {
+
+        this.updateProjet({projet: projet, id : this.projet?.id}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.close()
+          }
+
+        }).catch((error) => {
+
+          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+          this.champs.map(value => value.errors = this.erreurs[value.key])
+
+        })
+
+      }
+      else
+      {
+        
+        this.saveProjet(projet).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
+          }
+
+        })
+      }
+
+    },
+  },
+
+  watch: {
+    loading: function(value) {
+      //this.loading = value
+    },
+
+    errors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
     }
+
+  },
+  
+  mounted() {
+    console.log("Fetching projets ...")
+    this.fetchProjets()
   }
 }
 </script>

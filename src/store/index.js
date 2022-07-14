@@ -11,15 +11,7 @@ import entreprisesExecutante from "./modules/entreprisesExecutante/index";
 
 import institutions from "./modules/institutions/index";
 
-import mods from "./modules/mods/index";
-
-import ongs from "./modules/ongs/index";
-
-import missionDeControles from "./modules/missionDeControles/index";
-
-import programmes from "@/store/modules/programmes/index";
-
-import uniteeDeGestions from "@/store/modules/uniteeDeGestions/index";
+import projets from "./modules/projets/index";
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -90,6 +82,7 @@ export default new Vuex.Store({
     mods,
     ongs,
     missionDeControles,
+    projets,
     programmes,
     uniteeDeGestions
   }
