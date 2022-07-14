@@ -212,9 +212,9 @@
           <span :class="{'border-primary border-b-8 font-bold':seeStatistique}" @click="gotoStatistique()" class="inline-block cursor-pointer text-lg uppercase  py-2">Statistiques </span>
         </div>
         
-        <button v-if="seeActivite" @click="addActivite" title="ajouter une activite"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">ajouter une activité</span>
+        <button v-if="seeActivite" @click="addActivite" title="ajouter une activite"  class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+          <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
         </button>
         <button v-if="seePlan" @click="addPlan" title="ajouter un plan d'ecaissement"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
@@ -298,16 +298,19 @@
                   <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span
                       class="font-bold italic"><span class="underline mr-2">Activité</span>:</span> {{activite.libelle}} </p>
                   <!--  -->
+                  
+                  <!-- Cette ligne peut etre remplacer par structure associés -->
+
                   <div class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
                     <i class='bx bxs-pin bx-sm'></i>
                     <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Responsable : 
                       <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
                   </div>
-                  <div class="flex items-center text-gray-600 dark:text-gray-400 mb-1">
+                  <!-- <div class="flex items-center text-gray-600 dark:text-gray-400 mb-1">
                     <i class='bx bxs-pin bx-sm'></i>
                     <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Associée : 
                       <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
-                  </div>
+                  </div> -->
                   <!--  -->
                   <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
                     <i class='bx bxs-wallet bx-sm'></i>

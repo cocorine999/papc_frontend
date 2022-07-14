@@ -113,6 +113,10 @@ export default {
         {name:'Nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Sigle',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Logo',type:'file',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+
+
       ],
       passationChamps:[
         {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},

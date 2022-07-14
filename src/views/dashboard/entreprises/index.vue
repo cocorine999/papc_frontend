@@ -108,6 +108,8 @@ export default {
           { label: "description", type: "text", value: null },
           { label: "email", type: "email", value: null },
           { label: "password", type: "password", value: null },
+          { label: "Sigle", type: "text", value: null },
+          { label: "Logo", type: "file", value: null },
         ]
       });
     },

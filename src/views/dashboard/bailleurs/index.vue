@@ -192,6 +192,8 @@ export default {
         {name:'Nom',type:'text',placeholdere:"Nom du bailleur",isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Email',type:'email',placeholdere:"Votre Email",isSelect:false,isTextArea:false,data:'',required:true,},
         {name:'Contact',type:'',placeholdere:'Votre contact',isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Sigle',type:'text',placeholdere:'Votre sigle',isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Logo',type:'file',placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true,},
       ],
       cols:1,
       option:[
