@@ -21,10 +21,10 @@
           </label>
           <textarea v-model='champ.data' class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" required rows="3"></textarea>
         </div>
-        <div v-else-if="champ.isCheckbox ===true">
-          <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Attributaires <span class="px-2 text-lg font-black text-red-700">*</span></label>
+        <div v-else-if="champ.isCheckbox ===true" class="my-2">
+          <label class="text-sm font-semibold   block uppercase md:text-sm text-light"> {{champ.name}} <span class="px-2 text-lg font-black text-red-700">*</span></label>
           <div class="flex items-center  justify-evenly">
-            <label v-for="item in champ.items" :key="item.id" class=""> <input  class="px-3 mx-2 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="lot" id="travaux" :value="item.name" type="radio" /> {{item.name}} </label>
+            <label v-for="item in champ.items" :key="item.id" class=""> <input  v-model="champ.data" class="px-3 mx-2 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="lot" id="travaux" :value="item.name" type="radio" /> {{item.name}} </label>
           </div>
         </div>
       </div>

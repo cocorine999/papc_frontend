@@ -116,16 +116,16 @@
         <table class="w-full">
           <thead>
             <tr>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider" >Bailleurs</th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Collecteurs</th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Lots</th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Attributaires</th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Estimations de l'accord de financement</th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Engagment</th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Reference contrats</th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Taux de decaissement(%) </th>
-              <th class="p-3 border border-gray-500 text-left text-xs leading-4 text-primary tracking-wider">Commentaires </th>
-              <th class="p-3 border border-gray-500 text-center text-xs leading-4 text-primary tracking-wider">Actions</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Bailleurs</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Collecteurs</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Lots</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Attributaires</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Estimations de l'accord de financement</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Engagment</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Reference contrats</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Taux de decaissement(%) </th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Commentaires </th>
+              <th class="p-3 border border-gray-500 text-center  whitespace-nowrap leading-4 text-primary tracking-wider">Actions</th>
             </tr>
           </thead>
            <!--Il s'agit d'un tableau decomposé alors filter vos donnée avant de 'integretrer par bailleur' -->

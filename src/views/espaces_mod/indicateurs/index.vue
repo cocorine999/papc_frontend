@@ -50,7 +50,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold uppercase">ajouter un indicateur</span>
           </button>
-          <router-link to="/dashboard/indicateurs/suivi"  title="voir suivi"   class="px-4 py-2 overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <router-link to="/mod/indicateurs/suivi"  title="voir suivi"   class="px-4 py-2 overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
             <span  class="mx-2 text-sm font-semibold uppercase ">Voir suivi indicateur</span>
           </router-link>
         </div>
@@ -92,38 +92,36 @@ export default {
           {name:'Nom',type:'text',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Année de base',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Valeur de base',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Unite de mesure',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:['metre','milimetre','centimentre','personne','pourcentage'],required:true,},
-          {name:'Categories',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:true,},
-          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
-          {name:'Description',type:'',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:true,},
+          {name:'Unite de mesure',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:[{name:'metre'},{name:'milimetre'},{name:'centimentre'},{name:'personne'},{name:'pourcentage'}],required:true,},
+          {name:'Frequence',type:'',placeholdere:"",isCheckbox:true,data:'',items:[{name:'Annuellement'},{name:'Frequence'}],required:true,},
+          {name:'Source de données / Methodologie ',type:'text',placeholdere:"Methodologie",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Responsable collecte',type:'',placeholdere:"Responsable collecte ",isSelect:true,isTextArea:false,data:'',required:true,options:[{name:'ACVDT'},{name:'AUTRE'}]},
         ],
         cols:2,
         champsRecherche:[
           {name:'Indicateurs',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:['indicateur1','indicateur2','indicateurs3']},
           {name:'Année de base',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Categories',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:true,},
-          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
-          
+          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:[{name:'BM'},{name:'BOA'}]},
         ],
         headers:[
           {name:'Indicateur',props:'indicateur'},
-          {name:'Bailleur',props:'bailleur'},
-          {name:'Categorie',props:'categorie'},
-          {name:'Unité de mesure',props:'unite_mesure'},
           {name:'Valeur de base',props:'valeur_base'},
           {name:'Année de base',props:'anne_base'},
+          {name:'Unité de mesure',props:'unite_mesure'},
+          {name:'Frequence',props:'frequence'},
+          {name:'Source donées',props:'source_datas'},
+          {name:'Responsable collecte',props:'collecte'},
           {name:'Date de creation',props:'created_at'},
         ],
         dataTable:[
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
+          {indicateur:'indicateur1',valeur_base:"500000000",anne_base:"2022",unite_mesure:"centimentre",frequence:"annuelle",source_datas:"lorem ipsum door",collecte:"collecte",created_at:"22-06-2022"},
+          {indicateur:'indicateur2',valeur_base:"500000000",anne_base:"2022",unite_mesure:"centimentre",frequence:"annuelle",source_datas:"lorem ipsum door",collecte:"collecte",created_at:"22-06-2022"},
+          {indicateur:'indicateur3',valeur_base:"500000000",anne_base:"2022",unite_mesure:"centimentre",frequence:"annuelle",source_datas:"lorem ipsum door",collecte:"collecte",created_at:"22-06-2022"},
+          {indicateur:'indicateur4',valeur_base:"500000000",anne_base:"2022",unite_mesure:"centimentre",frequence:"annuelle",source_datas:"lorem ipsum door",collecte:"collecte",created_at:"22-06-2022"},
+          {indicateur:'indicateur5',valeur_base:"500000000",anne_base:"2022",unite_mesure:"centimentre",frequence:"annuelle",source_datas:"lorem ipsum door",collecte:"collecte",created_at:"22-06-2022"},
+          {indicateur:'indicateur6',valeur_base:"500000000",anne_base:"2022",unite_mesure:"centimentre",frequence:"annuelle",source_datas:"lorem ipsum door",collecte:"collecte",created_at:"22-06-2022"},
+          {indicateur:'indicateur7',valeur_base:"500000000",anne_base:"2022",unite_mesure:"centimentre",frequence:"annuelle",source_datas:"lorem ipsum door",collecte:"collecte",created_at:"22-06-2022"},
         ],
         actions:[
           {name:'modifier',iconne:''},

@@ -52,7 +52,8 @@
             </button>
           </div>
         </div>
-   
+
+        
         <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>    
     </div>
   </dashboard>
@@ -82,54 +83,43 @@ export default {
         showModal:false,
         showModal2:false,
         champs:[
+          {name:'Indicateurs',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:[{name:'indicateur1'},{name:'indicateur2'},{name:'indicateur3'}]},
           {name:'Année',type:'number',placeholdere:"Entrez l'année",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Valeur de base',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Valeur realisé',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[1,2,3,4]},
+          {name:'Valeur realisé',type:'number',placeholdere:"Valeur realise",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Unite de mesure',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:[{name:'metre'},{name:'milimetre'},{name:'centimentre'},{name:'personne'},{name:'pourcentage'}],required:true,},
+          
         ],
         champsRecherche:[
           {name:'Indicateurs',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:['indicateur1','indicateur2','indicateurs3']},
           {name:'Année de base',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Année',type:'year',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[1,2,3,4]},
-          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
-          {name:'Categories',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:true,}, 
+          {name:'Valeur de base',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
         ],
         cols:2,
         title:'',
         headers:[
-          {name:'Année',props:'annee',width:"w-24"},
-          {name:'Bailleur',props:'bailleur',width:"w-24"},
-          {name:'Indicateur',props:'indicateur',width:"w-28"},
-          {name:'Categorie',props:'categorie',width:"w-28"},
-          {name:'Unité de mesure',props:'unite_mesure',width:"w-40"},
-          {name:'Année de base',props:'anne_base',width:"w-36"},
-          {name:'Valeur de base',props:'valeur_base',width:"w-36"},
-          {name:'Valeur cible',props:'valeur_cible',width:"w-36"},
-          {name:'Valeur realisé',props:'valeur_realise',width:"w-36"},
-          {name:'Trimestre 1',props:'trimestre1',width:"w-32"},
-          {name:'Trimestre 2',props:'trimestre2',width:"w-32"},
-          {name:'Trimestre 3',props:'trimestre3',width:"w-32"},
-          {name:'Trimestre 4',props:'trimestre4',width:"w-32"},
-          {name:'Ecart',props:'ecart',width:"w-24"},
-          {name:'Commentaire',props:'commentaire', isComment:true,width:"w-56"},
-          {name:'Date de creation',props:'created_at',width:"w-24"},
+          {name:'Indicateur',props:'indicateur'},
+          {name:'Année de base',props:'anne_base'},
+          {name:'Valeur de base',props:'valeur_base'},
+          {name:'Valeur cible',props:'valeur_cible'},
+          {name:'Unité de mesure',props:'unite_mesure'},
+          {name:'2020',props:'date1'},
+          {name:'2022',props:'date2'},
+          {name:'2023',props:'date3'},
+          {name:'2024',props:'date4'},
+          {name:'Date de creation',props:'created_at'},
          
         ],
         dataTable:[
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          {indicateur:'accident de circulation',anne_base:"2019",valeur_base:"22222222222222222",valeur_cible:"1500000000",valeur_realise:"700000000",unite_mesure:"centimentre",date1:'43% (2016) ',date2:'46%',date3:'51%',date4:'60%',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          {indicateur:'taux de pauvrete',anne_base:"2019",valeur_base:"22222222222222222",valeur_cible:"1500000000",valeur_realise:"700000000",unite_mesure:"centimentre",date1:'43% (2016) ',date2:'46%',date3:'51%',date4:'60%',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          {indicateur:'Volume du bassin de retention',anne_base:"2019",valeur_base:"22222222222222222",valeur_cible:"1500000000",valeur_realise:"700000000",unite_mesure:"centimentre",date1:'43% (2016) ',date2:'46%',date3:'51%',date4:'60%',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          {indicateur:'Nombre d\'espace vert amenager',anne_base:"2019",valeur_base:"22222222222222222",valeur_cible:"1500000000",valeur_realise:"700000000",unite_mesure:"centimentre",date1:'43% (2016) ',date2:'46%',date3:'51%',date4:'60%',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          {indicateur:'Nombre equipement vers acquis',anne_base:"2019",valeur_base:"22222222222222222",valeur_cible:"1500000000",valeur_realise:"700000000",unite_mesure:"centimentre",date1:'43% (2016) ',date2:'46%',date3:'51%',date4:'60%',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          {indicateur:'Nombre d\'enfant former au metier',anne_base:"2019",valeur_base:"22222222222222222",valeur_cible:"1500000000",valeur_realise:"700000000",unite_mesure:"centimentre",date1:'43% (2016) ',date2:'46%',date3:'51%',date4:'60%',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          {indicateur:'Nombre de bac à ordure acquis',anne_base:"2019",valeur_base:"22222222222222222",valeur_cible:"1500000000",valeur_realise:"700000000",unite_mesure:"centimentre",date1:'43% (2016) ',date2:'46%',date3:'51%',date4:'60%',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
+          
+         
           
         ],
         actions:[
