@@ -33,6 +33,7 @@
       <div class="flex space-x-4">
         <span @click="goMod" :class="{'border-primary border-b-8':seeMod}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MOD </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
+        <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
       </div>
       
       <button  v-if="seeMod" @click="addMod" title="Ajouter un MOD"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
@@ -56,6 +57,21 @@
           > </card-mod>
       </div>
     </div>
+    <div v-if="seeChecklist">
+      <div  class="grid grid-cols-3 gap-4">
+        <div v-for="i in 6" :key="i.id">
+          <card-checklist
+            libelle="checklist"
+            code="15555DC" 
+            activite="Nombre d'accident routiere" 
+            :unites="['personne','%','km']" 
+            @supprimer="supprimer"
+            @modifier="modifier"
+            @dupliquer="dupliquer"
+            > </card-checklist>
+        </div>
+      </div>
+    </div>
     <div v-if="seePassation">
       <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
     </div>
@@ -70,6 +86,7 @@
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
   import ModalTopRight from '@/components/ModalTopRight'
+  import CardChecklist from '@/components/CardChecklist'
 export default {
   components: {
     CardMod,
@@ -78,6 +95,7 @@ export default {
     Vform,
     Vmodal,
     ModalTopRight,
+    CardChecklist
   },
   data() {
     return {
@@ -86,6 +104,7 @@ export default {
       loading:false,
       seeMod:true,
       seePassation:false,
+      seeChecklist:false,
       showInput:true,
       uploadFile:false,
       title:'',
@@ -160,10 +179,17 @@ export default {
     goMod() {
       this.seeMod = true
       this.seePassation = false
+      this.seeChecklist = false
     },
     goPassation() {
       this.seeMod = false
       this.seePassation = true
+      this.seeChecklist = false
+    },
+    goChecklist() {
+      this.seeMod = false
+      this.seePassation = false
+      this.seeChecklist = true
     },
     supprimerMod(data) {
       alert(data+ " à ete bien supprimer")

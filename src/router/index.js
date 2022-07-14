@@ -69,6 +69,11 @@ import suivi_indicateur_mod from "../views/espaces_mod/indicateurs/suivi/index.v
 import entreprises_mod from "../views/espaces_mod/entreprises/index.vue";
 import missioncontrole_mod from "../views/espaces_mod/mission-controle/index.vue";
 import ong_mod from "../views/espaces_mod/ong/index.vue";
+
+/* espace MOD */
+import entreprises_mo from "../views/espaces_mo/entreprises/index.vue";
+import missioncontrole_mo from "../views/espaces_mo/mission-controle/index.vue";
+import ong_mo from "../views/espaces_mo/ong/index.vue";
 /*  componemts */
 // const BailleursClild = () => import('../components/dashboard/Bailleurs');
 
@@ -400,6 +405,26 @@ const routes = [
     path: "/mod/ong",
     name: "ong_mod",
     component: ong_mod,
+  },
+
+  // espace Mo
+ 
+  {
+    path: "/mo/mission-controle",
+    name: "missioncontrole_mo",
+    component: missioncontrole_mo,
+  },
+
+  {
+    path: "/mo/entreprises",
+    name: "entreprises_mo",
+    component: entreprises_mo,
+  },
+
+  {
+    path: "/mo/ong",
+    name: "ong_mo",
+    component: ong_mo,
   },
 
 ];

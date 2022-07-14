@@ -21,74 +21,43 @@
       </router-link>
     </div>
 
-   
-    <div class="mb-1 px-6 relative" >
-      <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck3">
-      <header class="flex justify-between mb-3 items-center  cursor-pointer select-none tab-label" for="chck3">
-        <div class="flex space-x-3">
-          <span class="text-white ">
-            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 15H4v-2h16v2zm0 2H4v2h16v-2zm-5-6l5-3.55V5l-5 3.55L10 5 4 8.66V11l5.92-3.61L15 11z"></path></svg>
-          </span>
-          <p class="text-white  text-xs font-semibold uppercase">Indicateurs</p>
-        </div>
-        <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
-          <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </div> -->
-        <i class='bx bx-chevron-down bx-sm text-white'></i>
-      </header>
-      <div class="tab-content mb-3 bg-white ">
-        <div class="mb-1  flex items-center text-gray-700  cursor-pointer  ">
-          <router-link to="/mod/indicateurs" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
-            <span class="font-semibold text-xs">Indicateurs</span>
-          </router-link>
-        </div>
-
-        <div class="mb-1  flex items-center text-gray-700  cursor-pointer  ">
-          <router-link to="/mod/indicateurs/suivi" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
-            <span class="font-semibold text-xs">SUIVI</span>
-          </router-link>
-        </div>
-      </div>
-      
+    <div class="mb-1 px-4 flex items-center text-white  cursor-pointe  ">
+      <router-link to="/mod/indicateurs" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 15H4v-2h16v2zm0 2H4v2h16v-2zm-5-6l5-3.55V5l-5 3.55L10 5 4 8.66V11l5.92-3.61L15 11z"></path></svg>
+        <span class="font-semibold text-xs">Indicateurs</span>
+      </router-link>
     </div>
 
+    <div class="mb-1 px-4 flex items-center text-white  cursor-pointe  ">
+      <router-link to="/mod/indicateurs/suivi" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 15H4v-2h16v2zm0 2H4v2h16v-2zm-5-6l5-3.55V5l-5 3.55L10 5 4 8.66V11l5.92-3.61L15 11z"></path></svg>
+        <span class="font-semibold text-xs">SUIVI</span>
+      </router-link>
+    </div>
+   
    
 
-    <div class="mb-1 px-6 relative" >
-      <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck4">
-      <header class="flex justify-between mb-3 items-center  cursor-pointer select-none tab-label" for="chck4">
-        <div class="flex space-x-3">
-          <span class=" text-white">
-            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10zm-2-6H6v-2h12v2zm-4 4H6v-2h8v2z"></path></svg>
-          </span>
-          <p class="text-white  text-xs font-semibold uppercase">Entreprises  </p>
-        </div>
-        <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
-          <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </div> -->
-        <i class='bx bx-chevron-down bx-sm text-white'></i>
-      </header>
-      <div class="tab-content mb-3 bg-white ">
-
-        <div class="mb-1  flex items-center text-gray-700  cursor-pointer  ">
-          <router-link to="/mod/mission-controle" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
-            <span class="font-semibold text-xs">Mission de controle</span>
-          </router-link>
-        </div>
-
-         <div class="mb-1  flex items-center text-gray-700  cursor-pointer  ">
-          <router-link to="/mod/entreprises" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
-            <span class="font-semibold text-xs">Entreprises exécutante</span>
-          </router-link>
-        </div>
-        
-      </div>
+    <div class="mb-1 px-4 flex items-center text-white  cursor-pointer ">
+      <router-link to="/mod/mission-controle" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10zm-2-6H6v-2h12v2zm-4 4H6v-2h8v2z"></path></svg>
+        <span class="font-semibold text-xs">Mission de controle</span>
+      </router-link>
     </div>
 
+    <div class="mb-1 px-4 flex items-center text-white  cursor-pointer ">
+      <router-link to="/mod/entreprises" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10zm-2-6H6v-2h12v2zm-4 4H6v-2h8v2z"></path></svg>
+        <span class="font-semibold text-xs">Entreprises exécutante</span>
+      </router-link>
+    </div>
+
+    
+    <div class="mb-1 px-4 flex items-center text-white  cursor-pointer">
+      <router-link to="/dashboard/profil" style="width:100%" class="flex space-x-3 items-center  px-2 py-2 z-10 relative   text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="1.3em" height="1.3em" stroke-linecap="round" stroke-linejoin="round" class="icon icon-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="font-semibold text-xs uppercase">Profil</span>
+      </router-link>
+    </div>
     
 
 

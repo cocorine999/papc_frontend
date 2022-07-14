@@ -31,20 +31,21 @@
     </nav>
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span @click="goMo" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MOD </span>
+        <span @click="goMod" :class="{'border-primary border-b-8':seeMod}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
+        <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
       </div>
       
-      <button  v-if="seeMo" @click="addMo" title="Ajouter un MOD"  class="py-2  px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seeMod" @click="addMod" title="Ajouter un MOD"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-        <span class="mx-2 text-sm font-semibold">Ajouter un MOD</span>
+        <span class="mx-2 text-sm font-semibold">Ajouter un MO</span>
       </button>
       <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
       </button>
     </div>
-    <div v-if="seeMo" class="grid grid-cols-3 gap-4 my-6">
+    <div v-if="seeMod" class="grid grid-cols-3 gap-4 my-6">
       <div v-for="i in 6" :key="i.id">
         <card-mod
           libelle="programme"
@@ -56,6 +57,21 @@
           > </card-mod>
       </div>
     </div>
+    <div v-if="seeChecklist">
+      <div  class="grid grid-cols-3 gap-4">
+        <div v-for="i in 6" :key="i.id">
+          <card-checklist
+            libelle="checklist"
+            code="15555DC" 
+            activite="Nombre d'accident routiere" 
+            :unites="['personne','%','km']" 
+            @supprimer="supprimer"
+            @modifier="modifier"
+            @dupliquer="dupliquer"
+            > </card-checklist>
+        </div>
+      </div>
+    </div>
     <div v-if="seePassation">
       <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
     </div>
@@ -64,13 +80,13 @@
 </template>
 
 <script>
-  import ModalTopRight from '@/components/ModalTopRight'
   import Dashboard from '@/layouts/Dashboard'
   import CardMod from '@/components/CardMod'
   import Vtable from '@/components/Vtable'
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
-
+  import ModalTopRight from '@/components/ModalTopRight'
+  import CardChecklist from '@/components/CardChecklist'
 export default {
   components: {
     CardMod,
@@ -78,15 +94,17 @@ export default {
     Vtable,
     Vform,
     Vmodal,
-    ModalTopRight
+    ModalTopRight,
+    CardChecklist
   },
   data() {
     return {
       showModal:false,
       showModal2:false,
       loading:false,
-      seeMo:true,
+      seeMod:true,
       seePassation:false,
+      seeChecklist:false,
       showInput:true,
       uploadFile:false,
       title:'',
@@ -149,8 +167,8 @@ export default {
     
   },
   methods: {
-    addMo() {
-      this.title = 'Ajouter un mission de controle'
+    addMod() {
+      this.title = 'Ajouter un MOD'
       this.showModal = true
     },
     addPassation() {
@@ -158,13 +176,20 @@ export default {
       this.showModal2 = true
     },
     
-    goMo() {
-      this.seeMo = true
+    goMod() {
+      this.seeMod = true
       this.seePassation = false
+      this.seeChecklist = false
     },
     goPassation() {
-      this.seeMo = false
+      this.seeMod = false
       this.seePassation = true
+      this.seeChecklist = false
+    },
+    goChecklist() {
+      this.seeMod = false
+      this.seePassation = false
+      this.seeChecklist = true
     },
     supprimerMod(data) {
       alert(data+ " à ete bien supprimer")
