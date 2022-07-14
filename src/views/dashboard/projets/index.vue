@@ -45,7 +45,7 @@
       </div>
       <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="projet in projets" :key="projet.id">
-          <div @click="gotoDetails(index)" class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
+          <div @click="gotoDetails(projet.id)" class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
             <!-- <a href="#1" class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a> -->
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
               <p class="max-h-48 line-clamp-7 px-2">{{projet.description}} </p>
@@ -223,7 +223,7 @@ export default {
 
       this.setProjet(projet)
 
-      this.programmeAttributs.forEach((item) => {
+      this.projetAttributs.forEach((item) => {
 
         this.champs.find((value, index) => {
 

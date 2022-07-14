@@ -139,22 +139,24 @@
      <!--Filtre sur projet -->
     <div v-if="seeComposant">
       <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-      <div v-for="(composante,index) in composantes" :key="index">
+      <div v-for="composante in composantes" :key="composante.id">
         <!-- cards composantes -->
         <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-          <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
+          <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Code : {{composante.code}} </span>
           <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
 
-            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
-            <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{composante.sigle}}</span>
+            <span v-if="composante.statut == 0" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+            <span v-if="composante.statut == 2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
+            <span v-if="composante.statut == -1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
 
           <!-- dots -->
           <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
           <!-- ./dots -->
-          <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
+          <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>{{composante.position}} :</span> {{composante.nom}} </p>
           <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
             <i class='bx bxs-wallet bx-md' ></i>
-            <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+            <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.pret}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
           </div>
         </div>
         <!-- End cards composantes -->
@@ -174,15 +176,17 @@
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
             </thead>
             <tbody>
-              <tr class="bg-white" v-for="(i,index) in 10" :key="index">
+              <tr class="bg-white" v-for="composante in composantes" :key="composante.id">
                 <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{index}} ~ Projet {{index * 2}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">100M </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">1000M </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i*5}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{composante.position}} ~ Projet {{index * 2}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.description}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.budgetNational}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.pret}}</td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{composante.poids}} </td>
                 <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                  <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
+                  <span v-if="composante.statut == 0" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En cours</span>
+                  <span v-if="composante.statut == 2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">Terminer</span>
+                  <span v-if="composante.statut == -1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En retard</span>
                 </td>
                 <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
               </tr>
@@ -275,6 +279,10 @@ import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
+
 export default {
   components: {
     Dashboard,
@@ -329,7 +337,36 @@ export default {
     }
     
   },
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      composante: state => state.composantes.composante,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      composantes: "composantes/getComposantes", composante: "getComposante",
+      
+    })
+  },
+
   methods: {
+        //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setComposante: 'composantes/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('composantes', {
+      fetchComposantes: "FETCH_LIST_COMPOSANTE",
+      saveComposante: "STORE_COMPOSANTE",
+      updateComposante: "UPDATE_COMPOSANTE",
+      deleteComposante: "DESTROY_COMPOSANTE"
+    }),
+
     addDate() {
       this.dates.push({})
     },
@@ -352,25 +389,128 @@ export default {
     close() {
       this.showModal = false
     },
-    addComponent() {
-      this.title ="Ajouter un nouveau composant"
-      this.showModal = true
+    addComposante() {
+      this.title='Ajouter un nouveau composante'
+
+      let formData = this.champs.map((value) => {
+/*          if(value.key === 'bailleurId'){ 
+            value['options'] = this.bailleurs
+          }
+
+          else if(value.key === 'statut'){ 
+            value['options'] = this.$store.state.statuts
+          }
+
+          return value */
+        })
+
+      this.champs = formData
+
+      this.showCloseModal(true)
     },
-    modifier() {
-      this.title ="Modifier un nouveau composant"
-      this.showModal = true
+
+    modifier(composante) {
+
+      this.title = 'Modifier un composante'
+
+      this.setComposante(composante)
+
+      this.composanteAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            if(value.key === 'debut' || value.key === 'fin')
+            {
+              this.champs[index]['data'] = this.composante[item] + "-01"
+            }else{
+                this.champs[index]['data'] = this.composante[item]
+            }
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
+    },
+
+    async supprimer(composante) {
+      if(window.confirm("Voulez-vous supprimer cette composante " + composante.nom))
+        await this.deleteComposante(composante.id)
     },
     dupliquer() {
-      this.title ="Dupliquer un projet existant"
+      this.title ="Dupliquer un composante existant"
       this.showModal = true
+    },
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.composante = {}
     },
     gotoNext() {
       this.$router.push('/dashboard/projets/sous-composantes-globale')
     },
      editerSuivi(index) {
       this.showInput = false
+    },
+    sendForm() {
+
+      this.champs = this.champs.map(item => { item.errors = []; return item})
+
+      let composante = utils.extractFormData(this.champs, this.projetAttributs)
+      
+      if(this.composante?.id)
+      {
+
+        this.updateComposante({composante: composante, id : this.composante?.id}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.close()
+          }
+
+        }).catch((error) => {
+
+          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+          this.champs.map(value => value.errors = this.erreurs[value.key])
+
+        })
+
+      }
+      else
+      {
+        console.log(composante)
+        
+        this.saveComposante(composante).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
+          }
+
+        })
+      }
     }
     
+  },
+  watch: {
+    loading: function(value) {
+      //this.loading = value
+    },
+
+    errors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    }
+
+  },
+  
+  mounted() {
+    console.log("Fetching composantes ...")
+    this.fetchComposantes()
   }
 }
 </script>

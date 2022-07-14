@@ -6,6 +6,7 @@ export default class Composante {
         this.id = is(String, composante.id) ? composante.id : composante.id,
         this.nom = is(String, composante.nom) ? composante.nom :  composante.nom,
         this.code = is(String, composante.code) ? parseInt(composante.code) : composante.code,
+        this.sigle = is(String, composante.sigle) ? parseInt(composante.sigle) : composante.sigle,
         this.description = is(String, composante.description) ? composante.description : composante.description,
         this.poids = is(Number, composante.poids) ? composante.poids : composante.poids,
         this.budgetNational = is(String, composante.budgetNational) ? parseInt(composante.budgetNational) : composante.budgetNational,

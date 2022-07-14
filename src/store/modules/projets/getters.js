@@ -25,7 +25,8 @@ export default {
         return this.getProjets(state).length;
     },
 
-    [findProjet] : state => ({key, value}) => {
+    findProjet : state => ({key, value}) => {
+        //console.log(this.getProjets(state))
         return this.getProjets(state).find(item => item[key] === value);
     }
 }

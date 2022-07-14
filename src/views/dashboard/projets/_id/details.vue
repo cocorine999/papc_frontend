@@ -16,7 +16,7 @@
               <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
             </li>
             <li class="flex items-center text-blue-500">
-              <router-link to="/dashboard" class="text-gray-600">projet{{$route.params.id}}</router-link>
+              <router-link to="/dashboard" class="text-gray-600">projet/{{projet.nom}}</router-link>
               <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
             </li>
             <li class="flex items-center text-blue-500 ">
@@ -521,6 +521,9 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
+
 export default {
   components: {
     Vtable,
@@ -642,7 +645,37 @@ export default {
 
     }
   },
+
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      projet: state => state.projets.projet,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      projet: "projets/getProjet",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    })
+    
+  },
+
+  methods: {
+    //Charger les fonctions de communication avec le serveur
+    
+    ...mapActions('projets', {
+      getProjet: "GET_PROJET"
+    }),
+
+  },
+
   mounted() {
+    console.log("Getting projet...")
+    console.log(this.$route.params.id)
+    this.getProjet("id", this.$route.params.id)
     var map = tt.map({
       key: '0sJaQAQga6Y8A6ZOclM8AU6RqAhetXr7',
       container: 'map',
