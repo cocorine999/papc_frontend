@@ -8,13 +8,18 @@
         </modal-top-right>
       </div>
       <div class="flex items-center justify-between">
-        <titre>Les entreprises </titre>
+        <div class="flex space-x-4">
+        <span @click="goEntreprise" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
+        <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
+        </div>
+        <div>
           <button @click="showModal=true" title="ajouter un bailleur" class="py-2  px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-            <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-            <span class="mx-2 text-sm font-semibold">ajouter</span>
+              <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+              <span class="mx-2 text-sm font-semibold">ajouter</span>
           </button>
+        </div>
       </div>
-      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
+      <div v-if="seeEntreprise" class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
         <table class="w-full">
           <thead>
             <tr>
@@ -58,6 +63,21 @@
           </tbody>
         </table>
       </div>
+      <div class="my-3" v-if="seeChecklist">
+      <div  class="grid grid-cols-3 gap-4">
+        <div v-for="i in 6" :key="i.id">
+          <card-checklist
+            libelle="checklist"
+            code="15555DC" 
+            activite="Nombre d'accident routiere" 
+            :unites="['personne','%','km']" 
+            @supprimer="supprimer"
+            @modifier="modifier"
+            @dupliquer="dupliquer"
+            > </card-checklist>
+        </div>
+      </div>
+    </div>
     </div>
   </dashboard>
 </template>
@@ -68,18 +88,21 @@
   import ModalTopRight from '@/components/ModalTopRight'
   import FormComponent from '@/components/FormComponent'
   import Titre from '@/components/Titre'
-
+  import CardChecklist from '@/components/CardChecklist'
 export default {
   components: {
     ModalTopRight,
     Dashboard,
     RouteName,
     FormComponent,
-    Titre
+    Titre,
+    CardChecklist,
   },
     data() {
       return ({
         showModal:false,
+        seeEntreprise:true,
+        see_checklist:false,
         form: [
           { label: "nom", type: "text", value: null },
           { label: "description", type: "text", value: null },
@@ -91,6 +114,15 @@ export default {
     mounted() {
     },
     methods: {
+      goEntreprise() {
+        this.seeEntreprise = true
+       
+        this.seeChecklist = false
+      },
+      goChecklist() {
+        this.seeEntreprise = false
+        this.seeChecklist = true
+      },
       sender(){
         let data = {};
 

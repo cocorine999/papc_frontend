@@ -10,6 +10,10 @@
     <div v-if="espace=='mod'">
       <sidebar-mod></sidebar-mod>
     </div>
+
+     <div v-if="espace=='mo'">
+      <sidebar-mo></sidebar-mo>
+    </div>
    
     <div class="w-full bg-gray-100 pl-0 lg:pl-64 min-h-screen" :class="sideBarOpen ? 'relative' : ''" id="main-content">
       <navbar></navbar>
@@ -24,6 +28,7 @@
   import Sidebar from '@/components/Sidebar'
   import SidebarBailleur from '@/components/SidebarBailleur'
   import SidebarMod from '@/components/SidebarMod'
+  import SidebarMo from '@/components/SidebarMo'
   import { mapState } from 'vuex'
 
   export default {
@@ -34,6 +39,7 @@
       Sidebar,
       SidebarBailleur,
       SidebarMod,
+      SidebarMo,
     },
     
     computed: {
