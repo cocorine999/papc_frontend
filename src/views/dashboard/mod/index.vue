@@ -2,18 +2,18 @@
   <dashboard>
   <div class="p-4">
     <div v-if="showModal">
-      <vmodal :title="title"  v-on:close="close">
-        <div style="width:60vw;" class="px-4 overflow-y-auto">
+      <modal-top-right :title="title"  v-on:close="close">
+        <div  class="px-4 overflow-y-auto">
           <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
     <div v-if="showModal2">
-      <vmodal :title="title2"  v-on:close="showModal2 = false">
-        <div style="width:60vw;height:450px" class="px-4 overflow-y-auto">
+      <modal-top-right :title="title2"  v-on:close="showModal2 = false">
+        <div  class="px-4 overflow-y-auto">
           <vform template="default"  :champs="passationChamps" isAllPairSaufDescrip="true" :cols="colsPassation" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
     <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
@@ -33,14 +33,15 @@
       <div class="flex space-x-4">
         <span @click="goMod" :class="{'border-primary border-b-8':seeMod}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MOD </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
+        <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
       </div>
       
-      <button  v-if="seeMod" @click="addMod" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+      <button  v-if="seeMod" @click="addMod" title="Ajouter un MOD"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">Ajouter un MOD</span>
       </button>
-      <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+      <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
       </button>
     </div>
@@ -59,6 +60,21 @@
 
       </div>
     </div>
+    <div v-if="seeChecklist">
+      <div  class="grid grid-cols-3 gap-4">
+        <div v-for="i in 6" :key="i.id">
+          <card-checklist
+            libelle="checklist"
+            code="15555DC" 
+            activite="Nombre d'accident routiere" 
+            :unites="['personne','%','km']" 
+            @supprimer="supprimer"
+            @modifier="modifier"
+            @dupliquer="dupliquer"
+            > </card-checklist>
+        </div>
+      </div>
+    </div>
     <div v-if="seePassation">
       <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
     </div>
@@ -75,13 +91,17 @@
   import { mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
 
+  import ModalTopRight from '@/components/ModalTopRight'
+  import CardChecklist from '@/components/CardChecklist'
 export default {
   components: {
     CardMod,
     Dashboard,
     Vtable,
     Vform,
-    Vmodal
+    Vmodal,
+    ModalTopRight,
+    CardChecklist
   },
   data() {
     return {
@@ -89,11 +109,12 @@ export default {
       showModal2:false,
       seeMod:true,
       seePassation:false,
+      seeChecklist:false,
       showInput:true,
       uploadFile:false,
       title:'',
       title2:'',
-      submitText: "Enrégistrer le mod",
+      submitText: "Enrégistrer",
       modAttributs: ["nom", "email", "contact"],
       champs:[
         {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
@@ -185,11 +206,18 @@ export default {
     goMod() {
       this.seeMod = true
       this.seePassation = false
+      this.seeChecklist = false
     },
 
     goPassation() {
       this.seeMod = false
       this.seePassation = true
+      this.seeChecklist = false
+    },
+    goChecklist() {
+      this.seeMod = false
+      this.seePassation = false
+      this.seeChecklist = true
     },
 
     supprimerPassation(data) {
@@ -198,18 +226,19 @@ export default {
 
     
     addMod() {
-      this.title='Ajouter un MOD'
 
-      this.submitText = "Enrégistrer le MOD"
+      this.title = "Ajouter d'un nouveau MOD"
+
+      this.submitText = "Enrégistrer"
 
       this.showCloseModal(true)
     },
 
     modifierMod(mod) {
 
-      this.title = 'Modifier le MOD'
+      this.title = "Modification du MOD " + mod.user.nom
 
-      this.submitText = "Modifier le MOD"
+      this.submitText = "Modifier"
 
       this.setMod(mod)
 
@@ -233,9 +262,25 @@ export default {
         this.deleteMod(mod.id)
     },
 
-    dupliquerMod() {
-      this.title='Dupliquer un mod'
-      this.showCloseModal()
+    dupliquerMod(mod) {
+
+      this.title = "Ajouter d'un nouveau MOD"
+
+      this.submitText = "Enrégistrer"
+
+      this.modAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            this.champs[index]['data'] = mod.user[item]
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
     },
       
     close() {

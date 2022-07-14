@@ -18,8 +18,8 @@
         </div>
       </nav> 
       <div v-if="showModal">
-        <vmodal :title="title" v-on:close="close">
-        <div style="width:60vw" class="px-4">
+        <modal-top-right :title="title" v-on:close="close">
+        <div  class="px-4">
           <div v-if="title =='Ajouter une unité de gestion'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
@@ -28,11 +28,12 @@
           </div>
           
         </div>
-        </vmodal>
+        </modal-top-right>
       </div>
       <div class="flex items-center justify-between">
         <titre>Unites de gestions </titre>
-          <button @click="addUnite" title="ajouter " class="p-2 overflow-hidden text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+          <button @click="addUnite" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">ajouter</span>
           </button>
       </div>
@@ -42,6 +43,7 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
@@ -59,7 +61,8 @@ import extractFormData from '@/utils/extract-data'
       Vmodal,
       Vform,
       Titre,
-      SearchBar
+      SearchBar,
+      ModalTopRight
     },
     data() {
         return {

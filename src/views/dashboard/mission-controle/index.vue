@@ -2,18 +2,18 @@
   <dashboard>
   <div class="p-4">
     <div v-if="showModal">
-      <vmodal :title="title"  v-on:close="close">
-        <div style="width:60vw;" class="px-4 overflow-y-auto">
+      <modal-top-right :title="title"  v-on:close="showModal = false">
+        <div  class="px-4 overflow-y-auto">
           <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
     <div v-if="showModal2">
-      <vmodal :title="title2"  v-on:close="showModal2 = false">
-        <div style="width:60vw;height:450px" class="px-4 overflow-y-auto">
+      <modal-top-right :title="title2"  v-on:close="showModal2 = false">
+        <div  class="px-4 overflow-y-auto">
           <vform template="default"  :champs="passationChamps" isAllPairSaufDescrip="true" :cols="colsPassation" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
     <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
@@ -33,6 +33,7 @@
       <div class="flex space-x-4">
         <span @click="goMo" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
+        <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
       </div>
       
       <button  v-if="seeMo" @click="addMissionDeControle" title="Ajouter un MO"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
@@ -61,6 +62,21 @@
         </card-mod>
       </div>
     </div>
+    <div v-if="seeChecklist">
+      <div  class="grid grid-cols-3 gap-4">
+        <div v-for="i in 6" :key="i.id">
+          <card-checklist
+            libelle="checklist"
+            code="15555DC" 
+            activite="Nombre d'accident routiere" 
+            :unites="['personne','%','km']" 
+            @supprimer="supprimer"
+            @modifier="modifier"
+            @dupliquer="dupliquer"
+            > </card-checklist>
+        </div>
+      </div>
+    </div>
     <div v-if="seePassation">
       <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
     </div>
@@ -69,28 +85,35 @@
 </template>
 
 <script>
+
+  import ModalTopRight from '@/components/ModalTopRight'
+  import CardChecklist from '@/components/CardChecklist'
   import Dashboard from '@/layouts/Dashboard'
   import CardMod from '@/components/CardMod'
   import Vtable from '@/components/Vtable'
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
+
   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
-
 export default {
   components: {
     CardMod,
     Dashboard,
     Vtable,
     Vform,
-    Vmodal
+    Vmodal,
+    ModalTopRight,
+    CardChecklist
   },
   data() {
     return {
       showModal:false,
       showModal2:false,
       seeMo:true,
+      seeMod:false,
       seePassation:false,
+      seeChecklist:false,
       showInput:true,
       uploadFile:false,
       title: "Ajouter une nouvelle mission de controle",
@@ -184,13 +207,20 @@ export default {
       this.showModal2 = true
     },
     
-    goMo() {
-      this.seeMo = true
+    goMod() {
+      this.seeMod = true
       this.seePassation = false
+      this.seeChecklist = false
     },
     goPassation() {
-      this.seeMo = false
+      this.seeMod = false
       this.seePassation = true
+      this.seeChecklist = false
+    },
+    goChecklist() {
+      this.seeMod = false
+      this.seePassation = false
+      this.seeChecklist = true
     },
 
     supprimerPassation(data) {
@@ -237,11 +267,25 @@ export default {
         this.deleteMissionDeControle(missionDeControle.id)
     },
 
-    dupliquerMissionDeControle() {
+    dupliquerMissionDeControle(missionDeControle) {
 
-      this.title = "Dupliquer la mission de controle"
+      this.title = "Ajouter d'une nouvelle mission de controle"
 
-      this.showCloseModal()
+      this.submitText = "Enrégistrer"
+
+      this.missionDeControleAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            this.champs[index]['data'] = missionDeControle.user[item]
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
     },
       
     close() {

@@ -2,9 +2,9 @@
   <dashboard>
     <div class="w-full p-4">
     <!-- Modal de sous composants -->
-    <vmodal v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+    <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
+      <form action="" @submit.prevent="save" class="px-4"  >
+        <div class="grid grid-cols-1 gap-5 mt-3">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
@@ -15,7 +15,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
@@ -30,7 +30,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
@@ -47,7 +47,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
@@ -88,7 +88,7 @@
           </button>
         </div>
       </form>
-    </vmodal>
+    </modal-top-right>
 
      <!-- Modal de activité -->
      <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
@@ -221,7 +221,7 @@
         </ol>
       </div>
       <div>
-        <search-bar ></search-bar>
+        <search-bar></search-bar>
       </div>
     </nav> 
     <div class="flex justify-start mt-2">
@@ -233,7 +233,6 @@
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
         <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Sous composantes </span>
-        <span :class="{'border-primary border-b-8 font-bold':seeActivite}" @click="gotoActivite()" class="inline-block cursor-pointer text-lg uppercase  py-2">Activités </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       <button v-if="seeSousComposantes" @click="addSousComposants" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
@@ -246,36 +245,77 @@
       </button>
       
     </div>
-    <!-- le filtre -->
-    <div class="">
-      <select class="px-11 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-        <option class="font-semibold"> Tous </option>
-        <option class="font-semibold"  v-for="i in 5" :key="i.id" value=""> composante {{i}} </option>
-      </select>
-    </div>
-    <!-- fin le filtre -->
+    
     <div v-if="seeSousComposantes">
-      <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(composante,index) in sous_composantes" :key="index">
-        <!-- cards composantes -->
-        <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-          <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
-          <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
-
-            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
-            <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
-
-          <!-- dots -->
-          <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-          <!-- ./dots -->
-          <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
-          <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
-            <i class='bx bxs-wallet bx-md' ></i>
-            <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="flex items-center justify-between ">
+        <!--Filtre sur projet -->
+        <div class="w-2/5 flex items-center space-x-2">
+          <multiselect v-model="valueFiltre" :options="options" :custom-label="selectComposant"  placeholder="selectionnez un composant" label="name" track-by="name"></multiselect>
+          <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
+            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            <span>filtre</span>
+          </button>
+          <div v-else  class="px-6 w-full">
+            <div class="bg-gray-300 h-2 w-full rounded-full relative">
+              <span class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer" :style="`left:${rangeValue}%`"></span>
+              <span class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"  :style="`width:${rangeValue}%`"></span>
+            </div>
+            <div class="flex justify-between mt-2 text-xs text-gray-600">
+              <span @click="filtreRange(0)" class="w-8 cursor-pointer text-left">0%</span>
+              <span @click="filtreRange(25)" class="w-8 cursor-pointer text-center">25%</span>
+              <span @click="filtreRange(50)" class="w-8 cursor-pointer text-center">50%</span>
+              <span @click="filtreRange(75)" class="w-8 cursor-pointer text-center">75%</span>
+              <span @click="filtreRange(100)" class="w-8 cursor-pointer text-right">100%</span>
+              <button @click="showFiltre = false" class="text-white bg-blue-300 p-1">revenir</button>
+            </div>
+          
           </div>
         </div>
-        <!-- End cards composantes -->
+      <!--Filtre sur projet -->
+          <nav class="flex text-sm align-middle justify-evenly">
+          <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+            attentes 
+              <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined">
+              5
+              </span>
+            </span>
+            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+              validés 
+              <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
+              9
+              </span>
+            </span>
+            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+              rejetés
+              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
+              8
+              </span>
+            </span>
+          </nav>
+        </div>
       </div>
+      <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+        <div v-for="(composante,index) in sous_composantes" :key="index">
+          <!-- cards composantes -->
+          <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
+            <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
+            <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
+
+              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+              <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+
+            <!-- dots -->
+            <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
+            <!-- ./dots -->
+            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
+            <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
+              <i class='bx bxs-wallet bx-md' ></i>
+              <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+            </div>
+          </div>
+          <!-- End cards composantes -->
+        </div>
       </div>
       <div v-if="line"  class="line my-4">
         <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
@@ -309,95 +349,7 @@
       </div>
     </div>
 
-    <div v-if="seeActivite">
-      <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(activite,index) in activites" :key="index">
-          <!-- cards Activités -->
-          <div class="relative p-4 max-w-80 bg-white sm:rounded-lg overflow-hidden ">
-            <!-- dots -->
-            <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-            <!-- ./dots -->
-            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
-              <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
-            <div class="cursor-pointer">
-              <span class="absolute z-10 bottom-0 left-0 w-full h-10 text-white font-bold leading-3 px-8 py-3 text-left">
-                <span><i class='bx bxs-calendar mr-2'></i>{{activite.debut}}</span> au
-                <span><i class='bx bxs-calendar mr-2'></i>{{activite.fin}}</span></span>
-              <span
-                class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids
-                : {{activite.Poids}} </span>
-
-              <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
-                cours<i class='bx bx-time-five ml-1'></i></span>
-
-              <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span
-                  class="font-bold italic"><span class="underline mr-2">Activité</span>:</span> {{activite.libelle}} </p>
-              <!--  -->
-              <div class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
-                <i class='bx bxs-pin bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Responsable : 
-                  <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
-              </div>
-              <div class="flex items-center text-gray-600 dark:text-gray-400 mb-1">
-                <i class='bx bxs-pin bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Associée : 
-                  <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
-              </div>
-              <!--  -->
-              <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
-                <i class='bx bxs-wallet bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">EMP : 
-                  <span class="font-bold italic text-lg"> {{activite.montantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
-                </div>
-              </div>
-              <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
-                <i class='bx bxs-wallet bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">BN : <span
-                    class="font-bold italic text-lg">{{activite.montantBN}}</span><span class="ml-2 uppercase font-bold">fcfa</span>
-                </div>
-              </div>
-            </div>
-          </div>
-      <!-- End cards Activités -->
-        </div>
-      </div>
-      <div v-if="line"  class="line my-4">
-        <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-          <table class="w-full">
-            <thead>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Activité </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">BN </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">EPM-PRET</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">poids</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Structure resp</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Structure assoc</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">status</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
-            </thead>
-            <tbody>
-              <tr class="bg-white" v-for="(i,index) in 10" :key="index">
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">activité {{index}} ~ composante {{index*8}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">100M </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">1000M </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i*5}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> Structure resp {{index}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> Structure assoc {{index}} </td>
-                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                  <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
-                </td>
-                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="optionActivite" ></dropdown></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-     <div v-if="seeSuivi">
+    <div v-if="seeSuivi">
       <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
             <table class="w-full">
               <thead>
@@ -477,6 +429,8 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
+import Multiselect from 'vue-multiselect'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
@@ -487,9 +441,24 @@ export default {
     Vmodal,
     Titre,
     SearchBar,
+    Multiselect,
+    ModalTopRight
   },
   data() {
     return {
+      valueFiltre:'',
+      pending:false,
+      success:true,
+      rejected:false,
+      rangeValue:0,
+      showFiltre:false,
+      options:[
+        {name:'composante 1'},
+        {name:'composante 2'},
+        {name:'composante 3'},
+        {name:'composante 4'},
+        {name:'composante 5'},
+      ],
       showModal:false,
       showModal2:false,
       loading:false,
@@ -497,7 +466,6 @@ export default {
       mosaique:true,
       isStateChange:false,
       seeSousComposantes:true,
-      seeActivite:false,
       showInput:true,
       option:[
         {name:"supprimer"},
@@ -612,22 +580,24 @@ export default {
     
   },
   methods: {
+    filtreRange(value){
+      this.rangeValue = value
+    },
+    selectComposant ({ name}) {
+      return `${name}`
+    },
     addDate() {
       this.dates.push({})
     },
     gotoSousComposante() {
-      this.seeActivite = false
       this.seeSousComposantes = true
+      this.seeSuivi = false
     },
     gotoSuivi() {
-      this.seeActivite = false
       this.seeSousComposantes = false
       this.seeSuivi = true
     },
-    gotoActivite() {
-      this.seeActivite = true
-      this.seeSousComposantes = false
-    },
+  
     switch1() {
       this.mosaique = true
       this.line = false
@@ -675,7 +645,23 @@ export default {
     },
     editerSuivi(index) {
       this.showInput = false
-    }
+    },
+     toggle() {
+      this.pending = false
+      this.rejected = false
+      this.success = true
+
+    },
+    toggle2() {
+      this.success = false
+      this.rejected = false
+      this.pending = true
+    },
+    toggle3() {
+      this.pending = false
+      this.success = false
+      this.rejected = true
+    },
   }
 }
 </script>
