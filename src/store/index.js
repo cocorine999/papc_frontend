@@ -13,6 +13,16 @@ import institutions from "./modules/institutions/index";
 
 import projets from "./modules/projets/index";
 
+import mods from "./modules/mods/index";
+
+import missionDeControles from "./modules/missionDeControles/index";
+
+import programmes from "./modules/programmes/index";
+
+import ongs from "./modules/ongs/index";
+
+import uniteeDeGestions from "./modules/uniteeDeGestions/index";
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
