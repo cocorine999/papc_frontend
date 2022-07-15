@@ -277,7 +277,8 @@
               <!-- dots -->
                 <div class="absolute right-1 top-4 z-10  cursor-pointer">
                   <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
-                  </div>
+                </div>
+              <!-- dots -->
             <!-- cards Activités -->
               <div class="relative p-4 max-w-80 bg-white sm:rounded-lg overflow-hidden ">
                 
@@ -551,6 +552,7 @@ import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import ModalTopRight from '@/components/ModalTopRight'
 import Dashboard from '@/layouts/Dashboard'
+import Dropdown from '@/components/Dropdown.vue'
 
 export default {
   components: {
@@ -560,7 +562,8 @@ export default {
     Titre,
     SearchBar,
     Card,
-    Multiselect
+    Multiselect,
+    Dropdown
   },
   data() {
     return {

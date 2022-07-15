@@ -452,41 +452,44 @@
         class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5"
       >
         <div v-for="(tache,index) in taches" :key="index">
-        <!-- cards Tâches -->
-          <div class="relative p-4 bg-white sm:rounded-lg overflow-hidden ">
-            <!-- dots -->
-            <span class="absolute right-0 cursor-pointer">
-              <i class='bx bx-dots-vertical-rounded bx-md pr-2'></i>
-              </span>
-            <!-- ./dots -->
-            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
-              <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
-            <!--  -->
-            <div class="cursor-pointer">
-              <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{tache.Poids}} </span>
-
-              <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
-                cours<i class='bx bx-time-five ml-1'></i></span>
-
-              <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">
-                <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{tache.libelle}} </p>
+          <div class="relative">
+          <!-- dot -->
+            <div class="absolute right-1 top-4 z-10  cursor-pointer">
+                <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+          </div>
+          <!-- dot -->
+          <!-- cards Tâches -->
+            <div class="relative p-4 bg-white sm:rounded-lg overflow-hidden ">
+             
+              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
+                <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
               <!--  -->
-              <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
-                <i class='bx bxs-wallet bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : 
-                  <span class="font-bold italic text-lg"> {{tache.MontantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
+              <div class="cursor-pointer">
+                <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{tache.Poids}} </span>
+
+                <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
+                  cours<i class='bx bx-time-five ml-1'></i></span>
+
+                <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">
+                  <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{tache.libelle}} </p>
+                <!--  -->
+                <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
+                  <i class='bx bxs-wallet bx-sm'></i>
+                  <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : 
+                    <span class="font-bold italic text-lg"> {{tache.MontantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
-                <i class='bx bxs-wallet bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">BN : 
-                  <span class="font-bold italic text-lg">{{tache.MontantNE}}</span>
-                  <span class="ml-2 uppercase font-bold">fcfa</span>
+                <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
+                  <i class='bx bxs-wallet bx-sm'></i>
+                  <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">BN : 
+                    <span class="font-bold italic text-lg">{{tache.MontantNE}}</span>
+                    <span class="ml-2 uppercase font-bold">fcfa</span>
+                  </div>
                 </div>
               </div>
             </div>
+        <!-- End cards Tâches -->
           </div>
-      <!-- End cards Tâches -->
         </div>
       </div>
       <div v-if="line" class="line my-4">
@@ -621,6 +624,7 @@ import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import ModalTopRight from '@/components/ModalTopRight'
 import Dashboard from '@/layouts/Dashboard'
+import Dropdown from '@/components/Dropdown.vue'
 export default {
   components: {
     Dashboard,
@@ -628,7 +632,8 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
-    Multiselect
+    Multiselect,
+    Dropdown
   },
   data() {
     return {
