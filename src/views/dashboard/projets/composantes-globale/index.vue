@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     <div class="w-full p-4">
-    <vmodal v-if="showModal" :title="title"  v-on:close="close">
+    <vmodal v-if="showModal" :title="title"  v-on:close="showCloseModal">
       <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
@@ -39,9 +39,9 @@
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option value="">En cours</option>
-              <option value="">En attente</option>
-              <option value="">En terminer</option>
+              <option value="0">En cours</option>
+              <option value="-1">En attente</option>
+              <option value="2">En terminer</option>
             </select>
           </div>
         </div>
@@ -123,7 +123,7 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
-      <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if="seeComposant" @click="addComposante" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
           <span class="mx-2 text-sm font-semibold">ajouter un composant</span>
       </button>
@@ -146,9 +146,9 @@
           <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
 
             <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{composante.sigle}}</span>
-            <span v-if="composante.statut == 0" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
-            <span v-if="composante.statut == 2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
-            <span v-if="composante.statut == -1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
+            <span v-if="composante.statut = 0" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+            <span v-if="composante.statut = 2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
+            <span v-if="composante.statut = -1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
 
           <!-- dots -->
           <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
@@ -307,29 +307,7 @@ export default {
         {name:"dupliquer"},
         {name:"continuer"},
       ],
-      composantes: [
-        {
-          code: "4.1.1.3.1.1",
-          libelle: " Investissement dans l’assainissement pluvial et engagement des communautés pour la réduction des risques d’inondation et l’adaptation au changement climatique ",
-          montantBN: "1,561,078.941",
-          montantEPM: "42,598,138.77",
-          poids: "72.00",
-        },
-        {
-          code: "4.1.1.3.1.2",
-          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
-          montantBN: "1,030,354.65",
-          montantEPM: "1,030,354.65",
-          poids: "13.00",
-        },
-         {
-          code: "4.1.1.3.1.3",
-          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
-          montantBN: "1,030,354.65",
-          montantEPM: "1,030,354.65",
-          poids: "13.00",
-        },
-      ],
+      
       dates:[
         {}
       ],
@@ -388,6 +366,9 @@ export default {
     },
     close() {
       this.showModal = false
+    },
+    showCloseModal(value = false) {
+      this.showModal = value
     },
     addComposante() {
       this.title='Ajouter un nouveau composante'
