@@ -173,6 +173,9 @@ import extractFormData from '@/utils/extract-data'
 
         let uniteeDeGestion = extractFormData(this.champs, this.uniteeDeGestionAttributs)
 
+        if(typeof uniteeDeGestion.programmeId === 'object')
+          uniteeDeGestion.programmeId = uniteeDeGestion.programmeId.id
+
         if(this.uniteeDeGestion?.id)
         {
 
@@ -197,7 +200,6 @@ import extractFormData from '@/utils/extract-data'
           })
         }
       }
-  
     },
 
     watch: {

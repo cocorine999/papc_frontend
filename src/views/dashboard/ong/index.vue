@@ -2,7 +2,7 @@
 <dashboard>
   <div class="w-full p-4">
     <div v-if="showModal">      
-      <modal-top-right :title="title"  v-on:close="closeModal">
+      <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4">
           <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
         </div>
@@ -47,18 +47,18 @@
           <span @click="gochecklist" :class="{'border-primary border-b-8':seechecklist}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Mes checklist </span>
         </div>
       
-        <button v-if="seeOng" @click="addOngOrAgence" title="ajouter une instutitions"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="seeOng" @click="addOngOrAgence" title="Ajouter une nouvelle ong ou agence"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-2 text-xs font-semibold"> Ajouter </span>
         </button>
-        <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <button  v-if="seePassation" @click="addPassation" title="Enrégistrer une nouvelle passation"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-          <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
+          <span class="mx-2 text-sm font-semibold">Enrégistrer une passation de marché</span>
         </button>
 
-        <router-link v-if="seechecklist" to="/dashboard/checklist/create"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <router-link v-if="seechecklist" to="/dashboard/checklist/create"  title="Ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-          <span class="mx-2 text-sm font-semibold">Ajouter </span>
+          <span class="mx-2 text-sm font-semibold"> Ajouter </span>
         </router-link>
         
     </div>
@@ -67,7 +67,7 @@
      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
       <div v-for="(ongOrAgence,index) in ongsOrAgences" :key="index">
            <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
-              <span class="absolute bg-yellow-500 text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{ ongOrAgence.user.nom }}</span>
+              <span class="absolute bg-yellow-500 text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{ ongOrAgence.user.type }}</span>
               <!-- dots -->
               <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
               <!-- ./dots -->
@@ -78,7 +78,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">Dhaka, Street, State, Postal Code Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quod sunt tempore iste eligendi unde molestias ipsum omnis dolorum totam!</div>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate"> {{ ongOrAgence.user.nom }} </div>
               </div>
     
               <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
@@ -120,9 +120,9 @@
             code="15555DC" 
             activite="Nombre d'accident routiere" 
             :unites="['personne','%','km']" 
-            @supprimer="supprimer"
-            @modifier="modifier"
-            @dupliquer="dupliquer"
+            @supprimer="supprimerChecklist"
+            @modifier="modifierChecklist"
+            @dupliquer="dupliquerChecklist"
             > </card-checklist>
         </div>
       </div>
@@ -247,6 +247,7 @@
           {name:'Travaux',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Responsable sociologue',type:'',placeholdere:"Selectionnez un responsable",isSelect:true,isTextArea:false,data:'',required:true,options:['Responsable','Responsable2']},
         ],
+        dataTable2:[],
         cols:1,
         colsPassation:2,
         headers:[
@@ -277,7 +278,7 @@
         {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
-        {name:'Type', key: 'type', type:'', placeholdere:'Choisir un type', isSelect:true, isTextArea:false, data:'', options: [{id: "ong", nom: "Ong"}, {id: "agence", nom: "Agence de communication"}], cle: 'id', value: 'nom', required:true, errors : []}
+        {name:'Type', key: 'type', type:'', placeholdere:'Choisir un type', isSelect:true, isTextArea:false, data:'', options: [{id: "ong", nom: "Ong"}, {id: "agence", nom: "Agence de communication"}], cle: 'id', value: 'nom', methode: this.textSelector, required:true, errors : []}
 
       ],
         cols:1,
@@ -373,7 +374,7 @@
 
         modifierOngOrAgence(ongOrAgence) {
 
-          this.title = "Modification de l'institution {ongOrAgence.nom}"
+          this.title = "Modification"
 
           this.submitText = "Modifier"
 
@@ -405,6 +406,7 @@
         },
           
         close() {
+          
           this.showCloseModal()
 
           this.resetForm()
@@ -434,6 +436,8 @@
             this.ongOrAgence = extractFormData(this.champs, this.ongOrAgenceAttributs, ['data', 'data', 'data', 'data'])
 
             this.ongOrAgence.programmeId = this.currentUser?.programme.id
+
+            this.ongOrAgence.type = this.ongOrAgence.type.id
             
             if(id)
             {
@@ -470,19 +474,36 @@
                   alert(value.response.data.errors.programmeId[0])
                 })
             }
-        }
+        },
 
+        addChecklist(){
+
+        },
+
+        modifierChecklist(){
+
+        },
+
+        supprimerChecklist(){
+
+        },
+
+        dupliquerChecklist(){
+
+        },
+
+        textSelector({nom}){
+          return `${nom}`
+        }
     
       },
       
       watch: {
         isLoading: function(value) {
-          //this.loading = value
         },
 
         hasErrors: function(errors) {
           this.champs.forEach((value) => {value.errors = errors[value.key]})
-          //this.errors = errors
         },
 
         agencesDeCommunication: function(agences) {
@@ -532,6 +553,7 @@
         this.fetchAgencesDeCommunication()
         
       }
+
   }
 </script>
 

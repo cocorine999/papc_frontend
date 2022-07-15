@@ -45,8 +45,6 @@ export default {
     },
 
     async STORE_ONG ({ commit }, payload) {
-
-        console.log(payload)
         
         const { data, status } = await OngService.create(payload)
 

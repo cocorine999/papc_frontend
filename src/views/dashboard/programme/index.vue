@@ -232,7 +232,7 @@ export default {
       
       window.document.getElementById('vform')?.reset()
 
-      setProgramme({})
+      this.setProgramme({})
     },
 
     sendForm() {
