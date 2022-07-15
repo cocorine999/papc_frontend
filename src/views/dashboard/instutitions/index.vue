@@ -4,7 +4,7 @@
       <div v-if="showModal">
         <ModalTopRight  :title="title"  v-on:close="close">
           <div class="px-4">
-            <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
+            <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
         </ModalTopRight>
       </div>
@@ -28,66 +28,62 @@
 
       <div class="flex justify-start mt-2">
         <div class="flex  items-center ">
-        <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
-          <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
+        <span title="vue en mosaique" @click="switchBetweenCode({mosaique: true, line: false})" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
+          <span title="vue en ligne" @click="switchBetweenCode({mosaique:false, line: true})" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
         </div>
       </div>
       <div class="flex items-center justify-between my-2">
-        <titre>Les Instutitions </titre>
-          <button @click="addBailleur" title="ajouter une instutitions"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <titre>Les Institution </titre>
+          <button @click="addInstitution" title="ajouter une instutitions"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Ajouter </span>
           </button>
       </div>
-    </div>
-    <div class="flex items-center justify-between my-2">
-      <titre>Les Instutitions </titre>
-        <button @click="addInstitution" title="ajouter une instutitions"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
-        </button>
-    </div>
-    
-    <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-      <div v-for="(institution,index) in institutions" :key="index">
-           <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
-              <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-pink-500 px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{institution.nom}}</span>
-              <!-- dots -->
-              <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-              <!-- ./dots -->
-              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">{{ institution.nom }}</p>
-    
-              <div class="flex items-center mt-8 text-gray-600">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">Dhaka, Street, State, Postal Code Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quod sunt tempore iste eligendi unde molestias ipsum omnis dolorum totam!</div>
-              </div>
-    
-              <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ institution.contact }}</div>
-              </div>
-    
-              <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ institution.email }}</div>
-              </div>
+
+      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(institution,index) in institutions" :key="index">
+              <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
+                  <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-pink-500 px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{institution.nom}}</span>
+                  <!-- dots -->
+                  <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
+                  <!-- ./dots -->
+                  <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">{{ institution.nom }}</p>
+        
+                  <div class="flex items-center mt-8 text-gray-600">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">Dhaka, Street, State, Postal Code Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quod sunt tempore iste eligendi unde molestias ipsum omnis dolorum totam!</div>
+                  </div>
+        
+                  <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ institution.contact }}</div>
+                  </div>
+        
+                  <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ institution.email }}</div>
+                  </div>
+            </div>
+          </div>
+      </div>
+        
+        <div v-if="line"  class="line my-4">
+          <vtable 
+          :headers="headers" 
+          :datas="institutions"
+          :actions="actions"
+          @updateInputData="updateInputData"
+          @supprimer="supprimerInstitution" 
+          @modifier="modifierInstitution"></vtable>
         </div>
-      </div>
-      <div v-if="line"  class="line my-4">
-        <vtable 
-        :headers="headers" 
-        :datas="bailleurs"
-        :actions="actions" 
-        @supprimer="supprimer" 
-        @modifier="modifier"></vtable>
-      </div>
+
     </div>
   </dashboard>
 </template>
@@ -135,68 +131,26 @@
             {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
           ],
 
-          bailleurs:[
-            {
-              bailleur:'',
-              sigle:'ACVDT',
-              code:"4.1.1.3.1",
-              created_at:"22-06-2022",
-              color:' bg-yellow-500'
-              },
-            {
-            bailleur:'',
-            sigle:'SIRAT',
-            code:"4.1.1.3.2",
-            created_at:"22-06-2022",
-            color:' bg-red-500'
-            },
-            {
-            bailleur:'',
-            sigle:'MEF',
-            code:"4.1.1.3.3",
-            created_at:"22-06-2022",
-            color:' bg-pink-500'
-            },
-            {
-            bailleur:"",
-            sigle:'CAA',
-            code:"4.1.1.3.4",
-            created_at:"22-06-2022",
-            color:' bg-blue-500'
-            },
-            {
-            bailleur:"",
-            sigle:'ANSI',
-            code:"4.1.1.3.5",
-            created_at:"22-06-2022",
-            color:' bg-yellow-900'
-            },
-            {
-            bailleur:"",
-            sigle:'GOUV',
-            code:"4.1.1.3.6",
-            created_at:"22-06-2022",
-            color:' bg-indigo-500'
-            },
-
-          ],
-
           actions:[
             {name:'modifier',iconne:''},
             {name:'supprimer',iconne:''},
-          ],
-
-          champs:[
-            {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
-            {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
-            {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
           ],
 
           cols:1,
           option:[
             {name:'supprimer'},
             {name:'modifier'},
-          ]
+          ],
+          
+          headers:[
+
+            {name:'Nom', cle: 'nom'},
+            {name:'Email', cle: 'email', edit : false},
+            {name:'Contact', cle: 'contact'},
+
+            {name:'Date de creation', cle:'created_at', edit : false},
+
+          ],
         }
       },
 
@@ -223,13 +177,9 @@
           deleteInstitution: "DESTROY_INSTITUTION"
         }),
 
-        switch1() {
-          this.mosaique = true
-          this.line = false
-        },
-        switch2() {
-          this.mosaique = false
-          this.line = true
+        switchBetweenCode({mosaique, line}) {
+          this.mosaique = mosaique
+          this.line = line
         },
       
         addInstitution() {
@@ -292,6 +242,13 @@
           this.setInstitution({})
         },
 
+        async updateInputData(id, attribut, value) {
+            await this.updateInstitution({institution: {[attribut] : value}, id : id}).catch((value, status) => {
+              if(this.hasErrors[attribut] !== undefined)
+                alert(this.hasErrors[attribut])            
+            })
+        },
+
         sendForm() {
 
             this.champs = this.champs.map(item => { item.errors = []; return item})
@@ -313,7 +270,8 @@
 
                 })
                 .catch((value) => {
-                  alert(value.response.data.errors.programmeId[0])
+                  if(value.response.data.errors.programmeId !== undefined)
+                    alert(value.response.data.errors.programmeId[0])
                 })
 
             }

@@ -5,7 +5,7 @@
       <modal-top-right  :title="title"  v-on:close="close">
         <div class="px-4 overflow-auto" >
           <div>
-             <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
+             <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
         </div>
       </modal-top-right>

@@ -30,7 +30,7 @@ export default {
 
     async GET_ONG ({ commit, getters }, {key, value }) {
 
-        let ong = new Ong()
+        let ong = null
         
         ong = getters.findOng({key: key, value : value})
 

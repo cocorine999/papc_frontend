@@ -21,10 +21,10 @@
         <modal-top-right :title="title" v-on:close="close">
         <div  class="px-4">
           <div v-if="title =='Ajouter une unité de gestion'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
           <div v-if="title =='Modifier une unité de gestion'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
+              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
           
         </div>
@@ -163,7 +163,8 @@ import extractFormData from '@/utils/extract-data'
 
       async updateInputData(id, attribut, value) {
           await this.updateUniteeDeGestion({uniteeDeGestion: {[attribut] : value}, id : id}).catch((value, status) => {
-            alert(this.hasErrors[attribut])            
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
           })
       },
 

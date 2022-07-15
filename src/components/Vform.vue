@@ -59,7 +59,7 @@
 
     <div class="py-2 my-2 flex justify-center space-x-8">
       <vbutton  type="submit" template="success"> {{submitText}} </vbutton>
-      <vbutton  type="reset" template="danger"> annuler </vbutton>
+      <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
     </div>
   </form>
 </template>
@@ -83,6 +83,10 @@ export default {
     save() {
       this.$emit('sendForm')
     },
+
+    close(){
+      this.$emit('closeModal')
+    }
   
   },
   computed: {

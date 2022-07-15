@@ -4,7 +4,7 @@
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
+          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close"></vform>
         </div>
       </modal-top-right>
     </div>

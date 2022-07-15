@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import EntrepriseExecutanteService from "@/services/modules/entreprise.executante.service";
+import EntrepriseExecutante from "./entreprise.executante";
 
 export default {
     
@@ -22,30 +23,36 @@ export default {
 
         const { data, status } = await EntrepriseExecutanteService.get();
 
-        commit(SET_LIST_ENTREPRISE_EXECUTANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_ENTREPRISE_EXECUTANTE, data.data);
 
         return { data, status };
     },
 
     async GET_ENTREPRISE_EXECUTANTE ({ commit, getters }, {key, value }) {
 
-        let entrepriseExecutante = getters.findEntrepriseExecutante({key: key, value : value})
+        let entrepriseExecutante = null
+
+        entrepriseExecutante = getters.findEntrepriseExecutante({key: key, value : value})
 
         if((entrepriseExecutante === null || entrepriseExecutante || undefined) && typeof value === "int"){
 
             const { data, status } = await EntrepriseExecutanteService.get(value);
 
-            entrepriseExecutante = data.data
+            if(status === 200 || status === 201)
+                entrepriseExecutante = data.data
 
-            return entrepriseExecutante
-        }
+        }     
+
+        return entrepriseExecutante;
     },
 
     async STORE_ENTREPRISE_EXECUTANTE ({ commit }, payload) {
         
         const { data, status } = await EntrepriseExecutanteService.create(payload);
 
-        commit(ADD_ENTREPRISE_EXECUTANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_ENTREPRISE_EXECUTANTE, data.data);
 
         return { data, status };
 
@@ -55,7 +62,8 @@ export default {
         
         const { data, status } = await EntrepriseExecutanteService.update(id, entrepriseExecutante);
 
-        commit(MODIFY_ENTREPRISE_EXECUTANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_ENTREPRISE_EXECUTANTE, data.data);
 
         return { data, status };
 
@@ -65,7 +73,8 @@ export default {
         
         const { data, status } = await EntrepriseExecutanteService.destroy(idEntrepriseExecutante);
 
-        commit(REMOVE_ENTREPRISE_EXECUTANTE, idEntrepriseExecutante);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_ENTREPRISE_EXECUTANTE, idEntrepriseExecutante);
 
         return { data, status };
 

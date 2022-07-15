@@ -4,7 +4,7 @@
     <div v-if="showModal">      
       <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4">
-          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
+          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @updateInputData="updateInputData"></vform>
         </div>
       </modal-top-right>
     </div>
@@ -36,8 +36,8 @@
     
     <div class="flex justify-start mt-2">
       <div class="flex  items-center ">
-        <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
-        <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
+        <span title="vue en mosaique" @click="switchBetweenCode({mosaique: true, line: false})" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
+        <span title="vue en ligne" @click="switchBetweenCode({mosaique: false, line: true})" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
       </div>
     </div>
     <div class="flex items-center justify-between my-2">
@@ -99,11 +99,12 @@
     </div>
     <div v-if="line"  class="line my-4">
       <vtable 
-      :headers="headers" 
-      :datas="bailleurs"
-      :actions="actions" 
-      @supprimer="supprimer" 
-      @modifier="modifier"></vtable>
+      :headers="headersOngOrAgence" 
+      :datas="ongsOrAgences"
+      :actions="actions"
+      extra="type"
+      @supprimer="supprimerOngOrAgence" 
+      @modifier="modifierOngOrAgence"></vtable>
     </div>
     </div>
 
@@ -174,64 +175,22 @@
         seechecklist:false,
         title: '',
         ongOrAgenceAttributs: ["nom", "email", "contact", "type"],
-        headers:[
-          {name:'Bailleurs',props:'bailleur'},
-          {name:'Sigle',props:'sigle'},
-          {name:'Code PTA',props:'code'},
-          {name:'Date creation',props:'created_at'},
-        ],
-        
+        headersOngOrAgence:[
 
-        bailleurs:[
-          {
-            bailleur:'',
-            sigle:'ACVDT',
-            code:"4.1.1.3.1",
-            created_at:"22-06-2022",
-            color:' bg-yellow-500'
-            },
-          {
-          bailleur:'',
-          sigle:'SIRAT',
-          code:"4.1.1.3.2",
-          created_at:"22-06-2022",
-          color:' bg-red-500'
-          },
-          {
-          bailleur:'',
-          sigle:'MEF',
-          code:"4.1.1.3.3",
-          created_at:"22-06-2022",
-          color:' bg-pink-500'
-          },
-          {
-          bailleur:"",
-          sigle:'CAA',
-          code:"4.1.1.3.4",
-          created_at:"22-06-2022",
-          color:' bg-blue-500'
-          },
-          {
-          bailleur:"",
-          sigle:'ANSI',
-          code:"4.1.1.3.5",
-          created_at:"22-06-2022",
-          color:' bg-yellow-900'
-          },
-          {
-          bailleur:"",
-          sigle:'GOUV',
-          code:"4.1.1.3.6",
-          created_at:"22-06-2022",
-          color:' bg-indigo-500'
-          },
+            {name:'Nom', props: "user", cle: 'nom', edit : false},
+            {name:'Email', props: "user", cle: 'email', edit : false},
+            {name:'Contact', props: "user", cle: 'contact', edit : false},
+
+            {name:'Date de creation', cle:'created_at', edit : false},
 
         ],
+
         dataTable:[
           {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
           {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
           {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
         ],
+
         passationChamps:[
           {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},
           {name:'Selectionnez Site',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:['calavi','cotonou'],required:true,},
@@ -247,9 +206,13 @@
           {name:'Travaux',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Responsable sociologue',type:'',placeholdere:"Selectionnez un responsable",isSelect:true,isTextArea:false,data:'',required:true,options:['Responsable','Responsable2']},
         ],
+
         dataTable2:[],
+
         cols:1,
+
         colsPassation:2,
+
         headers:[
             {name:'Nom createur',props:'createur',width:"w-24"},
             {name:'Site',props:'site',width:"w-36"},
@@ -328,13 +291,9 @@
           deleteAgenceDeCommunication: "DESTROY_AGENCE_DE_COMMUNICATION"
         }),
 
-        switch1() {
-          this.mosaique = true
-          this.line = false
-        },
-        switch2() {
-          this.mosaique = false
-          this.line = true
+        switchBetweenCode({mosaique, line}) {
+          this.mosaique = mosaique
+          this.line = line
         },
         
         goOng() {
@@ -396,8 +355,8 @@
         },
 
         supprimerOngOrAgence(ongOrAgence) {
-          if(window.confirm("Voulez-vous vraiment supprimer " + ongOrAgence.nom))
-            ongOrAgence.type === 'ong' ? this.deleteOng(ongOrAgence.id) : this.deleteAgenceDeCommunication(ongOrAgence.id)
+          if(window.confirm("Voulez-vous vraiment supprimer " + ongOrAgence.user.nom))
+            ongOrAgence.user.type === 'ong' ? this.deleteOng(ongOrAgence.id) : this.deleteAgenceDeCommunication(ongOrAgence.id)
         },
 
         dupliquerOngOrAgence() {
@@ -425,6 +384,29 @@
           this.setOng({})
 
           this.setAgenceDeCommunication({})
+        },
+
+        async updateInputData(id, attribut, value) {
+          
+            console.log( id, attribut, value)
+
+            let type = 'ong';
+
+            console(type, type === 'ong')
+
+            if(type === 'ong'){
+              await this.updateOng({ong: {[attribut] : value}, id : id}).catch((value, status) => {
+                if(this.hasErrors[attribut] !== undefined)
+                  alert(this.hasErrors[attribut])            
+              })
+            }
+            else if(type === 'agence'){
+              await this.updateAgenceDeCommunication({agenceDeCommunication: {[attribut] : value}, id : id}).catch((value, status) => {
+                if(this.hasErrors[attribut] !== undefined)
+                  alert(this.hasErrors[attribut])            
+              })
+            }
+            else;
         },
 
         sendForm() {
@@ -507,40 +489,23 @@
         },
 
         agencesDeCommunication: function(agences) {
-
+          
           let data = [...this.ongs, ...agences]
 
           sortData({ data: data })
 
           this.ongsOrAgences = data
-
         },
 
         ongs: function(ongs) {
           
           let data = [...ongs, ...this.agencesDeCommunication]
 
-          sortData({ data: data, param: 'id',  })
+          sortData({ data: data })
           
           this.ongsOrAgences = data
 
-        },
-
-        /*ongsOrAgences: function (data) {
-
-          
-          const sortByDate = data => {
-            const sorter = (a, b) => {
-                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-            }
-            data.sort(sorter)
-          }
-
-          sortByDate(data)
-        
-          //sortData({ data:data })
-
-        } */
+        }
 
       },
       

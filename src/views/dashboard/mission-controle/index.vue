@@ -2,9 +2,9 @@
   <dashboard>
   <div class="p-4">
     <div v-if="showModal">
-      <modal-top-right :title="title"  v-on:close="showModal = false">
+      <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
+          <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
         </div>
       </modal-top-right>
     </div>
@@ -207,8 +207,8 @@ export default {
       this.showModal2 = true
     },
     
-    goMod() {
-      this.seeMod = true
+    goMo() {
+      this.seeMo = true
       this.seePassation = false
       this.seeChecklist = false
     },

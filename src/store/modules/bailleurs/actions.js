@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import BailleurService from "@/services/modules/bailleur.service";
+import Bailleur from "./bailleur";
 
 export default {
     
@@ -22,30 +23,35 @@ export default {
 
         const { data, status } = await BailleurService.get();
 
-        commit(SET_LIST_BAILLEUR, data.data);
+        if(status === 200 || status === 201) 
+            commit(SET_LIST_BAILLEUR, data.data);
 
         return { data, status };
     },
 
     async GET_BAILLEUR ({ commit, getters }, {key, value }) {
 
-        let bailleur = getters.findBailleur({key: key, value : value})
+        let bailleur = null
+        
+        bailleur = getters.findBailleur({key: key, value : value})
 
         if((bailleur === null || bailleur || undefined) && typeof value === "int"){
 
             const { data, status } = await BailleurService.get(value);
 
-            bailleur = data.data
-
-            return bailleur
+            if(status === 200 || status === 201)
+                bailleur = data.data
         }
+
+        return bailleur;
     },
 
     async STORE_BAILLEUR ({ commit }, payload) {
         
         const { data, status } = await BailleurService.create(payload);
 
-        commit(ADD_BAILLEUR, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_BAILLEUR, data.data);
 
         return { data, status };
 
@@ -55,7 +61,8 @@ export default {
         
         const { data, status } = await BailleurService.update(id, bailleur);
 
-        commit(MODIFY_BAILLEUR, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_BAILLEUR, data.data);
 
         return { data, status };
 
@@ -65,7 +72,8 @@ export default {
         
         const { data, status } = await BailleurService.destroy(idBailleur);
 
-        commit(REMOVE_BAILLEUR, idBailleur);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_BAILLEUR, idBailleur);
 
         return { data, status };
 
