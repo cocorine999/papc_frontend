@@ -235,9 +235,9 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Sous composantes </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
-      <button v-if="seeSousComposantes" @click="addSousComposants" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">ajouter un sous composant</span>
+      <button v-if="seeSousComposantes" @click="addSousComposants" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+          <span class="mx-2 text-xs font-semibold">ajouter un sous composant</span>
       </button>
       <button v-if="seeActivite" @click="addActivite" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
@@ -297,6 +297,12 @@
       </div>
       <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(composante,index) in sous_composantes" :key="index">
+        <div class="relative">
+          <!-- dot -->
+         <div class="absolute right-1 top-4 z-10  cursor-pointer">
+                  <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+         </div>
+          <!-- dot -->
           <!-- cards composantes -->
           <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
             <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
@@ -305,9 +311,7 @@
               <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
               <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
 
-            <!-- dots -->
-            <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-            <!-- ./dots -->
+          
             <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
             <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
               <i class='bx bxs-wallet bx-md' ></i>
@@ -315,6 +319,7 @@
             </div>
           </div>
           <!-- End cards composantes -->
+        </div>
         </div>
       </div>
       <div v-if="line"  class="line my-4">
@@ -435,6 +440,7 @@ import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import Dropdown from '@/components/Dropdown.vue'
 export default {
   components: {
     Dashboard,
@@ -442,7 +448,8 @@ export default {
     Titre,
     SearchBar,
     Multiselect,
-    ModalTopRight
+    ModalTopRight,
+    Dropdown
   },
   data() {
     return {
