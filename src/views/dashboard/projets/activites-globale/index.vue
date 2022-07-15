@@ -553,7 +553,7 @@ import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import ModalTopRight from '@/components/ModalTopRight'
 import Dashboard from '@/layouts/Dashboard'
-import Dropdown from '@/components/Dropdown.vue'
+
 
 export default {
   components: {
