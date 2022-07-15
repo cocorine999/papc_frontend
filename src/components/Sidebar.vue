@@ -187,14 +187,14 @@
       </header>
       <div class="tab-content mb-3 bg-white ">
         <div class="mb-1 flex items-center text-gray-700  cursor-pointer">
-          <router-link to="/dashboard/environnement/suivi" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
-            <span class="font-semibold text-xs">Suivi</span>
+          <router-link to="/dashboard/environements/indicateurs" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+            <span class="font-semibold text-xs">Activité de MOD</span>
           </router-link>
         </div>
 
         <div class="mb-1  flex items-center text-gray-700  cursor-pointer ">
-          <router-link to="/dashboard/environnement/suivi-financier" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
-            <span class="font-semibold text-xs">Suivi financier</span>
+          <router-link to="/dashboard/environement/suivi" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+            <span class="font-semibold text-xs">Suivi environnement</span>
           </router-link>
         </div>
 

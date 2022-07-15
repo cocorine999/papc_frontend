@@ -542,6 +542,7 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
+import Dropdown from '@/components/Dropdown'
 import Card from '@/components/Card'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
@@ -557,7 +558,8 @@ export default {
     Titre,
     SearchBar,
     Card,
-    Multiselect
+    Multiselect,
+    Dropdown
   },
   data() {
     return {

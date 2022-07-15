@@ -4,6 +4,7 @@ import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
 // import bailleurs from "../views/dashboard/bailleurs/index.vue";
 import checklist from "../views/dashboard/checklist/index.vue";
+import checklist_details from "../views/dashboard/checklist/_id/details.vue";
 import checklist_create from "../views/dashboard/checklist/create.vue";
 import entreprises from "../views/dashboard/entreprises/index.vue";
 // import fileManager from "../views/dashboard/fileManager/index.vue";
@@ -22,6 +23,8 @@ import pta from "../views/dashboard/pta/index.vue";
 import unite_gestion from "../views/dashboard/unite-gestion/index.vue";
 import indicateurs from "../views/dashboard/indicateurs/index.vue";
 import indicateurs_suivi from "../views/dashboard/indicateurs/suivi/index.vue";
+import environement_indicateur from "../views/dashboard/environements/index.vue";
+import environement_suivi from "../views/dashboard/environements/suivi/index.vue";
 import programme from "../views/dashboard/programme/index.vue";
 import finances_decaissement from "../views/dashboard/finances/decaissement.vue";
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
@@ -111,6 +114,13 @@ const routes = [
     name: "checklist",
     component: checklist,
   },
+
+  {
+    path: "/dashboard/checklist/:id/details",
+    name: "checklist_details",
+    component: checklist_details,
+  },
+
   {
     path: "/dashboard/checklist/create",
     name: "checklist_create",
@@ -262,6 +272,18 @@ const routes = [
     component:indicateurs_suivi,
     name: "indicateurs_suivi"
   }, 
+
+  {
+    path: "/dashboard/environements/indicateurs",
+    component: environement_indicateur,
+    name: "environement_indicateur"
+  }, 
+  {
+    path: "/dashboard/environement/suivi",
+    component:environement_suivi,
+    name: "environement_suivi"
+  }, 
+
   {
     path: "/dashboard/finances/decaissement",
     component:finances_decaissement,
