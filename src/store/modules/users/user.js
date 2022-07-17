@@ -11,7 +11,7 @@ export default class User {
         this.contact = is(String, user.contact) ? parseInt(user.contact) : '',
         this.type = user.type,
         this.poste = user.poste,
-        this.roles = isEmpty(user.roles) ? [] : Array<Role> user.roles
+        this.roles = user.roles
         this.created_at = is(Object, user.created_at) ? (new Date(user.created_at._date)).toISOString() : user.created_at
     }
 }

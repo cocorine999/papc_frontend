@@ -23,6 +23,8 @@ import missionDeControles from "./modules/missionDeControles/index";
 
 import uniteeDeGestions from "./modules/uniteeDeGestions/index";
 
+import uniteesDeMesure from "./modules/uniteesDeMesure/index";
+
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -95,7 +97,8 @@ export default new Vuex.Store({
     missionDeControles,
     projets,
     programmes,
-    uniteeDeGestions
+    uniteeDeGestions,
+    uniteesDeMesure
   }
 });
 
