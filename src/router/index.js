@@ -3,9 +3,11 @@ import VueRouter from "vue-router";
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
 // import bailleurs from "../views/dashboard/bailleurs/index.vue";
-import checklist from "../views/dashboard/checklist/index.vue";
-import checklist_details from "../views/dashboard/checklist/_id/details.vue";
+import checklist from "../views/dashboard/checklist/_id/checklist.vue";
+import generator from "../views/dashboard/checklist/generator.vue";
+import checklist_details from "../views/dashboard/checklist/_id/_id/details.vue";
 import checklist_create from "../views/dashboard/checklist/create.vue";
+import checklist_entreprise from "../views/dashboard/checklist/index.vue";
 import entreprises from "../views/dashboard/entreprises/index.vue";
 // import fileManager from "../views/dashboard/fileManager/index.vue";
 // import indicateurs from "../views/dashboard/indicateurs/index.vue";
@@ -111,13 +113,18 @@ const routes = [
   //   component: bailleurs,
   // },
   {
-    path: "/dashboard/checklist",
+    path: "/dashboard/checklist/:id/checklist",
     name: "checklist",
     component: checklist,
   },
+  {
+    path: "/form",
+    name: "generator",
+    component: generator,
+  },
 
   {
-    path: "/dashboard/checklist/:id/details",
+    path: "/dashboard/checklist/:id/checklist/:id/details",
     name: "checklist_details",
     component: checklist_details,
   },
@@ -126,6 +133,11 @@ const routes = [
     path: "/dashboard/checklist/create",
     name: "checklist_create",
     component: checklist_create,
+  },
+  {
+    path: "/dashboard/checklist",
+    name: "checklist_entreprise",
+    component: checklist_entreprise,
   },
   {
     path: "/dashboard/entreprises",
