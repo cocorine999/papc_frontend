@@ -13,7 +13,6 @@
                   {{ error }}
               </div>
           </div>
-
         </div>
 
         <div v-else-if="champ.isSelect ===true && champ.isTextArea ===false">

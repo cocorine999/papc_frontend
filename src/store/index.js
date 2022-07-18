@@ -1,4 +1,5 @@
 import Vue from "vue";
+
 import Vuex from "vuex";
 
 import auths from "@/store/modules/auths/index";
@@ -25,6 +26,12 @@ import uniteeDeGestions from "./modules/uniteeDeGestions/index";
 
 import uniteesDeMesure from "./modules/uniteesDeMesure/index";
 
+import composantes from "./modules/composantes/index";
+
+import activites from "./modules/activites/index";
+
+import taches from "./modules/taches/index";
+
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -36,6 +43,28 @@ export default new Vuex.Store({
     loading : false,
     messageErreur : null,
     errors : [],
+    statuts : [
+      {
+        nom : "Non validé",
+        etat: -2
+      },
+      {
+        nom: "Validé",
+        etat: -1
+      },
+      {
+        nom: "En cours",
+        etat: 0
+      },
+      {
+        nom: "En retard",
+        etat: 1
+      },
+      {
+        nom: "Terminé",
+        etat: 2
+      }
+    ],
   },
   getters: {
     sideBarOpen: state => {
@@ -89,6 +118,8 @@ export default new Vuex.Store({
   modules: {
     auths,
     agencesDeCommunication,
+    programmes,
+    uniteeDeGestions,
     bailleurs,
     entreprisesExecutante,
     institutions,
@@ -96,9 +127,10 @@ export default new Vuex.Store({
     ongs,
     missionDeControles,
     projets,
-    programmes,
-    uniteeDeGestions,
-    uniteesDeMesure
+    uniteesDeMesure,
+    composantes,
+    activites,
+    taches,
   }
 });
 

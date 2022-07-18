@@ -18,14 +18,15 @@ import ProjetService from "@/services/modules/projet.service";
 
 export default {
     
-    FETCH_LIST_PROJET : async ({ commit }) => {
+    FETCH_LIST_PROJET : async ({ commit }, {id}) => {
 
-        const { data, status } = await ProjetService.get();
+        const { data, status } = await ProjetService.programme(id);
 
         commit(SET_LIST_PROJET, data.data);
 
         return { data, status };
     },
+    
 
     async GET_PROJET ({ commit, getters }, {key, value }) {
 
