@@ -277,7 +277,7 @@ export default {
 
       let projet = utils.extractFormData(this.champs, this.projetAttributs)
 
-      projet.programmeId = this.currentUser?.programme.id
+      projet.programmeId = this.currentUser?.programme?.id
       
       if(this.projet?.id)
       {

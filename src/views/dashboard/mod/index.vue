@@ -308,7 +308,7 @@ export default {
 
         let mod = extractFormData(this.champs, this.modAttributs)
 
-        mod.programmeId = this.currentUser?.programme.id
+        mod.programmeId = this.currentUser?.programme?.id
 
         if(this.mod?.id)
         {

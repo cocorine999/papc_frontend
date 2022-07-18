@@ -417,7 +417,7 @@
 
             this.ongOrAgence = extractFormData(this.champs, this.ongOrAgenceAttributs, ['data', 'data', 'data', 'data'])
 
-            this.ongOrAgence.programmeId = this.currentUser?.programme.id
+            this.ongOrAgence.programmeId = this.currentUser?.programme?.id
 
             this.ongOrAgence.type = this.ongOrAgence.type.id
             

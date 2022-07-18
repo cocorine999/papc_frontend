@@ -390,7 +390,7 @@ export default {
       });
 
       entrepriseExecutante.modId = entrepriseExecutante.mod;
-      entrepriseExecutante.programmeId = this.currentUser?.programme.id;
+      entrepriseExecutante.programmeId = this.currentUser?.programme?.id;
       if (this.entrepriseExecutante?.id) {
         this.updateEntrepriseExecutante({
           entrepriseExecutante: entrepriseExecutante,
