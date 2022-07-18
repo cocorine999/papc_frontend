@@ -327,7 +327,7 @@ export default {
   
   mounted() {
     console.log("Fetching projets ...")
-    this.fetchProjets({id : 1}).then((value) => {
+    this.fetchProjets({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of bailleurs...")
           this.fetchBailleurs()

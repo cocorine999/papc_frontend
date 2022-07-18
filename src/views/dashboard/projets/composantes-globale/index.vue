@@ -382,13 +382,14 @@ export default {
       identifiant: state => state.auths.identifiant,
       composante: state => state.composantes.composante,
       loading : state => state.loading,
-      errors : state => state.errors
+      errors : state => state.errors,
     }),
 
     ...mapGetters({
       composantes: "composantes/getComposantes", 
       composante: "getComposante",
-      projets: "projets/getProjets"
+      projets: "projets/getProjets",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
       
     })
   },
@@ -543,10 +544,10 @@ export default {
   
   mounted() {
     console.log("Fetching list of composantes ...")
-    this.fetchComposantes({id : 1}).then((value) => {
+    this.fetchComposantes({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of projets...")
-          this.fetchProjets({id : 1})
+          this.fetchProjets({id : this.currentUser?.programme?.id})
         }, 1000);
     })
   }

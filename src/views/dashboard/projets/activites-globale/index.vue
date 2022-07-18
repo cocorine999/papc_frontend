@@ -1046,7 +1046,7 @@ export default {
   
   mounted() {
     console.log("Fetching list of activites ...")
-    this.fetchActivites({id : 1})
+    this.fetchActivites({id : this.currentUser?.programme?.id})
   }
 }
 </script>
