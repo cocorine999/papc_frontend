@@ -114,6 +114,7 @@ export default {
     return {
       showModal:false,
       line:false,
+      cols:1,
       mosaique:true,
        link:"https://mapiwee.com/wp-content/uploads/2020/07/Mapiwee-by-Maped-limportance-de-leau-expliqu%C3%A9-aux-enfants.jpeg",
       title: '',
@@ -278,6 +279,10 @@ export default {
       let projet = utils.extractFormData(this.champs, this.projetAttributs)
 
       projet.programmeId = this.currentUser?.programme?.id
+
+      projet.bailleurId = projet.bailleur.id
+
+      projet.statut = projet.statut.etat
       
       if(this.projet?.id)
       {
