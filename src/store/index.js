@@ -24,6 +24,8 @@ import missionDeControles from "./modules/missionDeControles/index";
 
 import uniteeDeGestions from "./modules/uniteeDeGestions/index";
 
+import uniteesDeMesure from "./modules/uniteesDeMesure/index";
+
 import composantes from "./modules/composantes/index";
 
 import activites from "./modules/activites/index";
@@ -125,6 +127,7 @@ export default new Vuex.Store({
     ongs,
     missionDeControles,
     projets,
+    uniteesDeMesure,
     composantes,
     activites,
     taches,

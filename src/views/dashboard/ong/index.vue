@@ -4,7 +4,7 @@
     <div v-if="showModal">      
       <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4">
-          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @updateInputData="updateInputData"></vform>
+          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" @updateInputData="updateInputData"></vform>
         </div>
       </modal-top-right>
     </div>
@@ -417,7 +417,7 @@
 
             this.ongOrAgence = extractFormData(this.champs, this.ongOrAgenceAttributs, ['data', 'data', 'data', 'data'])
 
-            this.ongOrAgence.programmeId = this.currentUser?.programme.id
+            this.ongOrAgence.programmeId = this.currentUser?.programme?.id
 
             this.ongOrAgence.type = this.ongOrAgence.type.id
             
@@ -490,7 +490,7 @@
 
         agencesDeCommunication: function(agences) {
           
-          let data = [...this.ongs, ...agences]
+          let data = [...this.ongs, ...this.agencesDeCommunication]
 
           sortData({ data: data })
 
@@ -499,13 +499,23 @@
 
         ongs: function(ongs) {
           
-          let data = [...ongs, ...this.agencesDeCommunication]
+          let data = [...this.ongs, ...this.agencesDeCommunication]
 
           sortData({ data: data })
           
           this.ongsOrAgences = data
 
-        }
+        }/* ,
+
+        ongsOrAgences: function() {
+          
+          let data = [...this.ongs, ...this.agencesDeCommunication]
+
+          sortData({ data: data })
+          
+          this.ongsOrAgences = data
+
+        } */
 
       },
       

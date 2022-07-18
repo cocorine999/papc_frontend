@@ -11,7 +11,7 @@ export default class EntrepriseExecutante{
         this.user = is(Object, entrepriseExecutante.user) ? new User(entrepriseExecutante.user) : entrepriseExecutante.user,
         this.passations = entrepriseExecutante.passations
         this.sites = entrepriseExecutante.sites
-        this.bailleurs = isEmpty(entrepriseExecutante.bailleurs) ? [] : Array<Bailleur> entrepriseExecutante.bailleurs
+        this.bailleurs = entrepriseExecutante.bailleurs
         this.created_at = is(Object, entrepriseExecutante.created_at) ? (new Date(entrepriseExecutante.created_at._date)).toISOString() : entrepriseExecutante.created_at
         
     }

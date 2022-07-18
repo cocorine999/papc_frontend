@@ -6,7 +6,7 @@
         <span @click="changeState" v-else-if="attribut =='terminer' && status " class="text-xs cursor-pointer bg-red-500 text-white p-1 border-red-500 outile-none "> {{attribut}}</span>
         <span @click="changeState" v-else-if="attribut =='en attente' && status " class="text-xs cursor-pointer bg-yellow-500 text-white p-1 border-yellow-500 outile-none "> {{attribut}}</span>
         <div @click.stop="updateData" :class="{'whitespace-nowrap':depliment}" v-if="attribut !='en cours' && attribut != 'terminer' && attribut != 'en attente' && isVisible  " class="text-xs cursor-pointer">
-          <p v-if="!depliment" class="cursor-pointer font-semibold"> {{attribut.substring(0,30)}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut.length > 30" :title="attribut" >...</span></p>
+          <p v-if="!depliment" class="cursor-pointer font-semibold"> {{attribut? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut.length > 30" :title="attribut" >...</span></p>
           <p v-else class="cursor-pointer font-semibold flex space-x-2"> 
             <span> {{ attribut }}</span>
             <span @click="depliment=false" >

@@ -14,7 +14,7 @@
             @click="goEntreprise"
             :class="{ 'border-primary border-b-8': seeEntreprise }"
             class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
-            >Listes MO
+            >Listes entreprises executantes
           </span>
           <span
             @click="goChecklist"
@@ -205,8 +205,10 @@ export default {
     return {
       title: "Ajouter une nouvelle entreprise executante",
       submitText: "Ajouter",
+      seeChecklist: false,
+      seeEntreprise: true,
       showModal: false,
-      entrepriseExecutanteAttributs: ["nom", "email", "contact"],
+      entrepriseExecutanteAttributs: ["nom", "email", "contact", "mod"],
 
       champs: [
         {
@@ -317,11 +319,18 @@ export default {
       this.setEntrepriseExecutante(entrepriseExecutante);
 
       this.entrepriseExecutanteAttributs.forEach((item) => {
-        this.champs.find((value, index) => {
-          if (value.key === item) {
+        this.form.find((value, index) => {
+          if (value.label === item) {
             if (item === "nom" || item === "email" || item === "contact")
-              this.champs[index]["data"] = this.entrepriseExecutante.user[item];
-            else this.champs[index]["data"] = this.entrepriseExecutante[item];
+              this.form[index]["value"] = this.entrepriseExecutante.user[item];
+            else if( value.label === "mod" ){
+              console.log(value.label)
+              console.log(this.form[index]["value"])
+              console.log(this.entrepriseExecutante)
+              this.form[index]["value"] = this.entrepriseExecutante.modId;
+              console.log(this.form[index]["value"])
+            }
+            else this.form[index]["value"] = this.entrepriseExecutante[item];
           }
         });
       });
@@ -367,7 +376,7 @@ export default {
     },
 
     sendForm() {
-      this.champs = this.champs.map((item) => {
+      this.form = this.form.map((item) => {
         item.errors = [];
         return item;
       });
@@ -380,8 +389,8 @@ export default {
         });
       });
 
-      entrepriseExecutante.programmeId = this.currentUser?.programme.id;
       entrepriseExecutante.modId = entrepriseExecutante.mod;
+      entrepriseExecutante.programmeId = this.currentUser?.programme?.id;
       if (this.entrepriseExecutante?.id) {
         this.updateEntrepriseExecutante({
           entrepriseExecutante: entrepriseExecutante,

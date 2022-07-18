@@ -255,7 +255,7 @@
 
             let institution = extractFormData(this.champs, this.institutionAttributs)
 
-            institution.programmeId = this.currentUser?.programme.id
+            institution.programmeId = this.currentUser?.programme?.id
 
             if(this.institution?.id)
             {
