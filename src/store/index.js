@@ -1,19 +1,30 @@
 import Vue from "vue";
+
 import Vuex from "vuex";
 
 import auths from "@/store/modules/auths/index";
 
+import agencesDeCommunication from "./modules/agencesDeCommunication/index";
+
+import ongs from "./modules/ongs/index";
+
 import bailleurs from "@/store/modules/bailleurs/index";
 
-import programmes from "@/store/modules/programmes/index";
+import entreprisesExecutante from "./modules/entreprisesExecutante/index";
+
+import institutions from "./modules/institutions/index";
 
 import projets from "./modules/projets/index";
+
+import programmes from "./modules/programmes/index";
 
 import uniteeDeGestions from "@/store/modules/uniteeDeGestions/index";
 
 import mods from "./modules/mods/index";
 
 import missionDeControles from "./modules/missionDeControles/index";
+
+import uniteeDeGestions from "./modules/uniteeDeGestions/index";
 
 import composantes from "./modules/composantes/index";
 
@@ -106,12 +117,16 @@ export default new Vuex.Store({
 
   modules: {
     auths,
+    agencesDeCommunication,
     programmes,
-    projets,
     uniteeDeGestions,
     bailleurs,
+    entreprisesExecutante,
+    institutions,
     mods,
+    ongs,
     missionDeControles,
+    projets,
     composantes,
     activites,
     taches,

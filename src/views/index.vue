@@ -159,13 +159,9 @@ export default {
 
   watch: {
     loading: function(params) {
-      this.loading = params
+      //this.loading = params
     }
-  },
-
-  mounted() {
-    console.log(this.identifiant)
-  },
+  }
 
 }
 </script>

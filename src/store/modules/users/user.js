@@ -1,4 +1,5 @@
-import { is } from 'ramda'
+import { is, isEmpty } from 'ramda'
+import Role from '@/store/modules/roles/role'
 
 export default class User {
     constructor (user = {}) 
@@ -10,6 +11,7 @@ export default class User {
         this.contact = is(String, user.contact) ? parseInt(user.contact) : '',
         this.type = user.type,
         this.poste = user.poste,
-        this.created_at = is(String, user.created_at) ? user.created_at : false
+        this.roles = isEmpty(user.roles) ? [] : Array<Role> user.roles
+        this.created_at = is(Object, user.created_at) ? (new Date(user.created_at._date)).toISOString() : user.created_at
     }
 }

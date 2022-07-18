@@ -7,7 +7,6 @@ export default class Mod {
     constructor (mod = {}) 
     {
         this.id = is(Number, mod.id) ? parseInt(mod.id) : mod.id,
-        this.nom = mod.nom,
         this.programmeId = is(Number, mod.programmeId) ? (mod.programmeId) : mod.programmeId,
         this.userId = is(Number, mod.userId) ? (mod.userId) : mod.userId,
         this.user = is(Object, mod.user) ? new User(mod.user) : mod.user,

@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import MissionDeControleService from "@/services/modules/mission.controle.service";
+import MissionDeControle from "./mission.controle";
 
 export default {
     
@@ -22,30 +23,35 @@ export default {
 
         const { data, status } = await MissionDeControleService.get();
 
-        commit(SET_LIST_MISSION_DE_CONTROLE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_MISSION_DE_CONTROLE, data.data);
 
         return { data, status };
     },
 
     async GET_MISSION_DE_CONTROLE ({ commit, getters }, {key, value }) {
 
-        let missionDeControle = getters.findMissionDeControle({key: key, value : value})
+        let missionDeControle = null
+
+        missionDeControle = getters.findMissionDeControle({key: key, value : value})
 
         if((missionDeControle === null || missionDeControle || undefined) && typeof value === "int"){
 
             const { data, status } = await MissionDeControleService.get(value);
 
-            missionDeControle = data.data
-
-            return missionDeControle
+            if(status === 200 || status === 201)
+                missionDeControle = data.data
         }
+
+        return missionDeControle;
     },
 
     async STORE_MISSION_DE_CONTROLE ({ commit }, payload) {
         
         const { data, status } = await MissionDeControleService.create(payload);
 
-        commit(ADD_MISSION_DE_CONTROLE, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_MISSION_DE_CONTROLE, data.data);
 
         return { data, status };
 
@@ -55,7 +61,8 @@ export default {
         
         const { data, status } = await MissionDeControleService.update(id, missionDeControle);
 
-        commit(MODIFY_MISSION_DE_CONTROLE, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_MISSION_DE_CONTROLE, data.data);
 
         return { data, status };
 
@@ -65,7 +72,8 @@ export default {
         
         const { data, status } = await MissionDeControleService.destroy(idMissionDeControle);
 
-        commit(REMOVE_MISSION_DE_CONTROLE, idMissionDeControle);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_MISSION_DE_CONTROLE, idMissionDeControle);
 
         return { data, status };
 

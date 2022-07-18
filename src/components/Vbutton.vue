@@ -30,7 +30,7 @@
          </div>
       </span>
     </button>
-    <button v-if="template==='danger'"  type="reset" class=" bg-red-500 py-2 px-4 border text-white border-red-500 rounded-md font-semibold outline-none">
+    <button v-if="template==='danger'" type="reset" v-on:click="$emit('close')" class=" bg-red-500 py-2 px-4 border text-white border-red-500 rounded-md font-semibold outline-none">
       <span v-if="!isloading">
         <slot></slot>
       </span>

@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import ModService from "@/services/modules/mod.service";
+import Mod from "./mod";
 
 export default {
     
@@ -22,30 +23,35 @@ export default {
 
         const { data, status } = await ModService.get();
 
-        commit(SET_LIST_MOD, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_MOD, data.data);
 
         return { data, status };
     },
 
     async GET_MOD ({ commit, getters }, {key, value }) {
 
-        let mod = getters.findmod({key: key, value : value})
+        let mod = null
+
+        mod = getters.findmod({key: key, value : value})
 
         if((mod === null || mod || undefined) && typeof value === "int"){
 
             const { data, status } = await ModService.get(value);
 
-            mod = data.data
-
-            return mod
+            if(status === 200 || status === 201)
+                mod = data.data
         }
+
+        return mod;
     },
 
     async STORE_MOD ({ commit }, payload) {
         
         const { data, status } = await ModService.create(payload);
 
-        commit(ADD_MOD, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_MOD, data.data);
 
         return { data, status };
 
@@ -55,7 +61,8 @@ export default {
         
         const { data, status } = await ModService.update(id, mod);
 
-        commit(MODIFY_MOD, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_MOD, data.data);
 
         return { data, status };
 
@@ -65,7 +72,8 @@ export default {
         
         const { data, status } = await ModService.destroy(idMod);
 
-        commit(REMOVE_MOD, idMod);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_MOD, idMod);
 
         return { data, status };
 

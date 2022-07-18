@@ -1,9 +1,9 @@
 <template>
   <dashboard>
     <div class="w-full p-4">
-    <vmodal v-if="showModal" :title="title"  v-on:close="showCloseModal">
-      <form action="" @submit.prevent="sendForm" class="px-12" style="width:60vw !important" >
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+    <modal-top-right v-if="showModal" :title="title"  v-on:close="showCloseModal">
+      <form action="" @submit.prevent="save" class="px-4"  >
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required v-model="composanteAttributs.nom" key="nom" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <select v-model="composanteAttributs.position" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input v-model="composanteAttributs.poids" required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
+        <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input v-model="composanteAttributs.budgetNational" required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
@@ -70,7 +70,7 @@
             </svg>
           </button>
 
-          <button v-if="title == 'Modifier un nouveau composant'  " type="submit" class='w-full mx-4 px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
+          <button v-if="title == 'Modifier un nouveau composant'  " type="submit" class='w-full px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
             <span  class="mx-2 text-xs font-semibold uppercase" v-if="loading == false">
               Modifier
             </span>
@@ -89,7 +89,8 @@
           </button>
         </div>
       </form>
-    </vmodal>
+    </modal-top-right>
+    
     <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
@@ -124,78 +125,117 @@
       </div>
       
       <button v-if="seeComposant" @click="addComposante" title="ajouter une composante"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">ajouter une composante</span>
+        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+        <span class="mx-2 text-sm font-semibold">ajouter une composante</span>
       </button>
      
     </div>
-    <!--Filtre sur projet -->
-      <div class="">
-        <select class="px-11 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-          <option class="font-semibold"> Tous </option>
-          <option class="font-semibold"  v-for="projet in projets" :key="projet.id" :value="projet.id"> {{projet.nom}} </option>
-        </select>
-      </div>
-     <!--Filtre sur projet -->
+    
     <div v-if="seeComposant">
-      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-      <div v-for="composante in composantes" :key="composante.id">
-        <!-- cards composantes -->
-        <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-          <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Code : {{composante.code}} </span>
-          <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
-
-            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{composante.sigle}}</span>
-            <span v-if="composante.statut = 0" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
-            <span v-if="composante.statut = 2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
-            <span v-if="composante.statut = -1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
-
-          <!-- dots -->
-          <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-          <!-- ./dots -->
-          <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>{{composante.position}} :</span> {{composante.nom}} </p>
-          <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
-            <i class='bx bxs-wallet bx-md' ></i>
-            <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.pret}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="flex items-center justify-between ">
+        <!--Filtre sur projet -->
+        <div class="w-2/5 flex items-center space-x-2">
+          <multiselect v-model="valueFiltre" :options="options" :custom-label="selectProjet"  placeholder="selectionnez un projet" label="name" track-by="name"></multiselect>
+          <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
+            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            <span>filtre</span>
+          </button>
+          <div v-else  class="px-6 w-full">
+            <div class="bg-gray-300 h-2 w-full rounded-full relative">
+              <span class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer" :style="`left:${rangeValue}%`"></span>
+              <span class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"  :style="`width:${rangeValue}%`"></span>
+            </div>
+            <div class="flex justify-between mt-2 text-xs text-gray-600">
+              <span @click="filtreRange(0)" class="w-8 cursor-pointer text-left">0%</span>
+              <span @click="filtreRange(25)" class="w-8 cursor-pointer text-center">25%</span>
+              <span @click="filtreRange(50)" class="w-8 cursor-pointer text-center">50%</span>
+              <span @click="filtreRange(75)" class="w-8 cursor-pointer text-center">75%</span>
+              <span @click="filtreRange(100)" class="w-8 cursor-pointer text-right">100%</span>
+              <button @click="showFiltre = false" class="text-white bg-blue-300 p-1">revenir</button>
+            </div>
+          
           </div>
         </div>
-        <!-- End cards composantes -->
+      <!--Filtre sur projet -->
+          <nav class="flex text-sm align-middle justify-evenly">
+          <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+            attentes 
+              <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined">
+              5
+              </span>
+            </span>
+            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+              validés 
+              <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
+              9
+              </span>
+            </span>
+            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+              rejetés
+              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
+              8
+              </span>
+            </span>
+          </nav>
+        </div>
       </div>
-    </div>
-    <div v-if="line"  class="line my-4">
-      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-          <table class="w-full">
-            <thead>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Composantes </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">BN </th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">EPM-PRET</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">poids</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">status</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
-            </thead>
-            <tbody>
-              <tr class="bg-white" v-for="composante in composantes" :key="composante.id">
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{composante.position}} ~ Projet {{index * 2}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.description}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.budgetNational}} </td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.pret}}</td>
-                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{composante.poids}} </td>
-                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                  <span v-if="composante.statut == 0" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En cours</span>
-                  <span v-if="composante.statut == 2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">Terminer</span>
-                  <span v-if="composante.statut == 1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En retard</span>
-                  <span v-if="composante.statut == -1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En attente</span>
-                  <span v-if="composante.statut == -2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">Non validé</span>
-                </td>
-                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
-              </tr>
-            </tbody>
-          </table>
+      <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+        <div v-for="composante in composantes" :key="composante.id">
+          <!-- cards composantes -->
+          <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
+            <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Code : {{composante.code}} </span>
+            <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
+
+              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{composante.sigle}}</span>
+              <span v-if="composante.statut == 0" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+              <span v-if="composante.statut == 2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
+              <span v-if="composante.statut == -1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
+
+            <!-- dots -->
+            <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
+            <!-- ./dots -->
+            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>{{composante.position}} :</span> {{composante.nom}} </p>
+            <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
+              <i class='bx bxs-wallet bx-md' ></i>
+              <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.pret}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+            </div>
+            <!-- End cards composantes -->
+          </div>
+        </div>
       </div>
-    </div>
+      <div v-if="line"  class="line my-4">
+        <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
+            <table class="w-full">
+              <thead>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Composantes </th>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description </th>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">BN </th>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">EPM-PRET</th>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">poids</th>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">status</th>
+                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
+              </thead>
+              <tbody>
+                <tr class="bg-white" v-for="composante in composantes" :key="composante.id">
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{composante.position}} ~ Projet {{index * 2}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.description}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.budgetNational}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.pret}}</td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{composante.poids}} </td>
+                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
+                    <span v-if="composante.statut == 0" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En cours</span>
+                    <span v-if="composante.statut == 2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">Terminer</span>
+                    <span v-if="composante.statut == -1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En retard</span>
+                  </td>
+                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
     </div>
 
     <div v-if="seeSuivi">
@@ -271,12 +311,13 @@
       </div>
     </div>
     
-  </div>
   </dashboard>
  
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
+import Multiselect from 'vue-multiselect'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
@@ -291,9 +332,24 @@ export default {
     Vmodal,
     Titre,
     SearchBar,
+    Multiselect,
+    ModalTopRight
   },
   data() {
     return {
+      valueFiltre:'',
+      pending:false,
+      success:true,
+      rejected:false,
+      rangeValue:0,
+      showFiltre:false,
+      options:[
+        {name:'projet1'},
+        {name:'projet2'},
+        {name:'projet3'},
+        {name:'projet4'},
+        {name:'projet5'},
+      ],
       showModal:false,
       loading:false,
       line:false,
@@ -495,7 +551,7 @@ export default {
   }
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 
 </style>
