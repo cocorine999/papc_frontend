@@ -3,17 +3,9 @@
     <div class="w-full p-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-          <form style="width:60vw;height: 450px;" class="p-4 overflow-auto">
-            <div v-if="title =='Ajouter un nouveau projet'">
-              <vform template="default"  :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+            <div>
+              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
             </div>
-            <div v-if="title =='Modifier un nouveau projet'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
-            </div>
-            <div v-if="title =='Dupliquer un nouveau projet'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
-            </div>
-          </form>
         </modal-top-right>
       </div>
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
@@ -114,6 +106,7 @@ export default {
     return {
       showModal:false,
       line:false,
+      submitText:"Enregistrer",
       cols:1,
       mosaique:true,
        link:"https://mapiwee.com/wp-content/uploads/2020/07/Mapiwee-by-Maped-limportance-de-leau-expliqu%C3%A9-aux-enfants.jpeg",
@@ -227,6 +220,8 @@ export default {
 
       this.title = 'Modifier un projet'
 
+      this.submitText="Enregistrer",
+
       this.setProjet(projet)
 
       this.projetAttributs.forEach((item) => {
@@ -234,12 +229,7 @@ export default {
         this.champs.find((value, index) => {
 
           if(value.key === item){
-            if(value.key === 'debut' || value.key === 'fin')
-            {
-              this.champs[index]['data'] = this.projet[item] + "-01"
-            }else{
-                this.champs[index]['data'] = this.projet[item]
-            }
+            this.champs[index]['data'] = this.projet[item]
           }
 
         })
@@ -280,9 +270,11 @@ export default {
 
       projet.programmeId = this.currentUser?.programme?.id
 
-      projet.bailleurId = projet.bailleur.id
+      projet.bailleurId = projet.bailleurId.id
 
       projet.statut = projet.statut.etat
+
+      console.log(projet)
       
       if(this.projet?.id)
       {
@@ -336,7 +328,7 @@ export default {
         setTimeout(() => {
           console.log("Fetching list of bailleurs...")
           this.fetchBailleurs()
-        }, 1000);
+        }, 500);
     })
   }
 }
