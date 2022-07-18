@@ -18,9 +18,9 @@ import ActiviteService from "@/services/modules/activite.service";
 
 export default {
     
-    FETCH_LIST_ACTIVITE : async ({ commit }) => {
+    FETCH_LIST_ACTIVITE : async ({ commit }, {id}) => {
 
-        const { data, status } = await ActiviteService.get();
+        const { data, status } = await ActiviteService.programme(id);
 
         commit(SET_LIST_ACTIVITE, data.data);
 

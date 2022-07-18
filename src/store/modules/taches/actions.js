@@ -18,9 +18,9 @@ import TacheService from "@/services/modules/tache.service";
 
 export default {
     
-    FETCH_LIST_TACHE : async ({ commit }) => {
+    FETCH_LIST_TACHE : async ({ commit }, {id}) => {
 
-        const { data, status } = await TacheService.get();
+        const { data, status } = await TacheService.programme();
 
         commit(SET_LIST_TACHE, data.data);
 

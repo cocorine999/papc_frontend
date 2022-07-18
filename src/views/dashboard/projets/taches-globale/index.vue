@@ -20,8 +20,7 @@
           <label
             class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
             >Description
-            <span class="px-2 text-lg font-black text-red-700">*</span></label
-          >
+            <span class="px-2 text-lg font-black text-red-700">*</span></label>
           <input
             required
             class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
@@ -132,7 +131,7 @@
                   width="1.5em"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
+                  <path>
                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"
                   ></path></svg
               ></span>

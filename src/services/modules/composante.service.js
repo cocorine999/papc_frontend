@@ -25,17 +25,20 @@ const ComposantesService = {
       return ApiService.delete(`composantes/${slug}`);
     },
 
-    projet(slug) {
-      return ApiService.get(`composantes/${slug}/projets`);
-    },
-
     sous_composantes(slug) {
-      return ApiService.get(`composantes/${slug}/sous-composantes`);
+      return ApiService.get(`composantes/sousComposantes/${slug}`);
     },
 
     activites(slug) {
-      return ApiService.get(`composantes/${slug}/activites`);
-    }
+      return ApiService.get(`composantes/activites/${slug}`);
+    },
+
+    programme(slug) {
+      return ApiService.get(`programmes/composantes/${slug}`);
+    },
+    programmeSc(slug) {
+      return ApiService.get(`programmes/sousComposantes/${slug}`);
+    },
 
   };
 

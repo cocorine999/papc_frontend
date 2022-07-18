@@ -5,7 +5,7 @@
         <form action="" @submit.prevent="save" class="p-4" >
             <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light">Nom du activé <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+              <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du activite" />
             </div>
             <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
@@ -14,7 +14,7 @@
             <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Selectionner un sous composant <span class="px-2 text-lg font-black text-red-700">*</span></label>
               <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option v-for="i in 5" :key="i.id">sous composante {{i}}</option>
+                <option v-for="i in 5" :key="i.id">sous activite {{i}}</option>
                 
               </select>
             </div>
@@ -237,7 +237,7 @@
       </div>
       <div v-if="seeActivite">
         <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(activite,index) in activites" :key="index">
+          <div v-for="activite in activites" :key="activite.id">
             <div class="relative">
               <!-- dots -->
                 <div class="absolute right-1 top-4 z-10  cursor-pointer">
@@ -248,42 +248,47 @@
                 
                 <!-- ./dots -->
                 <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
-                  <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+                  <i class='bx bx-coin-stack mr-1'></i>{{activite.sigle}}</span>
                 <div class="cursor-pointer">
                   <span class="absolute z-10 bottom-0 left-0 w-full h-10 text-white font-bold leading-3 px-8 py-3 text-left">
                     <span><i class='bx bxs-calendar mr-2'></i>{{activite.debut}}</span> au
                     <span><i class='bx bxs-calendar mr-2'></i>{{activite.fin}}</span></span>
                   <span
                     class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids
-                    : {{activite.Poids}} </span>
+                    : {{activite.poids}} </span>
 
-                  <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
+                  <span v-if="activite.statut == 0" class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
                     cours<i class='bx bx-time-five ml-1'></i></span>
+                  <span v-if="activite.statut == 2" class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
+                  <span v-if="activite.statut == 0" class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
+                  <span v-if="activite.statut == 1" class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En retard<i class='bx bx-time-five ml-1'></i></span>
+                  <span v-if="activite.statut == -1" class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
+                  <span v-if="activite.statut == -2" class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Non valideé<i class='bx bx-time-five ml-1'></i></span>
 
                   <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span
-                      class="font-bold italic"><span class="underline mr-2">Activité</span>:</span> {{activite.libelle}} </p>
+                      class="font-bold italic"><span class="underline mr-2">Activité</span>:</span> {{activite.nom}} </p>
                   <!--  -->
                   <div class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
                     <i class='bx bxs-pin bx-sm'></i>
                     <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Responsable : 
-                      <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
+                      <span class="font-bold italic text-lg uppercase"> {{activite.structureResponsable}} </span></div>
                   </div>
                   <div class="flex items-center text-gray-600 dark:text-gray-400 mb-1">
                     <i class='bx bxs-pin bx-sm'></i>
                     <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Associée : 
-                      <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
+                      <span class="font-bold italic text-lg uppercase"> {{activite.structureAssociee}} </span></div>
                   </div>
                   <!--  -->
                   <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
                     <i class='bx bxs-wallet bx-sm'></i>
                     <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">EMP : 
-                      <span class="font-bold italic text-lg"> {{activite.montantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
+                      <span class="font-bold italic text-lg"> {{activite.pret}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
                     </div>
                   </div>
                   <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
                     <i class='bx bxs-wallet bx-sm'></i>
                     <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">BN : <span
-                        class="font-bold italic text-lg">{{activite.montantBN}}</span><span class="ml-2 uppercase font-bold">fcfa</span>
+                        class="font-bold italic text-lg">{{activite.budgetNational}}</span><span class="ml-2 uppercase font-bold">fcfa</span>
                     </div>
                   </div>
                 </div>
@@ -308,17 +313,21 @@
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
               </thead>
               <tbody>
-                <tr class="bg-white" v-for="(i,index) in 10" :key="index">
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">activité {{index}} ~ sous composante {{index}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">100M </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">1000M </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i*5}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> Structure resp {{index}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> Structure assoc {{index}} </td>
+                <tr class="bg-white" v-for="(activite,index) in activites" :key="activite.id">
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{index + 1}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{activite.description}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{activite.budgetNational}} fcfa </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{activite.pret}} fcfa </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{activite.poids}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{activite.structureResponsable}} </td>
+                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{activite.structureAssociee}} </td>
                   <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                    <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
+                    <span v-if="activite.statut == 1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en retard</span>
+                    <span v-if="activite.statut == 0" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
+                    <span v-if="activite.statut == -2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">non validé</span>
+                    <span v-if="activite.statut == -1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en attente</span>
+                      <span v-if="activite.statut == 2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">terminer</span>
                   </td>
                   <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="optionActivite" ></dropdown></td>
                 </tr>
@@ -513,6 +522,9 @@ import Vmodal from '@/components/Vmodal'
 import ModalTopRight from '@/components/ModalTopRight'
 import Dashboard from '@/layouts/Dashboard'
 
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
+
 export default {
   components: {
     Dashboard,
@@ -553,50 +565,6 @@ export default {
       dates:[
         {}
       ],
-       activites:[
-            {
-              libelle: "Construire les collecteurs d'assainissement pluvial et aménager les voies connexes dans les bassins Pa3 et Y",
-              MontantNE : " ",
-              MontantEPM :"20,034,864.60",
-              Poids : 19,
-              StructureResponsable : "Pool PAP",
-              StructureAssociée : "Agetur",
-              debut: "01-01-2022",
-              fin: 31-12-2022
-            },
-            {
-              libelle: "Construire les collecteurs d'assainissement pluvial et aménager les voies connexes dans le bassin AAc",
-              MontantNE : " ",
-              MontantEPM :" 20,416,551.77",
-              Poids : 19,
-              StructureResponsable : "Pool PAP",
-              StructureAssociée : "Agetur",
-              debut: "01-03-2022",
-              fin: 31-12-2022
-            },
-          
-           
-              {
-                libelle: "Organiser des réunions d'information des parties populations riveraines sur les activités du projet",
-                MontantNE : " ",
-                MontantEPM :"",
-                Poids : 1,
-                StructureResponsable : "Pool PAP",
-                StructureAssociée : "Agetur",
-                debut: "01-01-2022",
-                fin: 31-12-2022
-              },
-              {
-                libelle: "Recruter une ONG en charge du développement et de la mise en œuvre de la stratégie de facilitation sociale pour l’engagement communautaire dans sa globalité y compris le plan IEC",
-                MontantNE : " ",
-                MontantEPM :"72,000.00",
-                Poids : 5,
-                StructureResponsable : "Pool PAP",
-                StructureAssociée : "",
-                debut: "01-01-2022",
-                fin: 31-12-2022
-              }
-       ],
       series: [{
         name: 'Inflation',
         data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
@@ -811,7 +779,37 @@ export default {
     }
     
   },
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      activite: state => state.activites.activite,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      activites: "activites/getActivites", 
+      activite: "activites/getActivite",
+      
+    })
+  },
+
   methods: {
+        //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setActivite: 'activites/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('activites', {
+      fetchActivites: "FETCH_LIST_ACTIVITE",
+      saveActivite: "STORE_ACTIVITE",
+      updateActivite: "UPDATE_ACTIVITE",
+      deleteActivite: "DESTROY_ACTIVITE"
+    }),
+
     gotoActivite() {
       this.seePlan = false
       this.seeActivite = true
@@ -870,21 +868,113 @@ export default {
       this.title ="Ajouter une activité"
       this.showModal = true
     },
-    modifier() {
-      this.title ="Modifier une activité"
-      this.showModal = true
+    modifier(activite) {
+
+      this.title = 'Modifier une activite'
+
+      this.setActivite(activite)
+
+      this.activiteAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            if(value.key === 'debut' || value.key === 'fin')
+            {
+              this.champs[index]['data'] = this.activite[item] + "-01"
+            }else{
+                this.champs[index]['data'] = this.activite[item]
+            }
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
     },
+
+    async supprimer(activite) {
+      if(window.confirm("Voulez-vous supprimer cette activite " + activite.nom))
+        await this.deleteactivite(activite.id)
+    },
+
     dupliquer() {
       this.title ="Dupliquer une activité"
       this.showModal = true
     },
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.activite = {}
+    },
+
     gotoNext() {
       this.$router.push('/dashboard/projets/taches-globale')
     },
     editerSuivi() {
       this.showInput = false
       
+    },
+
+        sendForm() {
+
+      /*this.champs = this.champs.map(item => { item.errors = []; return item})
+
+      let activite = utils.extractFormData(this.champs, this.projetAttributs)*/
+
+      let activite = this.activiteAttributs
+      
+      if(this.activite?.id)
+      {
+
+        this.updateactivite({activite: activite, id : this.activite?.id}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.close()
+          }
+
+        }).catch((error) => {
+
+          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+          this.champs.map(value => value.errors = this.erreurs[value.key])
+
+        })
+
+      }
+      else
+      {
+        console.log(activite)
+        
+        this.saveactivite(activite).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
+          }
+
+        })
+      }
     }
+  },
+  watch: {
+    loading: function(value) {
+      //this.loading = value
+    },
+
+    errors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    }
+
+  },
+  
+  mounted() {
+    console.log("Fetching list of activites ...")
+    this.fetchActivites({id : 1})
   }
 }
 </script>

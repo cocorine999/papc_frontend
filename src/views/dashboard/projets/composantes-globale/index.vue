@@ -2,30 +2,30 @@
   <dashboard>
     <div class="w-full p-4">
     <vmodal v-if="showModal" :title="title"  v-on:close="showCloseModal">
-      <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
+      <form action="" @submit.prevent="sendForm" class="px-12" style="width:60vw !important" >
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required v-model="composanteAttributs.nom" key="nom" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
+            <input v-model="composanteAttributs.description"  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
           </div>
         </div>
 
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option v-for="i in 5" :key="i.id" value=""> {{i}} </option>
+            <select v-model="composanteAttributs.position" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="i in 5" :key="i.id" :value="i"> {{i}} </option>
             </select>
           </div>
 
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un projet <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
+            <select v-model="composanteAttributs.projetId" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="projet in projets" :key="projet.id" :value="projet.id"> {{projet.nom}}</option>
 
             </select>
           </div>
@@ -34,14 +34,14 @@
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
+            <input v-model="composanteAttributs.poids" required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option value="0">En cours</option>
-              <option value="-1">En attente</option>
-              <option value="2">En terminer</option>
+            <select v-model="composanteAttributs.statut" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option :value="0">En cours</option>
+              <option :value="-1">En attente</option>
+              <option :value="2">En terminer</option>
             </select>
           </div>
         </div>
@@ -49,11 +49,11 @@
         <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
+            <input v-model="composanteAttributs.budgetNational" required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
+            <input v-model="composanteAttributs.pret" required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
           </div>
         </div>
 
@@ -61,7 +61,7 @@
         
 
         <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
-          <button v-if="title == 'Ajouter un nouveau composant' || title== 'Dupliquer un projet existant' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
+          <button v-if="title == 'Ajouter une nouvelle composante' || title== 'Dupliquer un projet existant' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
             <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
             Enregistrer et fermer
             </span>
@@ -123,9 +123,9 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
-      <button v-if="seeComposant" @click="addComposante" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if="seeComposant" @click="addComposante" title="ajouter une composante"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">ajouter un composant</span>
+          <span class="mx-2 text-sm font-semibold">ajouter une composante</span>
       </button>
      
     </div>
@@ -133,7 +133,7 @@
       <div class="">
         <select class="px-11 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
           <option class="font-semibold"> Tous </option>
-          <option class="font-semibold"  v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
+          <option class="font-semibold"  v-for="projet in projets" :key="projet.id" :value="projet.id"> {{projet.nom}} </option>
         </select>
       </div>
      <!--Filtre sur projet -->
@@ -186,7 +186,9 @@
                 <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
                   <span v-if="composante.statut == 0" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En cours</span>
                   <span v-if="composante.statut == 2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">Terminer</span>
-                  <span v-if="composante.statut == -1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En retard</span>
+                  <span v-if="composante.statut == 1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En retard</span>
+                  <span v-if="composante.statut == -1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En attente</span>
+                  <span v-if="composante.statut == -2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">Non validé</span>
                 </td>
                 <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
               </tr>
@@ -311,6 +313,7 @@ export default {
       dates:[
         {}
       ],
+      composanteAttributs : [],
      
     }
     
@@ -326,7 +329,9 @@ export default {
     }),
 
     ...mapGetters({
-      composantes: "composantes/getComposantes", composante: "getComposante",
+      composantes: "composantes/getComposantes", 
+      composante: "getComposante",
+      projets: "projets/getProjets"
       
     })
   },
@@ -344,6 +349,8 @@ export default {
       updateComposante: "UPDATE_COMPOSANTE",
       deleteComposante: "DESTROY_COMPOSANTE"
     }),
+
+    ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET' }),
 
     addDate() {
       this.dates.push({})
@@ -371,21 +378,7 @@ export default {
       this.showModal = value
     },
     addComposante() {
-      this.title='Ajouter un nouveau composante'
-
-      let formData = this.champs.map((value) => {
-/*          if(value.key === 'bailleurId'){ 
-            value['options'] = this.bailleurs
-          }
-
-          else if(value.key === 'statut'){ 
-            value['options'] = this.$store.state.statuts
-          }
-
-          return value */
-        })
-
-      this.champs = formData
+      this.title='Ajouter une nouvelle composante'
 
       this.showCloseModal(true)
     },
@@ -440,9 +433,11 @@ export default {
     },
     sendForm() {
 
-      this.champs = this.champs.map(item => { item.errors = []; return item})
+      /*this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let composante = utils.extractFormData(this.champs, this.projetAttributs)
+      let composante = utils.extractFormData(this.champs, this.projetAttributs)*/
+
+      let composante = this.composanteAttributs
       
       if(this.composante?.id)
       {
@@ -490,8 +485,13 @@ export default {
   },
   
   mounted() {
-    console.log("Fetching composantes ...")
-    this.fetchComposantes()
+    console.log("Fetching list of composantes ...")
+    this.fetchComposantes({id : 1}).then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of projets...")
+          this.fetchProjets({id : 1})
+        }, 1000);
+    })
   }
 }
 </script>

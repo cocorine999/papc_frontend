@@ -5,6 +5,8 @@ export default class Activite {
     {
         this.id = is(String, activite.id) ? activite.id : activite.id,
         this.nom = is(String, activite.nom) ? activite.nom :  activite.nom,
+        this.structureResponsable = is(String, activite.structureResponsable) ? activite.structureResponsable :  activite.structureResponsable,
+        this.structureAssociee = is(String, activite.structureAssociee) ? activite.structureAssociee :  activite.structureAssociee,
         this.code = is(String, activite.code) ? parseInt(activite.code) : activite.code,
         this.description = is(String, activite.description) ? activite.description : activite.description,
         this.type = is(String, activite.type) ? activite.type : activite.type,
@@ -13,7 +15,6 @@ export default class Activite {
         this.pret = is(String, activite.pret) ? parseInt(activite.pret) : activite.budgetNational,
         this.position = is(String, activite.position) ? parseInt(activite.position) : activite.budgetNational,
         this.tepPrevu = is(String, activite.tepPrevu) ? parseInt(activite.tepPrevu) : activite.budgetNational,
-        this.composante = is(Object, activite.composante) ? (activite.composante) : null,
         this.composanteId = is(String, activite.composanteId) ? activite.composanteId : activite.composanteId,
         this.user = is(Object, activite.user) ? (activite.user) : null,
         this.userId = is(String, activite.userId) ? activite.userId : activite.userId,
