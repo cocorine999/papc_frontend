@@ -1,6 +1,5 @@
 <template>
   <dashboard>
-    <div class="w-full p-4">
     <modal-top-right v-if="showModal" :title="title"  v-on:close="showCloseModal">
       <form action="" @submit.prevent="save" class="px-4"  >
         <div class="grid grid-cols-1 gap-5 mt-3 ">
