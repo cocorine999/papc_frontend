@@ -115,11 +115,11 @@
               class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md"
             >
               <span
-                class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right bg-pink-500"
+                class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right bg-primary"
                 ><p>Code : {{ bailleur.code }}</p></span
               >
               <span
-                class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold px-4 py-2 rounded-lg uppercase bg-pink-500"
+                class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold px-4 py-2 rounded-lg uppercase bg-primary"
                 ><i class="bx bx-coin-stack bx-md"></i
                 >{{ bailleur.sigle }}</span
               >

@@ -221,7 +221,7 @@ import extractFormData from '@/utils/extract-data'
         setTimeout(() => {
           console.log("Fetching list of programmes...")
           this.fetchProgrammes()
-        }, 1000);
+        }, 100);
       })
     }
   }

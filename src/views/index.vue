@@ -126,8 +126,8 @@ export default {
       await this.authentification(this.identifiant).then((response, status) =>{
 
           if (response.statut === "success" || response.status === 200) {
-            
-            window.location.assign(window.location.origin+"/dashboard")
+            this.$router.push('/dashboard/bailleur')
+            //window.location.assign(window.location.origin+"/dashboard/bailleur")
 
           }else{
             window.alert(response.message)
