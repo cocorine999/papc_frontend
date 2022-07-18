@@ -190,6 +190,8 @@
               <span v-if="composante.statut == 0" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
               <span v-if="composante.statut == 2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
               <span v-if="composante.statut == -1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
+              <span v-if="composante.statut == -2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Non validé<i class='bx bx-time-five ml-1'></i></span>
+              <span v-if="composante.statut == 1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En retard<i class='bx bx-time-five ml-1'></i></span>
 
             <!-- dots -->
             <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>

@@ -18,8 +18,6 @@ import projets from "./modules/projets/index";
 
 import programmes from "./modules/programmes/index";
 
-import uniteeDeGestions from "@/store/modules/uniteeDeGestions/index";
-
 import mods from "./modules/mods/index";
 
 import missionDeControles from "./modules/missionDeControles/index";
