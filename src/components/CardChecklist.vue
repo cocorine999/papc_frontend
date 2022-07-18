@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex" >
-      <div @click.stop="gotoDetails" class="bg-white relative cursor-pointer  shadow-lg border hover:border hover:border-gray-300 w-full hover:shadow-inner transition-shadow duration-300" style="max-height:350px" >
+      <div @click.stop="$emit('gotoDetails')" class="bg-white relative cursor-pointer  shadow-lg border hover:border hover:border-gray-300 w-full hover:shadow-inner transition-shadow duration-300" style="max-height:350px" >
         <div class="p-2 relative">
           <div class="flex justify-between items-center">
             <div class="flex space-x-2 items-center" >
@@ -39,9 +39,7 @@ export default {
     }
   },
   methods: {
-    gotoDetails() {
-      alert('page de details')
-    }
+   
   }
 }
 </script>

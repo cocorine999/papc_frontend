@@ -44,7 +44,7 @@
        <div class="flex space-x-4">
           <span @click="goOng" :class="{'border-primary border-b-8':seeOng}" class="inline-block cursor-pointer  text-lg uppercase font-bold  py-2">Les ONG/AGENCES DE COMMUNICATIONs </span>
           <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
-          <span @click="gochecklist" :class="{'border-primary border-b-8':seechecklist}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Mes checklist </span>
+          <span @click="gochecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Mes checklist </span>
         </div>
       
         <button v-if="seeOng" @click="addOngOrAgence" title="Ajouter une nouvelle ong ou agence"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
@@ -56,7 +56,7 @@
           <span class="mx-2 text-sm font-semibold">Enrégistrer une passation de marché</span>
         </button>
 
-        <router-link v-if="seechecklist" to="/dashboard/checklist/create"  title="Ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <router-link v-if="seeChecklist" to="/dashboard/checklist/create"  title="Ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
           <span class="mx-2 text-sm font-semibold"> Ajouter </span>
         </router-link>
@@ -64,9 +64,16 @@
     </div>
 
     <div v-if="seeOng">
-     <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+    <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
       <div v-for="(ongOrAgence,index) in ongsOrAgences" :key="index">
-           <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
+
+        <div class="relative">
+            <div class="absolute right-1 top-4 z-10  cursor-pointer">
+              <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+            </div>
+                
+            <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
+                  
               <span class="absolute bg-yellow-500 text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{ ongOrAgence.user.type }}</span>
               <!-- dots -->
               <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
@@ -94,7 +101,10 @@
                 </svg>
                 <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ ongOrAgence.user.email }}</div>
               </div>
+                <!-- dots -->
             </div>
+        </div>
+
       </div>
     </div>
     <div v-if="line"  class="line my-4">
@@ -110,10 +120,10 @@
 
     <div v-if="seePassation">
       <div v-if="seePassation">
-        <vtable :headers="headers" :datas="dataTable2" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
+        <vtable :headers="passationHeaders" :datas="passations" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
       </div>
     </div>
-    <div v-if="seechecklist"> 
+    <div v-if="seeChecklist"> 
       <div  class="grid grid-cols-3 gap-4">
         <div v-for="i in 6" :key="i.id">
           <card-checklist
@@ -143,6 +153,8 @@
   import Dashboard from '@/layouts/Dashboard'
   import CardMod from '@/components/CardMod'
   import CardChecklist from '@/components/CardChecklist'
+import Dropdown from '@/components/Dropdown.vue'
+
   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
   import sortData from "@/utils/sort-data";
@@ -159,7 +171,8 @@
       SearchBar,
       CardMod,
       CardChecklist,
-      ModalTopRight
+      ModalTopRight,
+      Dropdown,
       
     },
     data() {
@@ -172,7 +185,7 @@
         ongsOrAgences: [],
         seeOng:true,
         seePassation:false,
-        seechecklist:false,
+        seeChecklist:false,
         title: '',
         ongOrAgenceAttributs: ["nom", "email", "contact", "type"],
         headersOngOrAgence:[
@@ -183,12 +196,6 @@
 
             {name:'Date de creation', cle:'created_at', edit : false},
 
-        ],
-
-        dataTable:[
-          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
         ],
 
         passationChamps:[
@@ -207,13 +214,11 @@
           {name:'Responsable sociologue',type:'',placeholdere:"Selectionnez un responsable",isSelect:true,isTextArea:false,data:'',required:true,options:['Responsable','Responsable2']},
         ],
 
-        dataTable2:[],
-
         cols:1,
 
         colsPassation:2,
 
-        headers:[
+        passationHeaders: [
             {name:'Nom createur',props:'createur',width:"w-24"},
             {name:'Site',props:'site',width:"w-36"},
             {name:'MOD',props:'mod',width:"w-36"},
@@ -233,6 +238,8 @@
           
           ],
 
+
+        passations:[],
         actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
@@ -242,17 +249,8 @@
         {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Type', key: 'type', type:'', placeholdere:'Choisir un type', isSelect:true, isTextArea:false, data:'', options: [{id: "ong", nom: "Ong"}, {id: "agence", nom: "Agence de communication"}], cle: 'id', value: 'nom', methode: this.textSelector, required:true, errors : []}
-
-      ],
-        cols:1,
-        option:[
-          {name:'supprimer'},
-          {name:'modifier'},
-        ]
-
-      }
-    },
-
+      ]
+    }},
     computed:{
         ...mapGetters({
           hasErrors : "GET_ERREURS",
@@ -299,19 +297,19 @@
         goOng() {
           this.seeOng = true
           this.seePassation = false
-          this.seechecklist = false
+          this.seeChecklist = false
         },
 
         goPassation() {
           this.seeOng = false
           this.seePassation = true
-          this.seechecklist = false
+          this.seeChecklist = false
         },
 
         gochecklist() {
           this.seeOng = false
           this.seePassation = false
-          this.seechecklist = true
+          this.seeChecklist = true
         },
         
         supprimerPassation(data) {
