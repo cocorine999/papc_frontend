@@ -117,6 +117,9 @@ export default {
     supprimer(data) {
       alert(data+ " à ete bien supprimer")
     },
+    dupliquer(data) {
+      alert(data+ " à ete bien supprimer")
+    },
     supprimerActivte(data) {
       alert(data+ " à ete bien supprimer")
     },

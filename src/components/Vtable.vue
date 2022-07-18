@@ -21,10 +21,10 @@
                 <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="getRowDetail($event, index,index)">
-                  </label>
+                  </label> 
                 </td>
-                <td  v-for="head in headers" :key="head.id" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <div class="text-xs w-full" v-if="head.props !== undefined"> 
+                <td  v-for="(head, indice) in headers" :key="indice" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                  <div class="text-xs w-full" v-if="head.props !== undefined">
                     <tr-table :data="data[head.props][head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[head.props][extra] }" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table>
                   </div>
                   <div class="text-xs w-full" v-if="head.props === undefined "> 

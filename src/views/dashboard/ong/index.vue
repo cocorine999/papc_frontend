@@ -69,7 +69,7 @@
 
         <div class="relative">
             <div class="absolute right-1 top-4 z-10  cursor-pointer">
-              <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+              <dropdown @gotoNext="gotoNext" @supprimer="supprimerOngOrAgence" @modifier="modifierOngOrAgence" @duplicate='dupliquerOngOrAgence' :option="option"></dropdown>
             </div>
                 
             <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
@@ -244,6 +244,8 @@ import Dropdown from '@/components/Dropdown.vue'
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
+
+      option: [{ name: "supprimer" }, { name: "modifier" }],
       champs:[
         {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
@@ -469,6 +471,10 @@ import Dropdown from '@/components/Dropdown.vue'
         },
 
         dupliquerChecklist(){
+
+        },
+
+        gotoNext(){
 
         },
 

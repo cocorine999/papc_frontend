@@ -203,14 +203,10 @@
               <span v-if="composante.statut == -2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Non validé<i class='bx bx-time-five ml-1'></i></span>
               <span v-if="composante.statut == 1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En retard<i class='bx bx-time-five ml-1'></i></span>
 
-<<<<<<< HEAD
             <!-- dots -->
             <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
             <!-- ./dots -->
             <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>{{composante.position}} :</span> {{composante.nom}} </p>
-=======
-            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
->>>>>>> e3ade0764f894ad5cba595b63bb0f75c62b7253e
             <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
               <i class='bx bxs-wallet bx-md' ></i>
               <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.pret}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>

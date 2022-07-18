@@ -47,7 +47,7 @@
               class="relative"
             >
                 <div class="absolute right-1 top-4 z-10  cursor-pointer">
-                          <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+                  <dropdown @gotoNext="gotoNext" @supprimer="supprimerInstitution(institution)"  @modifier="modifierInstitution(institution)" @duplicate='dupliquerInstitution(institution)' :option="option"></dropdown>
                 </div>
                 
                 <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
@@ -300,8 +300,11 @@
                   alert(value.response.data.errors.programmeId[0])
                 })
             }
+        },
+
+        gotoNext(){
+
         }
-  
   },
   
       watch: {

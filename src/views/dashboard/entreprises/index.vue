@@ -85,11 +85,11 @@
           </thead>
           <tbody class="bg-white">
             <tr
-              v-for="entrepriseExecutante in entreprisesExecutante"
-              :key="entrepriseExecutante.id"
+              v-for="(entrepriseExecutante, indice) in entreprisesExecutante"
+              :key="indice"
             >
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                {{ i }}
+                {{ indice }}
               </td>
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                 {{ entrepriseExecutante.user.nom }}
@@ -374,6 +374,18 @@ export default {
 
       this.setEntrepriseExecutante({});
     },
+
+    modifierChecklist(){
+
+    }, 
+     
+    supprimerChecklist(){
+
+    }, 
+     
+    dupliquerChecklist(){
+
+    }, 
 
     sendForm() {
       this.form = this.form.map((item) => {

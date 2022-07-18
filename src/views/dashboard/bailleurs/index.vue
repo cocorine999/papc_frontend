@@ -48,7 +48,7 @@
           <div class="flex items-center">
             <span
               title="vue en mosaique"
-              @click="switch1"
+              @click="switchBetweenCode({mosaique: true, line: false})"
               :class="{ 'border-2': mosaique }"
               class="p-2 cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"
               ><svg
@@ -67,7 +67,7 @@
             ></span>
             <span
               title="vue en ligne"
-              @click="switch2"
+              @click="switchBetweenCode({mosaique: false, line: true})"
               :class="{ 'border-2': line }"
               class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500"
               ><svg
@@ -110,7 +110,7 @@
           <div v-for="(bailleur, index) in bailleurs" :key="index">
             <div class="relative" >
               <div class="absolute right-1 top-4 z-10  cursor-pointer">
-                <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+                <dropdown @supprimer="supprimer(bailleur)" @modifier="modifier(bailleur)" @duplicate='dupliquer(bailleur)' :option="option"></dropdown>
               </div>
               
               <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
@@ -123,11 +123,11 @@
                   ><i class="bx bx-coin-stack bx-md"></i
                   >{{ bailleur.sigle }}</span
                 >
-                <!-- dots -->
+                <!-- dots 
                 <span class="absolute right-0 cursor-pointer"
                   ><i class="bx bx-dots-vertical-rounded bx-md pr-2"></i
                 ></span>
-                <!-- ./dots -->
+                 ./dots -->
                 <p
                   class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"
                 >
@@ -221,7 +221,7 @@
         </div>
 
         <div v-if="line" class="line my-4">
-          <vtable
+          <vtable id="datatable"
             :headers="headers"
             :datas="bailleurs"
             :actions="actions"
@@ -270,11 +270,11 @@ export default {
       title: "Ajouter un nouveau bailleur",
       submitText: "Enrégistrer",
       headers: [
-        { name: "Bailleurs", props: "user", cle: "nom" },
-        { name: "Sigle", props: "sigle" },
-        { name: "Code PTA", props: "code" },
-        { name: "Pays", props: "pays", edit: true },
-        { name: "Date creation", props: "created_at", edit : false },
+        { name: "Bailleurs", props: "user", cle: "nom"},
+        { name: "Sigle", cle: "sigle"},
+        { name: "Code PTA", cle: "code", edit : false },
+        { name: "Pays", cle: "pays", edit: true },
+        { name: "Date creation", cle: "created_at", edit : false },
       ],
 
       actions: [
@@ -380,14 +380,9 @@ export default {
       deleteBailleur: "DESTROY_BAILLEUR",
     }),
 
-    switch1() {
-      this.mosaique = true;
-      this.line = false;
-    },
-
-    switch2() {
-      this.mosaique = false;
-      this.line = true;
+    switchBetweenCode({mosaique, line}) {
+      this.mosaique = mosaique
+      this.line = line
     },
 
     addBailleur() {
@@ -502,9 +497,7 @@ export default {
 
   mounted() {
     console.log("Fetching bailleurs ...");
-    this.fetchBailleurs().then((data, status) => {
-      console.log(data, status)
-    })
+    this.fetchBailleurs()
   },
 };
 </script>

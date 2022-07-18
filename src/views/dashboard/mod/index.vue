@@ -68,9 +68,9 @@
             code="15555DC" 
             activite="Nombre d'accident routiere" 
             :unites="['personne','%','km']" 
-            @supprimer="supprimer"
-            @modifier="modifier"
-            @dupliquer="dupliquer"
+            @supprimer="supprimerChecklist"
+            @modifier="modifierChecklist"
+            @dupliquer="dupliquerChecklist"
             > </card-checklist>
         </div>
       </div>
@@ -283,7 +283,19 @@ export default {
 
       this.showCloseModal(true)
     },
-      
+     
+    modifierChecklist(){
+
+    }, 
+     
+    supprimerChecklist(){
+
+    }, 
+     
+    dupliquerChecklist(){
+
+    }, 
+
     close() {
       this.showCloseModal()
 

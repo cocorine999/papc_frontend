@@ -1478,7 +1478,6 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import Dropdown from "@/components/Dropdown";
 import Card from "@/components/Card";
 import SearchBar from "@/components/SearchBar";
 import Titre from "@/components/Titre";
@@ -1812,7 +1811,7 @@ export default {
     filtreRange(value) {
       this.rangeValue = value;
     },
-    
+
     selectProjet({ name }) {
       return `${name}`;
     },
