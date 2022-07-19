@@ -1,45 +1,20 @@
 <template>
   <dashboard>
     <div class="p-4">
-    <div v-if="showModal2">
-      <vmodal  :title="title"  v-on:close="showModal2 = false">
-        <form action="" @submit.prevent="save" class="px-12" style="width:50vw !important" >
-          <div class="grid grid-cols-1 gap-5 ">
-            <div class="grid grid-cols-1">
-              <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">libelle <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required  v-model="libelle" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le libelle " />
-            </div>
+    <div v-if="showModal">
+      <modal-top-right  :title="title"  v-on:close="close">
 
-            <div class="grid grid-cols-1">
-              <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <textarea name="" id="" v-model="description" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent"  rows="5"></textarea>
-              
-            </div>
-            
+          <div class="px-4">
+            <vform
+              template="default"
+              :champs="champs"
+              cols="1"
+              :submitText="submitText"
+              @sendForm="sendForm"
+              @closeModal="close" 
+            ></vform>
           </div>
-          <div class="my-3 flex justify-center space-x-3 ">
-            <button  type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-              <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-              Enregistrer et fermer
-              </span>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-            </button>
-
-          <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-primary hover:opacity-80'> 
-            <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-              Enregistrer et ajouter
-            </span>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-          </div>
-
-        
-        </form>
-      </vmodal>
+      </modal-top-right>
     </div>
     <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
       <div>
@@ -61,8 +36,8 @@
     
     <div class="my-8 flex justify-between items-center ">
       <titre>Les unités de mesure</titre>
-      <button  @click="addUnite" title="ajouter une activite"   class="p-2  overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+      <button  @click="addUniteeDeMesure" title="ajouter une activite"   class="py-2 px-4  overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">ajouter une unité de mesure</span>
       </button>
     </div>
@@ -75,16 +50,14 @@
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">#</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Nom</th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody class="bg-white">
-          <tr v-for="(item, i) in unites" :key="i">
+          <tr v-for="(uniteeDeMesure, i) in uniteesDeMesure" :key="i">
             
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{i+1}} </td>
-            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{item.nom}}</td>
-            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{item.description}}</td>
+            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{uniteeDeMesure.nom}}</td>
 
             
             <td class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5">
@@ -96,12 +69,12 @@
                   </svg>
                 </div> -->
                 
-                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="editer">
+                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="modifierUniteeDeMesure(uniteeDeMesure)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
                 </div>
-                <div   class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
+                <div   class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="supprimerUniteeDeMesure(uniteeDeMesure)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
@@ -117,57 +90,182 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+
+import { mapGetters, mapMutations, mapActions } from "vuex"
+
+import extractFormData from "@/utils/extract-data"
+
 export default {
   components: {
     Dashboard,
     Vmodal,
     Titre,
     SearchBar,
+    ModalTopRight
   },
-    data() {
-      return ({
-        
-        showModal2:false,
-        title:'',
-        nom:'',
-        description:'',
-        loading:false,
-        form: [],
-        unites : [
-          {nom: "nombre",description: "nombre",},
-          {nom: "%",description: "pourcentage",},
-          {nom: "ha",description: "hectare",},
-          {nom: "km",description: "kilometre",},
-          {nom: "oui",description: "oui",},
-          {nom: "non",description: "non",},
-          {nom: "ml",description: "mililitre",},
-          {nom: "million fcfa",description: "million de franc fcfa",},
-          {nom: "personne",description: "personne",},
-        ],
-        
-      });
-    },
-    mounted() {
-    },
-    methods: {
-      save() {
-        this.unites.push({nom:libelle,description:description})
-        this.showModal2 = false
+  data() {
+    return ({
+
+      showModal:false,
+      title:'',
+      submitText: 'Enrégistrer',
+      champs: [
+        {
+          name: "Nom",
+          type: "text",
+          key: "nom",
+          placeholdere: "Nom de l'unitee de mésure",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        }
+      ],
+      uniteeDeMesureAttributs: ["nom"]        
+    });
+  },
+
+  computed: {
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      uniteeDeMesure: "uniteesDeMesure/getUniteeDeMesure",
+      uniteesDeMesure: "uniteesDeMesure/getUniteesDeMesure",
+    }),
+  },
+
+  methods: {
+
+      ...mapMutations({
+        setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+        setUniteeDeMesure: "uniteesDeMesure/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      }),
+
+      ...mapActions("uniteesDeMesure", {
+        fetchUniteesDeMesure: "FETCH_LIST_UNITEE_DE_MESURE",
+        saveUniteeDeMesure: "STORE_UNITEE_DE_MESURE",
+        updateUniteeDeMesure: "UPDATE_UNITEE_DE_MESURE",
+        deleteUniteeDeMesure: "DESTROY_UNITEE_DE_MESURE",
+      }),
+
+      addUniteeDeMesure() {
+        this.title = "Ajouter une nouvelle unitee de mésure";
+
+        this.submitText = "Enrégistrer";
+
+        this.showCloseModal(true);
       },
-      addUnite() {
-        this.showModal2 = true
-        this.title = 'Ajouter une unite de mesure'
-        
+
+      modifierUniteeDeMesure (uniteeDeMesure) {
+        this.title = "Modification de l'unitee de mésure " + uniteeDeMesure.nom;
+
+        this.submitText = "Modifier";
+
+        this.setUniteeDeMesure(uniteeDeMesure);
+
+        this.uniteeDeMesureAttributs.forEach((item) => {
+          this.champs.find((value, index) => {
+            if (value.key === item) {
+              this.champs[index]["data"] = this.uniteeDeMesure[item];
+            }
+          });
+        });
+
+        this.showCloseModal(true);
       },
-      editer() {
-        this.showModal2 = true
-        this.title = 'Modifier une unite de mesure'
+
+      supprimerUniteeDeMesure(uniteeDeMesure) {
+        if ( window.confirm("Voulez-vous supprimer l'unitee de mésure " + uniteeDeMesure.nom) )
+        {
+          this.deleteUniteeDeMesure(uniteeDeMesure.id);
+        }
+      },
+
+      dupliquer() {
+        this.title = "Ajouter une nouvelle unitee de mésure";
+        this.showCloseModal();
+      },
+
+      close() {
+        this.showCloseModal();
+
+        this.resetForm();
+      },
+
+      showCloseModal(value = false) {
+        this.showModal = value;
+      },
+
+      resetForm() {
+        this.champs = this.champs.map((item) => {
+          item.data = "";
+          return item;
+        });
+
+        window.document.getElementById("vform")?.reset();
+
+        this.setUniteeDeMesure({});
+      },
+
+      async updateInputData(id, attribut, value) {
+        await this.updateUniteeDeMesure({uniteeDeMesure: {[attribut] : value}, id : id}).then((value) => {
+          this.setUniteeDeMesure({})
+        }).catch((value, status) => {
+          if(this.hasErrors[attribut] !== undefined)
+            alert(this.hasErrors[attribut])        
+        })
+      },
+
+      sendForm() {
+        this.champs = this.champs.map((item) => {
+          item.errors = [];
+          return item;
+        });
+
+        let uniteeDeMesure = extractFormData(this.champs, this.uniteeDeMesureAttributs);
+
+        if (this.uniteeDeMesure?.id) {
+          this.updateUniteeDeMesure({ uniteeDeMesure: uniteeDeMesure, id: this.uniteeDeMesure?.id }).then(
+            (response) => {
+              if (response.status == 200 || response.status == 201) {
+                this.close();
+              }
+            }
+          );
+        } else {
+          this.saveUniteeDeMesure(uniteeDeMesure).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.close();
+            }
+          });
+        }
       }
-    }
+  },
+
+
+  watch: {
+    isLoading: function (value) {
+      //this.loading = value
+    },
+
+    hasErrors: function (errors) {
+      this.champs.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+      //this.errors = errors
+    },
+  },
+
+  mounted() {
+    console.log("Fetching unitees de mesure ...");
+    this.fetchUniteesDeMesure()
+  },
 }
 </script>
 

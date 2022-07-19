@@ -113,9 +113,9 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
-      <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">ajouter uncomposant</span>
+      <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+          <span class="mx-2 text-sm font-semibold">ajouter un composant</span>
       </button>
      
     </div>
@@ -262,6 +262,9 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
+
 export default {
   layout:'dashboard',
   data() {
@@ -287,7 +290,37 @@ export default {
     }
     
   },
+
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      composante: state => state.composantes.composante,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      composantes: "composantes/getComposantes", composante: "getComposante",
+      
+    })
+  },
+
   methods: {
+    //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setComposante: 'composantes/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('composantes', {
+      fetchComposantes: "FETCH_LIST_COMPOSANTE",
+      saveComposante: "STORE_COMPOSANTE",
+      updateComposante: "UPDATE_COMPOSANTE",
+      deleteComposante: "DESTROY_COMPOSANTE"
+    }),
+
     addDate() {
       this.dates.push({})
     },
@@ -313,25 +346,133 @@ export default {
     close2() {
       this.showModal2 = false
     },
-    addComponent() {
-      this.title ="Ajouter un nouveau composant"
-      this.showModal = true
+    addComposante() {
+      this.title='Ajouter un nouveau composante'
+
+      let formData = this.champs.map((value) => {
+/*          if(value.key === 'bailleurId'){ 
+            value['options'] = this.bailleurs
+          }
+
+          else if(value.key === 'statut'){ 
+            value['options'] = this.$store.state.statuts
+          }
+
+          return value */
+        })
+
+      this.champs = formData
+
+      this.showCloseModal(true)
     },
-    
-    modifier() {
-      this.title ="Modifier un nouveau composant"
-      this.showModal = true
+
+    modifier(composante) {
+
+      this.title = 'Modifier un composante'
+
+      this.setComposante(composante)
+
+      this.composanteAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            if(value.key === 'debut' || value.key === 'fin')
+            {
+              this.champs[index]['data'] = this.composante[item] + "-01"
+            }else{
+                this.champs[index]['data'] = this.composante[item]
+            }
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
+    },
+
+    async supprimer(composante) {
+      if(window.confirm("Voulez-vous supprimer cette composante " + composante.nom))
+        await this.deleteComposante(composante.id)
     },
     dupliquer() {
-      this.title ="Dupliquer un projet existant"
+      this.title ="Dupliquer un composante existant"
       this.showModal = true
+    },
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.composante = {}
     },
     gotoNext() {
       this.$router.push('/dashboard/projets/composantes/sous-composantes')
     },
     editerSuivi(index) {
       this.showInput = false
+    },
+    sendForm() {
+
+      this.champs = this.champs.map(item => { item.errors = []; return item})
+
+      let composante = utils.extractFormData(this.champs, this.projetAttributs)
+      
+      if(this.composante?.id)
+      {
+
+        this.updateComposante({composante: composante, id : this.composante?.id}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.close()
+          }
+
+        }).catch((error) => {
+
+          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+          this.champs.map(value => value.errors = this.erreurs[value.key])
+
+        })
+
+      }
+      else
+      {
+        console.log(composante)
+        
+        this.saveComposante(composante).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
+          }
+
+        })
+      }
+
     }
+  },
+  watch: {
+    loading: function(value) {
+      //this.loading = value
+    },
+
+    errors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    }
+
+  },
+  
+  mounted() {
+    console.log("Fetching composantes ...")
+    this.fetchComposantes()/*.then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of bailleurs...")
+          this.fetchBailleurs()
+        }, 1000);
+    })*/
   }
 }
 </script>

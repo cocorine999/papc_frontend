@@ -2,19 +2,11 @@
   <dashboard>
     <div class="w-full p-4">
       <div v-if="showModal">
-        <vmodal :title="title" v-on:close="close">
-          <form style="width:60vw;height: 450px;" class="p-4 overflow-auto">
-            <div v-if="title =='Ajouter un nouveau projet'">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+        <modal-top-right :title="title" v-on:close="close">
+            <div>
+              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
             </div>
-            <div v-if="title =='Modifier un nouveau projet'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
-            </div>
-            <div v-if="title =='Dupliquer un nouveau projet'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
-            </div>
-          </form>
-        </vmodal>
+        </modal-top-right>
       </div>
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
@@ -38,14 +30,14 @@
           <span  class="inline-block cursor-pointer  border-b-8 font-bold  text-sm uppercase    border-primary py-2">Les projets </span>
         </div>
 
-        <button @click="addProjet"  title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
+        <button @click="addProjet"  title="ajouter un projet"    class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
       </div>
       <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="projet in projets" :key="projet.id">
-          <div @click="gotoDetails(index)" class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
+          <div @click="gotoDetails(projet.id)" class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
             <!-- <a href="#1" class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a> -->
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
               <p class="max-h-48 line-clamp-7 px-2">{{projet.description}} </p>
@@ -55,20 +47,22 @@
             </div>
             <div class="relative mb-2">
               <img class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
-                :src="projet.link"
+                :src="link"
                 alt="">
                 <div class="absolute bottom-0 right-0">
                   <div v-if="projet.statut == 0 " class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></div>
                   <div v-if="projet.statut == 2 " class=" text-sm flex items-center text-white bg-green-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></div>
                   <div v-if="projet.statut == -1 " class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En attente <i class='bx bx-time-five ml-1'></i></div>
+                  <div v-if="projet.statut == 1 " class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En retard <i class='bx bx-time-five ml-1'></i></div>
+                  <div v-if="projet.statut == -2 " class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">Non validé <i class='bx bx-time-five ml-1'></i></div>
                 </div>
                 <div class="absolute top-2 left-2">
-                  <div :class="projet.couleur" class="uppercase rounded-lg text-sm flex items-center text-white  px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{projet.bailleur.sigle}}
+                  <div :class="projet.couleur" :style="`background-color:${projet.couleur}`" class="uppercase rounded-lg text-sm flex items-center text-white  px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{projet.bailleur.sigle}}
                   </div>
                 </div>
             </div>
             <div class="block px-4 pb-4">
-              <span :class="projet.couleur" class="absolute bottom-0 left-0 w-full  h-2"></span>
+              <span :class="projet.couleur" :style="`background-color:${projet.couleur}`" class="absolute bottom-0 left-0 w-full  h-2"></span>
               <h3 class="font-medium text-xl">
                 <a href="#2"
                   class="block uppercase relative group-hover:text-gray-800 transition-colors duration-200 line-clamp-2 text-lg">{{projet.nom}}
@@ -85,6 +79,7 @@
 </template>
 
 <script>
+import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
@@ -93,6 +88,7 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
 
 export default {
   components: {
@@ -102,28 +98,37 @@ export default {
     Vform,
     Titre,
     SearchBar,
+    ModalTopRight,
+    
    
   },
   data() {
     return {
       showModal:false,
+      line:false,
+      submitText:"Enregistrer",
+      cols:1,
+      mosaique:true,
+       link:"https://mapiwee.com/wp-content/uploads/2020/07/Mapiwee-by-Maped-limportance-de-leau-expliqu%C3%A9-aux-enfants.jpeg",
+      title: '',
+      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'poids', 'bailleurId'],
       champs:[
-        {name:'Nom du projet',type:'text',placeholdere:"Nom du projet",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Poids',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Pret',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Budget Nationnal',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Date fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Couleurs',type:'color',placeholdere:'Choississez une couleur',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Piece jointe',type:'file',placeholdere:'Choississez une couverture',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Ville',type:'',placeholdere:'Selectionnez une ville',isSelect:true,isTextArea:false,data:'',required:true,options:['cotonou','calavi','bohicon']},
-        {name:'Bailleurs',type:'',placeholdere:'Selectionnez un bailleur',isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA','Unesco']},
-        {name:'Status',type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:['en cours','terminer','en attente']},
-        {name:'Objectifs globaux',type:'',placeholdere:'',isSelect:false,isTextArea:true,data:'',required:true,},
-        {name:'Description',type:'',placeholdere:'Description du projet',isSelect:false,isTextArea:true,data:'',required:true,},
-        {name:'Objectif globaux',type:'text',placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Budget national',type:'number',placeholdere:'Definir un budget',isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Nom du projet',key:"nom",type:'text',placeholdere:"Nom du projet",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Poids',type:'number',key:"poids",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Pret',type:'number',key:"pret",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Budget Nationnal',key:"budgetNational",type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date debut',key:"debut",type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date fin',type:'date',key:"fin",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Couleur',type:'color',key:"couleur",placeholdere:'Choississez une couleur',isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Piece jointe',type:'file',placeholdere:'Choississez une couverture',isSelect:false,isTextArea:false,data:'',required:false,errors : []},
+        {name:'Ville',key:"ville",type:'',placeholdere:'Selectionnez une ville',isSelect:true,isTextArea:false,data:'',required:true,options:['cotonou','calavi','bohicon'], isSimpleTable: true, errors : []},
+        {name:'Bailleur',key:"bailleurId",type:'',placeholdere:'Selectionnez un bailleur',isSelect:true,isTextArea:false,data:'',required:true,options:this.bailleurs, cle: 'id', value: 'sigle', errors : []},
+        {name:'Status',key:"statut",type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:this.$store.state.statuts, cle: 'etat', value: 'nom', errors : []},
+        {name:'Objectifs globaux',key:"objectifGlobaux",type:'',placeholdere:'',isSelect:false,isTextArea:true,data:'',required:false,errors : []},
+        {name:'Objectif specifique',key:"objectifSpecifique",type:'text',placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'',required:false,errors : []},
+        {name:'Description',type:'',key:"description",placeholdere:'Description du projet',isSelect:false,isTextArea:true,data:'',required:false,errors : []},
       ],
+
      
       option:[
         {name:'supprimer'},
@@ -147,8 +152,10 @@ export default {
       errors : state => state.errors
     }),
 
-    ...mapGetters('projets', {
-      projets: "getProjets", projet: "getProjet"
+    ...mapGetters({
+      projets: "projets/getProjets", projet: "getProjet",
+      bailleurs: "bailleurs/getBailleurs",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
     })
     
   },
@@ -167,6 +174,8 @@ export default {
       deleteProjet: "DESTROY_PROJET"
     }),
 
+    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+
     gotoDetails(id) {
       this.$router.push({name:'projets_id_details',params:{id:id}})
      
@@ -176,10 +185,34 @@ export default {
     },
     
     close() {
-      this.showModal = false
+      this.showCloseModal()
+
+      this.resetForm
+    }, 
+    
+    showCloseModal(value = false) {
+      this.showModal = value
     },
     addProjet() {
-      this.title='Ajouter un projet'
+      this.title='Ajouter un nouveau projet'
+
+      const pluck = (arr, key) => arr.map(i=> i[key]);
+
+      let formData = this.champs.map((value) => {
+          if(value.key === 'bailleurId'){ 
+            /*value['options'] = pluck(this.bailleurs, 'sigle')*/
+            value['options'] = this.bailleurs
+          }
+
+          else if(value.key === 'statut'){ 
+            value['options'] = this.$store.state.statuts
+          }
+
+          return value
+        })
+
+      this.champs = formData
+
       this.showCloseModal(true)
     },
 
@@ -187,19 +220,16 @@ export default {
 
       this.title = 'Modifier un projet'
 
+      this.submitText="Enregistrer",
+
       this.setProjet(projet)
 
-      this.programmeAttributs.forEach((item) => {
+      this.projetAttributs.forEach((item) => {
 
         this.champs.find((value, index) => {
 
           if(value.key === item){
-            if(value.key === 'debut' || value.key === 'fin')
-            {
-              this.champs[index]['data'] = this.projet[item] + "-01"
-            }else{
-                this.champs[index]['data'] = this.projet[item]
-            }
+            this.champs[index]['data'] = this.projet[item]
           }
 
         })
@@ -219,16 +249,7 @@ export default {
       this.showModal = true
     },
 
-    close() {
-      this.showCloseModal()
-
-      this.resetForm
-    }, 
     
-    showCloseModal(value = false) {
-      this.showModal = value
-    },
-
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
@@ -241,29 +262,20 @@ export default {
       this.$router.push('/dashboard/projets/composantes')
     },
 
-    showCloseModal(value = false) {
-      this.showModal = value
-    },
-
-    resetForm(){
-
-      this.champs = this.champs.map(item => { item.data = ''; return item})
-      
-      window.document.getElementById('vform').reset()
-
-      this.projet = {}
-    },
-
     sendForm() {
 
       this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let projet = utils.extractFormData(this.champs, this.programmeAttributs)
-      
-      projet['debut'] = utils.formatDate(projet['debut'], {'year' : 'year' , 'month': 'month' })
-      
-      projet['fin'] = utils.formatDate(projet['fin'], {'year' : 'year' , 'month': 'month' })
+      let projet = utils.extractFormData(this.champs, this.projetAttributs)
 
+      projet.programmeId = this.currentUser?.programme?.id
+
+      projet.bailleurId = projet.bailleurId.id
+
+      projet.statut = projet.statut.etat
+
+      console.log(projet)
+      
       if(this.projet?.id)
       {
 
@@ -285,6 +297,7 @@ export default {
       }
       else
       {
+        console.log(projet)
         
         this.saveProjet(projet).then(response => {
           if(response.status == 200 || response.status == 201){
@@ -311,7 +324,12 @@ export default {
   
   mounted() {
     console.log("Fetching projets ...")
-    this.fetchProjets()
+    this.fetchProjets({id : 1}).then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of bailleurs...")
+          this.fetchBailleurs()
+        }, 500);
+    })
   }
 }
 </script>

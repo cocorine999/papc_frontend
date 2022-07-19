@@ -10,7 +10,7 @@ export default class Role {
         this.description = role.description,
         this.roleable_id = role.roleable_id,
         this.roleable_type = role.roleable_type,
-        this.permissions = isEmpty(role.permissions) ? [] : Array<Permission> role.permissions
+        this.permissions = role.permissions
         this.created_at = is(Object, role.created_at) ? (new Date(role.created_at._date)).toISOString() : role.created_at
     }
 }

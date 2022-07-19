@@ -1,33 +1,31 @@
 <template>
 <dashboard>
   <div class="w-full p-4">
-    
-    <div v-if="showModal">
-      <vmodal  :title="title"  v-on:close="close">
-        <div style="width:60vw" class="px-4">
-          <div>
-            <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
-          </div>         
+    <div v-if="showModal">      
+      <modal-top-right :title="title"  v-on:close="close">
+        <div  class="px-4">
+          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" @updateInputData="updateInputData"></vform>
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
+
     <div v-if="showModal2">
-      <vmodal :title="title2"  v-on:close="showModal2 = false">
-        <div style="width:60vw;height:450px" class="px-4 overflow-y-auto">
+      <modal-top-right :title="title2"  v-on:close="showModal2 = false">
+        <div  class="px-4 overflow-y-auto">
           <vform template="default"  :champs="passationChamps" isAllPairSaufDescrip="true" :cols="colsPassation" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
         </div>
-      </vmodal>
+      </modal-top-right>
     </div>
     
     <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
-            <nuxt-link to="" class="text-gray-600">dashboard</nuxt-link>
+            <router-link to="" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center ">
-            <nuxt-link to="" class="text-gray-600">ONG/AGENCES DE COMMUNICATIONS</nuxt-link>
+            <router-link to="" class="text-gray-600">ONG/AGENCES DE COMMUNICATIONS</router-link>
           </li>
         </ol>
       </div>
@@ -38,41 +36,45 @@
     
     <div class="flex justify-start mt-2">
       <div class="flex  items-center ">
-       <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
-        <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
+        <span title="vue en mosaique" @click="switchBetweenCode({mosaique: true, line: false})" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
+        <span title="vue en ligne" @click="switchBetweenCode({mosaique: false, line: true})" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
       </div>
     </div>
     <div class="flex items-center justify-between my-2">
        <div class="flex space-x-4">
-        <span @click="goOng" :class="{'border-primary border-b-8':seeOng}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Les ONG/AGENCES DE COMMUNICATIONs </span>
-        <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
-         <span @click="gochecklist" :class="{'border-primary border-b-8':seechecklist}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Mes checklist </span>
-       
-
-      </div>
+          <span @click="goOng" :class="{'border-primary border-b-8':seeOng}" class="inline-block cursor-pointer  text-lg uppercase font-bold  py-2">Les ONG/AGENCES DE COMMUNICATIONs </span>
+          <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
+          <span @click="gochecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Mes checklist </span>
+        </div>
       
-      
-        <button v-if="seeOng" @click="addOngOrAgence" title="ajouter une instutitions"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="seeOng" @click="addOngOrAgence" title="Ajouter une nouvelle ong ou agence"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-2 text-xs font-semibold"> Ajouter </span>
         </button>
-        <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-            <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-            <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
+        <button  v-if="seePassation" @click="addPassation" title="Enrégistrer une nouvelle passation"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+          <span class="mx-2 text-sm font-semibold">Enrégistrer une passation de marché</span>
         </button>
 
-        <router-link v-if="seechecklist" to="/dashboard/checklist/create"  title="ajouter une checklist"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-        <span class="mx-2 text-sm font-semibold">Ajouter </span>
-      </router-link>
-
+        <router-link v-if="seeChecklist" to="/dashboard/checklist/create"  title="Ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+          <span class="mx-2 text-sm font-semibold"> Ajouter </span>
+        </router-link>
         
     </div>
+
     <div v-if="seeOng">
-     <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+    <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
       <div v-for="(ongOrAgence,index) in ongsOrAgences" :key="index">
-           <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
-              <span class="absolute bg-yellow-500 text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{ ongOrAgence.user.nom }}</span>
+
+        <div class="relative">
+            <div class="absolute right-1 top-4 z-10  cursor-pointer">
+              <dropdown @gotoNext="gotoNext" @supprimer="supprimerOngOrAgence" @modifier="modifierOngOrAgence" @duplicate='dupliquerOngOrAgence' :option="option"></dropdown>
+            </div>
+                
+            <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
+                  
+              <span class="absolute bg-yellow-500 text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{ ongOrAgence.user.type }}</span>
               <!-- dots -->
               <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
               <!-- ./dots -->
@@ -83,7 +85,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">Dhaka, Street, State, Postal Code Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quod sunt tempore iste eligendi unde molestias ipsum omnis dolorum totam!</div>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate"> {{ ongOrAgence.user.nom }} </div>
               </div>
     
               <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
@@ -99,44 +101,49 @@
                 </svg>
                 <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{ ongOrAgence.user.email }}</div>
               </div>
+                <!-- dots -->
             </div>
+        </div>
+
       </div>
     </div>
     <div v-if="line"  class="line my-4">
       <vtable 
-      :headers="headers" 
-      :datas="bailleurs"
-      :actions="actions" 
-      @supprimer="supprimer" 
-      @modifier="modifier"></vtable>
+      :headers="headersOngOrAgence" 
+      :datas="ongsOrAgences"
+      :actions="actions"
+      extra="type"
+      @supprimer="supprimerOngOrAgence" 
+      @modifier="modifierOngOrAgence"></vtable>
     </div>
     </div>
+
     <div v-if="seePassation">
-       <div v-if="seePassation">
-      <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
-    </div>
-    </div>
-    <div v-if="seechecklist"> 
-         <div  class="grid grid-cols-3 gap-4">
-      <div v-for="i in 6" :key="i.id">
-        <card-checklist
-          libelle="checklist"
-          code="15555DC" 
-          activite="Nombre d'accident routiere" 
-          :unites="['personne','%','km']" 
-          @supprimer="supprimer"
-          @modifier="modifier"
-          @dupliquer="dupliquer"
-          > </card-checklist>
+      <div v-if="seePassation">
+        <vtable :headers="passationHeaders" :datas="passations" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
       </div>
     </div>
+    <div v-if="seeChecklist"> 
+      <div  class="grid grid-cols-3 gap-4">
+        <div v-for="i in 6" :key="i.id">
+          <card-checklist
+            libelle="checklist"
+            code="15555DC" 
+            activite="Nombre d'accident routiere" 
+            :unites="['personne','%','km']" 
+            @supprimer="supprimerChecklist"
+            @modifier="modifierChecklist"
+            @dupliquer="dupliquerChecklist"
+            > </card-checklist>
+        </div>
+      </div>
     </div>
-   
   </div>
   </dashboard>
 </template>
 
 <script>
+  import ModalTopRight from '@/components/ModalTopRight'
   import SearchBar from '@/components/SearchBar'
   import CardBailleur from '@/components/CardBailleur'
   import Titre from '@/components/Titre'
@@ -146,6 +153,8 @@
   import Dashboard from '@/layouts/Dashboard'
   import CardMod from '@/components/CardMod'
   import CardChecklist from '@/components/CardChecklist'
+import Dropdown from '@/components/Dropdown.vue'
+
   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
   import sortData from "@/utils/sort-data";
@@ -162,6 +171,8 @@
       SearchBar,
       CardMod,
       CardChecklist,
+      ModalTopRight,
+      Dropdown,
       
     },
     data() {
@@ -174,67 +185,19 @@
         ongsOrAgences: [],
         seeOng:true,
         seePassation:false,
-        seechecklist:false,
+        seeChecklist:false,
         title: '',
         ongOrAgenceAttributs: ["nom", "email", "contact", "type"],
-        headers:[
-          {name:'Bailleurs',props:'bailleur'},
-          {name:'Sigle',props:'sigle'},
-          {name:'Code PTA',props:'code'},
-          {name:'Date creation',props:'created_at'},
-        ],
-        
+        headersOngOrAgence:[
 
-        bailleurs:[
-          {
-            bailleur:'',
-            sigle:'ACVDT',
-            code:"4.1.1.3.1",
-            created_at:"22-06-2022",
-            color:' bg-yellow-500'
-            },
-          {
-          bailleur:'',
-          sigle:'SIRAT',
-          code:"4.1.1.3.2",
-          created_at:"22-06-2022",
-          color:' bg-red-500'
-          },
-          {
-          bailleur:'',
-          sigle:'MEF',
-          code:"4.1.1.3.3",
-          created_at:"22-06-2022",
-          color:' bg-pink-500'
-          },
-          {
-          bailleur:"",
-          sigle:'CAA',
-          code:"4.1.1.3.4",
-          created_at:"22-06-2022",
-          color:' bg-blue-500'
-          },
-          {
-          bailleur:"",
-          sigle:'ANSI',
-          code:"4.1.1.3.5",
-          created_at:"22-06-2022",
-          color:' bg-yellow-900'
-          },
-          {
-          bailleur:"",
-          sigle:'GOUV',
-          code:"4.1.1.3.6",
-          created_at:"22-06-2022",
-          color:' bg-indigo-500'
-          },
+            {name:'Nom', props: "user", cle: 'nom', edit : false},
+            {name:'Email', props: "user", cle: 'email', edit : false},
+            {name:'Contact', props: "user", cle: 'contact', edit : false},
+
+            {name:'Date de creation', cle:'created_at', edit : false},
 
         ],
-        dataTable:[
-          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-          {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        ],
+
         passationChamps:[
           {name:'Selectionnez MOD',type:'',placeholdere:"Selectionnez MOD",isSelect:true,isTextArea:false,data:'',required:true,options:['Agetur','Agetur2']},
           {name:'Selectionnez Site',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:['calavi','cotonou'],required:true,},
@@ -250,9 +213,12 @@
           {name:'Travaux',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Responsable sociologue',type:'',placeholdere:"Selectionnez un responsable",isSelect:true,isTextArea:false,data:'',required:true,options:['Responsable','Responsable2']},
         ],
+
         cols:1,
+
         colsPassation:2,
-        headers:[
+
+        passationHeaders: [
             {name:'Nom createur',props:'createur',width:"w-24"},
             {name:'Site',props:'site',width:"w-36"},
             {name:'MOD',props:'mod',width:"w-36"},
@@ -272,26 +238,21 @@
           
           ],
 
+
+        passations:[],
         actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
+
+      option: [{ name: "supprimer" }, { name: "modifier" }],
       champs:[
         {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
-        {name:'Type', key: 'type', type:'', placeholdere:'Choisir un type', isSelect:true, isTextArea:false, data:'', options: [{id: "ong", nom: "Ong"}, {id: "agence", nom: "Agence de communication"}], cle: 'id', value: 'nom', required:true, errors : []}
-
-      ],
-        cols:1,
-        option:[
-          {name:'supprimer'},
-          {name:'modifier'},
-        ]
-
-      }
-    },
-
+        {name:'Type', key: 'type', type:'', placeholdere:'Choisir un type', isSelect:true, isTextArea:false, data:'', options: [{id: "ong", nom: "Ong"}, {id: "agence", nom: "Agence de communication"}], cle: 'id', value: 'nom', methode: this.textSelector, required:true, errors : []}
+      ]
+    }},
     computed:{
         ...mapGetters({
           hasErrors : "GET_ERREURS",
@@ -330,31 +291,27 @@
           deleteAgenceDeCommunication: "DESTROY_AGENCE_DE_COMMUNICATION"
         }),
 
-        switch1() {
-          this.mosaique = true
-          this.line = false
-        },
-        switch2() {
-          this.mosaique = false
-          this.line = true
+        switchBetweenCode({mosaique, line}) {
+          this.mosaique = mosaique
+          this.line = line
         },
         
         goOng() {
           this.seeOng = true
           this.seePassation = false
-          this.seechecklist = false
+          this.seeChecklist = false
         },
 
         goPassation() {
           this.seeOng = false
           this.seePassation = true
-          this.seechecklist = false
+          this.seeChecklist = false
         },
 
         gochecklist() {
           this.seeOng = false
           this.seePassation = false
-          this.seechecklist = true
+          this.seeChecklist = true
         },
         
         supprimerPassation(data) {
@@ -376,7 +333,7 @@
 
         modifierOngOrAgence(ongOrAgence) {
 
-          this.title = "Modification de l'institution {ongOrAgence.nom}"
+          this.title = "Modification"
 
           this.submitText = "Modifier"
 
@@ -398,8 +355,8 @@
         },
 
         supprimerOngOrAgence(ongOrAgence) {
-          if(window.confirm("Voulez-vous vraiment supprimer " + ongOrAgence.nom))
-            ongOrAgence.type === 'ong' ? this.deleteOng(ongOrAgence.id) : this.deleteAgenceDeCommunication(ongOrAgence.id)
+          if(window.confirm("Voulez-vous vraiment supprimer " + ongOrAgence.user.nom))
+            ongOrAgence.user.type === 'ong' ? this.deleteOng(ongOrAgence.id) : this.deleteAgenceDeCommunication(ongOrAgence.id)
         },
 
         dupliquerOngOrAgence() {
@@ -408,6 +365,7 @@
         },
           
         close() {
+          
           this.showCloseModal()
 
           this.resetForm()
@@ -428,6 +386,29 @@
           this.setAgenceDeCommunication({})
         },
 
+        async updateInputData(id, attribut, value) {
+          
+            console.log( id, attribut, value)
+
+            let type = 'ong';
+
+            console(type, type === 'ong')
+
+            if(type === 'ong'){
+              await this.updateOng({ong: {[attribut] : value}, id : id}).catch((value, status) => {
+                if(this.hasErrors[attribut] !== undefined)
+                  alert(this.hasErrors[attribut])            
+              })
+            }
+            else if(type === 'agence'){
+              await this.updateAgenceDeCommunication({agenceDeCommunication: {[attribut] : value}, id : id}).catch((value, status) => {
+                if(this.hasErrors[attribut] !== undefined)
+                  alert(this.hasErrors[attribut])            
+              })
+            }
+            else;
+        },
+
         sendForm() {
 
             this.champs = this.champs.map(item => { item.errors = []; return item})
@@ -436,7 +417,9 @@
 
             this.ongOrAgence = extractFormData(this.champs, this.ongOrAgenceAttributs, ['data', 'data', 'data', 'data'])
 
-            this.ongOrAgence.programmeId = this.currentUser?.programme.id
+            this.ongOrAgence.programmeId = this.currentUser?.programme?.id
+
+            this.ongOrAgence.type = this.ongOrAgence.type.id
             
             if(id)
             {
@@ -473,54 +456,68 @@
                   alert(value.response.data.errors.programmeId[0])
                 })
             }
-        }
+        },
 
+        addChecklist(){
+
+        },
+
+        modifierChecklist(){
+
+        },
+
+        supprimerChecklist(){
+
+        },
+
+        dupliquerChecklist(){
+
+        },
+
+        gotoNext(){
+
+        },
+
+        textSelector({nom}){
+          return `${nom}`
+        }
     
       },
       
       watch: {
         isLoading: function(value) {
-          //this.loading = value
         },
 
         hasErrors: function(errors) {
           this.champs.forEach((value) => {value.errors = errors[value.key]})
-          //this.errors = errors
         },
 
         agencesDeCommunication: function(agences) {
-
-          let data = [...this.ongs, ...agences]
+          
+          let data = [...this.ongs, ...this.agencesDeCommunication]
 
           sortData({ data: data })
 
           this.ongsOrAgences = data
-
         },
 
         ongs: function(ongs) {
           
-          let data = [...ongs, ...this.agencesDeCommunication]
+          let data = [...this.ongs, ...this.agencesDeCommunication]
 
-          sortData({ data: data, param: 'id',  })
+          sortData({ data: data })
           
           this.ongsOrAgences = data
 
-        },
+        }/* ,
 
-        /*ongsOrAgences: function (data) {
-
+        ongsOrAgences: function() {
           
-          const sortByDate = data => {
-            const sorter = (a, b) => {
-                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-            }
-            data.sort(sorter)
-          }
+          let data = [...this.ongs, ...this.agencesDeCommunication]
 
-          sortByDate(data)
-        
-          //sortData({ data:data })
+          sortData({ data: data })
+          
+          this.ongsOrAgences = data
 
         } */
 
@@ -535,6 +532,7 @@
         this.fetchAgencesDeCommunication()
         
       }
+
   }
 </script>
 

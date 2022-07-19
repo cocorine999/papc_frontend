@@ -30,7 +30,7 @@ export default {
 
     async GET_AGENCE_DE_COMMUNICATION ({ commit, getters }, {key, value }) {
 
-        let agenceDeCommunication = new AgenceDeCommunication()
+        let agenceDeCommunication = null
         
         agenceDeCommunication = getters.findAgenceDeCommunication({key: key, value : value})
 
@@ -45,9 +45,7 @@ export default {
     },
 
     async STORE_AGENCE_DE_COMMUNICATION ({ commit }, payload) {
-        
-        console.log(payload)
-        
+                
         const { data, status } = await AgenceDeCommunicationService.create(payload)
 
         if(status === 200 || status === 201) commit(ADD_AGENCE_DE_COMMUNICATION, data.data)
@@ -70,7 +68,7 @@ export default {
         
         const { data, status } = await AgenceDeCommunicationService.destroy(idAgenceDeCommunication)
 
-        if(status === 200 || status === 201 || status === 204) commit(MODIFY_AGENCE_DE_REMOVE_AGENCE_DE_COMMUNICATIONCOMMUNICATION, commit(REMOVE_AGENCE_DE_COMMUNICATION, idAgenceDeCommunication))
+        if(status === 200 || status === 201 || status === 204) commit(REMOVE_AGENCE_DE_COMMUNICATION, idAgenceDeCommunication)
 
         return { data, status }
 

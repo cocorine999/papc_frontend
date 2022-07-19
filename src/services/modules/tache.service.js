@@ -28,6 +28,9 @@ const TachesService = {
     composante(slug) {
       return ApiService.get(`taches/${slug}/composantes`);
     },
+    programme(slug) {
+      return ApiService.get(`programmes/taches/${slug}`);
+    },
 
   };
 

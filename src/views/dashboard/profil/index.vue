@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class=" mb-4 bg-white border-white py-8 md:px-6 px-4 xl:px-16">
+    <div class=" mb-4 py-8 md:px-6 px-4 xl:px-16">
       <h1 class="text-primary text-2xl py-8 font-bold">Informations de l'utilisateur</h1>
       <div class="block px-2 w-full ">
         <form>
@@ -14,7 +14,7 @@
                     py-1.5
                     text-base
                     font-normal
-                    bg-blue-50
+                   bg-white
                     text-gray-700
                      bg-clip-padding
                     border border-solid border-primary
@@ -33,7 +33,7 @@
                     py-1.5
                     text-base
                     font-normal
-                    bg-blue-50
+                   bg-white
                     text-gray-700
                      bg-clip-padding
                     border border-solid border-primary
@@ -54,7 +54,7 @@
                   py-1.5
                   text-base
                   font-normal
-                  bg-blue-50
+                 bg-white
                 text-gray-700
                   bg-clip-padding
                   border border-solid border-primary
@@ -74,7 +74,7 @@
                     py-1.5
                     text-base
                     font-normal
-                    bg-blue-50
+                   bg-white
                     text-gray-700
                      bg-clip-padding
                     border border-solid border-primary
@@ -90,7 +90,7 @@
       
     </div>
 
-     <div class=" my-4 bg-white border-white px-4 md:px-6 py-8 xl:px-16">
+     <div class=" px-4 md:px-6 py-8 xl:px-16">
       <h1 class="text-primary text-2xl font-bold">Details du compte</h1>
 
       <div class="informaions">
@@ -105,7 +105,7 @@
                       py-1.5
                       text-base
                       font-normal
-                      bg-blue-50
+                     bg-white
                       text-gray-700
                       bg-clip-padding
                       border border-solid border-primary
@@ -127,7 +127,7 @@
                       py-1.5
                       text-base
                       font-normal
-                      bg-blue-50
+                     bg-white
                       text-gray-700
                       bg-clip-padding
                       border border-solid border-primary
@@ -148,7 +148,7 @@
                       py-1.5
                       text-base
                       font-normal
-                      bg-blue-50
+                     bg-white
                       text-gray-700
                       bg-clip-padding
                       border border-solid border-primary
@@ -164,18 +164,15 @@
               </div>
             </form>
         </div>
-        </div>
-
-
-      
-      
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Dashboard from '@/layouts/Dashboard'
 export default {
-  layout:'dashboard',
+  components: {Dashboard},
   data() {
     return {
       currentUsers:{},

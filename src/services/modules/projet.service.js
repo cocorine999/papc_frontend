@@ -10,7 +10,7 @@ const ProjetsService = {
     },
 
     get(slug) {
-      return ApiService.get("projets", slug);
+      return ApiService.get("/projets", slug);
     },
 
     create(params) {
@@ -26,11 +26,11 @@ const ProjetsService = {
     },
 
     programme(slug) {
-      return ApiService.get(`projets/${slug}/programmes`);
+      return ApiService.get(`programmes/projets/${slug}`);
     },
 
     composantes(slug) {
-      return ApiService.get(`projets/${slug}/composantes`);
+      return ApiService.get(`projets/composantes/${slug}`);
     }
 
   };

@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import ProgrammeService from "@/services/modules/programme.service";
+import Programme from "./programme";
 
 export default {
     
@@ -22,30 +23,36 @@ export default {
 
         const { data, status } = await ProgrammeService.get();
 
-        commit(SET_LIST_PROGRAMME, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_PROGRAMME, data.data);
 
         return { data, status };
     },
 
     async GET_PROGRAMME ({ commit, getters }, {key, value }) {
 
-        let programme = getters.findProgramme({key: key, value : value})
+        let programme = null
+
+        programme = getters.findProgramme({key: key, value : value})
 
         if((programme === null || programme || undefined) && typeof value === "int"){
 
             const { data, status } = await ProgrammeService.get(value);
 
-            programme = data.data
+            if(status === 200 || status === 201)
+                programme = data.data
 
-            return programme
         }
+        
+        return programme;
     },
 
     async STORE_PROGRAMME ({ commit }, payload) {
         
         const { data, status } = await ProgrammeService.create(payload);
 
-        commit(ADD_PROGRAMME, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_PROGRAMME, data.data);
 
         return { data, status };
 
@@ -55,7 +62,8 @@ export default {
         
         const { data, status } = await ProgrammeService.update(id, programme);
 
-        commit(MODIFY_PROGRAMME, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_PROGRAMME, data.data);
 
         return { data, status };
 
@@ -65,7 +73,8 @@ export default {
         
         const { data, status } = await ProgrammeService.destroy(idProgramme);
 
-        commit(REMOVE_PROGRAMME, idProgramme);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_PROGRAMME, idProgramme);
 
         return { data, status };
 

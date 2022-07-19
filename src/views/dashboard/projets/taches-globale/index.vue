@@ -1,236 +1,236 @@
 <template>
   <dashboard>
      <div class="w-full p-4">
-    <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-      <form action="" @submit.prevent="save" class="p-4">
-        <div class="form-group my-2">
-          <label
-            class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light"
-            >Nom de la tache
-            <span class="px-2 text-lg font-black text-red-700">*</span></label
-          >
-          <input
-            required
-            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
-            type="text"
-            placeholder="Entrer le nom du composante"
-          />
-        </div>
-        <div class="form-group my-2">
-          <label
-            class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
-            >Description
-            <span class="px-2 text-lg font-black text-red-700">*</span></label
-          >
-          <input
-            required
-            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
-            type="text"
-            placeholder="Entrer la description"
-          />
-        </div>
-        <div class="form-group my-2">
-          <label
-            class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
-            >Selectionner une activité
-            <span class="px-2 text-lg font-black text-red-700">*</span></label
-          >
-          <select
-            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
-            name=""
-            id=""
-          >
-            <option v-for="i in 5" :key="i.id" value="">
-              activité{{ i * 3 }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group my-2">
-          <label
-            class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
-            >Poids
-            <span class="px-2 text-lg font-black text-red-700">*</span></label
-          >
-          <input
-            required
-            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
-            type="number"
-            placeholder="Entrer le poids"
-          />
-        </div>
-        <div class="form-group my-2">
-          <label
-            class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light"
-            >Position
-            <span class="px-2 text-lg font-black text-red-700">*</span></label
-          >
-          <select
-            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
-            name=""
-            id=""
-          >
-            <option v-for="i in 5" :key="i.id" value="">{{ i }}</option>
-          </select>
-        </div>
-        <div class="form-group my-2">
-          <label
-            class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
-            >Status
-            <span class="px-2 text-lg font-black text-red-700">*</span></label
-          >
-          <select
-            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
-            name=""
-            id=""
-          >
-            <option value="">En cours</option>
-            <option value="">En attente</option>
-            <option value="">En terminer</option>
-          </select>
-        </div>
-
-        <div
-          class="grid grid-cols-2 gap-2"
-          v-for="date in dates"
-          :key="date.id"
-        >
-          <div class="form-group my-2">
-            <label
-              class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light"
-              >Date debut<span class="px-2 text-lg font-black text-red-700"
-                >*</span
-              ></label
-            >
-            <input
-              required
-              class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 w-full focus:border-transparent"
-              type="date"
-            />
-          </div>
-          <div class="form-group my-2">
-            <label
-              class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light"
-              >Date fin
-              <span class="px-2 text-lg font-black text-red-700">*</span></label
-            >
-            <div class="flex space-x-2 items-center">
+        <modal-top-right v-if="showModal" :title="title" v-on:close="close">
+          <form action="" @submit.prevent="save" class="p-4">
+            <div class="form-group my-2">
+              <label
+                class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light"
+                >Nom de la tache
+                <span class="px-2 text-lg font-black text-red-700">*</span></label
+              >
               <input
                 required
-                class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 w-full focus:border-transparent"
-                type="date"
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
+                type="text"
+                placeholder="Entrer le nom du composante"
               />
-              <span
-                title="ajouter une nouvelle date"
-                @click="addDate"
-                class="text-primary"
-                ><svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 16 16"
-                  height="1.5em"
-                  width="1.5em"
+            </div>
+            <div class="form-group my-2">
+              <label
+                class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
+                >Description
+                <span class="px-2 text-lg font-black text-red-700">*</span></label
+              >
+              <input
+                required
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
+                type="text"
+                placeholder="Entrer la description"
+              />
+            </div>
+            <div class="form-group my-2">
+              <label
+                class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
+                >Selectionner une activité
+                <span class="px-2 text-lg font-black text-red-700">*</span></label
+              >
+              <select
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
+                name=""
+                id=""
+              >
+                <option v-for="i in 5" :key="i.id" value="">
+                  activité{{ i * 3 }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group my-2">
+              <label
+                class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
+                >Poids
+                <span class="px-2 text-lg font-black text-red-700">*</span></label
+              >
+              <input
+                required
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
+                type="number"
+                placeholder="Entrer le poids"
+              />
+            </div>
+            <div class="form-group my-2">
+              <label
+                class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light"
+                >Position
+                <span class="px-2 text-lg font-black text-red-700">*</span></label
+              >
+              <select
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
+                name=""
+                id=""
+              >
+                <option v-for="i in 5" :key="i.id" value="">{{ i }}</option>
+              </select>
+            </div>
+            <div class="form-group my-2">
+              <label
+                class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"
+                >Status
+                <span class="px-2 text-lg font-black text-red-700">*</span></label
+              >
+              <select
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
+                name=""
+                id=""
+              >
+                <option value="">En cours</option>
+                <option value="">En attente</option>
+                <option value="">En terminer</option>
+              </select>
+            </div>
+
+            <div
+              class="grid grid-cols-2 gap-2"
+              v-for="date in dates"
+              :key="date.id"
+            >
+              <div class="form-group my-2">
+                <label
+                  class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light"
+                  >Date debut<span class="px-2 text-lg font-black text-red-700"
+                    >*</span
+                  ></label
+                >
+                <input
+                  required
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 w-full focus:border-transparent"
+                  type="date"
+                />
+              </div>
+              <div class="form-group my-2">
+                <label
+                  class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light"
+                  >Date fin
+                  <span class="px-2 text-lg font-black text-red-700">*</span></label
+                >
+                <div class="flex space-x-2 items-center">
+                  <input
+                    required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 w-full focus:border-transparent"
+                    type="date"
+                  />
+                  <span
+                    title="ajouter une nouvelle date"
+                    @click="addDate"
+                    class="text-primary"
+                    ><svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 16 16"
+                      height="1.5em"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"
+                      ></path></svg
+                  ></span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-center gap-4 pt-5 pb-5 my-4">
+              <button
+                v-if="
+                  title == 'Ajouter une tache' ||
+                  title == 'Dupliquer un sous composant'
+                "
+                type="submit"
+                class="w-auto p-1 font-medium text-white shadow-xl bg-blue-500 hover:opacity-80"
+              >
+                <span
+                  class="mx-2 text-sm font-semibold uppercase"
+                  v-if="loading == false"
+                >
+                  Enregistrer et fermer
+                </span>
+                <svg
+                  v-else
                   xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
                   <path
-                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"
-                  ></path></svg
-              ></span>
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </button>
+
+              <button
+                v-if="title == 'Modifier une activite'"
+                type="submit"
+                class="w-full px-1 py-2 font-medium text-white shadow-xl bg-blue-500 hover:opacity-80"
+              >
+                <span
+                  class="mx-2 text-xs font-semibold uppercase"
+                  v-if="loading == false"
+                >
+                  Modifier
+                </span>
+                <svg
+                  v-else
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </button>
+
+              <button
+                v-if="
+                  title == 'Ajouter une tache' || title == 'Dupliquer une tache'
+                "
+                type="submit"
+                class="w-auto p-1 font-medium text-white shadow-xl bg-primary hover:opacity-80"
+              >
+                <span
+                  class="mx-2 text-sm font-semibold uppercase"
+                  v-if="loading == false"
+                >
+                  Enregistrer et ajouter
+                </span>
+                <svg
+                  v-else
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </button>
             </div>
-          </div>
-        </div>
-        <div class="flex items-center justify-center gap-4 pt-5 pb-5 my-4">
-          <button
-            v-if="
-              title == 'Ajouter une tache' ||
-              title == 'Dupliquer un sous composant'
-            "
-            type="submit"
-            class="w-auto p-1 font-medium text-white shadow-xl bg-blue-500 hover:opacity-80"
-          >
-            <span
-              class="mx-2 text-sm font-semibold uppercase"
-              v-if="loading == false"
-            >
-              Enregistrer et fermer
-            </span>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 animate-spin"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-          </button>
-
-          <button
-            v-if="title == 'Modifier une activite'"
-            type="submit"
-            class="w-full px-1 py-2 font-medium text-white shadow-xl bg-blue-500 hover:opacity-80"
-          >
-            <span
-              class="mx-2 text-xs font-semibold uppercase"
-              v-if="loading == false"
-            >
-              Modifier
-            </span>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 animate-spin"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-          </button>
-
-          <button
-            v-if="
-              title == 'Ajouter une tache' || title == 'Dupliquer une tache'
-            "
-            type="submit"
-            class="w-auto p-1 font-medium text-white shadow-xl bg-primary hover:opacity-80"
-          >
-            <span
-              class="mx-2 text-sm font-semibold uppercase"
-              v-if="loading == false"
-            >
-              Enregistrer et ajouter
-            </span>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 animate-spin"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-          </button>
-        </div>
-      </form>
-    </modal-top-right>
+          </form>
+        </modal-top-right>
 
     <!--  <vmodal v-if="showModal2" :title="title"  v-on:close="close2">
       <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
@@ -391,81 +391,105 @@
         v-if="seeTache"
         @click="addTache"
         title="ajouter une activite"
-        class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
-      >
-        <span
-          ><svg
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            height="1.5em"
-            width="1.5em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path fill="none" d="M0 0h24v24H0V0z"></path>
-            <path
-              d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
-            ></path></svg
-        ></span>
-        <span class="mx-2 text-sm font-semibold">ajouter une tache</span>
+       class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+          <span class="mx-2 text-xs font-semibold">ajouter une tâche</span>
       </button>
     </div>
-    <!-- le filtre -->
-    <div class="">
-      <select
-        class="px-11 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
-        name=""
-        id=""
-      >
-        <option class="font-semibold">Tous</option>
-        <option class="font-semibold" v-for="i in 5" :key="i.id" value="">
-          activite {{ i + 1 * 5 }}
-        </option>
-      </select>
-    </div>
+   
     <!-- le filtre -->
     <div v-if="seeTache">
+      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+          <div class="flex items-center justify-between ">
+          <!--Filtre sur projet -->
+          <div class="w-2/5 flex items-center space-x-2">
+            <multiselect v-model="valueFiltre" :options="options" :custom-label="selectActivite"  placeholder="selectionnez une activité" label="name" track-by="name"></multiselect>
+            <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
+              <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+              <span>filtre</span>
+            </button>
+            <div v-else  class="px-6 w-full">
+              <div class="bg-gray-300 h-2 w-full rounded-full relative">
+                <span class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer" :style="`left:${rangeValue}%`"></span>
+                <span class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"  :style="`width:${rangeValue}%`"></span>
+              </div>
+              <div class="flex justify-between mt-2 text-xs text-gray-600">
+                <span @click="filtreRange(0)" class="w-8 cursor-pointer text-left">0%</span>
+                <span @click="filtreRange(25)" class="w-8 cursor-pointer text-center">25%</span>
+                <span @click="filtreRange(50)" class="w-8 cursor-pointer text-center">50%</span>
+                <span @click="filtreRange(75)" class="w-8 cursor-pointer text-center">75%</span>
+                <span @click="filtreRange(100)" class="w-8 cursor-pointer text-right">100%</span>
+                <button @click="showFiltre = false" class="text-white bg-blue-300 p-1">revenir</button>
+              </div>
+            
+            </div>
+          </div>
+        <!--Filtre sur projet -->
+            <nav class="flex text-sm align-middle justify-evenly">
+            <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+              attentes 
+                <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined">
+                5
+                </span>
+              </span>
+              <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+                validés 
+                <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
+                9
+                </span>
+              </span>
+              <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+                rejetés
+                <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
+                8
+                </span>
+              </span>
+            </nav>
+          </div>
+        </div>
       <div
         v-if="mosaique"
         class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5"
       >
         <div v-for="(tache,index) in taches" :key="index">
-        <!-- cards Tâches -->
-          <div class="relative p-4 bg-white sm:rounded-lg overflow-hidden ">
-            <!-- dots -->
-            <span class="absolute right-0 cursor-pointer">
-              <i class='bx bx-dots-vertical-rounded bx-md pr-2'></i>
-              </span>
-            <!-- ./dots -->
-            <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
-              <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
-            <!--  -->
-            <div class="cursor-pointer">
-              <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{tache.Poids}} </span>
-
-              <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
-                cours<i class='bx bx-time-five ml-1'></i></span>
-
-              <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">
-                <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{tache.libelle}} </p>
+          <div class="relative">
+          <!-- dot -->
+            <div class="absolute right-1 top-4 z-10  cursor-pointer">
+                <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+          </div>
+          <!-- dot -->
+          <!-- cards Tâches -->
+            <div class="relative p-4 bg-white sm:rounded-lg overflow-hidden ">
+             
+              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold">
+                <i class='bx bx-coin-stack mr-1'></i>BOAD</span>
               <!--  -->
-              <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
-                <i class='bx bxs-wallet bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : 
-                  <span class="font-bold italic text-lg"> {{tache.MontantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
+              <div class="cursor-pointer">
+                <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{tache.Poids}} </span>
+
+                <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
+                  cours<i class='bx bx-time-five ml-1'></i></span>
+
+                <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">
+                  <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{tache.libelle}} </p>
+                <!--  -->
+                <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
+                  <i class='bx bxs-wallet bx-sm'></i>
+                  <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : 
+                    <span class="font-bold italic text-lg"> {{tache.MontantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
-                <i class='bx bxs-wallet bx-sm'></i>
-                <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">BN : 
-                  <span class="font-bold italic text-lg">{{tache.MontantNE}}</span>
-                  <span class="ml-2 uppercase font-bold">fcfa</span>
+                <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
+                  <i class='bx bxs-wallet bx-sm'></i>
+                  <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">BN : 
+                    <span class="font-bold italic text-lg">{{tache.MontantNE}}</span>
+                    <span class="ml-2 uppercase font-bold">fcfa</span>
+                  </div>
                 </div>
               </div>
             </div>
+        <!-- End cards Tâches -->
           </div>
-      <!-- End cards Tâches -->
         </div>
       </div>
       <div v-if="line" class="line my-4">
@@ -594,21 +618,31 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import ModalTopRight from '@/components/ModalTopRight'
 import Dashboard from '@/layouts/Dashboard'
+import Dropdown from '@/components/Dropdown.vue'
 export default {
   components: {
     Dashboard,
     Vmodal,
     Titre,
     SearchBar,
-    ModalTopRight
+    ModalTopRight,
+    Multiselect,
+    Dropdown
   },
   data() {
     return {
+      valueFiltre:'',
+      pending:false,
+      success:true,
+      rejected:false,
+      rangeValue:0,
+      showFiltre:false,
       showModal: false,
       showModal2: false,
       loading: false,
@@ -617,6 +651,13 @@ export default {
       isStateChange: false,
       seePlan: false,
       seeTache: true,
+      options:[
+        {name:'activite 1'},
+        {name:'activite 2'},
+        {name:'activite 3'},
+        {name:'activite 4'},
+        {name:'activite 5'},
+      ],
       option: [
         { name: "supprimer" },
         { name: "modifier" },
@@ -652,6 +693,12 @@ export default {
     };
   },
   methods: {
+    filtreRange(value){
+      this.rangeValue = value
+    },
+    selectActivite ({ name}) {
+      return `${name}`
+    },
     gotoTache() {
       this.seePlan = false;
       this.seeTache = true;
@@ -706,6 +753,22 @@ export default {
       this.$router.push(
         "/dashboard/projets/composantes/sous-composantes/activites/taches"
       );
+    },
+     toggle() {
+      this.pending = false
+      this.rejected = false
+      this.success = true
+
+    },
+    toggle2() {
+      this.success = false
+      this.rejected = false
+      this.pending = true
+    },
+    toggle3() {
+      this.pending = false
+      this.success = false
+      this.rejected = true
     },
   },
 };
