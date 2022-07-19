@@ -3,7 +3,7 @@
     <vmodal v-if="showLink" @close="showLink=false">
       <div class="m-2 p-2 bg-white shadow" style="width:60vw">
         <p class="p-2 bg-gray-300 border text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
-          <a  title="cliquez ici" target="_blank" href="http://localhost:8080/form"> http://localhost:8080/form</a>
+          <a  title="cliquez ici" target="_blank" href="/form"> cliquer ici</a>
         </p>
       </div>
     </vmodal>
@@ -34,7 +34,7 @@
         <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
         <span @click="goActivite" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Activité </span>
       </div>
-      <router-link v-if="seeChecklist" to="/dashboard/checklist/create"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+      <router-link v-if="seeChecklist" to="/dashboard/mod/checklist/create"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
         <span class="mx-2 text-sm font-semibold">Creer une checklist </span>
       </router-link>
@@ -111,7 +111,7 @@ export default {
       this.showLink = true
     },
     gotoDetails(id) {
-      this.$router.push({name:'checklist_details',params:{id:id}})
+      this.$router.push({name:'unite_de_gestion_checklist_details',params:{id:id}})
     },
     addActivite() {
       this.title = 'Creer une activité'

@@ -3,7 +3,7 @@
     <div class="w-full p-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-            <div>
+            <div class="p-4 overflow-auto">
               <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" ></vform>
             </div>
         </modal-top-right>
