@@ -29,7 +29,48 @@
       </button>
       
     </div>
+    <!--En tete de la checklist-->
     <div v-if="seeChecklist" >
+      <div class="mt-4 mb-6">
+        <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">16-07-2022</span> </div>
+        <input type="date" class="px-2 py-1 border border-gray-700">
+
+      </div>
+      <div class="grid grid-cols-4 w-3/4 mb-4">
+        <div class="">
+          <ul>
+            <li class="text-base font-bold py-2">Entreprise</li>
+            <li class="text-base font-bold py-2">Enquité</li>
+            <li class="text-base font-bold py-2">Post enquité</li>
+            <li class="text-base font-bold py-2">Contact enquité</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: indefinit</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li class="text-base font-bold py-2">Bailleur</li>
+            <li class="text-base font-bold py-2">Site</li>
+            <li class="text-base font-bold py-2">Missionaire</li>
+            <li class="text-base font-bold py-2">Numero</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: indefinit</li>
+          </ul>
+        </div>
+      </div>
+       <!-- fin En tete de la checklist-->
       <div class=" overflow-x-auto">
         <table class="min-w-full">
           <thead class="border-b bg-gray-300">
@@ -46,17 +87,25 @@
                 
                 <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   <span class="font-bold">{{activite.activite}}</span>
-                  <tr class="border-b border-gray-300" v-for="(data ,indexe) in activite.data" :key="indexe">
+                  <tr class="" v-for="(data ,indexe) in activite.data" :key="indexe">
                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                      <span class="font-bold">-</span> {{data.label}}
                     </td>
                   </tr>
                 </td>
                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  en cours
+                 <tr class="" v-for="(data ,indexe) in activite.data" :key="indexe">
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                     vide
+                    </td>
+                  </tr>
                 </td>
                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-
+                  <tr class="" v-for="(data ,indexe) in activite.data" :key="indexe">
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      vide
+                    </td>
+                  </tr>
                 </td>
                 
                 
