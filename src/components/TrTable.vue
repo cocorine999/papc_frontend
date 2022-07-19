@@ -6,12 +6,12 @@
         <span @click="changeState" v-else-if="attribut =='terminer' && status " class="text-xs cursor-pointer bg-red-500 text-white p-1 border-red-500 outile-none "> {{attribut}}</span>
         <span @click="changeState" v-else-if="attribut =='en attente' && status " class="text-xs cursor-pointer bg-yellow-500 text-white p-1 border-yellow-500 outile-none "> {{attribut}}</span>
         <div @click.stop="updateData" :class="{'whitespace-nowrap':depliment}" v-if="attribut !='en cours' && attribut != 'terminer' && attribut != 'en attente' && isVisible  " class="text-xs cursor-pointer">
-          <p v-if="!depliment" class="cursor-pointer font-semibold"> {{attribut? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut.length > 30" :title="attribut" >...</span></p>
+          <p v-if="!depliment" class="cursor-pointer font-semibold"> {{attribut? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut ? attribut.length > 30 : 0" :title="attribut" >...</span></p>
           <p v-else class="cursor-pointer font-semibold flex space-x-2"> 
             <span> {{ attribut }}</span>
             <span @click="depliment=false" >
               <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M8 7v4L2 6l6-5v4h5a8 8 0 1 1 0 16H4v-2h9a6 6 0 1 0 0-12H8z"></path></g></svg>
-            </span> 
+            </span>
           </p>
         </div>
       </div>

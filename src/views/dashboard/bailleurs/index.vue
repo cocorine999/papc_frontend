@@ -48,7 +48,7 @@
           <div class="flex items-center">
             <span
               title="vue en mosaique"
-              @click="switch1"
+              @click="switchBetweenCode({mosaique: true, line: false})"
               :class="{ 'border-2': mosaique }"
               class="p-2 cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"
               ><svg
@@ -67,7 +67,7 @@
             ></span>
             <span
               title="vue en ligne"
-              @click="switch2"
+              @click="switchBetweenCode({mosaique: false, line: true})"
               :class="{ 'border-2': line }"
               class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500"
               ><svg
@@ -106,113 +106,114 @@
           </button>
         </div>
 
-        <div
-          v-if="mosaique"
-          class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5"
-        >
+        <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5" >
           <div v-for="(bailleur, index) in bailleurs" :key="index">
-            <div
-              class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md"
-            >
-              <span
-                class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right bg-pink-500"
-                ><p>Code : {{ bailleur.code }}</p></span
-              >
-              <span
-                class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold px-4 py-2 rounded-lg uppercase bg-pink-500"
-                ><i class="bx bx-coin-stack bx-md"></i
-                >{{ bailleur.sigle }}</span
-              >
-              <!-- dots -->
-              <span class="absolute right-0 cursor-pointer"
-                ><i class="bx bx-dots-vertical-rounded bx-md pr-2"></i
-              ></span>
-              <!-- ./dots -->
-              <p
-                class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"
-              >
-                {{ bailleur.user.nom }}
-              </p>
-
-              <div class="flex items-center mt-8 text-gray-600">
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  class="w-8 h-8 text-gray-500"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <div
-                  class="ml-4 text-md tracking-wide font-semibold w-full truncate"
-                >
-                  {{ bailleur.pays }}
-                </div>
+            <div class="relative" >
+              <div class="absolute right-1 top-4 z-10  cursor-pointer">
+                <dropdown @supprimer="supprimer(bailleur)" @modifier="modifier(bailleur)" @duplicate='dupliquer(bailleur)' :option="option"></dropdown>
               </div>
-
-              <div
-                class="flex items-center mt-1 text-gray-600 dark:text-gray-400"
-              >
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  class="w-8 h-8 text-gray-500"
+              
+              <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
+                <span
+                  class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right bg-primary"
+                  ><p>Code : {{ bailleur.code }}</p></span
                 >
-                  <path
+                <span
+                  class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold px-4 py-2 rounded-lg uppercase bg-primary"
+                  ><i class="bx bx-coin-stack bx-md"></i
+                  >{{ bailleur.sigle }}</span
+                >
+                <!-- dots 
+                <span class="absolute right-0 cursor-pointer"
+                  ><i class="bx bx-dots-vertical-rounded bx-md pr-2"></i
+                ></span>
+                 ./dots -->
+                <p
+                  class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"
+                >
+                  {{ bailleur.user.nom }}
+                </p>
+
+                <div class="flex items-center mt-8 text-gray-600">
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.5"
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-                <div
-                  class="ml-4 text-md tracking-wide font-semibold w-full truncate"
-                >
-                  {{ bailleur.user.contact }}
+                    viewBox="0 0 24 24"
+                    class="w-8 h-8 text-gray-500"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <div
+                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                  >
+                    {{ bailleur.pays }}
+                  </div>
                 </div>
-              </div>
 
-              <div
-                class="flex items-center mb-8 text-gray-600 dark:text-gray-400"
-              >
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  class="w-8 h-8 text-gray-500"
+                <div
+                  class="flex items-center mt-1 text-gray-600 dark:text-gray-400"
                 >
-                  <path
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.5"
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
+                    viewBox="0 0 24 24"
+                    class="w-8 h-8 text-gray-500"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  <div
+                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                  >
+                    {{ bailleur.user.contact }}
+                  </div>
+                </div>
+
                 <div
-                  class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                  class="flex items-center mb-8 text-gray-600 dark:text-gray-400"
                 >
-                  {{ bailleur.user.email }}
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    class="w-8 h-8 text-gray-500"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <div
+                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                  >
+                    {{ bailleur.user.email }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -220,7 +221,7 @@
         </div>
 
         <div v-if="line" class="line my-4">
-          <vtable
+          <vtable id="datatable"
             :headers="headers"
             :datas="bailleurs"
             :actions="actions"
@@ -243,7 +244,8 @@ import Vtable from "@/components/Vtable";
 import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import Dropdown from '@/components/Dropdown.vue'
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
 
 export default {
@@ -256,7 +258,9 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    Dropdown
   },
+  
   data() {
     return {
       bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
@@ -266,11 +270,11 @@ export default {
       title: "Ajouter un nouveau bailleur",
       submitText: "Enrégistrer",
       headers: [
-        { name: "Bailleurs", props: "user", cle: "nom" },
-        { name: "Sigle", props: "sigle" },
-        { name: "Code PTA", props: "code" },
-        { name: "Pays", props: "pays", edit: true },
-        { name: "Date creation", props: "created_at", edit : false },
+        { name: "Bailleurs", props: "user", cle: "nom"},
+        { name: "Sigle", cle: "sigle"},
+        { name: "Code PTA", cle: "code", edit : false },
+        { name: "Pays", cle: "pays", edit: true },
+        { name: "Date creation", cle: "created_at", edit : false },
       ],
 
       actions: [
@@ -345,6 +349,8 @@ export default {
           required: true,
           errors: [],
         },
+
+        {name:'Logo',type:'file',placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true, errors: []},
       ],
       cols: 1,
 
@@ -374,14 +380,9 @@ export default {
       deleteBailleur: "DESTROY_BAILLEUR",
     }),
 
-    switch1() {
-      this.mosaique = true;
-      this.line = false;
-    },
-
-    switch2() {
-      this.mosaique = false;
-      this.line = true;
+    switchBetweenCode({mosaique, line}) {
+      this.mosaique = mosaique
+      this.line = line
     },
 
     addBailleur() {
@@ -496,9 +497,7 @@ export default {
 
   mounted() {
     console.log("Fetching bailleurs ...");
-    this.fetchBailleurs().then((data, status) => {
-      console.log(data, status)
-    })
+    this.fetchBailleurs()
   },
 };
 </script>

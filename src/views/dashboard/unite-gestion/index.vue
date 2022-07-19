@@ -37,7 +37,9 @@
             <span class="mx-2 text-sm font-semibold">ajouter</span>
           </button>
       </div>
-      <vtable :headers="headers" :datas="uniteeDeGestions" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+      <div  id="dataTable">
+        <vtable :headers="headers" :datas="uniteeDeGestions" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+      </div>
     </div>
   </dashboard>
 </template>
@@ -162,10 +164,14 @@ import extractFormData from '@/utils/extract-data'
       },
 
       async updateInputData(id, attribut, value) {
+        
           await this.updateUniteeDeGestion({uniteeDeGestion: {[attribut] : value}, id : id}).catch((value, status) => {
             if(this.hasErrors[attribut] !== undefined)
               alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
           })
+
       },
 
       sendForm() {
@@ -221,7 +227,7 @@ import extractFormData from '@/utils/extract-data'
         setTimeout(() => {
           console.log("Fetching list of programmes...")
           this.fetchProgrammes()
-        }, 1000);
+        }, 100);
       })
     }
   }

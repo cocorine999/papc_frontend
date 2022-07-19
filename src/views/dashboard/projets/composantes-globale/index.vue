@@ -119,18 +119,23 @@
     </div>
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
+        <span :class="{'border-primary border-b-8 font-bold':seeComposante}" @click="gotoComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
-      <button v-if="seeComposant" @click="addComposante" title="ajouter une composante"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if="seeComposante" @click="addComposante" title="ajouter une composante"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">ajouter une composante</span>
+      </button>
+      
+      <button v-if="seeComposante" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+          <span class="mx-2 text-xs font-semibold">ajouter un composant</span>
       </button>
      
     </div>
     
-    <div v-if="seeComposant">
+    <div v-if="seeComposante">
       <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
@@ -180,7 +185,12 @@
         </div>
       </div>
       <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="composante in composantes" :key="composante.id">
+        
+        <div v-for="(composante,index) in composantes" :key="index">
+        <div class="relative "> 
+          <div class="absolute right-1 top-4 z-10  cursor-pointer">
+                  <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
+          </div>
           <!-- cards composantes -->
           <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
             <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Code : {{composante.code}} </span>
@@ -204,8 +214,11 @@
             <!-- End cards composantes -->
           </div>
         </div>
-      </div>
+        </div>
+        </div>
+
       <div v-if="line"  class="line my-4">
+      
         <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
             <table class="w-full">
               <thead>
@@ -219,7 +232,7 @@
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
               </thead>
               <tbody>
-                <tr class="bg-white" v-for="composante in composantes" :key="composante.id">
+                <tr class="bg-white" v-for="(composante, index) in composantes" :key="index">
                   <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
                   <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{composante.position}} ~ Projet {{index * 2}} </td>
                   <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.description}} </td>
@@ -323,6 +336,7 @@ import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import Dropdown from '@/components/Dropdown.vue'
 
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import utils from '@/utils/index'
@@ -334,7 +348,8 @@ export default {
     Titre,
     SearchBar,
     Multiselect,
-    ModalTopRight
+    ModalTopRight,
+    Dropdown
   },
   data() {
     return {
@@ -356,7 +371,7 @@ export default {
       line:false,
       mosaique:true,
       isStateChange:false,
-      seeComposant:true,
+      seeComposante:true,
       seeSuivi:false,
       showInput:true,
       seeStatistique:false,
@@ -415,11 +430,11 @@ export default {
     },
      gotoSuivi() {
       this.seeSuivi = true
-      this.seeComposant = false
+      this.seeComposante = false
     },
     gotoComposante() {
       this.seeSuivi = false
-      this.seeComposant = true
+      this.seeComposante = true
     },
     switch1() {
       this.mosaique = true

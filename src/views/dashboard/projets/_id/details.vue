@@ -68,7 +68,7 @@
             <select
               class="px-2 py-1 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
             >
-              <option disabled value="">Selectionnez un projet</option>
+              <option disabled selected hidden value="">Selectionnez un projet</option>
               <option value="data" v-for="(data, index) in 5" :key="index">
                 projet {{ index }}
               </option>
@@ -98,7 +98,7 @@
             </button>
             <button
               title="editer un projet"
-              class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
+              class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"
             >
               <span>
                 <svg

@@ -1,13 +1,18 @@
 <template>
   <dashboard>
     <div v-if="isNotGenere" class="container mx-auto">
+      
       <div class="py-8 flex space-x-5 justify-between">
         <div class="w-full">
           <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configuration de la checklist</h3>
           <div class="border border-dashed border-gray-300 my-4 px-8 py-4" >
             <fieldset  class="border border-dashed border-gray-300 p-3 my-2">
               <legend class="text-sm uppercase">Creation de la checklist </legend>
-              <div v-for="(form,index)  in Forms" :key="index">
+              <div class="my-2">
+                <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Selectionner une activité <span class="px-2 mb-2 text-lg font-black text-red-700">*</span></label>
+                <multiselect v-model="valueFiltre" :options="options" :custom-label="selectActivite"  placeholder="selectionnez une activite" label="name" track-by="name"></multiselect>
+              </div>
+              <div v-for="(form,index)  in Forms.data" :key="index">
                 <div class="flex justify-between w-full items-center ">
                   <div class="my-3 w-4/5" v-if="form.type=='edit'">
                     <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.label}} </label>
@@ -64,9 +69,9 @@
           </div>
         </div>
       </div>
-      <pre>
-        {{Forms}}
-      </pre>
+     <pre>
+      {{Forms}}
+     </pre>
       <div>
         <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer la checklist</button>
       </div>
@@ -78,7 +83,7 @@
         <div class="flex justify-center ">
           <div class="w-3/4 border border-dashed border-gray-700 p-6">
             <h1 class="text-lg font-semibold uppercase text-center py-2">Formulaire generer</h1>
-            <div v-for="form in Forms" :key="form.id">
+            <div v-for="form in Forms.data" :key="form.id">
               <div v-if="form.type=='edit'">
                   <label   class=" block py-2 text-sm font-semibold " for="">
                     {{form.label}} <span  class="px-2 text-lg font-black text-red-700">*</span>
@@ -124,37 +129,49 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
+import Vbutton from '@/components/Vbutton'
 import Dashboard from '@/layouts/Dashboard'
 export default {
   layout:'dashboard',
-  components: {Dashboard},
+  components: {Dashboard,Multiselect,Vbutton},
    data() {
     return {
       Answers:[],
       multiple_val:'',
+      valueFiltre:'',
       isNotGenere:true,
-      Forms:[]
+      Forms:{activite:'',data:[]},
+      options:[
+        {libelle:'preparer et faire valider par le MO et le MOD un PGESC',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+        {libelle:'preparer et faire valider par le MO et le MOD un PAE',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+        {libelle:'preparer et faire valider par le MO et le MOD un PPGED',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+        {libelle:'preparer et faire valider par le MO et le MOD un PPSPS',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+      ],
     }
   },
   methods: {
+    selectActivite ({ libelle}) {
+      return `${libelle}`
+    },
     btn_edit() {
-      this.Forms.push({type:'edit',label:null,content:null})
+      this.Forms.data.push({type:'edit',label:null,content:null})
     },
     btn_boolean() {
-      this.Forms.push({type:'boolean',label:null,checked:null})
+      this.Forms.data.push({type:'boolean',label:null,checked:null})
     },
     btn_multiple() {
-      this.Forms.push({type:'multiple',label:null,reponse:this.Answers})
+      this.Forms.data.push({type:'multiple',label:null,reponse:this.Answers})
     },
     btn_photo() {
-      this.Forms.push({type:'photos',label:null,images:null})
+      this.Forms.data.push({type:'photos',label:null,images:null})
     },
     addResponse() {
       this.Answers.push({label:this.multiple_val})
       this.multiple_val = ''
     },
     deleteItems(index) {
-      this.Forms.splice(index,1)
+      this.Forms.data.splice(index,1)
     },
     
     deleteAnswers(index) {
