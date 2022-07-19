@@ -5,6 +5,7 @@ export default class Projet {
     {
         this.id = is(String, projet.id) ? projet.id : projet.id,
         this.nom = is(String, projet.nom) ? projet.nom :  projet.nom,
+        this.link = is(String, projet.link) ? projet.link :  projet.link,
         this.code = is(String, projet.code) ? parseInt(projet.code) : projet.code,
         this.description = is(String, projet.description) ? projet.description : projet.description,
         this.couleur = is(String, projet.couleur) ? projet.couleur : projet.couleur,
