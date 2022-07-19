@@ -1,30 +1,31 @@
 <template>
   <dashboard>
-    <modal-top-right v-if="showModal" :title="title"  v-on:close="showCloseModal">
+    <div class="w-full p-4">
+    <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
       <form action="" @submit.prevent="save" class="px-4"  >
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="composanteAttributs.nom" key="nom" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input v-model="composanteAttributs.description"  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
+            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
           </div>
         </div>
 
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select v-model="composanteAttributs.position" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option v-for="i in 5" :key="i.id" :value="i"> {{i}} </option>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="i in 5" :key="i.id" value=""> {{i}} </option>
             </select>
           </div>
 
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un projet <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select v-model="composanteAttributs.projetId" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option v-for="projet in projets" :key="projet.id" :value="projet.id"> {{projet.nom}}</option>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
 
             </select>
           </div>
@@ -33,14 +34,14 @@
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input v-model="composanteAttributs.poids" required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
+            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select v-model="composanteAttributs.statut" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option :value="0">En cours</option>
-              <option :value="-1">En attente</option>
-              <option :value="2">En terminer</option>
+            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option value="">En cours</option>
+              <option value="">En attente</option>
+              <option value="">En terminer</option>
             </select>
           </div>
         </div>
@@ -48,11 +49,11 @@
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input v-model="composanteAttributs.budgetNational" required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
+            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
           </div>
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input v-model="composanteAttributs.pret" required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
+            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
           </div>
         </div>
 
@@ -60,7 +61,7 @@
         
 
         <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
-          <button v-if="title == 'Ajouter une nouvelle composante' || title== 'Dupliquer un projet existant' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
+          <button v-if="title == 'Ajouter un nouveau composant' || title== 'Dupliquer un projet existant' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
             <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
             Enregistrer et fermer
             </span>
@@ -119,23 +120,18 @@
     </div>
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span :class="{'border-primary border-b-8 font-bold':seeComposante}" @click="gotoComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
+        <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
-      <button v-if="seeComposante" @click="addComposante" title="ajouter une composante"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-        <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-        <span class="mx-2 text-sm font-semibold">ajouter une composante</span>
-      </button>
-      
-      <button v-if="seeComposante" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter un composant</span>
       </button>
      
     </div>
     
-    <div v-if="seeComposante">
+    <div v-if="seeComposant">
       <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
@@ -185,7 +181,6 @@
         </div>
       </div>
       <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        
         <div v-for="(composante,index) in composantes" :key="index">
         <div class="relative "> 
           <div class="absolute right-1 top-4 z-10  cursor-pointer">
@@ -193,63 +188,52 @@
           </div>
           <!-- cards composantes -->
           <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-            <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Code : {{composante.code}} </span>
+            <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
             <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
 
-              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>{{composante.sigle}}</span>
-              <span v-if="composante.statut == 0" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
-              <span v-if="composante.statut == 2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Terminer<i class='bx bx-time-five ml-1'></i></span>
-              <span v-if="composante.statut == -1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En attente<i class='bx bx-time-five ml-1'></i></span>
-              <span v-if="composante.statut == -2" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">Non validé<i class='bx bx-time-five ml-1'></i></span>
-              <span v-if="composante.statut == 1" class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En retard<i class='bx bx-time-five ml-1'></i></span>
+              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
+              <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
 
-            <!-- dots -->
-            <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-            <!-- ./dots -->
-            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>{{composante.position}} :</span> {{composante.nom}} </p>
+            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
             <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
               <i class='bx bxs-wallet bx-md' ></i>
-              <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.pret}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+              <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
             </div>
-            <!-- End cards composantes -->
           </div>
+          <!-- End cards composantes -->
         </div>
         </div>
-        </div>
-
-      <div v-if="line"  class="line my-4">
-      
-        <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-            <table class="w-full">
-              <thead>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Composantes </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">BN </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">EPM-PRET</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">poids</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">status</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
-              </thead>
-              <tbody>
-                <tr class="bg-white" v-for="(composante, index) in composantes" :key="index">
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{composante.position}} ~ Projet {{index * 2}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.description}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.budgetNational}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">{{composante.pret}}</td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{composante.poids}} </td>
-                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                    <span v-if="composante.statut == 0" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En cours</span>
-                    <span v-if="composante.statut == 2" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">Terminer</span>
-                    <span v-if="composante.statut == -1" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">En retard</span>
-                  </td>
-                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
+    </div>
+    <div v-if="line"  class="line my-4">
+      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
+          <table class="w-full">
+            <thead>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Composantes </th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description </th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">BN </th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">EPM-PRET</th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">poids</th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">status</th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
+            </thead>
+            <tbody>
+              <tr class="bg-white" v-for="(i,index) in 10" :key="index">
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Composante {{index}} ~ Projet {{index * 2}} </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">100M </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">1000M </td>
+                <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i*5}} </td>
+                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
+                  <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
+                </td>
+                <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
+              </tr>
+            </tbody>
+          </table>
       </div>
+    </div>
     </div>
 
     <div v-if="seeSuivi">
@@ -325,6 +309,7 @@
       </div>
     </div>
     
+  </div>
   </dashboard>
  
 </template>
@@ -337,10 +322,6 @@ import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
-
-import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-import utils from '@/utils/index'
-
 export default {
   components: {
     Dashboard,
@@ -371,7 +352,7 @@ export default {
       line:false,
       mosaique:true,
       isStateChange:false,
-      seeComposante:true,
+      seeComposant:true,
       seeSuivi:false,
       showInput:true,
       seeStatistique:false,
@@ -381,59 +362,53 @@ export default {
         {name:"dupliquer"},
         {name:"continuer"},
       ],
-      
+      composantes: [
+        {
+          code: "4.1.1.3.1.1",
+          libelle: " Investissement dans l’assainissement pluvial et engagement des communautés pour la réduction des risques d’inondation et l’adaptation au changement climatique ",
+          montantBN: "1,561,078.941",
+          montantEPM: "42,598,138.77",
+          poids: "72.00",
+        },
+        {
+          code: "4.1.1.3.1.2",
+          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
+          montantBN: "1,030,354.65",
+          montantEPM: "1,030,354.65",
+          poids: "13.00",
+        },
+         {
+          code: "4.1.1.3.1.3",
+          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
+          montantBN: "1,030,354.65",
+          montantEPM: "1,030,354.65",
+          poids: "13.00",
+        },
+      ],
       dates:[
         {}
       ],
-      composanteAttributs : [],
      
     }
     
   },
-  computed:{
-
-    //importation des variables du module auths
-    ...mapState({
-      identifiant: state => state.auths.identifiant,
-      composante: state => state.composantes.composante,
-      loading : state => state.loading,
-      errors : state => state.errors
-    }),
-
-    ...mapGetters({
-      composantes: "composantes/getComposantes", 
-      composante: "getComposante",
-      projets: "projets/getProjets"
-      
-    })
-  },
-
   methods: {
-        //Charger les fonctions de communication avec le serveur
-    ...mapMutations({
-      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setComposante: 'composantes/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
-    }),
-
-    ...mapActions('composantes', {
-      fetchComposantes: "FETCH_LIST_COMPOSANTE",
-      saveComposante: "STORE_COMPOSANTE",
-      updateComposante: "UPDATE_COMPOSANTE",
-      deleteComposante: "DESTROY_COMPOSANTE"
-    }),
-
-    ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET' }),
-
+    filtreRange(value){
+      this.rangeValue = value
+    },
+    selectProjet ({ name}) {
+      return `${name}`
+    },
     addDate() {
       this.dates.push({})
     },
      gotoSuivi() {
       this.seeSuivi = true
-      this.seeComposante = false
+      this.seeComposant = false
     },
     gotoComposante() {
       this.seeSuivi = false
-      this.seeComposante = true
+      this.seeComposant = true
     },
     switch1() {
       this.mosaique = true
@@ -446,56 +421,17 @@ export default {
     close() {
       this.showModal = false
     },
-    showCloseModal(value = false) {
-      this.showModal = value
-    },
-    addComposante() {
-      this.title='Ajouter une nouvelle composante'
-
-      this.showCloseModal(true)
-    },
-
-    modifier(composante) {
-
-      this.title = 'Modifier un composante'
-
-      this.setComposante(composante)
-
-      this.composanteAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-
-          if(value.key === item){
-            if(value.key === 'debut' || value.key === 'fin')
-            {
-              this.champs[index]['data'] = this.composante[item] + "-01"
-            }else{
-                this.champs[index]['data'] = this.composante[item]
-            }
-          }
-
-        })
-
-      })
-
-      this.showCloseModal(true)
-    },
-
-    async supprimer(composante) {
-      if(window.confirm("Voulez-vous supprimer cette composante " + composante.nom))
-        await this.deleteComposante(composante.id)
-    },
-    dupliquer() {
-      this.title ="Dupliquer un composante existant"
+    addComponent() {
+      this.title ="Ajouter un nouveau composant"
       this.showModal = true
     },
-    resetForm(){
-
-      this.champs = this.champs.map(item => { item.data = ''; return item})
-      
-      window.document.getElementById('vform').reset()
-
-      this.composante = {}
+    modifier() {
+      this.title ="Modifier un nouveau composant"
+      this.showModal = true
+    },
+    dupliquer() {
+      this.title ="Dupliquer un projet existant"
+      this.showModal = true
     },
     gotoNext() {
       this.$router.push('/dashboard/projets/sous-composantes-globale')
@@ -503,67 +439,23 @@ export default {
      editerSuivi(index) {
       this.showInput = false
     },
-    sendForm() {
+    toggle() {
+      this.pending = false
+      this.rejected = false
+      this.success = true
 
-      /*this.champs = this.champs.map(item => { item.errors = []; return item})
-
-      let composante = utils.extractFormData(this.champs, this.projetAttributs)*/
-
-      let composante = this.composanteAttributs
-      
-      if(this.composante?.id)
-      {
-
-        this.updateComposante({composante: composante, id : this.composante?.id}).then(response => {
-          
-          if(response.status == 200 || response.status == 201){
-
-            this.close()
-          }
-
-        }).catch((error) => {
-
-          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-          this.champs.map(value => value.errors = this.erreurs[value.key])
-
-        })
-
-      }
-      else
-      {
-        console.log(composante)
-        
-        this.saveComposante(composante).then(response => {
-          if(response.status == 200 || response.status == 201){
-              this.close()
-          }
-
-        })
-      }
-    }
-    
-  },
-  watch: {
-    loading: function(value) {
-      //this.loading = value
     },
-
-    errors: function(errors) {
-      this.champs.forEach((value) => {value.errors = errors[value.key]})
-      //this.errors = errors
-    }
-
-  },
-  
-  mounted() {
-    console.log("Fetching list of composantes ...")
-    this.fetchComposantes({id : 1}).then((value) => {
-        setTimeout(() => {
-          console.log("Fetching list of projets...")
-          this.fetchProjets({id : 1})
-        }, 500);
-    })
+    toggle2() {
+      this.success = false
+      this.rejected = false
+      this.pending = true
+    },
+    toggle3() {
+      this.pending = false
+      this.success = false
+      this.rejected = true
+    },
+    
   }
 }
 </script>
