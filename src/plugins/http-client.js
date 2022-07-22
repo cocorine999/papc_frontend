@@ -14,7 +14,7 @@ import store from  "@/store/index"
  * Some general configuration can be added like timeout, headers, params etc. More details can be found on https://github.com/axios/axios
  * */
 const config = {
-  baseURL: API_BASE_URL.DEVELOPMENT + "/api/" || API_BASE_URL.STAGGING + "/api/" || API_BASE_URL.DEPLOYMENT + "/api/" || "",
+  baseURL: API_BASE_URL + "/api/",
   timeout: 60 * 1000, // Timeout
   //withCredentials: true, // Check cross-site Access-Control,
   headers: {
