@@ -290,11 +290,11 @@
     </div>
 
     <div class="mb-1 px-4 flex items-center text-white  cursor-pointer">
-      <router-link to="/dashboard/ong" style="width:100%" class="flex space-x-3 items-center  px-2 py-2 z-10 relative   text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+      <router-link to="/dashboard/formulaire" style="width:100%" class="flex space-x-3 items-center  px-2 py-2 z-10 relative   text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
         <span class=" ">
-        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M17 7h2v2h-2zM17 11h2v2h-2zM17 15h2v2h-2zM1 11v10h6v-5h2v5h6V11L8 6l-7 5zm12 8h-2v-5H5v5H3v-7l5-3.5 5 3.5v7z"></path><path d="M10 3v1.97l2 1.43V5h9v14h-4v2h6V3z"></path></svg>
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M448 75.2v361.7c0 24.3-19 43.2-43.2 43.2H43.2C19.3 480 0 461.4 0 436.8V75.2C0 51.1 18.8 32 43.2 32h361.7c24 0 43.1 18.8 43.1 43.2zm-37.3 361.6V75.2c0-3-2.6-5.8-5.8-5.8h-9.3L285.3 144 224 94.1 162.8 144 52.5 69.3h-9.3c-3.2 0-5.8 2.8-5.8 5.8v361.7c0 3 2.6 5.8 5.8 5.8h361.7c3.2.1 5.8-2.7 5.8-5.8zM150.2 186v37H76.7v-37h73.5zm0 74.4v37.3H76.7v-37.3h73.5zm11.1-147.3l54-43.7H96.8l64.5 43.7zm210 72.9v37h-196v-37h196zm0 74.4v37.3h-196v-37.3h196zm-84.6-147.3l64.5-43.7H232.8l53.9 43.7zM371.3 335v37.3h-99.4V335h99.4z"></path></svg>
         </span>
-        <span class="font-semibold text-xs uppercase">ONG / Agences de comunications</span>
+        <span class="font-semibold text-xs uppercase">Formulaire</span>
       </router-link>
     </div>
 

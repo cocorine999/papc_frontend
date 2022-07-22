@@ -334,57 +334,10 @@
         <search-bar></search-bar>
       </div>
     </nav>
-    <div class="flex justify-start mt-2">
-      <div class="flex items-center">
-        <span
-          title="vue en mosaique"
-          @click="switch1"
-          :class="{ 'border-2': mosaique }"
-          class="p-2 cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"
-          ><svg
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            height="1.8em"
-            width="1.8em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path fill="none" d="M0 0h24v24H0z"></path>
-            <path
-              d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"
-            ></path></svg
-        ></span>
-        <span
-          title="vue en ligne"
-          @click="switch2"
-          :class="{ 'border-2': line }"
-          class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500"
-          ><svg
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            height="1.8em"
-            width="1.8em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path fill="none" d="M0 0h24v24H0z"></path>
-            <path
-              d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"
-            ></path></svg
-        ></span>
-      </div>
-    </div>
+    
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span
-          :class="{ 'border-primary border-b-8 font-bold': seeTache }"
-          @click="gotoTache()"
-          class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
-          >taches</span
-        >
-       
+        <span class="inline-block  border-b-8 font-bold cursor-pointer text-lg uppercase border-primary py-2">taches</span>
       </div>
 
       <button
@@ -447,175 +400,18 @@
             </nav>
           </div>
         </div>
-      <div
-        v-if="mosaique"
-        class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5"
-      >
+      <div  class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(tache,index) in taches" :key="index">
-          <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative">
-          <!-- dot -->
-            <div class="absolute flex space-x-3 right-1 top-4 z-10  cursor-pointer">
-              <span v-if="!isValidate" title="tache non valider" class="text-red-300"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z" stroke="none"/><path d="M21 19.1H3V5h18v14.1zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="none"/><path fill="none" d="M21 19.1H3V5h18v14.1zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="none"/><path d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41z" stroke="none"/></svg></span>
-              <span v-if="isValidate" title="tache valider" class="text-green-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 15.5V2a2 2 0 012-2h8a2 2 0 012 2v13.5a.5.5 0 01-.74.439L8 13.069l-5.26 2.87A.5.5 0 012 15.5zm8.854-9.646a.5.5 0 00-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 10-.708.708l1.5 1.5a.5.5 0 00.708 0l3-3z" stroke="none"/></svg></span>
-              <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
-              
-          </div>
-          <!-- dot -->
-          <!-- cards Tâches -->
-            <div class="relative p-4 bg-white sm:rounded-lg overflow-hidden ">
-             
-              <div class="absolute uppercase flex space-x-2 items-center ">
-                <div class="bg-primary rounded-lg text-sm text-white px-3 py-1 font-semibold ">
-                  <i class='bx bx-coin-stack mr-1'></i>
-                  <span>BOAD</span>
-                </div>
-                <button v-if="showValidate" @click="isValidate=true" class="bg-green-500 rounded-lg text-sm   px-3 py-1 font-semibold text-white">Valider</button>
-                
-              </div>
-              <!--  -->
-              <div class="cursor-pointer">
-                <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{tache.Poids}} </span>
-
-                <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
-                  cours<i class='bx bx-time-five ml-1'></i></span>
-
-                <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 ">
-                  <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{tache.libelle}} </p>
-                <!--  -->
-                <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
-                  <i class='bx bxs-wallet bx-sm'></i>
-                  <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : 
-                    <span class="font-bold italic text-lg"> {{tache.MontantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
-                  </div>
-                </div>
-                <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
-                  <i class='bx bxs-wallet bx-sm'></i>
-                  <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">BN : 
-                    <span class="font-bold italic text-lg">{{tache.MontantNE}}</span>
-                    <span class="ml-2 uppercase font-bold">fcfa</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-        <!-- End cards Tâches -->
-          </div>
-        </div>
-      </div>
-      <div v-if="line" class="line my-4">
-        <div
-          class="align-middle inline-block w-full overflow-hidden pt-3 rounded-bl-lg rounded-br-lg"
-        >
-          <table class="w-full">
-            <thead>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                #
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                tache
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Description
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                BN
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                EPM-PRET
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                poids
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Structure resp
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Structure assoc
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                status
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Actions
-              </th>
-            </thead>
-            <tbody>
-              <tr class="bg-white" v-for="(i, index) in 10" :key="index">
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  {{ i }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  tache {{ index }} ~activite {{ index + 1 * 6 }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  Lorem ipsum dolor sit amet
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  100M
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  1000M
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  {{ i * 5 }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  Structure resp {{ index }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  Structure assoc {{ index }}
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  <span
-                    class="bg-green-500 p-1 rounded-md text-white font-semibold px-2 text-xs"
-                    >en cours</span
-                  >
-                </td>
-                <td
-                  class="px-2 py-4 whitespace-no-wrap border-b border-gray-500"
-                >
-                  <dropdown :option="optionActivite"></dropdown>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <card-tache
+            bailleur="BM"
+            :poids="tache.Poids"
+            :libelle="tache.libelle"
+            :montantNE="tache.montantNE"
+            :montantEPM="tache.montantEPM"
+            @supprimer="supprimer"
+            @modifier="modifier"
+            @validation="validation"
+          ></card-tache>
         </div>
       </div>
     </div>
@@ -627,13 +423,14 @@
 </template>
 
 <script>
+import Vtable from '@/components/Vtable'
 import Multiselect from 'vue-multiselect'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import ModalTopRight from '@/components/ModalTopRight'
 import Dashboard from '@/layouts/Dashboard'
-import Dropdown from '@/components/Dropdown.vue'
+import CardTache from '@/components/CardTache.vue'
 export default {
   components: {
     Dashboard,
@@ -642,12 +439,11 @@ export default {
     SearchBar,
     ModalTopRight,
     Multiselect,
-    Dropdown
+    CardTache,
+    Vtable
   },
   data() {
     return {
-      showValidate:false,
-      isValidate:false,
       valueFiltre:'',
       pending:false,
       success:true,
@@ -668,11 +464,6 @@ export default {
         {name:'activite 3'},
         {name:'activite 4'},
         {name:'activite 5'},
-      ],
-      option: [
-        { name: "supprimer" },
-        { name: "modifier" },
-        { name: "dupliquer" },
       ],
       taches :[
         {
@@ -699,7 +490,23 @@ export default {
             MontantEPM :"",
             Poids : 7,
           },
-        ],
+      ],
+      headers: [
+        { name: "Tache", props: "tache"},
+        { name: "Description", props: "description"},
+        { name: "Budget Nationnal",props:'bn'},
+        { name: "Pret",props:'pret'},
+        { name: "Poids",props:'poids'},
+        { name: "Structure responsable",props:'struct_responsable'},
+        { name: "Structure Associé",props:'struct_assoc'},
+        { name: "Status",props:'status'},
+      ],
+      dataTable:[
+        {tache:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",struct_responsable:"agetur",struct_assoc:"",status:"en cours"}
+      ],
+      actions: [
+        { name: "supprimer", iconne: "" },
+      ],
       dates: [{}],
     };
   },
@@ -710,26 +517,11 @@ export default {
     selectActivite ({ name}) {
       return `${name}`
     },
-    gotoTache() {
-      this.seePlan = false;
-      this.seeTache = true;
-    },
-    gotoPlan() {
-      this.seePlan = true;
-      this.seeTache = false;
-    },
+   
     addDate() {
       this.dates.push({});
     },
 
-    switch1() {
-      this.mosaique = true;
-      this.line = false;
-    },
-    switch2() {
-      this.mosaique = false;
-      this.line = true;
-    },
     close() {
       this.showModal = false;
     },
@@ -751,6 +543,12 @@ export default {
     addTache() {
       this.title = "Ajouter une tache";
       this.showModal = true;
+    },
+    validation() {
+      alert('tache valider')
+    },
+    supprimer() {
+      alert('element à ete supprimer')
     },
     modifier() {
       this.title = "Modifier une tache";
