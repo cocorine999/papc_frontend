@@ -78,7 +78,11 @@ import fileManager from "../views/dashboard/fileManager/index.vue";
 import demo from "../views/demo.vue";
 import instutitions from "../views/dashboard/instutitions/index.vue";
 import paps from "../views/dashboard/paps/index.vue";
-import ong from "../views/dashboard/ong/index.vue";
+
+import formulaire from "../views/dashboard/formulaire/index.vue";
+import formulaire_create from "../views/dashboard/formulaire/create.vue";
+import formulaire_id_details from "../views/dashboard/formulaire/_id/suivi.vue";
+
 import profil from "../views/dashboard/profil/index.vue";
 
 /* espace bailleurs */
@@ -268,9 +272,19 @@ const routes = [
     component: paps,
   },
   {
-    path: "/dashboard/ong",
-    name: "ong",
-    component: ong,
+    path: "/dashboard/formulaire",
+    name: "formulaire",
+    component: formulaire,
+  },
+  {
+    path: "/dashboard/formulaire-create",
+    name: "formulaire_create",
+    component: formulaire_create,
+  },
+  {
+    path: "/dashboard/formulaire/:id/suivi",
+    name: "formulaire_id_details",
+    component: formulaire_id_details,
   },
 
   // {

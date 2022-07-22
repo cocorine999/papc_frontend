@@ -224,12 +224,7 @@
         <search-bar></search-bar>
       </div>
     </nav> 
-    <div class="flex justify-start mt-2">
-      <div class="flex  items-center ">
-       <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
-        <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
-      </div>
-    </div>
+    
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
         <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Sous composantes </span>
@@ -295,136 +290,26 @@
           </nav>
         </div>
       </div>
-      <div v-if="mosaique" class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+      <div  class=" my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(composante,index) in sous_composantes" :key="index">
-        <div class="relative">
-          <!-- dot -->
-         <div class="absolute right-1 top-4 z-10  cursor-pointer">
-                  <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
-         </div>
-          <!-- dot -->
-          <!-- cards composantes -->
-          <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-            <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{composante.code}} </span>
-            <!-- <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-Primary px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>boad</span> -->
-
-              <span class="absolute uppercase rounded-lg text-sm text-white bg-primary px-3 py-1 font-semibold"><i class='bx bx-coin-stack mr-1'></i>BOAD</span>
-              <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
-
-          
-            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
-            <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
-              <i class='bx bxs-wallet bx-md' ></i>
-              <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
-            </div>
-          </div>
-          <!-- End cards composantes -->
-        </div>
+          <card-composante
+            :libelle="composante.libelle"
+            :code="composante.code"
+            :montantEPM="composante.montantEPM"
+            :id="index"
+          ></card-composante>
         </div>
       </div>
-      <div v-if="line"  class="line my-4">
-        <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-            <table class="w-full">
-              <thead>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Sous Composantes </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">BN </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">EPM-PRET</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">poids</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">status</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
-              </thead>
-              <tbody>
-                <tr class="bg-white" v-for="(i,index) in 10" :key="index">
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">sous composante {{index}} ~ composante {{index *6}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">Lorem ipsum dolor sit amet </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">100M </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">1000M </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i*5}} </td>
-                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                    <span class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
-                  </td>
-                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 "> <dropdown :option="option" ></dropdown></td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-      </div>
+      
     </div>
 
     <div v-if="seeSuivi">
-      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-            <table class="w-full">
-              <thead>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Sous composantes </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">BN </th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">EPM-PRET</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">poids actuel</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">status</th>
-                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Actions</th> 
-              </thead>
-              <tbody>
-                <tr class="bg-white" v-for="(i,index) in 10" :key="index">
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> {{i}} </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">
-                    <span v-if="showInput"> Composante {{index}} </span>
-                    <input v-if="!showInput" type="text" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
-                  </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">
-                    <span v-if="showInput"> Lorem ipsum dolor sit amet </span>
-                    <input v-if="!showInput" type="text" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
-                  </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">
-                    <span v-if="showInput">100M</span>
-                    <input v-if="!showInput" type="text" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
-                  </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  ">
-                    <span v-if="showInput" >1000M</span>
-                    <input v-if="!showInput" type="text" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
-                  </td>
-                  <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500  "> 
-                   <span v-if="showInput"> {{i*5}} </span>
-                   <input v-if="!showInput" type="text" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
-                  </td>
-                  <td class=" px-2 py-4 whitespace-no-wrap border-b border-gray-500 ">
-                    <span v-if="showInput" class="bg-green-500 p-1 rounded-md text-white font-semibold px-2  text-xs">en cours</span>
-                    <select v-else  @change="isStateChange = false" class="outine-none" name="" id="">
-                      <option value="">cree</option>
-                      <option value="">en attente</option>
-                      <option value="">en cours</option>
-                      <option value="">en terminer</option>
-                    </select>
-                  </td>
-                   <td class="px-2 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5">
-                    <div class="flex item-center justify-center">
-                      <!-- <div title="details"  class="cursor-pointer w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      </div> -->
-                      
-                      <button @click="showInput = true" v-if="!showInput" class="text-sm bg-green-500 px-2 py-1 text-white outline-none">enregistrer</button>
-                      <div v-if="showInput" class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="editerSuivi(item)">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                        </svg>
-                      </div>
-                      <div  v-if="showInput" class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </div>
-                    </div>      
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-      </div>
+      <vtable id="datatable"
+        :headers="headers"
+        :datas="dataTable"
+        :actions="actions"
+        @supprimer="supprimer">
+      </vtable>
     </div>
     
 
@@ -434,13 +319,14 @@
 </template>
 
 <script>
+import CardComposante from '@/components/CardComposante.vue'
 import ModalTopRight from '@/components/ModalTopRight'
 import Multiselect from 'vue-multiselect'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-import Dropdown from '@/components/Dropdown.vue'
+import Vtable from '@/components/Vtable'
 export default {
   components: {
     Dashboard,
@@ -449,7 +335,8 @@ export default {
     SearchBar,
     Multiselect,
     ModalTopRight,
-    Dropdown
+    Vtable,
+    CardComposante
   },
   data() {
     return {
@@ -477,17 +364,7 @@ export default {
       option:[
         {name:"supprimer"},
         {name:"modifier"},
-        {name:"dupliquer"},
-        {name:"continuer"},
       ],
-      optionActivite:[
-        {name:"Voir plan execution"},
-        {name:"supprimer"},
-        {name:"modifier"},
-        {name:"dupliquer"},
-        {name:"continuer"},
-      ],
-
       activites:[
             {
               libelle: "Construire les collecteurs d'assainissement pluvial et aménager les voies connexes dans les bassins Pa3 et Y",
@@ -578,6 +455,21 @@ export default {
                 poids: "4.00",
               },
           
+      ],
+      headers: [
+        { name: "Composante", props: "composante"},
+        { name: "Description", props: "description"},
+        { name: "Budget Nationnal",props:'bn'},
+        { name: "Pret",props:'pret'},
+        { name: "Poids",props:'poids'},
+       
+        { name: "Status",props:'status'},
+      ],
+      dataTable:[
+        {composante:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",status:"en cours"}
+      ],
+      actions: [
+        { name: "supprimer", iconne: "" },
       ],
       dates:[
         {}
