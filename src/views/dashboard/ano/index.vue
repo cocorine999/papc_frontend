@@ -99,6 +99,9 @@ export default {
     
   },
   methods: {
+
+
+    
     addAno() {
       this.title = 'Ajouter un element'
       this.showModal = true
