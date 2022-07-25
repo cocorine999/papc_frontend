@@ -1,8 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
+
+
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
-// import bailleurs from "../views/dashboard/bailleurs/index.vue";
+import liens from "../views/liens.vue";
 
 import form_gestion_generator from "../views/dashboard/form/generator.vue";
 
@@ -143,11 +146,11 @@ const routes = [
     name: "ano",
     component: ano,
   },
-  // {
-  //   path: "/dashboard/bailleurs",
-  //   name: "bailleurs",
-  //   component: bailleurs,
-  // },
+  {
+    path: "/liens",
+    name: "liens",
+    component: liens,
+  },
  
  {
     path: "/form",

@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     
-  <div class="p-4">
+  <div class="px-4">
     <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">

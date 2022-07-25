@@ -1,6 +1,6 @@
 <template>
 <dashboard espace="bailleur">
-  <div class="w-full p-4">
+  <div class="w-full px-4">
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="closeModal">
         <div  class="px-4">

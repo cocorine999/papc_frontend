@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-4">
+    <div class="px-4">
     <RouteName title="utilisateurs" />
     <div v-if="showModal">
       <modal-top-right title="Ajouter un utilisateur" v-on:close="close">
