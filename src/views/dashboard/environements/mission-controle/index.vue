@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     
-    <div class="w-full p-4">
+    <div class="w-full px-4">
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -212,7 +212,7 @@ export default {
     },
 
     gotoNext() {
-       this.$router.push({name:'checklist',params:{id:1}})
+       this.$router.push({name:'mission_controle_checklist',params:{id:1}})
     },
 
     dupliquer(data) {

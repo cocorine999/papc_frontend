@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="w-full p-4">
+    <div class="w-full px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4">
@@ -114,15 +114,10 @@
               </div>
               
               <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
-                <span
-                  class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right bg-primary"
-                  ><p>Code : {{ bailleur.code }}</p></span
-                >
-                <span
-                  class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold px-4 py-2 rounded-lg uppercase bg-primary"
-                  ><i class="bx bx-coin-stack bx-md"></i
-                  >{{ bailleur.sigle }}</span
-                >
+                <span class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right "><p>Code : {{ bailleur.code }}</p></span>
+                <div class="flex h-20 top-0 absolute  text-4xl sm:text-5xl text-white tracking-tight font-bold  py-2 rounded-lg uppercase">
+                  <img  class="w-full object-contain " src="@/assets/images/login/logo-gouv.webp" alt="AFD">
+                </div>
                 <!-- dots 
                 <span class="absolute right-0 cursor-pointer"
                   ><i class="bx bx-dots-vertical-rounded bx-md pr-2"></i
