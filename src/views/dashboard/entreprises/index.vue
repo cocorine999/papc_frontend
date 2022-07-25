@@ -403,6 +403,8 @@ export default {
 
       entrepriseExecutante.modId = entrepriseExecutante.mod;
       entrepriseExecutante.programmeId = this.currentUser?.programme?.id;
+      console.log(entrepriseExecutante)
+
       if (this.entrepriseExecutante?.id) {
         this.updateEntrepriseExecutante({
           entrepriseExecutante: entrepriseExecutante,
@@ -460,7 +462,7 @@ export default {
     console.log("Fetching entreprises executantes ...");
 
     this.fetchEntreprisesExecutante().then((value) => {
-      if (this.currentUser.role.some((role) => role.name !== "mod")) {
+      if (this.currentUser.role.some((role) => role.nom !== "mod")) {
         setTimeout(() => {
           this.fetchMods();
         }, 500);
