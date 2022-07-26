@@ -1,4 +1,3 @@
-
 import getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
@@ -19,8 +18,7 @@ const state = () => ({
     "perPage" : null,
     "prevPage" : null,
     "from" : null,
-    "total" : null,
-    
+    "total" : null
   },
   lists: [],
   programme : new Programme()

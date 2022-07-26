@@ -3,7 +3,7 @@ export default {
 
     GET_AUTHENTICATE_USER : state => {
 
-        return state.authenticateUser 
+        return state.authenticateUser
 
                 ? state.authenticateUser
 

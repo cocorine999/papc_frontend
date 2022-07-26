@@ -30,7 +30,15 @@ import composantes from "./modules/composantes/index";
 
 import activites from "./modules/activites/index";
 
+import categories from "./modules/categories/index";
+
 import taches from "./modules/taches/index";
+
+import suiviIndicateurs from "./modules/suiviIndicateurs/index";
+
+
+
+import indicateurs from "./modules/indicateurs/index";
 
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
@@ -112,7 +120,7 @@ export default new Vuex.Store({
   actions: {
     toggleSidebar(context) {
       context.commit('toggleSidebar')
-    },
+    }
   },
 
   modules: {
@@ -131,6 +139,9 @@ export default new Vuex.Store({
     composantes,
     activites,
     taches,
+    indicateurs,
+    categories,
+    suiviIndicateurs,
   }
 });
 

@@ -107,7 +107,6 @@ export default {
       identifiant: state => state.auths.identifiant,
       loading : state => state.loading
     })
-    
   },
 
   methods: {
