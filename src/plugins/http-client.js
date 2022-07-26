@@ -69,7 +69,7 @@ httpClient.interceptors.request.use(config =>{
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
-
+    // ici les anciennes erreures sont écrasées
     store.commit(SET_ERRORS_MESSAGE, {message : null, errors: []})
 
     return config;
