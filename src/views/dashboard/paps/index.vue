@@ -30,13 +30,13 @@
       <div class="flex space-x-4">
         <span  class="inline-block cursor-pointer  border-b-8 font-bold text-sm uppercase    border-primary py-2">Tableau recapitulatif </span> 
       </div>
-      <button  @click="addAno" title="ajouter un tabelau"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+      <button  @click="addPap" title="ajouter un tabelau"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
         <span class="mx-2 text-xs font-semibold">Ajouter </span> 
       </button>
     </div>
     
-     <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+     <vtable :headers="headers" :datas="this.paps" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
     
   </div>
   </dashboard>
@@ -51,9 +51,9 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-import { mapState } from 'vuex'
 
-
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
 
 export default {
    components: {
@@ -73,37 +73,30 @@ export default {
       showInput:true,
       title:'',
       champs:[
-        {name:' Nom et Prenom ',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:' Montant',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:' Nom ', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Prenom ', key:'prenom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Montant', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
 
-        {name:'Date de paiement',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:' coordonnées geographiques',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Commentaires',type:'',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:true,},
-        {name:' Contact ',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-
-        {name:'Status',type:'',placeholdere:"Selectionnez une valeur",isSelect:true,isTextArea:false,data:'',options:['En cours','En attente','terminer'],required:true,},
+        {name:'Date de paiement', key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Longitude', key:'longitude',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Latitude', key:'latitude',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Commentaires', key:'commentaire',type:'text',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:false,errors : []},
+        {name:' Contact ',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Bailleur', key:'bailleurId',type:'',placeholdere:"Selectionnez un bailleur",isSelect:true,isTextArea:false,data:'',options:this.bailleurs, cle: 'id', value: 'sigle',required:true,errors : []},
       ],
       cols:2,
       headers:[
         {name:'Nom et Prenom',props:'nom'},
-        {name:'Coordonnées géographiques',props:'bailleur'},
-        {name:'Montant(Fcfa)',props:'type'},
-        {name:'Date de paiement',props:'date_soumission'},
-        {name:'Contact',props:'date_obtention'},
-        {name:'Status',props:'status',status:true},
+        {name:'Prenoms',props:'prenoms'},
+        {name:'longitude',props:'longitude'},
+        {name:'latitude',props:'latitude'},
+        {name:'Montant(Fcfa)',props:'montant'},
+        {name:'Date de paiement',props:'annee'},
+        {name:'Contact',props:'contact'},
+        {name:'Bailleur',props:'bailleur'},
         {name:'Date de création',props:'created_at'},
       ],
       dataTable:[
-        {nom:'ZINSOU Alain ',bailleur:'L:6,547777 , l=2,5855477',type:"8 000 000 ",date_soumission:"23-06-2022",date_obtention:"00229 96 97 06 03",status:'terminer',created_at:"22-06-2022"},
-        {nom:'ATO Marc',bailleur:'L:6,547777 , l=2,5855477',type:"2  000 000 ",date_soumission:"23-06-2022",date_obtention:"00229 96 97 06 03",status:'terminer',created_at:"22-06-2022"},
-        {nom:'HOUENOU Roger',bailleur:'L:6,547777 , l=2,5855477',type:"6  000 000 ",date_soumission:"23-06-2022",date_obtention:"00229 96 97 06 03",status:'en cours',created_at:"22-06-2022"},
-        {nom:'AZIZA Mathieu',bailleur:'L:6,547777 , l=2,5855477',type:"4  000 000 ",date_soumission:"23-06-2022",date_obtention:"00229 96 97 06 03",status:'en attente',created_at:"22-06-2022"},
-        {nom:'NOUTAI Constantin',bailleur:'L:6,547777 , l=2,5855477',type:"1  000 000 ",date_soumission:"23-06-2022",date_obtention:"00229 96 97 06 03",status:'en cours',created_at:"22-06-2022"},
-        {nom:'demande de fond à la BM',bailleur:'L:6,547777 , l=2,5855477',type:"PTAB",date_soumission:"23-06-2022",date_obtention:"00229 96 97 06 03",status:'terminer',created_at:"22-06-2022"},
-        {nom:'demande de fond à la BM',bailleur:'BM',type:"PTAB",date_soumission:"23-06-2022",date_obtention:"30-07-2022",status:'en cours',created_at:"22-06-2022"},
-        {nom:'demande de fond à la BM',bailleur:'BM',type:"PTAB",date_soumission:"23-06-2022",date_obtention:"30-07-2022",status:'en attente',created_at:"22-06-2022"},
-        {nom:'demande de fond à la BM',bailleur:'BM',type:"PTAB",date_soumission:"23-06-2022",date_obtention:"30-07-2022",status:'en attente',created_at:"22-06-2022"},
-        {nom:'demande de fond à la BM',bailleur:'BM',type:"PTAB",date_soumission:"23-06-2022",date_obtention:"30-07-2022",status:'terminer',created_at:"22-06-2022"},
       ],
       actions:[
         {name:'supprimer',iconne:''},
@@ -111,7 +104,41 @@ export default {
     }
     
   },
+
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      pap: state => state.paps.pap,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      paps: "paps/getPaps", pap: "getPap",
+      bailleurs: "bailleurs/getBailleurs",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    })
+    
+  },
+
   methods: {
+    //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setPap: 'paps/FILL' // map `this.CREATE_INSTANCE_PAP()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('paps', {
+      fetchPaps: "FETCH_LIST_PAP",
+      savePap: "STORE_PAP",
+      updatePap: "UPDATE_PAP",
+      deletePap: "DESTROY_PAP"
+    }),
+
+    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+
     addAno() {
       this.title = 'Ajouter un element'
       this.showModal = true
@@ -119,13 +146,137 @@ export default {
 
     
     
-    supprimer(data) {
-     alert(data +" à ete bien supprimer")
-    },
     close() {
-      this.showModal = false
+      this.showCloseModal()
+
+      this.resetForm
+    }, 
+    
+    showCloseModal(value = false) {
+      this.showModal = value
+    },
+    addPap() {
+      this.title='Ajouter un nouveau pap'
+
+      let formData = this.champs.map((value) => {
+          if(value.key === 'bailleurId'){ 
+            value['options'] = this.bailleurs
+          }
+
+          return value
+        })
+
+      this.champs = formData
+
+      this.showCloseModal(true)
+    },
+
+    modifier(pap) {
+
+      this.title = 'Modifier un pap'
+
+      this.submitText="Enregistrer",
+
+      this.setPap(pap)
+
+      this.papAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if(value.key === item){
+            this.champs[index]['data'] = this.pap[item]
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
+    },
+
+    async supprimer(pap) {
+      if(window.confirm("Voulez-vous supprimer ce pap " + pap.nom + pap.prenoms))
+        await this.deletePap(pap.id)
+    },
+
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.pap = {}
+    },
+
+    sendForm() {
+
+      this.champs = this.champs.map(item => { item.errors = []; return item})
+
+      let pap = utils.extractFormData(this.champs, this.papAttributs)
+
+      pap.programmeId = this.currentUser?.programme?.id
+
+      pap.bailleurId = pap.bailleurId.id
+
+      pap.statut = pap.statut.etat
+
+      console.log(pap)
+      
+      if(this.pap?.id)
+      {
+
+        this.updatePap({pap: pap, id : this.pap?.id}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.close()
+          }
+
+        }).catch((error) => {
+
+          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+          this.champs.map(value => value.errors = this.erreurs[value.key])
+
+        })
+
+      }
+      else
+      {
+        console.log(pap)
+        
+        this.savePap(pap).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
+          }
+
+        })
+      }
+
     },
     
+  },
+
+  watch: {
+    loading: function(value) {
+      //this.loading = value
+    },
+
+    errors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    }
+
+  },
+  
+  mounted() {
+    console.log("Fetching paps ...")
+    this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of bailleurs...")
+          this.fetchBailleurs()
+        }, 500);
+    })
   }
 }
 </script>

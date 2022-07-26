@@ -210,6 +210,10 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
+
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
+
 export default {
   components: {
     Dashboard,
