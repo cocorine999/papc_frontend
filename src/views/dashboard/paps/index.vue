@@ -4,7 +4,7 @@
     <div v-if="showModal">
       <ModalTopRight :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer un ano" @sendForm="sendForm" ></vform>
+          <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer un pap" @sendForm="sendForm" ></vform>
         </div>
       </ModalTopRight>
     </div>
@@ -36,7 +36,7 @@
       </button>
     </div>
     
-     <vtable :headers="headers" :datas="this.paps" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+     <vtable :headers="headers" :datas="paps" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     
   </div>
   </dashboard>
@@ -72,31 +72,29 @@ export default {
       loading:false,
       showInput:true,
       title:'',
+      papAttributs : ['nom', 'prenoms', 'longitude', 'latitude', 'dateDePaiement', 'contact', 'bailleurId', 'montant'],
       champs:[
         {name:' Nom ', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Prenom ', key:'prenom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Prenoms ', key:'prenoms',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Montant', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
 
-        {name:'Date de paiement', key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Longitude', key:'longitude',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Latitude', key:'latitude',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Commentaires', key:'commentaire',type:'text',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:false,errors : []},
-        {name:' Contact ',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date de paiement', key:'dateDePaiement',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Longitude', key:'longitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Latitude', key:'latitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Contact ', key:'contact',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Bailleur', key:'bailleurId',type:'',placeholdere:"Selectionnez un bailleur",isSelect:true,isTextArea:false,data:'',options:this.bailleurs, cle: 'id', value: 'sigle',required:true,errors : []},
       ],
       cols:2,
       headers:[
-        {name:'Nom et Prenom',props:'nom'},
-        {name:'Prenoms',props:'prenoms'},
-        {name:'longitude',props:'longitude'},
-        {name:'latitude',props:'latitude'},
-        {name:'Montant(Fcfa)',props:'montant'},
-        {name:'Date de paiement',props:'annee'},
-        {name:'Contact',props:'contact'},
-        {name:'Bailleur',props:'bailleur'},
-        {name:'Date de création',props:'created_at'},
-      ],
-      dataTable:[
+        {name:'Nom',cle:'nom'},
+        {name:'Prenoms',cle:'prenoms'},
+        {name:'Longitude',cle:'longitude'},
+        {name:'Latitude',cle:'latitude'},
+        {name:'Montant(Fcfa)',cle:'montant'},
+        {name:'Date de paiement',cle:'dateDePaiement'},
+        {name:'Contact',cle:'contact'},
+        {name:'Bailleur',cle:'bailleur'},
+        {name:'Date de création',cle:'dateDeCreation'},
       ],
       actions:[
         {name:'supprimer',iconne:''},
@@ -116,7 +114,8 @@ export default {
     }),
 
     ...mapGetters({
-      paps: "paps/getPaps", pap: "getPap",
+      paps: "paps/getPaps", 
+      pap: "paps/getPap",
       bailleurs: "bailleurs/getBailleurs",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     })
@@ -171,31 +170,8 @@ export default {
       this.showCloseModal(true)
     },
 
-    modifier(pap) {
-
-      this.title = 'Modifier un pap'
-
-      this.submitText="Enregistrer",
-
-      this.setPap(pap)
-
-      this.papAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-
-          if(value.key === item){
-            this.champs[index]['data'] = this.pap[item]
-          }
-
-        })
-
-      })
-
-      this.showCloseModal(true)
-    },
-
     async supprimer(pap) {
-      if(window.confirm("Voulez-vous supprimer ce pap " + pap.nom + pap.prenoms))
+      if(window.confirm("Voulez-vous supprimer ce pap " + pap.nom + ' '+ pap.prenoms))
         await this.deletePap(pap.id)
     },
 
@@ -208,7 +184,20 @@ export default {
       this.pap = {}
     },
 
+    async updateInputData(id, attribut, value) {
+        
+          await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
+
+    },
+
     sendForm() {
+
+      console.log(this.champs)
 
       this.champs = this.champs.map(item => { item.errors = []; return item})
 
@@ -217,8 +206,6 @@ export default {
       pap.programmeId = this.currentUser?.programme?.id
 
       pap.bailleurId = pap.bailleurId.id
-
-      pap.statut = pap.statut.etat
 
       console.log(pap)
       
@@ -243,8 +230,7 @@ export default {
       }
       else
       {
-        console.log(pap)
-        
+      
         this.savePap(pap).then(response => {
           if(response.status == 200 || response.status == 201){
               this.close()

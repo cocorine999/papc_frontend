@@ -25,6 +25,10 @@ const ProjetsService = {
       return ApiService.delete(`sinistres/${slug}`);
     },
 
+    programme(slug) {
+      return ApiService.get(`programmes/sinistres/${slug}`);
+    },
+
   };
 
   export default ProjetsService;

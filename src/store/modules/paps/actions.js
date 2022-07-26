@@ -14,13 +14,13 @@ import {
     REMOVE as REMOVE_PAP
 } from "@/store/mutations.type"
 
-import PapService from "@/services/modules/pap.service";
+import PapService from "@/services/modules/paps.service";
 
 export default {
     
     FETCH_LIST_PAP : async ({ commit }, {id}) => {
 
-        const { data, status } = await PapService.get();
+        const { data, status } = await PapService.programme(id);
 
         commit(SET_LIST_PAP, data.data);
 

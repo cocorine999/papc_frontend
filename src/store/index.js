@@ -32,6 +32,8 @@ import activites from "./modules/activites/index";
 
 import taches from "./modules/taches/index";
 
+import paps from "./modules/paps/index";
+
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -131,6 +133,7 @@ export default new Vuex.Store({
     composantes,
     activites,
     taches,
+    paps,
   }
 });
 
