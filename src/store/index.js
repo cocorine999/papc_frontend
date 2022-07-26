@@ -39,6 +39,9 @@ import suiviIndicateurs from "./modules/suiviIndicateurs/index";
 
 
 import indicateurs from "./modules/indicateurs/index";
+import anos from "./modules/anos/index";
+
+import typeAnos from "./modules/typeAnos/index";
 
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
@@ -101,11 +104,11 @@ export default new Vuex.Store({
     },
 
     [SET_LOADER](state, value) {
-      if(typeof value === "boolean")
+      if(typeof value === "boolean") // vérifie si le LOADER est vraiement de type boolean
         state.loading = value
     },
 
-    [SET_ERRORS_MESSAGE](state, {message, errors}) {
+    [SET_ERRORS_MESSAGE](state, {message, errors}) { //si erreur, cette fonction permet de récuperer les erreurs et de les stockés pour la vue
       state.messageErreur = message
       state.errors = errors
     },
@@ -142,6 +145,8 @@ export default new Vuex.Store({
     indicateurs,
     categories,
     suiviIndicateurs,
+    anos,
+    typeAnos
   }
 });
 

@@ -231,270 +231,270 @@
 </template>
 
 <script>
-import ModalTopRight from "@/components/ModalTopRight";
-import SearchBar from "@/components/SearchBar";
-import CardBailleur from "@/components/CardBailleur";
-import Titre from "@/components/Titre";
-import Vtable from "@/components/Vtable";
-import Vform from "@/components/Vform";
-import Vmodal from "@/components/Vmodal";
-import Dashboard from "@/layouts/Dashboard";
-import Dropdown from '@/components/Dropdown.vue'
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import extractFormData from "@/utils/extract-data";
+  import ModalTopRight from "@/components/ModalTopRight";
+  import SearchBar from "@/components/SearchBar";
+  import CardBailleur from "@/components/CardBailleur";
+  import Titre from "@/components/Titre";
+  import Vtable from "@/components/Vtable";
+  import Vform from "@/components/Vform";
+  import Vmodal from "@/components/Vmodal";
+  import Dashboard from "@/layouts/Dashboard";
+  import Dropdown from '@/components/Dropdown.vue'
+  import { mapGetters, mapMutations, mapActions } from "vuex";
+  import extractFormData from "@/utils/extract-data";
 
-export default {
-  components: {
-    Vtable,
-    Dashboard,
-    Vmodal,
-    Vform,
-    CardBailleur,
-    Titre,
-    SearchBar,
-    ModalTopRight,
-    Dropdown
-  },
-  
-  data() {
-    return {
-      bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
-      showModal: false,
-      line: false,
-      mosaique: true,
-      title: "Ajouter un nouveau bailleur",
-      submitText: "Enrégistrer",
-      headers: [
-        { name: "Bailleurs", props: "user", cle: "nom"},
-        { name: "Sigle", cle: "sigle"},
-        { name: "Code PTA", cle: "code", edit : false },
-        { name: "Pays", cle: "pays", edit: true },
-        { name: "Date creation", cle: "created_at", edit : false },
-      ],
+  export default {
+    components: {
+      Vtable,
+      Dashboard,
+      Vmodal,
+      Vform,
+      CardBailleur,
+      Titre,
+      SearchBar,
+      ModalTopRight,
+      Dropdown
+    },
+    
+    data() {
+      return {
+        bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
+        showModal: false,
+        line: false,
+        mosaique: true,
+        title: "Ajouter un nouveau bailleur",
+        submitText: "Enrégistrer",
+        headers: [
+          { name: "Bailleurs", props: "user", cle: "nom"},
+          { name: "Sigle", cle: "sigle"},
+          { name: "Code PTA", cle: "code", edit : false },
+          { name: "Pays", cle: "pays", edit: true },
+          { name: "Date creation", cle: "created_at", edit : false },
+        ],
 
-      actions: [
-        { name: "modifier", iconne: "" },
-        { name: "supprimer", iconne: "" },
-      ],
+        actions: [
+          { name: "modifier", iconne: "" },
+          { name: "supprimer", iconne: "" },
+        ],
 
-      champs: [
-        {
-          name: "Nom",
-          type: "text",
-          key: "nom",
-          placeholdere: "Nom du bailleur",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
-        },
-        {
-          name: "Code",
-          type: "number",
-          key: "code",
-          placeholdere: "Code du bailleur",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
-        },
-        {
-          name: "Sigle",
-          type: "text",
-          key: "sigle",
-          placeholdere: "Sigle du bailleur",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
-        },
-        {
-          name: "Email",
-          type: "email",
-          key: "email",
-          placeholdere: "Votre Email",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
-        },
-        {
-          name: "Contact",
-          type: "number",
-          key: "contact",
-          placeholdere: "Votre contact",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
-        },
-        {
-          name: "Pays",
-          type: "text",
-          key: "pays",
-          placeholdere: "Pays du bailleur",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
-        },
+        champs: [
+          {
+            name: "Nom",
+            type: "text",
+            key: "nom",
+            placeholdere: "Nom du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Code",
+            type: "number",
+            key: "code",
+            placeholdere: "Code du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Sigle",
+            type: "text",
+            key: "sigle",
+            placeholdere: "Sigle du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Email",
+            type: "email",
+            key: "email",
+            placeholdere: "Votre Email",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Contact",
+            type: "number",
+            key: "contact",
+            placeholdere: "Votre contact",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Pays",
+            type: "text",
+            key: "pays",
+            placeholdere: "Pays du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
 
-        {name:'Logo',type:'file',placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true, errors: []},
-      ],
-      cols: 1,
+          {name:'Logo',type:'file',placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true, errors: []},
+        ],
+        cols: 1,
 
-      option: [{ name: "supprimer" }, { name: "modifier" }],
-    };
-  },
-
-  computed: {
-    ...mapGetters({
-      hasErrors: "GET_ERREURS",
-      isLoading: "IS_LOADING",
-      bailleur: "bailleurs/getBailleur",
-      bailleurs: "bailleurs/getBailleurs",
-    }),
-  },
-
-  methods: {
-    ...mapMutations({
-      setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
-    }),
-
-    ...mapActions("bailleurs", {
-      fetchBailleurs: "FETCH_LIST_BAILLEUR",
-      saveBailleur: "STORE_BAILLEUR",
-      updateBailleur: "UPDATE_BAILLEUR",
-      deleteBailleur: "DESTROY_BAILLEUR",
-    }),
-
-    switchBetweenCode({mosaique, line}) {
-      this.mosaique = mosaique
-      this.line = line
+        option: [{ name: "supprimer" }, { name: "modifier" }],
+      };
     },
 
-    addBailleur() {
-      this.title = "Ajouter un bailleur";
-
-      this.submitText = "Enrégistrer";
-
-      this.showCloseModal(true);
+    computed: {
+      ...mapGetters({
+        hasErrors: "GET_ERREURS",
+        isLoading: "IS_LOADING",
+        bailleur: "bailleurs/getBailleur",
+        bailleurs: "bailleurs/getBailleurs",
+      }),
     },
 
-    modifier(bailleur) {
-      this.title = "Modifier le bailleur";
+    methods: {
+      ...mapMutations({
+        setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+        setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      }),
 
-      this.submitText = "Modifier";
+      ...mapActions("bailleurs", {
+        fetchBailleurs: "FETCH_LIST_BAILLEUR",
+        saveBailleur: "STORE_BAILLEUR",
+        updateBailleur: "UPDATE_BAILLEUR",
+        deleteBailleur: "DESTROY_BAILLEUR",
+      }),
 
-      this.setBailleur(bailleur);
+      switchBetweenCode({mosaique, line}) {
+        this.mosaique = mosaique
+        this.line = line
+      },
 
-      this.bailleurAttributs.forEach((item) => {
-        this.champs.find((value, index) => {
-          if (value.key === item) {
-            if (item === "nom" || item === "email" || item === "contact")
-              this.champs[index]["data"] = this.bailleur.user[item];
-            else this.champs[index]["data"] = this.bailleur[item];
-          }
+      addBailleur() {
+        this.title = "Ajouter un bailleur";
+
+        this.submitText = "Enrégistrer";
+
+        this.showCloseModal(true);
+      },
+
+      modifier(bailleur) {
+        this.title = "Modifier le bailleur";
+
+        this.submitText = "Modifier";
+
+        this.setBailleur(bailleur);
+
+        this.bailleurAttributs.forEach((item) => {
+          this.champs.find((value, index) => {
+            if (value.key === item) {
+              if (item === "nom" || item === "email" || item === "contact")
+                this.champs[index]["data"] = this.bailleur.user[item];
+              else this.champs[index]["data"] = this.bailleur[item];
+            }
+          });
         });
-      });
 
-      this.showCloseModal(true);
-    },
+        this.showCloseModal(true);
+      },
 
-    supprimer(bailleur) {
-      console.log(bailleur)
-      if (
-        window.confirm("Voulez-vous supprimer le bailleur " + bailleur.user.nom)
-      )
-        this.deleteBailleur(bailleur.id);
-    },
+      supprimer(bailleur) {
+        console.log(bailleur)
+        if (
+          window.confirm("Voulez-vous supprimer le bailleur " + bailleur.user.nom)
+        )
+          this.deleteBailleur(bailleur.id);
+      },
 
-    dupliquer() {
-      this.title = "Dupliquer un bailleur";
-      this.showCloseModal();
-    },
+      dupliquer() {
+        this.title = "Dupliquer un bailleur";
+        this.showCloseModal();
+      },
 
-    close() {
-      this.showCloseModal();
+      close() {
+        this.showCloseModal();
 
-      this.resetForm();
-    },
+        this.resetForm();
+      },
 
-    showCloseModal(value = false) {
-      this.showModal = value;
-    },
+      showCloseModal(value = false) {
+        this.showModal = value;
+      },
 
-    resetForm() {
-      this.champs = this.champs.map((item) => {
-        item.data = "";
-        return item;
-      });
+      resetForm() {
+        this.champs = this.champs.map((item) => {
+          item.data = "";
+          return item;
+        });
 
-      window.document.getElementById("vform")?.reset();
+        window.document.getElementById("vform")?.reset();
 
-      this.setBailleur({});
-    },
+        this.setBailleur({});
+      },
 
-    async updateInputData(id, attribut, value) {
-      await this.updateBailleur({bailleur: {[attribut] : value}, id : id}).then((value) => {
-        this.setBailleur({})
-      }).catch((value, status) => {
-        if(this.hasErrors[attribut] !== undefined)
-          alert(this.hasErrors[attribut])        
-      })
-    },
+      async updateInputData(id, attribut, value) {
+        await this.updateBailleur({bailleur: {[attribut] : value}, id : id}).then((value) => {
+          this.setBailleur({})
+        }).catch((value, status) => {
+          if(this.hasErrors[attribut] !== undefined)
+            alert(this.hasErrors[attribut])        
+        })
+      },
 
-    sendForm() {
-      this.champs = this.champs.map((item) => {
-        item.errors = [];
-        return item;
-      });
+      sendForm() {
+        this.champs = this.champs.map((item) => {
+          item.errors = [];
+          return item;
+        });
 
-      let bailleur = extractFormData(this.champs, this.bailleurAttributs);
+        let bailleur = extractFormData(this.champs, this.bailleurAttributs);
 
-      if (this.bailleur?.id) {
-        this.updateBailleur({ bailleur: bailleur, id: this.bailleur?.id }).then(
-          (response) => {
+        if (this.bailleur?.id) {
+          this.updateBailleur({ bailleur: bailleur, id: this.bailleur?.id }).then(
+            (response) => {
+              if (response.status == 200 || response.status == 201) {
+                this.close();
+              }
+            }
+          );
+        } else {
+          this.saveBailleur(bailleur).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
             }
-          }
-        );
-      } else {
-        this.saveBailleur(bailleur).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            this.close();
-          }
+          });
+        }
+      },
+    },
+
+    watch: {
+      isLoading: function (value) {
+        //this.loading = value
+      },
+
+      hasErrors: function (errors) {
+        this.champs.forEach((value) => {
+          value.errors = errors[value.key];
         });
-      }
-    },
-  },
-
-  watch: {
-    isLoading: function (value) {
-      //this.loading = value
+        //this.errors = errors
+      },
     },
 
-    hasErrors: function (errors) {
-      this.champs.forEach((value) => {
-        value.errors = errors[value.key];
-      });
-      //this.errors = errors
+    mounted() {
+      console.log("Fetching bailleurs ...");
+      this.fetchBailleurs()
     },
-  },
-
-  mounted() {
-    console.log("Fetching bailleurs ...");
-    this.fetchBailleurs()
-  },
-};
+  };
 </script>
 
 <style></style>
