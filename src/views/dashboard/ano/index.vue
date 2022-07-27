@@ -31,8 +31,7 @@
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
-            class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau
-            recapitulatif </span>
+            class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
         </div>
         <button @click="addAno" title="ajouter un tabelau"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
@@ -43,8 +42,10 @@
           <span class="mx-2 text-sm font-semibold">Ajouter </span>
         </button>
       </div>
-      <vtable id="datatable" :headers="headers" :datas="anos" :actions="actions" @supprimer="supprimer" @modifier="modifier">
-      </vtable>
+      <div id="dataTable">
+        <vtable :headers="headers" :datas="anos" :actions="actions" @supprimer="supprimer" @modifier="modifier">
+        </vtable>
+      </div>
     </div>
   </dashboard>
 
@@ -85,17 +86,17 @@ export default {
         { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: ['En cours', 'En attente', 'Terminer'], required: true, errors: [] },
+        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
       cols: 1,
       headers: [
-        { name: 'Nom', props: 'nom' },
-        { name: 'Bailleur', props: 'bailleur' },
-        { name: 'Type', props: 'type' },
-        { name: 'Date soumission', props: 'date_soumission' },
-        { name: 'Destinataire', props: 'destinataire' },
-        { name: 'Status', props: 'status', status: true },
-        { name: 'Date de creation', props: 'created_at' },
+        { name: 'Nom', cle: 'dossier' },
+        { name: 'Bailleur', props: 'bailleur', cle: 'sigle' },
+        { name: 'Type', props: 'typeAno', cle: 'nom' },
+        { name: 'Date soumission', cle: 'dateDeSoumission' },
+        { name: 'Destinataire', cle: 'destinataire' },
+        { name: 'Status', cle: 'status', status: true },
+        { name: 'Date de creation', cle: 'created_at' },
       ],
 
       actions: [
@@ -136,8 +137,8 @@ export default {
     ...mapActions('typeAnos', { fetchTypeAnos: 'FETCH_LIST_TYPE_ANO' }),
     ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
 
-    resetForm(){ //delete data in form after submit
-      this.champs = this.champs.map(item => { item.data = ''; return item})
+    resetForm() { //delete data in form after submit
+      this.champs = this.champs.map(item => { item.data = ''; return item })
       window.document.getElementById('vform')?.reset()
       this.setAno({})
     },
@@ -147,8 +148,12 @@ export default {
         item.errors = [];
         return item;
       });
-
       let ano = extractFormData(this.champs, this.anoAttributs);
+
+      ano.typeId = ano.typeId.id
+      ano.bailleurId = ano.bailleurId.id
+      ano.statut = ano.statut.etat
+      console.log(ano);
 
       if (this.ano?.id) {
         this.updateAno({ ano: ano, id: this.ano?.id }).then(
@@ -167,6 +172,7 @@ export default {
       }
     },
 
+
     addAno() {
       this.title = 'Ajouter un element'
       this.showModal = true
@@ -174,17 +180,16 @@ export default {
 
     modifier(ano) {
       this.title = 'Modifier ano {{ ano.nom }}'
-      this.submitText= "Modifier"
+      this.submitText = "Modifier"
       this.setAno(ano)
       this.anoAttributs.forEach((item) => {
 
         this.champs.find((value, index) => {
-          if(value.key === item){
-            if(value.key === 'debut' || value.key === 'fin')
-            {
+          if (value.key === item) {
+            if (value.key === 'debut' || value.key === 'fin') {
               this.champs[index]['data'] = this.ano[item] + "-01"
-            }else{
-                this.champs[index]['data'] = this.ano[item]
+            } else {
+              this.champs[index]['data'] = this.ano[item]
             }
           }
         })
@@ -194,7 +199,7 @@ export default {
     },
 
     async supprimer(ano) {
-      if(window.confirm("Voulez-vous supprimer ce ano ?" + ano.nom))
+      if (window.confirm("Voulez-vous supprimer ce ano ?" + ano.nom))
         await this.deleteAno(ano.id)
     },
 
@@ -206,13 +211,13 @@ export default {
   mounted() {
     console.log("Fetching anos ...");
     this.fetchAnos()
-      .then((value) => { console.log(value) });
+    //.then((value) => { console.log(value) });
     console.log("Fetching type anos ...");
     this.fetchTypeAnos()
-      .then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
+    //.then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
     console.log("Fetching bailleurs ...");
     this.fetchBailleurs()
-      .then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
+    //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },
 
   watch: {
@@ -252,6 +257,20 @@ export default {
         return item;
       });
     },
+    // map du statut dans Store
+    statuts: function (statuts) {
+      this.champs.map((item) => {
+        if (item.key === 'statut') {
+          item.options = statuts.map((statut) => {
+            return {
+              id: statut.etat,
+              nom: statut.nom,
+            }
+          });
+        }
+        return item;
+      });
+    }
   },
 }
 </script>
