@@ -1,8 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-
-
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
 import liens from "../views/liens.vue";
@@ -33,8 +31,6 @@ import mission_controle_checklist_details from "../views/dashboard/environements
 import mission_controle_checklist_create from "../views/dashboard/environements/mission-controle/create.vue";
 import mission_controle_checklist_entreprise from "../views/dashboard/environements/mission-controle/index.vue";
 //checklist environment mission-controle
-
-
 
 //checklist environement entreprise
 import entreprise_checklist from "../views/dashboard/environements/entreprise/_id/checklist.vue";
@@ -67,7 +63,9 @@ import finances_decaissement from "../views/dashboard/finances/decaissement.vue"
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
 import point_financier from "../views/dashboard/finances/point_financier.vue";
 import config_unites from "../views/dashboard/config/unites/index.vue";
+import config_types from "../views/dashboard/config/types/index.vue";
 import config_categories from "../views/dashboard/config/categories/index.vue";
+import config_main_oeuvre from "../views/dashboard/config/main_oeuvre/index.vue";
 import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
 import projets from "../views/dashboard/projets/index.vue";
@@ -152,13 +150,13 @@ const routes = [
     name: "liens",
     component: liens,
   },
- 
- {
+
+  {
     path: "/form",
     name: "form_gestion_generator",
     component: form_gestion_generator,
   },
-  // checklist unite de gestion 
+  // checklist unite de gestion
   {
     path: "/dashboard/unite-gestion/checklist/:id/checklist",
     name: "unite_de_gestion_checklist",
@@ -183,7 +181,7 @@ const routes = [
   },
   //fin checklist de gestion
 
-  // checklist mod 
+  // checklist mod
   {
     path: "/dashboard/mod/checklist/:id/checklist",
     name: "mod_checklist",
@@ -199,7 +197,7 @@ const routes = [
   {
     path: "/dashboard/mod/checklist/create",
     name: "mod_checklist_create",
-    component:mod_checklist_create,
+    component: mod_checklist_create,
   },
   {
     path: "/dashboard/mod/checklist",
@@ -208,7 +206,7 @@ const routes = [
   },
   //fin checklist de mod
 
-  // checklist mission-controle 
+  // checklist mission-controle
   {
     path: "/dashboard/mission-controle/checklist/:id/checklist",
     name: "mission_controle_checklist",
@@ -224,7 +222,7 @@ const routes = [
   {
     path: "/dashboard/mission-controle/checklist/create",
     name: "mission_controle_checklist_create",
-    component:mission_controle_checklist_create,
+    component: mission_controle_checklist_create,
   },
   {
     path: "/dashboard/mission-controle/checklist",
@@ -233,8 +231,8 @@ const routes = [
   },
   //fin checklist de mission-controle
 
-   // checklist entreprise
-   {
+  // checklist entreprise
+  {
     path: "/dashboard/entreprise/checklist/:id/checklist",
     name: "entreprise_checklist",
     component: entreprise_checklist,
@@ -249,7 +247,7 @@ const routes = [
   {
     path: "/dashboard/entreprise/checklist/create",
     name: "entreprise_checklist_create",
-    component:entreprise_checklist_create,
+    component: entreprise_checklist_create,
   },
   {
     path: "/dashboard/entreprise/checklist",
@@ -258,13 +256,12 @@ const routes = [
   },
   //fin checklist de entreprise
 
-
   {
     path: "/dashboard/entreprises",
     name: "entreprises",
     component: entreprises,
   },
- 
+
   {
     path: "/dashboard/instutitions",
     name: "instutitions",
@@ -425,12 +422,10 @@ const routes = [
   },
   {
     path: "/dashboard/indicateurs/suivi",
-    component:indicateurs_suivi,
-    name: "indicateurs_suivi"
-  }, 
+    component: indicateurs_suivi,
+    name: "indicateurs_suivi",
+  },
 
- 
-  
   {
     path: "/dashboard/finances/decaissement",
     component: finances_decaissement,
@@ -458,9 +453,19 @@ const routes = [
     name: "config_categories",
   },
   {
+    path: "/dashboard/config/main_oeuvre",
+    component: config_main_oeuvre,
+    name: "config_main_oeuvre",
+  },
+  {
     path: "/dashboard/config/unites",
     component: config_unites,
     name: "config_unites",
+  },
+  {
+    path: "/dashboard/config/types",
+    component: config_types,
+    name: "config_types",
   },
 
   // espace bailleurs
@@ -584,7 +589,7 @@ const routes = [
   },
 
   // espace Mo
- 
+
   {
     path: "/mo/mission-controle",
     name: "missioncontrole_mo",
@@ -602,7 +607,6 @@ const routes = [
     name: "ong_mo",
     component: ong_mo,
   },
-
 ];
 const router = new VueRouter({
   mode: "history",
