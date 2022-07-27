@@ -35,14 +35,16 @@ import categories from "./modules/categories/index";
 import taches from "./modules/taches/index";
 
 import paps from "./modules/paps/index";
+
 import suiviIndicateurs from "./modules/suiviIndicateurs/index";
 
-
-
 import indicateurs from "./modules/indicateurs/index";
+
 import anos from "./modules/anos/index";
 
 import typeAnos from "./modules/typeAnos/index";
+
+import eActivites from "./modules/eActivites/index";
 
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
@@ -148,7 +150,8 @@ export default new Vuex.Store({
     categories,
     suiviIndicateurs,
     anos,
-    typeAnos
+    typeAnos,
+    eActivites,
   }
 });
 

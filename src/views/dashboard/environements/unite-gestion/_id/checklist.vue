@@ -72,6 +72,7 @@
   import Vform from '@/components/Vform'
   import ModalTopRight from '@/components/ModalTopRight'
   import Vmodal from '@/components/Vmodal'
+  import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   components: {
     CardChecklist,
@@ -106,7 +107,21 @@ export default {
         ],
     }
   },
+
+  computed: {
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      eActivites: "eActivites/getEActivites",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
   methods: {
+
+    ...mapActions("eActivites", {
+      fetchEActivites: "FETCH_LIST_EACTIVITE",
+    }),
+
     getlink(i){
       this.showLink = true
     },
@@ -138,15 +153,10 @@ export default {
       return `${name}`
     },
   },
+
   mounted() {
-    const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    this.champs = [
-      {name:'Nom activité',type:'text',placeholdere:"libelle activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Code activité',type:'text',placeholdere:"code activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Programme',type:'',placeholdere:'Choisir un programme',isSelect:true,isTextArea:false,data:'',options:programme,required:true,methode:this.selectData},
-      {name:'Date debut',type:'date',placeholdere:"Date debut",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Date fin',type:'date',placeholdere:"Date fin",isSelect:false,isTextArea:false,data:'',required:true,},
-    ]
+    console.log("Fetching e-activites ...");
+    this.fetchEActivites(this.$route.params.id);
   }
 }
 </script>
