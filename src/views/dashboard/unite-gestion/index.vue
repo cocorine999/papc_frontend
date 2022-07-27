@@ -78,17 +78,13 @@ import extractFormData from '@/utils/extract-data'
           {name:'Programme', key: 'programmeId', type:'', placeholdere:'Choisir un programme', isSelect:true, isTextArea:false, data:'', options: this.programmes, cle: 'id', value: 'nom', required:true, errors : []}
         ],
         cols:1,
-          
         headers:[
-
           {name:'Nom', props:'user', cle:'nom'},
           {name:'Email', props:'user', cle:'email', edit : false},
           {name:'Contact', props:'user', cle:'contact'},
           {name:'Date de creation', props:'created_at', edit : false},
-
         ],
         actions:[
-         
           {name:'supprimer',iconne:''},
         ]
       };

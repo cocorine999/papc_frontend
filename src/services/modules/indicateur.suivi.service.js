@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const IndicateursService = {
+const IndicateurSuiviService = {
 
     query(type, params) {
       return ApiService.query("suivi-indicateurs", {
@@ -31,5 +31,5 @@ const IndicateursService = {
 
   };
 
-  export default IndicateursService;
+  export default IndicateurSuiviService;
   

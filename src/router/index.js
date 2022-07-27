@@ -65,6 +65,7 @@ import indicateurs_suivi from "../views/dashboard/indicateurs/suivi/index.vue";
 import programme from "../views/dashboard/programme/index.vue";
 import finances_decaissement from "../views/dashboard/finances/decaissement.vue";
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
+import point_financier from "../views/dashboard/finances/point_financier.vue";
 import config_unites from "../views/dashboard/config/unites/index.vue";
 import config_categories from "../views/dashboard/config/categories/index.vue";
 import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
@@ -440,6 +441,12 @@ const routes = [
     component: finances_suivi,
     name: "finances_suivi",
   },
+  {
+    path: "/dashboard/finances/point-financier",
+    component: point_financier,
+    name: "point_financier",
+  },
+  
   {
     path: "/dashboard/finances/plan_decaissement",
     component: finances_plan_decaissement,

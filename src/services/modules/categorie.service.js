@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const ModService = {
+const CategoriesService = {
 
     query(type, params) {
       return ApiService.query("categories", {
@@ -28,5 +28,5 @@ const ModService = {
 
   };
 
-  export default ModService;
+  export default CategoriesService;
   

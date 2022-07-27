@@ -36,7 +36,9 @@ import taches from "./modules/taches/index";
 
 import suiviIndicateurs from "./modules/suiviIndicateurs/index";
 
+import utilisateurs from "./modules/utilisateurs/index";
 
+import roles from "./modules/roles/index";
 
 import indicateurs from "./modules/indicateurs/index";
 import anos from "./modules/anos/index";
@@ -146,7 +148,9 @@ export default new Vuex.Store({
     categories,
     suiviIndicateurs,
     anos,
-    typeAnos
+    typeAnos,
+    utilisateurs,
+    roles
   }
 });
 
