@@ -103,7 +103,6 @@ export default {
       option:[
         {name:'supprimer'},
         {name:'modifier'},
-       
       ]
     }
   },
@@ -281,7 +280,6 @@ export default {
       this.champs.forEach((value) => {value.errors = errors[value.key]})
       //this.errors = errors
     }
-
   },
   
   mounted() {

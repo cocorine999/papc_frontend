@@ -211,16 +211,7 @@ export default {
       entrepriseExecutanteAttributs: ["nom", "email", "contact", "mod"],
 
       champs: [
-        {
-          name: "Nom",
-          key: "nom",
-          type: "text",
-          placeholdere: "",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
+        { name: "Nom", key: "nom", type: "text", placeholdere: "", isSelect: false, isTextArea: false, data: "", required: true, errors: [],
         },
         {
           name: "Email",

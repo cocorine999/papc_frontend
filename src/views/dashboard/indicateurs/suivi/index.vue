@@ -20,7 +20,7 @@
         
         <div v-if="showModal">
           <modal-top-right :title="title"  v-on:close="showModal = false">
-            <div  class="px-4 overflow-y-auto">
+            <div  class="px-4 h-full">
               <div v-if="title =='Modifier un suivi'">
                 <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
               </div>
@@ -52,8 +52,8 @@
             </button>
           </div>
         </div>
-   
-        <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>    
+        
+        <vtable :headers="headers" :datas="suivis" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>    
     </div>
   </dashboard>
 
@@ -67,6 +67,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import extractFormData from "@/utils/extract-data";
 export default {
   components: {
     Vtable,
@@ -77,15 +79,18 @@ export default {
     SearchBar,
     ModalTopRight
   },
-    data() {
+  data() {
       return ({
+        suiviAttributes : ['annee', 'trimestre','valeurCible','valeurRealise','indicateurId','commentaire'],
         showModal:false,
         showModal2:false,
         champs:[
-          {name:'Année',type:'number',placeholdere:"Entrez l'année",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Valeur de base',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Valeur realisé',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[1,2,3,4]},
+          {name:'Année',type:'number',key:'annee',placeholdere:"Entrez l'année",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Valeur cible',key:'valeurCible',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Valeur realisé',key:'valeurRealise',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Trimestre',key:'trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[{id:1,nom:1},{id:2,nom:2},{id:3,nom:3},{id:4,nom:4}],cle: 'id', value: 'nom',},
+          {name:'Indicateurs',key:'indicateurId',type:'',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:this.indicateurs, cle: 'id', value: 'nom',errors : []},
+          {name:'Commentaire',key:'commentaire',type:'',placeholdere:"commentaire",isSelect:false,isTextArea:true,data:'',required:true,},
         ],
         champsRecherche:[
           {name:'Indicateurs',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:['indicateur1','indicateur2','indicateurs3']},
@@ -98,103 +103,132 @@ export default {
         cols:2,
         title:'',
         headers:[
-          {name:'Année',props:'annee',width:"w-24"},
-          {name:'Bailleur',props:'bailleur',width:"w-24"},
-          {name:'Indicateur',props:'indicateur',width:"w-28"},
-          {name:'Categorie',props:'categorie',width:"w-28"},
-          {name:'Unité de mesure',props:'unite_mesure',width:"w-40"},
-          {name:'Année de base',props:'anne_base',width:"w-36"},
-          {name:'Valeur de base',props:'valeur_base',width:"w-36"},
-          {name:'Valeur cible',props:'valeur_cible',width:"w-36"},
-          {name:'Valeur realisé',props:'valeur_realise',width:"w-36"},
-          {name:'Trimestre 1',props:'trimestre1',width:"w-32"},
-          {name:'Trimestre 2',props:'trimestre2',width:"w-32"},
-          {name:'Trimestre 3',props:'trimestre3',width:"w-32"},
-          {name:'Trimestre 4',props:'trimestre4',width:"w-32"},
-          {name:'Ecart',props:'ecart',width:"w-24"},
-          {name:'Commentaire',props:'commentaire', isComment:true,width:"w-56"},
-          {name:'Date de creation',props:'created_at',width:"w-24"},
-         
-        ],
-        dataTable:[
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
-          {annee:'2020',bailleur:'BM',indicateur:'accident de circulation',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",valeur_cible:"1500000000",valeur_realise:"700000000",anne_base:"2022",trimestre1:'lorem',trimestre2:'lorem',trimestre3:'lorem',trimestre4:'lorem',ecart:'80',commentaire:'commentaire',created_at:"22-06-2022"},
           
+          {name:'Trimestre',cle:'trimestre',width:"w-24"},
+          {name:'valeur cible',cle:'valeurCible',width:"w-28"},
+          {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
+          {name:'Commentaire',cle:'commentaire', isComment:true,width:"w-56"},
+          {name:'Date de creation',cle:'created_at',width:"w-24"},
         ],
+       
         actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
-        
-        series: [{
-            name: 'Net Profit',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-          }, {
-            name: 'Revenue',
-            data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-          }, {
-            name: 'Free Cash Flow',
-            data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }],
-          chartOptions: {
-            chart: {
-              type: 'bar',
-              height: 350
-            },
-            plotOptions: {
-              bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                endingShape: 'rounded'
-              },
-            },
-            dataLabels: {
-              enabled: false
-            },
-            stroke: {
-              show: true,
-              width: 2,
-              colors: ['transparent']
-            },
-            xaxis: {
-              categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-            },
-            yaxis: {
-              title: {
-                text: '$ (thousands)'
-              }
-            },
-            fill: {
-              opacity: 1
-            },
-            tooltip: {
-              y: {
-                formatter: function (val) {
-                  return "$ " + val + " thousands"
-                }
-              }
-            }
-        },
-          
-          
-        
+
+      });
+  },
+  watch: {
+    isLoading: function (value) {
+      //this.loading = value
+    },
+     indicateurs: function (indicateurs) {
+      this.champs.map((item) => {
+        if (item.key === "indicateurId") {
+          item.options = indicateurs.map((indicateur) => {
+            return {
+              id: indicateur.id,
+              nom: indicateur.nom,
+            };
+          });
+        }
+        return item;
       });
     },
-    mounted() {
+    
+    hasErrors: function (errors) {
+      this.champs.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+      //this.errors = errors
     },
-    methods: {
-      addSuivi() {
+  },
+  computed: {
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      indicateurs: "indicateurs/getIndicateurs",
+      suivis: "suiviIndicateurs/getSuivis",
+      suivi: "suiviIndicateurs/getSuivi",
+    }),
+    
+  },
+  
+  methods: {
+    ...mapMutations({
+      setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setSuivis: "suiviIndicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+    }),
+     ...mapActions("indicateurs", {
+      fetchIndicateurs: "FETCH_LIST_INDICATEUR",
+    }),
+    ...mapActions("suiviIndicateurs", {
+      fetchSuivi: "FETCH_LIST_SUIVI",
+      saveSuivi: "STORE_SUIVI",
+      updateSuivi: "UPDATE_SUIVI",
+      deleteSuivi: "DESTROY_SUIVI",
+    }),
+    sendForm() {
+      this.champs = this.champs.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let suivi = extractFormData(this.champs,this.suiviAttributes);
+      suivi.trimestre = suivi.trimestre.id
+      suivi.indicateurId = suivi.indicateurId.id
+      suivi.valeurCible = [suivi.valeurCible]
+      suivi.valeurRealise = [suivi.valeurRealise]
+    
+     
+
+      if (this.suivi?.id) {
+        this.updateSuivi({ suivi: suivi, id: this.suivi?.id }).then(
+          (response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.close();
+            }
+          }
+        );
+      } else {
+        this.saveSuivi(suivi).then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            this.close();
+          }
+        });
+      }
+    },
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+        
+      window.document.getElementById('vform')?.reset()
+
+      this.setIndicateur({})
+    },
+
+    async updateInputData(id, attribut, value) {
+        await this.updateSuivi({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
+          if(this.hasErrors[attribut] !== undefined)
+            alert(this.hasErrors[attribut])            
+        }).finally(() => {
+          $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+        })
+    },
+
+    async supprimer(suivi) {
+      if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + suivi.nom))
+        await this.deleteSuivi(suivi.id)
+    },
+
+    close() {
+      this.showCloseModal();
+      this.resetForm();
+    },
+    showCloseModal(value = false) {
+      this.showModal = value;
+    },
+    addSuivi() {
         this.title ='Creer un suivi'
         this.showModal = true
       },
@@ -209,7 +243,17 @@ export default {
         this.title ='Dupliquer un suivi'
         this.showModal = true
       }
-    }
+  },
+  mounted() {
+    this.fetchSuivi().then((value) => {
+      setTimeout(() => {
+        console.log("Fetching list of suivi...")
+        this.fetchIndicateurs()
+      }, 100);
+    })
+   
+    
+  },
 }
 </script>
 
