@@ -38,6 +38,10 @@ import paps from "./modules/paps/index";
 
 import suiviIndicateurs from "./modules/suiviIndicateurs/index";
 
+import utilisateurs from "./modules/utilisateurs/index";
+
+import roles from "./modules/roles/index";
+
 import indicateurs from "./modules/indicateurs/index";
 
 import anos from "./modules/anos/index";
@@ -152,6 +156,8 @@ export default new Vuex.Store({
     anos,
     typeAnos,
     eActivites,
+    utilisateurs,
+    roles
   }
 });
 
