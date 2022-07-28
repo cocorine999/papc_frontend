@@ -319,20 +319,21 @@ export default {
       this.setEntrepriseExecutante(entrepriseExecutante);
 
       this.entrepriseExecutanteAttributs.forEach((item) => {
+
         this.form.find((value, index) => {
+
           if (value.label === item) {
-            if (item === "nom" || item === "email" || item === "contact")
+            if (item === "nom" || item === "email" || item === "contact"){
               this.form[index]["value"] = this.entrepriseExecutante.user[item];
+            }
             else if( value.label === "mod" ){
-              console.log(value.label)
-              console.log(this.form[index]["value"])
-              console.log(this.entrepriseExecutante)
               this.form[index]["value"] = this.entrepriseExecutante.modId;
-              console.log(this.form[index]["value"])
             }
             else this.form[index]["value"] = this.entrepriseExecutante[item];
           }
+          
         });
+
       });
 
       this.showCloseModal(true);
@@ -402,9 +403,9 @@ export default {
       });
 
       entrepriseExecutante.modId = entrepriseExecutante.mod;
-      entrepriseExecutante.programmeId = this.currentUser?.programme?.id;
-      console.log(entrepriseExecutante)
 
+      entrepriseExecutante.programmeId = this.currentUser?.programme?.id;
+      
       if (this.entrepriseExecutante?.id) {
         this.updateEntrepriseExecutante({
           entrepriseExecutante: entrepriseExecutante,

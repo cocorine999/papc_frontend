@@ -96,7 +96,7 @@ import Multiselect from 'vue-multiselect'
 import Vbutton from '@/components/Vbutton'
 export default {
 
-  props:['template','champs','cols','submitText','isAllPairSaufDescrip','attrs'],
+  props:['template','champs', 'cols', 'submitText', 'sendRequest', 'isAllPairSaufDescrip','attrs'],
   components: {
     Vbutton,Multiselect,
   },
@@ -108,7 +108,9 @@ export default {
   methods: {
    
     save() {
-      this.$emit('sendForm')
+      if(this.sendRequest === false){
+        this.$emit('sendForm')
+      }
     },
 
     close(){

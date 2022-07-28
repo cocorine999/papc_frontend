@@ -70,7 +70,7 @@ import TrTable from '@/components/TrTable'
 import Pagination from '@/components/Pagination'
 export default {
   components: { TrTable,Pagination },
-  props:['datas', 'headers', 'actions', 'extra'],
+  props:['datas', 'headers', 'actions', 'extra', 'sendRequest'],
   data() {
     return{
       currentPage:1,
@@ -104,7 +104,9 @@ export default {
 
     update(id, type, input, value)
     {
-      this.$emit('updateInputData', id, input, value)
+      if(this.sendRequest === false){
+        this.$emit('updateInputData', id, input, value)
+      }
     },
 
     onPageChange(page) {

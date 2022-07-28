@@ -18,9 +18,18 @@ import ComposanteService from "@/services/modules/composante.service";
 
 export default {
     
-    FETCH_LIST_COMPOSANTE : async ({ commit }, {id}) => {
+    FETCH_LIST_COMPOSANTE : async ({ commit }) => {
 
-        const { data, status } = await ComposanteService.programme(id);
+        const { data, status } = await ComposanteService.get();
+
+        commit(SET_LIST_COMPOSANTE, data.data);
+
+        return { data, status };
+    },
+    
+    FETCH_LIST_COMPOSANTE_OF_PROJET : async ({ commit }, id = null) => {
+        
+        const { data, status } = await ComposanteService.composantesOfProjet(id);
 
         commit(SET_LIST_COMPOSANTE, data.data);
 
@@ -43,7 +52,7 @@ export default {
     },
 
     async STORE_COMPOSANTE ({ commit }, payload) {
-        console.log(payload)
+        
         const { data, status } = await ComposanteService.create(payload);
 
         commit(ADD_COMPOSANTE, data.data);

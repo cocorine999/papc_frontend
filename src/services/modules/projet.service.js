@@ -26,11 +26,15 @@ const ProjetsService = {
     },
 
     programme(slug) {
-      return ApiService.get(`programmes/projets/${slug}`);
+      return ApiService.get(`projets/${slug}/programme`);
+    },
+
+    projetsOfProgramme(slug) {
+      return ApiService.get(`programmes/${slug}/projets`);
     },
 
     composantes(slug) {
-      return ApiService.get(`projets/composantes/${slug}`);
+      return ApiService.get(`projets/${slug}/composantes`);
     }
 
   };

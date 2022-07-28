@@ -7,19 +7,19 @@
     </div>
     <!-- cards composantes -->
     <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-      <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{code}} </span>
+      <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{ poids }} </span>
       <div class="absolute uppercase flex space-x-2 items-center">
         <div class="bg-primary rounded-lg text-sm text-white px-3 py-1 font-semibold ">
           <i class='bx bx-coin-stack mr-1'></i>
-          <span>BOAD</span>
+          <span>{{ bailleur }}</span>
         </div>
          <button title="valider une tache" v-if="showValidate" @click="validation" class="bg-green-500 rounded-lg text-sm   px-3 py-1 font-semibold text-white">Valider</button>
       </div>
       <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></span>
-      <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span> {{id}} :</span> {{libelle}} </p>
+      <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span> {{ position }} :</span> {{ libelle }} </p>
       <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
         <i class='bx bxs-wallet bx-md' ></i>
-        <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+        <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{ montantEPM }}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
       </div>
     </div>
     <!-- End cards composantes -->
@@ -30,7 +30,7 @@
 import Dropdown from '@/components/Dropdown.vue'
 export default {
   components: {Dropdown},
-  props: ['libelle','code','montantEPM','code','id','poids'],
+  props: ['libelle', 'code', 'montantEPM', 'position', 'bailleur', 'poids'],
    data() {
     return {
       option: [

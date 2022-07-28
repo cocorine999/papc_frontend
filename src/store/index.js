@@ -28,6 +28,8 @@ import uniteesDeMesure from "./modules/uniteesDeMesure/index";
 
 import composantes from "./modules/composantes/index";
 
+import sousComposantes from "./modules/sousComposantes/index";
+
 import activites from "./modules/activites/index";
 
 import taches from "./modules/taches/index";
@@ -129,6 +131,7 @@ export default new Vuex.Store({
     projets,
     uniteesDeMesure,
     composantes,
+    sousComposantes,
     activites,
     taches,
   }

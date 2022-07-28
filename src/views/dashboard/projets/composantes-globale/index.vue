@@ -1,116 +1,35 @@
 <template>
   <dashboard>
     <div class="w-full p-4">
-    <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="save" class="px-4"  >
-        <div class="grid grid-cols-1 gap-5 mt-3 ">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
-          </div>
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
-          </div>
-        </div>
 
-        <div class="grid grid-cols-1 gap-5 mt-3 ">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option v-for="i in 5" :key="i.id" value=""> {{i}} </option>
-            </select>
-          </div>
-
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un projet <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
-
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 gap-5 mt-3 ">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
-          </div>
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option value="">En cours</option>
-              <option value="">En attente</option>
-              <option value="">En terminer</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 gap-5 mt-3 ">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
-          </div>
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
-          </div>
-        </div>
-
-        
-        
-
-        <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
-          <button v-if="title == 'Ajouter un nouveau composant' || title== 'Dupliquer un projet existant' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-            <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-            Enregistrer et fermer
-            </span>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-
-          <button v-if="title == 'Modifier un nouveau composant'  " type="submit" class='w-full px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-            <span  class="mx-2 text-xs font-semibold uppercase" v-if="loading == false">
-              Modifier
-            </span>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-
-          <button v-if="title == 'Ajouter un nouveau composant' || title== 'Dupliquer un projet existant' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-primary hover:opacity-80'> 
-            <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-            Enregistrer et ajouter
-            </span>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-        </div>
-      </form>
-    </modal-top-right>
-    
-    <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-      <div>
-        <ol class="inline-flex p-0 list-none">
-          <li class="flex items-center ">
-            <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
-            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-          </li>
-          <li class="flex items-center text-blue-500 ">
-            <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
-             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-          </li>
-          <li class="flex items-center text-blue-500 ">
-            <router-link to="/dashboard/projets/composantes-globale" class="">composantes</router-link>
-          </li>
-        </ol>
+      <div v-if="showModal">
+        <modal-top-right :title="title" v-on:close="close">
+            <div class="p-4 overflow-auto">
+              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest" @sendForm="sendForm" @closeModal="close"></vform>
+            </div>
+        </modal-top-right>
       </div>
-      <div>
-        <search-bar ></search-bar>
-      </div>
-    </nav> 
+      
+      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+        <div>
+          <ol class="inline-flex p-0 list-none">
+            <li class="flex items-center ">
+              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+            </li>
+            <li class="flex items-center text-blue-500 ">
+              <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+            </li>
+            <li class="flex items-center text-blue-500 ">
+              <router-link to="/dashboard/projets/composantes-globale" class="">composantes</router-link>
+            </li>
+          </ol>
+        </div>
+        <div>
+          <search-bar ></search-bar>
+        </div>
+      </nav> 
 
     
     <div class="flex items-center justify-between my-2">
@@ -131,7 +50,7 @@
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
-          <multiselect v-model="valueFiltre" :options="options" :custom-label="selectProjet"  placeholder="selectionnez un projet" label="name" track-by="name"></multiselect>
+          <multiselect v-model="valueFiltre" :options="projets" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
           <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
             <span>filtre</span>
@@ -176,20 +95,27 @@
         </div>
       </div>
       <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(composante,index) in composantes" :key="index">
+        <div v-for="(composante, index) in composantes" :key="index">
           <card-composante
-            :libelle="composante.libelle"
+            :libelle="composante.nom"
             :code="composante.code"
-            :montantEPM="composante.montantEPM"
-            :id="index"
+            :montantEPM="composante.pret"
+            :position="composante.position"
+            :poids="composante.poids"
+            :bailleur="composante.sigle"
+            @modifier="modifier(composante)"
+            @supprimer="supprimer(composante)"
+            @validation="validation(composante)"
           ></card-composante>
         </div>
+
       </div>
     </div>
     <div v-if="seeSuivi">
       <vtable id="datatable"
         :headers="headers"
         :datas="dataTable"
+        :sendRequest="sendRequest"
         :actions="actions"
         @supprimer="supprimer">
       </vtable>
@@ -207,14 +133,20 @@ import Multiselect from 'vue-multiselect'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
+import Vform from '@/components/Vform'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
+import Projet from '@/store/modules/projets/projet'
+
 export default {
   components: {
     Dashboard,
     Vmodal,
     Titre,
+    Vform,
     SearchBar,
     Multiselect,
     ModalTopRight,
@@ -224,21 +156,17 @@ export default {
 },
   data() {
     return {
-      valueFiltre:'',
+      valueFiltre: null,
       pending:false,
       success:true,
       rejected:false,
       rangeValue:0,
       showFiltre:false,
-      options:[
-        {name:'projet1'},
-        {name:'projet2'},
-        {name:'projet3'},
-        {name:'projet4'},
-        {name:'projet5'},
-      ],
+      programmeId: this.currentUser?.programme?.id,
+      cols:1,
+      sendRequest: false,
+      submitText:"Enregistrer",
       showModal:false,
-      loading:false,
       line:false,
       mosaique:true,
       isStateChange:false,
@@ -252,7 +180,7 @@ export default {
         {name:"dupliquer"},
         {name:"continuer"},
       ],
-      composantes: [
+      /* composantes: [
         {
           code: "4.1.1.3.1.1",
           libelle: " Investissement dans l’assainissement pluvial et engagement des communautés pour la réduction des risques d’inondation et l’adaptation au changement climatique ",
@@ -274,18 +202,32 @@ export default {
           montantEPM: "1,030,354.65",
           poids: "13.00",
         },
+      ],*/
+
+      composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'statut', 'poids'],
+
+      champs:[
+
+        {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez lr statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
+        
       ],
+
       headers: [
-        { name: "Composante", props: "composante"},
-        { name: "Description", props: "description"},
-        { name: "Budget Nationnal",props:'bn'},
-        { name: "Pret",props:'pret'},
-        { name: "Poids",props:'poids'},
-       
-        { name: "Status",props:'status'},
+        { name: "Composante", cle: "nom"},
+        { name: "Description", cle: "description"},
+        { name: "Budget Nationnal", cle: 'budgetNational'},
+        { name: "Pret", cle:'pret'},
+        { name: "Poids",  cle:'poids'},
+        { name: "Status", cle:'statut'},
       ],
       dataTable:[
-        {composante:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",status:"en cours"}
+        {composante:"tache 1", description:"lorem ipsum", bn:"200000000", pret:"9540000000", poids:"5", status:"en cours"}
       ],
       actions: [
         { name: "supprimer", iconne: "" },
@@ -297,71 +239,330 @@ export default {
     }
     
   },
+
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      composante: state => state.composantes.composante,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      projets: "projets/getProjets",
+      composantes: "composantes/getComposantes",
+      composante: "composantes/getComposante",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    }),
+
+  },
+
   methods: {
+
+    //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setComposantes: 'composantes/SET_LIST_COMPOSANTES'
+    }),
+
+    ...mapActions('composantes', {
+      fetchComposantes: "FETCH_LIST_COMPOSANTE_OF_PROJET",
+      saveComposante: "STORE_COMPOSANTE",
+      updateComposante: "UPDATE_COMPOSANTE",
+      deleteComposante: "DESTROY_COMPOSANTE"
+    }),
+
+    ...mapActions({
+      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
+    }),
+
+    getIntervale(val){
+      return val - 25;
+    },
+
     filtreRange(value){
+
       this.rangeValue = value
+
+      /* let composantes = this.composantes.map((composante) => {
+        
+        if(composante.tep >= this.getIntervale(value) &&  composante.tep <= value){
+            return composante;
+        }
+      }); */
+
     },
-    selectProjet ({ name}) {
-      return `${name}`
+
+    selectProjet ({ nom}) {
+      return `${nom}`
     },
+
     addDate() {
       this.dates.push({})
     },
+
      gotoSuivi() {
       this.seeSuivi = true
       this.seeComposant = false
     },
+
     gotoComposante() {
       this.seeSuivi = false
       this.seeComposant = true
     },
-    switch1() {
-      this.mosaique = true
-      this.line = false
-    },
-    switch2() {
-      this.mosaique = false
-      this.line = true
-    },
-    close() {
-      this.showModal = false
-    },
-    addComponent() {
-      this.title ="Ajouter un nouveau composant"
-      this.showModal = true
-    },
-    modifier() {
-      this.title ="Modifier un nouveau composant"
-      this.showModal = true
-    },
-    dupliquer() {
-      this.title ="Dupliquer un projet existant"
-      this.showModal = true
-    },
+
     gotoNext() {
       this.$router.push('/dashboard/projets/sous-composantes-globale')
     },
-     editerSuivi(index) {
+
+    editerSuivi(index) {
       this.showInput = false
     },
+
     toggle() {
       this.pending = false
       this.rejected = false
       this.success = true
 
     },
+
     toggle2() {
       this.success = false
       this.rejected = false
       this.pending = true
     },
+
     toggle3() {
       this.pending = false
       this.success = false
       this.rejected = true
     },
     
+    addComponent() {
+      this.title ="Ajouter un nouveau composant"
+
+      this.submitText="Enregistrer",
+
+      this.showCloseModal(true)
+
+    },
+
+    modifier(composante) {
+
+      this.title = 'Modifier un composante'
+
+      this.setComposante(composante)
+
+      this.composanteAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if( value.key === "statut" ){
+
+            this.$store.state.statuts.map((value) => {
+              if(value.etat === composante[item]){
+                this.champs[index]['data'] = value
+              }
+            });
+
+          }
+          else if(value.key === item){
+            this.champs[index]['data'] = composante[item]
+          }
+
+        });
+
+      });
+
+      this.submitText = "Modifier",
+
+      this.showCloseModal(true)
+    },
+
+    supprimer(composante) {
+      if(window.confirm("Voulez-vous supprimer la composante " + composante.nom)){
+        if(this.sendRequest === false){
+          this.sendRequest = true;
+          this.deleteComposante(composante.id)
+          this.sendRequest = false;
+        }
+      }
+    },
+
+    dupliquer(composante) {
+
+      this.title = "Ajouter un nouveau  composant";
+
+      this.submitText = "Enrégistrer";
+
+      this.composanteAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if( value.key === "statut" ){
+
+            this.$store.state.statuts.map((value) => {
+              if(value.etat === composante[item]){
+                this.champs[index]['data'] = value
+              }
+            });
+
+          }
+          else{
+            this.champs[index]['data'] = composante[item]
+          }
+
+        });
+
+      });
+      
+      this.showCloseModal(true);
+      
+    },
+
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.setComposante({})
+    },
+    
+    gotoNext() {
+      this.$router.push('/dashboard/projets/composantes/sous-composantes')
+    },
+
+    validation(composante){
+
+      if( this.sendRequest === false ){
+
+        this.sendRequest = true;
+
+          composante = {"statut": -1}
+
+          this.updateComposante({composante: composante, id : composante.id}).then(response => {
+            
+            if(response.status == 200 || response.status == 201){
+
+              this.close();
+
+              this.sendRequest = false;
+            }
+
+          }).catch((error) => {
+
+            this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors});
+
+            this.champs.map(value => value.errors = this.erreurs[value.key]);
+              
+            this.sendRequest = false;
+
+          })
+
+      }
+    },
+    
+    sendForm() {
+
+      if( this.sendRequest === false ){
+
+        this.sendRequest = true;
+
+        this.champs = this.champs.map(item => { item.errors = []; return item})
+
+        let composante = utils.extractFormData(this.champs, this.composanteAttributs)
+
+        composante.projetId = this.valueFiltre.id;
+
+        composante.statut = composante.statut.etat;
+                
+        if(this.composante?.id)
+        {
+
+          this.updateComposante({composante: composante, id : this.composante?.id}).then(response => {
+            
+            if(response.status == 200 || response.status == 201){
+
+              this.close()
+            }
+
+          }).catch((error) => {
+
+            this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+            this.champs.map(value => value.errors = this.erreurs[value.key])
+
+          })
+
+        }
+        else
+        {
+          
+          this.saveComposante(composante).then(response => {
+            if(response.status == 200 || response.status == 201){
+                this.close()
+            }
+
+          })
+        }
+
+
+        this.sendRequest = false;
+      }
+    },
+
+    close() {
+      this.showCloseModal()
+
+      this.resetForm()
+
+      this.sendRequest = false;
+    }, 
+    
+    showCloseModal(value = false) {
+      this.showModal = value
+    },
+
+  },
+  watch: {
+    loading: function(value) {
+      //this.loading = value
+    },
+
+    errors: function(errors) {
+      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      //this.errors = errors
+    },
+
+    valueFiltre: function(valeur){
+      if( valeur instanceof Projet || valeur instanceof Object )
+      {
+        this.fetchComposantes(valeur.id);
+      }
+      else if( typeof valeur !== null ){
+        this.fetchComposantes(valeur);
+      }
+    },
+    
+    projets: function(projets){
+      this.valueFiltre = projets[0]
+    }
+
+  },
+
+  created(){
+
+    //console.log(this.currentUser)
+    if(this.programmeId){
+
+      this.fetchProjets(this.programmeId)
+    } 
+
   }
+  
 }
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

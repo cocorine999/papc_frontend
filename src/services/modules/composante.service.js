@@ -33,8 +33,19 @@ const ComposantesService = {
       return ApiService.get(`composantes/activites/${slug}`);
     },
 
-    programme(slug) {
-      return ApiService.get(`programmes/composantes/${slug}`);
+    composantesOfProjet(slug = null) {
+      if(slug){
+        return ApiService.get(`projets/${slug}/composantes`);
+      }
+      return ApiService.get(`projets/composantes`);
+    },
+
+    sousComposantesOfComposante(slug) {
+      return ApiService.get(`composantes/${slug}/sousComposantes`);
+    },
+
+    projet(slug) {
+      return ApiService.get(`composantes/${slug}/projet`);
     },
     programmeSc(slug) {
       return ApiService.get(`programmes/sousComposantes/${slug}`);
