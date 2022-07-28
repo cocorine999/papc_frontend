@@ -33,6 +33,14 @@ const ProgrammeService = {
       return ApiService.get(`programmes/${slug}/projets`);
     },
 
+    mods(slug) {
+      return ApiService.get(`programmes/${slug}/mods`);
+    },
+
+    entreprisesExecutante(slug) {
+      return ApiService.get(`programmes/${slug}/entreprise-executants`);
+    },
+
   };
 
   export default ProgrammeService;

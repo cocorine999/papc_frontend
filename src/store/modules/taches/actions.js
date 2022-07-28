@@ -1,10 +1,3 @@
-import {
-    FETCH_LIST as FETCH_LIST_TACHE,
-    GET as GET_TACHE,
-    STORE as STORE_TACHE,
-    UPDATE as UPDATE_TACHE,
-    DESTROY as DESTROY_TACHE,
-} from "@/store/actions.type"
 
 import {
     SET_LIST as SET_LIST_TACHE,

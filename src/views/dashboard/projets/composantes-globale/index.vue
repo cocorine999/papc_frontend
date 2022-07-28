@@ -180,35 +180,12 @@ export default {
         {name:"dupliquer"},
         {name:"continuer"},
       ],
-      /* composantes: [
-        {
-          code: "4.1.1.3.1.1",
-          libelle: " Investissement dans l’assainissement pluvial et engagement des communautés pour la réduction des risques d’inondation et l’adaptation au changement climatique ",
-          montantBN: "1,561,078.941",
-          montantEPM: "42,598,138.77",
-          poids: "72.00",
-        },
-        {
-          code: "4.1.1.3.1.2",
-          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
-          montantBN: "1,030,354.65",
-          montantEPM: "1,030,354.65",
-          poids: "13.00",
-        },
-         {
-          code: "4.1.1.3.1.3",
-          libelle: " Renforcement de la gestion et de la capacité en matière de résilience urbaine",
-          montantBN: "1,030,354.65",
-          montantEPM: "1,030,354.65",
-          poids: "13.00",
-        },
-      ],*/
-
+      
       composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'statut', 'poids'],
 
       champs:[
 
-        {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Nom de la composante', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -424,7 +401,7 @@ export default {
 
     resetForm(){
 
-      this.champs = this.champs.map(item => { item.data = ''; return item})
+      this.champs = this.champs.map(item => { item['data'] = ''; return item})
       
       window.document.getElementById('vform').reset()
 

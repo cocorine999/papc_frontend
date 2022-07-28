@@ -37,7 +37,6 @@ export default {
         return { data, status };
     },
     
-
     async GET_COMPOSANTE ({ commit, getters }, {key, value }) {
 
         let composante = getters.findComposante({key: key, value : value})

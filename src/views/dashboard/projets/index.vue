@@ -37,18 +37,18 @@
         </button>
       </div>
       <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="projet in projets" :key="projet.id">
+        <div v-for="(projet, index) in projets" :key="index">
           <div @click="gotoDetails(projet)" class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
             <!-- <a href="#1" class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a> -->
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
-              <p class="max-h-48 line-clamp-7 px-2">{{projet.description}} </p>
+              <p class="max-h-48 line-clamp-7 px-2"> {{ projet.description }} </p>
               <div class="absolute bottom-5 ">
                   <div class="uppercase text-sm flex items-center text-white bg-white text-primary px-4 py-3 font-bold">Voir plus<i class='bx bx-right-arrow-alt ml-1 icon-bold'></i></div>
                 </div>
             </div>
             <div class="relative mb-2">
               <img class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
-                :src=" + projet.link"
+                :src=" projet.link "
                 alt="">
                 <div class="absolute bottom-0 right-0">
                   <div v-if="projet.statut == 0 " class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></div>
@@ -111,6 +111,7 @@ export default {
       submitText:"Enregistrer",
       cols:1,
       mosaique:true,
+      programmeId: this.currentUser?.programme?.id,
       title: '',
       projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'poids', 'bailleurId'],
       champs:[
@@ -129,16 +130,12 @@ export default {
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
-
      
       option:[
         {name:'supprimer'},
         {name:'modifier'},
         {name:'dupliquer'},
       ],
-     
-    
-      title:''
     }
     
   },
@@ -182,6 +179,7 @@ export default {
       this.$router.push({name:'projets_id_details',params:{id:projet.id, projet: projet}})
      
     },
+
     addDate() {
       this.dates.push({})
     },
@@ -197,13 +195,11 @@ export default {
     },
 
     addProjet() {
-      this.title='Ajouter un nouveau projet'
 
-      const pluck = (arr, key) => arr.map(i=> i[key]);
+      this.title='Ajouter un nouveau projet'
 
       let formData = this.champs.map((value) => {
           if(value.key === 'bailleurId'){ 
-            /*value['options'] = pluck(this.bailleurs, 'sigle')*/
             value['options'] = this.bailleurs
           }
 
@@ -259,7 +255,7 @@ export default {
       
       window.document.getElementById('vform').reset()
 
-      this.projet = {}
+      this.setProjet({})
     },
 
     gotoNext() {
@@ -272,13 +268,11 @@ export default {
 
       let projet = extractFormData(this.champs, this.projetAttributs)
 
-      projet.programmeId = this.currentUser?.programme?.id
+      projet.programmeId = this.programmeId
 
       projet.bailleurId = projet.bailleurId.id
 
       projet.statut = projet.statut.etat
-
-      console.log(projet)
       
       if(this.projet?.id)
       {
@@ -300,9 +294,7 @@ export default {
 
       }
       else
-      {
-        console.log(projet)
-        
+      { 
         this.saveProjet(projet).then(response => {
           if(response.status == 200 || response.status == 201){
               this.close()
@@ -321,19 +313,20 @@ export default {
 
     errors: function(errors) {
       this.champs.forEach((value) => {value.errors = errors[value.key]})
-      //this.errors = errors
     }
 
   },
   
-  mounted() {
+  created() {
     console.log("Fetching projets ...")
-    this.fetchProjets(this.currentUser?.programme?.id).then((value) => {
-        setTimeout(() => {
-          console.log("Fetching list of bailleurs...")
-          this.fetchBailleurs(this.currentUser?.programme?.id)
-        });
-    })
+    if(this.programmeId){
+      this.fetchProjets(this.programmeId).then((value) => {
+          setTimeout(() => {
+            console.log("Fetching list of bailleurs...")
+            this.fetchBailleurs(this.programmeId)
+          });
+      })
+    }
   }
 }
 </script>

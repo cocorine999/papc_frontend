@@ -1,16 +1,16 @@
 import Tache from './tache';
 
 import {
-    SET_LIST as SET_LIST_PROJET,
-    ADD as ADD_NEW_PROJET,
+    SET_LIST as SET_LIST_TACHE,
+    ADD as ADD_NEW_TACHE,
     FILL,
-    MODIFY as MODIFY_PROJET,
-    REMOVE as REMOVE_PROJET
+    MODIFY as MODIFY_TACHE,
+    REMOVE as REMOVE_TACHE
 } from "@/store/mutations.type";
 
 export default {
 
-    [SET_LIST_PROJET](state, lists) {
+    [SET_LIST_TACHE](state, lists) {
         state.lists = lists
         localStorage.setItem('taches', JSON.stringify(lists))
     },
@@ -19,11 +19,11 @@ export default {
         state.tache = new Tache(tache)
     },
 
-    [ADD_NEW_PROJET](state, tache) {
+    [ADD_NEW_TACHE](state, tache) {
         state.lists.unshift(tache)
     },
 
-    [MODIFY_PROJET](state, tache) {
+    [MODIFY_TACHE](state, tache) {
 
         let taches = state.lists.map(item => {
             if(item.id === tache?.id){
@@ -37,7 +37,7 @@ export default {
         localStorage.setItem('taches', JSON.stringify(state.lists))
     },
 
-    [REMOVE_PROJET](state, idTache) {
+    [REMOVE_TACHE](state, idTache) {
         let taches = state.lists.filter(item => {
             return item.id !== idTache
         });

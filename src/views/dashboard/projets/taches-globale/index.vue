@@ -232,65 +232,6 @@
           </form>
         </modal-top-right>
 
-    <!--  <vmodal v-if="showModal2" :title="title"  v-on:close="close2">
-      <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Entrer l'année base <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number"  />
-          </div>
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionner le trimestre <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option v-for="i in 4" :key="i.id" value="">Trimestre {{i}}</option>
-            </select>
-          </div>
-        </div>
-
-      
-        <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
-          </div>
-          <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
-          </div>
-        </div>
-
-        
-        <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
-          <button v-if="title == 'Ajouter un plan decaissement' || title== 'Dupliquer un plan decaissement' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-            <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-            Enregistrer et fermer
-            </span>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-
-          <button v-if="title == 'Modifier un plan de decaissement'  " type="submit" class='w-full mx-4 px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-            <span  class="mx-2 text-xs font-semibold uppercase" v-if="loading == false">
-              Modifier
-            </span>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-
-          <button v-if="title == 'Ajouter un plan decaissement' || title== 'Dupliquer un plan decaissement' " type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-primary hover:opacity-80'> 
-            <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-              Enregistrer et ajouter
-            </span>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-        </div>
-      </form>
-    </vmodal> -->
-
     <nav
       class="mb-2 text-sm font-semibold flex justify-between items-center"
       aria-label="Breadcrumb"
@@ -491,15 +432,16 @@ export default {
             Poids : 7,
           },
       ],
+      
       headers: [
-        { name: "Tache", props: "tache"},
-        { name: "Description", props: "description"},
-        { name: "Budget Nationnal",props:'bn'},
-        { name: "Pret",props:'pret'},
-        { name: "Poids",props:'poids'},
-        { name: "Structure responsable",props:'struct_responsable'},
-        { name: "Structure Associé",props:'struct_assoc'},
-        { name: "Status",props:'status'},
+        { name: "Tache", cle: "tache"},
+        { name: "Description", cle: "description"},
+        { name: "Budget Nationnal", cle:'bn'},
+        { name: "Pret", cle:'pret'},
+        { name: "Poids", cle:'poids'},
+        { name: "Structure responsable", props:'user', cle:'struct_responsable'},
+        { name: "Structure Associé", props:'user', cle:'struct_assoc'},
+        { name: "Status", cle:'statut'},
       ],
       dataTable:[
         {tache:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",struct_responsable:"agetur",struct_assoc:"",status:"en cours"}

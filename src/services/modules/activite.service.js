@@ -26,15 +26,12 @@ const ActivitesService = {
     },
 
     composante(slug) {
-      return ApiService.get(`activites/${slug}/composantes`);
+      return ApiService.get(`activites/${slug}/composante`);
     },
 
-    activites(slug) {
+    taches(slug) {
       return ApiService.get(`activites/${slug}/taches`);
-    },
-    programme(slug) {
-      return ApiService.get(`programmes/activites/${slug}`);
-    },
+    }
 
   };
 

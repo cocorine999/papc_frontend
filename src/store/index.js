@@ -63,6 +63,18 @@ export default new Vuex.Store({
     loading : false,
     messageErreur : null,
     errors : [],
+
+    types : [
+      {
+        nom : "",
+        type: 'pta'
+      },
+
+      {
+        nom : "PPM",
+        type: 'ppm'
+      }
+    ],
     statuts : [
       {
         nom : "Non validé",
