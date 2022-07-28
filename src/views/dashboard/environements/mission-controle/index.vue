@@ -28,12 +28,8 @@
 
       <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(bailleur,index) in bailleurs" :key="index">
-          <div class="relative">
-             <!-- dot -->
-            <div class="absolute right-1 top-4 z-10  cursor-pointer">
-              <dropdown @gotoNext="gotoNext" @modifier="modifier" @duplicate='dupliquer' :option="option"></dropdown>
-            </div>
-          <!-- dot -->
+          <div @click="gotoNext" class="relative cursor-pointer">
+            
             <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
               <span :class="bailleur.color" class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p>Code : {{bailleur.code}} </p></span>
               <span :class="bailleur.color" class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{bailleur.sigle}}</span>

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
+import role_permission from "../views/dashboard/role_permission/index.vue";
 import liens from "../views/liens.vue";
 
 import form_gestion_generator from "../views/dashboard/form/generator.vue";
@@ -134,6 +135,11 @@ const routes = [
     path: "/demo",
     name: "demo",
     component: demo,
+  },
+  {
+    path: "/dashboard/roles",
+    name: "role_permission",
+    component: role_permission,
   },
   // {
   //   path: "/dashboard/",
