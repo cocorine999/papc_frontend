@@ -33,14 +33,7 @@ const ComposantesService = {
       return ApiService.get(`composantes/activites/${slug}`);
     },
 
-    composantesOfProjet(slug = null) {
-      if(slug){
-        return ApiService.get(`projets/${slug}/composantes`);
-      }
-      return ApiService.get(`projets/composantes`);
-    },
-
-    sousComposantesOfComposante(slug) {
+    sousComposantes(slug) {
       return ApiService.get(`composantes/${slug}/sousComposantes`);
     },
 

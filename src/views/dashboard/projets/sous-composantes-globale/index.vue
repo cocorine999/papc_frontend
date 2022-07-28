@@ -99,6 +99,8 @@
           <card-composante
             :libelle="sousComposante.nom"
             :code="sousComposante.code"
+            composanteName="Sous Composante"
+            :statut="getStatus(sousComposante.statut)"
             :montantEPM="sousComposante.pret"
             :position="sousComposante.position"
             :poids="sousComposante.poids"
@@ -138,7 +140,7 @@ import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-import utils from '@/utils/index'
+import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
 import Composante from '@/store/modules/composantes/composante'
 
 export default {
@@ -228,8 +230,8 @@ export default {
 
     ...mapGetters({
       composantes: "composantes/getComposantes",
+      sousComposante: "sousComposantes/getSousComposante",
       sousComposantes: "sousComposantes/getSousComposantes",
-      sousComposante: "sousComposantes/getSousComposantes",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
 
@@ -241,11 +243,11 @@ export default {
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setSousComposante: 'sousComposantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
-      setSousComposantes: 'sousComposantes/SET_LIST_COMPOSANTES'
+      setSousComposantes: 'sousComposantes/SET_LIST_SOUS_COMPOSANTE'
     }),
 
     ...mapActions('sousComposantes', {
-      fetchSousComposantes: "FETCH_LIST_SOUS_COMPOSANTE_OF_PROJET",
+      fetchSousComposantes: "FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
       saveSousComposante: "STORE_SOUS_COMPOSANTE",
       updateSousComposante: "UPDATE_SOUS_COMPOSANTE",
       deleteSousComposante: "DESTROY_SOUS_COMPOSANTE"
@@ -257,6 +259,10 @@ export default {
 
     getIntervale(val){
       return val - 25;
+    },
+
+    getStatus(status){
+      return getStringValueOfStatutCode(status);
     },
 
     filtreRange(value){
@@ -336,7 +342,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if( value.key === "statut" ){
+          if( value.key === "statut" && item === "statut"){
 
             this.$store.state.statuts.map((value) => {
               if(value.etat === sousComposante[item]){
@@ -359,10 +365,10 @@ export default {
     },
 
     supprimer(sousComposante) {
-      if(window.confirm("Voulez-vous supprimer la sousComposante " + sousComposante.nom)){
+      if(window.confirm("Voulez-vous supprimer la sous composante " + sousComposante.nom)){
         if(this.sendRequest === false){
           this.sendRequest = true;
-          this.deleteComposante(sousComposante.id)
+          this.deleteSousComposante(sousComposante.id)
           this.sendRequest = false;
         }
       }
@@ -378,7 +384,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if( value.key === "statut" ){
+          if( value.key === "statut" && item === "statut"){
 
             this.$store.state.statuts.map((value) => {
               if(value.etat === sousComposante[item]){
@@ -387,7 +393,7 @@ export default {
             });
 
           }
-          else{
+          else if(value.key === item){
             this.champs[index]['data'] = sousComposante[item]
           }
 
@@ -418,9 +424,7 @@ export default {
 
         this.sendRequest = true;
 
-          sousComposante = {"statut": -1}
-
-          this.updateComposante({sousComposante: sousComposante, id : sousComposante.id}).then(response => {
+          this.updateSousComposante({sousComposante: { "statut": -1, "composanteId": this.valueFiltre.id }, id : sousComposante.id}).then(response => {
             
             if(response.status == 200 || response.status == 201){
 
@@ -450,7 +454,7 @@ export default {
 
         this.champs = this.champs.map(item => { item.errors = []; return item})
 
-        let sousComposante = utils.extractFormData(this.champs, this.sousComposanteAttributs)
+        let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
 
         sousComposante.composanteId = this.valueFiltre.id;
 

@@ -99,6 +99,7 @@
           <card-composante
             :libelle="composante.nom"
             :code="composante.code"
+            :statut="getStatus(composante.statut)"
             :montantEPM="composante.pret"
             :position="composante.position"
             :poids="composante.poids"
@@ -138,7 +139,7 @@ import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-import utils from '@/utils/index'
+import  { extractFormData, getStringValueOfStatutCode }  from '@/utils/index'
 import Projet from '@/store/modules/projets/projet'
 
 export default {
@@ -435,15 +436,19 @@ export default {
       this.$router.push('/dashboard/projets/composantes/sous-composantes')
     },
 
+    getStatus(status){
+      return getStringValueOfStatutCode(status);
+    },
+
+
+
     validation(composante){
 
       if( this.sendRequest === false ){
 
         this.sendRequest = true;
 
-          composante = {"statut": -1}
-
-          this.updateComposante({composante: composante, id : composante.id}).then(response => {
+          this.updateComposante({composante: { "statut": -1, "projetId": this.valueFiltre.id }, id : composante.id}).then(response => {
             
             if(response.status == 200 || response.status == 201){
 
@@ -473,7 +478,7 @@ export default {
 
         this.champs = this.champs.map(item => { item.errors = []; return item})
 
-        let composante = utils.extractFormData(this.champs, this.composanteAttributs)
+        let composante = extractFormData(this.champs, this.composanteAttributs)
 
         composante.projetId = this.valueFiltre.id;
 

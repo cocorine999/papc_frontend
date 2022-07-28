@@ -16,6 +16,8 @@ import {
 
 import SousComposanteService from "@/services/modules/composante.service";
 
+import ComposanteService from "@/services/modules/composante.service";
+
 export default {
     
     FETCH_LIST_SOUS_COMPOSANTE : async ({ commit }) => {
@@ -29,7 +31,7 @@ export default {
     
     FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE : async ({ commit }, id) => {
         
-        const { data, status } = await SousComposanteService.sousComposantesOfComposante(id);
+        const { data, status } = await ComposanteService.sousComposantes(id);
 
         commit(SET_LIST_SOUS_COMPOSANTE, data.data);
 
@@ -62,7 +64,7 @@ export default {
     },
 
     async UPDATE_SOUS_COMPOSANTE ({ commit }, {sousComposante, id}) {
-        
+        console.log(id)
         const { data, status } = await SousComposanteService.update(id, sousComposante);
 
         commit(MODIFY_SOUS_COMPOSANTE, data.data);

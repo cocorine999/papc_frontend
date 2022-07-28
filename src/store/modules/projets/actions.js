@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import ProjetService from "@/services/modules/projet.service";
+import ProgrammeService from "@/services/modules/programme.service";
 
 export default {
     
@@ -29,7 +30,7 @@ export default {
     
     FETCH_LIST_PROJET_OF_PROGRAMME : async ({ commit }, id) => {
 
-        const { data, status } = await ProjetService.projetsOfProgramme(id);
+        const { data, status } = await ProgrammeService.projets(id);
 
         commit(SET_LIST_PROJET, data.data);
 

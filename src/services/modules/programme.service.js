@@ -27,7 +27,11 @@ const ProgrammeService = {
 
     uniteeGestion(slug) {
       return ApiService.get(`programmes/${slug}/unitee-de-gestion`);
-    }
+    },
+
+    projets(slug) {
+      return ApiService.get(`programmes/${slug}/projets`);
+    },
 
   };
 

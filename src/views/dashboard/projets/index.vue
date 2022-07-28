@@ -89,7 +89,8 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-import utils from '@/utils/index'
+
+import { extractFormData } from '@/utils/index'
 
 export default {
   components: {
@@ -270,7 +271,7 @@ export default {
 
       this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let projet = utils.extractFormData(this.champs, this.projetAttributs)
+      let projet = extractFormData(this.champs, this.projetAttributs)
 
       projet.programmeId = this.currentUser?.programme?.id
 

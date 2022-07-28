@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import ComposanteService from "@/services/modules/composante.service";
+import ProjetService from "@/services/modules/projet.service";
 
 export default {
     
@@ -27,9 +28,9 @@ export default {
         return { data, status };
     },
     
-    FETCH_LIST_COMPOSANTE_OF_PROJET : async ({ commit }, id = null) => {
+    FETCH_LIST_COMPOSANTE_OF_PROJET : async ({ commit }, id) => {
         
-        const { data, status } = await ComposanteService.composantesOfProjet(id);
+        const { data, status } = await ProjetService.composantes(id);
 
         commit(SET_LIST_COMPOSANTE, data.data);
 
