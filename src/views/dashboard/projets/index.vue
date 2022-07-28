@@ -48,7 +48,7 @@
             </div>
             <div class="relative mb-2">
               <img class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
-                :src="link"
+                :src=" + projet.link"
                 alt="">
                 <div class="absolute bottom-0 right-0">
                   <div v-if="projet.statut == 0 " class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></div>
@@ -111,7 +111,6 @@ export default {
       submitText:"Enregistrer",
       cols:1,
       mosaique:true,
-       link:"https://mapiwee.com/wp-content/uploads/2020/07/Mapiwee-by-Maped-limportance-de-leau-expliqu%C3%A9-aux-enfants.jpeg",
       title: '',
       projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'poids', 'bailleurId'],
       champs:[

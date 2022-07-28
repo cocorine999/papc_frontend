@@ -32,7 +32,25 @@ import sousComposantes from "./modules/sousComposantes/index";
 
 import activites from "./modules/activites/index";
 
+import categories from "./modules/categories/index";
+
 import taches from "./modules/taches/index";
+
+import paps from "./modules/paps/index";
+
+import suiviIndicateurs from "./modules/suiviIndicateurs/index";
+
+import utilisateurs from "./modules/utilisateurs/index";
+
+import roles from "./modules/roles/index";
+
+import indicateurs from "./modules/indicateurs/index";
+
+import anos from "./modules/anos/index";
+
+import typeAnos from "./modules/typeAnos/index";
+
+import eActivites from "./modules/eActivites/index";
 
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
@@ -95,11 +113,11 @@ export default new Vuex.Store({
     },
 
     [SET_LOADER](state, value) {
-      if(typeof value === "boolean")
+      if(typeof value === "boolean") // vérifie si le LOADER est vraiement de type boolean
         state.loading = value
     },
 
-    [SET_ERRORS_MESSAGE](state, {message, errors}) {
+    [SET_ERRORS_MESSAGE](state, {message, errors}) { //si erreur, cette fonction permet de récuperer les erreurs et de les stockés pour la vue
       state.messageErreur = message
       state.errors = errors
     },
@@ -114,7 +132,7 @@ export default new Vuex.Store({
   actions: {
     toggleSidebar(context) {
       context.commit('toggleSidebar')
-    },
+    }
   },
 
   modules: {
@@ -134,6 +152,15 @@ export default new Vuex.Store({
     sousComposantes,
     activites,
     taches,
+    paps,
+    indicateurs,
+    categories,
+    suiviIndicateurs,
+    anos,
+    typeAnos,
+    eActivites,
+    utilisateurs,
+    roles
   }
 });
 

@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-4">
+    <div class="px-4">
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -19,16 +19,16 @@
       </nav> 
 
       <div v-if="showModal">
-        <modal-top-right :title="title"  v-on:close="showModal = false">
+        <modal-top-right :title="title"  v-on:close="close">
           <div  class="px-4 overflow-y-auto">
             <div v-if="title =='Modifier un indicateur'">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
+              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
             <div v-if="title =='Ajouter un indicateur'">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" ></vform>
+              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
             <div v-if="title =='Dupliquer un indicateur'">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer à partir de " @sendForm="sendForm" ></vform>
+              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer à partir de "   @closeModal="close"  @sendForm="sendForm" ></vform>
             </div>
           </div>
         </modal-top-right>
@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+      <vtable :headers="headers" :datas="indicateurs" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -71,6 +71,8 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import extractFormData from "@/utils/extract-data";
 export default {
   components: {
     Vtable,
@@ -88,14 +90,16 @@ export default {
         showModal2:false,
         loading:false,
         title:'',
+        indicateurAttributs : ['nom', 'description', 'anneeDeBase', 'valeurDeBase','bailleurId','categorieId','uniteeMesureId'],
         champs:[
-          {name:'Nom',type:'text',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Année de base',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Valeur de base',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Unite de mesure',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:['metre','milimetre','centimentre','personne','pourcentage'],required:true,},
-          {name:'Categories',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:true,},
-          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
-          {name:'Description',type:'',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:true,},
+          {name:'Nom',type:'text',key:'nom',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+          {name:'Année de base',key:'anneeDeBase',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+          {name:'Valeur de base',key:'valeurDeBase',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+          
+          {name:'Unite de mesure',key:'uniteeMesureId',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:this.uniteDeMesure,required:true,cle: 'id', value:'nom',errors : []},
+          {name:'Categories',key:'categorieId',ntype:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:this.categories,required:true, cle: 'id', value: 'nom', errors : []},
+          {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:this.bailleurs, cle: 'id', value: 'sigle',errors : []},
+          {name:'Description',key:'description',type:'',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:true,},
         ],
         cols:2,
         champsRecherche:[
@@ -106,25 +110,16 @@ export default {
           
         ],
         headers:[
-          {name:'Indicateur',props:'indicateur'},
-          {name:'Bailleur',props:'bailleur'},
-          {name:'Categorie',props:'categorie'},
-          {name:'Unité de mesure',props:'unite_mesure'},
-          {name:'Valeur de base',props:'valeur_base'},
-          {name:'Année de base',props:'anne_base'},
-          {name:'Date de creation',props:'created_at'},
+          {name:'Indicateur',cle:'nom'},
+          {name:'description',cle:'description'},
+          {name:'Bailleur',cle:'bailleur',props:'nom'},
+          {name:'Categorie',cle:'categorie',props:'nom'},
+          {name:'Unité de mesure',cle:'uniteDeMesure',props:'nom'},
+          {name:'Valeur de base',cle:'valeurDeBase'},
+          {name:'Année de base',cle:'anneeDeBase'},
+          {name:'Date de creation',cle:'created_at'},
         ],
-        dataTable:[
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-          {indicateur:'indicateur1',bailleur:'BM',categorie:"Categorie",unite_mesure:"centimentre",valeur_base:"500000000",anne_base:"2022",created_at:"22-06-2022"},
-        ],
+        
         actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
@@ -132,25 +127,170 @@ export default {
 
       });
   },
-  mounted() {
+  watch: {
+    isLoading: function (value) {
+      //this.loading = value
+    },
+     bailleurs: function (bailleurs) {
+      this.champs.map((item) => {
+        if (item.key === "bailleurId") {
+          item.options = bailleurs.map((bailleur) => {
+            return {
+              id: bailleur.id,
+              sigle: bailleur.sigle,
+            };
+          });
+        }
+        return item;
+      });
+    },
+    categories: function (categories) {
+      this.champs.map((item) => {
+        if (item.key === "categorieId") {
+          item.options = categories.map((categorie) => {
+            return {
+              id: categorie.id,
+              nom: categorie.nom,
+            };
+          });
+        }
+        return item;
+      });
+    },
+    uniteDeMesure: function (uniteDeMesure) {
+      this.champs.map((item) => {
+        if (item.key === "uniteeMesureId") {
+          item.options = uniteDeMesure.map((unite) => {
+            return {
+              id: unite.id,
+              nom: unite.nom,
+            };
+          });
+        }
+        return item;
+      });
+    },
+    hasErrors: function (errors) {
+      this.champs.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+      //this.errors = errors
+    },
+  },
+  
+  computed: {
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      indicateur: "indiateurs/getIndicateur",
+      indicateurs: "indicateurs/getIndicateurs",
+      categories: "categories/getCategorie",
+      bailleurs: "bailleurs/getBailleurs",
+      categories: "categories/getCategories",
+      uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
+    }),
   },
   methods: {
-      addIndicateur() {
-        this.title ='Ajouter un indicateur'
-        this.showModal = true
-      },
-      modifier() {
+    ...mapMutations({
+      setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+    }),
+
+    ...mapActions("indicateurs", {
+      fetchIndicateurs: "FETCH_LIST_INDICATEUR",
+      saveIndicateur: "STORE_INDICATEUR",
+      updateIndicateur: "UPDATE_INDICATEUR",
+      deleteIndicateur: "DESTROY_INDICATEUR",
+    }),
+    ...mapActions("bailleurs", {
+      fetchBailleurs: "FETCH_LIST_BAILLEUR",
+    }),
+    ...mapActions("categories", {
+      fetchCategories: "FETCH_LIST_CATEGORIE",
+    }),
+     ...mapActions("uniteesDeMesure", {
+      fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
+    }),
+    sendForm() {
+      this.champs = this.champs.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let indicateur = extractFormData(this.champs,this.indicateurAttributs);
+      indicateur.bailleurId = indicateur.bailleurId.id
+      indicateur.categorieId = indicateur.categorieId.id
+      indicateur.uniteeMesureId = indicateur.uniteeMesureId.id
+      console.log("les indicateurs",indicateur)
+
+      if (this.indicateur?.id) {
+        this.updateIndicateur({ indicateur: indicateur, id: this.indicateur?.id }).then(
+          (response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.close();
+            }
+          }
+        );
+      } else {
+        this.saveIndicateur(indicateur).then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            this.close();
+          }
+        });
+      }
+    },
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item.data = ''; return item})
+        
+      window.document.getElementById('vform')?.reset()
+
+      this.setIndicateur({})
+    },
+
+    async updateInputData(id, attribut, value) {
+        await this.updateIndicateur({indicateur: {[attribut] : value}, id : id}).catch((value, status) => {
+          if(this.hasErrors[attribut] !== undefined)
+            alert(this.hasErrors[attribut])            
+        }).finally(() => {
+          $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+        })
+    },
+    async supprimer(indicateur) {
+      if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + indicateur.nom))
+        await this.deleteIndicateur(indicateur.id)
+    },
+    close() {
+      this.showCloseModal();
+      this.resetForm();
+    },
+    showCloseModal(value = false) {
+      this.showModal = value;
+    },
+    addIndicateur() {
+      this.title ='Ajouter un indicateur'
+      this.showModal = true
+    },
+    modifier() {
         this.title ='Modifier un indicateur'
         this.showModal = true
-      },
-      supprimer(data) {
-        alert(data+" à ete bien supprimer")
-      },
-      dupliquer() {
-        this.title ='Dupliquer un indicateur'
-        this.showModal = true
-      }
-  }
+    },
+
+    
+      
+      
+  },
+
+   mounted() {
+    this.fetchIndicateurs().then((value) => {
+      setTimeout(() => {
+        console.log("Fetching list of programmes...")
+        this.fetchBailleurs()
+        this.fetchCategories()
+        this.fetchUnite()
+      }, 100);
+    })
+  },
 }
 </script>
 

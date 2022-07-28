@@ -1,7 +1,6 @@
 <template>
   <dashboard>
     <div class="w-full p-4">
-
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
             <div class="p-4 overflow-auto">
@@ -240,7 +239,7 @@ export default {
     }
     
   },
-
+  
   computed:{
 
     //importation des variables du module auths

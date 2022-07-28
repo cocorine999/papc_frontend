@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-4">
+    <div class="px-4">
       <route-name title="entreprises" />
       <div v-if="showModal">
         <modal-top-right title="Ajouter un entreprise" v-on:close="close">
@@ -211,16 +211,7 @@ export default {
       entrepriseExecutanteAttributs: ["nom", "email", "contact", "mod"],
 
       champs: [
-        {
-          name: "Nom",
-          key: "nom",
-          type: "text",
-          placeholdere: "",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
+        { name: "Nom", key: "nom", type: "text", placeholdere: "", isSelect: false, isTextArea: false, data: "", required: true, errors: [],
         },
         {
           name: "Email",

@@ -95,6 +95,7 @@ import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import Vform from '@/components/Vform'
 
 import { mapGetters, mapMutations, mapActions } from "vuex"
 
@@ -106,11 +107,11 @@ export default {
     Vmodal,
     Titre,
     SearchBar,
-    ModalTopRight
+    ModalTopRight,
+    Vform,
   },
   data() {
     return ({
-
       showModal:false,
       title:'',
       submitText: 'Enrégistrer',

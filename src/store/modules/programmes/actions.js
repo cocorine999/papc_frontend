@@ -58,7 +58,7 @@ export default {
 
     },
 
-    async UPDATE_PROGRAMME ({ commit }, {programme, id}) {
+    async UPDATE_PROGRAMME ({ commit },{programme, id}) {
         
         const { data, status } = await ProgrammeService.update(id, programme);
 
