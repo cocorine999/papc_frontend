@@ -10,7 +10,7 @@
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs"  submitText="Creer une activite" @sendForm="sendForm" ></vform>
+          <vform template="default"  :champs="champs"  submitText="Ajouter" @sendForm="sendForm" ></vform>
         </div>
       </modal-top-right>
     </div>
@@ -116,6 +116,7 @@ export default {
     ...mapState({
       identifiant: state => state.auths.identifiant,
       eActivite: state => state.eActivites.eActivite,
+      formulaire: state => state.formulaires.formulaire,
       loading : state => state.loading,
       errors : state => state.errors
     }),
@@ -124,6 +125,7 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       eActivites: "eActivites/getEActivites",
+      formulaires: "formulaires/getFormulaires",
       entreprises: "entreprisesExecutante/getEntreprisesExecutante",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
@@ -132,7 +134,8 @@ export default {
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setEActivite: 'eActivites/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setEActivite: 'eActivites/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
 
     ...mapActions("eActivites", {
@@ -140,6 +143,13 @@ export default {
       saveEActivite: "STORE_EACTIVITE",
       updateEActivite: "UPDATE_EACTIVITE",
       deleteEActivite: "DESTROY_EACTIVITE"
+    }),
+
+    ...mapActions("formulaires", {
+      fetchFormulaires: "FETCH_LIST_FORMULAIRE",
+      saveFormulaire: "STORE_FORMULAIRE",
+      updateFormulaire: "UPDATE_FORMULAIRE",
+      deleteFormulaire: "DESTROY_FORMULAIRE"
     }),
 
     ...mapActions("entreprisesExecutante", {
@@ -267,6 +277,8 @@ export default {
           this.fetchEntreprisesExecutante()
         }, 500);
     })
+    console.log("Fetching list formulaires ...")
+    this.fetchFormulaires()
   }
 }
 </script>
