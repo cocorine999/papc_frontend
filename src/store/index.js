@@ -66,7 +66,7 @@ export default new Vuex.Store({
 
     types : [
       {
-        nom : "",
+        nom : "pta",
         type: 'pta'
       },
 

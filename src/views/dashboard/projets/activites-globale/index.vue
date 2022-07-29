@@ -551,7 +551,7 @@
               </span>
             </nav>
           </div>
-          ***
+
         </div>
         <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(activite, index) in activites" :key="index">
@@ -717,6 +717,7 @@ export default {
     Dropdown,
     CardActivite,
     Vtable,
+    Vform,
   },
   data() {
     return {
@@ -724,23 +725,25 @@ export default {
       pending: false,
       success: true,
       rejected: false,
-      programmeId: this.currentUser?.programme?.id,
+      programmeId: this.currentUser?.programme.id,
       cols: 1,
       sendRequest: false,
       submitText: "Enregistrer",
       rangeValue: 0,
       showFiltre: false,
       
-      composanteAttributs : ['nom', 'description', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'type', 'pret', 'tepPrevu', 'statut', 'poids'],
+      activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'statut', 'poids'],
 
       champs:[
 
         {name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Type', key: "type", type: '', placeholdere: 'Selectionnez le type d\'activite', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.types, cle: 'type', value: 'nom',  errors : []},
+        {name: 'Type', key: "types", type: '', placeholdere: 'Selectionnez le type d\'activite', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.types, cle: 'type', value: 'nom',  errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data:'', required: true, options: this.entreprisesExecutante, cle: 'id', value: 'nom',  errors : []},
         {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.mods, cle: 'id', value: 'nom',  errors : []},
         {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez le statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
@@ -1062,7 +1065,7 @@ export default {
       entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       activites: "activites/getActivites",
       activite: "activites/getActivite",
-      currentUser: "auths/GET_AUTHENTICATE_USER",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
   },
 
@@ -1236,15 +1239,25 @@ export default {
           item.errors = [];
           return item;
         });
+        console.log(this.champs)
 
         let activite = extractFormData(this.champs, this.activiteAttributs);
 
+        console.log(activite)
+
         activite.composanteId = this.valueFiltre.id;
-        activite.structureResponsableId = this.activite.structureResponsableId.id;
-        activite.structureAssocieId = this.activite.structureAssocieId.id;
-        activite.userId = this.activite.structureAssocieId.id;
+
+        activite.structureResponsableId = activite.structureResponsableId.id;
+
+        activite.structureAssocieId = activite.structureAssocieId.id;
+
+        activite.userId = activite.structureAssocieId;
+
+        activite["type"] = activite.types.type;
 
         activite.statut = activite.statut.etat;
+
+        console.log(activite)
 
         if (this.activite?.id) {
           this.updateActivite({ activite: activite, id: this.activite?.id })
@@ -1283,9 +1296,18 @@ export default {
       this.sendRequest = false;
     },
 
+    resetForm(){
+
+      this.champs = this.champs.map(item => { item['data'] = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.setActivite({})
+    },
+    
     showCloseModal(value = false) {
       this.showModal = value;
-    },
+    }
   },
 
   watch: {
@@ -1295,45 +1317,70 @@ export default {
 
     errors: function (errors) {
       this.champs.forEach((value) => {
-        value.errors = errors[value.key];
+        if(value.key === "types"){
+        
+          value.errors = errors["type"];
+
+        }
+        else value.errors = errors[value.key];
       });
       //this.errors = errors
     },
 
     valueFiltre: function (valeur) {
-      console.log(valeur)
+      
       if (valeur instanceof Composante || valeur instanceof Object) {
         this.fetchActivites(valeur.id);
-      } else if (typeof valeur !== null) {
+      } 
+
+      else if (typeof valeur !== null) {
         this.fetchActivites(valeur);
       }
+
     },
 
     entreprisesExecutante: function (entreprisesExecutante) {
+
       this.champs.map((item) => {
+
         if (item.key === "structureResponsableId") {
+
           item.options = entreprisesExecutante.map((entrepriseExecutante) => {
+
             return {
               id: entrepriseExecutante.user.id,
               nom: entrepriseExecutante.user.nom,
             };
+
           });
+
         }
+
         return item;
+
       });
+
     },
 
     mods: function (mods) {
+
       this.champs.map((item) => {
+
         if (item.key === "structureAssocieId") {
+
           item.options = mods.map((mod) => {
+
             return {
               id: mod.user.id,
               nom: mod.user.nom,
             };
+
           });
+
         }
+
         return item;
+        
       });
     },
 
@@ -1348,14 +1395,21 @@ export default {
   },
 
   created() {
-    Promise.all([this.fetchComposantes() ]);
-  },
+    Promise.all([this.fetchComposantes() ]).then((value) => {
+ 
+      this.programmeId = this.currentUser.programme.id
+      
+      if(this.programmeId){
 
-  mounted() {
-    if(this.programmeId){
-      Promise.allSettled([ this.fetchMods(this.programmeId), this.fetchEntreprisesExecutante(this.programmeId) ]);
-    }
-  },
+        this.fetchMods(this.programmeId)
+
+        this.fetchEntreprisesExecutante(this.programmeId)
+
+      }
+    });
+
+  }
+
 };
 </script>
 

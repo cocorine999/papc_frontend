@@ -319,6 +319,7 @@ export default {
   
   created() {
     console.log("Fetching projets ...")
+    this.programmeId = this.currentUser.programme.id
     if(this.programmeId){
       this.fetchProjets(this.programmeId).then((value) => {
           setTimeout(() => {
