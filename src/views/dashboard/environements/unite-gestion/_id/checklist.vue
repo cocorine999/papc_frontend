@@ -10,7 +10,7 @@
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs" :cols="cols" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
+          <vform template="default"  :champs="champs"  submitText="Creer une activite" @sendForm="sendForm" ></vform>
         </div>
       </modal-top-right>
     </div>
@@ -59,7 +59,7 @@
       </div>
     </div>
     <div v-else class="my-4">
-      <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
+      <vtable :headers="headers" :datas="eActivites" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>    
     </div>
   </div>
   </dashboard>
@@ -72,7 +72,9 @@
   import Vform from '@/components/Vform'
   import ModalTopRight from '@/components/ModalTopRight'
   import Vmodal from '@/components/Vmodal'
-  import { mapGetters, mapMutations, mapActions } from "vuex";
+  import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
+  import utils from '@/utils/index';
+
 export default {
   components: {
     CardChecklist,
@@ -88,18 +90,19 @@ export default {
       seeActivite:false,
       showModal:false,
       showLink:false,
-      champs:[],
+      activitesAttributs : ['nom', 'debut', 'fin', 'statut', 'entrepriseExecutantId'],
+      champs:[
+        {name:'Nom de l\'activite',key:"nom",type:'text',placeholdere:"Nom de l'activité",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date debut',key:"debut",type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date fin',type:'date',key:"fin",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Entreprise',key:"entrepriseExecutantId",type:'',placeholdere:'Selectionnez une entreprise',isSelect:true,isTextArea:false,data:'',required:true,options:this.entreprises, cle: 'id', value: 'nom', errors : []},
+        {name:'Status',key:"statut",type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:this.$store.state.statuts, cle: 'etat', value: 'nom', errors : []},
+      ],
       headers:[
-          {name:'Libelle activite',props:'libelle'},
-          {name:'Date debut',props:'debut'},
-          {name:'Date fin',props:'fin'},
-          {name:'Date de creation',props:'created_at'},
-        ],
-        dataTable:[
-          {libelle:'preparer et faire valider par le MO et le MOD un PGESC',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PAE',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PPGED',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PPSPS',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+          {name:'Libelle activite',cle:'nom'},
+          {name:'Date debut',cle:'debut'},
+          {name:'Date fin',cle:'fin'},
+          {name:'Date de creation',cle:'created_at'},
         ],
         actions:[
           {name:'modifier',iconne:''},
@@ -109,17 +112,38 @@ export default {
   },
 
   computed: {
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      eActivite: state => state.eActivites.eActivite,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       eActivites: "eActivites/getEActivites",
+      entreprises: "entreprisesExecutante/getEntreprisesExecutante",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
   methods: {
+    //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setEActivite: 'eActivites/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
 
     ...mapActions("eActivites", {
       fetchEActivites: "FETCH_LIST_EACTIVITE",
+      saveEActivite: "STORE_EACTIVITE",
+      updateEActivite: "UPDATE_EACTIVITE",
+      deleteEActivite: "DESTROY_EACTIVITE"
+    }),
+
+    ...mapActions("entreprisesExecutante", {
+      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
     }),
 
     getlink(i){
@@ -130,6 +154,28 @@ export default {
     },
     addActivite() {
       this.title = 'Creer une activité'
+
+      let entreprises = this.entreprises.map((value) => {
+        return {
+          "id" : value.id,
+          "nom" : value.user.nom
+        }
+      })
+
+      let formData = this.champs.map((value) => {
+          if(value.key === 'entrepriseExecutantId'){ 
+            value['options'] = entreprises
+          }
+
+          else if(value.key === 'statut'){ 
+            value['options'] = this.$store.state.statuts
+          }
+
+          return value
+        })
+
+        this.champs = formData
+
       this.showModal = true
     },
     goActivite() {
@@ -139,6 +185,61 @@ export default {
     goChecklist() {
       this.seeActivite = false
       this.seeChecklist = true
+    },
+
+    async updateInputData(id, attribut, value) {
+        
+          await this.updateEActivite({eActivite: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
+
+    },
+
+    sendForm() {
+
+      this.champs = this.champs.map(item => { item.errors = []; return item})
+
+      let eActivite = utils.extractFormData(this.champs, this.activitesAttributs)
+
+      eActivite.entrepriseExecutantId = eActivite.entrepriseExecutantId.id
+
+      eActivite.statut = eActivite.statut.etat
+
+      console.log(eActivite)
+      
+      if(this.eActivite?.id)
+      {
+
+        this.updateEActivite({eActivite: eActivite, id : this.eActivite?.id}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.close()
+          }
+
+        }).catch((error) => {
+
+          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+          this.champs.map(value => value.errors = this.erreurs[value.key])
+
+        })
+
+      }
+      else
+      {
+
+        this.saveEActivite(eActivite).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
+          }
+
+        })
+      }
+
     },
     modifier(data) {
       alert(data+ " à ete bien modifier")
@@ -152,11 +253,20 @@ export default {
     selectData ({ name}) {
       return `${name}`
     },
+    async supprimer(eActivite) {
+      if(window.confirm("Voulez-vous supprimer cette activité " + eActivite.nom))
+        await this.deleteEActivite(eActivite.id)
+    },
   },
 
   mounted() {
-    console.log("Fetching e-activites ...");
-    this.fetchEActivites(this.$route.params.id);
+    console.log("Fetching e-activites ...")
+    this.fetchEActivites(this.$route.params.id).then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of entreprises...")
+          this.fetchEntreprisesExecutante()
+        }, 500);
+    })
   }
 }
 </script>
