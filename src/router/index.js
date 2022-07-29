@@ -66,6 +66,7 @@ import point_financier from "../views/dashboard/finances/point_financier.vue";
 import config_unites from "../views/dashboard/config/unites/index.vue";
 import config_types from "../views/dashboard/config/types/index.vue";
 import config_categories from "../views/dashboard/config/categories/index.vue";
+import config_sinistres from "../views/dashboard/config/sinistres/index.vue";
 import config_main_oeuvre from "../views/dashboard/config/main_oeuvre/index.vue";
 import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
@@ -457,6 +458,11 @@ const routes = [
     path: "/dashboard/config/categories",
     component: config_categories,
     name: "config_categories",
+  },
+  {
+    path: "/dashboard/config/sinistres",
+    component: config_sinistres,
+    name: "config_sinistres",
   },
   {
     path: "/dashboard/config/main_oeuvre",

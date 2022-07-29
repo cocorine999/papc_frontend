@@ -788,6 +788,8 @@
           </router-link>
         </div>
 
+       
+
         <div class="mb-10 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/config/types"

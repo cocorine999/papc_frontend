@@ -6,7 +6,7 @@
         <div class="w-full">
           <div class="my-3 w-full" >
             <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
-            <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
+            <input type="text" v-model="nomFormulaire"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
           </div>
           <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configuration de la checklist</h3>
           
@@ -22,7 +22,7 @@
               <div class="flex justify-between items-center">
                 <div class="my-2 w-4/5">
                   <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Selectionner une activité <span class="px-2 mb-2 text-lg font-black text-red-700">*</span></label>
-                  <multiselect v-model="activite.activite" :options="options" :custom-label="selectActivite"  placeholder="selectionnez une activite" label="name" track-by="name"></multiselect>
+                  <multiselect v-model="activite.activite" :options="options" :custom-label="selectActivite"  placeholder="selectionnez une activite" label="code" track-by="name"></multiselect>
                 </div>
                 <div class="my-2">
                   <span @click.prevent.stop="deleteElement(index)" class="text-red-500  cursor-pointer "> 
@@ -89,7 +89,7 @@
         </div>
       </div>
      <pre>
-      {{Forms}}
+     {{newPost}}
      </pre>
       <div>
         <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer la checklist</button>
@@ -166,6 +166,8 @@ export default {
       currentIndex:0,
       currentIndexData:0,
       Forms:[],
+      nomFormulaire:'',
+     
       options:[
         {libelle:'preparer et faire valider par le MO et le MOD un PGESC',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
         {libelle:'preparer et faire valider par le MO et le MOD un PAE',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
@@ -214,6 +216,11 @@ export default {
       this.Answers.splice(index,1)
     }
   },
+  computed: {
+    newPost() {
+      return [{nom:this.nomFormulaire,json:this.Forms}]
+    }
+  }
   
 }
 </script>
