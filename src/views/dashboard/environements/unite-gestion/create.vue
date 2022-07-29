@@ -7,7 +7,10 @@
           <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configuration de la checklist</h3>
           
           <div class="border border-dashed border-gray-300 my-4 px-8 py-4" >
-           
+              <div class="my-3 w-full" >
+                <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
+                <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
+              </div>
              <button @click="createActivite" class="flex space-x-2 bg-blue-500 text-white border border-blue-500 uppercase items-center px-4 py-2">
                   <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm6.5 4.5v3h3a.5.5 0 010 1h-3v3a.5.5 0 01-1 0v-3h-3a.5.5 0 010-1h3v-3a.5.5 0 011 0z" stroke="none"/></svg></span>
                   <span class="text-bold">ajouter une activité</span>
@@ -29,27 +32,27 @@
               
               <div v-for="(form,index)  in activite.data" :key="index">
                 <div class="flex justify-between w-full items-center ">
-                  <div class="my-3 w-4/5" v-if="form.type=='edit'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.label}} </label>
-                    <input  type="text" v-model="form.label" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
+                  <div class="my-3 w-4/5" v-if="form.inputType=='edit'">
+                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                    <input  type="text" v-model="form.nom" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
                   </div>
 
-                  <div class="my-3 w-4/5" v-if="form.type=='photos'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.label}} </label>
-                    <input type="text" v-model="form.label" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Saisissez votre libellé de photos">
+                  <div class="my-3 w-4/5" v-if="form.inputType=='photos'">
+                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                    <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Saisissez votre libellé de photos">
                     <input type="file"  class="px-2 py-2  text-sm border border-primary w-2/3 outline-none block " placeholder="Saisissez votre libellé">
                   </div>
 
-                  <div class="my-3 w-4/5" v-if="form.type=='boolean'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.label}} </label>
-                    <input type="text" v-model="form.label" class="px-2 py-2  text-sm border border-primary w-full outline-none block  " placeholder="Saisissez votre libellé vrai ou faux ">
+                  <div class="my-3 w-4/5" v-if="form.inputType=='boolean'">
+                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                    <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block  " placeholder="Saisissez votre libellé vrai ou faux ">
                     <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_true">Realiser</label>
                     <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_false">Non realiser</label>
                   </div>
-                  <div class="my-3 w-4/5" v-if="form.type=='multiple'">
+                  <div class="my-3 w-4/5" v-if="form.inputType=='multiple'">
                     <div class="">
-                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.label}} </label>
-                      <input type="text" v-model="form.label" class="px-2 py-2  text-sm border border-primary w-full outline-none block" placeholder="Saisissez votre libellé multiple">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                      <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block" placeholder="Saisissez votre libellé multiple">
                     </div>
                     <div class="my-4 flex justify-between items-center " v-for="(answers,index) in form.response" :key="index">
                       <label for="" class="px-4  block mb-4 text-primary text-sm uppercase font-semibold  py-2">
@@ -100,20 +103,20 @@
             <div v-for="activite in Forms" :key="activite.id" class="w-3/4 border border-dashed border-gray-700 p-6">
               <h1 class="text-lg font-semibold uppercase text-center py-2">{{activite.activite.libelle}}</h1>
               <div v-for="form in activite.data" :key="form.id">
-                <div v-if="form.type=='edit'">
+                <div v-if="form.inputType=='edit'">
                     <label   class=" block py-2 text-sm font-semibold " for="">
-                      {{form.label}} <span  class="px-2 text-lg font-black text-red-700">*</span>
+                      {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                     </label>
                     <input  type="text"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
                 </div>
-                <div v-if="form.type=='photos'">
+                <div v-if="form.inputType=='photos'">
                   <label   class=" block py-2 text-sm font-semibold " for="">
-                    {{form.label}} <span  class="px-2 text-lg font-black text-red-700">*</span>
+                    {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                   </label>
                   <input  type="file" accept="png,jpg"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
                 </div>
-                <div v-if="form.type=='boolean'">
-                  <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.label}}</label>
+                <div v-if="form.inputType=='boolean'">
+                  <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.nom}}</label>
                   <div class="flex items-center my-4">
                     <label for="Realiser" class="px-4 block text-sm uppercase font-medium text-gray-700">
                       <input id="vrai" name="verite" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
@@ -125,8 +128,8 @@
                     </label>
                   </div>
                 </div>
-                <div class="" v-if="form.type=='multiple'">
-                  <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.label}}</label>
+                <div class="" v-if="form.inputType=='multiple'">
+                  <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.nom}}</label>
                   <label v-for="answers in Answers" :key="answers.id" class="px-4  text-sm uppercase font-medium text-gray-700">
                     <input  name="multiple" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
                     {{answers.label}} /
@@ -182,18 +185,18 @@ export default {
       return `${libelle}`
     },
     btn_edit() {
-      this.Forms[this.currentIndex].data.push({type:'edit',label:null,content:null})
+      this.Forms[this.currentIndex].data.push({inputType:'edit',nom:null,content:null})
     },
     btn_boolean() {
-      this.Forms[this.currentIndex].data.push({type:'boolean',label:null,checked:null})
+      this.Forms[this.currentIndex].data.push({inputType:'boolean',nom:null,checked:null})
     },
     btn_multiple() {
      
-      this.Forms[this.currentIndex].data.push({type:'multiple',label:null})
+      this.Forms[this.currentIndex].data.push({inputType:'multiple',nom:null})
      
     },
     btn_photo() {
-      this.Forms[this.currentIndex].data.push({type:'photos',label:null,images:null})
+      this.Forms[this.currentIndex].data.push({inputType:'photos',nom:null,images:null})
     },
     addResponse() {
       /* this.currentIndex = this.Forms[this.currentIndex].data.length -1
