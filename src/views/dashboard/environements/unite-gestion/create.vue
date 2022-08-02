@@ -192,6 +192,7 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       eActivites: "eActivites/getEActivites",
+      uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
       formulaires: "formulaires/getFormulaires",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
@@ -210,6 +211,10 @@ export default {
 
     ...mapActions("formulaires", {
       saveFormulaire: "STORE_FORMULAIRE",
+    }),
+
+    ...mapActions("uniteesDeMesure", {
+      fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
 
     createActivite(){
@@ -276,6 +281,9 @@ export default {
   mounted() {
     console.log("Fetching e-activites ...")
     this.fetchEActivites("9OaDKE6vy5XjxW1dwOYGP9p7zg8bJmLxVBr32eNZ06DaqlkvoQAnVMKE2ZmbVq7j")
+
+    console.log("Fetching unuite de mesure")
+    this.fetchUnite()
   }
   
 }
