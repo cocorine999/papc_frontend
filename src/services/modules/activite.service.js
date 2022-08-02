@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const ActivitesService = {
+const ActiviteService = {
 
     query(type, params) {
       return ApiService.query("activites", {
@@ -35,5 +35,5 @@ const ActivitesService = {
 
   };
 
-  export default ActivitesService;
+  export default ActiviteService;
   

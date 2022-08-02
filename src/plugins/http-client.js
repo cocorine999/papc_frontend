@@ -9,6 +9,7 @@ import {
 
 import store from  "@/store/index"
 
+import router from  "@/router/index"
 /**
  * Axios basic configuration
  * Some general configuration can be added like timeout, headers, params etc. More details can be found on https://github.com/axios/axios
@@ -112,7 +113,9 @@ httpClient.interceptors.response.use(
           window.location.href ='/' 
         */
         
-        store.commit("RESET_AUTH_DATA")
+        store.commit("auths/RESET_AUTH_DATA")
+
+        router.push("/")
        
         break;
 

@@ -435,10 +435,17 @@
           <div class="flex items-center justify-between">
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">
+            
+            <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+
+            <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+          
+
               <multiselect
                 v-model="valueFiltre"
-                :options="composantes"
-                placeholder="selectionnez une composante"
+                :options="sousComposantes"
+                :preselect-first="true"
+                placeholder="selectionnez une sous composante"
                 label="nom"
                 track-by="id"
               ></multiselect>
@@ -556,13 +563,18 @@
         <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(activite, index) in activites" :key="index">
             <card-activite
-              bailleur="BM"
+              :bailleur="activite.bailleur.sigle"
               :libelle="activite.nom"
               :poids="activite.poids"
               :montantEPM="activite.pret"
               :montantNE="activite.budgetNational"
               :debut="activite.debut"
               :fin="activite.fin"
+              :statut="getStatus(activite.statut)"
+              :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+              @modifier="modifier(activite)"
+              @supprimer="supprimer(activite)"
+              @validation="validation(activite)"
             ></card-activite>
             <!-- End cards Activités -->
           </div>
@@ -721,7 +733,10 @@ export default {
   },
   data() {
     return {
-      valueFiltre: "",
+      valueFiltre: null,
+      composanteId: null,
+      projetFiltre: null,
+      composanteFiltre: null,
       pending: false,
       success: true,
       rejected: false,
@@ -739,9 +754,9 @@ export default {
         {name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Type', key: "types", type: '', placeholdere: 'Selectionnez le type d\'activite', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.types, cle: 'type', value: 'nom',  errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data:'', required: true, options: this.entreprisesExecutante, cle: 'id', value: 'nom',  errors : []},
@@ -1060,6 +1075,7 @@ export default {
 
     ...mapGetters({
       mods: "mods/getMods",
+      projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposantes: "sousComposantes/getSousComposantes",
       entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
@@ -1075,6 +1091,8 @@ export default {
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setActivite: "activites/FILL", // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setActivites: "activites/SET_LIST_ACTIVITES",
+      setComposantes: 'composantes/SET_LIST_COMPOSANTES',
+      setSousComposantes: 'sousComposantes/SET_LIST_SOUSCOMPOSANTE'
     }),
 
     ...mapActions("activites", {
@@ -1089,6 +1107,7 @@ export default {
       fetchEntreprisesExecutante: "entreprisesExecutante/FETCH_LIST_ENTREPRISE_EXECUTANTE_OF_PROGRAMME",
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
+      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
     supprimerT() {},
@@ -1159,13 +1178,66 @@ export default {
     },
 
     addActivite() {
-      this.title = "Ajouter une activité";
-      this.showModal = true;
+
+      this.title ="Ajouter une activité"
+
+      this.submitText="Enregistrer",
+
+      this.showCloseModal(true)
+
     },
 
-    modifier() {
-      this.title = "Modifier une activité";
-      this.showModal = true;
+    getNom(nom, prenom) {
+
+      let name = ''
+
+      if(nom !== undefined && nom !== null) name+= nom
+
+      if(prenom !== undefined && prenom !== null ) name+= prenom
+
+      return name;
+    },
+
+    supprimer(activite) {
+      if(window.confirm("Voulez-vous supprimer l'activite " + activite.nom)){
+        if(this.sendRequest === false){
+          this.sendRequest = true;
+          this.deleteActivite(activite.id)
+          this.sendRequest = false;
+        }
+      }
+    },
+
+    modifier(activite) {
+
+      this.title = 'Modifier une activite'
+
+      this.setActivite(activite)
+
+      this.activiteAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if( value.key === "statut" && item === "statut"){
+
+            this.$store.state.statuts.map((value) => {
+              if(value.etat === activite[item]){
+                this.champs[index]['data'] = value
+              }
+            });
+
+          }
+          else if(value.key === item){
+            this.champs[index]['data'] = activite[item]
+          }
+
+        });
+
+      });
+
+      this.submitText = "Modifier",
+
+      this.showCloseModal(true)
     },
 
     dupliquer() {
@@ -1206,7 +1278,7 @@ export default {
         this.sendRequest = true;
 
         this.updateActivite({
-          activite: { statut: -1, composanteId: this.valueFiltre.id },
+          activite: { statut: -1, composanteId: this.composanteId },
           id: activite.id,
         })
           .then((response) => {
@@ -1239,13 +1311,10 @@ export default {
           item.errors = [];
           return item;
         });
-        console.log(this.champs)
 
         let activite = extractFormData(this.champs, this.activiteAttributs);
 
-        console.log(activite)
-
-        activite.composanteId = this.valueFiltre.id;
+        activite.composanteId = this.composanteId;
 
         activite.structureResponsableId = activite.structureResponsableId.id;
 
@@ -1256,8 +1325,6 @@ export default {
         activite["type"] = activite.types.type;
 
         activite.statut = activite.statut.etat;
-
-        console.log(activite)
 
         if (this.activite?.id) {
           this.updateActivite({ activite: activite, id: this.activite?.id })
@@ -1324,20 +1391,10 @@ export default {
         }
         else value.errors = errors[value.key];
       });
-      //this.errors = errors
-    },
-
-    valueFiltre: function (valeur) {
-      
-      if (valeur instanceof Composante || valeur instanceof Object) {
-        this.fetchActivites(valeur.id);
-      } 
-
-      else if (typeof valeur !== null) {
-        this.fetchActivites(valeur);
-      }
-
-    },
+  
+    },/* 
+    
+    */
 
     entreprisesExecutante: function (entreprisesExecutante) {
 
@@ -1385,28 +1442,91 @@ export default {
     },
 
 
-    composantes: function (composantes) {
-      this.valueFiltre = composantes[0];
+    projets: function(projets){
+      if(projets.length > 0){
+        this.projetFiltre = projets[0]
+      }
     },
 
-    sousComposantes: function (sousComposantes) {
-      this.valueFiltre = sousComposantes[0];
+    projetFiltre: function(valeur){
+
+      if( valeur instanceof Composante || valeur instanceof Object )
+      {
+        this.fetchComposantes(valeur.id);
+      }
+      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
+        this.fetchComposantes(valeur);
+      }
+      else{ 
+        this.setComposantes([])
+      }
     },
+    
+    composantes: function (composantes) {
+      if(composantes.length > 0){
+        this.composanteFiltre = composantes[0]
+      }
+      else{
+        this.composanteFiltre = null
+      }
+    },
+
+    composanteFiltre: function(valeur){
+
+      if( valeur instanceof Composante || valeur instanceof Object )
+      {
+        this.fetchSousComposantes(valeur.id);
+      }
+      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
+        this.fetchSousComposantes(valeur);
+      }
+      else{ 
+        this.setSousComposantes([])
+      }
+    }, 
+
+    sousComposantes: function (sousComposantes) {
+      if(sousComposantes.length > 0){ 
+        this.valueFiltre = sousComposantes[0];
+      }
+      else if(this.composanteFiltre !== null && typeof this.composanteFiltre !== 'undefined' && this.composanteFiltre.length !== 0  ){
+        this.fetchActivites(this.composanteFiltre.id);
+        this.composanteId = this.composanteFiltre.id
+        this.valueFiltre = null;
+      }
+      else{
+        this.valueFiltre = null;
+      }
+    },
+
+    valueFiltre: function (valeur) {
+      
+      if (valeur instanceof Composante || valeur instanceof Object) {
+        this.fetchActivites(valeur.id);
+        this.composanteId = valeur.id
+      } 
+
+      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
+        this.fetchActivites(valeur);
+        this.composanteId = valeur
+      }
+
+    },
+
   },
 
   created() {
-    Promise.all([this.fetchComposantes() ]).then((value) => {
- 
-      this.programmeId = this.currentUser.programme.id
-      
-      if(this.programmeId){
 
-        this.fetchMods(this.programmeId)
+    this.programmeId = this.currentUser.programme.id
 
-        this.fetchEntreprisesExecutante(this.programmeId)
+    if(this.programmeId){
+      Promise.all([this.fetchProjets(this.programmeId) ]).then((value) => {
+  
+          this.fetchMods(this.programmeId)
 
-      }
-    });
+          this.fetchEntreprisesExecutante(this.programmeId)
+      });
+    }
 
   }
 

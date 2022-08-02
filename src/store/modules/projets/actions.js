@@ -28,6 +28,11 @@ export default {
         return { data, status };
     },
     
+    GET_STATISTIQUE : async ({ commit }, id) => {
+
+        return await ProjetService.statistiques(id);
+    },   
+    
     FETCH_LIST_PROJET_OF_PROGRAMME : async ({ commit }, id) => {
 
         const { data, status } = await ProgrammeService.projets(id);

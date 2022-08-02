@@ -31,6 +31,10 @@ const ProjetsService = {
 
     composantes(slug) {
       return ApiService.get(`projets/${slug}/composantes`);
+    },
+
+    statistiques(slug) {
+      return ApiService.get(`projets/${slug}/statistiques`);
     }
 
   };

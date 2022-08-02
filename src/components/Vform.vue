@@ -108,7 +108,10 @@ export default {
   methods: {
    
     save() {
-      if(this.sendRequest === false){
+      if(this.sendRequest !== undefined && this.sendRequest === false){
+        this.$emit('sendForm')
+      }else{
+
         this.$emit('sendForm')
       }
     },

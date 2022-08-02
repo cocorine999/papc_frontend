@@ -8,12 +8,22 @@ import {
 } from "@/store/mutations.type"
 
 import TacheService from "@/services/modules/tache.service";
+import ActiviteService from "@/services/modules/activite.service";
 
 export default {
     
     FETCH_LIST_TACHE : async ({ commit }, {id}) => {
 
         const { data, status } = await TacheService.programme();
+
+        commit(SET_LIST_TACHE, data.data);
+
+        return { data, status };
+    },
+        
+    FETCH_LIST_TACHE_OF_ACTIVITE : async ({ commit }, id) => {
+        
+        const { data, status } = await ActiviteService.taches(id);
 
         commit(SET_LIST_TACHE, data.data);
 

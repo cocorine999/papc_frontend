@@ -14,6 +14,10 @@ export default {
         state.lists = lists
         localStorage.setItem('sous-composantes', JSON.stringify(lists))
     },
+
+    SET_LIST_SOUSCOMPOSANTE(state, lists) {
+        state.lists = lists
+    },
     
     [FILL](state, sousComposante) {
         state.sousComposante = new Composante(sousComposante)

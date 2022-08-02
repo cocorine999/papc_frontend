@@ -5,4 +5,4 @@ const STAGGING_URL= "http://89.47.161.3:8001"
 
 const DEPLOYMENT_URL= "http://89.47.161.3:8001"
 
-export const API_BASE_URL = STAGGING_URL
+export const API_BASE_URL = DEVELOPMENT_URL

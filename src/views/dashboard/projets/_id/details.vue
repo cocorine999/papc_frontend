@@ -15,6 +15,7 @@
           </div>
         </vmodal>
       </div>
+
       <nav class="mb-2 text-sm font-semibold" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -42,6 +43,7 @@
           </ol>
         </div>
       </nav>
+
       <div class="flex justify-end mb-4">
         <div class="border border-gray-300 p-2 bg-white shadow">
           <router-link
@@ -62,6 +64,7 @@
           >
         </div>
       </div>
+
       <div class="my-4">
         <div class="mb-4 flex justify-between">
           <div>
@@ -163,7 +166,7 @@
                 </svg>
               </div>
               <div class="mx-5">
-                <h4 class="text-2xl font-semibold text-gray-700">8,282</h4>
+                <h4 class="text-2xl font-semibold text-gray-700"> {{ projet.tep }} </h4>
                 <div class="text-gray-500">TEP</div>
               </div>
             </div>
@@ -326,7 +329,7 @@
             </div>
             <div>
               <h1 class="text-lg uppercase p-4 font-bold bg-white">
-                Projet de recyclage des eaux du benin
+                {{ projet.nom }}
               </h1>
             </div>
             <div
@@ -335,73 +338,7 @@
             >
               <h2 class="text-lg font-semibold py-2">Description du projet</h2>
               <p class="text-sm font-semibold leading-6 text-justify">
-                I didn't ask for a completely reasonable excuse! I asked you to
-                get busy! Hey, tell me something. You've got all this money. How
-                come you always dress like you're doing your laundry? What are
-                their names? As an interesting side note, as a head without a
-                body, I envy the dead. OK, this has gotta stop. I'm going to
-                remind Fry of his humanity the way only a woman can. Say what?
-                Bender, this is Fry's decision… and he made it wrong. So it's
-                time for us to interfere in his life. When the lights go out,
-                it's nobody's business what goes on between two consenting
-                adults. I videotape every customer that comes in here, so that I
-                may blackmail them later. Ah, the 'Breakfast Club' soundtrack! I
-                can't wait til I'm old enough to feel ways about stuff! Tell
-                them I hate them. All I want is to be a monkey of moderate
-                intelligence who wears a suit… that's why I'm transferring to
-                business school! Fry, you can't just sit here in the dark
-                listening to classical music. I've been there. My folks were
-                always on me to groom myself and wear underpants. What am I, the
-                pope? Oh, all right, I am. But if anything happens to me, tell
-                them I died robbing some old man. Fry! Stay back! He's too
-                powerful! Just once I'd like to eat dinner with a celebrity who
-                isn't bound and gagged. Who's brave enough to fly into something
-                we all keep calling a death sphere? Who am I making this out to?
-                Oh right. I forgot about the battle. Have you ever tried just
-                turning off the TV, sitting down with your children, and hitting
-                them? Large bet on myself in round one. Aww, it's true. I've
-                been hiding it for so long. Guards! Bring me the forms I need to
-                fill out to have her taken away! We need rest. The spirit is
-                willing, but the flesh is spongy and bruised. Oh no! The
-                professor will hit me! But if Zoidberg 'fixes' it… then perhaps
-                gifts! Pansy. I don't want to be rescued. Oh, how I wish I could
-                believe or understand that! There's only one reasonable course
-                of action now: kill Flexo! You'll have all the Slurm you can
-                drink when you're partying with Slurms McKenzie! WINDMILLS DO
-                NOT WORK THAT WAY! GOOD NIGHT! I just want to talk. It has
-                nothing to do with mating. Fry, that doesn't make sense. What
-                kind of a father would I be if I said no? No, just a regular
-                mistake. Hello Morbo, how's the family? Ummm…to eBay? Oh dear!
-                She's stuck in an infinite loop, and he's an idiot! Well, that's
-                love for you. Alright, let's mafia things up a bit. Joey, burn
-                down the ship. Clamps, burn down the crew. Bender?! You stole
-                the atom. And I'm his friend Jesus. Alright, let's mafia things
-                up a bit. Joey, burn down the ship. Clamps, burn down the crew.
-                You don't know how to do any of those. This is the worst kind of
-                discrimination: the kind against me! WINDMILLS DO NOT WORK THAT
-                WAY! GOOD NIGHT! Leela, Bender, we're going grave robbing. Yes.
-                You gave me a dollar and some candy. That's the ONLY thing about
-                being a slave. Goodbye, friends. I never thought I'd die like
-                this. But I always really hoped. Okay, it's 500 dollars, you
-                have no choice of carrier, the battery can't hold the charge and
-                the reception isn't very… Your best is an idiot! Really?! Ask
-                her how her day was. Fatal. No, I'm Santa Claus! It's just like
-                the story of the grasshopper and the octopus. All year long, the
-                grasshopper kept burying acorns for winter, while the octopus
-                mooched off his girlfriend and watched TV. But then the winter
-                came, and the grasshopper died, and the octopus ate all his
-                acorns. Also he got a race car. Is any of this getting through
-                to you? Yeah, lots of people did. Please, Don-Bot… look into
-                your hard drive, and open your mercy file! Daddy Bender, we're
-                hungry. I've got to find a way to escape the horrible ravages of
-                youth. Suddenly, I'm going to the bathroom like clockwork, every
-                three hours. And those jerks at Social Security stopped sending
-                me checks. Now 'I'' have to pay ''them'! You, minion. Lift my
-                arm. AFTER HIM! Man, I'm sore all over. I feel like I just went
-                ten rounds with mighty Thor. Ask her how her day was. Guess
-                again. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Praesentium exercitationem sequi aliquid quo maiores voluptatum
-                consequuntur dolorum perspiciatis laborum a!
+                {{ projet.description }}
               </p>
             </div>
             <div style="height: 36vh" class="p-4 overflow-auto content">
@@ -439,13 +376,13 @@
                 class="text-sm border-b border-gray-300 font-semibold py-2 flex justify-between items-center"
               >
                 <span class="font-bold">Montant BN :</span>
-                <span class="text-gray-700">1000000000000</span>
+                <span class="text-gray-700">{{ projet.budgetNational }}</span>
               </p>
               <p
                 class="text-sm border-b border-gray-300 font-semibold py-2 flex justify-between items-center"
               >
                 <span class="font-bold">Montant EPM-PRET :</span>
-                <span class="text-gray-700">3000000000000</span>
+                <span class="text-gray-700">{{ projet.pret }}</span>
               </p>
               <div
                 class="text-sm border-b border-gray-300 font-semibold py-2 flex justify-between items-center"
@@ -470,7 +407,7 @@
                         d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm-1 15h-6v-6h6v6zm1-10H5V7h14v2z"
                       ></path>
                     </svg>
-                    28-06-2020
+                    {{ projet.debut }}
                   </span>
                   au
 
@@ -492,7 +429,7 @@
                         d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zm6-3.586-3.707-3.707 1.414-1.414L11 15.586l4.293-4.293 1.414 1.414L11 18.414zM5 7h14v2H5V7z"
                       ></path>
                     </svg>
-                    28-06-2025
+                    {{ projet.fin }}
                   </span>
                 </p>
               </div>
@@ -500,7 +437,7 @@
                 class="text-sm font-semibold py-2 border-b border-gray-300 flex justify-between items-center"
               >
                 <span class="font-bold">Ville :</span>
-                <span class="text-gray-700">Cotonou</span>
+                <span class="text-gray-700">{{ projet.ville }}</span>
               </p>
             </div>
           </div>
@@ -960,6 +897,7 @@ export default {
     return {
       isStateChange: false,
       showModal: false,
+      stats : [],
       champsRecherche: [
         {
           name: "Date debut",
@@ -1152,7 +1090,6 @@ export default {
 
     //importation des variables du module auths
     ...mapState({
-      identifiant: state => state.auths.identifiant,
       projet: state => state.projets.projet,
       loading : state => state.loading,
       errors : state => state.errors
@@ -1174,8 +1111,10 @@ export default {
     }),
 
     ...mapActions('projets', {
-      getProjet: "GET_PROJET"
+      getProjet: "GET_PROJET",
+      getStatistique: "GET_STATISTIQUE"
     }),
+
 
     modifier(){
 
@@ -1194,10 +1133,16 @@ export default {
 
   },
 
-  mounted() {
+  created(){
     console.log("Getting projet...")
   
     this.setProjet(this.$route.params.projet)
+
+    //this.stats = this.getStatistique(projet.id)
+
+  },
+
+  mounted() {
 
     var map = tt.map({
       key: "0sJaQAQga6Y8A6ZOclM8AU6RqAhetXr7",

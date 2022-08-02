@@ -416,8 +416,6 @@ export default {
       return getStringValueOfStatutCode(status);
     },
 
-
-
     validation(composante){
 
       if( this.sendRequest === false ){
@@ -515,7 +513,6 @@ export default {
 
     errors: function(errors) {
       this.champs.forEach((value) => {value.errors = errors[value.key]})
-      //this.errors = errors
     },
 
     valueFiltre: function(valeur){
@@ -523,7 +520,7 @@ export default {
       {
         this.fetchComposantes(valeur.id);
       }
-      else if( typeof valeur !== null ){
+      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
         this.fetchComposantes(valeur);
       }
     },
@@ -536,9 +533,7 @@ export default {
 
   created(){
 
-    //console.log(this.currentUser)
     if(this.programmeId){
-
       this.fetchProjets(this.programmeId)
     } 
 

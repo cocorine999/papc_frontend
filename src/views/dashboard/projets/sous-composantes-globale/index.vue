@@ -50,7 +50,10 @@
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
-          <multiselect v-model="valueFiltre" :options="composantes" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+          <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+
+          <multiselect v-model="valueFiltre" :options="composantes" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+          
           <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
             <span>filtre</span>
@@ -159,6 +162,7 @@ export default {
   data() {
     return {
       valueFiltre: null,
+      projetFiltre: null,
       pending:false,
       success:true,
       rejected:false,
@@ -229,6 +233,7 @@ export default {
     }),
 
     ...mapGetters({
+      projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposante: "sousComposantes/getSousComposante",
       sousComposantes: "sousComposantes/getSousComposantes",
@@ -255,6 +260,7 @@ export default {
 
     ...mapActions({
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
+      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
     getIntervale(val){
@@ -523,19 +529,36 @@ export default {
       {
         this.fetchSousComposantes(valeur.id);
       }
-      else if( typeof valeur !== null ){
+      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
         this.fetchSousComposantes(valeur);
+      }
+    },
+
+    projetFiltre: function(valeur){
+      if( valeur instanceof Composante || valeur instanceof Object )
+      {
+        this.fetchComposantes(valeur.id);
+      }
+      else if( valeur !== null ){
+        this.fetchComposantes(valeur);
       }
     },
     
     composantes: function(composantes){
       this.valueFiltre = composantes[0]
+    },
+    
+    projets: function(projets){
+      this.projetFiltre = projets[0]
+      this.valueFiltre = []
     }
 
   },
 
   created(){
-    this.fetchComposantes()
+    if(this.programmeId){
+      this.fetchProjets(this.programmeId)
+    }
   }
   
 }
