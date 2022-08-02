@@ -97,7 +97,7 @@
     </div>
    
     <div v-else class="container mx-auto">
-      <form action="">
+      <form  @submit.prevent="sendForm" action="">
         <div class="flex justify-center ">
           <div class="w-3/4">
             <div v-for="activite in Forms" :key="activite.id" class="w-3/4 border border-dashed border-gray-700 p-6">
@@ -140,7 +140,7 @@
           </div>
         </div>
         <div class="py-2 my-2 flex justify-center space-x-8">
-          <vbutton  type="submit" template="success">Enregistrer </vbutton>
+          <vbutton  type="submit"  template="success">Enregistrer </vbutton>
           <button @click="isNotGenere = true" class="text-white bg-red-500 px-4 py-2 outline-none border-red-500 font-semibold" > retour en arriere </button>
         </div>
       </form>
@@ -221,18 +221,18 @@ export default {
       return `${nom}`
     },
     btn_edit() {
-      this.Forms[this.currentIndex].data.push({inputType:'edit',nom:null,content:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'edit',nom:null,content:null})
     },
     btn_boolean() {
-      this.Forms[this.currentIndex].data.push({inputType:'boolean',nom:null,checked:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'boolean',nom:null,checked:null})
     },
     btn_multiple() {
      
-      this.Forms[this.currentIndex].data.push({inputType:'multiple',nom:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'multiple',nom:null})
      
     },
     btn_photo() {
-      this.Forms[this.currentIndex].data.push({inputType:'photos',nom:null,images:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'photos',nom:null,images:null})
     },
     addResponse() {
       /* this.currentIndex = this.Forms[this.currentIndex].data.length -1
@@ -253,13 +253,13 @@ export default {
 
     sendForm() {
 
-      let formulaire = [
+      let formulaire = 
         {
-          nom : this.nomFormulaire,
-          json : this.Forms,
-          type : 0
+          "nom" : this.nomFormulaire,
+          "json" : this.Forms,
+          "type" : 0
         }
-      ]
+      
 
       console.log(formulaire)
       
@@ -275,7 +275,7 @@ export default {
 
   mounted() {
     console.log("Fetching e-activites ...")
-    this.fetchEActivites(this.$route.params.id)
+    this.fetchEActivites("9OaDKE6vy5XjxW1dwOYGP9p7zg8bJmLxVBr32eNZ06DaqlkvoQAnVMKE2ZmbVq7j")
   }
   
 }
