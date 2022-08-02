@@ -44,17 +44,17 @@
       </button>
     </div>
     <div v-if="seeChecklist" class="grid grid-cols-3 gap-4">
-      <div v-for="i in 6" :key="i.id">
+      <div v-for="formulaire in formulaires" :key="formulaire.id">
         <card-checklist
-          libelle="checklist"
+          libelle={{formulaire.nom}}
           code="15555DC" 
           activite="Nombre d'accident routiere" 
           :unites="['personne','%','km']" 
           @supprimer="supprimer"
           @modifier="modifier"
           @dupliquer="dupliquer"
-          @gotoDetails="gotoDetails(i)"
-          @onlink="getlink(i)"
+          @gotoDetails="gotoDetails(formulaire.id)"
+          @onlink="getlink(formulaire.id)"
           > </card-checklist>
       </div>
     </div>
