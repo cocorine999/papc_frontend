@@ -9,7 +9,9 @@ export default {
 
                 : localStorage.getItem('authenticateUser')
 
-                ? JSON.parse(localStorage.getItem('authenticateUser'))
+                ? JSON.parse(localStorage.getItem('authenticateUser')) !== undefined ? state.authenticateUser = JSON.parse(localStorage.getItem('authenticateUser'))
+
+                : null
 
                 : null
     },
@@ -23,13 +25,15 @@ export default {
 
                 : localStorage.getItem('access_token')
 
-                ? state.access_token = JSON.parse(localStorage.getItem('access_token'))
+                ? JSON.parse(localStorage.getItem('access_token')) !== undefined ? state.access_token = JSON.parse(localStorage.getItem('access_token'))
+
+                : null
 
                 : null
     },
 
-    IS_AUTHENTICATED : state => {
-        return this.GET_ACCESS_TOKEN(state) ? true : null;
+    IS_AUTHENTICATED : (getters, state) => {
+        return getters.GET_ACCESS_TOKEN ? true : null;
     },
 
 }

@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import ModService from "@/services/modules/mod.service";
+import ProgrammeService from "@/services/modules/programme.service";
 import Mod from "./mod";
 
 export default {
@@ -25,6 +26,15 @@ export default {
 
         if(status === 200 || status === 201)
             commit(SET_LIST_MOD, data.data);
+
+        return { data, status };
+    },
+    
+    FETCH_LIST_MOD_OF_PROGRAMME : async ({ commit }, id) => {
+        
+        const { data, status } = await ProgrammeService.mods(id);
+
+        commit(SET_LIST_MOD, data.data);
 
         return { data, status };
     },

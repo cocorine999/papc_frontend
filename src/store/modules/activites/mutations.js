@@ -1,16 +1,16 @@
 import Activite from './activite';
 
 import {
-    SET_LIST as SET_LIST_PROJET,
-    ADD as ADD_NEW_PROJET,
+    SET_LIST as SET_LIST_ACTIVITE,
+    ADD as ADD_NEW_ACTIVITE,
     FILL,
-    MODIFY as MODIFY_PROJET,
-    REMOVE as REMOVE_PROJET
+    MODIFY as MODIFY_ACTIVITE,
+    REMOVE as REMOVE_ACTIVITE
 } from "@/store/mutations.type";
 
 export default {
 
-    [SET_LIST_PROJET](state, lists) {
+    [SET_LIST_ACTIVITE](state, lists) {
         state.lists = lists
         localStorage.setItem('activites', JSON.stringify(lists))
     },
@@ -19,11 +19,11 @@ export default {
         state.activite = new Activite(activite)
     },
 
-    [ADD_NEW_PROJET](state, activite) {
+    [ADD_NEW_ACTIVITE](state, activite) {
         state.lists.unshift(activite)
     },
 
-    [MODIFY_PROJET](state, activite) {
+    [MODIFY_ACTIVITE](state, activite) {
 
         let activites = state.lists.map(item => {
             if(item.id === activite?.id){
@@ -37,7 +37,7 @@ export default {
         localStorage.setItem('activites', JSON.stringify(state.lists))
     },
 
-    [REMOVE_PROJET](state, idActivite) {
+    [REMOVE_ACTIVITE](state, idActivite) {
         let activites = state.lists.filter(item => {
             return item.id !== idActivite
         });

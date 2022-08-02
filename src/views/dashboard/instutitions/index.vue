@@ -52,9 +52,7 @@
                 
                 <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
                     <span class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold bg-pink-500 px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{institution.nom}}</span>
-                    <!-- dots -->
-                    <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
-                    <!-- ./dots -->
+                    
                     <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">{{ institution.nom }}</p>
           
                     <div class="flex items-center mt-8 text-gray-600">

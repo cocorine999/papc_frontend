@@ -69,7 +69,7 @@ import CardProgramme from '@/components/CardProgramme'
 
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
-import utils from '@/utils/index'
+import { formatDate, extractFormData } from '@/utils/index'
 
 export default {
   components: {
@@ -238,11 +238,11 @@ export default {
 
       this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let programme = utils.extractFormData(this.champs, this.programmeAttributs)
+      let programme = extractFormData(this.champs, this.programmeAttributs)
       
-      programme['debut'] = utils.formatDate(programme['debut'], {'year' : 'year' , 'month': 'month' })
+      programme['debut'] = formatDate(programme['debut'], {'year' : 'year' , 'month': 'month' })
       
-      programme['fin'] = utils.formatDate(programme['fin'], {'year' : 'year' , 'month': 'month' })
+      programme['fin'] = formatDate(programme['fin'], {'year' : 'year' , 'month': 'month' })
 
       if(this.programme?.id)
       {

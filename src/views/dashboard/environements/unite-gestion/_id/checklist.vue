@@ -73,7 +73,7 @@
   import ModalTopRight from '@/components/ModalTopRight'
   import Vmodal from '@/components/Vmodal'
   import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
-  import utils from '@/utils/index';
+  import { extractFormData } from '@/utils/index';
 
 export default {
   components: {
@@ -212,7 +212,7 @@ export default {
 
       this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let eActivite = utils.extractFormData(this.champs, this.activitesAttributs)
+      let eActivite = extractFormData(this.champs, this.activitesAttributs)
 
       eActivite.entrepriseExecutantId = eActivite.entrepriseExecutantId.id
 

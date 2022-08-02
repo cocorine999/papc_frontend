@@ -214,7 +214,7 @@
             </div>
           </div>
         </div>
-
+<!-- 
         <div v-if="line" class="line my-4">
           <vtable id="datatable"
             :headers="headers"
@@ -224,7 +224,7 @@
             @modifier="modifier"
             @updateInputData="updateInputData" 
           ></vtable>
-        </div>
+        </div> -->
       </div>
     </div>
   </dashboard>
@@ -260,6 +260,7 @@
       return {
         bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
         showModal: false,
+        programmeId: this.currentUser?.programme?.id,
         line: false,
         mosaique: true,
         title: "Ajouter un nouveau bailleur",
@@ -359,6 +360,7 @@
         isLoading: "IS_LOADING",
         bailleur: "bailleurs/getBailleur",
         bailleurs: "bailleurs/getBailleurs",
+        currentUser : 'auths/GET_AUTHENTICATE_USER'
       }),
     },
 
@@ -369,7 +371,7 @@
       }),
 
       ...mapActions("bailleurs", {
-        fetchBailleurs: "FETCH_LIST_BAILLEUR",
+        fetchBailleurs: "FETCH_LIST_BAILLEUR_OF_PROGRAMME",
         saveBailleur: "STORE_BAILLEUR",
         updateBailleur: "UPDATE_BAILLEUR",
         deleteBailleur: "DESTROY_BAILLEUR",
@@ -452,6 +454,7 @@
       },
 
       sendForm() {
+        
         this.champs = this.champs.map((item) => {
           item.errors = [];
           return item;
@@ -487,12 +490,15 @@
           value.errors = errors[value.key];
         });
         //this.errors = errors
-      },
+      }
     },
 
-    mounted() {
+    created() {
       console.log("Fetching bailleurs ...");
-      this.fetchBailleurs()
+      this.programmeId = this.currentUser.programme.id
+      if(this.programmeId){
+        this.fetchBailleurs(this.programmeId)
+      }
     },
   };
 </script>

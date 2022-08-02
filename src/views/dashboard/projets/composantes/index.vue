@@ -1,7 +1,7 @@
 <template>
   <div class="w-full p-4">
     <vmodal v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
+      <form action="" @submit.prevent="sendForm" class="px-12" style="width:60vw !important" >
         <div class="mx-4 mt-3">
           <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Code PTA  <span class="px-2 text-lg font-black text-red-700">*</span></label>
           <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
@@ -400,6 +400,7 @@ export default {
       this.title ="Dupliquer un composante existant"
       this.showModal = true
     },
+
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
@@ -408,12 +409,15 @@ export default {
 
       this.composante = {}
     },
+    
     gotoNext() {
       this.$router.push('/dashboard/projets/composantes/sous-composantes')
     },
+
     editerSuivi(index) {
       this.showInput = false
     },
+
     sendForm() {
 
       this.champs = this.champs.map(item => { item.errors = []; return item})

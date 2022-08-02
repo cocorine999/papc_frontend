@@ -324,7 +324,9 @@ export default {
 
         let missionDeControle = extractFormData(this.champs, this.missionDeControleAttributs)
 
-        missionDeControle.programmeId = this.currentUser?.programme.id
+        missionDeControle.programmeId = this.currentUser?.programme?.id
+
+        console.log(missionDeControle)
 
         if(this.missionDeControle?.id)
         {

@@ -6,7 +6,7 @@ export default {
 
     getBailleurs : state => {
 
-        return state.lists
+        return state.lists > 0
 
                 ? state.lists
 
