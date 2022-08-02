@@ -70,6 +70,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
 export default {
   components: {
     Vtable,
@@ -122,9 +124,46 @@ export default {
         ]
       };
     },
+
+  computed:{
+
+  //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      suiviFinancier: state => state.suiviFinanciers.suiviFinancier,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      suiviFinanciers: "suiviFinanciers/getSuiviFinanciers", suiviFinancier: "getSuiviFinancier",
+      projets: "projets/getProjets",
+      activites: "activites/getActivites",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    })
+    
+  },
+
     mounted() {
     },
     methods: {
+      //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setSuiviFinanicer: 'suiviFinanciers/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('suiviFinanciers', {
+      fetchSuiviFinanicers: "FETCH_LIST_SUIVIFINANCIER",
+      saveSuiviFinanicer: "STORE_SUIVIFINANCIER",
+      updateSuiviFinanicer: "UPDATE_SUIVIFINANCIER",
+      deleteSuiviFinanicer: "DESTROY_SUIVIFINANCIER"
+    }),
+
+    ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET' }),
+
+    ...mapActions('activites', { fetchActivites: 'FETCH_LIST_ACTIVITE' }),
+
       sendForm() {
         alert('donnée envoyer')
       },
@@ -143,7 +182,18 @@ export default {
       supprimer(data) {
         alert(data +" à ete bien supprimer")
       }
-    }
+    },
+
+    mounted() {
+      console.log("Fetching suivi financier ...")
+        this.fetchSuiviFinanicers({id : this.currentUser?.programme?.id}).then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of activite")
+          this.fetchActivites()
+        }, 500);
+    })
+  }
+
   }
 </script>
 

@@ -52,6 +52,8 @@ import eActivites from "./modules/eActivites/index";
 
 import formulaires from "./modules/formulaires/index";
 
+import formulaires from "./modules/suiviFinanciers/index";
+
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -161,6 +163,7 @@ export default new Vuex.Store({
     utilisateurs,
     roles,
     formulaires,
+    suiviFinanciers,
   }
 });
 
