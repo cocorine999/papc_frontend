@@ -6,13 +6,13 @@ import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
 import liens from "../views/liens.vue";
 
-import form_gestion_generator from "../views/dashboard/form/generator.vue";
+import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
 
 //checklist environment unite de gestion
 import unite_de_gestion_checklist from "../views/dashboard/environements/unite-gestion/_id/checklist.vue";
 
 import unite_de_gestion_checklist_details from "../views/dashboard/environements/unite-gestion/_id/_id/details.vue";
-import unite_de_gestion_checklist_create from "../views/dashboard/environements/unite-gestion/create.vue";
+import unite_de_gestion_checklist_create from "../views/dashboard/environements/unite-gestion/_id/create.vue";
 import unite_de_gestion_checklist_entreprise from "../views/dashboard/environements/unite-gestion/index.vue";
 //checklist environment unite de gestion
 
@@ -20,7 +20,7 @@ import unite_de_gestion_checklist_entreprise from "../views/dashboard/environeme
 import mod_checklist from "../views/dashboard/environements/mod/_id/checklist.vue";
 //import mod_generator from "../views/dashboard/environements/mod/generator.vue";
 import mod_checklist_details from "../views/dashboard/environements/mod/_id/_id/details.vue";
-import mod_checklist_create from "../views/dashboard/environements/mod/create.vue";
+import mod_checklist_create from "../views/dashboard/environements/mod/_id/create.vue";
 import mod_checklist_entreprise from "../views/dashboard/environements/mod/index.vue";
 
 //fin checklist environment mod
@@ -29,7 +29,7 @@ import mod_checklist_entreprise from "../views/dashboard/environements/mod/index
 import mission_controle_checklist from "../views/dashboard/environements/mission-controle/_id/checklist.vue";
 //import mission_controle_generator from "../views/dashboard/environements/mission-controle/generator.vue";
 import mission_controle_checklist_details from "../views/dashboard/environements/mission-controle/_id/_id/details.vue";
-import mission_controle_checklist_create from "../views/dashboard/environements/mission-controle/create.vue";
+import mission_controle_checklist_create from "../views/dashboard/environements/mission-controle/_id/create.vue";
 import mission_controle_checklist_entreprise from "../views/dashboard/environements/mission-controle/index.vue";
 //checklist environment mission-controle
 
@@ -37,7 +37,7 @@ import mission_controle_checklist_entreprise from "../views/dashboard/environeme
 import entreprise_checklist from "../views/dashboard/environements/entreprise/_id/checklist.vue";
 //import entreprise_generator from "../views/dashboard/environements/entreprise/generator.vue";
 import entreprise_checklist_details from "../views/dashboard/environements/entreprise/_id/_id/details.vue";
-import entreprise_checklist_create from "../views/dashboard/environements/entreprise/create.vue";
+import entreprise_checklist_create from "../views/dashboard/environements/entreprise/_id/create.vue";
 import entreprise_checklist_entreprise from "../views/dashboard/environements/entreprise/index.vue";
 
 //fin checklist environment entreprise
@@ -159,7 +159,7 @@ const routes = [
   },
 
   {
-    path: "/form",
+    path: "/form/:id",
     name: "form_gestion_generator",
     component: form_gestion_generator,
   },
@@ -177,7 +177,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/unite-de-gestion/checklist/create",
+    path: "/dashboard/unite-de-gestion/checklist/:id/create",
     name: "unite_de_gestion_checklist_create",
     component: unite_de_gestion_checklist_create,
   },
@@ -202,7 +202,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/mod/checklist/create",
+    path: "/dashboard/mod/checklist/:id/create",
     name: "mod_checklist_create",
     component: mod_checklist_create,
   },
@@ -227,7 +227,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/mission-controle/checklist/create",
+    path: "/dashboard/mission-controle/checklist/:id/create",
     name: "mission_controle_checklist_create",
     component: mission_controle_checklist_create,
   },
@@ -252,7 +252,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/entreprise/checklist/create",
+    path: "/dashboard/entreprise/checklist/:id/create",
     name: "entreprise_checklist_create",
     component: entreprise_checklist_create,
   },

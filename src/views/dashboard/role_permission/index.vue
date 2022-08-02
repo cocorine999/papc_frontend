@@ -210,12 +210,12 @@ import extractFormData from '@/utils/extract-data'
       ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
 
         addTag (newTag) {
-        const tag = {
-          nom: newTag,
-        }
-        this.options.push(tag)
-        this.value.push(tag)
-      },
+          const tag = {
+            nom: newTag,
+          }
+          this.options.push(tag)
+          this.value.push(tag)
+        },
       modifier(data) {
         this.title = "Modifier un role"
         this.showModal = true

@@ -1,6 +1,58 @@
 <template>
   <dashboard>
-    
+    <div v-if="showModal">
+      <modal-top-right :title="title"  v-on:close="showModal = false">
+        <div  class="px-4 overflow-y-auto">
+          <form action="" @submit.prevent="sendForm" class="px-4"  >
+            
+            <div class="my-4">
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            </div>
+
+          <div class="my-4">
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Code de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+          </div>
+
+           <div class="my-4">
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <multiselect v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+            
+          </div>
+
+          <div class="my-4">
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date debut <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+          </div>
+
+          <div class="my-4">
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+          </div>
+        
+
+        <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
+          <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
+            Enregistrer 
+          </button>
+
+          <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
+            Annuler
+          </button>
+
+        </div>
+          </form>
+        </div>
+      </modal-top-right>
+    </div>
+    <vmodal v-if="showLink" @close="showLink=false">
+      <div class="m-2 p-2 bg-white shadow" style="width:60vw">
+        <p class="p-2 bg-gray-300 border text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
+          <a  title="cliquez ici" target="_blank" href="/form"> cliquer ici</a>
+        </p>
+      </div>
+    </vmodal>
     <div class="w-full px-4">
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
@@ -18,15 +70,26 @@
           <search-bar></search-bar>
         </div>
       </nav> 
-    
+
       <div class="flex items-center justify-between my-2">
-        <titre>Les entreprise executantes </titre>
+        <div class="flex space-x-4">
+          <span @click="goEntreprise" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
+          <span @click="goActivite" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
+        </div> 
+        <div>
+          <button @click="addActivite" v-if="seeActivite"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+            <span class="mx-2 text-sm font-semibold">Creer une activité </span>
+          </button>
+        </div>
          
       </div>
 
-      <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+      <div v-if="seeEntreprise" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(bailleur,index) in bailleurs" :key="index">
-          <div @click="gotoNext" class="relative cursor-pointer" >
+          <div @click="gotoNext" class="relative cursor-pointer">
+             
             <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
               <span :class="bailleur.color" class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p>Code : {{bailleur.code}} </p></span>
               <span :class="bailleur.color" class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{bailleur.sigle}}</span>
@@ -58,6 +121,27 @@
           </div>
         </div>
       </div>
+      <div v-if="seeActivite">
+        <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
+      </div>
+      <div v-if="seeFormulaire">
+        <div class="grid grid-cols-3 gap-4">
+          <div v-for="i in 6" :key="i.id">
+            <card-checklist
+              libelle="checklist"
+              code="15555DC" 
+              activite="Nombre d'accident routiere" 
+              :unites="['personne','%','km']" 
+              @supprimer="supprimer"
+              @modifier="modifier"
+              @dupliquer="dupliquer"
+              @gotoDetails="gotoDetails(i)"
+              @onlink="getlink(i)"
+              > 
+            </card-checklist>
+          </div>
+        </div>
+      </div>
 
       
   </div>
@@ -74,9 +158,10 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
+import CardChecklist from '@/components/CardChecklist'
+import Multiselect from 'vue-multiselect'
 
 export default {
-  modules: ['@nuxtjs/axios'],
  
   components: {
     Vtable,
@@ -87,22 +172,16 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
-    Dropdown
+    Dropdown,
+    CardChecklist,
+    Multiselect,
 
   },
   data() {
     return {
+      title:'',
       showModal:false,
-      loading:false,
-      line:false,
-      mosaique:true,
-      title: '',
-      headers:[
-        {name:'Bailleurs',props:'bailleur'},
-        {name:'Sigle',props:'sigle'},
-        {name:'Code PTA',props:'code'},
-        {name:'Date creation',props:'created_at'},
-      ],
+      champs:[],
       bailleurs:[
          {
           bailleur:'Banque Mondiale ',
@@ -148,79 +227,85 @@ export default {
         },
 
       ],
+      showLink:false,
+      headers:[
+          {name:'Libelle activite',cle:'libelle'},
+          {name:'code',cle:'code'},
+          {name:'Entreprise',cle:'entreprise'},
+          {name:'Date debut',cle:'debut'},
+          {name:'Date fin',cle:'fin'},
+          {name:'Date de creation',cle:'created_at'},
+      ],
       dataTable:[
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        {bailleur:'Banque Mondiale ',sigle:'BM',code:"DFSDFDS525",created_at:"22-06-2022"},
-        
-          
+          {libelle:'preparer et faire valider par le MO et le MOD un PGESC',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+          {libelle:'preparer et faire valider par le MO et le MOD un PAE',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+          {libelle:'preparer et faire valider par le MO et le MOD un PPGED',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+          {libelle:'preparer et faire valider par le MO et le MOD un PPSPS',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
       ],
-      actions:[
-        {name:'modifier',iconne:''},
-        {name:'supprimer',iconne:''},
-       
-      ],
-      champs:[
-        {name:'Nom',type:'text',placeholdere:"Nom du bailleur",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Email',type:'email',placeholdere:"Votre Email",isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Contact',type:'',placeholdere:'Votre contact',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Sigle',type:'text',placeholdere:'Votre sigle',isSelect:false,isTextArea:false,data:'',required:true,},
-        {name:'Logo',type:'file',placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true,},
-      ],
-      cols:1,
       option:[
         {name:'supprimer'},
         {name:'modifier'},
         {name:'continuer',iconne:''},
-      ]
+      ],
+      seeEntreprise:true,
+      seeFormulaire:false,
+      seeActivite:false,
+      entreprises: [
+        {nom:"entreprise 1"},
+        {nom:"entreprise 2"},
+        {nom:"entreprise 3"},
+        {nom:"entreprise 4"},
+        {nom:"entreprise 5"},
+        {nom:"entreprise 6"},
+      ],
+      value:[]
+      
     }
   },
   mounted() {
     
   },
   methods: {
-    switch1() {
-      this.mosaique = true
-      this.line = false
+    addTag (newTag) {
+      const tag = {
+        nom: newTag,
+      }
+      this.options.push(tag)
+      this.value.push(tag)
     },
-    switch2() {
-      this.mosaique = false
-      this.line = true
+    getlink(i){
+      this.showLink = true
     },
-    
-    closeModal() {
-      this.showModal=false
+    gotoDetails(id) {
+      this.$router.push({name:'entreprise_checklist_details',params:{id:id}})
     },
-    addBailleur() {
-      this.title='Ajouter un nouveau bailleur'
+    selectData ({ name}) {
+      return `${name}`
+    },
+    addActivite() {
+      this.title = 'Creer une activité'
       this.showModal = true
     },
-    sendForm() {
-      alert('donnée envoyer')
+    goEntreprise() {
+      this.seeEntreprise = true
+      this.seeFormulaire = false
+      this.seeActivite = false
+    },
+    goFormulaire() {
+      this.seeEntreprise = false
+      this.seeFormulaire = true
+      this.seeActivite = false
+    },
+    goActivite() {
+      this.seeEntreprise = false
+      this.seeFormulaire = false
+      this.seeActivite = true
     },
     
-    modifier(data) {
-      this.title='Modifier un bailleur'
-      this.showModal = true
-    },
-
     gotoNext() {
        this.$router.push({name:'entreprise_checklist',params:{id:1}})
     },
 
-    dupliquer(data) {
-      alert(data+ " à ete bien supprimer")
-    },
-    
-    supprimer(data) {
-      alert(data +" à ete bien supprimer")
-    },
-
-    dupliquer(data) {
-      this.showModal = true
-      this.title='Dupliquer un bailleur'
-      alert(data +" à ete bien dupliquer")
-    },
    
   }
 }

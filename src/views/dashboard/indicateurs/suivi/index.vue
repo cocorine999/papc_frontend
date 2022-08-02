@@ -52,7 +52,7 @@
             </button>
           </div>
         </div>
-        
+       
         <vtable :headers="headers" :datas="suivis" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>    
     </div>
   </dashboard>
@@ -105,9 +105,8 @@ export default {
         headers:[
           
           {name:'Trimestre',cle:'trimestre',width:"w-24"},
-          {name:'valeur cible',cle:'valeurCible',width:"w-28"},
+          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
           {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
-          {name:'Commentaire',cle:'commentaire', isComment:true,width:"w-56"},
           {name:'Date de creation',cle:'created_at',width:"w-24"},
         ],
        

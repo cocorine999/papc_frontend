@@ -33,25 +33,65 @@
               <div v-for="(form,index)  in activite.data" :key="index">
                 <div class="flex justify-between w-full items-center ">
                   <div class="my-3 w-4/5" v-if="form.inputType=='edit'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                     <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                     <input  type="text" v-model="form.nom" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
                   </div>
 
                   <div class="my-3 w-4/5" v-if="form.inputType=='photos'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                     <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Saisissez votre libellé de photos">
                     <input type="file"  class="px-2 py-2  text-sm border border-primary w-2/3 outline-none block " placeholder="Saisissez votre libellé">
                   </div>
 
                   <div class="my-3 w-4/5" v-if="form.inputType=='boolean'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                     <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block  " placeholder="Saisissez votre libellé vrai ou faux ">
                     <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_true">Realiser</label>
                     <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_false">Non realiser</label>
                   </div>
                   <div class="my-3 w-4/5" v-if="form.inputType=='multiple'">
                     <div class="">
-                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                       <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                       <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block" placeholder="Saisissez votre libellé multiple">
                     </div>
                     <div class="my-4 flex justify-between items-center " v-for="(answers,index) in form.response" :key="index">
@@ -185,18 +225,20 @@ export default {
       return `${libelle}`
     },
     btn_edit() {
-      this.Forms[this.currentIndex].data.push({inputType:'edit',nom:null,content:null})
+      
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'edit',nom:null,content:null,uniteeId:''})
+      
     },
     btn_boolean() {
-      this.Forms[this.currentIndex].data.push({inputType:'boolean',nom:null,checked:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'boolean',nom:null,checked:null,uniteeId:''})
     },
     btn_multiple() {
      
-      this.Forms[this.currentIndex].data.push({inputType:'multiple',nom:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'multiple',nom:null,uniteeId:''})
      
     },
     btn_photo() {
-      this.Forms[this.currentIndex].data.push({inputType:'photos',nom:null,images:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'photos',nom:null,images:null,uniteeId:''})
     },
     addResponse() {
       /* this.currentIndex = this.Forms[this.currentIndex].data.length -1
