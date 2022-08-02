@@ -282,8 +282,10 @@ export default {
     console.log("Fetching e-activites ...")
     this.fetchEActivites("9OaDKE6vy5XjxW1dwOYGP9p7zg8bJmLxVBr32eNZ06DaqlkvoQAnVMKE2ZmbVq7j")
 
-    console.log("Fetching unuite de mesure")
-    this.fetchUnite()
+    setTimeout(() => { 
+        console.log("Fetching unuite de mesure")
+        this.fetchUnite()
+    })
   }
   
 }
