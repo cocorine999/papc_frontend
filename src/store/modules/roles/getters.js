@@ -18,7 +18,7 @@ export default {
   },
 
   getRole : state => {
-      return state.indicateur;
+      return state.role;
   },
 
   getTotal : state => {

@@ -16,7 +16,7 @@ export default {
     },
 
     [FILL](state, role) {
-        state.ROLE = new Role(role)
+        state.role = new Role(role)
     },
 
     [ADD_NEW_ROLE](state, role) {
