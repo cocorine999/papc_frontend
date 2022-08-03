@@ -56,7 +56,7 @@
         </div>
       
       </div>
-      <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+      <vtable :headers="headers" :datas="suivi" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
     </div>
   </dashboard>
  
@@ -88,35 +88,19 @@ export default {
           showModal2:false,
           title:'',
           champs:[
-          {name:'Montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Activité',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:['projet1','projet2'],required:true,},
-          {name:'Trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:['trimestre 1','trimestre 2','trimestre 3','trimestre 4'],required:true,}, 
-        ],
-        champsExport:[
-          {name:'Date de debut',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:['indicateur1','indicateur2','indicateurs3']},
-          {name:'Date de Fin',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[1,2,3,4]},
-          {name:'Activité',type:'',placeholdere:"Selectionnez une activité",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
+          {name:'Consommer', key:'consommer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date', key:'annee',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:true,},
+          {name:'Trimestre', key:'trimestre',type:'number',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:[{"id" : 1, "nom" : "trimestre 1"}, {"id" : 2, "nom" : "trimestre 2"}, {"id" : 3, "nom" : "trimestre 3"}, {"id" : 4, "nom" : "trimestre 4"}], cle: 'id', value: 'nom',required:true,}, 
         ],
         cols:2, 
         headers:[
           {name:'Createur',props:'createur'},
-          {name:'Code',props:'code'},
-          {name:'Activité',props:'activite'},
-          {name:'Trimestre 1',props:'trimestre1'},
-          {name:'Trimestre 2',props:'trimestre2'},
-          {name:'Trimestre 3',props:'trimestre3'},
-          {name:'Trimestre 4',props:'trimestre4'},
           {name:'Code PTAB',props:'pta'},
+          {name:'Activité',props:'activite'},
+          {name:'Trimestre',props:'trimestre'},
           {name:'Année',props:'annee'},
           {name:'Date de creation',props:'created_at'},
-        ],
-        dataTable:[
-          {createur:'Gomez ',code:'',activite:"activité 1",trimestre1:",trimestre1",trimestre2:"trimestre2",trimestre3:"trimestre3",trimestre4:"trimestre4",pta:'1.3.3.5',annee:"2020",created_at:"22-06-2022"},
-          {createur:'Ange Klika ',code:'',activite:"activité 1",trimestre1:",trimestre1",trimestre2:"trimestre2",trimestre3:"trimestre3",trimestre4:"trimestre4",pta:'1.3.3.5',annee:"2020",created_at:"22-06-2022"},
-          {createur:'Gandonou Luthe ',code:'',activite:"activité 1",trimestre1:",trimestre1",trimestre2:"trimestre2",trimestre3:"trimestre3",trimestre4:"trimestre4",pta:'1.3.3.5',annee:"2020",created_at:"22-06-2022"},
-          
         ],
         actions:[
          
