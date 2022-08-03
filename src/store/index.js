@@ -48,9 +48,14 @@ import indicateurs from "./modules/indicateurs/index";
 
 import anos from "./modules/anos/index";
 
+import sinistres from "./modules/sinistres/index";
+
 import typeAnos from "./modules/typeAnos/index";
 
 import eActivites from "./modules/eActivites/index";
+
+import decaissements from "./modules/decaissements/index";
+
 
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
@@ -172,7 +177,9 @@ export default new Vuex.Store({
     typeAnos,
     eActivites,
     utilisateurs,
-    roles
+    roles,
+    sinistres,
+    decaissements
   }
 });
 

@@ -55,7 +55,7 @@
           </router-link>
         </div>
       </div>
-
+     
       <vtable :headers="headers" :datas="indicateurs" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
@@ -73,6 +73,7 @@ import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
+import $ from "jquery";
 export default {
   components: {
     Vtable,
@@ -109,16 +110,7 @@ export default {
           {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
           
         ],
-        headers:[
-          {name:'Indicateur',cle:'nom'},
-          {name:'description',cle:'description'},
-          {name:'Bailleur',cle:'bailleur',props:'nom'},
-          {name:'Categorie',cle:'categorie',props:'nom'},
-          {name:'Unité de mesure',cle:'uniteDeMesure',props:'nom'},
-          {name:'Valeur de base',cle:'valeurDeBase'},
-          {name:'Année de base',cle:'anneeDeBase'},
-          {name:'Date de creation',cle:'created_at'},
-        ],
+        headers:[],
         
         actions:[
           {name:'modifier',iconne:''},
@@ -131,7 +123,8 @@ export default {
     isLoading: function (value) {
       //this.loading = value
     },
-     bailleurs: function (bailleurs) {
+    
+    bailleurs: function (bailleurs) {
       this.champs.map((item) => {
         if (item.key === "bailleurId") {
           item.options = bailleurs.map((bailleur) => {
@@ -288,6 +281,17 @@ export default {
         this.fetchBailleurs()
         this.fetchCategories()
         this.fetchUnite()
+        this.headers = [
+          {name:'Indicateur',cle:'nom',},
+          {name:'description',cle:'description'},
+          {name:'Bailleur',cle:'sigle',props:'bailleur',select:true,options:this.bailleurs,key:'sigle',updateKey:'bailleurId'},
+          {name:'Categorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
+          {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'},
+          {name:'Valeur de base',cle:'valeurDeBase'},
+          {name:'Année de base',cle:'anneeDeBase'},
+          {name:'Date de creation',cle:'created_at'},
+        ]
+
       }, 100);
     })
   },

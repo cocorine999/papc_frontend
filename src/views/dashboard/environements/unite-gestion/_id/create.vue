@@ -5,12 +5,12 @@
       <div class="py-8 flex space-x-5 justify-between">
         <div class="w-full">
           <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configuration de la checklist</h3>
-          <div class="my-3 w-full" >
-            <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
-            <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
-          </div>
+          
           <div class="border border-dashed border-gray-300 my-4 px-8 py-4" >
-           
+             <div class="my-3 w-full" >
+                <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
+                <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
+              </div>
              <button @click="createActivite" class="flex space-x-2 bg-blue-500 text-white border border-blue-500 uppercase items-center px-4 py-2">
                   <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm6.5 4.5v3h3a.5.5 0 010 1h-3v3a.5.5 0 01-1 0v-3h-3a.5.5 0 010-1h3v-3a.5.5 0 011 0z" stroke="none"/></svg></span>
                   <span class="text-bold">ajouter une activité</span>
@@ -33,25 +33,65 @@
               <div v-for="(form,index)  in activite.data" :key="index">
                 <div class="flex justify-between w-full items-center ">
                   <div class="my-3 w-4/5" v-if="form.inputType=='edit'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                     <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                     <input  type="text" v-model="form.nom" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
                   </div>
 
                   <div class="my-3 w-4/5" v-if="form.inputType=='photos'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                     <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Saisissez votre libellé de photos">
                     <input type="file"  class="px-2 py-2  text-sm border border-primary w-2/3 outline-none block " placeholder="Saisissez votre libellé">
                   </div>
 
                   <div class="my-3 w-4/5" v-if="form.inputType=='boolean'">
-                    <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                     <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block  " placeholder="Saisissez votre libellé vrai ou faux ">
                     <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_true">Realiser</label>
                     <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_false">Non realiser</label>
                   </div>
                   <div class="my-3 w-4/5" v-if="form.inputType=='multiple'">
                     <div class="">
-                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
+                       <div class="flex justify-between">
+                      <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
+                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option  value="KM"> KM </option>
+                          <option  value="Mettre"> Metre </option>
+                          <option  value="CM"> CM </option>
+                          <option  value="pourcentage"> pourcentage </option>
+                          <option  value="personnes"> personnes </option>
+                          <option  value="unite"> unité </option>
+                        </select>
+                    </div>
                       <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block" placeholder="Saisissez votre libellé multiple">
                     </div>
                     <div class="my-4 flex justify-between items-center " v-for="(answers,index) in form.response" :key="index">
@@ -185,18 +225,20 @@ export default {
       return `${libelle}`
     },
     btn_edit() {
-      this.Forms[this.currentIndex].data.push({inputType:'edit',nom:null,content:null})
+      
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'edit',nom:null,content:null,uniteeId:''})
+      
     },
     btn_boolean() {
-      this.Forms[this.currentIndex].data.push({inputType:'boolean',nom:null,checked:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'boolean',nom:null,checked:null,uniteeId:''})
     },
     btn_multiple() {
      
-      this.Forms[this.currentIndex].data.push({inputType:'multiple',nom:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'multiple',nom:null,uniteeId:''})
      
     },
     btn_photo() {
-      this.Forms[this.currentIndex].data.push({inputType:'photos',nom:null,images:null})
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'photos',nom:null,images:null,uniteeId:''})
     },
     addResponse() {
       /* this.currentIndex = this.Forms[this.currentIndex].data.length -1

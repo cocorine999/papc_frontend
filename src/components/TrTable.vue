@@ -2,11 +2,9 @@
   <div>
     <div>
       <div class="">
-        <span @click="changeState" v-if="attribut === 'en cours' && status " class="text-xs cursor-pointer bg-green-500 text-white p-1 border-green-500 outline-none "> {{attribut}}</span>
-        <span @click="changeState" v-else-if="attribut === 'terminer' && status " class="text-xs cursor-pointer bg-red-500 text-white p-1 border-red-500 outile-none "> {{attribut}}</span>
-        <span @click="changeState" v-else-if="attribut === 'en attente' && status " class="text-xs cursor-pointer bg-yellow-500 text-white p-1 border-yellow-500 outile-none "> {{attribut}}</span>
-        <div @click.stop="updateData" :class="{'whitespace-nowrap':depliment}" v-if="attribut !='en cours' && attribut != 'terminer' && attribut != 'en attente' && isVisible  " class="text-xs cursor-pointer">
-          <p v-if="!depliment" class="cursor-pointer font-semibold"> {{attribut ? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut != undefined ? attribut.length > 30 : 0" :title="attribut" >...</span></p>
+        
+        <div @click.stop="updateData" v-if="isVisible" :class="{'whitespace-nowrap':depliment}"  class="text-xs cursor-pointer">
+          <p v-if="!depliment" class="cursor-pointer font-semibold"> {{attribut? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut ? attribut.length > 30 : 0" :title="attribut" >...</span></p>
           <p v-else class="cursor-pointer font-semibold flex space-x-2"> 
             <span> {{ attribut }}</span>
             <span @click="depliment=false" >
@@ -15,11 +13,11 @@
           </p>
         </div>
       </div>
+     
       <input  type="text" v-if="!isVisible" v-model="attribut" @keyup.enter="update" class="border w-full  border-primary py-1 px-2 text-xs "/>
-      <select name="" v-model="attribut"  @change="hideSelect(attribut)" v-if="!status" id="">
-        <option value="">en cours</option>
-        <option value="">en attente</option>
-        <option value="">terminer</option>
+      <select name="" v-model="attribut" class="border w-full block my-1 border-primary py-1 px-2 text-xs "  @change="hideSelect(attribut)" v-if="select" id="">
+        <option v-for="option in options" :key="option.id" :value="option[optionsKey]"> {{option[optionsKey]}}  </option>
+        
       </select>
     </div>
   </div>
@@ -27,16 +25,15 @@
 
 <script>
 export default {
-  props:['data', 'objet', 'isEditable'],
+  props:['data', 'objet', 'isEditable','isSelect','options','optionsKey','updateKey'],
   data() {
     return {
       isVisible:true,
-      isSelct:false,
-      status:true,
+      select:false,
       delay: 700,
       clicks: 0,
       timer: null,
-      attribut: this.data,
+      attribut: `${this.data}`,
       depliment:false
     }
   },
@@ -44,8 +41,10 @@ export default {
 
       edit()
       {
-        if(this.isEditable) 
+        if(this.isEditable)  {
           this.isVisible = false
+        }
+          
       },
       
       update() {
@@ -64,7 +63,14 @@ export default {
       },
       
       hideSelect(data) {
-          this.status = true
+          this.select = false
+          let id = ''
+          this.options.forEach(element => {
+           if(element[this.optionsKey] == data)  {
+              id = element.id
+           }
+          });
+          this.$emit('update', this.objet?.id, this.objet?.extra,this.updateKey, id)
       },
 
       deplier() {
@@ -73,7 +79,20 @@ export default {
       
       updateData(event) {
         
-        if(this.isEditable){ 
+        if(this.isEditable && this.isSelect){ 
+          this.clicks++;
+          if (this.clicks === 1) {
+            this.timer = setTimeout( () => {
+              this.clicks = 0
+            }, this.delay);
+          } else {
+            clearTimeout(this.timer);  
+            this.select = true
+           
+            this.clicks = 0;
+          }         
+        }
+        else {
           this.clicks++;
           if (this.clicks === 1) {
             this.timer = setTimeout( () => {
@@ -83,8 +102,9 @@ export default {
             clearTimeout(this.timer);  
             this.isVisible = false
             this.clicks = 0;
-          }         
+          }  
         }
+        
       }, 
 
       changeState(event) {
