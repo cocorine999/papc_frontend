@@ -7,6 +7,7 @@ import {
 } from "@/store/mutations.type"
 
 import PlanDeDecaissementService from "@/services/modules/plan.decaissement.service";
+import ActiviteService from "@/services/modules/activite.service";
 import PlanDeDecaissement from "./plan.decaissement";
 
 export default {
@@ -14,6 +15,16 @@ export default {
   FETCH_LIST_PLAN_DE_DECAISSEMENT : async ({ commit }) => {
 
       const { data, status } = await PlanDeDecaissementService.get();
+
+      if(status === 200 || status === 201) 
+          commit(SET_LIST_PLAN_DE_DECAISSEMENT, data.data);
+
+      return { data, status };
+  },
+  
+  FETCH_LIST_PLAN_DE_DECAISSEMENT_ACTIVITE : async ({ commit }, idActivite) => {
+
+      const { data, status } = await ActiviteService.plansDeDecaissement(idActivite);
 
       if(status === 200 || status === 201) 
           commit(SET_LIST_PLAN_DE_DECAISSEMENT, data.data);
@@ -49,9 +60,9 @@ export default {
 
   },
 
-  async UPDATE_PLAN_DE_DECAISSEMENT ({ commit }, {decaissment, id}) {
+  async UPDATE_PLAN_DE_DECAISSEMENT ({ commit }, {planDeDecaissement, id}) {
       
-      const { data, status } = await PlanDeDecaissementService.update(id, decaissment);
+      const { data, status } = await PlanDeDecaissementService.update(id, planDeDecaissement);
 
       if(status === 200 || status === 201)
           commit(MODIFY_PLAN_DE_DECAISSEMENT, data.data);

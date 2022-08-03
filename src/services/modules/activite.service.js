@@ -31,6 +31,10 @@ const ActiviteService = {
 
     taches(slug) {
       return ApiService.get(`activites/${slug}/taches`);
+    },
+
+    plansDeDecaissement(slug) {
+      return ApiService.get(`activites/${slug}/plansDeDecaissement`);
     }
 
   };

@@ -84,6 +84,29 @@ export default new Vuex.Store({
         type: 'ppm'
       }
     ],
+
+    trimestres : [
+      {
+        valeur : 1,
+        trimestre: 'Trimestre 1'
+      },
+
+      {
+        valeur : 2,
+        trimestre: 'Trimestre 2'
+      },
+
+      {
+        valeur : 3,
+        trimestre: 'Trimestre 3'
+      },
+
+      {
+        valeur : 4,
+        trimestre: 'Trimestre 4'
+      }
+    ],
+
     statuts : [
       {
         nom : "Non validé",
