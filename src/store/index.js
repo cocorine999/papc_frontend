@@ -60,6 +60,8 @@ import suiviFinanciers from "./modules/suiviFinanciers/index";
 
 import decaissements from "./modules/decaissements/index";
 
+import planDeDecaissements from "./modules/planDeDecaissements/index";
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
@@ -183,7 +185,8 @@ export default new Vuex.Store({
     formulaires,
     suiviFinanciers,
     sinistres,
-    decaissements
+    decaissements,
+    planDeDecaissements
   }
 });
 

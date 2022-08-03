@@ -16,7 +16,8 @@ export default {
 
         const { data, status } = await ActiviteService.get();
 
-        commit(SET_LIST_ACTIVITE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_ACTIVITE, data.data);
 
         return { data, status };
     },
@@ -25,7 +26,8 @@ export default {
         
         const { data, status } = await ComposanteService.activites(id);
 
-        commit(SET_LIST_ACTIVITE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_ACTIVITE, data.data);
 
         return { data, status };
     },
@@ -48,7 +50,8 @@ export default {
         
         const { data, status } = await ActiviteService.create(payload);
 
-        commit(ADD_ACTIVITE, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_ACTIVITE, data.data);
 
         return { data, status };
 
@@ -58,7 +61,8 @@ export default {
         
         const { data, status } = await ActiviteService.update(id, activite);
 
-        commit(MODIFY_ACTIVITE, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_ACTIVITE, data.data);
 
         return { data, status };
 
@@ -68,7 +72,8 @@ export default {
         
         const { data, status } = await ActiviteService.destroy(idActivite);
 
-        commit(REMOVE_ACTIVITE, idActivite);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_ACTIVITE, idActivite);
 
         return { data, status };
 

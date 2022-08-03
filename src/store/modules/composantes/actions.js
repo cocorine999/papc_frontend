@@ -23,7 +23,8 @@ export default {
 
         const { data, status } = await ComposanteService.get();
 
-        commit(SET_LIST_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_COMPOSANTE, data.data);
 
         return { data, status };
     },
@@ -32,7 +33,8 @@ export default {
         
         const { data, status } = await ProjetService.composantes(id);
 
-        commit(SET_LIST_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_COMPOSANTE, data.data);
 
         return { data, status };
     },
@@ -55,7 +57,8 @@ export default {
         
         const { data, status } = await ComposanteService.create(payload);
 
-        commit(ADD_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_COMPOSANTE, data.data);
 
         return { data, status };
 
@@ -65,7 +68,8 @@ export default {
         
         const { data, status } = await ComposanteService.update(id, composante);
 
-        commit(MODIFY_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_COMPOSANTE, data.data);
 
         return { data, status };
 
@@ -75,7 +79,8 @@ export default {
         
         const { data, status } = await ComposanteService.destroy(idComposante);
 
-        commit(REMOVE_COMPOSANTE, idComposante);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_COMPOSANTE, idComposante);
 
         return { data, status };
 
