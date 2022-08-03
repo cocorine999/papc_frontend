@@ -4,7 +4,7 @@
       
       <div class="py-8 flex space-x-5 justify-between">
         <div class="w-full">
-          <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configuration de la checklist</h3>
+          <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configurer le formulaire</h3>
           
           <div class="border border-dashed border-gray-300 my-4 px-8 py-4" >
              <div class="my-3 w-full" >
@@ -131,7 +131,7 @@
       {{Forms}}
      </pre>
       <div>
-        <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer la checklist</button>
+        <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer le formulaire</button>
       </div>
       
     </div>

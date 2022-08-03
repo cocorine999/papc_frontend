@@ -2,9 +2,10 @@
   <dashboard>
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="showModal = false">
+      
         <div  class="px-4 overflow-y-auto">
           <form action="" @submit.prevent="sendForm" class="px-4"  >
-            
+       
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
               <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
@@ -14,11 +15,21 @@
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Code de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
           </div>
-
-           <div class="my-4">
+          
+          <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <multiselect v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
-            
+            <div class="flex justify-between my-3">
+              <div>
+                <input type="radio" @click="allEntreprise= false" id="all" name="entreprise" value="all" >
+                <label class="px-2" for="all">Tout les entreprises</label>
+              </div>
+              <div>
+                <input type="radio" @click="allEntreprise= true" id="sauf" name="entreprise" value="sauf">
+                <label class="px-2" for="sauf">Tout sauf</label>
+              </div>
+            </div>
+          
+            <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
           </div>
 
           <div class="my-4">
@@ -82,8 +93,11 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Creer une activité </span>
           </button>
+          <router-link v-if="seeFormulaire"  :to="{name:'mission_controle_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+            <span class="mx-2 text-sm font-semibold">Creer un formulaire </span>
+          </router-link>
         </div>
-         
       </div>
 
       <div v-if="seeEntreprise" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
@@ -128,7 +142,7 @@
         <div class="grid grid-cols-3 gap-4">
           <div v-for="i in 6" :key="i.id">
             <card-checklist
-              libelle="checklist"
+              libelle="formulaire"
               code="15555DC" 
               activite="Nombre d'accident routiere" 
               :unites="['personne','%','km']" 
@@ -181,6 +195,7 @@ export default {
     return {
       title:'',
       showModal:false,
+      allEntreprise:false,
       champs:[],
       bailleurs:[
          {
