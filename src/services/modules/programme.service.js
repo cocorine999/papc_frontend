@@ -41,6 +41,10 @@ const ProgrammeService = {
       return ApiService.get(`programmes/${slug}/entreprise-executants`);
     },
 
+    activites(slug) {
+      return ApiService.get(`programmes/${slug}/activites`);
+    }
+
   };
 
   export default ProgrammeService;
