@@ -81,8 +81,10 @@ import extractFormData from '@/utils/extract-data'
         headers:[
           {name:'Nom', props:'user', cle:'nom'},
           {name:'Email', props:'user', cle:'email', edit : false},
-          {name:'Contact', props:'user', cle:'contact'},
-          {name:'Date de creation', props:'created_at', edit : false},
+          {name:'Programme', props:'programme', cle:'nom', edit : false},
+          
+          {name:'Date de creation', cle:'created_at', edit : false},
+
         ],
         actions:[
           {name:'supprimer',iconne:''},

@@ -15,20 +15,42 @@ import {
 } from "@/store/mutations.type"
 
 import ProjetService from "@/services/modules/projet.service";
+import ProgrammeService from "@/services/modules/programme.service";
 
 export default {
     
-    FETCH_LIST_PROJET : async ({ commit }, {id}) => {
+    FETCH_LIST_PROJET : async ({ commit }, id) => {
 
-        const { data, status } = await ProjetService.programme(id);
+        const { data, status } = await ProjetService.get();
 
         commit(SET_LIST_PROJET, data.data);
 
         return { data, status };
     },
     
+    GET_STATISTIQUE : async ({ commit }, id) => {
+
+        return await ProjetService.statistiques(id);
+    },   
+    
+    FETCH_LIST_PROJET_OF_PROGRAMME : async ({ commit }, id) => {
+
+        const { data, status } = await ProgrammeService.projets(id);
+
+        commit(SET_LIST_PROJET, data.data);
+
+        return { data, status };
+    },   
 
     async GET_PROJET ({ commit, getters }, {key, value }) {
+
+        const { data, status } = await ProjetService.get(payload, value);
+
+        return projet
+
+        commit(ADD_PROJET, data.data);
+
+        return { data, status };
 
         let projet = getters.findProjet({key: key, value : value})
 

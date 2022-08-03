@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const ActivitesService = {
+const ActiviteService = {
 
     query(type, params) {
       return ApiService.query("activites", {
@@ -26,17 +26,14 @@ const ActivitesService = {
     },
 
     composante(slug) {
-      return ApiService.get(`activites/${slug}/composantes`);
+      return ApiService.get(`activites/${slug}/composante`);
     },
 
-    activites(slug) {
+    taches(slug) {
       return ApiService.get(`activites/${slug}/taches`);
-    },
-    programme(slug) {
-      return ApiService.get(`programmes/activites/${slug}`);
-    },
+    }
 
   };
 
-  export default ActivitesService;
+  export default ActiviteService;
   

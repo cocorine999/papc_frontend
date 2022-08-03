@@ -1,10 +1,3 @@
-import {
-    FETCH_LIST as FETCH_LIST_TACHE,
-    GET as GET_TACHE,
-    STORE as STORE_TACHE,
-    UPDATE as UPDATE_TACHE,
-    DESTROY as DESTROY_TACHE,
-} from "@/store/actions.type"
 
 import {
     SET_LIST as SET_LIST_TACHE,
@@ -15,12 +8,22 @@ import {
 } from "@/store/mutations.type"
 
 import TacheService from "@/services/modules/tache.service";
+import ActiviteService from "@/services/modules/activite.service";
 
 export default {
     
     FETCH_LIST_TACHE : async ({ commit }, {id}) => {
 
         const { data, status } = await TacheService.programme();
+
+        commit(SET_LIST_TACHE, data.data);
+
+        return { data, status };
+    },
+        
+    FETCH_LIST_TACHE_OF_ACTIVITE : async ({ commit }, id) => {
+        
+        const { data, status } = await ActiviteService.taches(id);
 
         commit(SET_LIST_TACHE, data.data);
 

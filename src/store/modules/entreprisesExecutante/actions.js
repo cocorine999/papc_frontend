@@ -15,6 +15,7 @@ import {
 } from "@/store/mutations.type"
 
 import EntrepriseExecutanteService from "@/services/modules/entreprise.executante.service";
+import ProgrammeService from "@/services/modules/programme.service";
 import EntrepriseExecutante from "./entreprise.executante";
 
 export default {
@@ -25,6 +26,15 @@ export default {
 
         if(status === 200 || status === 201)
             commit(SET_LIST_ENTREPRISE_EXECUTANTE, data.data);
+
+        return { data, status };
+    },
+    
+    FETCH_LIST_ENTREPRISE_EXECUTANTE_OF_PROGRAMME : async ({ commit }, id) => {
+        
+        const { data, status } = await ProgrammeService.entreprisesExecutante(id);
+
+        commit(SET_LIST_ENTREPRISE_EXECUTANTE, data.data);
 
         return { data, status };
     },

@@ -28,6 +28,15 @@ export default {
 
         return { data, status };
     },
+    
+    FETCH_LIST_BAILLEUR_OF_PROGRAMME : async ({ commit }, id) => {
+
+        const { data, status } = await BailleurService.bailleursOfProgramme(id);
+
+        commit(SET_LIST_BAILLEUR, data.data);
+
+        return { data, status };
+    },   
 
     async GET_BAILLEUR ({ commit, getters }, {key, value }) {
 

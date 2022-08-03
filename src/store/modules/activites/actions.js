@@ -1,12 +1,4 @@
 import {
-    FETCH_LIST as FETCH_LIST_ACTIVITE,
-    GET as GET_ACTIVITE,
-    STORE as STORE_ACTIVITE,
-    UPDATE as UPDATE_ACTIVITE,
-    DESTROY as DESTROY_ACTIVITE,
-} from "@/store/actions.type"
-
-import {
     SET_LIST as SET_LIST_ACTIVITE,
     FIND as findActivite,
     ADD as ADD_ACTIVITE,
@@ -16,17 +8,27 @@ import {
 
 import ActiviteService from "@/services/modules/activite.service";
 
+import ComposanteService from "@/services/modules/composante.service";
+
 export default {
     
-    FETCH_LIST_ACTIVITE : async ({ commit }, {id}) => {
+    FETCH_LIST_ACTIVITE : async ({ commit }) => {
 
-        const { data, status } = await ActiviteService.programme(id);
+        const { data, status } = await ActiviteService.get();
 
         commit(SET_LIST_ACTIVITE, data.data);
 
         return { data, status };
     },
-    
+        
+    FETCH_LIST_ACTIVITE_OF_COMPOSANTE : async ({ commit }, id) => {
+        
+        const { data, status } = await ComposanteService.activites(id);
+
+        commit(SET_LIST_ACTIVITE, data.data);
+
+        return { data, status };
+    },
 
     async GET_ACTIVITE ({ commit, getters }, {key, value }) {
 

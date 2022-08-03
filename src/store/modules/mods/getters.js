@@ -6,7 +6,7 @@ export default {
 
     getMods : state => {
 
-        return state.lists
+        return state.lists.length > 0
 
                 ? state.lists
 

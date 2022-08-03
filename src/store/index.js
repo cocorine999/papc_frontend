@@ -28,6 +28,8 @@ import uniteesDeMesure from "./modules/uniteesDeMesure/index";
 
 import composantes from "./modules/composantes/index";
 
+import sousComposantes from "./modules/sousComposantes/index";
+
 import activites from "./modules/activites/index";
 
 import categories from "./modules/categories/index";
@@ -66,6 +68,18 @@ export default new Vuex.Store({
     loading : false,
     messageErreur : null,
     errors : [],
+
+    types : [
+      {
+        nom : "pta",
+        type: 'pta'
+      },
+
+      {
+        nom : "PPM",
+        type: 'ppm'
+      }
+    ],
     statuts : [
       {
         nom : "Non validé",
@@ -152,6 +166,7 @@ export default new Vuex.Store({
     projets,
     uniteesDeMesure,
     composantes,
+    sousComposantes,
     activites,
     taches,
     paps,

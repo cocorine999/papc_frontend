@@ -27,7 +27,11 @@ const BailleursService = {
 
     programmes(slug) {
       return ApiService.get(`bailleurs/${slug}/programmes`);
-    }
+    },
+
+    bailleursOfProgramme(slug) {
+      return ApiService.get(`programmes/${slug}/bailleurs`);
+    },
 
   };
 

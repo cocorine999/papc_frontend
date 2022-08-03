@@ -10,7 +10,7 @@
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs" :cols="cols" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
+          <vform template="default"  :champs="champs"  submitText="Creer une activite" @sendForm="sendForm" ></vform>
         </div>
       </modal-top-right>
     </div>
@@ -76,7 +76,14 @@ export default {
       seeActivite:false,
       showModal:false,
       showLink:false,
-      champs:[],
+      activitesAttributs : ['nom', 'debut', 'fin', 'statut', 'entrepriseExecutantId'],
+      champs:[
+        {name:'Nom de l\'activite',key:"nom",type:'text',placeholdere:"Nom de l'activité",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date debut',key:"debut",type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date fin',type:'date',key:"fin",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Entreprise',key:"entrepriseExecutantId",type:'',placeholdere:'Selectionnez une entreprise',isSelect:true,isTextArea:false,data:'',required:true,options:this.entreprises, cle: 'id', value: 'nom', errors : []},
+        {name:'Status',key:"statut",type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:this.$store.state.statuts, cle: 'etat', value: 'nom', errors : []},
+      ],
       headers:[
           {name:'Libelle activite',cle:'libelle'},
           {name:'Date debut',cle:'debut'},
@@ -114,6 +121,10 @@ export default {
     },
     selectData ({ name}) {
       return `${name}`
+    },
+    async supprimer(eActivite) {
+      if(window.confirm("Voulez-vous supprimer cette activité " + eActivite.nom))
+        await this.deleteEActivite(eActivite.id)
     },
   },
   mounted() {

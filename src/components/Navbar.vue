@@ -102,7 +102,17 @@ export default {
     },
 
     mounted() {
-    this.cigle = getCigle(this.currentUser?.nom + ' ' + this.currentUser?.prenom)
+
+    let nom
+
+    if(this.currentUser.nom != undefined)
+      nom = this.currentUser.nom
+
+    if(this.currentUser.prenom != undefined)
+      nom += this.currentUser.prenom
+
+    this.cigle = getCigle(nom)
+    
     /* const usersInfo = JSON.parse(localStorage.getItem('usersInfos'))
       if(usersInfo) {
         this.currentUsers = usersInfo

@@ -6,7 +6,7 @@ export default {
 
     getEntreprisesExecutante : state => {
 
-        return state.lists
+        return state.lists > 0
 
                 ? state.lists
 

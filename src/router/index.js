@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store/index";
 
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
@@ -120,6 +121,9 @@ import ong_mod from "../views/espaces_mod/ong/index.vue";
 import entreprises_mo from "../views/espaces_mo/entreprises/index.vue";
 import missioncontrole_mo from "../views/espaces_mo/mission-controle/index.vue";
 import ong_mo from "../views/espaces_mo/ong/index.vue";
+import guest from "./middleware/guest";
+import middlewarePipeline from "./middlewarePipeline";
+import auth from "./middleware/auth";
 /*  componemts */
 // const BailleursClild = () => import('../components/dashboard/Bailleurs');
 
@@ -131,7 +135,11 @@ const routes = [
     name: "index",
     component: index,
     meta: { auth: true },
+    middleware: [
+      guest
+    ]
   },
+
   {
     path: "/demo",
     name: "demo",
@@ -147,44 +155,82 @@ const routes = [
   //   name: "dashboard",
   //   component: dashboard,
   // },
+
   {
     path: "/dashboard/ano",
     name: "ano",
     component: ano,
+    meta:{
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/liens",
     name: "liens",
     component: liens,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/form/:id",
     name: "form_gestion_generator",
     component: form_gestion_generator,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   // checklist unite de gestion
   {
     path: "/dashboard/unite-gestion/checklist/:id/checklist",
     name: "unite_de_gestion_checklist",
     component: unite_de_gestion_checklist,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/unite-de-gestion/checklist/:id/checklist/:id/details",
     name: "unite_de_gestion_checklist_details",
     component: unite_de_gestion_checklist_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/unite-de-gestion/checklist/create",
     name: "unite_de_gestion_checklist_create",
     component: unite_de_gestion_checklist_create,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/unite-gestion/checklist",
     name: "unite_de_gestion_checklist_entreprise",
     component: unite_de_gestion_checklist_entreprise,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   //fin checklist de gestion
 
@@ -193,23 +239,44 @@ const routes = [
     path: "/dashboard/mod/checklist/:id/checklist",
     name: "mod_checklist",
     component: mod_checklist,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/mod/checklist/:id/checklist/:id/details",
     name: "mod_checklist_details",
     component: mod_checklist_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/mod/checklist/create",
     name: "mod_checklist_create",
     component: mod_checklist_create,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/mod/checklist",
     name: "mod_checklist_entreprise",
     component: mod_checklist_entreprise,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   //fin checklist de mod
 
@@ -218,23 +285,44 @@ const routes = [
     path: "/dashboard/mission-controle/checklist/:id/checklist",
     name: "mission_controle_checklist",
     component: mission_controle_checklist,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/mission-controle/checklist/:id/checklist/:id/details",
     name: "mission_controle_checklist_details",
     component: mission_controle_checklist_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/mission-controle/checklist/create",
     name: "mission_controle_checklist_create",
     component: mission_controle_checklist_create,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/mission-controle/checklist",
     name: "mission_controle_checklist_entreprise",
     component: mission_controle_checklist_entreprise,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   //fin checklist de mission-controle
 
@@ -243,23 +331,44 @@ const routes = [
     path: "/dashboard/entreprise/checklist/:id/checklist",
     name: "entreprise_checklist",
     component: entreprise_checklist,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/entreprise/checklist/:id/checklist/:id/details",
     name: "entreprise_checklist_details",
     component: entreprise_checklist_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/entreprise/checklist/create",
     name: "entreprise_checklist_create",
     component: entreprise_checklist_create,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/entreprise/checklist",
     name: "entreprise_checklist_entreprise",
     component: entreprise_checklist_entreprise,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   //fin checklist de entreprise
 
@@ -267,32 +376,66 @@ const routes = [
     path: "/dashboard/entreprises",
     name: "entreprises",
     component: entreprises,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/dashboard/instutitions",
     name: "instutitions",
     component: instutitions,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/PAP",
     name: "paps",
     component: paps,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/formulaire",
     name: "formulaire",
     component: formulaire,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/formulaire-create",
     name: "formulaire_create",
     component: formulaire_create,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/formulaire/:id/suivi",
     name: "formulaire_id_details",
     component: formulaire_id_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   // {
@@ -305,20 +448,38 @@ const routes = [
   //   name: "indicateurs",
   //   component: indicateurs,
   // },
+
   {
     path: "/dashboard/mission-controle",
     name: "missioncontrole",
     component: missioncontrole,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/mod",
     name: "mod",
     component: mod,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/profil",
     name: "profil",
     component: profil,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   // {
@@ -337,10 +498,16 @@ const routes = [
   //   name: "projets",
   //   component: projets,
   // },
+
   {
     path: "/dashboard/pta",
     name: "pta",
     component: pta,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   // {
   //   path: "/dashboard/unite-gestion",
@@ -365,100 +532,211 @@ const routes = [
     path: "/dashboard/bailleurs",
     name: "bailleurs",
     component: bailleurs,
+    meta:{
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/utilisateurs",
     name: "utilisateurs",
     component: utilisateurs,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/programme",
     name: "programme",
     component: programme,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/unite-gestion",
     name: "unite_gestion",
     component: unite_gestion,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/projets",
     name: "projets",
     component: projets,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/fileManager",
     name: "fileManager",
     component: fileManager,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/projets/:id/details",
     component: projets_id_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "projets_id_details",
   },
+
   {
     path: "/dashboard/projets/:id/cadreLogique",
     component: projets_id_cadreLogique,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "projets_id_cadreLogique",
   },
   ,
   {
     path: "/dashboard/projets/activites-globale",
     component: dashboard_projets_activites_globale,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "dashboard_projets_activites_globale",
   },
+
   {
     path: "/dashboard/projets/composantes-globale",
     component: dashboard_projets_composantes_globale,
     name: "dashboard_projets_composantes_globale",
+    meta:{
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/projets/sous-composantes-globale",
     component: dashboard_projets_sous_composantes_globale,
     name: "dashboard_projets_sous_composantes_globale",
+    meta:{
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/dashboard/projets/taches-globale",
     component: dashboard_projets_taches_globale,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "dashboard_projets_taches_globale",
   },
+
   {
     path: "/dashboard/indicateurs",
     component: indicateurs,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "indicateurs",
   },
+
   {
     path: "/dashboard/indicateurs/:id/suivi",
     component: indicateurs_suivi,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "indicateurs_suivi",
   },
 
   {
     path: "/dashboard/finances/decaissement",
     component: finances_decaissement,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "finances_decaissement",
   },
+
   {
     path: "/dashboard/finances/suivi",
     component: finances_suivi,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "finances_suivi",
   },
+
   {
     path: "/dashboard/finances/point-financier",
     component: point_financier,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "point_financier",
   },
   
   {
     path: "/dashboard/finances/plan_decaissement",
     component: finances_plan_decaissement,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "finances_plan_decaissement",
   },
+
   {
     path: "/dashboard/config/categories",
     component: config_categories,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "config_categories",
   },
+
   {
     path: "/dashboard/config/sinistres",
     component: config_sinistres,
@@ -467,16 +745,33 @@ const routes = [
   {
     path: "/dashboard/config/main_oeuvre",
     component: config_main_oeuvre,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "config_main_oeuvre",
   },
+
   {
     path: "/dashboard/config/unites",
     component: config_unites,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "config_unites",
   },
+
   {
     path: "/dashboard/config/types",
     component: config_types,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "config_types",
   },
 
@@ -485,119 +780,253 @@ const routes = [
     path: "/bailleurs/dashboard",
     name: "dashboard_bailleur",
     component: dashboard_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/bailleurs/ano",
     name: "ano_bailleur",
     component: ano_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/bailleurs/activites",
     component: activites_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "activites_bailleur",
   },
+
   {
     path: "/bailleurs/composantes",
     component: composantes_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "composantes_bailleur",
   },
+
   {
     path: "/bailleurs/sous-composantes",
     component: sous_composantes_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "sous_composantes_bailleur,",
   },
+
   {
     path: "/bailleurs/taches",
     component: taches_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "taches_bailleur",
   },
+
   {
     path: "/bailleurs/indicateurs",
     component: indicateurs_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "indicateurs_bailleur",
   },
+
   {
     path: "/bailleurs/indicateurs/suivi",
     component: suivi_indicateur_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "suivi_indicateur_bailleur",
   },
+
   {
     path: "/bailleurs/finances/decaissement",
     component: finances_decaissement_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "finances_decaissement",
   },
+
   {
     path: "/bailleurs/finances/suivi",
     component: finances_suivi_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "finances_suivi_bailleur",
   },
+
   {
     path: "/bailleurs/finances/plan_decaissement",
     component: finances_plan_decaissement_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "finances_plan_decaissement_bailleur",
   },
+
   {
     path: "/bailleurs/mission-controle",
     name: "missioncontrole_bailleur",
     component: missioncontrole_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/bailleurs/mod",
     name: "mod_bailleur",
     component: mod_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/bailleurs/entreprises",
     name: "entreprises_bailleur",
     component: entreprises_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/bailleurs/PAP",
     name: "paps_bailleur",
     component: paps_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/bailleurs/ong",
     name: "ong_bailleur",
     component: ong_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/bailleurs/pta",
     name: "pta_bailleur",
     component: pta_bailleur,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   // espace Mod
   {
     path: "/mod/collecteur",
     name: "collecteur_mod",
     component: collecteur_mod,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
+
   {
     path: "/mod/indicateurs",
     component: indicateurs_mod,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "indicateurs_mod",
   },
+
   {
     path: "/mod/indicateurs/suivi",
     component: suivi_indicateur_mod,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
     name: "suivi_indicateur_mod",
   },
+
   {
     path: "/mod/mission-controle",
     name: "missioncontrole_mod",
     component: missioncontrole_mod,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/mod/entreprises",
     name: "entreprises_mod",
     component: entreprises_mod,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/mod/ong",
     name: "ong_mod",
     component: ong_mod,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   // espace Mo
@@ -606,23 +1035,62 @@ const routes = [
     path: "/mo/mission-controle",
     name: "missioncontrole_mo",
     component: missioncontrole_mo,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/mo/entreprises",
     name: "entreprises_mo",
     component: entreprises_mo,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 
   {
     path: "/mo/ong",
     name: "ong_mo",
     component: ong_mo,
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
 ];
+
 const router = new VueRouter({
   mode: "history",
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+    if (!to.meta.middleware) {
+        return next()
+    }
+    const middleware = to.meta.middleware
+
+    console.log(to)
+    console.log(middleware)
+
+    const context = {
+        to,
+        from,
+        next,
+        store
+    }
+
+    return middleware[0]({
+        ...context,
+        next: middlewarePipeline(context, middleware, 1)
+    })
+
+})
 
 export default router;
