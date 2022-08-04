@@ -56,7 +56,7 @@
         </div>
       
       </div>
-      <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+      <vtable :headers="headers" :datas="suivi" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
     </div>
   </dashboard>
  
@@ -70,6 +70,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import utils from '@/utils/index'
 export default {
   components: {
     Vtable,
@@ -86,35 +88,19 @@ export default {
           showModal2:false,
           title:'',
           champs:[
-          {name:'Montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Activité',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:['projet1','projet2'],required:true,},
-          {name:'Trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:['trimestre 1','trimestre 2','trimestre 3','trimestre 4'],required:true,}, 
-        ],
-        champsExport:[
-          {name:'Date de debut',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:['indicateur1','indicateur2','indicateurs3']},
-          {name:'Date de Fin',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[1,2,3,4]},
-          {name:'Activité',type:'',placeholdere:"Selectionnez une activité",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
+          {name:'Consommer', key:'consommer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date', key:'annee',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:true,},
+          {name:'Trimestre', key:'trimestre',type:'number',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:[{"id" : 1, "nom" : "trimestre 1"}, {"id" : 2, "nom" : "trimestre 2"}, {"id" : 3, "nom" : "trimestre 3"}, {"id" : 4, "nom" : "trimestre 4"}], cle: 'id', value: 'nom',required:true,}, 
         ],
         cols:2, 
         headers:[
           {name:'Createur',props:'createur'},
-          {name:'Code',props:'code'},
-          {name:'Activité',props:'activite'},
-          {name:'Trimestre 1',props:'trimestre1'},
-          {name:'Trimestre 2',props:'trimestre2'},
-          {name:'Trimestre 3',props:'trimestre3'},
-          {name:'Trimestre 4',props:'trimestre4'},
           {name:'Code PTAB',props:'pta'},
+          {name:'Activité',props:'activite'},
+          {name:'Trimestre',props:'trimestre'},
           {name:'Année',props:'annee'},
           {name:'Date de creation',props:'created_at'},
-        ],
-        dataTable:[
-          {createur:'Gomez ',code:'',activite:"activité 1",trimestre1:",trimestre1",trimestre2:"trimestre2",trimestre3:"trimestre3",trimestre4:"trimestre4",pta:'1.3.3.5',annee:"2020",created_at:"22-06-2022"},
-          {createur:'Ange Klika ',code:'',activite:"activité 1",trimestre1:",trimestre1",trimestre2:"trimestre2",trimestre3:"trimestre3",trimestre4:"trimestre4",pta:'1.3.3.5',annee:"2020",created_at:"22-06-2022"},
-          {createur:'Gandonou Luthe ',code:'',activite:"activité 1",trimestre1:",trimestre1",trimestre2:"trimestre2",trimestre3:"trimestre3",trimestre4:"trimestre4",pta:'1.3.3.5',annee:"2020",created_at:"22-06-2022"},
-          
         ],
         actions:[
          
@@ -122,9 +108,46 @@ export default {
         ]
       };
     },
+
+  computed:{
+
+  //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      suiviFinancier: state => state.suiviFinanciers.suiviFinancier,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      suiviFinanciers: "suiviFinanciers/getSuiviFinanciers", suiviFinancier: "getSuiviFinancier",
+      projets: "projets/getProjets",
+      activites: "activites/getActivites",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    })
+    
+  },
+
     mounted() {
     },
     methods: {
+      //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setSuiviFinanicer: 'suiviFinanciers/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('suiviFinanciers', {
+      fetchSuiviFinanicers: "FETCH_LIST_SUIVIFINANCIER",
+      saveSuiviFinanicer: "STORE_SUIVIFINANCIER",
+      updateSuiviFinanicer: "UPDATE_SUIVIFINANCIER",
+      deleteSuiviFinanicer: "DESTROY_SUIVIFINANCIER"
+    }),
+
+    ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET' }),
+
+    ...mapActions('activites', { fetchActivites: 'FETCH_LIST_ACTIVITE' }),
+
       sendForm() {
         alert('donnée envoyer')
       },
@@ -143,7 +166,18 @@ export default {
       supprimer(data) {
         alert(data +" à ete bien supprimer")
       }
-    }
+    },
+
+    mounted() {
+      console.log("Fetching suivi financier ...")
+        this.fetchSuiviFinanicers({id : this.currentUser?.programme?.id}).then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of activite")
+          this.fetchActivites()
+        }, 500);
+    })
+  }
+
   }
 </script>
 

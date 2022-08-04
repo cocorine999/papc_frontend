@@ -34,11 +34,23 @@
               </svg>
             </li>
             <li class="flex items-center text-blue-500">
-              <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
-              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+              <router-link to="/dashboard/projets" class="text-gray-600"
+                >projets</router-link
+              >
+              <svg
+                class="w-3 h-3 mx-3 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 320 512"
+              >
+                <path
+                  d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+                />
+              </svg>
             </li>
             <li class="flex items-center text-blue-500">
-              <router-link to="/dashboard/projets" class="">{{ projet.nom }}</router-link>
+              <router-link to="/dashboard/projets" class="">{{
+                projet.nom
+              }}</router-link>
             </li>
           </ol>
         </div>
@@ -71,7 +83,9 @@
             <select
               class="px-2 py-1 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
             >
-              <option disabled selected hidden value="">Selectionnez un projet</option>
+              <option disabled selected hidden value="">
+                Selectionnez un projet
+              </option>
               <option value="data" v-for="(data, index) in 5" :key="index">
                 projet {{ index }}
               </option>
@@ -101,7 +115,7 @@
             </button>
             <button
               title="editer un projet"
-              class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"
+              class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
             >
               <span>
                 <svg
@@ -166,7 +180,9 @@
                 </svg>
               </div>
               <div class="mx-5">
-                <h4 class="text-2xl font-semibold text-gray-700"> {{ projet.tep }} </h4>
+                <h4 class="text-2xl font-semibold text-gray-700">
+                  {{ projet.tep }}
+                </h4>
                 <div class="text-gray-500">TEP</div>
               </div>
             </div>
@@ -250,7 +266,9 @@
                 </svg>
               </div>
               <div class="mx-5">
-                <h4 class="text-2xl font-semibold text-gray-700">8,282</h4>
+                <h4 class="text-2xl font-semibold text-gray-700">
+                  {{ getMontant() }}
+                </h4>
                 <div class="text-gray-500">Montants</div>
               </div>
             </div>
@@ -601,235 +619,35 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="text-gray-700 dark:text-gray-100">
+                  <tr
+                    class="text-gray-700 dark:text-gray-100"
+                    v-for="(
+                      stats_composante, index
+                    ) in projet.stats_composantes"
+                    :key="index"
+                  >
                     <th
                       class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
                     >
-                      Composante 1
+                      {{ stats_composante.nom }}
                     </th>
                     <td
                       class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                     >
-                      45
+                      {{ stats_composante.activites_count }}
                     </td>
                     <td
                       class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                     >
                       <div class="flex items-center">
-                        <span class="mr-2">70%</span>
+                        <span class="mr-2"> {{ stats_composante.tep }}%</span>
                         <div class="relative w-full">
                           <div
                             class="overflow-hidden h-2 text-xs flex rounded bg-blue-200"
                           >
                             <div
-                              style="width: 70%"
+                              :style="`width: ${stats_composante.tep}%`"
                               class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr class="text-gray-700 dark:text-gray-100">
-                    <th
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                    >
-                      Composante2
-                    </th>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      12
-                    </td>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      <div class="flex items-center">
-                        <span class="mr-2">40%</span>
-                        <div class="relative w-full">
-                          <div
-                            class="overflow-hidden h-2 text-xs flex rounded bg-blue-200"
-                          >
-                            <div
-                              style="width: 40%"
-                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr class="text-gray-700 dark:text-gray-100">
-                    <th
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                    >
-                      Composante2
-                    </th>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      12
-                    </td>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      <div class="flex items-center">
-                        <span class="mr-2">40%</span>
-                        <div class="relative w-full">
-                          <div
-                            class="overflow-hidden h-2 text-xs flex rounded bg-blue-200"
-                          >
-                            <div
-                              style="width: 40%"
-                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="text-gray-700 dark:text-gray-100">
-                    <th
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                    >
-                      Composante2
-                    </th>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      12
-                    </td>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      <div class="flex items-center">
-                        <span class="mr-2">40%</span>
-                        <div class="relative w-full">
-                          <div
-                            class="overflow-hidden h-2 text-xs flex rounded bg-blue-200"
-                          >
-                            <div
-                              style="width: 40%"
-                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="text-gray-700 dark:text-gray-100">
-                    <th
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                    >
-                      Composante2
-                    </th>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      12
-                    </td>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      <div class="flex items-center">
-                        <span class="mr-2">40%</span>
-                        <div class="relative w-full">
-                          <div
-                            class="overflow-hidden h-2 text-xs flex rounded bg-blue-200"
-                          >
-                            <div
-                              style="width: 40%"
-                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr class="text-gray-700 dark:text-gray-100">
-                    <th
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                    >
-                      Composante 3
-                    </th>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      4
-                    </td>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      <div class="flex items-center">
-                        <span class="mr-2">45%</span>
-                        <div class="relative w-full">
-                          <div
-                            class="overflow-hidden h-2 text-xs flex rounded bg-pink-200"
-                          >
-                            <div
-                              style="width: 45%"
-                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-pink-500"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="text-gray-700 dark:text-gray-100">
-                    <th
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                    >
-                      Composante 5
-                    </th>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      5
-                    </td>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      <div class="flex items-center">
-                        <span class="mr-2">60%</span>
-                        <div class="relative w-full">
-                          <div
-                            class="overflow-hidden h-2 text-xs flex rounded bg-red-200"
-                          >
-                            <div
-                              style="width: 60%"
-                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="text-gray-700 dark:text-gray-100">
-                    <th
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                    >
-                      Composante
-                    </th>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      16
-                    </td>
-                    <td
-                      class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    >
-                      <div class="flex items-center">
-                        <span class="mr-2">30%</span>
-                        <div class="relative w-full">
-                          <div
-                            class="overflow-hidden h-2 text-xs flex rounded bg-blue-200"
-                          >
-                            <div
-                              style="width: 30%"
-                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-700"
                             ></div>
                           </div>
                         </div>
@@ -881,8 +699,9 @@ import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
 
-import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-import utils from '@/utils/index'
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+import utils from "@/utils/index";
+import Projet from "@/store/modules/projets/projet";
 
 export default {
   components: {
@@ -897,7 +716,8 @@ export default {
     return {
       isStateChange: false,
       showModal: false,
-      stats : [],
+      stats: [],
+      projet: new Projet(),
       champsRecherche: [
         {
           name: "Date debut",
@@ -1086,44 +906,38 @@ export default {
     };
   },
 
-  computed:{
-
+  computed: {
     //importation des variables du module auths
     ...mapState({
-      projet: state => state.projets.projet,
-      loading : state => state.loading,
-      errors : state => state.errors
+      loading: (state) => state.loading,
+      errors: (state) => state.errors,
     }),
 
     ...mapGetters({
-      projet: "projets/getProjet",
-      currentUser : 'auths/GET_AUTHENTICATE_USER'
-    })
-    
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+
+    checkStats() {
+      return this.stats;
+    },
   },
 
   methods: {
     //Charger les fonctions de communication avec le serveur
-    
+
     ...mapMutations({
-      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setProjet: 'projets/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
     }),
 
-    ...mapActions('projets', {
+    ...mapActions("projets", {
       getProjet: "GET_PROJET",
-      getStatistique: "GET_STATISTIQUE"
+      getStatistique: "GET_STATISTIQUE",
     }),
 
+    modifier() {},
 
-    modifier(){
+    supprimer() {},
 
-    },
-
-    supprimer(){
-
-    },
-    
     gotocadreLogique(id) {
       this.$router.push({
         name: "projets_id_cadreLogique",
@@ -1131,19 +945,35 @@ export default {
       });
     },
 
+    getMontant() {
+      if (this.projet?.id) {
+        return this.projet.pret + this.projet.budgetNational;
+      }
+      return 0;
+    },
   },
 
-  created(){
-    console.log("Getting projet...")
-  
-    this.setProjet(this.$route.params.projet)
+  watch: {
+    checkStats: function (stats) {
+      this.projet = stats.data.data;
+    },
+  },
 
-    //this.stats = this.getStatistique(projet.id)
-
+  created() {
+    console.log("Getting projet...");
+    /* 
+    console.log(this.$route.params.projet)
+    if(this.$route.params.projet !== undefined){
+      this.projet = this.$route.params.projet
+    }
+ */
+    this.getStatistique(this.$route.params.id).then((value) => {
+      this.stats = value;
+    });
   },
 
   mounted() {
-
+    console.log(this.projet);
     var map = tt.map({
       key: "0sJaQAQga6Y8A6ZOclM8AU6RqAhetXr7",
       container: "map",
@@ -1152,10 +982,7 @@ export default {
     map.addControl(new tt.FullscreenControl());
 
     map.addControl(new tt.NavigationControl());
-
-    
-  }
-
+  },
 };
 </script>
 

@@ -54,9 +54,13 @@ import typeAnos from "./modules/typeAnos/index";
 
 import eActivites from "./modules/eActivites/index";
 
+import formulaires from "./modules/formulaires/index";
+
+import suiviFinanciers from "./modules/suiviFinanciers/index";
+
 import decaissements from "./modules/decaissements/index";
 
-
+import planDeDecaissements from "./modules/planDeDecaissements/index";
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -80,6 +84,29 @@ export default new Vuex.Store({
         type: 'ppm'
       }
     ],
+
+    trimestres : [
+      {
+        valeur : 1,
+        trimestre: 'Trimestre 1'
+      },
+
+      {
+        valeur : 2,
+        trimestre: 'Trimestre 2'
+      },
+
+      {
+        valeur : 3,
+        trimestre: 'Trimestre 3'
+      },
+
+      {
+        valeur : 4,
+        trimestre: 'Trimestre 4'
+      }
+    ],
+
     statuts : [
       {
         nom : "Non validé",
@@ -178,8 +205,11 @@ export default new Vuex.Store({
     eActivites,
     utilisateurs,
     roles,
+    formulaires,
+    suiviFinanciers,
     sinistres,
-    decaissements
+    decaissements,
+    planDeDecaissements
   }
 });
 

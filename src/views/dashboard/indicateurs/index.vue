@@ -73,7 +73,6 @@ import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
-import $ from "jquery";
 export default {
   components: {
     Vtable,

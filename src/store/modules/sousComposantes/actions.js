@@ -24,7 +24,8 @@ export default {
 
         const { data, status } = await SousComposanteService.get();
 
-        commit(SET_LIST_SOUS_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_SOUS_COMPOSANTE, data.data);
 
         return { data, status };
     },
@@ -33,7 +34,8 @@ export default {
         
         const { data, status } = await ComposanteService.sousComposantes(id);
 
-        commit(SET_LIST_SOUS_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_SOUS_COMPOSANTE, data.data);
 
         return { data, status };
     },
@@ -57,17 +59,19 @@ export default {
         
         const { data, status } = await SousComposanteService.create(payload);
 
-        commit(ADD_SOUS_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_SOUS_COMPOSANTE, data.data);
 
         return { data, status };
 
     },
 
     async UPDATE_SOUS_COMPOSANTE ({ commit }, {sousComposante, id}) {
-        console.log(id)
+
         const { data, status } = await SousComposanteService.update(id, sousComposante);
 
-        commit(MODIFY_SOUS_COMPOSANTE, data.data);
+        if(status === 200 || status === 201)
+            commit(MODIFY_SOUS_COMPOSANTE, data.data);
 
         return { data, status };
 
@@ -77,7 +81,8 @@ export default {
         
         const { data, status } = await SousComposanteService.destroy(idSousComposante);
 
-        commit(REMOVE_SOUS_COMPOSANTE, idSousComposante);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_SOUS_COMPOSANTE, idSousComposante);
 
         return { data, status };
 
