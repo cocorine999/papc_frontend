@@ -113,7 +113,7 @@
           </div>
         </div>
        
-        <vtable :headers="headers" :datas="suivis" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>    
+        <vtable :headers="headers" :datas="suivis" :actions="actions"  @suivre="suivreIndicateur"></vtable>    
     </div>
   </dashboard>
 
@@ -171,8 +171,7 @@ export default {
         ],
        
         actions:[
-          {name:'modifier',iconne:''},
-          {name:'supprimer',iconne:''},
+          {name:'suivre'}
         ],
 
       });
@@ -231,6 +230,10 @@ export default {
       updateSuivi: "UPDATE_SUIVI",
       deleteSuivi: "DESTROY_SUIVI",
     }),
+    suivreIndicateur(data){
+      this.showModal = true
+      this.title = `Suivre l'indicateur ${data}`
+    },
     sendForm() {
       this.champs = this.champs.map((item) => {
         item.errors = [];

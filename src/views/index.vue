@@ -58,6 +58,9 @@
           </div>
         </div>
 
+        <div>
+          <p class="text-md font-semibold text-center text-gray-700">&copy; 2022 Banque Mondiale.Tout droit réservé </p>
+        </div>
 
         <div>
           <p class="text-md font-semibold text-center text-gray-700">&copy; 2022 Banque Mondiale.Tout droit réservé </p>

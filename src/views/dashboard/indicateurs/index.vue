@@ -56,7 +56,7 @@
         </div>
       </div>
      
-      <vtable :headers="headers" :datas="indicateurs" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @supprimer="supprimer"></vtable>
+      <vtable :headers="headers" :datas="indicateurs" :actions="actions" @updateInputData="updateInputData" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -112,7 +112,7 @@ export default {
         headers:[],
         
         actions:[
-          {name:'suivre',iconne:''},
+          {name:'consulter',iconne:''},
           {name:'supprimer',iconne:''},
         ]
 
@@ -203,7 +203,7 @@ export default {
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
-    suivreIndicateur(id){
+    consulterSuivi(id){
       this.$router.push({name:'indicateurs_suivi',params:{id:id}})
     },
     sendForm() {
