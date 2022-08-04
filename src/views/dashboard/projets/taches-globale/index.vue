@@ -228,7 +228,6 @@
           <div v-for="(tache, index) in taches" :key="index">
             <card-tache
               :bailleur="tache.bailleur.sigle"
-              activiteName="Tache"
               :statut="getStatus(tache.statut)"
               :poids="tache.poids"
               :libelle="tache.nom"
@@ -289,7 +288,6 @@ export default {
       showFiltre:false,
       showModal: false,
       showModal2: false,
-      loading: false,
       line: false,
       mosaique: true,
       isStateChange: false,
@@ -520,20 +518,19 @@ export default {
         })
           .then((response) => {
             if (response.status == 200 || response.status == 201) {
-              this.close();
+              
+              this.showCloseModal();
 
               this.sendRequest = false;
             }
           })
           .catch((error) => {
-            this.setErrors({
+
+            console.log(error)
+            /* this.setErrors({
               message: error?.response?.data?.message,
               errors: error.response.data.errors,
-            });
-
-            this.champs.map(
-              (value) => (value.errors = this.erreurs[value.key])
-            );
+            }); */
 
             this.sendRequest = false;
           });

@@ -10,11 +10,7 @@
     <div class="absolute right-1 flex space-x-3 top-4 z-10 cursor-pointer">
       <span
         v-if="!isValidate"
-        :title="
-          activiteName != undefined
-            ? activiteName.concat(' non valider')
-            : 'Activite non valider'
-        "
+        title="Activite non valider"
         class="text-red-300"
         ><svg
           stroke="currentColor"
@@ -43,11 +39,7 @@
 
       <span
         v-if="isValidate"
-        :title="
-          activiteName != undefined
-            ? activiteName.concat(' valider')
-            : 'Activite valider'
-        "
+        title="Activite valider"
         class="text-green-500"
         ><svg
           stroke="currentColor"
@@ -86,11 +78,7 @@
 
         <div v-if="!isValidate">
           <button
-            :title="
-              activiteName != undefined
-                ? 'Valider la '.concat(activiteName)
-                : 'Valider l\' activite'
-            "
+            title="Valider l\' activite"
             v-if="showValidate"
             @click="validation"
             class="bg-green-500 rounded-lg text-sm px-3 py-1 font-semibold text-white"
@@ -178,8 +166,7 @@ export default {
     "structureResponsable",
     "debut",
     "fin",
-    "statut",
-    "activiteName",
+    "statut"
   ],
   components: { Dropdown },
   data() {

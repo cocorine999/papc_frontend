@@ -22,37 +22,46 @@ export default {
     FETCH_LIST_PROJET : async ({ commit }, id) => {
 
         const { data, status } = await ProjetService.get();
-
-        commit(SET_LIST_PROJET, data.data);
+        
+        if(status === 200 || status === 201)
+            commit(SET_LIST_PROJET, data.data);
 
         return { data, status };
     },
     
     GET_STATISTIQUE : async ({ commit }, id) => {
 
-        return await ProjetService.statistiques(id);
+        const { data } = await ProjetService.statistiques(id);
+
+        return { data };
     },   
     
     FETCH_LIST_PROJET_OF_PROGRAMME : async ({ commit }, id) => {
 
         const { data, status } = await ProgrammeService.projets(id);
 
-        commit(SET_LIST_PROJET, data.data);
+        if(status === 200 || status === 201)
+            commit(SET_LIST_PROJET, data.data);
 
         return { data, status };
     },   
 
     async GET_PROJET ({ commit, getters }, {key, value }) {
 
+        let projet = null;
+
         const { data, status } = await ProjetService.get(payload, value);
 
-        return projet
+        if(status === 200 || status === 201 || status === 204)
+            projet = data
+
+        return projet 
 
         commit(ADD_PROJET, data.data);
 
         return { data, status };
 
-        let projet = getters.findProjet({key: key, value : value})
+        projet = getters.findProjet({key: key, value : value})
 
         if((projet === null || projet || undefined) && typeof value === "int"){
 
@@ -68,7 +77,8 @@ export default {
         
         const { data, status } = await ProjetService.create(payload);
 
-        commit(ADD_PROJET, data.data);
+        if(status === 200 || status === 201)
+            commit(ADD_PROJET, data.data);
 
         return { data, status };
 
@@ -78,7 +88,9 @@ export default {
         
         const { data, status } = await ProjetService.update(id, projet);
 
-        commit(MODIFY_PROJET, data.data);
+
+        if(status === 200 || status === 201)
+            commit(MODIFY_PROJET, data.data);
 
         return { data, status };
 
@@ -88,7 +100,8 @@ export default {
         
         const { data, status } = await ProjetService.destroy(idProjet);
 
-        commit(REMOVE_PROJET, idProjet);
+        if(status === 200 || status === 201 || status === 204)
+            commit(REMOVE_PROJET, idProjet);
 
         return { data, status };
 

@@ -13,304 +13,23 @@
             @closeModal="close"
           ></vform>
         </div>
-        <!-- 
-        <form action="" @submit.prevent="save" class="p-4" >
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light">Nom du activé <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
-            </div>
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
-            </div>
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Selectionner un sous composant <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option v-for="i in 5" :key="i.id">sous composante {{i}}</option>
-                
-              </select>
-            </div>
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
-            </div>
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option v-for="i in 5" :key="i.id" value=""> {{i}} </option>
-              </select>
-            </div>
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option value="">En cours</option>
-                <option value="">En attente</option>
-                <option value="">En terminer</option>
-              </select>
-            </div>
-
-        
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light block ">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
-            </div>
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required   class="px-3 py-2 mt-1 border-2 w-full border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
-            </div>
-
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Struture associé <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option v-for="i in 5" :key="i.id" value=""> Struture Associé {{i}} </option>
-              </select>
-            </div>
-
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Struture responsable <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option v-for="i in 5" :key="i.id" value=""> Struture responsable {{i}} </option>
-              </select>
-            </div>
-
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Struture responsable <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full   focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option v-for="i in 5" :key="i.id" value=""> responsable Pool {{i}} </option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2" v-for="date in dates" :key="date.id">
-              <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
-              </div>
-              <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <div class="flex space-x-2 items-center">
-                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
-                  <span title="ajouter une nouvelle date" @click="addDate" class="text-primary"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg></span>
-                </div>
-              </div>
-            </div>
-            <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 '>
-              <button v-if="title == 'Ajouter une activité' || title== 'Dupliquer un sous composant' " type="submit" class='w-auto p-1 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-                <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-                Enregistrer et fermer
-                </span>
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-
-              <button v-if="title == 'Modifier une activite'  " type="submit" class='w-full px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-                <span  class="mx-2 text-xs font-semibold uppercase" v-if="loading == false">
-                  Modifier
-                </span>
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-
-              <button v-if="title == 'Ajouter une activité' || title== 'Dupliquer une activité' " type="submit" class='w-auto p-1 font-medium text-white  shadow-xl bg-primary hover:opacity-80'> 
-                <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-                Enregistrer et ajouter
-                </span>
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            </div>
-          </form>
-        -->
+       
       </modal-top-right>
 
+
       <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
-        <form
-          action=""
-          @submit.prevent="save"
-          class="px-12"
-          style="width: 60vw !important"
-        >
-          <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
-            <div class="grid grid-cols-1">
-              <label
-                class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light"
-                >Entrer l'année base
-                <span class="px-2 text-lg font-black text-red-700"
-                  >*</span
-                ></label
-              >
-              <input
-                required
-                class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
-                type="number"
-              />
-            </div>
-            <div class="grid grid-cols-1">
-              <label
-                class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light"
-                >Selectionner le trimestre
-                <span class="px-2 text-lg font-black text-red-700"
-                  >*</span
-                ></label
-              >
-              <select
-                class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
-                name=""
-                id=""
-              >
-                <option v-for="i in 4" :key="i.id" value="">
-                  Trimestre {{ i }}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 gap-5 mt-3 md:grid-cols-2 md:gap-8 mx-4">
-            <div class="grid grid-cols-1">
-              <label
-                class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light"
-                >Montant BN
-                <span class="px-2 text-lg font-black text-red-700"
-                  >*</span
-                ></label
-              >
-              <input
-                required
-                class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
-                type="number"
-                placeholder="Entrer le BN"
-              />
-            </div>
-            <div class="grid grid-cols-1">
-              <label
-                class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light"
-                >Montant EPM-PRET
-                <span class="px-2 text-lg font-black text-red-700"
-                  >*</span
-                ></label
-              >
-              <input
-                required
-                class="px-3 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
-                type="number"
-                placeholder="Entrer le EPM pret "
-              />
-            </div>
-          </div>
-
-          <div class="mx-4 mt-3">
-            <label
-              class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"
-              >Selectionnez une activité
-              <span class="px-2 text-lg font-black text-red-700">*</span></label
-            >
-            <select
-              class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2 focus:border-transparent"
-              name=""
-              id=""
-            >
-              <option v-for="i in 5" :key="i.id" value="">
-                activité {{ i }}
-              </option>
-            </select>
-          </div>
-
-          <div
-            class="flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8"
-          >
-            <button
-              v-if="
-                title == 'Ajouter un plan decaissement' ||
-                title == 'Dupliquer un plan decaissement'
-              "
-              type="submit"
-              class="w-auto px-4 py-2 font-medium text-white shadow-xl bg-blue-500 hover:opacity-80"
-            >
-              <span
-                class="mx-2 text-sm font-semibold uppercase"
-                v-if="loading == false"
-              >
-                Enregistrer et fermer
-              </span>
-              <svg
-                v-else
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 animate-spin"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-            </button>
-
-            <button
-              v-if="title == 'Modifier un plan de decaissement'"
-              type="submit"
-              class="w-full mx-4 px-1 py-2 font-medium text-white shadow-xl bg-blue-500 hover:opacity-80"
-            >
-              <span
-                class="mx-2 text-xs font-semibold uppercase"
-                v-if="loading == false"
-              >
-                Modifier
-              </span>
-              <svg
-                v-else
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 animate-spin"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-            </button>
-
-            <button
-              v-if="
-                title == 'Ajouter un plan decaissement' ||
-                title == 'Dupliquer un plan decaissement'
-              "
-              type="submit"
-              class="w-auto px-4 py-2 font-medium text-white shadow-xl bg-primary hover:opacity-80"
-            >
-              <span
-                class="mx-2 text-sm font-semibold uppercase"
-                v-if="loading == false"
-              >
-                Enregistrer et ajouter
-              </span>
-              <svg
-                v-else
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 animate-spin"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-            </button>
-          </div>
-        </form>
+        <div class="p-4 overflow-auto">
+          <vform
+            template="default"
+            :champs="champs2"
+            :cols="cols"
+            :submitText="submitText"
+            :sendRequest="sendRequest"
+            @sendForm="savePlanDecaissement"
+            @closeModal="close2"
+          ></vform>
+        </div>
+       
       </modal-top-right>
 
       <nav
@@ -425,7 +144,7 @@
               ></path></svg
           ></span>
           <span class="mx-2 text-sm font-semibold"
-            >ajouter un plan d'ecaissement</span
+            >ajouter un plan de décaissement</span
           >
         </button>
       </div>
@@ -440,7 +159,6 @@
 
             <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
           
-
               <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
@@ -582,17 +300,39 @@
       </div>
 
       <div v-if="seePlan">
+
+
+        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+          <div class="flex items-center justify-between">
+            <!--Filtre sur projet -->
+            <div class="w-2/5 flex items-center space-x-2">
+            
+              <multiselect
+                v-model="activiteFiltre"
+                :options="activites"
+                :preselect-first="true"
+                placeholder="selectionnez une activite"
+                label="nom"
+                track-by="id"
+              ></multiselect>
+            </div>
+            
+          </div>
+
+        </div>
+
         <div class="my-4 grid grid-cols-4 gap-4">
-          <div v-for="(i, index) in 4" :key="index">
+          <div v-for="(planDeDecaissement, index) in planDeDecaissements" :key="index">
             <card>
               <div class="p-2">
                 <div class="flex justify-between">
                   <h1 class="font-base font-bold text-gray-900">
-                    année {{ 2018 + index }}
+                    {{ planDeDecaissement.annee }}
                   </h1>
                   <div>
                     <dropdown
-                      @modifier="modifier"
+                      @modifier="modifierPlan(planDeDecaissement)"
+                      @supprimer="supprimerPlan(planDeDecaissement)"
                       @duplicate="dupliquer"
                       :option="optionActivite"
                     ></dropdown>
@@ -601,23 +341,23 @@
                 <div class="my-2">
                   <p class="text-sm font-semibold py-1">
                     <span class="font-bold">Activité :</span>
-                    <span class="text-gray-700"> {{ index }} </span>
+                    <span class="text-gray-700"> {{ planDeDecaissement.activite.nom }} </span>
                   </p>
                   <p class="text-sm font-semibold py-1">
                     <span class="font-bold">Trimestre :</span>
-                    <span class="text-gray-700"> {{ index + 1 }} </span>
+                    <span class="text-gray-700"> {{ planDeDecaissement.trimestre }} </span>
                   </p>
                   <p class="text-sm font-semibold py-1">
                     <span class="font-bold">Montant BN :</span>
-                    <span class="text-gray-700">100M</span>
+                    <span class="text-gray-700"> {{ planDeDecaissement.budgetNational }}</span>
                   </p>
                   <p class="text-sm font-semibold py-1">
                     <span class="font-bold">Montant EPM-PRET :</span>
-                    <span class="text-gray-700">1000M</span>
+                    <span class="text-gray-700"> {{ planDeDecaissement.pret }}</span>
                   </p>
                   <p class="text-sm font-semibold py-1">
-                    <span class="font-bold pr-2">De</span> 01/01/2019
-                    <span class="font-bold px-2">Au</span> 31/12/2025
+                    <span class="font-bold pr-2">De</span> {{ planDeDecaissement.debut }}
+                    <span class="font-bold px-2">Au</span> {{ planDeDecaissement.fin }}
                   </p>
                   <div class="flex justify-between">
                     <div></div>
@@ -634,6 +374,8 @@
             </card>
           </div>
         </div>
+        
+
       </div>
 
       <div v-if="seeSuivi">
@@ -716,6 +458,8 @@ import Dashboard from "@/layouts/Dashboard";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
+import Activite from '@/store/modules/activites/activite';
+import moment from 'moment'
 
 export default {
   components: {
@@ -734,6 +478,7 @@ export default {
   data() {
     return {
       valueFiltre: null,
+      activiteFiltre: null,
       composanteId: null,
       projetFiltre: null,
       composanteFiltre: null,
@@ -748,6 +493,9 @@ export default {
       showFiltre: false,
       
       activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'statut', 'poids'],
+
+
+      planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
 
       champs:[
 
@@ -765,6 +513,16 @@ export default {
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
+
+      champs2:[
+
+        {name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'value', value: 'trimestre',  errors : []},
+        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        
+      ],
+
 
       showModal: false,
       showModal2: false,
@@ -1081,6 +839,8 @@ export default {
       entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       activites: "activites/getActivites",
       activite: "activites/getActivite",
+      planDeDecaissements: "planDeDecaissements/getPlanDeDecaissements",
+      planDeDecaissement: "planDeDecaissements/getPlanDeDecaissement",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
   },
@@ -1089,6 +849,8 @@ export default {
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setPlanDeDecaissement: "planDeDecaissements/FILL", // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setPlanDeDecaissements: "planDeDecaissements/SET_LIST_PLAN_DE_DECAISSEMENT",
       setActivite: "activites/FILL", // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setActivites: "activites/SET_LIST_ACTIVITES",
       setComposantes: 'composantes/SET_LIST_COMPOSANTES',
@@ -1100,6 +862,13 @@ export default {
       saveActivite: "STORE_ACTIVITE",
       updateActivite: "UPDATE_ACTIVITE",
       deleteActivite: "DESTROY_ACTIVITE",
+    }),
+
+    ...mapActions("planDeDecaissements", {
+      fetchPlanDeDecaissements: "FETCH_LIST_PLAN_DE_DECAISSEMENT_ACTIVITE",
+      savePlanDeDecaissement: "STORE_PLAN_DE_DECAISSEMENT",
+      updatePlanDeDecaissement: "UPDATE_PLAN_DE_DECAISSEMENT",
+      deletePlanDeDecaissement: "DESTROY_PLAN_DE_DECAISSEMENT",
     }),
 
     ...mapActions({
@@ -1121,6 +890,7 @@ export default {
       this.seeActivite = true;
       this.seeSuivi = false;
       this.seeStatistique = false;
+      this.fetchActivites(this.composanteId)
     },
 
     gotoStatistique() {
@@ -1135,6 +905,8 @@ export default {
       this.seeActivite = false;
       this.seeSuivi = false;
       this.seeStatistique = false;
+
+      this.fetchPlanDeDecaissements(this.activites[0]?.id)
     },
 
     gotoSuivi() {
@@ -1160,21 +932,41 @@ export default {
 
     close2() {
       this.showModal2 = false;
+
+      this.resetForm();
+
+      this.sendRequest = false;
     },
 
     addPlan() {
-      this.title = "Ajouter un plan decaissement";
+
+      this.title ="Ajouter un un plan de decaissement"
+
+      this.submitText="Enregistrer"
+
       this.showModal2 = true;
     },
 
     modifierPlan() {
       this.title = "Modifier un plan de decaissement";
+      this.submitText="Modifier"
       this.showModal2 = true;
     },
 
-    dupliquerPlan() {
-      this.title = "Dupliquer un plan decaissement";
+    modifierPlan() {
+      this.title = "Modifier un plan de decaissement";
+      this.submitText="Modifier"
       this.showModal2 = true;
+    },
+
+    supprimerPlan(plan){
+      if(window.confirm("Voulez-vous supprimer ce plan de décaissement ")){
+        if(this.sendRequest === false){
+          this.sendRequest = true;
+          this.deletePlanDeDecaissement(plan.id)
+          this.sendRequest = false;
+        }
+      }
     },
 
     addActivite() {
@@ -1303,6 +1095,57 @@ export default {
       }
     },
 
+    savePlanDecaissement() {
+      if (this.sendRequest === false) {
+        this.sendRequest = true;
+
+        this.champs2 = this.champs2.map((item) => {
+          item.errors = [];
+          return item;
+        });
+
+        let planDeDecaissement = extractFormData(this.champs2, this.planDeDecaissementAttributs);
+
+        console.log( this.activiteFiltre )
+        console.log(planDeDecaissement)
+
+        planDeDecaissement['activiteId'] = this.activiteFiltre.id;
+
+        planDeDecaissement.annee = moment(planDeDecaissement.annee).format('YYYY')
+
+        planDeDecaissement.trimestre = planDeDecaissement.trimestre.valeur;
+
+        console.log(planDeDecaissement)
+
+        if (this.planDeDecaissement?.id) {
+          this.updatePlanDeDecaissement({ planDeDecaissement: planDeDecaissement, id: this.planDeDecaissement?.id })
+            .then((response) => {
+              if (response.status == 200 || response.status == 201) {
+                this.close2();
+              }
+            })
+            .catch((error) => {
+              this.setErrors({
+                message: error?.response?.data?.message,
+                errors: error.response.data.errors,
+              });
+
+              this.champs.map(
+                (value) => (value.errors = this.erreurs[value.key])
+              );
+            });
+        } else {
+          this.savePlanDeDecaissement(planDeDecaissement).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.close();
+            }
+          });
+        }
+
+        this.sendRequest = false;
+      }
+    },
+
     sendForm() {
       if (this.sendRequest === false) {
         this.sendRequest = true;
@@ -1357,6 +1200,15 @@ export default {
 
     close() {
       this.showCloseModal();
+
+      this.resetForm();
+
+      this.sendRequest = false;
+    },
+
+    close2() {
+
+      this.showModal2 = value;
 
       this.resetForm();
 
@@ -1512,6 +1364,32 @@ export default {
       }
 
     },
+    
+    activites: function (activites) {
+
+      if(this.seePlan){
+        if(activites.length > 0){
+          this.activiteFiltre = activites[0]
+        }
+        else{
+          this.activiteFiltre = null
+        }
+      }
+    },
+
+    activiteFiltre: function(valeur){
+
+      if( valeur instanceof Activite || valeur instanceof Object )
+      {
+        this.fetchPlanDeDecaissements(valeur.id);
+      }
+      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
+        this.fetchPlanDeDecaissements(valeur);
+      }
+      else{ 
+        this.setPlanDeDecaissements([])
+      }
+    }, 
 
   },
 

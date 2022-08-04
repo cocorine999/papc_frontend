@@ -4,7 +4,7 @@
       <div v-if="isNotGenere" class="container mx-auto">
         <div class="my-8 flex space-x-5 justify-between">
           <div class="w-full">
-            <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configuration de la checklist</h3>
+            <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configurer le formulaire</h3>
             <div class="my-3 w-full" >
               <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
               <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
@@ -75,7 +75,7 @@
         </div>
        
         <div>
-          <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer la checklist</button>
+          <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer le formulaire</button>
         </div>
         
       </div>

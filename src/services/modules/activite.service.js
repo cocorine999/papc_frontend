@@ -33,6 +33,10 @@ const ActiviteService = {
       return ApiService.get(`activites/${slug}/taches`);
     },
 
+    plansDeDecaissement(slug) {
+      return ApiService.get(`activites/${slug}/plansDeDecaissement`);
+    }
+
   };
 
   export default ActiviteService;

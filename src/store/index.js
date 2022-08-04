@@ -62,6 +62,8 @@ import decaissements from "./modules/decaissements/index";
 
 import pointFinancier from "./modules/pointFinancier/index";
 
+import planDeDecaissements from "./modules/planDeDecaissements/index";
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
@@ -84,6 +86,29 @@ export default new Vuex.Store({
         type: 'ppm'
       }
     ],
+
+    trimestres : [
+      {
+        valeur : 1,
+        trimestre: 'Trimestre 1'
+      },
+
+      {
+        valeur : 2,
+        trimestre: 'Trimestre 2'
+      },
+
+      {
+        valeur : 3,
+        trimestre: 'Trimestre 3'
+      },
+
+      {
+        valeur : 4,
+        trimestre: 'Trimestre 4'
+      }
+    ],
+
     statuts : [
       {
         nom : "Non validé",
@@ -215,7 +240,7 @@ export default new Vuex.Store({
     suiviFinanciers,
     sinistres,
     decaissements,
-    pointFinancier
+    pointFinancier,
+    planDeDecaissements
   }
 });
-
