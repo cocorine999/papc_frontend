@@ -21,7 +21,7 @@
     <div class="flex items-center justify-between">
       <titre>Point financier </titre>     
     </div>
-    <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+    <vtable :headers="headers" :datas="pointFinancier"></vtable>
   </div>
   </dashboard>
  
@@ -32,6 +32,7 @@ import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
 import Dashboard from '@/layouts/Dashboard'
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   components: {
@@ -43,55 +44,48 @@ export default {
     data() {
         return {
         headers:[
-          {name:'Bailleur',props:'bailleur'},
-          {name:'Montants financier',props:'montant_financier'},
-          {name:'Taux de decaissement',props:'taux'},
-          {name:'PTAB',props:'ptab'},
-          {name:'Decaissement',props:'decaissement'},
-          {name:'Realisation PTAB ',props:'realisation'},
-          {name:'TEF',props:'tef'},
-          {name:'TEF GLOBALE',props:'tefGlobale'},
-          {name:'Date de creation',props:'created_at'},
+          {name:'Bailleur',props:'bailleur', cle:'bailleur'},
+          {name:'Montants financier',props:'montant_financier', cle:'montanFinancier'},
+          {name:'Taux de decaissement',props:'taux', cle:'tauxDeDecaissement'},
+          {name:'PTAB',props:'ptab', cle:'ptab'},
+          {name:'Decaissement',props:'decaissement', cle:'decaissement'},
+          {name:'Realisation PTAB ',props:'realisation', cle:'realisationPta'},
+          {name:'TEF',props:'tef', cle:'tef'},
+          {name:'TEF GLOBALE',props:'tefGlobale', cle:'tefGlobal'},
         ],
-        dataTable:[
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-          {bailleur:'BM',montant_financier:'2000000000',taux:'5%',ptab:'',decaissement:'50000000',realisation:'',tef:'',tefGlobale:'',created_at:'27-07-2022'},
-         
-        ],
-        actions:[
-         
-          {name:'supprimer',iconne:''},
-        ]
       };
     },
-    mounted() {
+    computed:{
+
+  //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      pointFinancier: state => state.pointFinancier.suiviFinancier,
+      loading : state => state.loading,
+      errors : state => state.errors,
+    }),
+
+    ...mapGetters({
+      pointFinancier: "pointFinancier/getPointFinancier",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    }),   
+    
+  },
+    
+  methods: {
+    ...mapActions('pointFinancier', { fetchPointFinancier: 'FETCH_LIST_POINTFINANCIER' }),
+
     },
-    methods: {
-      sendForm() {
-        alert('donnée envoyer')
-      },
-      close() {
-        this.showModal = false
-      },
-      addDecaissement() {
-        this.title ="Ajouter un decaissement"
-        this.showModal = true
-      },
-      modifier(data) {
-        this.title ="Modifier un decaissement"
-        this.showModal = true
-        alert(data +" à ete modifier")
-      },
-      supprimer(data) {
-        alert(data +" à ete bien supprimer")
-      }
-    }
+    mounted() {
+      console.log("Fetching point financier ...")
+      let form = 
+        {
+          "programmeId" : this.currentUser?.programme?.id, 
+          "annee" : (new Date()).getFullYear()
+        }
+      
+      this.fetchPointFinancier(form);
+    },
   }
 </script>
 

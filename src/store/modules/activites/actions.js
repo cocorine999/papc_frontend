@@ -21,6 +21,15 @@ export default {
 
         return { data, status };
     },
+
+    FETCH_LIST_ACTIVITE_OF_PROGRAMME : async ({ commit }, id) => {
+
+        const { data, status } = await ProgrammeService.activites(id);
+
+        commit(SET_LIST_ACTIVITE, data.data);
+
+        return { data, status };
+    },
         
     FETCH_LIST_ACTIVITE_OF_COMPOSANTE : async ({ commit }, id) => {
         

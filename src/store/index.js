@@ -60,6 +60,8 @@ import suiviFinanciers from "./modules/suiviFinanciers/index";
 
 import decaissements from "./modules/decaissements/index";
 
+import pointFinancier from "./modules/pointFinancier/index";
+
 import planDeDecaissements from "./modules/planDeDecaissements/index";
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
@@ -127,6 +129,35 @@ export default new Vuex.Store({
       {
         nom: "Terminé",
         etat: 2
+      }
+    ],
+
+    trimestres :[
+      {
+        id : 1, 
+        nom : "trimestre 1"
+      }, 
+      {
+        id : 2,
+        nom : "trimestre 2"
+      }, 
+      {
+        id : 3, 
+        nom : "trimestre 3"
+      }, 
+      {
+        id : 4, 
+        nom : "trimestre 4"
+      }
+    ],
+    sources : [
+      {
+        id : 1, 
+        nom : "Budget National"
+      },
+      {
+        id : 0, 
+        nom : "Pret"
       }
     ],
   },
@@ -209,7 +240,7 @@ export default new Vuex.Store({
     suiviFinanciers,
     sinistres,
     decaissements,
+    pointFinancier,
     planDeDecaissements
   }
 });
-
