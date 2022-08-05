@@ -155,14 +155,15 @@
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">
             
-            <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
 
-            <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+            <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
           
               <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
                 :preselect-first="true"
+                :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
                 label="nom"
                 track-by="id"
@@ -333,7 +334,6 @@
                     <dropdown
                       @modifier="modifierPlan(planDeDecaissement)"
                       @supprimer="supprimerPlan(planDeDecaissement)"
-                      @duplicate="dupliquer"
                       :option="optionActivite"
                     ></dropdown>
                   </div>
@@ -537,9 +537,8 @@ export default {
       option: [{ name: "supprimer" }, { name: "modifier" }],
 
       optionActivite: [
-        { name: "Voir plan decaissement" },
         { name: "supprimer" },
-        { name: "modifier" },
+        { name: "modifier" }
       ],
 
       dates: [{}],
@@ -879,6 +878,10 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
+    customLabel ({ codePta, nom }) {
+      return `${codePta} – ${nom}`
+    },
+
     supprimerT() {},
 
     filtreRange(value) {
@@ -905,8 +908,6 @@ export default {
       this.seeActivite = false;
       this.seeSuivi = false;
       this.seeStatistique = false;
-
-      this.fetchPlanDeDecaissements(this.activites[0]?.id)
     },
 
     gotoSuivi() {
@@ -930,14 +931,6 @@ export default {
       this.line = true;
     },
 
-    close2() {
-      this.showModal2 = false;
-
-      this.resetForm();
-
-      this.sendRequest = false;
-    },
-
     addPlan() {
 
       this.title ="Ajouter un un plan de decaissement"
@@ -947,15 +940,39 @@ export default {
       this.showModal2 = true;
     },
 
-    modifierPlan() {
+    modifierPlan(planDeDecaissement) {
       this.title = "Modifier un plan de decaissement";
-      this.submitText="Modifier"
-      this.showModal2 = true;
-    },
 
-    modifierPlan() {
-      this.title = "Modifier un plan de decaissement";
       this.submitText="Modifier"
+      
+      this.setPlanDeDecaissement(planDeDecaissement)
+
+      this.planDeDecaissementAttributs.forEach((item) => {
+
+        this.champs2.find((value, index) => {
+
+          if( value.key === "trimestre" && item === "trimestre"){
+
+            this.$store.state.trimestres.map((value) => {
+              if(value.valeur === planDeDecaissement[item]){
+                this.champs2[index]['data'] = value
+              }
+            });
+
+          }
+          else if( value.key === 'annee' ){
+            console.log(  moment( planDeDecaissement.annee + "/" + planDeDecaissement.trimestre + '/01').format("YYYY-MM-DD") )
+            this.champs2[index]['data'] = moment( planDeDecaissement.annee + "/" + planDeDecaissement.trimestre + '/01').format("YYYY-MM-DD")
+          }
+          else if(value.key === item){
+            this.champs2[index]['data'] = planDeDecaissement[item]
+          }
+
+        });
+
+      });
+
+      
       this.showModal2 = true;
     },
 
@@ -963,8 +980,12 @@ export default {
       if(window.confirm("Voulez-vous supprimer ce plan de décaissement ")){
         if(this.sendRequest === false){
           this.sendRequest = true;
-          this.deletePlanDeDecaissement(plan.id)
-          this.sendRequest = false;
+          this.deletePlanDeDecaissement(plan.id).finally((value) => {
+              if (response.status === 200 || response.status === 201) {
+                this.sendRequest = false;
+                this.fetchPlanDeDecaissements(this.activiteFiltre.id);
+              }
+          })
         }
       }
     },
@@ -994,8 +1015,11 @@ export default {
       if(window.confirm("Voulez-vous supprimer l'activite " + activite.nom)){
         if(this.sendRequest === false){
           this.sendRequest = true;
-          this.deleteActivite(activite.id)
-          this.sendRequest = false;
+
+          this.deleteActivite(activite.id).finally((value) => {
+            this.fetchActivites(this.composanteId);
+            this.sendRequest = false;
+          });
         }
       }
     },
@@ -1069,34 +1093,17 @@ export default {
       if (this.sendRequest === false) {
         this.sendRequest = true;
 
-        this.updateActivite({
-          activite: { statut: -1, composanteId: this.composanteId },
-          id: activite.id,
-        })
-          .then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-
-              this.sendRequest = false;
-            }
-          })
-          .catch((error) => {
-            this.setErrors({
-              message: error?.response?.data?.message,
-              errors: error.response.data.errors,
-            });
-
-            this.champs.map(
-              (value) => (value.errors = this.erreurs[value.key])
-            );
-
+        this.updateActivite({ activite: { statut: -1, composanteId: this.composanteId }, id: activite.id })
+          .finally((error) => {              
             this.sendRequest = false;
+            this.fetchActivites(this.composanteId);
           });
       }
     },
 
     savePlanDecaissement() {
       if (this.sendRequest === false) {
+
         this.sendRequest = true;
 
         this.champs2 = this.champs2.map((item) => {
@@ -1106,43 +1113,35 @@ export default {
 
         let planDeDecaissement = extractFormData(this.champs2, this.planDeDecaissementAttributs);
 
-        console.log( this.activiteFiltre )
-        console.log(planDeDecaissement)
-
         planDeDecaissement['activiteId'] = this.activiteFiltre.id;
 
         planDeDecaissement.annee = moment(planDeDecaissement.annee).format('YYYY')
 
         planDeDecaissement.trimestre = planDeDecaissement.trimestre.valeur;
 
-        console.log(planDeDecaissement)
-
         if (this.planDeDecaissement?.id) {
           this.updatePlanDeDecaissement({ planDeDecaissement: planDeDecaissement, id: this.planDeDecaissement?.id })
             .then((response) => {
-              if (response.status == 200 || response.status == 201) {
+              if (response.status === 200 || response.status === 201) {
                 this.close2();
               }
             })
-            .catch((error) => {
-              this.setErrors({
-                message: error?.response?.data?.message,
-                errors: error.response.data.errors,
-              });
-
-              this.champs.map(
-                (value) => (value.errors = this.erreurs[value.key])
-              );
+            .finally((error) => {              
+              this.sendRequest = false;
+              this.fetchPlanDeDecaissements(this.activiteFiltre.id);
             });
         } else {
-          this.savePlanDeDecaissement(planDeDecaissement).then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-            }
-          });
+          this.savePlanDeDecaissement(planDeDecaissement)
+            .then((response) => {
+              if (response.status === 200 || response.status === 201) {
+                this.close2();
+              }
+            })
+            .finally((error) => {              
+              this.sendRequest = false;
+              this.fetchPlanDeDecaissements(this.activiteFiltre.id);
+            });
         }
-
-        this.sendRequest = false;
       }
     },
 
@@ -1172,29 +1171,26 @@ export default {
         if (this.activite?.id) {
           this.updateActivite({ activite: activite, id: this.activite?.id })
             .then((response) => {
-              if (response.status == 200 || response.status == 201) {
+              if (response.status === 200 || response.status === 201) {
                 this.close();
               }
             })
-            .catch((error) => {
-              this.setErrors({
-                message: error?.response?.data?.message,
-                errors: error.response.data.errors,
-              });
-
-              this.champs.map(
-                (value) => (value.errors = this.erreurs[value.key])
-              );
+            .finally((error) => {            
+              this.sendRequest = false;  
+              this.fetchActivites(this.composanteId);
             });
         } else {
-          this.saveActivite(activite).then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-            }
-          });
+          this.saveActivite(activite)
+            .then((response) => {
+              if (response.status === 200 || response.status === 201) {
+                this.close();
+              }
+            })
+            .finally((error) => {          
+              this.sendRequest = false;    
+              this.fetchActivites(this.composanteId);
+            });
         }
-
-        this.sendRequest = false;
       }
     },
 
@@ -1208,11 +1204,20 @@ export default {
 
     close2() {
 
-      this.showModal2 = value;
+      this.showModal2 = false;
 
-      this.resetForm();
+      this.resetForm2();
 
       this.sendRequest = false;
+    },
+
+    resetForm2(){
+
+      this.champs2 = this.champs2.map(item => { item['data'] = ''; return item})
+      
+      window.document.getElementById('vform').reset()
+
+      this.setPlanDeDecaissement({})
     },
 
     resetForm(){
@@ -1235,18 +1240,26 @@ export default {
     },
 
     errors: function (errors) {
-      this.champs.forEach((value) => {
-        if(value.key === "types"){
-        
-          value.errors = errors["type"];
+      if(this.gotoPlan)
+        this.champs2.forEach((value) => {
+          if(value.key === "types"){
+          
+            value.errors = errors["type"];
 
-        }
-        else value.errors = errors[value.key];
-      });
+          }
+          else value.errors = errors[value.key];
+        });
+      else
+        this.champs.forEach((value) => {
+          if(value.key === "types"){
+          
+            value.errors = errors["type"];
+
+          }
+          else value.errors = errors[value.key];
+        });
   
-    },/* 
-    
-    */
+    },
 
     entreprisesExecutante: function (entreprisesExecutante) {
 
@@ -1366,19 +1379,14 @@ export default {
     },
     
     activites: function (activites) {
-
       if(this.seePlan){
         if(activites.length > 0){
           this.activiteFiltre = activites[0]
-        }
-        else{
-          this.activiteFiltre = null
         }
       }
     },
 
     activiteFiltre: function(valeur){
-
       if( valeur instanceof Activite || valeur instanceof Object )
       {
         this.fetchPlanDeDecaissements(valeur.id);
@@ -1390,6 +1398,12 @@ export default {
         this.setPlanDeDecaissements([])
       }
     }, 
+
+    seePlan: function(valeur){
+      if(this.activites.length > 0){
+        this.activiteFiltre = this.activites[0]
+      }
+    }
 
   },
 

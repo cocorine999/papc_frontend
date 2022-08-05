@@ -50,9 +50,9 @@
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
-          <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+          <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
 
-          <multiselect v-model="valueFiltre" :options="composantes" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+          <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
           
           <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
@@ -263,6 +263,10 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
+    customLabel ({ codePta, nom }) {
+      return `${codePta} – ${nom}`
+    },
+
     getIntervale(val){
       return val - 25;
     },
@@ -373,9 +377,13 @@ export default {
     supprimer(sousComposante) {
       if(window.confirm("Voulez-vous supprimer la sous composante " + sousComposante.nom)){
         if(this.sendRequest === false){
+
           this.sendRequest = true;
-          this.deleteSousComposante(sousComposante.id)
-          this.sendRequest = false;
+
+          this.deleteSousComposante(sousComposante.id).finally((response) => {
+                this.sendRequest = false;
+                this.fetchSousComposantes(this.valueFiltre.id);
+          });
         }
       }
     },
@@ -430,23 +438,10 @@ export default {
 
         this.sendRequest = true;
 
-          this.updateSousComposante({sousComposante: { "statut": -1, "composanteId": this.valueFiltre.id }, id : sousComposante.id}).then(response => {
-            
-            if(response.status == 200 || response.status == 201){
-
-              this.close();
-
-              this.sendRequest = false;
-            }
-
-          }).catch((error) => {
-
-            this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors});
-
-            this.champs.map(value => value.errors = this.erreurs[value.key]);
-              
+        this.updateSousComposante({sousComposante: { "statut": -1, "composanteId": this.valueFiltre.id }, id : sousComposante.id})
+          .finally((error) => {
             this.sendRequest = false;
-
+            this.fetchSousComposantes(this.valueFiltre.id);
           })
 
       }
@@ -469,35 +464,34 @@ export default {
         if(this.sousComposante?.id)
         {
 
-          this.updateSousComposante({sousComposante: sousComposante, id : this.sousComposante?.id}).then(response => {
-            
-            if(response.status == 200 || response.status == 201){
+          this.updateSousComposante({sousComposante: sousComposante, id : this.sousComposante?.id})
+            .then(response => {
+              
+              if(response.status === 200 || response.status === 201){
+                this.close()
+              }
 
-              this.close()
-            }
-
-          }).catch((error) => {
-
-            this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-            this.champs.map(value => value.errors = this.erreurs[value.key])
-
-          })
+            })
+            .finally((error) => {
+              this.fetchSousComposantes(this.valueFiltre.id);
+            })
 
         }
         else
         {
           
-          this.saveSousComposante(sousComposante).then(response => {
-            if(response.status == 200 || response.status == 201){
+          this.saveSousComposante(sousComposante)
+          
+            .then(response => {
+              if(response.status === 200 || response.status === 201){
                 this.close()
-            }
+              }
 
-          })
+            })
+            .finally((error) => {              
+              this.fetchSousComposantes(this.valueFiltre.id);
+            })
         }
-
-
-        this.sendRequest = false;
       }
     },
 
