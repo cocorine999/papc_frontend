@@ -4,6 +4,7 @@
     @mouseenter="showValidate = true"
     @mouseleave="showValidate = false"
     class="relative"
+    @click.stop="gotoDetail"
   >
     <!-- dots -->
 
@@ -185,6 +186,9 @@ export default {
       this.isValidate = true;
       this.$emit("validation");
     },
+    gotoDetail() {
+      this.$router.push({name:'dashboard_projets_activites_globale_details',params:{id:1}})
+    }
   },
 };
 </script>

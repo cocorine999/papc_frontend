@@ -6,6 +6,7 @@ import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
 import liens from "../views/liens.vue";
+import password_update from "../views/password_update.vue";
 
 import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
 
@@ -73,7 +74,9 @@ import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
 import projets from "../views/dashboard/projets/index.vue";
 import dashboard_projets_activites_globale from "../views/dashboard/projets/activites-globale/index.vue";
+import dashboard_projets_activites_globale_details from "../views/dashboard/projets/activites-globale/_id/details.vue";
 import dashboard_projets_taches_globale from "../views/dashboard/projets/taches-globale/index.vue";
+import dashboard_projets_taches_globale_details from "../views/dashboard/projets/taches-globale/_id/details.vue";
 import dashboard_projets_composantes_globale from "../views/dashboard/projets/composantes-globale/index.vue";
 import dashboard_projets_sous_composantes_globale from "../views/dashboard/projets/sous-composantes-globale/index.vue";
 import projets_id_details from "../views/dashboard/projets/_id/details.vue";
@@ -144,6 +147,11 @@ const routes = [
     path: "/demo",
     name: "demo",
     component: demo,
+  },
+  {
+    path: "/changer-mots-de-passe",
+    name: "password_update",
+    component: password_update
   },
   {
     path: "/dashboard/roles",
@@ -626,6 +634,16 @@ const routes = [
     },
     name: "dashboard_projets_activites_globale",
   },
+  {
+    path: "/dashboard/projets/activites-globale/:id/details",
+    component: dashboard_projets_activites_globale_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
+    name: "dashboard_projets_activites_globale_details",
+  },
 
   {
     path: "/dashboard/projets/composantes-globale",
@@ -658,6 +676,16 @@ const routes = [
       ]
     },
     name: "dashboard_projets_taches_globale",
+  },
+  {
+    path: "/dashboard/projets/taches-globale/:id/details",
+    component: dashboard_projets_taches_globale_details,
+    meta: {
+      middleware: [
+        auth
+      ]
+    },
+    name: "dashboard_projets_taches_globale_details",
   },
 
   {

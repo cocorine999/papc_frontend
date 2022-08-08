@@ -1,6 +1,6 @@
 <template>
   <div class="md:grid md:grid-cols-2 block ">
-    <div class="absolute bg-cercle "> <img src="/img/auth/cercle.png" width="500px" height="500px" alt=""></div>
+    <div class="absolute bg-cercle "> <img src="/img/cercle.png" width="500px" height="500px" alt=""></div>
     <div class="hidden relative md:px-8  bg-primary md:flex justify-center items-center">
     <div class=" mt-[40vh] ">
       <h1 class="text-4xl font-bold text-white mb-5">
@@ -21,7 +21,7 @@
     <div
       class="w-full  h-screen flex flex-col justify-center items-center relative"
     >
-      <img class="w-48 xl:w-96" src="/img/auth/layer.svg" alt="" />
+      <img class="w-48 xl:w-96" src="/img/layer.svg" alt="" />
       <h1 class="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-3 mt-10 sm:mb-8 text-center text-[#52575C]">
         Mot de passe oublié
       </h1>
