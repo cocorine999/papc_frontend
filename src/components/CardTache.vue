@@ -1,6 +1,6 @@
 <template>
   <!-- cards Tâches -->
-  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative">
+  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false"  @click.stop="gotoDetail" class="relative cursor-pointer">
     <!-- dot -->
     <div class="absolute flex space-x-3 right-1 top-4 z-10  cursor-pointer">
       <span v-if="!isValidate" title="Tâche non valider" class="text-red-300"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z" stroke="none"/><path d="M21 19.1H3V5h18v14.1zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="none"/><path fill="none" d="M21 19.1H3V5h18v14.1zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="none"/><path d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41z" stroke="none"/></svg></span>
@@ -93,6 +93,9 @@ export default {
     validation(){
       this.isValidate=true
       this.$emit('validation')
+    },
+    gotoDetail() {
+      this.$router.push({name:'/dashboard/projets/taches-globale/:id/details',params:{id:1}})
     }
   }
 }
