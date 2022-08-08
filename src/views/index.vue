@@ -58,8 +58,8 @@
           </div>
         </div>
 
-        <div>
-          <p class="text-md font-semibold text-center text-gray-700">&copy; 2022 Banque Mondiale.Tout droit réservé </p>
+        <div class="flex justify-center">
+          <router-link to="#" class="text-md font-semibold text-primary">Mots de passe oublié </router-link>
         </div>
 
         <div>
