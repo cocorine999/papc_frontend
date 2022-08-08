@@ -84,8 +84,8 @@ export default {
           champs:[
           {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'codePta' + ' nom',required:true,},
-          {name:'Source de decaissement',key:'type',type:'',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
+          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:true,},
+          {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
         ],
         champsRecherche:[
           {name:'Date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
@@ -97,7 +97,7 @@ export default {
           
         headers:[
           {name:'Projets',cle:'projet'},
-          {name:'Bailleurs',cle:'bailleurs'},
+          {name:'Bailleur',cle:'bailleur'},
           {name:'Type de decaissement',cle:'type'},
           {name:'Date de decaissement',cle:'date'},
           {name:'Date de creation',cle:'created_at'},
@@ -154,6 +154,9 @@ export default {
 
       let decaissement = extractFormData(this.champs, this.decaissementAttributs)
 
+      decaissement.type = decaissement.type.id
+      decaissement.projetId = decaissement.projetId.id
+
       console.log(decaissement)
       
       if(this.decaissement?.id)
@@ -192,6 +195,21 @@ export default {
       },
       addDecaissement() {
         this.title ="Ajouter un decaissement"
+
+        let formData = this.champs.map((value) => {
+          if(value.key === 'projetId'){ 
+            value['options'] = this.projets
+          }
+          
+          else if(value.key === 'type'){
+            value['options'] = this.$store.state.sources;
+          }
+
+          return value
+        })
+
+      this.champs = formData
+
         this.showModal = true
       },
       modifier(data) {
