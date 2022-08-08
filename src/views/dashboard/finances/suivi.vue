@@ -207,7 +207,7 @@ export default {
 
     mounted() {
       console.log("Fetching suivi financier ...")
-        this.fetchSuiviFinanciers({id : this.currentUser?.programme?.id}).then((value) => {
+        this.fetchSuiviFinanciers(this.currentUser?.programme?.id).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of activite")
           this.fetchActivites()

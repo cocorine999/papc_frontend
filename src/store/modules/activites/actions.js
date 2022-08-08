@@ -10,6 +10,8 @@ import ActiviteService from "@/services/modules/activite.service";
 
 import ComposanteService from "@/services/modules/composante.service";
 
+import ProgrammeService from "@/services/modules/programme.service";
+
 export default {
     
     FETCH_LIST_ACTIVITE : async ({ commit }) => {
