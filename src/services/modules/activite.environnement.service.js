@@ -25,8 +25,8 @@ const ActiviteEnvironnementService = {
       return ApiService.delete(`eActivites/${slug}`);
     },
 
-    entrepriseExecutant(slug) {
-      return ApiService.get(`entreprise-executants/${slug}/eActivites`);
+    programme(slug) {
+      return ApiService.get(`programmes/${slug}/eActivites`);
     },
 
   };

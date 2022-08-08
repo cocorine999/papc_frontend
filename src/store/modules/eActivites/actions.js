@@ -20,7 +20,7 @@ export default {
     
     FETCH_LIST_EACTIVITE : async ({ commit }, id) => {
 
-        const { data, status } = await EActiviteService.entrepriseExecutant(id);
+        const { data, status } = await EActiviteService.programme(id);
 
         commit(SET_LIST_EACTIVITE, data.data);
 

@@ -137,7 +137,7 @@
         </div>
       </div>
       <div v-if="seeActivite">
-        <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
+        <vtable :headers="headers" :datas="eActivites" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
@@ -175,7 +175,7 @@ import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardChecklist from '@/components/CardChecklist'
 import Multiselect from 'vue-multiselect'
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 
 export default {
  
@@ -209,12 +209,7 @@ export default {
           {name:'Date fin',cle:'fin'},
           {name:'Date de creation',cle:'created_at'},
       ],
-      dataTable:[
-          {libelle:'preparer et faire valider par le MO et le MOD un PGESC',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PAE',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PPGED',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PPSPS',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-      ],
+      
       option:[
         {name:'supprimer'},
         {name:'modifier'},
@@ -228,10 +223,20 @@ export default {
     }
   },
   computed: {
+        ...mapState({
+      identifiant: state => state.auths.identifiant,
+      eActivite: state => state.eActivites.eActivite,
+      formulaire: state => state.formulaires.formulaire,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       entreprises: "entreprisesExecutante/getEntreprisesExecutante",
+      eActivites: "eActivites/getEActivites",
+      formulaires: "formulaires/getFormulaires",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
@@ -240,6 +245,13 @@ export default {
     
     console.log("Fetching entreprises executantes ...");
     this.fetchEntreprisesExecutante();
+
+    console.log("Fetching e-activites ...")
+    this.fetchEActivites(this.currentUser?.programme?.id)
+
+    console.log("Fetching list formulaires ...")
+    this.fetchFormulaires()
+
 
     const en = [{name:'papc'},{name:'pool'},{name:'demo'}]
     this.champs = [
@@ -251,6 +263,28 @@ export default {
     ]
   },
   methods: {
+
+        //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setEActivite: 'eActivites/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions("eActivites", {
+      fetchEActivites: "FETCH_LIST_EACTIVITE",
+      saveEActivite: "STORE_EACTIVITE",
+      updateEActivite: "UPDATE_EACTIVITE",
+      deleteEActivite: "DESTROY_EACTIVITE"
+    }),
+
+    ...mapActions("formulaires", {
+      fetchFormulaires: "FETCH_LIST_FORMULAIRE",
+      saveFormulaire: "STORE_FORMULAIRE",
+      updateFormulaire: "UPDATE_FORMULAIRE",
+      deleteFormulaire: "DESTROY_FORMULAIRE"
+    }),
+
     
     ...mapActions("entreprisesExecutante", {
       fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
