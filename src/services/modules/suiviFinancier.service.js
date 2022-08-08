@@ -25,6 +25,10 @@ const SuiviFinanciersService = {
       return ApiService.delete(`suiviFinanciers/${slug}`);
     },
 
+    byProgramme(slug) {
+      return ApiService.get(`programmes/${slug}/suiviFinanciers`);
+    },
+
   };
 
   export default SuiviFinanciersService;

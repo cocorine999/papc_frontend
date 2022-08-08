@@ -18,9 +18,9 @@ import SuiviFinancierService from "@/services/modules/suiviFinancier.service";
 
 export default {
     
-    FETCH_LIST_SUIVIFINANCIER : async ({ commit }) => {
+    FETCH_LIST_SUIVIFINANCIER : async ({ commit }, id) => {
 
-        const { data, status } = await SuiviFinancierService.get();
+        const { data, status } = await SuiviFinancierService.byProgramme(id);
 
         commit(SET_LIST_SUIVIFINANCIER, data.data);
 
