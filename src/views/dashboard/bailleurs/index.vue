@@ -462,6 +462,8 @@
 
         let bailleur = extractFormData(this.champs, this.bailleurAttributs);
 
+        bailleur.programmeId = this.programmeId;
+
         if (this.bailleur?.id) {
           this.updateBailleur({ bailleur: bailleur, id: this.bailleur?.id }).then(
             (response) => {
