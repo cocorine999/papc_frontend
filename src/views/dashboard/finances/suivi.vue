@@ -130,8 +130,6 @@ export default {
     
   },
 
-    mounted() {
-    },
     methods: {
       //Charger les fonctions de communication avec le serveur
     ...mapMutations({

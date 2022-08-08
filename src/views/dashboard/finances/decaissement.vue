@@ -48,7 +48,7 @@
       </div>
      
     </div>
-    <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+    <vtable :headers="headers" :datas="decaissements" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
   </div>
   </dashboard>
  
@@ -62,6 +62,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import { extractFormData } from '@/utils/index'
 
 export default {
   components: {
@@ -78,12 +80,12 @@ export default {
           showModal:false,
           showModal2:false,
           title:'',
+          decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
           champs:[
-          {name:'Montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projet',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:['projet1','projet2'],required:true,},
-          {name:'Source de decaissement',type:'',placeholdere:'Choisir un bailleur',isSelect:true,isTextArea:false,data:'',options:['projet1','projet2'],required:true,},
-          {name:'Type',type:'',placeholdere:'Choisir un type decaissement',isSelect:true,isTextArea:false,data:'',options:['BN','EMP'],required:true,},
+          {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'codePta' + ' nom',required:true,},
+          {name:'Source de decaissement',key:'type',type:'',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
         ],
         champsRecherche:[
           {name:'Date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
@@ -94,18 +96,14 @@ export default {
         cols:2,
           
         headers:[
-          {name:'Nom createur',props:'createur'},
-          {name:'Projets',props:'projet'},
-          {name:'Bailleurs',props:'bailleurs'},
-          {name:'Type de decaissement',props:'type'},
-          {name:'Date de decaissement',props:'date_decaissement'},
-          {name:'Date de creation',props:'created_at'},
+          {name:'Projets',cle:'projet'},
+          {name:'Bailleurs',cle:'bailleurs'},
+          {name:'Type de decaissement',cle:'type'},
+          {name:'Date de decaissement',cle:'date'},
+          {name:'Date de creation',cle:'created_at'},
         ],
         dataTable:[
-          {createur:'Gomez ',projet:'projet 1',bailleurs:"BM",type:"EMP",date_decaissement:'20-05-2022',created_at:"22-06-2022"},
-          {createur:'Ange Klika ',projet:'projet 2',bailleurs:"BM",type:"BN",date_decaissement:'20-05-2022',created_at:"22-06-2022"},
-          {createur:'Luthe ',projet:'projet 3',bailleurs:"BM",type:"EMP",date_decaissement:'20-05-2022',created_at:"22-06-2022"},
-         
+          
         ],
         actions:[
          
@@ -113,12 +111,82 @@ export default {
         ]
       };
     },
-    mounted() {
-    },
+    computed:{
+
+  //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      decaissement: state => state.decaissements.decaissement,
+      loading : state => state.loading,
+      errors : state => state.errors,
+    }),
+
+    ...mapGetters({
+      decaissements: "decaissements/getDecaissements", decaissement: "getDecaissement",
+      projets: "projets/getProjets",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    })
+    
+  },
+
     methods: {
-      sendForm() {
-        alert('donnée envoyer')
-      },
+
+            //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setDecaissement: 'decaissements/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions('decaissements', {
+      fetchDecaissements: "FETCH_LIST_DECAISSEMENT",
+      saveDecaissement: "STORE_DECAISSEMENT",
+      updateDecaissement: "UPDATE_DECAISSEMENT",
+      deleteDecaissement: "DESTROY_DECAISSEMENT"
+    }),
+
+    ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET_OF_PROGRAMME' }),
+
+    sendForm() {
+
+      console.log(this.champs)
+
+      this.champs = this.champs.map(item => { item.errors = []; return item})
+
+      let decaissement = extractFormData(this.champs, this.decaissementAttributs)
+
+      console.log(decaissement)
+      
+      if(this.decaissement?.id)
+      {
+
+        this.updateDecaissement({decaissement: decaissement, id : this.decaissement?.id}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.close()
+          }
+
+        }).catch((error) => {
+
+          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+
+          this.champs.map(value => value.errors = this.erreurs[value.key])
+
+        })
+
+      }
+      else
+      {
+      
+        this.saveDecaissement(decaissement).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
+          }
+
+        })
+      }
+
+    },  
       close() {
         this.showModal = false
       },
@@ -134,8 +202,18 @@ export default {
       supprimer(data) {
         alert(data +" à ete bien supprimer")
       }
-    }
+    },
+
+    mounted() {
+      console.log("Fetching decaissements ...")
+        this.fetchDecaissements().then((value) => {
+        setTimeout(() => {
+          console.log("Fetching list of projets")
+          this.fetchProjets(this.currentUser?.programme?.id)
+        }, 500);
+    })
   }
+}
 </script>
 
 <style scoped>
