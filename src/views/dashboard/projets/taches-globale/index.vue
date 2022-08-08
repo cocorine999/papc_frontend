@@ -91,15 +91,16 @@
           <div class="flex items-center justify-between">
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">
-            <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
 
-            <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+            <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
           
 
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
                 :preselect-first="true"
+                :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
                 label="nom"
                 track-by="id"
@@ -109,6 +110,7 @@
                 v-model="valueFiltre"
                 :options="activites"
                 :preselect-first="true"
+                :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
                 track-by="id"
@@ -226,6 +228,7 @@
         </div>
         <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(tache, index) in taches" :key="index">
+            <pre> {{tache.position}} </pre>
             <card-tache
               :bailleur="tache.bailleur.sigle"
               :statut="getStatus(tache.statut)"
@@ -306,13 +309,13 @@ export default {
 
       champs:[
 
-        {name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Nom de la tâche', key: "nom", type: 'text', placeholdere: "Nom de la tâche", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez le statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
-        {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
 
@@ -384,6 +387,10 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
+    customLabel ({ codePta, nom }) {
+      return `${codePta} – ${nom}`
+    },
+
     filtreRange(value){
       this.rangeValue = value
     },
@@ -440,7 +447,10 @@ export default {
         if(this.sendRequest === false){
           this.sendRequest = true;
           this.deleteTache(tache.id)
-          this.sendRequest = false;
+            .finally((error) => {              
+              this.sendRequest = false;
+              this.fetchTaches(this.valueFiltre.id);
+            });
         }
       }
     },
@@ -516,24 +526,10 @@ export default {
           tache: { statut: -1, activiteId: this.valueFiltre.id },
           id: tache.id,
         })
-          .then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              
-              this.showCloseModal();
-
-              this.sendRequest = false;
-            }
+          .finally((error) => {      
+            this.sendRequest = false;        
+            this.fetchTaches(this.valueFiltre.id);
           })
-          .catch((error) => {
-
-            console.log(error)
-            /* this.setErrors({
-              message: error?.response?.data?.message,
-              errors: error.response.data.errors,
-            }); */
-
-            this.sendRequest = false;
-          });
       }
     },
 
@@ -548,8 +544,6 @@ export default {
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
 
-        console.log(tache)
-
         tache['activiteId'] = this.valueFiltre.id;
 
         tache.statut = tache.statut.etat;
@@ -557,29 +551,25 @@ export default {
         if (this.tache?.id) {
           this.updateTache({ tache: tache, id: this.tache?.id })
             .then((response) => {
-              if (response.status == 200 || response.status == 201) {
+              if (response.status === 200 || response.status === 201) {
                 this.close();
               }
             })
-            .catch((error) => {
-              this.setErrors({
-                message: error?.response?.data?.message,
-                errors: error.response.data.errors,
-              });
-
-              this.champs.map(
-                (value) => (value.errors = this.erreurs[value.key])
-              );
+            .finally((error) => {              
+              this.fetchTaches(this.valueFiltre.id);
             });
         } else {
-          this.saveTache(tache).then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-            }
-          });
+          this.saveTache(tache)
+            .then((response) => {
+              if (response.status === 200 || response.status === 201) {
+                this.close();
+              }
+            })
+            .finally((error) => {              
+              this.fetchTaches(this.valueFiltre.id);
+            });
         }
 
-        this.sendRequest = false;
       }
     },
 
