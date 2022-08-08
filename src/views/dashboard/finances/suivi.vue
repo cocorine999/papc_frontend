@@ -97,12 +97,11 @@ export default {
         ],
         cols:2, 
         headers:[
-          {name:'Createur',props:'createur'},
-          {name:'Code PTAB',props:'pta'},
-          {name:'Activité',props:'activite'},
-          {name:'Trimestre',props:'trimestre'},
-          {name:'Année',props:'annee'},
-          {name:'Date de creation',props:'created_at'},
+          {name:'Code PTAB',cle:'codePta'},
+          {name:'Activité',cle:'nom'},
+          {name:'Trimestre',cle:'trimestre'},
+          {name:'Année',cle:'annee'},
+          {name:'Date de creation',cle:'created_at'},
         ],
         actions:[
          
