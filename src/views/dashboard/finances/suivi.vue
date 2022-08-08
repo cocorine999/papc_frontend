@@ -56,7 +56,7 @@
         </div>
       
       </div>
-      <vtable :headers="headers" :datas="suiviFinanciers" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+      <vtable :headers="headers" :datas="suiviFinanciers" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     </div>
   </dashboard>
  
@@ -148,6 +148,17 @@ export default {
 
     ...mapActions('activites', { fetchActivites: 'FETCH_LIST_ACTIVITE_OF_PROGRAMME' }),
 
+    async updateInputData(id, attribut, value) {
+      console.log('ok')
+        
+          await this.updateSuiviFinancier({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
+    },
+
       sendForm() {
 
       console.log(this.champs)
@@ -162,27 +173,8 @@ export default {
 
       console.log(suivi)
       
-      if(this.suivi?.id)
-      {
-
-        this.updateSuiviFinancier({suivi: suivi, id : this.suivi?.id}).then(response => {
-          
-          if(response.status == 200 || response.status == 201){
-
-            this.close()
-          }
-
-        }).catch((error) => {
-
-          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-          this.champs.map(value => value.errors = this.erreurs[value.key])
-
-        })
-
-      }
-      else
-      {
+      
+      
       
         this.saveSuiviFinancier(suivi).then(response => {
           if(response.status == 200 || response.status == 201){
@@ -190,8 +182,13 @@ export default {
           }
 
         })
-      }
+      
 
+    },
+
+    async supprimer(suivi) {
+      if(window.confirm("Voulez-vous supprimer ce suivi " ))
+        await this.deleteSuiviFinancier(suivi.id)
     },
       close() {
         this.showModal = false
@@ -229,9 +226,6 @@ export default {
         this.showModal = true
         alert(data +" à ete modifier")
       },
-      supprimer(data) {
-        alert(data +" à ete bien supprimer")
-      }
     },
 
     mounted() {
