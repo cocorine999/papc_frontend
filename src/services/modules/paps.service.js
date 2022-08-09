@@ -26,7 +26,7 @@ const ProjetsService = {
     },
 
     programme(slug) {
-      return ApiService.get(`programmes/sinistres/${slug}`);
+      return ApiService.get(`programmes/${slug}/sinistres`);
     },
 
   };
