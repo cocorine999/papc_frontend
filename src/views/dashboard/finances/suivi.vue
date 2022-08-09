@@ -97,12 +97,11 @@ export default {
         ],
         cols:2, 
         headers:[
-          {name:'Createur',props:'createur'},
-          {name:'Code PTAB',props:'pta'},
-          {name:'Activité',props:'activite'},
-          {name:'Trimestre',props:'trimestre'},
-          {name:'Année',props:'annee'},
-          {name:'Date de creation',props:'created_at'},
+          {name:'Code PTAB',cle:'codePta'},
+          {name:'Activité',cle:'nom'},
+          {name:'Trimestre',cle:'trimestre'},
+          {name:'Année',cle:'annee'},
+          {name:'Date de creation',cle:'created_at'},
         ],
         actions:[
          
@@ -130,20 +129,18 @@ export default {
     
   },
 
-    mounted() {
-    },
     methods: {
       //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setSuiviFinanicer: 'suiviFinanciers/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setSuiviFinancier: 'suiviFinanciers/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
 
     ...mapActions('suiviFinanciers', {
-      fetchSuiviFinanicers: "FETCH_LIST_SUIVIFINANCIER",
-      saveSuiviFinanicer: "STORE_SUIVIFINANCIER",
-      updateSuiviFinanicer: "UPDATE_SUIVIFINANCIER",
-      deleteSuiviFinanicer: "DESTROY_SUIVIFINANCIER"
+      fetchSuiviFinanciers: "FETCH_LIST_SUIVIFINANCIER",
+      saveSuiviFinancier: "STORE_SUIVIFINANCIER",
+      updateSuiviFinancier: "UPDATE_SUIVIFINANCIER",
+      deleteSuiviFinancier: "DESTROY_SUIVIFINANCIER"
     }),
 
     ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET' }),
@@ -163,7 +160,7 @@ export default {
       if(this.suivi?.id)
       {
 
-        this.updateSuiviFinanicer({suivi: suivi, id : this.suivi?.id}).then(response => {
+        this.updateSuiviFinancier({suivi: suivi, id : this.suivi?.id}).then(response => {
           
           if(response.status == 200 || response.status == 201){
 
@@ -182,7 +179,7 @@ export default {
       else
       {
       
-        this.saveSuiviFinanicer(suivi).then(response => {
+        this.saveSuiviFinancier(suivi).then(response => {
           if(response.status == 200 || response.status == 201){
               this.close()
           }
@@ -210,7 +207,7 @@ export default {
 
     mounted() {
       console.log("Fetching suivi financier ...")
-        this.fetchSuiviFinanicers({id : this.currentUser?.programme?.id}).then((value) => {
+        this.fetchSuiviFinanciers(this.currentUser?.programme?.id).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of activite")
           this.fetchActivites()
