@@ -8,38 +8,46 @@
        
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+              <input required v-model="nom" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom de l'activite" />
             </div>
 
           <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Code de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required v-model="code" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+          </div>
+
+          <div class="my-4">
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Statut <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <select  v-model="statut" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent">
+              <option value="">---Select Statut---</option>
+             <option v-for="(item, i) in statuts" :key="i" :value="item.etat">{{item.nom}}</option>
+            </select>
           </div>
           
           <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <div class="flex justify-between my-3">
               <div>
-                <input type="radio" @click="allEntreprise= false" id="all" name="entreprise" value="all" >
+                <input  type="radio" @click="allEntreprise= false" id="all" name="entreprise" value="all" >
                 <label class="px-2" for="all">Tout les entreprises</label>
               </div>
               <div>
-                <input type="radio" @click="allEntreprise= true" id="sauf" name="entreprise" value="sauf">
+                <input  type="radio" @click="allEntreprise= true" id="sauf" name="entreprise" value="sauf">
                 <label class="px-2" for="sauf">Tout sauf</label>
               </div>
             </div>
           
-            <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+            <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises"  :multiple="true" :taggable="true" @tag="addTag"></multiselect>
           </div>
 
           <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date debut <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required v-model="debut" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
           </div>
 
           <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required v-model="fin" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
           </div>
         
 
@@ -228,7 +236,8 @@ export default {
       eActivite: state => state.eActivites.eActivite,
       formulaire: state => state.formulaires.formulaire,
       loading : state => state.loading,
-      errors : state => state.errors
+      errors : state => state.errors,
+      statuts : state => state.statuts
     }),
 
     ...mapGetters({
@@ -306,10 +315,75 @@ export default {
     selectData ({ name}) {
       return `${name}`
     },
+    close() {
+        this.showCloseModal();
+
+        this.resetForm();
+      },
     addActivite() {
       this.title = 'Creer une activité'
       this.showModal = true
     },
+        async updateInputData(id, attribut, value) {
+        
+          await this.updateEActivite({eActivite: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
+
+    },
+
+    sendForm() {
+
+      var isIn = false
+      var entrepriseExecutantId = []
+
+      if(this.allEntreprise)
+      {
+        this.entreprises.forEach(entreprise => {
+          this.value.forEach(element => {
+            if(entreprise === element)
+            {
+              isIn = true
+            }
+          });
+
+          if(isIn == false)
+          {
+            entrepriseExecutantId.push(entreprise.id)
+          }
+        });
+      }
+
+      else
+      {
+        this.entreprises.forEach(element => {
+          entrepriseExecutantId.push(element.id)
+        });
+      }
+
+      let eActivite = {
+        "nom" : this.nom,
+        "debut" : this.debut,
+        "fin" : this.fin,
+        "code" : this.code,
+        "statut" : this.statut,
+        "entrepriseExecutantId" : entrepriseExecutantId
+      }
+
+      console.log(eActivite)
+      
+      this.saveEActivite(eActivite).then(response => {
+        if(response.status == 200 || response.status == 201){
+            this.close()
+        }
+
+      })
+      
+    },
+
     goEntreprise() {
       this.seeEntreprise = true
       this.seeFormulaire = false

@@ -183,6 +183,11 @@ export default {
 
       this.pap = {}
     },
+    close() {
+        this.showCloseModal();
+
+        this.resetForm();
+      },
 
     async updateInputData(id, attribut, value) {
         
