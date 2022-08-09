@@ -145,7 +145,7 @@
         </div>
       </div>
       <div v-if="seeActivite">
-        <vtable :headers="headers" :datas="eActivites" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
+        <vtable :headers="headers" :datas="eActivites" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
@@ -210,12 +210,16 @@ export default {
       
       showLink:false,
       headers:[
-          {name:'Libelle activite',cle:'libelle'},
+          {name:'Libelle activite',cle:'nom'},
           {name:'code',cle:'code'},
           {name:'Entreprise',cle:'entreprise'},
           {name:'Date debut',cle:'debut'},
           {name:'Date fin',cle:'fin'},
           {name:'Date de creation',cle:'created_at'},
+      ],
+
+      actions:[
+        {name:'supprimer',iconne:''},
       ],
       
       option:[
@@ -263,13 +267,7 @@ export default {
 
 
     const en = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    this.champs = [
-      {name:'Nom activité',type:'text',placeholdere:"libelle activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Code activité',type:'text',placeholdere:"code activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Programme',type:'',placeholdere:'Choisir un programme',isSelect:true,isTextArea:false,data:'',options:programme,required:true,methode:this.selectData},
-      {name:'Date debut',type:'date',placeholdere:"Date debut",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Date fin',type:'date',placeholdere:"Date fin",isSelect:false,isTextArea:false,data:'',required:true,},
-    ]
+    
   },
   methods: {
 
@@ -324,7 +322,8 @@ export default {
       this.title = 'Creer une activité'
       this.showModal = true
     },
-        async updateInputData(id, attribut, value) {
+    
+    async updateInputData(id, attribut, value) {
         
           await this.updateEActivite({eActivite: {[attribut] : value}, id : id}).catch((value, status) => {
             if(this.hasErrors[attribut] !== undefined)
@@ -383,6 +382,12 @@ export default {
       })
       
     },
+
+    async supprimerActivite(activite) {
+      if(window.confirm("Voulez-vous supprimer cette activité " + activite.nom ))
+        await this.deleteEActivite(activite.id)
+    },
+
 
     goEntreprise() {
       this.seeEntreprise = true
