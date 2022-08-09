@@ -1,6 +1,6 @@
 <template>
   <div class="md:grid md:grid-cols-2 block">
-    <div class="absolute bg-cercle "> <img src="/img/auth/cercle.png" width="500px" height="500px" alt=""></div>
+    <div class="absolute bg-cercle "> <img src="/img/cercle.png" width="500px" height="500px" alt=""></div>
     <div  class="hidden relative md:px-8  bg-primary md:flex justify-center items-center">
       <div class="hidden md:block lg:w-4/5 xl:w-1/2 mx-auto mt-[40vh]">
         <h1 class="text-4xl font-bold text-white mb-5">
@@ -22,7 +22,7 @@
       <div class="relative m-10">
         <img
           class="w-36 absolute"
-          src="/img/auth/validation.gif "
+          src="/img/validation.gif "
           alt=""
         />
         <div class="w-36 h-28 bg-white/70 backdrop-blur-0"></div>
