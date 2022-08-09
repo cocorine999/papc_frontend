@@ -152,10 +152,8 @@
           <div v-for="formulaire in formulaires" :key="formulaire.id">
             <card-checklist
               :libelle=formulaire.nom
-              :auteur=formulaire.auteur.nom
+              :activite=formulaire.auteur
               @supprimer="supprimer"
-              @modifier="modifier"
-              @dupliquer="dupliquer"
               @gotoDetails="gotoDetails(formulaire.id)"
               @onlink="getlink(formulaire.id)"
               > 
