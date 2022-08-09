@@ -59,7 +59,7 @@
         </div>
 
         <div class="flex justify-center">
-          <router-link to="#" class="text-md font-semibold text-primary">Mots de passe oublié </router-link>
+          <router-link to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mots de passe oublié </router-link>
         </div>
 
         <div>

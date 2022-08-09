@@ -7,6 +7,8 @@ import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
 import liens from "../views/liens.vue";
 import password_update from "../views/password_update.vue";
+import reset from "../views/_login/reset.vue";
+import validate from "../views/validate.vue";
 
 import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
 
@@ -138,9 +140,7 @@ const routes = [
     name: "index",
     component: index,
     meta: { auth: true },
-    middleware: [
-      guest
-    ]
+    middleware: [guest],
   },
 
   {
@@ -151,7 +151,22 @@ const routes = [
   {
     path: "/changer-mots-de-passe",
     name: "password_update",
-    component: password_update
+    component: password_update,
+  },
+  {
+    path: "/confirmer-mots-de-passe",
+    name: "reset",
+    component: reset,
+  },
+  {
+    path: "/confirmer-mots-de-passe",
+    name: "reset",
+    component: reset,
+  },
+  {
+    path: "/mots-de-passe-valider",
+    name: "validate",
+    component: validate,
   },
   {
     path: "/dashboard/roles",
@@ -168,11 +183,9 @@ const routes = [
     path: "/dashboard/ano",
     name: "ano",
     component: ano,
-    meta:{
-      middleware: [
-        auth
-      ]
-    }
+    meta: {
+      middleware: [auth],
+    },
   },
 
   {
@@ -180,10 +193,8 @@ const routes = [
     name: "liens",
     component: liens,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -191,10 +202,8 @@ const routes = [
     name: "form_gestion_generator",
     component: form_gestion_generator,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
   // checklist unite de gestion
   {
@@ -202,10 +211,8 @@ const routes = [
     name: "unite_de_gestion_checklist",
     component: unite_de_gestion_checklist,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -213,10 +220,8 @@ const routes = [
     name: "unite_de_gestion_checklist_details",
     component: unite_de_gestion_checklist_details,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -224,10 +229,8 @@ const routes = [
     name: "unite_de_gestion_checklist_create",
     component: unite_de_gestion_checklist_create,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -235,10 +238,8 @@ const routes = [
     name: "unite_de_gestion_checklist_entreprise",
     component: unite_de_gestion_checklist_entreprise,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
   //fin checklist de gestion
 
@@ -248,10 +249,8 @@ const routes = [
     name: "mod_checklist",
     component: mod_checklist,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -259,10 +258,8 @@ const routes = [
     name: "mod_checklist_details",
     component: mod_checklist_details,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -270,10 +267,8 @@ const routes = [
     name: "mod_checklist_create",
     component: mod_checklist_create,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -281,10 +276,8 @@ const routes = [
     name: "mod_checklist_entreprise",
     component: mod_checklist_entreprise,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
   //fin checklist de mod
 
@@ -294,10 +287,8 @@ const routes = [
     name: "mission_controle_checklist",
     component: mission_controle_checklist,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -305,10 +296,8 @@ const routes = [
     name: "mission_controle_checklist_details",
     component: mission_controle_checklist_details,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -316,10 +305,8 @@ const routes = [
     name: "mission_controle_checklist_create",
     component: mission_controle_checklist_create,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -327,10 +314,8 @@ const routes = [
     name: "mission_controle_checklist_entreprise",
     component: mission_controle_checklist_entreprise,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
   //fin checklist de mission-controle
 
@@ -340,10 +325,8 @@ const routes = [
     name: "entreprise_checklist",
     component: entreprise_checklist,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -351,10 +334,8 @@ const routes = [
     name: "entreprise_checklist_details",
     component: entreprise_checklist_details,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -362,10 +343,8 @@ const routes = [
     name: "entreprise_checklist_create",
     component: entreprise_checklist_create,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -373,10 +352,8 @@ const routes = [
     name: "entreprise_checklist_entreprise",
     component: entreprise_checklist_entreprise,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
   //fin checklist de entreprise
 
@@ -385,10 +362,8 @@ const routes = [
     name: "entreprises",
     component: entreprises,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -396,10 +371,8 @@ const routes = [
     name: "instutitions",
     component: instutitions,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -407,10 +380,8 @@ const routes = [
     name: "paps",
     component: paps,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -418,10 +389,8 @@ const routes = [
     name: "formulaire",
     component: formulaire,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -429,10 +398,8 @@ const routes = [
     name: "formulaire_create",
     component: formulaire_create,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -440,10 +407,8 @@ const routes = [
     name: "formulaire_id_details",
     component: formulaire_id_details,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   // {
@@ -462,10 +427,8 @@ const routes = [
     name: "missioncontrole",
     component: missioncontrole,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -473,10 +436,8 @@ const routes = [
     name: "mod",
     component: mod,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -484,10 +445,8 @@ const routes = [
     name: "profil",
     component: profil,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   // {
@@ -512,10 +471,8 @@ const routes = [
     name: "pta",
     component: pta,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
   // {
   //   path: "/dashboard/unite-gestion",
@@ -540,11 +497,9 @@ const routes = [
     path: "/dashboard/bailleurs",
     name: "bailleurs",
     component: bailleurs,
-    meta:{
-      middleware: [
-        auth
-      ]
-    }
+    meta: {
+      middleware: [auth],
+    },
   },
 
   {
@@ -552,10 +507,8 @@ const routes = [
     name: "utilisateurs",
     component: utilisateurs,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -563,10 +516,8 @@ const routes = [
     name: "programme",
     component: programme,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -574,10 +525,8 @@ const routes = [
     name: "unite_gestion",
     component: unite_gestion,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -585,10 +534,8 @@ const routes = [
     name: "projets",
     component: projets,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -596,19 +543,15 @@ const routes = [
     name: "fileManager",
     component: fileManager,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
     path: "/dashboard/projets/:id/details",
     component: projets_id_details,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "projets_id_details",
   },
@@ -617,9 +560,7 @@ const routes = [
     path: "/dashboard/projets/:id/cadreLogique",
     component: projets_id_cadreLogique,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "projets_id_cadreLogique",
   },
@@ -628,9 +569,7 @@ const routes = [
     path: "/dashboard/projets/activites-globale",
     component: dashboard_projets_activites_globale,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "dashboard_projets_activites_globale",
   },
@@ -638,9 +577,7 @@ const routes = [
     path: "/dashboard/projets/activites-globale/:id/details",
     component: dashboard_projets_activites_globale_details,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "dashboard_projets_activites_globale_details",
   },
@@ -649,31 +586,25 @@ const routes = [
     path: "/dashboard/projets/composantes-globale",
     component: dashboard_projets_composantes_globale,
     name: "dashboard_projets_composantes_globale",
-    meta:{
-      middleware: [
-        auth
-      ]
-    }
+    meta: {
+      middleware: [auth],
+    },
   },
 
   {
     path: "/dashboard/projets/sous-composantes-globale",
     component: dashboard_projets_sous_composantes_globale,
     name: "dashboard_projets_sous_composantes_globale",
-    meta:{
-      middleware: [
-        auth
-      ]
-    }
+    meta: {
+      middleware: [auth],
+    },
   },
 
   {
     path: "/dashboard/projets/taches-globale",
     component: dashboard_projets_taches_globale,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "dashboard_projets_taches_globale",
   },
@@ -681,9 +612,7 @@ const routes = [
     path: "/dashboard/projets/taches-globale/:id/details",
     component: dashboard_projets_taches_globale_details,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "dashboard_projets_taches_globale_details",
   },
@@ -692,9 +621,7 @@ const routes = [
     path: "/dashboard/indicateurs",
     component: indicateurs,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "indicateurs",
   },
@@ -703,9 +630,7 @@ const routes = [
     path: "/dashboard/indicateurs/:id/suivi",
     component: indicateurs_suivi,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "indicateurs_suivi",
   },
@@ -714,9 +639,7 @@ const routes = [
     path: "/dashboard/finances/decaissement",
     component: finances_decaissement,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "finances_decaissement",
   },
@@ -725,9 +648,7 @@ const routes = [
     path: "/dashboard/finances/suivi",
     component: finances_suivi,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "finances_suivi",
   },
@@ -736,20 +657,16 @@ const routes = [
     path: "/dashboard/finances/point-financier",
     component: point_financier,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "point_financier",
   },
-  
+
   {
     path: "/dashboard/finances/plan_decaissement",
     component: finances_plan_decaissement,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "finances_plan_decaissement",
   },
@@ -758,9 +675,7 @@ const routes = [
     path: "/dashboard/config/categories",
     component: config_categories,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "config_categories",
   },
@@ -774,9 +689,7 @@ const routes = [
     path: "/dashboard/config/main_oeuvre",
     component: config_main_oeuvre,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "config_main_oeuvre",
   },
@@ -785,9 +698,7 @@ const routes = [
     path: "/dashboard/config/unites",
     component: config_unites,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "config_unites",
   },
@@ -796,9 +707,7 @@ const routes = [
     path: "/dashboard/config/types",
     component: config_types,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "config_types",
   },
@@ -809,10 +718,8 @@ const routes = [
     name: "dashboard_bailleur",
     component: dashboard_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -820,19 +727,15 @@ const routes = [
     name: "ano_bailleur",
     component: ano_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
     path: "/bailleurs/activites",
     component: activites_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "activites_bailleur",
   },
@@ -841,9 +744,7 @@ const routes = [
     path: "/bailleurs/composantes",
     component: composantes_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "composantes_bailleur",
   },
@@ -852,9 +753,7 @@ const routes = [
     path: "/bailleurs/sous-composantes",
     component: sous_composantes_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "sous_composantes_bailleur,",
   },
@@ -863,9 +762,7 @@ const routes = [
     path: "/bailleurs/taches",
     component: taches_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "taches_bailleur",
   },
@@ -874,9 +771,7 @@ const routes = [
     path: "/bailleurs/indicateurs",
     component: indicateurs_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "indicateurs_bailleur",
   },
@@ -885,9 +780,7 @@ const routes = [
     path: "/bailleurs/indicateurs/suivi",
     component: suivi_indicateur_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "suivi_indicateur_bailleur",
   },
@@ -896,9 +789,7 @@ const routes = [
     path: "/bailleurs/finances/decaissement",
     component: finances_decaissement_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "finances_decaissement",
   },
@@ -907,9 +798,7 @@ const routes = [
     path: "/bailleurs/finances/suivi",
     component: finances_suivi_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "finances_suivi_bailleur",
   },
@@ -918,9 +807,7 @@ const routes = [
     path: "/bailleurs/finances/plan_decaissement",
     component: finances_plan_decaissement_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "finances_plan_decaissement_bailleur",
   },
@@ -930,10 +817,8 @@ const routes = [
     name: "missioncontrole_bailleur",
     component: missioncontrole_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -941,10 +826,8 @@ const routes = [
     name: "mod_bailleur",
     component: mod_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -952,10 +835,8 @@ const routes = [
     name: "entreprises_bailleur",
     component: entreprises_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -963,10 +844,8 @@ const routes = [
     name: "paps_bailleur",
     component: paps_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -974,10 +853,8 @@ const routes = [
     name: "ong_bailleur",
     component: ong_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -985,10 +862,8 @@ const routes = [
     name: "pta_bailleur",
     component: pta_bailleur,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
   // espace Mod
   {
@@ -996,19 +871,15 @@ const routes = [
     name: "collecteur_mod",
     component: collecteur_mod,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
     path: "/mod/indicateurs",
     component: indicateurs_mod,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "indicateurs_mod",
   },
@@ -1017,9 +888,7 @@ const routes = [
     path: "/mod/indicateurs/suivi",
     component: suivi_indicateur_mod,
     meta: {
-      middleware: [
-        auth
-      ]
+      middleware: [auth],
     },
     name: "suivi_indicateur_mod",
   },
@@ -1029,10 +898,8 @@ const routes = [
     name: "missioncontrole_mod",
     component: missioncontrole_mod,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -1040,10 +907,8 @@ const routes = [
     name: "entreprises_mod",
     component: entreprises_mod,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -1051,10 +916,8 @@ const routes = [
     name: "ong_mod",
     component: ong_mod,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   // espace Mo
@@ -1064,10 +927,8 @@ const routes = [
     name: "missioncontrole_mo",
     component: missioncontrole_mo,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -1075,10 +936,8 @@ const routes = [
     name: "entreprises_mo",
     component: entreprises_mo,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 
   {
@@ -1086,10 +945,8 @@ const routes = [
     name: "ong_mo",
     component: ong_mo,
     meta: {
-      middleware: [
-        auth
-      ]
-    }
+      middleware: [auth],
+    },
   },
 ];
 
@@ -1099,26 +956,25 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (!to.meta.middleware) {
-        return next()
-    }
-    const middleware = to.meta.middleware
+  if (!to.meta.middleware) {
+    return next();
+  }
+  const middleware = to.meta.middleware;
 
-    console.log(to)
-    console.log(middleware)
+  console.log(to);
+  console.log(middleware);
 
-    const context = {
-        to,
-        from,
-        next,
-        store
-    }
+  const context = {
+    to,
+    from,
+    next,
+    store,
+  };
 
-    return middleware[0]({
-        ...context,
-        next: middlewarePipeline(context, middleware, 1)
-    })
-
-})
+  return middleware[0]({
+    ...context,
+    next: middlewarePipeline(context, middleware, 1),
+  });
+});
 
 export default router;

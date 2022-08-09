@@ -29,19 +29,19 @@
         <div class="w-full md:px-0 px-4 md:w-3/5">
           <input
             class="appearance-none invalide border-b-2 relative z-50 w-full leading-tight border-[#939393] focus:outline-none focus:border-b-gray-500 focus:bg-white text-gray-700 placeholder:text-[#939393] placeholder:text-sm pb-2"
-            type="text"
+            type="email"
             v-model.trim='$v.login.$model'
             name="password"
             id="password"
-            pattern="[0-9]{8,12}"
-            placeholder="Entrez votre numéro de telephone"
+           
+            placeholder="Entrez votre adresse mail"
           />
           <div class="text-red-500 text-sm   py-2 font-extralight" v-if='!$v.login.required && soumettre' >
             Ce champs est obligatoire
           </div>
 
           <div class="flex justify-center my-3 relative z-50">
-            <button type="submit" class="w-full md:my-3 my-1 hover:opacity-75 transition-all  duration-500 py-1  md:py-3 border bg-primary text-white text-sm md:text-base xl:text-lg"> Envoyer</button>
+            <button   type="submit" class="w-full md:my-3 my-1 hover:opacity-75 transition-all  duration-500 py-1  md:py-3 border bg-primary text-white text-sm md:text-base xl:text-lg text-center"> Envoyer</button>
           </div>
         </div>
         
