@@ -80,3 +80,17 @@ Pour commencer il faut
 
 
 - Définir les différentes requêtes liées au module dans le 
+
+
+
+### Comment utiliser le loader 
+
+import VueElementLoading from 'vue-element-loading'
+
+    export default {
+      components: {
+        VueElementLoading
+      }
+    }
+    
+<vue-element-loading :active="isActive" :is-full-screen="true"/>
