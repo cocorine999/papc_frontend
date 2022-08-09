@@ -60,7 +60,7 @@ import pta from "../views/dashboard/pta/index.vue";
 // import dashboard from "../views/dashboard/index.vue";
 import unite_gestion from "../views/dashboard/unite-gestion/index.vue";
 import indicateurs from "../views/dashboard/indicateurs/index.vue";
-import indicateurs_suivi from "../views/dashboard/indicateurs/_id/suivi.vue";
+import indicateurs_suivi from "../views/dashboard/indicateurs/suivi.vue";
 import programme from "../views/dashboard/programme/index.vue";
 import finances_decaissement from "../views/dashboard/finances/decaissement.vue";
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
@@ -700,7 +700,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/indicateurs/:id/suivi",
+    path: "/dashboard/indicateurs/suivi",
     component: indicateurs_suivi,
     meta: {
       middleware: [

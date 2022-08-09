@@ -1,17 +1,54 @@
 <template>
   <dashboard>
     <div class="w-full px-4">
-      <modal-top-right v-if="showModal" :title="title" v-on:close="close">
+       <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
+        <div style="width:60vw" class="p-4">
+          <form action="">
+            <div  class="grid grid-cols-2 gap-2 my-2" v-for="(date,index) in dates" :key="index">
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
+              </div>
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <div class="flex space-x-2 items-center">
+                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
+                  <span title="ajouter une nouvelle date" @click="addDate" class="text-primary"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.6em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg></span>
+                  <span title="supprimer une date " @click="deleteItem(index)" class="bg-red-500 p-1 rounded-full text-white"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" stroke="none"/></svg></span>
+                </div>
+              </div>
+            </div>
+            <button class="bg-primary text-white px-4 py-2 border border-primary font-semibold uppercase">Enregistrer</button>
+          </form>
+        </div>
+      </vmodal>
 
-          <vform
+      <modal-top-right v-if="showModalSuivi" :title="title" v-on:close="showModalSuivi=false">
+         <div class="p-4">
+           <vform
             template="default"
-            :champs="champs"
+            :champs="champsSuiviTache"
             :cols="cols"
             :submitText="submitText"
             :sendRequest="sendRequest"
             @sendForm="sendForm"
             @closeModal="close"
           ></vform>
+         </div>
+      </modal-top-right>
+      
+      <modal-top-right v-if="showModal" :title="title" v-on:close="close">
+          <div class="p-4">
+            <vform
+            template="default"
+            :champs="champs"
+            :cols="cols"
+            :submitText="submitText"
+            :sendRequest="sendRequest"
+            @sendForm="sendForm"
+            @closeModal="close">
+            </vform>
+          </div>
       </modal-top-right>
 
       <nav
@@ -60,28 +97,31 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span
-            class="inline-block border-b-8 font-bold cursor-pointer text-lg uppercase border-primary py-2"
-            >taches</span
-          >
+          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Taches</span>
+          <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Suivi tache</span>
         </div>
 
-        <button
-          v-if="seeTache"
-          @click="addTache"
-          title="ajouter une activite"
-          class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
-        >
+        <button v-if="seeTache"   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
-              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
-            >
-              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
-          ></span>
+              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+            </span>
           <span class="mx-2 text-xs font-semibold">ajouter une tâche</span>
+        </button>
+        <button v-if="seeSuivi"   @click="addSuivi" title="creer un suivi" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+            </span>
+          <span class="mx-2 text-xs font-semibold">creer un suivi</span>
         </button>
       </div>
 
@@ -239,9 +279,20 @@
               @supprimer="supprimer(tache)"
               @modifier="modifier(tache)"
               @validation="validation(tache)"
+              @prolonger="prolonger(tache)"
             ></card-tache>
           </div>
         </div>
+      </div>
+      <div v-if="seeSuivi">
+          <vtable
+            id="datatable"
+            :headers="headers"
+            :datas="dataTable"
+            :actions="actions"
+            @suivre="suivreTache"
+            >
+          </vtable>
       </div>
     </div>
   </dashboard>
@@ -275,6 +326,9 @@ export default {
   },
   data() {
     return {
+      dates: [{}],
+      showProlonger:false,
+      showModalSuivi:false,
       valueFiltre: null,
       composanteId: null,
       projetFiltre: null,
@@ -294,7 +348,7 @@ export default {
       line: false,
       mosaique: true,
       isStateChange: false,
-      seePlan: false,
+      seeSuivi: false,
       seeTache: true,
       options:[
         {name:'activite 1'},
@@ -318,26 +372,29 @@ export default {
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
+      champsSuiviTache:[
+        {name: 'Tache ', key: "statut", type: '', placeholdere: 'Selectionnez une tache ', isSelect: true, isTextArea: false, data:'', required: true, options: [{nom:'tache 1'},{nom:'tache 2'}], cle: 'etat', value: 'nom',  errors : []},
+        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        
+      ],
 
    
-      
       headers: [
         { name: "Tache", cle: "tache"},
         { name: "Description", cle: "description"},
         { name: "Budget Nationnal", cle:'bn'},
         { name: "Pret", cle:'pret'},
         { name: "Poids", cle:'poids'},
-        { name: "Structure responsable", props:'user', cle:'struct_responsable'},
-        { name: "Structure Associé", props:'user', cle:'struct_assoc'},
-        { name: "Status", cle:'statut'},
+        { name: "date de creation", cle:'created_at'},
+        
       ],
 
       dataTable:[
-        {tache:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",struct_responsable:"agetur",struct_assoc:"",status:"en cours"}
+        {tache:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",created_at:"08/08/2022"}
       ],
 
       actions: [
-        { name: "supprimer", iconne: "" },
+        { name: "suivre", iconne: "" },
       ],
       dates: [{}],
     };
@@ -401,7 +458,13 @@ export default {
     addDate() {
       this.dates.push({});
     },
-
+    deleteItem(item) {
+      this.dates.splice(item, 1);
+      alert(item)
+    },
+    prolonger(tache) {
+      this.showProlonger = true
+    },
     close() {
       this.showModal = false;
     },
@@ -429,6 +492,24 @@ export default {
 
       this.showCloseModal(true)
 
+    },
+
+    addSuivi() {
+
+      this.title ="Creer un suivi"
+
+      this.submitText="Enregistrer",
+
+      this.showModalSuivi = true
+
+    },
+
+    suivreTache(data) {
+       this.title ="Suivre une tache "
+
+      this.submitText="Enregistrer",
+
+      this.showModalSuivi = true
     },
     
     getNom(nom, prenom) {
@@ -592,6 +673,14 @@ export default {
 
     showCloseModal(value = false) {
       this.showModal = value;
+    },
+    gotoSuivi() {
+      this.seeSuivi = true
+      this.seeTache = false
+    },
+    gotoTache() {
+      this.seeSuivi = false
+      this.seeTache = true
     }
   },
 

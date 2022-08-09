@@ -312,7 +312,7 @@
             style="width: 100%"
             class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
           >
-            <span class="font-semibold text-xs">SUIVI</span>
+            <span class="font-semibold text-xs">Suivi</span>
           </router-link>
         </div>
       </div>
