@@ -4,7 +4,7 @@
     @mouseenter="showValidate = true"
     @mouseleave="showValidate = false"
     class="relative"
-    @click.stop="gotoDetail"
+    
   >
     <!-- dots -->
 
@@ -61,6 +61,7 @@
       <dropdown
         @supprimer="$emit('supprimer')"
         @modifier="$emit('modifier')"
+        @prolonger="$emit('prolonger')"
         :option="option"
       ></dropdown>
     </div>
@@ -175,7 +176,7 @@ export default {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
-        { name: "dupliquer" },
+        { name: "prolonger" },
       ],
       showValidate: false,
       isValidate: this.statut.code > -2,

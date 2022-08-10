@@ -54,7 +54,7 @@
           <div  v-for="(error, key) in champ.errors" :key="key">
               <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
               <div class="text-red-500 text-sm   py-2 font-semibold">
-                  {{ error }}
+                {{ error }}
               </div>
           </div>
         </div>
@@ -63,7 +63,7 @@
 
 
     <div class="py-2 my-2 flex justify-center space-x-8">
-      <vbutton  type="submit" template="success"> {{submitText}} </vbutton>
+      <vbutton  type="submit" :isloading="sendRequest" template="success"> {{submitText}} </vbutton>
       <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
     </div>
   </form>
