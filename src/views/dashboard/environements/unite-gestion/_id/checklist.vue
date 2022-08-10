@@ -2,7 +2,7 @@
   <dashboard>
     <vmodal v-if="showLink" @close="showLink=false">
       <div class="m-2 p-2 bg-white shadow flex justify-center " style="width:60vw">
-        <router-link title="cliquez ici"  target="_blank" :to="{name:'form_gestion_generator',params:{id:2}}" class="p-2 bg-gray-300 border cursor-pointer text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
+        <router-link title="cliquez ici"  target="_blank" :to="{name:'form_gestion_generator',params:{id:formulaireId}}" class="p-2 bg-gray-300 border cursor-pointer text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
           cliquer ici
         </router-link>
       </div>
@@ -35,18 +35,15 @@
      
     </div>
     <div  class="grid grid-cols-3 gap-4">
-      <div v-for="i in 6" :key="i.id">
+      <div v-for="formulaire in formulaires" :key="formulaire.id">
         <card-checklist
-          libelle="formulaire"
-          code="15555DC" 
-          activite="Nombre d'accident routiere" 
-          :unites="['personne','%','km']" 
+          :libelle=formulaire.nom
+          :activite=formulaire.auteur
           @supprimer="supprimer"
-          @modifier="modifier"
-          @dupliquer="dupliquer"
-          @gotoDetails="gotoDetails(i)"
-          @onlink="getlink(i)"
-          > </card-checklist>
+          @gotoDetails="gotoDetails(formulaire.id)"
+          @onlink="getlink(formulaire.id)"
+        > 
+        </card-checklist>
       </div>
     </div>
     
@@ -61,6 +58,7 @@
   import Vform from '@/components/Vform'
   import ModalTopRight from '@/components/ModalTopRight'
   import Vmodal from '@/components/Vmodal'
+  import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   components: {
     CardChecklist,
@@ -100,10 +98,38 @@ export default {
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
+        formulaireId:""
     }
   },
+  computed: {
+        ...mapState({
+      identifiant: state => state.auths.identifiant,
+      formulaire: state => state.formulaires.formulaire,
+      loading : state => state.loading,
+      errors : state => state.errors,
+      statuts : state => state.statuts
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      formulaires: "formulaires/getFormulaires",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
+
   methods: {
+        //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions("formulaires", {
+      fetchFormulaires: "FETCH_LIST_FORMULAIRE",
+    }),
     getlink(i){
+      this.formulaireId = i
       this.showLink = true
     },
     gotoDetails(id) {
@@ -129,13 +155,10 @@ export default {
   },
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    this.champs = [
-      {name:'Nom activité',type:'text',placeholdere:"libelle activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Code activité',type:'text',placeholdere:"code activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Programme',type:'',placeholdere:'Choisir un programme',isSelect:true,isTextArea:false,data:'',options:programme,required:true,methode:this.selectData},
-      {name:'Date debut',type:'date',placeholdere:"Date debut",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Date fin',type:'date',placeholdere:"Date fin",isSelect:false,isTextArea:false,data:'',required:true,},
-    ]
+    
+    console.log("Fetching list formulaires ...")
+    this.fetchFormulaires()
+
   }
 }
 </script>

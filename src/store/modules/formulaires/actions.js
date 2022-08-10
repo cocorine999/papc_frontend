@@ -29,20 +29,17 @@ export default {
         return { data, status };
     },
 
-    async GET_FORMULAIRE ({ commit, getters }, {key, value }) {
+    async GET_FORMULAIRE ({ commit, getters }, value ) {
 
         let formulaire = null
 
-        formulaire = getters.findFormulaire({key: key, value : value})
-
-        if((formulaire === null || formulaire || undefined) && typeof value === "int"){
 
             const { data, status } = await FormulaireService.get(value);
 
             if(status === 200 || status === 201)
                 formulaire = data.data
 
-        }
+        
         
         return formulaire;
     },

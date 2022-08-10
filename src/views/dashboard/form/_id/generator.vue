@@ -1,12 +1,13 @@
 <template>
  <div class="p-4">
   <div  class="my-4">
+
     <form action="">
       <div class="flex justify-center ">
             <div class="w-3/4">
-              <div v-for="checklist in checklists" :key="checklist.id" class=" border border-dashed border-gray-400 p-6">
+              <div v-for="(checklist, index) in formulaire" :key="index" class=" border border-dashed border-gray-400 p-6">
                 <div class="flex justify-between">
-                  <h1 class="text-lg font-semibold uppercase text-center py-2">{{checklist.activite}}</h1>
+                  <h1 class="text-lg font-semibold uppercase text-center py-2">{{checklist.activite.nom}}</h1>
                   <div class="flex items-center my-4">
                     <label for="vrai" class="px-4 block text-sm uppercase font-medium text-gray-700">
                         <input id="vrai" name="verite" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
@@ -18,20 +19,20 @@
                     </label>
                   </div>
                 </div>
-              <div v-for="form in checklist.data" :key="form.id">
-                <div v-if="form.type=='edit'">
+              <div v-for="(form, index) in checklist.data" :key="index">
+                <div v-if="form.inputType=='edit'">
                     <label   class=" block py-2 text-sm font-semibold " for="">
-                      {{form.label}} <span  class="px-2 text-lg font-black text-red-700">*</span>
+                      {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                     </label>
                     <input  type="text"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
                 </div>
-                <div v-if="form.type=='photos'">
+                <div v-if="form.inputType=='photos'">
                   <label   class=" block py-2 text-sm font-semibold " for="">
-                    {{form.label}} <span  class="px-2 text-lg font-black text-red-700">*</span>
+                    {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                   </label>
                   <input  type="file" accept="png,jpg"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
                 </div>
-                <div v-if="form.type=='boolean'">
+                <div v-if="form.inputType=='boolean'">
                   <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.label}}</label>
                   <div class="flex items-center my-4">
                     <label for="vrai" class="px-4 block text-sm uppercase font-medium text-gray-700">
@@ -44,8 +45,8 @@
                     </label>
                   </div>
                 </div>
-                <div class="" v-if="form.type=='multiple'">
-                  <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.label}}</label>
+                <div class="" v-if="form.inputType=='multiple'">
+                  <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.nom}}</label>
                   <label v-for="answers in Answers" :key="answers.id" class="px-4  text-sm uppercase font-medium text-gray-700">
                     <input  name="multiple" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
                     {{answers.label}} /
@@ -66,6 +67,7 @@
 <script>
   import Vform from '@/components/Vform'
   import Vbutton from '@/components/Vbutton'
+  import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   components: {
     Vform,
@@ -77,6 +79,7 @@ export default {
       seeForm:false,
       showModal:false,
       champs:[],
+      formulaire : [],
       headers:[
           {name:'Libelle activite',props:'libelle'},
           {name:'Code activite',props:'code'},
@@ -153,12 +156,39 @@ export default {
         ],
     }
   },
+  computed: {
+        ...mapState({
+      identifiant: state => state.auths.identifiant,
+      loading : state => state.loading,
+      errors : state => state.errors,
+      statuts : state => state.statuts
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
   methods: {
+  
+    ...mapActions("formulaires", {
+      getFormulaire: "GET_FORMULAIRE",
+    }),
     
    
   },
   mounted() {
-    
+    console.log("Getting formulaire ...")
+    this.getFormulaire(this.$route.params.id).then((response) =>{
+      
+      this.formulaire = response
+      
+      this.formulaire = response.map(element => {
+        element = JSON.parse(element)
+        return element
+      });
+    })
   }
 }
 </script>
