@@ -35,7 +35,7 @@
           <div class="form-group">
          <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
           </div>
-        <div class="flex justify-center mt-5">
+        <div class="flex justify-center mt-3">
           <router-link to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mots de passe oublié ? </router-link>
         </div>
         </form>
