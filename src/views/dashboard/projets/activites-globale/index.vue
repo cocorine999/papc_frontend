@@ -33,7 +33,7 @@
       </modal-top-right>
 
       <nav
-        class="mb-2 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
         aria-label="Breadcrumb"
       >
         <div>
