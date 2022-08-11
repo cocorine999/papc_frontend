@@ -22,20 +22,6 @@
           </form>
         </div>
       </vmodal>
-
-      <modal-top-right v-if="showModalSuivi" :title="title" v-on:close="showModalSuivi=false">
-         <div class="p-4">
-           <vform
-            template="default"
-            :champs="champsSuiviTache"
-            :cols="cols"
-            :submitText="submitText"
-            :sendRequest="sendRequest"
-            @sendForm="sendForm"
-            @closeModal="close"
-          ></vform>
-         </div>
-      </modal-top-right>
       
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
           <div class="p-4">
@@ -112,30 +98,26 @@
             </span>
           <span class="mx-2 text-xs font-semibold">ajouter une tâche</span>
         </button>
-        <button v-if="seeSuivi"   @click="addSuivi" title="creer un suivi" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
-              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            </span>
-          <span class="mx-2 text-xs font-semibold">creer un suivi</span>
-        </button>
+       
       </div>
 
       <!-- le filtre -->
       <div v-if="seeTache">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-          <div class="flex items-center justify-between">
-            <!--Filtre sur projet -->
-            <div class="w-2/5 flex items-center space-x-2">
+          <!--Filtre sur projet -->
+          <div class="w-full grid grid-cols-2 gap-4">
+           <div>
+            <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
             <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+           </div>
 
-            <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+           <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+             <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+           </div>
           
-
+            <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
@@ -143,9 +125,12 @@
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
                 label="nom"
-                track-by="id"
-              ></multiselect>
+                track-by="id">
+              </multiselect>
+            </div>
 
+            <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
               <multiselect
                 v-model="valueFiltre"
                 :options="activites"
@@ -153,10 +138,11 @@
                 :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
-                track-by="id"
-              ></multiselect>
+                track-by="id">
+              </multiselect>
+            </div>
               
-              <button
+            <button
                 v-if="!showFiltre"
                 title="filtre"
                 @click="showFiltre = true"
@@ -177,9 +163,9 @@
                     points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
                   ></polygon>
                 </svg>
-                <span>filtre</span>
-              </button>
-              <div v-else class="px-6 w-full">
+                <span>progression des taches </span>
+            </button>
+            <div v-else class="px-6 w-full">
                 <div class="bg-gray-300 h-2 w-full rounded-full relative">
                   <span
                     class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
@@ -223,52 +209,56 @@
                     revenir
                   </button>
                 </div>
-              </div>
             </div>
-            <!--Filtre sur projet -->
+          </div>
+        </div>
+
+        <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+          <div class="flex   justify-between">
+             <!--Filtre sur projet -->
+             <h2 class="uppercase font-bold">Listes des taches </h2>
             <nav class="flex text-sm align-middle justify-evenly">
-              <span
-                @click="toggle2"
-                :class="{ 'border-yellow-600 text-yellow-600': pending }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                attentes
                 <span
-                  class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+                  @click="toggle2"
+                  :class="{ 'border-yellow-600 text-yellow-600': pending }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  5
+                  attentes
+                  <span
+                    class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+                  >
+                    5
+                  </span>
                 </span>
-              </span>
-              <span
-                @click="toggle"
-                :class="{ 'border-green-600 text-green-600': success }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                validés
                 <span
-                  class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
+                  @click="toggle"
+                  :class="{ 'border-green-600 text-green-600': success }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  9
+                  validés
+                  <span
+                    class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
+                  >
+                    9
+                  </span>
                 </span>
-              </span>
-              <span
-                @click="toggle3"
-                :class="{ 'border-red-600 text-red-600': rejected }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                rejetés
                 <span
-                  class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
+                  @click="toggle3"
+                  :class="{ 'border-red-600 text-red-600': rejected }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  8
+                  rejetés
+                  <span
+                    class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
+                  >
+                    8
+                  </span>
                 </span>
-              </span>
             </nav>
           </div>
         </div>
         <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(tache, index) in taches" :key="index">
-            <pre> {{tache.position}} </pre>
             <card-tache
               :bailleur="tache.bailleur.sigle"
               :statut="getStatus(tache.statut)"
@@ -280,6 +270,7 @@
               @modifier="modifier(tache)"
               @validation="validation(tache)"
               @prolonger="prolonger(tache)"
+              @suivre="suivreMyTache(tache)"
             ></card-tache>
           </div>
         </div>
@@ -290,7 +281,7 @@
             :headers="headers"
             :datas="dataTable"
             :actions="actions"
-            @suivre="suivreTache"
+
             >
           </vtable>
       </div>
@@ -394,7 +385,7 @@ export default {
       ],
 
       actions: [
-        { name: "suivre", iconne: "" },
+       
       ],
       dates: [{}],
     };
@@ -465,6 +456,9 @@ export default {
     prolonger(tache) {
       this.showProlonger = true
     },
+    suivreMyTache(tache) {
+      this.$router.push({name:'dashboard_projets_taches_globale_suivis',params:{id:tache.id}})
+    },
     close() {
       this.showModal = false;
     },
@@ -494,15 +488,7 @@ export default {
 
     },
 
-    addSuivi() {
-
-      this.title ="Creer un suivi"
-
-      this.submitText="Enregistrer",
-
-      this.showModalSuivi = true
-
-    },
+    
 
     suivreTache(data) {
        this.title ="Suivre une tache "

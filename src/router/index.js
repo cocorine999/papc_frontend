@@ -63,6 +63,7 @@ import pta from "../views/dashboard/pta/index.vue";
 import unite_gestion from "../views/dashboard/unite-gestion/index.vue";
 import indicateurs from "../views/dashboard/indicateurs/index.vue";
 import indicateurs_suivi from "../views/dashboard/indicateurs/suivi.vue";
+import indicateurs_suivi_details from "../views/dashboard/indicateurs/_id/suivi.vue";
 import programme from "../views/dashboard/programme/index.vue";
 import finances_decaissement from "../views/dashboard/finances/decaissement.vue";
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
@@ -76,9 +77,9 @@ import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
 import projets from "../views/dashboard/projets/index.vue";
 import dashboard_projets_activites_globale from "../views/dashboard/projets/activites-globale/index.vue";
-import dashboard_projets_activites_globale_details from "../views/dashboard/projets/activites-globale/_id/details.vue";
+import dashboard_projets_activites_globale_suivis from "../views/dashboard/projets/activites-globale/_id/suivis.vue";
 import dashboard_projets_taches_globale from "../views/dashboard/projets/taches-globale/index.vue";
-import dashboard_projets_taches_globale_details from "../views/dashboard/projets/taches-globale/_id/details.vue";
+import dashboard_projets_taches_globale_suivis from "../views/dashboard/projets/taches-globale/_id/suivis.vue";
 import dashboard_projets_composantes_globale from "../views/dashboard/projets/composantes-globale/index.vue";
 import dashboard_projets_sous_composantes_globale from "../views/dashboard/projets/sous-composantes-globale/index.vue";
 import projets_id_details from "../views/dashboard/projets/_id/details.vue";
@@ -575,11 +576,11 @@ const routes = [
   },
   {
     path: "/dashboard/projets/activites-globale/:id/details",
-    component: dashboard_projets_activites_globale_details,
+    component: dashboard_projets_activites_globale_suivis,
     meta: {
       middleware: [auth],
     },
-    name: "dashboard_projets_activites_globale_details",
+    name: "dashboard_projets_activites_globale_suivis",
   },
 
   {
@@ -610,11 +611,11 @@ const routes = [
   },
   {
     path: "/dashboard/projets/taches-globale/:id/details",
-    component: dashboard_projets_taches_globale_details,
+    component: dashboard_projets_taches_globale_suivis,
     meta: {
       middleware: [auth],
     },
-    name: "dashboard_projets_taches_globale_details",
+    name: "dashboard_projets_taches_globale_suivis",
   },
 
   {
@@ -633,6 +634,15 @@ const routes = [
       middleware: [auth],
     },
     name: "indicateurs_suivi",
+  },
+
+  {
+    path: "/dashboard/indicateurs/:id/suivi",
+    component: indicateurs_suivi_details,
+    meta: {
+      middleware: [auth],
+    },
+    name: "indicateurs_suivi_details",
   },
 
   {

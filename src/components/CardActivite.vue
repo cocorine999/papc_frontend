@@ -62,6 +62,7 @@
         @supprimer="$emit('supprimer')"
         @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')"
+        @suivre="$emit('suivre')"
         :option="option"
       ></dropdown>
     </div>
@@ -90,16 +91,12 @@
         </div>
       </div>
       <div class="cursor-pointer">
-        <span
-          class="absolute z-10 bottom-0 left-0 w-full h-10 text-white font-bold leading-3 px-8 py-3 text-left"
-        >
-          <span><i class="bx bxs-calendar mr-2"></i> {{ debut }}</span> au
-          <span><i class="bx bxs-calendar mr-2"></i> {{ fin }} </span></span
-        >
-        <span
-          class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right"
-          >Poids: {{ poids }}
-        </span>
+        
+        <span v-if="!showInput" @click.stop="suivreActivite" class="absolute cursor-pointer bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{ poids }}</span>
+        <div v-else  class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary   font-bold leading-3 px-8 py-3 "> 
+         <span class="text-white"> Poids:</span>
+        <input type="text" @keyup.enter="validerSuivi(poids)" v-model="poids" class="border border-primary p-2  outline-none">
+        </div>
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
           <span
@@ -149,6 +146,10 @@
             ><span class="ml-2 uppercase font-bold">fcfa</span>
           </div>
         </div>
+        <p
+          class=" mt-1 text-gray-600 dark:text-gray-400 mb-6">
+          <span><i class="bx bxs-calendar mr-2"></i> {{ debut }}</span> au
+          <span><i class="bx bxs-calendar mr-2"></i> {{ fin }} </span></p>
       </div>
     </div>
   </div>
@@ -177,12 +178,33 @@ export default {
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
+        { name: "mes suivis" },
       ],
       showValidate: false,
+      delay: 700,
+      clicks: 0,
+      timer: null,
+      showInput:false,
       isValidate: this.statut.code > -2,
     };
   },
   methods: {
+    suivreActivite() {
+     
+      this.clicks++;
+      if (this.clicks === 1) {
+        this.timer = setTimeout( () => {
+        this.clicks = 0
+      }, this.delay);
+      } else {
+        clearTimeout(this.timer);  
+        this.showInput = true
+        this.clicks = 0;
+      }      
+    },
+    validerSuivi(poids){
+      this.showInput = false
+    },
     validation() {
       this.isValidate = true;
       this.$emit("validation");

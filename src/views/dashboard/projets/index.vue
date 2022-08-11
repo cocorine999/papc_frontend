@@ -42,7 +42,12 @@
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
               <p class="max-h-48 line-clamp-7 px-2"> {{ projet.description }} </p>
               <div  class="absolute bottom-5 ">
-                <div class="uppercase text-sm flex items-center space-x-3 bg-white text-primary px-4 py-3 font-bold">
+                <div class="uppercase text-sm flex items-center rounded-2xl shadow space-x-3 bg-white text-primary px-4 py-3 font-bold">
+                  details
+                </div>
+              </div>
+              <div  class="absolute bottom-2 right-2 ">
+                <div class="uppercase text-sm flex items-center rounded-2xl space-x-3 bg-white text-primary px-4 py-3 font-bold">
                   <span @click.stop="modifierProjet(projet)" title="modifier un projet" class="text-blue-500 cursor-pointer"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
                   <span @click.stop="supprimerProjet(projet)" title="supprimer un projet"  class="text-red-500 cursor-pointer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M292.7 840h438.6l24.2-512h-487z"></path><path d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"></path></svg></span>
                 </div>
@@ -50,7 +55,7 @@
             </div>
             <div class="relative mb-2">
               <img class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
-                :src=" projet.link "
+                src="@/assets/images/login/logo-gouv.webp"
                 alt="">
                 <div class="absolute bottom-0 right-0">
                   <div v-if="projet.statut == 0 " class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i class='bx bx-time-five ml-1'></i></div>
