@@ -56,7 +56,7 @@
         </div>
       
       </div>
-      <vtable :headers="headers" :datas="suiviFinanciers" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+      <vtable :headers="headers" :datas="suiviFinanciers" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     </div>
   </dashboard>
  
@@ -90,16 +90,17 @@ export default {
           suiviAttributs : ['consommer', 'type', 'trimestre', 'annee', 'activiteId'],
           champs:[
           {name:'Consommer', key:'consommer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-          {name:'Source', key:'type',type:'',placeholdere:'Selectionnez la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,errors : []}, 
-          {name:'Date', key:'annee',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-          {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'codePta' + ' nom',required:true,errors : []},
-          {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'id', value: 'nom',required:true,errors : []}, 
+          {name:'Source', key:'type',placeholdere:'Selectionnez la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value:'nom',required:true,errors : []}, 
+          {name:'Année', key:'annee',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+          {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:true,errors : []},
+          {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',required:true,errors : []}, 
         ],
         cols:2, 
         headers:[
           {name:'Code PTAB',cle:'codePta'},
           {name:'Activité',cle:'nom'},
           {name:'Trimestre',cle:'trimestre'},
+          {name:'Consommer',cle:'consommer'},
           {name:'Année',cle:'annee'},
           {name:'Date de creation',cle:'created_at'},
         ],
@@ -147,6 +148,17 @@ export default {
 
     ...mapActions('activites', { fetchActivites: 'FETCH_LIST_ACTIVITE_OF_PROGRAMME' }),
 
+    async updateInputData(id, attribut, value) {
+      console.log('ok')
+        
+          await this.updateSuiviFinancier({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
+    },
+
       sendForm() {
 
       console.log(this.champs)
@@ -155,29 +167,14 @@ export default {
 
       let suivi = extractFormData(this.champs, this.suiviAttributs)
 
+      suivi.type = suivi.type.id
+      suivi.trimestre = suivi.trimestre.valeur
+      suivi.activiteId = suivi.activiteId.id
+
       console.log(suivi)
       
-      if(this.suivi?.id)
-      {
-
-        this.updateSuiviFinancier({suivi: suivi, id : this.suivi?.id}).then(response => {
-          
-          if(response.status == 200 || response.status == 201){
-
-            this.close()
-          }
-
-        }).catch((error) => {
-
-          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-          this.champs.map(value => value.errors = this.erreurs[value.key])
-
-        })
-
-      }
-      else
-      {
+      
+      
       
         this.saveSuiviFinancier(suivi).then(response => {
           if(response.status == 200 || response.status == 201){
@@ -185,14 +182,43 @@ export default {
           }
 
         })
-      }
+      
 
+    },
+
+    async supprimer(suivi) {
+      if(window.confirm("Voulez-vous supprimer ce suivi " ))
+        await this.deleteSuiviFinancier(suivi.id)
     },
       close() {
         this.showModal = false
       },
       addSuivi() {
         this.title ="Ajouter un Suivi"
+
+        this.activites = this.activites.map((value) =>{
+          value.nom = `${value.codePta} – ${value.nom}`
+          return value
+        })
+
+        let formData = this.champs.map((value) => {
+          if(value.key === 'activiteId'){ 
+            value['options'] = this.activites
+          }
+
+          else if(value.key === 'trimestre'){
+            value['options'] = this.$store.state.trimestres;
+          }
+          
+          else if(value.key === 'type'){
+            value['options'] = this.$store.state.sources;
+          }
+
+          return value
+        })
+
+      this.champs = formData
+
         this.showModal = true
       },
       modifier(data) {
@@ -200,9 +226,6 @@ export default {
         this.showModal = true
         alert(data +" à ete modifier")
       },
-      supprimer(data) {
-        alert(data +" à ete bien supprimer")
-      }
     },
 
     mounted() {
@@ -210,7 +233,7 @@ export default {
         this.fetchSuiviFinanciers(this.currentUser?.programme?.id).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of activite")
-          this.fetchActivites()
+          this.fetchActivites(this.currentUser?.programme?.id)
         }, 500);
     })
   }
