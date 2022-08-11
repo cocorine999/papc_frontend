@@ -23,7 +23,7 @@ export default {
         this.$emit('gotoNext')
       }
       if(option == 'dupliquer') {
-        this.$emit('duplicate')
+        this.$emit('dupliquer')
       }
        if(option == 'supprimer') {
         this.$emit('supprimer')

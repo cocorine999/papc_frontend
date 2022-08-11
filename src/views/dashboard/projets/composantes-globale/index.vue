@@ -410,7 +410,7 @@ export default {
 
     resetForm(){
 
-      this.champs = this.champs.map(item => { item['data'] = ''; return item})
+      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
       
       window.document.getElementById('vform').reset()
 
@@ -510,7 +510,11 @@ export default {
     },
 
     errors: function(errors) {
-      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      this.champs.forEach((value) => {
+        if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
+          value.errors = errors[value.key]
+        }
+      })
     },
 
     valueFiltre: function(valeur){
