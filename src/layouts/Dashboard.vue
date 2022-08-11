@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap">
-
+    
     <div v-if="espace==undefined">
       <sidebar></sidebar>
     </div>
@@ -29,6 +29,7 @@
   import SidebarBailleur from '@/components/SidebarBailleur'
   import SidebarMod from '@/components/SidebarMod'
   import SidebarMo from '@/components/SidebarMo'
+  // import VueElementLoading from 'vue-element-loading'
   import { mapState } from 'vuex'
 
   export default {
@@ -40,6 +41,7 @@
       SidebarBailleur,
       SidebarMod,
       SidebarMo,
+      // VueElementLoading
     },
     
     computed: {

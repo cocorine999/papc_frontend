@@ -8,7 +8,6 @@ import role_permission from "../views/dashboard/role_permission/index.vue";
 import liens from "../views/liens.vue";
 import password_update from "../views/password_update.vue";
 import reset from "../views/_login/reset.vue";
-import validate from "../views/validate.vue";
 
 import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
 
@@ -62,13 +61,14 @@ import pta from "../views/dashboard/pta/index.vue";
 // import dashboard from "../views/dashboard/index.vue";
 import unite_gestion from "../views/dashboard/unite-gestion/index.vue";
 import indicateurs from "../views/dashboard/indicateurs/index.vue";
-import indicateurs_suivi from "../views/dashboard/indicateurs/_id/suivi.vue";
+import indicateurs_suivi from "../views/dashboard/indicateurs/suivi.vue";
 import programme from "../views/dashboard/programme/index.vue";
 import finances_decaissement from "../views/dashboard/finances/decaissement.vue";
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
 import point_financier from "../views/dashboard/finances/point_financier.vue";
 import config_unites from "../views/dashboard/config/unites/index.vue";
 import config_types from "../views/dashboard/config/types/index.vue";
+import config_sites from "../views/dashboard/config/site/index.vue";
 import config_categories from "../views/dashboard/config/categories/index.vue";
 import config_sinistres from "../views/dashboard/config/sinistres/index.vue";
 import config_main_oeuvre from "../views/dashboard/config/main_oeuvre/index.vue";
@@ -158,16 +158,8 @@ const routes = [
     name: "reset",
     component: reset,
   },
-  {
-    path: "/confirmer-mots-de-passe",
-    name: "reset",
-    component: reset,
-  },
-  {
-    path: "/mots-de-passe-valider",
-    name: "validate",
-    component: validate,
-  },
+  
+  
   {
     path: "/dashboard/roles",
     name: "role_permission",
@@ -627,7 +619,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/indicateurs/:id/suivi",
+    path: "/dashboard/indicateurs/suivi",
     component: indicateurs_suivi,
     meta: {
       middleware: [auth],
@@ -710,6 +702,14 @@ const routes = [
       middleware: [auth],
     },
     name: "config_types",
+  },
+  {
+    path: "/dashboard/config/sites",
+    component: config_sites,
+    meta: {
+      middleware: [auth],
+    },
+    name: "config_sites",
   },
 
   // espace bailleurs
