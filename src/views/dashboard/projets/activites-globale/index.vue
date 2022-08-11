@@ -175,13 +175,20 @@
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between">
             <!--Filtre sur projet -->
-            <div class="w-2/5 flex items-center space-x-2">
-            
-            <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <div class="w-full grid grid-cols-2 items-center gap-4">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
+                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+              </div>
 
-            <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
-          
-              <multiselect
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+              </div>
+              <div>
+                
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+                <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
                 :preselect-first="true"
@@ -190,6 +197,9 @@
                 label="nom"
                 track-by="id"
               ></multiselect>
+              </div>
+           
+              <div></div>
               <button
                 v-if="!showFiltre"
                 title="filtre"
@@ -211,7 +221,7 @@
                     points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
                   ></polygon>
                 </svg>
-                <span>filtre</span>
+                <span>progression des activités</span>
               </button>
               <div v-else class="px-6 w-full">
                 <div class="bg-gray-300 h-2 w-full rounded-full relative">
@@ -259,45 +269,7 @@
                 </div>
               </div>
             </div>
-            <!--Filtre sur projet -->
-            <nav class="flex text-sm align-middle justify-evenly">
-              <span
-                @click="toggle2"
-                :class="{ 'border-yellow-600 text-yellow-600': pending }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                attentes
-                <span
-                  class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
-                >
-                  5
-                </span>
-              </span>
-              <span
-                @click="toggle"
-                :class="{ 'border-green-600 text-green-600': success }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                validés
-                <span
-                  class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
-                >
-                  9
-                </span>
-              </span>
-              <span
-                @click="toggle3"
-                :class="{ 'border-red-600 text-red-600': rejected }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                rejetés
-                <span
-                  class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
-                >
-                  8
-                </span>
-              </span>
-            </nav>
+           
           </div>
 
         </div>
@@ -317,6 +289,7 @@
               @supprimer="supprimer(activite)"
               @prolonger="prolonger(activite)"
               @validation="validation(activite)"
+              @suivre="suivreMyActivite(activite)"
             ></card-activite>
             <!-- End cards Activités -->
           </div>
@@ -840,7 +813,7 @@ export default {
           status: "en cours",
         },
       ],
-      actions: [{ name: "supprimer", iconne: "" }],
+      
     };
   },
 
@@ -905,6 +878,10 @@ export default {
     },
 
     supprimerT() {},
+
+    suivreMyActivite(activite) {
+      this.$router.push({name:'dashboard_projets_activites_globale_suivis',params:{id:activite.id}})
+    },
 
     filtreRange(value) {
       this.rangeValue = value;
