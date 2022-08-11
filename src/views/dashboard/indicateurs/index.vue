@@ -86,6 +86,10 @@
            
           </div>
 
+              
+
+              
+
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
                 <textArea class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textArea>
@@ -204,8 +208,6 @@ export default {
         actions:[
           {name:'suivre'},
           {name:'supprimer',iconne:''},
-          {name:'consulter',iconne:''},
-         
         ]
 
       });
@@ -300,7 +302,7 @@ export default {
       this.title = `Suivre l'indicateur`
     },
     consulterSuivi(id){
-      this.$router.push({name:'indicateurs_suivi_details',params:{id:id}})
+      this.$router.push({name:'indicateurs_suivi',params:{id:id}})
     },
     sendForm() {
       this.champs = this.champs.map((item) => {
@@ -365,9 +367,7 @@ export default {
     modifier() {
         this.title ='Modifier un indicateur'
         this.showModal = true
-    },
-
-    
+    }
       
       
   },
