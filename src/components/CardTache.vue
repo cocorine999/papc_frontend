@@ -1,11 +1,11 @@
 <template>
   <!-- cards Tâches -->
-  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false"  @click.stop="gotoDetail" class="relative cursor-pointer">
+  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative cursor-pointer">
     <!-- dot -->
     <div class="absolute flex space-x-3 right-1 top-4 z-10  cursor-pointer">
       <span v-if="!isValidate" title="Tâche non valider" class="text-red-300"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z" stroke="none"/><path d="M21 19.1H3V5h18v14.1zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="none"/><path fill="none" d="M21 19.1H3V5h18v14.1zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="none"/><path d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41z" stroke="none"/></svg></span>
       <span v-if="isValidate" title="Tâche valider" class="text-green-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 15.5V2a2 2 0 012-2h8a2 2 0 012 2v13.5a.5.5 0 01-.74.439L8 13.069l-5.26 2.87A.5.5 0 012 15.5zm8.854-9.646a.5.5 0 00-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 10-.708.708l1.5 1.5a.5.5 0 00.708 0l3-3z" stroke="none"/></svg></span>
-      <dropdown @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"  :option="option"></dropdown>
+      <dropdown @supprimer="$emit('supprimer')" @modifier="$emit('modifier')" @suivre="$emit('suivre')" @prolonger="$emit('prolonger')" :option="option"></dropdown>
     </div>
     <!-- dot -->
     <div class="relative p-4 bg-white sm:rounded-lg overflow-hidden ">     
@@ -29,13 +29,16 @@
       </div>
       <!--  -->
       <div class="cursor-pointer">
-        <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{ poids }} </span>
+        <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{ poids }} </span>
+        <div v-else  class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary   font-bold leading-3 px-8 py-3 "> 
+         <span class="text-white"> Poids:</span>
+        <input type="text" @keyup.enter="validerSuivi(poids)" v-model="poids" class="border border-primary p-2  outline-none">
+        </div>
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
           <span
             class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold"
-            :class="statut.couleur"
-          >
+            :class="statut.couleur">
             {{ statut.libelle }} <i class="bx bx-time-five ml-1"></i
           ></span>
         </div>
@@ -84,12 +87,33 @@ export default {
         { name: "supprimer" },
         { name: "modifier" },
         { name: "dupliquer" },
+        { name: "prolonger" },
+        { name: "mes suivis" },
       ],
       showValidate:false,
+      delay: 700,
+      clicks: 0,
+      timer: null,
+      showInput:false,
       isValidate: this.statut.code > -2,
     }
   },
   methods:{
+    suivreTache(poids) {
+      this.clicks++;
+      if (this.clicks === 1) {
+        this.timer = setTimeout( () => {
+        this.clicks = 0
+      }, this.delay);
+      } else {
+        clearTimeout(this.timer);  
+        this.showInput = true
+        this.clicks = 0;
+      }      
+    },
+    validerSuivi(poids){
+      this.showInput = false
+    },
     validation(){
       this.isValidate=true
       this.$emit('validation')

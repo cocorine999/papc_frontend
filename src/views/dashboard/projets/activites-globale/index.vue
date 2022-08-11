@@ -1,6 +1,28 @@
 <template>
   <dashboard>
     <div class="w-full px-4">
+      <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
+        <div style="width:60vw" class="p-4">
+          <form action="">
+            <div  class="grid grid-cols-2 gap-2 my-2" v-for="(date,index) in dates" :key="index">
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
+              </div>
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <div class="flex space-x-2 items-center">
+                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
+                  <span title="ajouter une nouvelle date" @click="addDate" class="text-primary"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.6em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg></span>
+                  <span title="supprimer une date " @click="deleteItem(index)" class="bg-red-500 p-1 rounded-full text-white"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" stroke="none"/></svg></span>
+                </div>
+              </div>
+            </div>
+            <button class="bg-primary text-white px-4 py-2 border border-primary font-semibold uppercase">Enregistrer</button>
+          </form>
+        </div>
+      </vmodal>
+
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <div class="p-4 overflow-auto">
           <vform
@@ -33,7 +55,7 @@
       </modal-top-right>
 
       <nav
-        class="mb-2 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
         aria-label="Breadcrumb"
       >
         <div>
@@ -153,13 +175,20 @@
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between">
             <!--Filtre sur projet -->
-            <div class="w-2/5 flex items-center space-x-2">
-            
-            <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <div class="w-full grid grid-cols-2 items-center gap-4">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
+                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+              </div>
 
-            <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
-          
-              <multiselect
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+              </div>
+              <div>
+                
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+                <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
                 :preselect-first="true"
@@ -168,6 +197,9 @@
                 label="nom"
                 track-by="id"
               ></multiselect>
+              </div>
+           
+              <div></div>
               <button
                 v-if="!showFiltre"
                 title="filtre"
@@ -189,7 +221,7 @@
                     points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
                   ></polygon>
                 </svg>
-                <span>filtre</span>
+                <span>progression des activités</span>
               </button>
               <div v-else class="px-6 w-full">
                 <div class="bg-gray-300 h-2 w-full rounded-full relative">
@@ -237,45 +269,7 @@
                 </div>
               </div>
             </div>
-            <!--Filtre sur projet -->
-            <nav class="flex text-sm align-middle justify-evenly">
-              <span
-                @click="toggle2"
-                :class="{ 'border-yellow-600 text-yellow-600': pending }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                attentes
-                <span
-                  class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
-                >
-                  5
-                </span>
-              </span>
-              <span
-                @click="toggle"
-                :class="{ 'border-green-600 text-green-600': success }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                validés
-                <span
-                  class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
-                >
-                  9
-                </span>
-              </span>
-              <span
-                @click="toggle3"
-                :class="{ 'border-red-600 text-red-600': rejected }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                rejetés
-                <span
-                  class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
-                >
-                  8
-                </span>
-              </span>
-            </nav>
+           
           </div>
 
         </div>
@@ -293,7 +287,9 @@
               :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
               @modifier="modifier(activite)"
               @supprimer="supprimer(activite)"
+              @prolonger="prolonger(activite)"
               @validation="validation(activite)"
+              @suivre="suivreMyActivite(activite)"
             ></card-activite>
             <!-- End cards Activités -->
           </div>
@@ -491,14 +487,14 @@ export default {
       submitText: "Enregistrer",
       rangeValue: 0,
       showFiltre: false,
-      
+      showProlonger:false,
       activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'statut', 'poids'],
-
+      dates:[
+        {}
+      ],
 
       planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
-
       champs:[
-
         {name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Type', key: "types", type: '', placeholdere: 'Selectionnez le type d\'activite', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.types, cle: 'type', value: 'nom',  errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -818,7 +814,7 @@ export default {
           status: "en cours",
         },
       ],
-      actions: [{ name: "supprimer", iconne: "" }],
+      
     };
   },
 
@@ -884,6 +880,10 @@ export default {
 
     supprimerT() {},
 
+    suivreMyActivite(activite) {
+      this.$router.push({name:'dashboard_projets_activites_globale_suivis',params:{id:activite.id}})
+    },
+
     filtreRange(value) {
       this.rangeValue = value;
     },
@@ -917,13 +917,18 @@ export default {
       this.seeStatistique = false;
     },
 
-    addDate() {
-      this.dates.push({});
-    },
+   
 
     switch1() {
       this.mosaique = true;
       this.line = false;
+    },
+    addDate() {
+      this.dates.push({});
+    },
+    deleteItem(item) {
+      this.dates.splice(item, 1);
+      alert(item)
     },
 
     switch2() {
@@ -1009,6 +1014,10 @@ export default {
       if(prenom !== undefined && prenom !== null ) name+= prenom
 
       return name;
+    },
+
+    prolonger(activite) {
+      this.showProlonger = true
     },
 
     supprimer(activite) {

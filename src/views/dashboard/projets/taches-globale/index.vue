@@ -1,21 +1,44 @@
 <template>
   <dashboard>
     <div class="w-full px-4">
+       <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
+        <div style="width:60vw" class="p-4">
+          <form action="">
+            <div  class="grid grid-cols-2 gap-2 my-2" v-for="(date,index) in dates" :key="index">
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
+              </div>
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <div class="flex space-x-2 items-center">
+                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
+                  <span title="ajouter une nouvelle date" @click="addDate" class="text-primary"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.6em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg></span>
+                  <span title="supprimer une date " @click="deleteItem(index)" class="bg-red-500 p-1 rounded-full text-white"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" stroke="none"/></svg></span>
+                </div>
+              </div>
+            </div>
+            <button class="bg-primary text-white px-4 py-2 border border-primary font-semibold uppercase">Enregistrer</button>
+          </form>
+        </div>
+      </vmodal>
+      
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-
-          <vform
+          <div class="p-4">
+            <vform
             template="default"
             :champs="champs"
             :cols="cols"
             :submitText="submitText"
             :sendRequest="sendRequest"
             @sendForm="sendForm"
-            @closeModal="close"
-          ></vform>
+            @closeModal="close">
+            </vform>
+          </div>
       </modal-top-right>
 
       <nav
-        class="mb-2 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
         aria-label="Breadcrumb"
       >
         <div>
@@ -60,42 +83,41 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span
-            class="inline-block border-b-8 font-bold cursor-pointer text-lg uppercase border-primary py-2"
-            >taches</span
-          >
+          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Taches</span>
+          <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Suivi tache</span>
         </div>
 
-        <button
-          v-if="seeTache"
-          @click="addTache"
-          title="ajouter une activite"
-          class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
-        >
+        <button v-if="seeTache"   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
-              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
-            >
-              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
-          ></span>
+              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+            </span>
           <span class="mx-2 text-xs font-semibold">ajouter une tâche</span>
         </button>
+       
       </div>
 
       <!-- le filtre -->
       <div v-if="seeTache">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-          <div class="flex items-center justify-between">
-            <!--Filtre sur projet -->
-            <div class="w-2/5 flex items-center space-x-2">
+          <!--Filtre sur projet -->
+          <div class="w-full grid grid-cols-2 gap-4">
+           <div>
+            <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
             <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+           </div>
 
-            <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+           <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+             <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+           </div>
           
-
+            <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
@@ -103,9 +125,12 @@
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
                 label="nom"
-                track-by="id"
-              ></multiselect>
+                track-by="id">
+              </multiselect>
+            </div>
 
+            <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
               <multiselect
                 v-model="valueFiltre"
                 :options="activites"
@@ -113,10 +138,11 @@
                 :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
-                track-by="id"
-              ></multiselect>
+                track-by="id">
+              </multiselect>
+            </div>
               
-              <button
+            <button
                 v-if="!showFiltre"
                 title="filtre"
                 @click="showFiltre = true"
@@ -137,9 +163,9 @@
                     points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
                   ></polygon>
                 </svg>
-                <span>filtre</span>
-              </button>
-              <div v-else class="px-6 w-full">
+                <span>progression des taches </span>
+            </button>
+            <div v-else class="px-6 w-full">
                 <div class="bg-gray-300 h-2 w-full rounded-full relative">
                   <span
                     class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
@@ -183,52 +209,56 @@
                     revenir
                   </button>
                 </div>
-              </div>
             </div>
-            <!--Filtre sur projet -->
+          </div>
+        </div>
+
+        <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+          <div class="flex   justify-between">
+             <!--Filtre sur projet -->
+             <h2 class="uppercase font-bold">Listes des taches </h2>
             <nav class="flex text-sm align-middle justify-evenly">
-              <span
-                @click="toggle2"
-                :class="{ 'border-yellow-600 text-yellow-600': pending }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                attentes
                 <span
-                  class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+                  @click="toggle2"
+                  :class="{ 'border-yellow-600 text-yellow-600': pending }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  5
+                  attentes
+                  <span
+                    class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+                  >
+                    5
+                  </span>
                 </span>
-              </span>
-              <span
-                @click="toggle"
-                :class="{ 'border-green-600 text-green-600': success }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                validés
                 <span
-                  class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
+                  @click="toggle"
+                  :class="{ 'border-green-600 text-green-600': success }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  9
+                  validés
+                  <span
+                    class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
+                  >
+                    9
+                  </span>
                 </span>
-              </span>
-              <span
-                @click="toggle3"
-                :class="{ 'border-red-600 text-red-600': rejected }"
-                class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-              >
-                rejetés
                 <span
-                  class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
+                  @click="toggle3"
+                  :class="{ 'border-red-600 text-red-600': rejected }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  8
+                  rejetés
+                  <span
+                    class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
+                  >
+                    8
+                  </span>
                 </span>
-              </span>
             </nav>
           </div>
         </div>
         <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(tache, index) in taches" :key="index">
-            <pre> {{tache.position}} </pre>
             <card-tache
               :bailleur="tache.bailleur.sigle"
               :statut="getStatus(tache.statut)"
@@ -239,9 +269,21 @@
               @supprimer="supprimer(tache)"
               @modifier="modifier(tache)"
               @validation="validation(tache)"
+              @prolonger="prolonger(tache)"
+              @suivre="suivreMyTache(tache)"
             ></card-tache>
           </div>
         </div>
+      </div>
+      <div v-if="seeSuivi">
+          <vtable
+            id="datatable"
+            :headers="headers"
+            :datas="dataTable"
+            :actions="actions"
+
+            >
+          </vtable>
       </div>
     </div>
   </dashboard>
@@ -275,6 +317,9 @@ export default {
   },
   data() {
     return {
+      dates: [{}],
+      showProlonger:false,
+      showModalSuivi:false,
       valueFiltre: null,
       composanteId: null,
       projetFiltre: null,
@@ -294,7 +339,7 @@ export default {
       line: false,
       mosaique: true,
       isStateChange: false,
-      seePlan: false,
+      seeSuivi: false,
       seeTache: true,
       options:[
         {name:'activite 1'},
@@ -318,26 +363,29 @@ export default {
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
+      champsSuiviTache:[
+        {name: 'Tache ', key: "statut", type: '', placeholdere: 'Selectionnez une tache ', isSelect: true, isTextArea: false, data:'', required: true, options: [{nom:'tache 1'},{nom:'tache 2'}], cle: 'etat', value: 'nom',  errors : []},
+        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        
+      ],
 
    
-      
       headers: [
         { name: "Tache", cle: "tache"},
         { name: "Description", cle: "description"},
         { name: "Budget Nationnal", cle:'bn'},
         { name: "Pret", cle:'pret'},
         { name: "Poids", cle:'poids'},
-        { name: "Structure responsable", props:'user', cle:'struct_responsable'},
-        { name: "Structure Associé", props:'user', cle:'struct_assoc'},
-        { name: "Status", cle:'statut'},
+        { name: "date de creation", cle:'created_at'},
+        
       ],
 
       dataTable:[
-        {tache:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",struct_responsable:"agetur",struct_assoc:"",status:"en cours"}
+        {tache:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",created_at:"08/08/2022"}
       ],
 
       actions: [
-        { name: "supprimer", iconne: "" },
+       
       ],
       dates: [{}],
     };
@@ -401,7 +449,16 @@ export default {
     addDate() {
       this.dates.push({});
     },
-
+    deleteItem(item) {
+      this.dates.splice(item, 1);
+      alert(item)
+    },
+    prolonger(tache) {
+      this.showProlonger = true
+    },
+    suivreMyTache(tache) {
+      this.$router.push({name:'dashboard_projets_taches_globale_suivis',params:{id:tache.id}})
+    },
     close() {
       this.showModal = false;
     },
@@ -429,6 +486,16 @@ export default {
 
       this.showCloseModal(true)
 
+    },
+
+    
+
+    suivreTache(data) {
+       this.title ="Suivre une tache "
+
+      this.submitText="Enregistrer",
+
+      this.showModalSuivi = true
     },
     
     getNom(nom, prenom) {
@@ -592,6 +659,14 @@ export default {
 
     showCloseModal(value = false) {
       this.showModal = value;
+    },
+    gotoSuivi() {
+      this.seeSuivi = true
+      this.seeTache = false
+    },
+    gotoTache() {
+      this.seeSuivi = false
+      this.seeTache = true
     }
   },
 

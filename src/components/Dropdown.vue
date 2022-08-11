@@ -31,6 +31,12 @@ export default {
       if(option == 'modifier') {
         this.$emit('modifier')
       }
+      if(option == 'prolonger') {
+        this.$emit('prolonger')
+      }
+      if(option == 'mes suivis') {
+        this.$emit('suivre')
+      }
       
     }
   }

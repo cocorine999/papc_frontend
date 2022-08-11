@@ -11,9 +11,9 @@ import './assets/css/fonts.css';
 import 'boxicons/css/boxicons.min.css';
 import VueApexCharts from 'vue-apexcharts'
 
-
 import Vuelidate from 'vuelidate';
 Vue.component('apexchart', VueApexCharts)
+
 Vue.use(Vuelidate);
 Vue.use(VueApexCharts)
 

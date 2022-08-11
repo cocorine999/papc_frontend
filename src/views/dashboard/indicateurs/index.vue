@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     <div class="px-4">
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -17,6 +17,95 @@
           <search-bar ></search-bar>
         </div>
       </nav> 
+
+      <div v-if="showSuiviModal">
+          <modal-top-right :title="title"  v-on:close="showSuiviModal = false">
+            <div  class="px-4 overflow-y-auto">
+              <form action="" @submit.prevent="sendForm" class="px-4"  >
+          
+                <div class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                  <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
+                    <option disabled value="0">Année:</option>
+                    <option v-for="year in years" :key="year.id" :value="year">{{ year }}</option>
+                  </select>
+                </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Suivi par date ou par trimestre ? <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <div class="flex justify-between my-3">
+                  <div>
+                    <input type="radio" :checked="choiceDateOption"  @click="choiceDateOption= true" id="date" name="choix" value="date" >
+                    <label class="px-2" for="all">Par date</label>
+                  </div>
+                  <div>
+                    <input type="radio" @click="choiceDateOption= false" id="trimestre" name="choix" value="trimestre">
+                    <label class="px-2" for="sauf">Par trimestre</label>
+                  </div>
+                </div>
+
+                <div v-if="choiceDateOption" class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="" />
+                </div>
+              
+              <div v-else class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <div class="flex justify-between my-3">
+                  <div>
+                    <input type="radio"  id="T1" name="trimestre" value="T1" >
+                    <label class="px-2" for="T1">T1</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="T2" name="trimestre" value="T2">
+                    <label class="px-2" for="T2">T2</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="T3" name="trimestre" value="T3">
+                    <label class="px-2" for="T3">T3</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="T4" name="trimestre" value="T4">
+                    <label class="px-2" for="T4">T4</label>
+                  </div>
+                </div>
+              
+                <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+              </div>
+          
+           
+          </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <textArea class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textArea>
+             </div>
+            
+
+            <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
+              <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
+                Enregistrer 
+              </button>
+
+              <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
+                Annuler
+              </button>
+
+            </div>
+              </form>
+            </div>
+          </modal-top-right>
+      </div>
 
       <div v-if="showModal">
         <modal-top-right :title="title"  v-on:close="close">
@@ -56,7 +145,7 @@
         </div>
       </div>
      
-      <vtable :headers="headers" :datas="indicateurs" :actions="actions" @updateInputData="updateInputData" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable :headers="headers" :datas="indicateurs" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -88,9 +177,11 @@ export default {
       return ({
         showModal:false,
         showModal2:false,
+        showSuiviModal:false,
         loading:false,
         title:'',
         indicateurAttributs : ['nom', 'description', 'anneeDeBase', 'valeurDeBase','bailleurId','categorieId','uniteeMesureId'],
+        choiceDateOption:true,
         champs:[
           {name:'Nom',type:'text',key:'nom',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
           {name:'Année de base',key:'anneeDeBase',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
@@ -111,8 +202,10 @@ export default {
         headers:[],
         
         actions:[
-          {name:'consulter',iconne:''},
+          {name:'suivre'},
           {name:'supprimer',iconne:''},
+          {name:'consulter',iconne:''},
+         
         ]
 
       });
@@ -202,8 +295,12 @@ export default {
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
+    suivreIndicateur(data){
+      this.showSuiviModal = true
+      this.title = `Suivre l'indicateur`
+    },
     consulterSuivi(id){
-      this.$router.push({name:'indicateurs_suivi',params:{id:id}})
+      this.$router.push({name:'indicateurs_suivi_details',params:{id:id}})
     },
     sendForm() {
       this.champs = this.champs.map((item) => {
