@@ -24,7 +24,7 @@
                     <label   class=" block py-2 text-sm font-semibold " for="">
                       {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                     </label>
-                    <input  type="text"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
+                    <input  type="text" v-model="form.content"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
                 </div>
                 <div v-if="form.inputType=='photos'">
                   <label   class=" block py-2 text-sm font-semibold " for="">
@@ -36,11 +36,11 @@
                   <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.label}}</label>
                   <div class="flex items-center my-4">
                     <label for="vrai" class="px-4 block text-sm uppercase font-medium text-gray-700">
-                      <input id="vrai" name="verite" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
+                      <input id="vrai" name="verite" v-model="form.content" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
                       realiser
                     </label>
                     <label for="faux" class="px-4 block text-sm uppercase font-medium text-gray-700">
-                      <input id="faux" name="verite" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
+                      <input id="faux" name="verite"  v-model="form.content" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
                       non realiser
                     </label>
                   </div>
@@ -48,7 +48,7 @@
                 <div class="" v-if="form.inputType=='multiple'">
                   <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.nom}}</label>
                   <label v-for="answers in Answers" :key="answers.id" class="px-4  text-sm uppercase font-medium text-gray-700">
-                    <input  name="multiple" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
+                    <input  name="multiple" v-model="form.content" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
                     {{answers.label}} /
                   </label>
                 </div>
@@ -80,6 +80,11 @@ export default {
       showModal:false,
       champs:[],
       formulaire : [],
+      activiteStatut : 0,
+      userId : null,
+      mois : "",
+      annee : 0,
+      entrepriseExecutant : null,
       headers:[
           {name:'Libelle activite',props:'libelle'},
           {name:'Code activite',props:'code'},
@@ -87,68 +92,6 @@ export default {
           {name:'Date debut',props:'debut'},
           {name:'Date fin',props:'fin'},
           {name:'Date de creation',props:'created_at'},
-        ],
-        checklists:[
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PGESC",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "Plaquette validée et/ou notification de la validation",
-                "content": null
-              }
-            ]
-          },
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PAE",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "PAE approuvé",
-                "content": null
-              }
-            ]
-          },
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PPGED",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "PPGED approuvé",
-                "content": null
-              }
-            ]
-          },
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PPSPS",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "PPSPS approuvé",
-                "content": null
-              }
-            ]
-          },
         ],
         actions:[
           {name:'modifier',iconne:''},
@@ -175,6 +118,38 @@ export default {
     ...mapActions("formulaires", {
       getFormulaire: "GET_FORMULAIRE",
     }),
+
+    sendForm() {
+
+      this.formulare.forEach(element => {
+        element.data.forEach(data =>{
+          let form = 
+          {
+            "aciviteId" : element.activite.id,
+            "checklistId" : data.id,
+            "valeur" : data.content,
+            "activiteStatut" : this.activiteStatut,
+            "entrepriseExecutantId" : this.entrepriseExecutant.id,
+            "userId" : this.responsableEnquete.id,
+            "mois" : this.mois,
+            "annee" : this.annee
+          }
+        });
+      });
+
+      
+      
+
+      console.log(formulaire)
+      
+      this.saveFormulaire(formulaire).then(response => {
+        if(response.status == 200 || response.status == 201){
+            this.close()
+        }
+
+      })
+
+    },
     
    
   },
