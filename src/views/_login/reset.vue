@@ -6,15 +6,10 @@
     <div
       class="hidden relative md:px-8 bg-primary md:flex justify-center items-center"
     >
-      <div class="hidden md:block lg:w-4/5 xl:w-1/2 mx-auto mt-[40vh]">
-        <h1 class="text-4xl font-bold text-white mb-5">
-          Mot de <br />
-          Passe Oublié
-        </h1>
+      <div class="hidden md:block lg:w-4/5 xl:w-3/4 mx-auto mt-[40vh]">
+        <h1 class="text-4xl font-bold text-white mb-5">Mot de Passe Oublié</h1>
         <p class="text-white">
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-          sint. Velit officia consequat duis enim velit mollit. Exercitation
-          veniam consequat sunt nostrud amet.
+          Veuillez choisir un nouveau Mot de Passe pour finaliser le processus.
         </p>
       </div>
     </div>
@@ -28,7 +23,7 @@
           Réinitialisation du Mot de passe
         </h1>
         <form @submit.prevent="save" class="w-full">
-          <div class="relative my-4">
+          <div class="relative my-4 w-3/5 mx-auto">
             <input
               class="appearance-none border-b-2 w-full leading-tight border-[#939393] focus:outline-none focus:border-b-gray-500 focus:bg-white text-gray-700 placeholder:text-[#939393] placeholder:text-sm pb-2"
               type="password"
@@ -50,7 +45,7 @@
               mots de passe tres court
             </div>
           </div>
-          <div class="relative my-4">
+          <div class="relative my-4 w-3/5 mx-auto">
             <input
               class="appearance-none border-b-2 w-full leading-tight border-[#939393] focus:outline-none focus:border-b-gray-500 focus:bg-white text-gray-700 placeholder:text-[#939393] placeholder:text-sm pb-2"
               type="password"
@@ -69,15 +64,20 @@
 
           <!-- button de retour  -->
 
-          <div class="flex justify-center">
+          <div class="flex w-3/5 mx-auto justify-center my-10 relative z-50">
             <button
               type="submit"
-              class="mb-3 mt-5 w-full sm:mt-10 py-3 border bg-primary text-white text-sm md:text-base xl:text-lg"
+              class="w-full md:my-3 my-1 hover:opacity-75 transition-all duration-500 py-1 md:py-3 border bg-primary text-white text-sm md:text-base xl:text-lg text-center"
             >
               Envoyer
             </button>
           </div>
         </form>
+        <div class="flex justify-center">
+          <router-link to="/" class="text-md font-semibold text-primary mt-7"
+            >Retourner à l'écran de connexion</router-link
+          >
+        </div>
       </div>
     </div>
   </div>

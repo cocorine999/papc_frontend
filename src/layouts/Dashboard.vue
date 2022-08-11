@@ -29,7 +29,7 @@
   import SidebarBailleur from '@/components/SidebarBailleur'
   import SidebarMod from '@/components/SidebarMod'
   import SidebarMo from '@/components/SidebarMo'
-  import VueElementLoading from 'vue-element-loading'
+  // import VueElementLoading from 'vue-element-loading'
   import { mapState } from 'vuex'
 
   export default {
@@ -41,7 +41,7 @@
       SidebarBailleur,
       SidebarMod,
       SidebarMo,
-      VueElementLoading
+      // VueElementLoading
     },
     
     computed: {
