@@ -75,5 +75,13 @@ export default {
 
         return { data, status };
 
-    }
+    },
+
+    async GET_SUIVI (id, eSuivi) {
+        
+        const { data, status } = await FormulaireService.getSuivi(id, eSuivi);
+
+        return { data, status };
+
+    },
 }

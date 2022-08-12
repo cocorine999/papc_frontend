@@ -173,6 +173,7 @@
   import Vtable from '@/components/Vtable'
   import Vform from '@/components/Vform'
   import Vbutton from '@/components/Vbutton'
+  import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   components: {
     CardChecklist,
@@ -188,6 +189,7 @@ export default {
       seeForm:false,
       showModal:false,
       champs:[],
+      formulaire: [],
       headers:[
           {name:'Libelle activite',props:'libelle'},
           {name:'Code activite',props:'code'},
@@ -264,7 +266,25 @@ export default {
         ],
     }
   },
+  computed: {
+    ...mapState({
+      identifiant: (state) => state.auths.identifiant,
+      loading: (state) => state.loading,
+      errors: (state) => state.errors,
+      statuts: (state) => state.statuts,
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      utilisateurs: "utilisateurs/getUtilisateurs",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
   methods: {
+    ...mapActions("formulaires", {
+      getSuivi: "GET_SUIVI",
+    }),
     addActivite() {
       this.title = 'Creer une activité'
       this.showModal = true
@@ -299,6 +319,25 @@ export default {
       {name:'Date debut',type:'date',placeholdere:"Date debut",isSelect:false,isTextArea:false,data:'',required:true,},
       {name:'Date fin',type:'date',placeholdere:"Date fin",isSelect:false,isTextArea:false,data:'',required:true,},
     ]
+
+    let form = {
+      "date": "2019-02-02",
+      "entrepriseId": this.$route.params.idE,
+      "formulaireId": this.$route.params.idC
+    };
+
+    console.log(form);
+
+    console.log("Getting suivi ...");
+    console.log(this.$route.params.idC);
+    this.getSuivi(form).then((response) => {
+      this.formulaire = response;
+
+      this.formulaire = response.map((element) => {
+        element = JSON.parse(element);
+        return element;
+      });
+    });
   }
 }
 </script>

@@ -26,7 +26,7 @@ const FormulaireService = {
     },
 
     getSuivi(slug, params) {
-      return ApiService.post(`formulaires/${slug}`, params);
+      return ApiService.post("formulaires/getSuivi", params);
     },
     
 
