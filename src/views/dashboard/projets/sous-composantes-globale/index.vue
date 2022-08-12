@@ -109,6 +109,7 @@
             :poids="sousComposante.poids"
             :bailleur="sousComposante.sigle"
             @modifier="modifier(sousComposante)"
+            @dupliquer="dupliquer(sousComposante)"
             @supprimer="supprimer(sousComposante)"
             @validation="validation(sousComposante)"
           ></card-composante>
@@ -196,7 +197,7 @@ export default {
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez lr statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
+        {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez lr statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom', errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
@@ -342,6 +343,38 @@ export default {
 
     },
 
+    dupliquer(sousComposante) {
+
+      this.title ="Ajouter un nouveau composant"
+
+      this.sousComposanteAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if( value.key === "statut" && item === "statut"){
+
+            this.$store.state.statuts.map((value) => {
+              if(value.etat === sousComposante[item]){
+                this.champs[index]['data'] = value
+              }
+            });
+
+          }
+          else if(value.key === item){
+            this.champs[index]['data'] = sousComposante[item]
+          }
+
+        });
+
+      });
+
+      this.submitText="Enregistrer",
+
+      this.showCloseModal(true)
+    },
+
+    
+
     modifier(sousComposante) {
 
       this.title = 'Modifier un sous composant'
@@ -421,7 +454,7 @@ export default {
 
     resetForm(){
 
-      this.champs = this.champs.map(item => { item.data = ''; return item})
+      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
       
       window.document.getElementById('vform').reset()
 
@@ -473,6 +506,7 @@ export default {
 
             })
             .finally((error) => {
+              this.sendRequest = false;
               this.fetchSousComposantes(this.valueFiltre.id);
             })
 
@@ -488,7 +522,8 @@ export default {
               }
 
             })
-            .finally((error) => {              
+            .finally((error) => {          
+              this.sendRequest = false;    
               this.fetchSousComposantes(this.valueFiltre.id);
             })
         }
@@ -514,7 +549,12 @@ export default {
     },
 
     errors: function(errors) {
-      this.champs.forEach((value) => {value.errors = errors[value.key]})
+
+      this.champs.forEach((value) => {
+        if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
+          value.errors = errors[value.key]
+        }
+      })
       //this.errors = errors
     },
 

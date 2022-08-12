@@ -469,7 +469,7 @@ export default {
     Dropdown,
     CardActivite,
     Vtable,
-    Vform,
+    Vform
   },
   data() {
     return {
@@ -507,13 +507,12 @@ export default {
         {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.mods, cle: 'id', value: 'nom',  errors : []},
         {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez le statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-        
       ],
 
       champs2:[
 
         {name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'value', value: 'trimestre',  errors : []},
+        {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',  errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         
@@ -1222,7 +1221,7 @@ export default {
 
     resetForm2(){
 
-      this.champs2 = this.champs2.map(item => { item['data'] = ''; return item})
+      this.champs2 = this.champs2.map(item => { item['data'] = ''; item['errors'] = []; return item})
       
       window.document.getElementById('vform').reset()
 
@@ -1231,7 +1230,7 @@ export default {
 
     resetForm(){
 
-      this.champs = this.champs.map(item => { item['data'] = ''; return item})
+      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
       
       window.document.getElementById('vform').reset()
 
@@ -1249,25 +1248,40 @@ export default {
     },
 
     errors: function (errors) {
-      if(this.gotoPlan)
-        this.champs2.forEach((value) => {
-          if(value.key === "types"){
-          
-            value.errors = errors["type"];
 
-          }
-          else value.errors = errors[value.key];
-        });
-      else
-        this.champs.forEach((value) => {
-          if(value.key === "types"){
-          
-            value.errors = errors["type"];
+      if(errors instanceof Object && errors.length === undefined){
+        if(this.seePlan){
+            this.champs2.forEach((value) => {
 
-          }
-          else value.errors = errors[value.key];
-        });
-  
+              if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
+                if(value.key === "types"){
+                
+                  value.errors = errors["type"];
+
+                }
+                else value.errors = errors[value.key];
+              }
+            });
+        }
+        else if(this.seeActivite){
+            this.champs.forEach((value) => {
+              if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
+               console.log("seeActivite boucle if ")
+                if(value.key === "types"){
+                  value.errors = errors["type"];
+                }
+                else{
+                  console.log(this.sendRequest)
+                  value.errors = errors[value.key];
+                }
+
+              }
+            });
+        }
+      }
+      else if(errors instanceof Array && errors.length === 0 ){
+        this.champs = this.champs.map(item => { item['errors'] = []; return item})
+      }
     },
 
     entreprisesExecutante: function (entreprisesExecutante) {
