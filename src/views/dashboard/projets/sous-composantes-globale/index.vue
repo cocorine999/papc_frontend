@@ -111,6 +111,7 @@
             @modifier="modifier(sousComposante)"
             @supprimer="supprimer(sousComposante)"
             @validation="validation(sousComposante)"
+            @suivre="suivreMyComposant(sousComposante)"
           ></card-composante>
         </div>
 
@@ -262,6 +263,11 @@ export default {
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
+
+    suivreMyComposant(sousComposante) {
+      this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
+    },
+
 
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`

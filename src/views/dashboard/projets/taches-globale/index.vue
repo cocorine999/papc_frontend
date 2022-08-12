@@ -3,22 +3,30 @@
     <div class="w-full px-4">
        <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
         <div style="width:60vw" class="p-4">
-          <form action="">
-            <div  class="grid grid-cols-2 gap-2 my-2" v-for="(date,index) in dates" :key="index">
+          <form @submit.prevent="saveProlongerDate(tacheId,dates)" action="">
+            <div  class="grid grid-cols-2 gap-2 my-2">
               <div class="form-group my-2">
                 <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
+                <input v-model="dates.debut" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
               </div>
               <div class="form-group my-2">
                 <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <div class="flex space-x-2 items-center">
-                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
-                  <span title="ajouter une nouvelle date" @click="addDate" class="text-primary"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.6em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg></span>
-                  <span title="supprimer une date " @click="deleteItem(index)" class="bg-red-500 p-1 rounded-full text-white"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" stroke="none"/></svg></span>
-                </div>
+                <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
               </div>
             </div>
-            <button class="bg-primary text-white px-4 py-2 border border-primary font-semibold uppercase">Enregistrer</button>
+            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+              <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                enregistrer
+              </span>
+              <span v-else class="flex items-center space-x-2">
+                <span class="text-xs px-4 font-semibold ">
+                  envoi ...
+                </span>
+                <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </span>
+              </button>
           </form>
         </div>
       </vmodal>
@@ -260,6 +268,7 @@
         <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(tache, index) in taches" :key="index">
             <card-tache
+              :id="tache.id"
               :bailleur="tache.bailleur.sigle"
               :statut="getStatus(tache.statut)"
               :poids="tache.poids"
@@ -303,6 +312,7 @@ import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
 import Activite from "@/store/modules/activites/activite";
+import TacheService from "@/services/modules/tache.service.js";
 export default {
   components: {
     Dashboard,
@@ -317,7 +327,9 @@ export default {
   },
   data() {
     return {
-      dates: [{}],
+      dates: {debut:'',fin:''},
+      suivis:[],
+      chargement:false,
       showProlonger:false,
       showModalSuivi:false,
       valueFiltre: null,
@@ -348,8 +360,7 @@ export default {
         {name:'activite 4'},
         {name:'activite 5'},
       ],
-
-            
+      tacheId:'',
       tacheAttributs : ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'statut', 'poids'],
 
       champs:[
@@ -387,7 +398,7 @@ export default {
       actions: [
        
       ],
-      dates: [{}],
+      
     };
   },
 
@@ -454,7 +465,25 @@ export default {
       alert(item)
     },
     prolonger(tache) {
+      this.tacheId = tache.id
       this.showProlonger = true
+    },
+    saveProlongerDate(id,data) {
+      this.chargement = true
+      TacheService.addDate(id,data).then((data) => {
+        alert('envoyer')
+      }).catch((e) => {
+        console.log(e)
+      })
+      this.chargement = false  
+    },
+    getSuivi() {
+      TacheService.getSuivi().then((data) => {
+        this.suivis = data.data
+        console.log('mes suivis',this.suivis.data)
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     suivreMyTache(tache) {
       this.$router.push({name:'dashboard_projets_taches_globale_suivis',params:{id:tache.id}})
@@ -785,7 +814,7 @@ export default {
   },
 
   created() {
-
+    this.getSuivi()
     this.programmeId = this.currentUser.programme.id
 
     if(this.programmeId){

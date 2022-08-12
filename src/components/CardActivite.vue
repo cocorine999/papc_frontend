@@ -92,11 +92,8 @@
       </div>
       <div class="cursor-pointer">
         
-        <span v-if="!showInput" @click.stop="suivreActivite" class="absolute cursor-pointer bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{ poids }}</span>
-        <div v-else  class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary   font-bold leading-3 px-8 py-3 "> 
-         <span class="text-white"> Poids:</span>
-        <input type="text" @keyup.enter="validerSuivi(poids)" v-model="poids" class="border border-primary p-2  outline-none">
-        </div>
+        <span  class="absolute cursor-pointer bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{ poids }}</span>
+       
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
           <span

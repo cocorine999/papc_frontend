@@ -16,6 +16,10 @@ const ActiviteService = {
     create(params) {
       return ApiService.post("activites", params);
     },
+    addDate(slug,params) {
+      return ApiService.post(`activites/${slug}/ajouterDuree`, params);
+      //return ApiService.post(`activites/ajouterDuree/${slug}`, params);
+    },
 
     update(slug, params) {
       return ApiService.update("activites", slug, params);

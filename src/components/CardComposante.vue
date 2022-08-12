@@ -6,11 +6,12 @@
 
       <span v-if="isValidate" :title="composanteName != undefined ? composanteName.concat(' valider') : 'Composante valider' " class="text-green-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 15.5V2a2 2 0 012-2h8a2 2 0 012 2v13.5a.5.5 0 01-.74.439L8 13.069l-5.26 2.87A.5.5 0 012 15.5zm8.854-9.646a.5.5 0 00-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 10-.708.708l1.5 1.5a.5.5 0 00.708 0l3-3z" stroke="none"/></svg></span>
 
-      <dropdown @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"  :option="option"></dropdown>
+      <dropdown @supprimer="$emit('supprimer')" @modifier="$emit('modifier')" @suivre="$emit('suivre')"  :option="option"></dropdown>
     </div>
     <!-- cards composantes -->
     <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
-      <span class="absolute bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{ poids }} </span>
+      <span  title="suivre une activité"  class="absolute cursor-pointer bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids : {{ poids }} </span>
+      
       <div class="absolute uppercase flex space-x-2 items-center">
         <div class="bg-primary rounded-lg text-sm text-white px-3 py-1 font-semibold ">
           <i class='bx bx-coin-stack mr-1'></i>
@@ -47,13 +48,34 @@ export default {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
+        { name: "mes suivis" },
        
       ],
       showValidate:false,
+      showValidate:false,
+      delay: 700,
+      clicks: 0,
+      timer: null,
+      showInput:false,
       isValidate: this.statut.code > -2,
     }
   },
   methods:{
+    suivreComposant(poids) {
+      this.clicks++;
+      if (this.clicks === 1) {
+        this.timer = setTimeout( () => {
+        this.clicks = 0
+      }, this.delay);
+      } else {
+        clearTimeout(this.timer);  
+        this.showInput = true
+        this.clicks = 0;
+      }      
+    },
+    validerSuivi(poids){
+      this.showInput = false
+    },
     validation(){
       this.isValidate=true
       this.$emit('validation')

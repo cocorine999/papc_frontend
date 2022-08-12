@@ -320,7 +320,7 @@ export default {
       updateComposante: "UPDATE_COMPOSANTE",
       deleteComposante: "DESTROY_COMPOSANTE"
     }),
-
+    
     addDate() {
       this.dates.push({})
     },

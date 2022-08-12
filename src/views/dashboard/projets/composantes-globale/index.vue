@@ -106,6 +106,7 @@
             @modifier="modifier(composante)"
             @supprimer="supprimer(composante)"
             @validation="validation(composante)"
+            @suivre="suivreMyComposant(composante)"
           ></card-composante>
         </div>
 
@@ -243,6 +244,11 @@ export default {
       setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setComposantes: 'composantes/SET_LIST_COMPOSANTES'
     }),
+
+    suivreMyComposant(composante) {
+      this.$router.push({name:'dashboard_projets_composantes_globale_suivis',params:{id:composante.id}})
+    },
+
 
     ...mapActions('composantes', {
       fetchComposantes: "FETCH_LIST_COMPOSANTE_OF_PROJET",

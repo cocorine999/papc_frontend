@@ -326,7 +326,7 @@ export default {
     },
     
     gotoNext() {
-       this.$router.push({name:'unite_de_gestion_checklist',params:{id:1}})
+       this.$router.push({name:'unite_de_gestion_checklist',params:{idE:1}})
     },
 
    

@@ -20,19 +20,36 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div  class="px-4">
-            <form v-if="title =='Creer un nouveau role' ">
+            <form @submit.prevent="createRole" v-if="title =='Creer un nouveau role' ">
               <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le role  </label>
                 <input required type="text" v-model="roles.nom" placeholder="Taper le role"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Description du role  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <textArea class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textArea>
+              </div>
           
               <div class="my-4">
-                <multiselect v-model="roles.value" tag-placeholder="Ajouter un type utilisateur" placeholder="Ajouter une permissions" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="permisions" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Ajouter une permissions" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="permisions" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
                 <!-- <div v-for="role in errors.roles" :key="role.id" class="text-red-500 text-sm   py-2 font-bold"> {{role}} </div> -->
               </div>
 
               <div class="py-2 my-4 flex justify-center space-x-8">
-                <vbutton  type="submit" template="success">Creer un role </vbutton>
+                <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
                 <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
               </div>
             </form>
@@ -133,9 +150,9 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
+import RoleService from "@/services/modules/role.service.js";
+import PermissionsService from "@/services/modules/permission.service.js";
 
-import { mapActions, mapMutations, mapGetters} from "vuex";
-import extractFormData from '@/utils/extract-data'
 
   export default {
     components: {
@@ -159,23 +176,16 @@ import extractFormData from '@/utils/extract-data'
           ],
           uniteeDeGestionAttributs : ['nom', 'email', 'contact', 'programmeId'],
           showModal:false,
+          chargement:false,
           title:'',
           saveUpdate:{},
-          permisions: [
-            {nom:"creer"},
-            {nom:"modifier"},
-            {nom:"supprimer"},
-            {nom:"lire"},
-            {nom:"commenter"},
-            {nom:"signer"},
-            {nom:"creer checklist"},
-            {nom:"lire checklist"},
-
-          ],
+          permisions: [],
           roles:{
             nom:'',
-            value:[]
-          }
+            description:'',
+            role:[]
+          },
+          value:[]
           
       };
     },
@@ -184,132 +194,70 @@ import extractFormData from '@/utils/extract-data'
 
       //importation des variables du module auths
 
-      ...mapGetters({
-        hasErrors : "GET_ERREURS",
-        isLoading : "IS_LOADING",
-        uniteeDeGestion: "uniteeDeGestions/getUniteeDeGestion",
-        uniteeDeGestions: "uniteeDeGestions/getUniteeDeGestions",
-        programmes: "programmes/getProgrammes"
-      })
+   
     },
 
     methods: {
 
-      ...mapMutations({
-        setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-        setUniteeDeGestion: 'uniteeDeGestions/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
-      }),
-
-      ...mapActions('uniteeDeGestions', {
-        fetchUniteeDeGestions: "FETCH_LIST_UNITEE_DE_GESTION",
-        saveUniteeDeGestion: "STORE_UNITEE_DE_GESTION",
-        updateUniteeDeGestion: "UPDATE_UNITEE_DE_GESTION",
-        deleteUniteeDeGestion: "DESTROY_UNITEE_DE_GESTION"
-      }),
-
-      ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
-
-        addTag (newTag) {
-          const tag = {
-            nom: newTag,
-          }
-          this.options.push(tag)
-          this.value.push(tag)
-        },
+      createRole() {
+        this.chargement = true
+        this.value.forEach(element => {
+          this.roles.role.push(element.id)
+        })
+        const data = {
+          nom:this.roles.nom,
+          description:this.roles.description,
+          permissions:this.roles.role
+        }
+        RoleService.create(data).then((data) => {
+          alert('envoyer')
+        }).catch((e) => {
+          console.log(e)
+        })
+        this.chargement = false  
+      },
+      getPermission() {
+        PermissionsService.get().then((data) => {
+          this.permissions = data.data.data
+          console.log('mes  permissions',this.permisions)
+        }).catch((e) => {
+          console.log(e)
+        })
+      },
+      addTag (newTag) {
+            const tag = {
+              nom: newTag,
+            }
+            this.options.push(tag)
+            this.value.push(tag)
+      },
       modifier(data) {
-        this.title = "Modifier un role"
-        this.showModal = true
-        this.saveUpdate = data
+          this.title = "Modifier un role"
+          this.showModal = true
+          this.saveUpdate = data
       },
       addRole() {
-        this.title='Creer un nouveau role'
-        this.showCloseModal(true)
+          this.title='Creer un nouveau role'
+          this.showCloseModal(true)
       },
 
       async supprimer(uniteeDeGestion) {
-        if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + uniteeDeGestion.nom))
-          await this.deleteUniteeDeGestion(uniteeDeGestion.id)
+          if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + uniteeDeGestion.nom))
+            await this.deleteUniteeDeGestion(uniteeDeGestion.id)
       },
     
       close() {
         this.showCloseModal()
-
         this.resetForm()
       }, 
-    
+      
       showCloseModal(value = false) {
         this.showModal = value
       },
-
-      resetForm(){
-
-        this.champs = this.champs.map(item => { item.data = ''; return item})
-        
-        window.document.getElementById('vform')?.reset()
-
-        this.setUniteeDeGestion({})
-      },
-
-      async updateInputData(id, attribut, value) {
-        
-          await this.updateUniteeDeGestion({uniteeDeGestion: {[attribut] : value}, id : id}).catch((value, status) => {
-            if(this.hasErrors[attribut] !== undefined)
-              alert(this.hasErrors[attribut])            
-          }).finally(() => {
-            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
-          })
-
-      },
-
-      sendForm() {
-
-        this.champs = this.champs.map(item => { item.errors = []; return item})
-
-        let uniteeDeGestion = extractFormData(this.champs, this.uniteeDeGestionAttributs)
-
-        if(typeof uniteeDeGestion.programmeId === 'object')
-          uniteeDeGestion.programmeId = uniteeDeGestion.programmeId.id
-
-        if(this.uniteeDeGestion?.id)
-        {
-
-          this.updateProgramme({uniteeDeGestion: uniteeDeGestion, id : this.uniteeDeGestion?.id}).then(response => {
-            
-            if(response.status == 200 || response.status == 201){
-
-              this.close()
-            }
-
-          })
-
-        }
-        else
-        {
-          
-          this.saveUniteeDeGestion(uniteeDeGestion).then(response => {
-            if(response.status == 200 || response.status == 201){
-                this.close()
-            }
-
-          })
-        }
-      }
-    },
-
-    watch: {
-      isLoading: function(value) {
-          //this.loading = value
-      },
-
-      hasErrors: function(errors) {
-        this.champs.forEach((value) => {value.errors = errors[value.key]})
-        //this.errors = errors
-      }
-
-    },
-
-    mounted() {
       
+    },
+    mounted() {
+      this.getPermission()
     }
   }
 </script>
