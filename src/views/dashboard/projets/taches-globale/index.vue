@@ -276,6 +276,7 @@
               :montantNE="tache.montantNE"
               :montantEPM="tache.montantEPM"
               @supprimer="supprimer(tache)"
+              @dupliquer="dupliquer(tache)"
               @modifier="modifier(tache)"
               @validation="validation(tache)"
               @prolonger="prolonger(tache)"
@@ -551,6 +552,36 @@ export default {
       }
     },
 
+    dupliquer(tache) {
+
+      this.title = 'Ajouter une tache'
+
+      this.tacheAttributs.forEach((item) => {
+
+        this.champs.find((value, index) => {
+
+          if( value.key === "statut" && item === "statut"){
+
+            this.$store.state.statuts.map((value) => {
+              if(value.etat === tache[item]){
+                this.champs[index]['data'] = value
+              }
+            });
+
+          }
+          else if(value.key === item){
+            this.champs[index]['data'] = tache[item]
+          }
+
+        });
+
+      });
+
+      this.submitText = "Enregistrer",
+
+      this.showCloseModal(true)
+    },
+
     modifier(tache) {
 
       this.title = 'Modifier une tache'
@@ -633,10 +664,10 @@ export default {
       if (this.sendRequest === false) {
         this.sendRequest = true;
 
-        this.champs = this.champs.map((item) => {
+        /* this.champs = this.champs.map((item) => {
           item.errors = [];
           return item;
-        });
+        }); */
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
 
@@ -651,7 +682,8 @@ export default {
                 this.close();
               }
             })
-            .finally((error) => {              
+            .finally((error) => {     
+              this.sendRequest = false;               
               this.fetchTaches(this.valueFiltre.id);
             });
         } else {
@@ -661,7 +693,8 @@ export default {
                 this.close();
               }
             })
-            .finally((error) => {              
+            .finally((error) => {
+              this.sendRequest = false;        
               this.fetchTaches(this.valueFiltre.id);
             });
         }
@@ -679,7 +712,7 @@ export default {
 
     resetForm(){
 
-      this.champs = this.champs.map(item => { item['data'] = ''; return item})
+      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
 
       window.document.getElementById('vform').reset()
 
@@ -705,14 +738,23 @@ export default {
     },
 
     errors: function (errors) {
-      this.champs.forEach((value) => {
-        if(value.key === "types"){
 
-          value.errors = errors["type"];
+      if(errors.length > 0){
+        this.champs.forEach((value) => {
+          if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
+            value.errors = errors[value.key]
+            if(value.key === "types"){
 
-        }
-        else value.errors = errors[value.key];
-      });
+              value.errors = errors["type"];
+
+            }
+            else value.errors = errors[value.key];
+          }
+        })
+      }
+      else{
+        this.champs = this.champs.map(item => { item['errors'] = []; return item})
+      }
 
     },
     

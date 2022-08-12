@@ -131,25 +131,7 @@ export default new Vuex.Store({
         etat: 2
       }
     ],
-
-    trimestres :[
-      {
-        id : 1, 
-        nom : "trimestre 1"
-      }, 
-      {
-        id : 2,
-        nom : "trimestre 2"
-      }, 
-      {
-        id : 3, 
-        nom : "trimestre 3"
-      }, 
-      {
-        id : 4, 
-        nom : "trimestre 4"
-      }
-    ],
+    
     sources : [
       {
         id : 1, 

@@ -124,7 +124,7 @@ httpClient.interceptors.response.use(
         break;
 
       case 422:
-        store.commit(SET_ERRORS_MESSAGE, {message : error.response?.data?.message, errors: error.response?.data?.errors})
+        //store.commit(SET_ERRORS_MESSAGE, {message : error.response?.data?.message, errors: error.response?.data?.errors})
         break;
     
       default:

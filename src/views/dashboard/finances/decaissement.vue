@@ -48,7 +48,7 @@
       </div>
      
     </div>
-    <vtable :headers="headers" :datas="decaissements" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+    <vtable :headers="headers" :datas="decaissements" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
   </div>
   </dashboard>
  
@@ -84,8 +84,8 @@ export default {
           champs:[
           {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'codePta' + ' nom',required:true,},
-          {name:'Source de decaissement',key:'type',type:'',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
+          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:true,},
+          {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
         ],
         champsRecherche:[
           {name:'Date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
@@ -97,8 +97,9 @@ export default {
           
         headers:[
           {name:'Projets',cle:'projet'},
-          {name:'Bailleurs',cle:'bailleurs'},
+          {name:'Bailleur',cle:'bailleur'},
           {name:'Type de decaissement',cle:'type'},
+          {name:'Montant',cle:'montant'},
           {name:'Date de decaissement',cle:'date'},
           {name:'Date de creation',cle:'created_at'},
         ],
@@ -146,6 +147,17 @@ export default {
 
     ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET_OF_PROGRAMME' }),
 
+    async updateInputData(id, attribut, value) {
+        
+          await this.updateDecaissement({decaissement: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
+    },
+
+
     sendForm() {
 
       console.log(this.champs)
@@ -154,37 +166,19 @@ export default {
 
       let decaissement = extractFormData(this.champs, this.decaissementAttributs)
 
+      decaissement.type = decaissement.type.id
+      decaissement.projetId = decaissement.projetId.id
+
       console.log(decaissement)
       
-      if(this.decaissement?.id)
-      {
-
-        this.updateDecaissement({decaissement: decaissement, id : this.decaissement?.id}).then(response => {
-          
-          if(response.status == 200 || response.status == 201){
-
-            this.close()
-          }
-
-        }).catch((error) => {
-
-          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-          this.champs.map(value => value.errors = this.erreurs[value.key])
-
-        })
-
-      }
-      else
-      {
       
-        this.saveDecaissement(decaissement).then(response => {
-          if(response.status == 200 || response.status == 201){
-              this.close()
-          }
+      this.saveDecaissement(decaissement).then(response => {
+        if(response.status == 200 || response.status == 201){
+            this.close()
+        }
 
-        })
-      }
+      })
+      
 
     },  
       close() {
@@ -192,6 +186,21 @@ export default {
       },
       addDecaissement() {
         this.title ="Ajouter un decaissement"
+
+        let formData = this.champs.map((value) => {
+          if(value.key === 'projetId'){ 
+            value['options'] = this.projets
+          }
+          
+          else if(value.key === 'type'){
+            value['options'] = this.$store.state.sources;
+          }
+
+          return value
+        })
+
+      this.champs = formData
+
         this.showModal = true
       },
       modifier(data) {
@@ -199,9 +208,10 @@ export default {
         this.showModal = true
         alert(data +" à ete modifier")
       },
-      supprimer(data) {
-        alert(data +" à ete bien supprimer")
-      }
+      async supprimer(decaissement) {
+      if(window.confirm("Voulez-vous supprimer ce decaissement " ))
+        await this.deleteDecaissement(decaissement.id)
+    },
     },
 
     mounted() {

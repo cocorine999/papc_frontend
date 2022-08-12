@@ -11,8 +11,8 @@
             </div>
           </div>
           <div class="my-2">
-            <p v-if="activite != undefined" class="text-sm font-semibold py-1"> <span class="font-bold">Activité :</span>  <span class="text-gray-700">{{activite}} </span> </p>
-            <p v-if="activite != undefined" class="text-sm font-semibold py-1"> <span class="font-bold">Unité :</span> <span v-for="unite in unites" :key="unite.id" class="text-gray-700"> {{unite}} <i>/</i> </span>  </p>
+            <p v-if="activite != undefined" class="text-sm font-semibold py-1"> <span class="font-bold">Auteur :</span>  <span class="text-gray-700">{{activite}} </span> </p>
+            <p v-if="activite != undefined" class="text-sm font-semibold py-1"> <span class="font-bold"></span> <span v-for="unite in unites" :key="unite.id" class="text-gray-700"> {{unite}} <i>/</i> </span>  </p>
           </div>
           <div class="my-2 flex justify-end absolute bottom-2 right-2 space-x-3">
             

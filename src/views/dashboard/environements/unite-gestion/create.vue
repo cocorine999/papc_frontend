@@ -9,7 +9,7 @@
           <div class="border border-dashed border-gray-300 my-4 px-8 py-4" >
              <div class="my-3 w-full" >
                 <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
-                <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
+                <input type="text" v-model="nomFormulaire"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
               </div>
              <button @click="createActivite" class="flex space-x-2 bg-blue-500 text-white border border-blue-500 uppercase items-center px-4 py-2">
                   <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm6.5 4.5v3h3a.5.5 0 010 1h-3v3a.5.5 0 01-1 0v-3h-3a.5.5 0 010-1h3v-3a.5.5 0 011 0z" stroke="none"/></svg></span>
@@ -21,7 +21,7 @@
               <div class="flex justify-between items-center">
                 <div class="my-2 w-4/5">
                   <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Selectionner une activité <span class="px-2 mb-2 text-lg font-black text-red-700">*</span></label>
-                  <multiselect v-model="activite.activite" :options="options" :custom-label="selectActivite"  placeholder="selectionnez une activite" label="name" track-by="name"></multiselect>
+                  <multiselect v-model="activite.activite" :options="eActivites" :custom-label="selectActivite"  placeholder="selectionnez une activite" label="name" track-by="name"></multiselect>
                 </div>
                 <div class="my-2">
                   <span @click.prevent.stop="deleteElement(index)" class="text-red-500  cursor-pointer "> 
@@ -36,12 +36,7 @@
                      <div class="flex justify-between">
                       <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
                        <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
-                          <option  value="KM"> KM </option>
-                          <option  value="Mettre"> Metre </option>
-                          <option  value="CM"> CM </option>
-                          <option  value="pourcentage"> pourcentage </option>
-                          <option  value="personnes"> personnes </option>
-                          <option  value="unite"> unité </option>
+                          <option v-for="(item, i) in uniteesDeMesure" :key="i" :value="item.id">{{item.nom}}</option>
                         </select>
                     </div>
                     <input  type="text" v-model="form.nom" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
@@ -65,14 +60,10 @@
 
                   <div class="my-3 w-4/5" v-if="form.inputType=='boolean'">
                      <div class="flex justify-between">
+                      {{uniteesDeMesure}}
                       <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
                        <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
-                          <option  value="KM"> KM </option>
-                          <option  value="Mettre"> Metre </option>
-                          <option  value="CM"> CM </option>
-                          <option  value="pourcentage"> pourcentage </option>
-                          <option  value="personnes"> personnes </option>
-                          <option  value="unite"> unité </option>
+                          <option v-for="(item, i) in uniteesDeMesure" :key="i" :value="item.id">{{item.nom}}</option>
                         </select>
                     </div>
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block  " placeholder="Saisissez votre libellé vrai ou faux ">
@@ -84,12 +75,7 @@
                        <div class="flex justify-between">
                       <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
                        <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
-                          <option  value="KM"> KM </option>
-                          <option  value="Mettre"> Metre </option>
-                          <option  value="CM"> CM </option>
-                          <option  value="pourcentage"> pourcentage </option>
-                          <option  value="personnes"> personnes </option>
-                          <option  value="unite"> unité </option>
+                          <option v-for="(item, i) in uniteesDeMesure" :key="i" :value="item.id">{{item.nom}}</option>
                         </select>
                     </div>
                       <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block" placeholder="Saisissez votre libellé multiple">
@@ -137,7 +123,7 @@
     </div>
    
     <div v-else class="container mx-auto">
-      <form action="">
+      <form @submit.prevent="sendForm">
         <div class="flex justify-center ">
           <div class="w-3/4">
             <div v-for="activite in Forms" :key="activite.id" class="w-3/4 border border-dashed border-gray-700 p-6">
@@ -192,6 +178,8 @@
 import Multiselect from 'vue-multiselect'
 import Vbutton from '@/components/Vbutton'
 import Dashboard from '@/layouts/Dashboard'
+import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
+import utils from '@/utils/index';
 export default {
   layout:'dashboard',
   components: {Dashboard,Multiselect,Vbutton},
@@ -204,25 +192,59 @@ export default {
       isNotGenere:true,
       currentIndex:0,
       currentIndexData:0,
+      nomFormulaire:'',
       Forms:[
        
       ],
-      options:[
-        {libelle:'preparer et faire valider par le MO et le MOD un PGESC',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-        {libelle:'preparer et faire valider par le MO et le MOD un PAE',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-        {libelle:'preparer et faire valider par le MO et le MOD un PPGED',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-        {libelle:'preparer et faire valider par le MO et le MOD un PPSPS',code:"DD555F",programme:'POOL PAPC',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-      ],
     }
   },
+
+  computed: {
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      eActivite: state => state.eActivites.eActivite,
+      formulaire: state => state.formulaires.formulaire,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      eActivites: "eActivites/getEActivites",
+      uniteesDeMesure:"uniteesDeMesure/getUniteesDeMesure",
+      formulaires: "formulaires/getFormulaires",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
+
   methods: {
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setEActivite: 'eActivites/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions("eActivites", {
+      fetchEActivites: "FETCH_LIST_EACTIVITE",
+    }),
+
+    ...mapActions("formulaires", {
+      saveFormulaire: "STORE_FORMULAIRE",
+    }),
+
+    ...mapActions("uniteesDeMesure", {
+      fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
+    }),
+
     createActivite(){
       this.isActive = false
       this.Forms.push({activite:'',data:[]})
       this.currentIndex = this.Forms.length -1
     },
-    selectActivite ({ libelle}) {
-      return `${libelle}`
+    selectActivite ({ nom}) {
+      return `${nom}`
     },
     btn_edit() {
       
@@ -255,8 +277,39 @@ export default {
     
     deleteAnswers(index) {
       this.Answers.splice(index,1)
-    }
+    },
+
+    sendForm() {
+
+      let formulaire = 
+        {
+          "nom" : this.nomFormulaire,
+          "json" : this.Forms,
+          "type" : 0
+        }
+      
+
+      console.log(formulaire)
+      
+      this.saveFormulaire(formulaire).then(response => {
+        if(response.status == 200 || response.status == 201){
+            this.close()
+        }
+
+      })
+
+    },
   },
+
+  mounted() {
+    console.log("Fetching e-activites ...")
+    this.fetchEActivites(this.currentUser?.programme?.id)
+
+    setTimeout(() => { 
+        console.log("Fetching unuite de mesure")
+        this.fetchUnite()
+    })
+  }
   
 }
 </script>
