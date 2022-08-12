@@ -319,7 +319,7 @@ export default {
     },
     
     gotoNext() {
-       this.$router.push({name:'entreprise_checklist',params:{id:1}})
+       this.$router.push({name:'entreprise_checklist',params:{idE:1}})
     },
 
    

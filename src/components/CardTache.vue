@@ -32,7 +32,7 @@
         <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{ poids }} </span>
         <div v-else  class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary   font-bold leading-3 px-8 py-3 "> 
          <span class="text-white"> Poids:</span>
-        <input type="text" @keyup.enter="validerSuivi(poids)" v-model="poids" class="border border-primary p-2  outline-none">
+        <input type="text" @keyup.enter="validerSuivi(id,poids)" v-model="poids" class="border border-primary p-2  outline-none">
         </div>
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import TacheService from "@/services/modules/tache.service.js";
 import Dropdown from '@/components/Dropdown.vue'
 export default {
   props:[
@@ -78,7 +79,8 @@ export default {
     "structureResponsable",
     "debut",
     "fin",
-    "statut"
+    "statut",
+    "id"
   ],
   components:{ Dropdown},
   data() {
@@ -111,8 +113,18 @@ export default {
         this.clicks = 0;
       }      
     },
-    validerSuivi(poids){
-      this.showInput = false
+    
+    validerSuivi(id,poids){
+      const data = {
+        poidsActuel:poids,
+        tacheId:id
+      }
+      TacheService.suiviTache(data).then((data) => {
+         this.showInput = false
+      }).catch((e) => {
+        console.log(e)
+      })
+     
     },
     validation(){
       this.isValidate=true

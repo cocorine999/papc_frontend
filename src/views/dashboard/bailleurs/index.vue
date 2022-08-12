@@ -242,7 +242,7 @@
   import Dropdown from '@/components/Dropdown.vue'
   import { mapGetters, mapMutations, mapActions } from "vuex";
   import extractFormData from "@/utils/extract-data";
-  import BailleursService from "@/services/modules/bailleur.service.js";
+  
   export default {
     components: {
       Vtable,
@@ -504,11 +504,7 @@
     },
 
     mounted(){
-      const data = BailleursService.get().then((data) => {
-         console.log("mes données propre",data.data)
-      }).catch((e) => {
-        console.log(e)
-      })
+      
      
     }
   };
