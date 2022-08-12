@@ -24,6 +24,9 @@ const TachesService = {
     suiviTache(params) {
       return ApiService.post(`suivis`, params);
     },
+    mySuivis(slug) {
+      return ApiService.get(`taches/${slug}/suivis`);
+    },
     getSuivi() {
       return ApiService.get(`suivis`);
     },

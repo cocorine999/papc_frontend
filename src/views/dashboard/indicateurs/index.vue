@@ -24,7 +24,7 @@
               <form action="" @submit.prevent="sendForm" class="px-4"  >
           
                 <div class="my-4">
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
                   <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
                     <option disabled value="0">Année:</option>
                     <option v-for="year in years" :key="year.id" :value="year">{{ year }}</option>
@@ -166,6 +166,7 @@ import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
+import SuiviService from "@/services/modules/indicateur.suivi.service.js";
 export default {
   components: {
     Vtable,
@@ -184,6 +185,7 @@ export default {
         showSuiviModal:false,
         loading:false,
         title:'',
+        chargement:false,
         indicateurAttributs : ['nom', 'description', 'anneeDeBase', 'valeurDeBase','bailleurId','categorieId','uniteeMesureId'],
         choiceDateOption:true,
         champs:[
@@ -204,7 +206,7 @@ export default {
           
         ],
         headers:[],
-        
+        idIndicateur:'',
         actions:[
           {name:'suivre'},
           {name:'supprimer',iconne:''},
@@ -275,6 +277,10 @@ export default {
       categories: "categories/getCategories",
       uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
     }),
+    years () {
+      const year = new Date().getFullYear()+20
+      return Array.from({length: year - 1900}, (value, index) => year + index)
+    }
   },
   methods: {
     ...mapMutations({
@@ -298,11 +304,21 @@ export default {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
     suivreIndicateur(data){
+      this.idIndicateur = data
       this.showSuiviModal = true
       this.title = `Suivre l'indicateur`
     },
     consulterSuivi(id){
       this.$router.push({name:'indicateurs_suivi',params:{id:id}})
+    },
+    saveSuivi() {
+      this.chargement = true
+      const data = {}
+      SuiviService.create(id,data).then((data) => {
+      }).catch((e) => {
+        console.log(e)
+      })
+      this.chargement = false  
     },
     sendForm() {
       this.champs = this.champs.map((item) => {

@@ -62,8 +62,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import extractFormData from "@/utils/extract-data";
+import TacheService from "@/services/modules/tache.service.js";
+
 export default {
   components: {
     Vtable,
@@ -83,6 +83,7 @@ export default {
         ],
         cols:2,
         title:'',
+        suivis:[],
         headers:[
           {name:'BN',cle:'bn',props:'valeurCible',width:"w-28"},
           {name:'Pret',cle:'pret',width:"w-28"},
@@ -97,7 +98,8 @@ export default {
           {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
           {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
           {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-        ]
+        ],
+        suivis:[],
       });
   },
  
@@ -107,10 +109,17 @@ export default {
   },
   
   methods: {
-   
+    getSuivi() {
+      TacheService.mySuivis().then((data) => {
+        this.suivis = data.data.data
+        console.log('mes suivis',this.suivis)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
   },
   mounted() {
-   
+    this.TacheService()
   },
 }
 </script>
