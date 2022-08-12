@@ -173,6 +173,7 @@
   import Vtable from '@/components/Vtable'
   import Vform from '@/components/Vform'
   import Vbutton from '@/components/Vbutton'
+  import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   components: {
     CardChecklist,
@@ -188,6 +189,7 @@ export default {
       seeForm:false,
       showModal:false,
       champs:[],
+      formulaire: [],
       headers:[
           {name:'Libelle activite',props:'libelle'},
           {name:'Code activite',props:'code'},
@@ -264,7 +266,23 @@ export default {
         ],
     }
   },
+  computed: {
+      ...mapState({
+      identifiant: state => state.auths.identifiant,
+      loading : state => state.loading,
+      errors : state => state.errors,
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
   methods: {
+    ...mapActions("formulaires", {
+      fetchSuivi: "GET_SUIVI",
+    }),
     addActivite() {
       this.title = 'Creer une activité'
       this.showModal = true

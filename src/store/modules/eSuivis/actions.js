@@ -70,5 +70,13 @@ export default {
 
         return { data, status };
 
-    }
+    },
+
+    async GET_SUIVI ({ commit }, {eSuivi, id}) {
+        
+        const { data, status } = await ESuiviService.getSuivi(id, eSuivi);
+
+        return { data, status };
+
+    },
 }

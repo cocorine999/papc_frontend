@@ -25,6 +25,11 @@ const FormulaireService = {
       return ApiService.delete(`formulaires/${slug}`);
     },
 
+    getSuivi(slug, params) {
+      return ApiService.post(`formulaires/${slug}`, params);
+    },
+    
+
   };
 
   export default FormulaireService;
