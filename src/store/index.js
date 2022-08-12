@@ -64,6 +64,8 @@ import pointFinancier from "./modules/pointFinancier/index";
 
 import planDeDecaissements from "./modules/planDeDecaissements/index";
 
+import eSuivis from "./modules/eSuivis/index";
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
@@ -223,6 +225,7 @@ export default new Vuex.Store({
     sinistres,
     decaissements,
     pointFinancier,
-    planDeDecaissements
+    planDeDecaissements,
+    eSuivis,
   }
 });
