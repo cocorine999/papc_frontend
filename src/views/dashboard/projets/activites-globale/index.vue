@@ -482,6 +482,7 @@ export default {
   },
   data() {
     return {
+      suivis:[],
       valueFiltre: null,
       activiteFiltre: null,
       composanteId: null,
@@ -887,6 +888,14 @@ export default {
       return `${codePta} – ${nom}`
     },
 
+    getSuivi() {
+      ActiviteService.getSuivi().then((data) => {
+        this.suivis = data.data
+        console.log('mes suivis',this.suivis.data)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
     supprimerT() {},
 
     saveProlongerDate(id,data) {

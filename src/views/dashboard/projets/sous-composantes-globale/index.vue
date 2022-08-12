@@ -147,7 +147,7 @@ import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
 import Composante from '@/store/modules/composantes/composante'
-
+import ComposanteService from "@/services/modules/composante.service.js";
 export default {
   components: {
     Dashboard,
@@ -220,6 +220,7 @@ export default {
       dates:[
         {}
       ],
+      suivis:[]
      
     }
     
@@ -267,6 +268,15 @@ export default {
 
     suivreMyComposant(sousComposante) {
       this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
+    },
+
+    getSuivi() {
+      ComposanteService.getSuivi().then((data) => {
+        this.suivis = data.data
+        console.log('mes suivis',this.suivis.data)
+      }).catch((e) => {
+        console.log(e)
+      })
     },
 
 
