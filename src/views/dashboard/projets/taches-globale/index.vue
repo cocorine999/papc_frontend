@@ -384,17 +384,14 @@ export default {
    
       headers: [
         { name: "Tache", cle: "tache"},
-        { name: "Description", cle: "description"},
-        { name: "Budget Nationnal", cle:'bn'},
-        { name: "Pret", cle:'pret'},
-        { name: "Poids", cle:'poids'},
+        { name: "code pta", cle: "codePta"},
+        { name: "poids initial", cle:'poidsInitial'},
+        { name: "poids actuel", cle:'poidsActuel'},
         { name: "date de creation", cle:'created_at'},
         
       ],
 
-      dataTable:[
-        {tache:"tache 1",description:"lorem ipsum",bn:"200000000",pret:"9540000000",poids:"5",created_at:"08/08/2022"}
-      ],
+      dataTable:[],
 
       actions: [
        
@@ -480,8 +477,17 @@ export default {
     },
     getSuivi() {
       TacheService.getSuivi().then((data) => {
-        this.suivis = data.data
-        console.log('mes suivis',this.suivis.data)
+        const datas = data.data.data
+        datas.forEach(element => {
+          const tache = element.tache.nom
+          const codePta = element.tache.codePta
+          const poidsInitial = element.tache.poids
+          const poidsActuel = element.poidsActuel
+          const created_at = element.created_at
+          this.dataTable.push({tache:tache,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+        })
+        console.log("les suiivs",this.dataTable)
+       
       }).catch((e) => {
         console.log(e)
       })

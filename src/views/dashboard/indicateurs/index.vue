@@ -21,14 +21,15 @@
       <div v-if="showSuiviModal">
         <modal-top-right :title="title"  v-on:close="showSuiviModal = false">
             <div  class="px-4 overflow-y-auto">
-              <form action="" @submit.prevent="sendForm" class="px-4"  >
+              <form action="" @submit.prevent="saveSuivi" class="px-4"  >
           
                 <div class="my-4">
+                  <pre>
+                    {{isValeurCibleUse}}
+                  </pre>
                   <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                  <select v-model="suiviIndicateurs.annee" @change="verifyValeurCible(suiviIndicateurs.annee)" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
-                    <option disabled value="0">Année:</option>
-                    <option v-for="year in years" :key="year.id" :value="year">{{ year }}</option>
-                  </select>
+
+                   <input v-model="suiviIndicateurs.annee"  @change="verifyValeurCible(suiviIndicateurs.annee)" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
                 </div>
 
               <div class="my-4">
@@ -212,6 +213,7 @@ export default {
         actions:[
           {name:'suivre'},
           {name:'supprimer',iconne:''},
+          {name:'consulter',iconne:''},
         ]
 
       });
@@ -280,7 +282,7 @@ export default {
       uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
     }),
     years () {
-      const year = new Date().getFullYear()+20
+      const year = new Date().getFullYear()
       return Array.from({length: year - 1900}, (value, index) => year + index)
     }
   },
@@ -311,7 +313,8 @@ export default {
       this.title = `Suivre l'indicateur`
     },
     consulterSuivi(id){
-      this.$router.push({name:'indicateurs_suivi',params:{id:id}})
+     
+      this.$router.push({name:'indicateurs_suivi_details',params:{id:id}})
     },
     saveSuivi() {
       this.chargement = true

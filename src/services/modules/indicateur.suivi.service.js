@@ -13,7 +13,7 @@ const IndicateurSuiviService = {
       return ApiService.get("suivi-indicateurs", slug);
     },
     checksuivi(slug, params) {
-      return ApiService.get(`indicateurs/${slug}/checksuivi/${params}`, slug);
+      return ApiService.get(`indicateurs/${slug}/checkSuivi/${params}`, slug);
     },
 
     create(params) {
