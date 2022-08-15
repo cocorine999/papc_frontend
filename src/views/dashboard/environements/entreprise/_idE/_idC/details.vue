@@ -1,6 +1,9 @@
 <template>
   <dashboard>
-    
+    <pre>
+      id entreprise {{$route.params.idE}}
+      id formulaire {{$route.params.idC}}
+    </pre>
   <div class="px-4">
     <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>

@@ -17,6 +17,20 @@ const TachesService = {
       return ApiService.post("taches", params);
     },
 
+    addDate(slug,params) {
+      return ApiService.post(`taches/${slug}/ajouterDuree`, params);
+      //return ApiService.post(`taches/ajouterDuree/${slug}`, params);
+    },
+    suiviTache(params) {
+      return ApiService.post(`suivis`, params);
+    },
+    mySuivis(slug) {
+      return ApiService.get(`taches/${slug}/suivis`);
+    },
+    getSuivi() {
+      return ApiService.get(`suivis`);
+    },
+
     update(slug, params) {
       return ApiService.update("taches", slug, params);
     },

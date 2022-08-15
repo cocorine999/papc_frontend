@@ -100,7 +100,7 @@ export default {
       this.showLink = true
     },
     gotoDetails(id) {
-      this.$router.push({name:'entreprise_checklist_details',params:{id:id}})
+      this.$router.push({name:'entreprise_checklist_details',params:{idC:id}})
     },
     
     modifier(data) {

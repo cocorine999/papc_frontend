@@ -64,6 +64,7 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
+import ActiviteService from "@/services/modules/activite.service.js";
 export default {
   components: {
     Vtable,
@@ -107,7 +108,14 @@ export default {
   },
   
   methods: {
-   
+    getSuivi() {
+      ActiviteService.mySuivis().then((data) => {
+        this.suivis = data.data.data
+        console.log('mes suivis',this.suivis)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
   },
   mounted() {
    

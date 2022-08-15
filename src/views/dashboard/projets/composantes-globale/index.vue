@@ -106,6 +106,7 @@
             @modifier="modifier(composante)"
             @supprimer="supprimer(composante)"
             @validation="validation(composante)"
+            @suivre="suivreMyComposant(composante)"
           ></card-composante>
         </div>
 
@@ -140,6 +141,7 @@ import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import  { extractFormData, getStringValueOfStatutCode }  from '@/utils/index'
 import Projet from '@/store/modules/projets/projet'
+import ComposanteService from "@/services/modules/composante.service.js";
 
 export default {
   components: {
@@ -212,6 +214,7 @@ export default {
       dates:[
         {}
       ],
+      suivis:[]
      
     }
     
@@ -243,6 +246,20 @@ export default {
       setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setComposantes: 'composantes/SET_LIST_COMPOSANTES'
     }),
+
+    suivreMyComposant(composante) {
+      this.$router.push({name:'dashboard_projets_composantes_globale_suivis',params:{id:composante.id}})
+    },
+
+     getSuivi() {
+      ComposanteService.getSuivi().then((data) => {
+        this.suivis = data.data
+        console.log('mes suivis',this.suivis.data)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+
 
     ...mapActions('composantes', {
       fetchComposantes: "FETCH_LIST_COMPOSANTE_OF_PROJET",
@@ -410,7 +427,7 @@ export default {
 
     resetForm(){
 
-      this.champs = this.champs.map(item => { item['data'] = ''; return item})
+      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
       
       window.document.getElementById('vform').reset()
 
@@ -510,7 +527,11 @@ export default {
     },
 
     errors: function(errors) {
-      this.champs.forEach((value) => {value.errors = errors[value.key]})
+      this.champs.forEach((value) => {
+        if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
+          value.errors = errors[value.key]
+        }
+      })
     },
 
     valueFiltre: function(valeur){
