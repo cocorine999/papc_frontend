@@ -17,6 +17,13 @@ const ComposantesService = {
       return ApiService.post("composantes", params);
     },
 
+    mySuivis(slug) {
+      return ApiService.get(`composantes/${slug}/suivis`);
+    },
+    getSuivi() {
+      return ApiService.get(`suivis`);
+    },
+
     update(slug, params) {
       return ApiService.update("composantes", slug, params);
     },

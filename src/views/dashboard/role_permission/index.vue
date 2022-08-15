@@ -27,8 +27,10 @@
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
               <div class="my-4">
+               
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Description du role  <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <textArea class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textArea>
+              
+                <textarea v-model="roles.description"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
               </div>
           
               <div class="my-4">
@@ -180,6 +182,7 @@ import PermissionsService from "@/services/modules/permission.service.js";
           title:'',
           saveUpdate:{},
           permisions: [],
+          description:'',
           roles:{
             nom:'',
             description:'',

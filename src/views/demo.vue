@@ -1,12 +1,31 @@
 <template>
   <dashboard>
     <div>
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga, quo, eum numquam distinctio blanditiis commodi sit quibusdam, omnis natus provident repellendus quis nihil cum dolorum. Quis placeat et modi porro?
-        <vform template="default" :champs="champs" :cols="cols" submitText="Creer à partir de" :attrs="selectData"  @sendForm="sendForm" ></vform>
-   
-    <pre>
-      {{champs}}
-    </pre>
+      <pre>
+       la data  {{data}}
+      </pre>
+     <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <div class="flex justify-between my-3">
+                  <div>
+                    <input type="radio" v-model="data"  id="T1" name="trimestre" value="T1" >
+                    <label class="px-2" for="T1">T1</label>
+                  </div>
+                  <div>
+                    <input type="radio" v-model="data" id="T2" name="trimestre" value="T2">
+                    <label class="px-2" for="T2">T2</label>
+                  </div>
+                  <div>
+                    <input type="radio" v-model="data" id="T3" name="trimestre" value="T3">
+                    <label class="px-2" for="T3">T3</label>
+                  </div>
+                  <div>
+                    <input type="radio" v-model="data" id="T4" name="trimestre" value="T4">
+                    <label class="px-2" for="T4">T4</label>
+                  </div>
+                </div>
+
+              </div>
    </div>
   </dashboard>
 </template>
@@ -20,6 +39,7 @@ export default {
   },
   data() {
     return {
+      data:'',
       champs:[],
         cols:1,
         options:[]

@@ -38,15 +38,16 @@
           <div class=" w-1/3 bg-white shadow p-2">
             <div class="p-4">
               <div>
-                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Tache</span> : tache demo </p>
-                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Poids</span>:5 </p>
-                <p class=" text-sm   py-2" ><span class="font-bold uppercase px-1">BN</span> :2000000000k</p>
-                <p class=" text-sm   py-2"> <span class="font-bold uppercase px-1">Pret</span> :200000k</p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Tache</span> : {{taches.nom}} </p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Bailleur</span> : {{taches.bailleur.sigle}} </p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Code PTA</span> : {{taches.codePta}} </p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Poids initial</span>:{{taches.poids}} </p>
+     
               </div>
             </div>
           </div>
           <div class="datatable w-full bg-white shadow p-2 ">
-            <vtable :headers="headers" :datas="taches"  ></vtable>
+            <vtable :headers="headers" :datas="dataTable"  ></vtable>
           </div>
         </div>    
     </div>
@@ -84,21 +85,15 @@ export default {
         cols:2,
         title:'',
         suivis:[],
-        headers:[
-          {name:'BN',cle:'bn',props:'valeurCible',width:"w-28"},
-          {name:'Pret',cle:'pret',width:"w-28"},
-          {name:'Poids',cle:'poids',width:"w-28"},
-          {name:'Date de creation',cle:'created_at',width:"w-24"},
+        headers: [
+          { name: "Tache", cle: "tache"},
+          { name: "code pta", cle: "codePta"},
+          { name: "poids initial", cle:'poidsInitial'},
+          { name: "poids actuel", cle:'poidsActuel'},
+          { name: "date de creation", cle:'created_at'},
         ],
-        taches: [
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-        ],
+        taches:[],
+        dataTable:[],
         suivis:[],
       });
   },
@@ -110,16 +105,32 @@ export default {
   
   methods: {
     getSuivi() {
-      TacheService.mySuivis().then((data) => {
-        this.suivis = data.data.data
-        console.log('mes suivis',this.suivis)
+      TacheService.mySuivis(this.$route.params.id).then((data) => {
+        const datas = data.data.data
+         datas.forEach(element => {
+          const tache = element.tache.nom
+          const codePta = element.tache.codePta
+          const poidsInitial = element.tache.poids
+          const poidsActuel = element.poidsActuel
+          const created_at = element.created_at
+          this.dataTable.push({tache:tache,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+        })
+        console.log("les suiivs",this.dataTable)
       }).catch((e) => {
         console.log(e)
       })
     },
+    currentTache() {
+      TacheService.get(this.$route.params.id).then((data) => {
+        this.taches= data.data.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
   },
   mounted() {
-    this.TacheService()
+    this.getSuivi()
+    this.currentTache()
   },
 }
 </script>

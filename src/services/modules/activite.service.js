@@ -21,6 +21,13 @@ const ActiviteService = {
       //return ApiService.post(`activites/ajouterDuree/${slug}`, params);
     },
 
+    mySuivis(slug) {
+      return ApiService.get(`activites/${slug}/suivis`);
+    },
+    getSuivi() {
+      return ApiService.get(`suivis`);
+    },
+
     update(slug, params) {
       return ApiService.update("activites", slug, params);
     },

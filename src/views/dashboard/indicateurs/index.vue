@@ -19,26 +19,27 @@
       </nav> 
 
       <div v-if="showSuiviModal">
-          <modal-top-right :title="title"  v-on:close="showSuiviModal = false">
+        <modal-top-right :title="title"  v-on:close="showSuiviModal = false">
             <div  class="px-4 overflow-y-auto">
-              <form action="" @submit.prevent="sendForm" class="px-4"  >
+              <form action="" @submit.prevent="saveSuivi" class="px-4"  >
           
                 <div class="my-4">
+                  <pre>
+                    {{isValeurCibleUse}}
+                  </pre>
                   <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                  <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent">
-                    <option disabled value="0">Année:</option>
-                    <option v-for="year in years" :key="year.id" :value="year">{{ year }}</option>
-                  </select>
+
+                   <input v-model="suiviIndicateurs.annee"  @change="verifyValeurCible(suiviIndicateurs.annee)" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
                 </div>
 
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
+                <input v-model="suiviIndicateurs.valeurCible" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
 
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
+                <input v-model="suiviIndicateurs.valeurRealise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
 
               <div class="my-4">
@@ -56,43 +57,35 @@
 
                 <div v-if="choiceDateOption" class="my-4">
                   <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="" />
+                  <input v-model="suiviIndicateurs.dateSuivie" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="" />
                 </div>
               
               <div v-else class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-lg font-black text-red-700">*</span></label>
                 <div class="flex justify-between my-3">
                   <div>
-                    <input type="radio"  id="T1" name="trimestre" value="T1" >
+                    <input v-model="suiviIndicateurs.trimestre" type="radio"  id="T1" name="trimestre" value="1" >
                     <label class="px-2" for="T1">T1</label>
                   </div>
                   <div>
-                    <input type="radio" id="T2" name="trimestre" value="T2">
+                    <input type="radio" v-model="suiviIndicateurs.trimestre" id="T2" name="trimestre" value="2">
                     <label class="px-2" for="T2">T2</label>
                   </div>
                   <div>
-                    <input type="radio" id="T3" name="trimestre" value="T3">
+                    <input type="radio" v-model="suiviIndicateurs.trimestre" id="T3" name="trimestre" value="3">
                     <label class="px-2" for="T3">T3</label>
                   </div>
                   <div>
-                    <input type="radio" id="T4" name="trimestre" value="T4">
+                    <input type="radio" v-model="suiviIndicateurs.trimestre" id="T4" name="trimestre" value="4">
                     <label class="px-2" for="T4">T4</label>
                   </div>
                 </div>
-              
-                <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+
               </div>
-          
-           
           </div>
-
-              
-
-              
-
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <textArea class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textArea>
+                <textArea v-model="suiviIndicateurs.commentaire" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textArea>
              </div>
             
 
@@ -108,7 +101,7 @@
             </div>
               </form>
             </div>
-          </modal-top-right>
+        </modal-top-right>
       </div>
 
       <div v-if="showModal">
@@ -180,6 +173,15 @@ export default {
   },
   data() {
       return ({
+        suiviIndicateurs:{
+          annee:'',
+          trimestre:'',
+          dateSuivie:'',
+          valeurCible:[],
+          valeurRealise:[],
+          indicateurId:0,
+          commentaire:''
+        },
         showModal:false,
         showModal2:false,
         showSuiviModal:false,
@@ -207,9 +209,11 @@ export default {
         ],
         headers:[],
         idIndicateur:'',
+        isValeurCibleUse:false,
         actions:[
           {name:'suivre'},
           {name:'supprimer',iconne:''},
+          {name:'consulter',iconne:''},
         ]
 
       });
@@ -278,7 +282,7 @@ export default {
       uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
     }),
     years () {
-      const year = new Date().getFullYear()+20
+      const year = new Date().getFullYear()
       return Array.from({length: year - 1900}, (value, index) => year + index)
     }
   },
@@ -309,16 +313,25 @@ export default {
       this.title = `Suivre l'indicateur`
     },
     consulterSuivi(id){
-      this.$router.push({name:'indicateurs_suivi',params:{id:id}})
+     
+      this.$router.push({name:'indicateurs_suivi_details',params:{id:id}})
     },
     saveSuivi() {
       this.chargement = true
-      const data = {}
+      const data = thi.suiviIndicateurs
       SuiviService.create(id,data).then((data) => {
       }).catch((e) => {
         console.log(e)
       })
       this.chargement = false  
+    },
+    verifyValeurCible(date) {
+      SuiviService.checksuivi(this.idIndicateur,date).then((data) => {
+        //recuperation de la valeur de verfication pour la valeur cible
+        this.isValeurCibleUse.data.data.data
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     sendForm() {
       this.champs = this.champs.map((item) => {
