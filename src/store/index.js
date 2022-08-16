@@ -48,8 +48,6 @@ import indicateurs from "./modules/indicateurs/index";
 
 import anos from "./modules/anos/index";
 
-import sinistres from "./modules/sinistres/index";
-
 import typeAnos from "./modules/typeAnos/index";
 
 import eActivites from "./modules/eActivites/index";
@@ -63,6 +61,10 @@ import decaissements from "./modules/decaissements/index";
 import pointFinancier from "./modules/pointFinancier/index";
 
 import planDeDecaissements from "./modules/planDeDecaissements/index";
+
+import eSuivis from "./modules/eSuivis/index";
+
+import sites from "./modules/sites/index";
 
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
@@ -220,9 +222,10 @@ export default new Vuex.Store({
     roles,
     formulaires,
     suiviFinanciers,
-    sinistres,
     decaissements,
     pointFinancier,
-    planDeDecaissements
+    planDeDecaissements,
+    eSuivis,
+    sites,
   }
 });

@@ -41,7 +41,6 @@
           :activite=formulaire.auteur
           @supprimer="supprimer"
           @gotoDetails="gotoDetails(formulaire.id)"
-          @onlink="getlink(formulaire.id)"
         > 
         </card-checklist>
       </div>

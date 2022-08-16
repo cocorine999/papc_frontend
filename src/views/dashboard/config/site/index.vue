@@ -47,7 +47,7 @@
           </span>
         </div>
         <button
-          @click="addTypeAno"
+          @click="addSite"
           title="ajouter un tabelau"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline"
         >
@@ -65,10 +65,10 @@
       <div id="dataTable">
         <vtable
           :headers="headers"
-          :datas="typeAnos"
+          :datas="sites"
           :actions="actions"
           @supprimer="supprimer"
-          @modifier="modifier"
+          @updateInputData="updateInputData"
         >
         </vtable>
       </div>
@@ -84,7 +84,7 @@ import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
 
-import { mapActions, mapMutations, mapGetters } from "vuex";
+import { mapActions, mapMutations, mapGetters, mapState } from "vuex";
 import extractFormData from "@/utils/extract-data";
 
 export default {
@@ -99,114 +99,140 @@ export default {
 
   data() {
     return {
-      typeAnoAttributs: ["duree", "nom"],
+      siteAttributs: ["nom", "longitude", "latitude", "entrepriseExecutantId", "bailleurId"],
       showModal: false,
       loading: false,
       showInput: true,
       title: "",
       champs: [
         {
-          name: "Site",
-          key: "nom",
-          type: "text",
-          placeholdere: "Saissisez un site",
+          name: 'Site',
+          key: 'nom',
+          type: 'text',
+          placeholdere: 'Saissisez un site',
           isSelect: false,
           isTextArea: false,
-          data: "",
+          data: '',
           required: true,
           errors: [],
         },
         {
-          name: "Entreprise",
-          key: "",
-          type: "",
-          placeholdere: "Selectionnez une valeur",
+          name: 'Entreprise',
+          key: 'entrepriseExecutantId',
+          type: '',
+          placeholdere: 'Selectionnez une entreprise',
           isSelect: true,
           isTextArea: false,
-          data: "",
-          options: this.$store.state.statuts,
-          cle: "id",
-          value: "nom",
+          data: '',
+          options: this.entreprises,
+          cle: 'id',
+          value: 'nom',
+          required: true,
+          errors: [],
+        },
+        {
+          name: 'Bailleur',
+          key: 'bailleurId',
+          type: '',
+          placeholdere: 'Selectionnez un bailleur',
+          isSelect: true,
+          isTextArea: false,
+          data: '',
+          options: this.bailleurs,
+          cle: 'id',
+          value: 'sigle',
           required: true,
           errors: [],
         },
 
         {
-          name: "Latitude",
-          key: "nom",
-          type: "number",
-          placeholdere: "Entrée la latitude",
+          name: 'Latitude',
+          key: 'latitude',
+          type: 'number',
+          placeholdere: 'Entrée la latitude',
           isSelect: false,
           isTextArea: false,
-          data: "",
+          data: '',
           required: true,
           errors: [],
         },
 
         {
-          name: "Longitude",
-          key: "duree",
-          type: "number",
-          placeholdere: "Duree",
+          name: 'Longitude',
+          key: 'longitude',
+          type: 'number',
+          placeholdere: 'Entrée la longitude',
           isSelect: false,
           isTextArea: false,
-          data: "",
+          data: '',
           required: true,
           errors: [],
         },
       ],
       cols: 1,
       headers: [
-        { name: "Site", cle: "nom" },
-        { name: "Entreprise", cle: "nom" },
-        { name: "Longitude", cle: "nom" },
-        { name: "Latitude", cle: "nom" },
+        { name: 'Site', cle: 'nom' },
+        { name: 'Entreprise', cle: 'entreprise' },
+        { name: 'Bailleur', cle: 'bailleur' },
+        { name: 'Longitude', cle: 'longitude' },
+        { name: 'Latitude', cle: 'latitude' },
       ],
 
       actions: [
-        { name: "modifier", iconne: "" },
-        { name: "supprimer", iconne: "" },
+        { name: 'modifier', iconne: '' },
+        { name: 'supprimer', iconne: '' },
       ],
     };
   },
 
   computed: {
-    //importation des variables du module auths
+     //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
 
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
-      typeAno: "typeAnos/getTypeAno",
-      typeAnos: "typeAnos/getTypeAnos",
+      site: "sites/getSite",
+      sites: "sites/getSites",
+      entreprises: "entreprisesExecutante/getEntreprisesExecutante",
+      bailleurs: "bailleurs/getBailleurs",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
 
   methods: {
     // call action
-    ...mapActions("typeAnos", {
-      fetchTypeAnos: "FETCH_LIST_TYPE_ANO",
-      saveTypeAno: "STORE_TYPE_ANO",
-      updateTypeAno: "UPDATE_TYPE_ANO",
-      deleteTypeAno: "DESTROY_TYPE_ANO",
+    ...mapActions("sites", {
+      fetchSites: "FETCH_LIST_SITE",
+      saveSite: "STORE_SITE",
+      updateSite: "UPDATE_SITE",
+      deleteSite: "DESTROY_SITE",
+    }),
+
+    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+
+    ...mapActions("entreprisesExecutante", {
+      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
     }),
 
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setTypeAno: "TypeAnos/FILL", // map `this.CREATE_INSTANCE_ANO()` to `this.$store.commit('CREATE_INSTANCE_ANO')`
+      setSite: "Sites/FILL", // map `this.CREATE_INSTANCE_ANO()` to `this.$store.commit('CREATE_INSTANCE_ANO')`
     }),
 
-    ...mapActions("typeAnos", { fetchTypeAnos: "FETCH_LIST_TYPE_ANO" }),
-
-    resetForm() {
-      //delete data in form after submit
-      this.champs = this.champs.map((item) => {
-        item.data = "";
-        return item;
-      });
-      window.document.getElementById("vform")?.reset();
-      this.setTypeAno({});
+    async updateInputData(id, attribut, value) {
+        console.log('update');
+          await this.updateSite({site: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
     },
 
     sendForm() {
@@ -214,49 +240,56 @@ export default {
         item.errors = [];
         return item;
       });
-      let typeAno = extractFormData(this.champs, this.typeAnoAttributs);
+      let site = extractFormData(this.champs, this.siteAttributs);
 
-      console.log(typeAno);
+      site.programmeId = this.currentUser?.programme?.id;
+      site.bailleurId = site.bailleurId.id
+      site.entrepriseExecutantId = site.entrepriseExecutantId.id
 
-      if (this.typeAno?.id) {
-        this.updateTypeAno({ typeAno: typeAno, id: this.typeAno?.id }).then(
-          (response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-            }
-          }
-        );
-      } else {
-        this.saveTypeAno(typeAno).then((response) => {
+      console.log(site);
+
+      
+        this.saveSite(site).then((response) => {
           if (response.status == 200 || response.status == 201) {
             this.close();
           }
         });
-      }
+      
     },
 
-    addTypeAno() {
-      this.title = "Ajouter un site";
-      this.showModal = true;
+    showCloseModal(value = false) {
+      this.showModal = value
     },
 
-    modifier(typeAno) {
-      this.title = "Modifier ano {{ ano.nom }}";
-      this.submitText = "Modifier";
-      this.setTypeAno(ano);
-      this.anoAttributs.forEach((item) => {
-        this.champs.find((value, index) => {
-          if (value.key === item) {
-            this.champs[index]["data"] = this.typeAno[item];
+    addSite() {
+      this.title='Ajouter un nouveau site'
+
+      this.entreprises = this.entreprises.map((value) =>{
+        value.nom = value.user.nom
+
+        return value
+      })
+
+      let formData = this.champs.map((value) => {
+          if(value.key === 'bailleurId'){ 
+            value['options'] = this.bailleurs
           }
-        });
-      });
-      this.showCloseModal(true);
+
+          else if(value.key === 'entrepriseExecutantId'){ 
+            value['options'] = this.entreprises
+          }
+
+          return value
+        })
+
+      this.champs = formData
+
+      this.showCloseModal(true)
     },
 
-    async supprimer(typeAno) {
-      if (window.confirm("Voulez-vous supprimer ce Type d'ano ?" + typeAno.nom))
-        await this.deleteTypeAno(typeAno.id);
+    async supprimer(site) {
+      if (window.confirm("Voulez-vous supprimer ce  site ?" + site.nom))
+        await this.deleteSite(site.id);
     },
 
     close() {
@@ -265,8 +298,14 @@ export default {
   },
 
   mounted() {
-    console.log("Fetching type anos ...");
-    this.fetchTypeAnos();
+    console.log("Fetching sites ...")
+    this.fetchSites(this.currentUser?.programme?.id)
+
+    console.log("Fetching entreprises executantes ...");
+    this.fetchEntreprisesExecutante();
+
+    console.log("Fetching list of bailleurs...")
+    this.fetchBailleurs()
   },
 
   watch: {
@@ -281,7 +320,7 @@ export default {
       //this.errors = errors
     },
 
-    typeAnos: function (typeAnos) {},
+    sites: function (sites) {},
   },
 };
 </script>
