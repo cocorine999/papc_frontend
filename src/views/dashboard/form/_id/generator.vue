@@ -283,10 +283,10 @@ export default {
     this.getFormulaire(this.$route.params.id).then((response) => {
       this.formulaire = response;
 
-      this.formulaire = response.map((element) => {
+      /*this.formulaire = response.map((element) => {
         element = JSON.parse(element);
         return element;
-      });
+      });*/
     });
 
     console.log("Fetching entreprises executantes ...");

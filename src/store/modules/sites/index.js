@@ -2,11 +2,11 @@
 import getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
-import Sinistre from './sinistre'
+import Site from './site'
 
 const state = () => ({
   errors: [],
-  sinistres: {
+  sites: {
     "currentPage" : null,
     "data" : [],
     "firstPageURL" : null,
@@ -22,7 +22,7 @@ const state = () => ({
     "total" : null
   },
   lists: [],
-  sinistre : new Sinistre()
+  site : new Site()
 })
 
 export default {

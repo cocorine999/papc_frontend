@@ -373,11 +373,7 @@ export default {
     this.getSuivi(form).then((response) => {
       this.formulaire = response.data.data;
 
-       this.formulaire = response.data.data.map((element) => {
-         element = JSON.parse(element);
-         return element;
-       });
-
+       
        if(this.formulaire.length != 0)
        {
           this.entete = this.formulaire[0];
