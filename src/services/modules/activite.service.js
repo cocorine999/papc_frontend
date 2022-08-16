@@ -25,7 +25,10 @@ const ActiviteService = {
       return ApiService.get(`activites/${slug}/suivis`);
     },
     getSuivi() {
-      return ApiService.get(`suivis`);
+      const params = {
+        type: "activite"
+      }
+      return ApiService.post(`suivis/filterByModule`, params);
     },
 
     update(slug, params) {

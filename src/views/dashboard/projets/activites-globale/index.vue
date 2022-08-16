@@ -519,12 +519,10 @@ export default {
       ],
 
       champs2:[
-
         {name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',  errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        
       ],
 
 
@@ -804,26 +802,14 @@ export default {
       },
 
       headers: [
-        { name: "activite", cle: "activite" },
-        { name: "Budget Nationnal", cle: "bn" },
-        { name: "Pret", cle: "pret" },
-        { name: "Poids", cle: "poids" },
-        { name: "Structure responsable", cle: "struct_resp" },
-        { name: "Structure associé", cle: "struct_assoc" },
-        { name: "Status", cle: "status" },
+        { name: "Activite", cle: "activite"},
+        { name: "code pta", cle: "codePta"},
+        { name: "poids initial", cle:'poidsInitial'},
+        { name: "poids actuel", cle:'poidsActuel'},
+        { name: "date de creation", cle:'created_at'},
+        
       ],
-
-      dataTable: [
-        {
-          activite: "activite 1",
-          bn: "200000000",
-          pret: "9540000000",
-          poids: "5",
-          struct_resp: "agetur",
-          struct_assoc: "",
-          status: "en cours",
-        },
-      ],
+      dataTable:[],
       
     };
   },
@@ -890,8 +876,16 @@ export default {
 
     getSuivi() {
       ActiviteService.getSuivi().then((data) => {
-        this.suivis = data.data
-        console.log('mes suivis',this.suivis.data)
+        const datas = data.data.data
+        datas.forEach(element => {
+          const activite = element.activite.nom
+          const codePta = element.tache.codePta
+          const poidsInitial = element.tache.poids
+          const poidsActuel = element.poidsActuel
+          const created_at = element.created_at
+          this.dataTable.push({activite:activite,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+        })
+        console.log('mes suivis',this.suivis)
       }).catch((e) => {
         console.log(e)
       })
@@ -1458,7 +1452,7 @@ export default {
   },
 
   created() {
-
+    this.getSuivi()
     this.programmeId = this.currentUser.programme.id
 
     if(this.programmeId){

@@ -21,7 +21,10 @@ const ComposantesService = {
       return ApiService.get(`composantes/${slug}/suivis`);
     },
     getSuivi() {
-      return ApiService.get(`suivis`);
+      const params = {
+        type: "composante"
+      }
+      return ApiService.post(`suivis/filterByModule`, params);
     },
 
     update(slug, params) {

@@ -28,7 +28,10 @@ const TachesService = {
       return ApiService.get(`taches/${slug}/suivis`);
     },
     getSuivi() {
-      return ApiService.get(`suivis`);
+      const params = {
+        type: "tache"
+      }
+      return ApiService.post(`suivis/filterByModule`, params);
     },
 
     update(slug, params) {

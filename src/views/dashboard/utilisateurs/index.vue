@@ -31,7 +31,9 @@
           <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
     </div>
-   
+   <pre>
+    {{idProgramme}}
+   </pre>
     <div  id="dataTable">
       <vtable :headers="headers" :datas="utilisateurs" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
     </div>
@@ -126,7 +128,11 @@ export default {
       utilisateur: "utilisateurs/getUtilisateur",
       utilisateurs: "utilisateurs/getUtilisateurs",
       roles: "roles/getRoles",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+    idProgramme(){
+      return this.currentUser.programme.id
+    }
   },
   methods: {
     ...mapMutations({
@@ -153,6 +159,7 @@ export default {
 
       let utilisateur = extractFormData(this.champs,this.usersAttributes);
       utilisateur.roles = [utilisateur.roles.id]
+      utilisateur.programmeId = this.idProgramme
 
       if (this.utilisateur?.id) {
         this.updateUtilisateur({ utilisateur: utilisateur, id: this.utilisateur?.id }).then(

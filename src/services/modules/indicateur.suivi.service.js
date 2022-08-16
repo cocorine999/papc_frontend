@@ -12,10 +12,13 @@ const IndicateurSuiviService = {
     get(slug) {
       return ApiService.get("suivi-indicateurs", slug);
     },
+    
     checksuivi(slug, params) {
-      return ApiService.get(`indicateurs/${slug}/checkSuivi/${params}`, slug);
+      return ApiService.get(`indicateurs/${slug}/checkSuivi/${params}`);
     },
-
+    mySuivis(slug) {
+      return ApiService.get(`indicateurs/${slug}/suivis`);
+    },
     create(params) {
       return ApiService.post("suivi-indicateurs", params);
     },
