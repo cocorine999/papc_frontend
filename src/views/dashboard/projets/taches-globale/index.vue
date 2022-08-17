@@ -524,8 +524,6 @@ export default {
 
     },
 
-    
-
     suivreTache(data) {
        this.title ="Suivre une tache "
 

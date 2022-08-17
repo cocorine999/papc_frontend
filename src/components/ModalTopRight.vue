@@ -1,10 +1,10 @@
 <template>
   <!-- give the sidebar z-50 class so its higher than the navbar if you want to see the logo -->
   <!-- you will need to add a little "X" button next to the logo in order to close it though -->
-  <div style="width: 30%" class="relative z-50">
+  <div style="width: 30%" class="relative z-20">
     <div
       style="width: 30%"
-      class="fixed z-50 top-20  overflow-auto bg-white border-r shadow-lg bottom-0 right-0 scrollbar-thumb-blue scrollbar-thumb-rounded lg:block"
+      class="fixed z-20 top-20  overflow-auto bg-white border-r shadow-lg bottom-0 right-0 scrollbar-thumb-blue scrollbar-thumb-rounded lg:block"
       id="main-nav"
     >
       <div class="flex justify-between items-center w-full px-4  py-2 bg-gray-100 border-b relative">

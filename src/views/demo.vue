@@ -4,6 +4,8 @@
       <pre>
        la data  {{data}}
       </pre>
+
+      <input type="number" class="border border-primary-500">
      <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-lg font-black text-red-700">*</span></label>
                 <div class="flex justify-between my-3">

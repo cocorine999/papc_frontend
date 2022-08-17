@@ -24,20 +24,20 @@
               <form action="" @submit.prevent="saveSuivi" class="px-4"  >
           
                 <div class="my-4">
-                  <pre>
-                    {{isValeurCibleUse}}
-                  </pre>
+                 
                   <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
 
                    <input v-model="suiviIndicateurs.annee"  @change="verifyValeurCible(suiviIndicateurs.annee)" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
                 </div>
 
-              <div class="my-4">
+              <div v-if="isValeurCibleUse" class="my-4">
+                
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible <span class="px-2 text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurCible" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
 
               <div class="my-4">
+               
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurRealise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
@@ -85,20 +85,25 @@
           </div>
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <textArea v-model="suiviIndicateurs.commentaire" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textArea>
+                <textarea v-model="suiviIndicateurs.commentaire" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
              </div>
             
-
-            <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
-              <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-                Enregistrer 
-              </button>
-
-              <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
-                Annuler
-              </button>
-
-            </div>
+              <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
+                <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+              </div>
               </form>
             </div>
         </modal-top-right>
@@ -155,6 +160,7 @@ import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
+import Vbutton from '@/components/Vbutton'
 import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
 import { mapGetters, mapMutations, mapActions } from "vuex";
@@ -165,6 +171,7 @@ export default {
     Vtable,
     Dashboard,
     Vmodal,
+    Vbutton,
     Vform,
     Titre,
     SearchBar,
@@ -177,9 +184,8 @@ export default {
           annee:'',
           trimestre:'',
           dateSuivie:'',
-          valeurCible:[],
-          valeurRealise:[],
-          indicateurId:0,
+          valeurCible:0,
+          valeurRealise:0,
           commentaire:''
         },
         showModal:false,
@@ -281,10 +287,7 @@ export default {
       categories: "categories/getCategories",
       uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
     }),
-    years () {
-      const year = new Date().getFullYear()
-      return Array.from({length: year - 1900}, (value, index) => year + index)
-    }
+   
   },
   methods: {
     ...mapMutations({
@@ -313,16 +316,26 @@ export default {
       this.title = `Suivre l'indicateur`
     },
     consulterSuivi(id){
-     
       this.$router.push({name:'indicateurs_suivi_details',params:{id:id}})
     },
     saveSuivi() {
       this.chargement = true
-      const data = thi.suiviIndicateurs
-      SuiviService.create(id,data).then((data) => {
+      const data = this.suiviIndicateurs
+      data.valeurRealise = [data.valeurRealise]
+      data.valeurCible = [data.valeurCible]
+      data.indicateurId = this.idIndicateur
+      if(this.choiceDateOption == true){
+        delete data.trimestre
+      }
+      else {
+        delete data.dateSuivie
+      }
+      console.log('les données apres traitement',data)
+      SuiviService.create(data).then((data) => {
+        alert('suivi effectué')
       }).catch((e) => {
-        console.log(e)
-      })
+        alert(e)
+      }) 
       this.chargement = false  
     },
     verifyValeurCible(date) {
@@ -404,7 +417,7 @@ export default {
    mounted() {
     this.fetchIndicateurs().then((value) => {
       setTimeout(() => {
-        console.log("Fetching list of programmes...")
+        console.log("Fetching list indicateurs...")
         this.fetchBailleurs()
         this.fetchCategories()
         this.fetchUnite()

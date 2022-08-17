@@ -76,6 +76,7 @@ export default {
         cols:2,
         title:'',
         headers:[
+          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
           {name:'Trimestre',cle:'trimestre',width:"w-24"},
           {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
           {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
