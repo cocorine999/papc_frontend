@@ -183,7 +183,7 @@ export default {
         {name:"continuer"},
       ],
       
-      composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'statut', 'poids'],
+      composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
 
       champs:[
 
@@ -192,7 +192,6 @@ export default {
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez lr statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
@@ -361,16 +360,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if( value.key === "statut" ){
-
-            this.$store.state.statuts.map((value) => {
-              if(value.etat === composante[item]){
-                this.champs[index]['data'] = value
-              }
-            });
-
-          }
-          else if(value.key === item){
+          if(value.key === item){
             this.champs[index]['data'] = composante[item]
           }
 
@@ -390,9 +380,11 @@ export default {
           this.sendRequest = true;
 
           this.deleteComposante(composante.id)
+            .then((value) => {           
+              this.fetchComposantes(this.valueFiltre.id);
+            })
             .finally((error) => {      
               this.sendRequest = false;        
-              this.fetchComposantes(this.valueFiltre.id);
             });
         }
       }
@@ -407,19 +399,7 @@ export default {
       this.composanteAttributs.forEach((item) => {
 
         this.champs.find((value, index) => {
-
-          if( value.key === "statut" ){
-
-            this.$store.state.statuts.map((value) => {
-              if(value.etat === composante[item]){
-                this.champs[index]['data'] = value
-              }
-            });
-
-          }
-          else{
             this.champs[index]['data'] = composante[item]
-          }
 
         });
 
@@ -453,7 +433,9 @@ export default {
         this.sendRequest = true;
 
           this.updateComposante({composante: { "statut": -1, "projetId": this.valueFiltre.id }, id : composante.id})
-          
+            .then((value) => {
+              this.fetchComposantes(this.valueFiltre.id);
+            })
             .finally((error) => {              
               this.sendRequest = false;
               this.fetchComposantes(this.valueFiltre.id);
@@ -473,8 +455,6 @@ export default {
         let composante = extractFormData(this.champs, this.composanteAttributs)
 
         composante.projetId = this.valueFiltre.id;
-
-        composante.statut = composante.statut.etat;
                 
         if(this.composante?.id)
         {
@@ -484,13 +464,13 @@ export default {
             .then(response => {
               
               if(response.status === 200 || response.status === 201){
+                this.fetchComposantes(this.valueFiltre.id);
                 this.close()
               }
 
             })
             .finally((error) => {              
               this.sendRequest = false;
-              this.fetchComposantes(this.valueFiltre.id);
             });
 
         }
@@ -500,13 +480,13 @@ export default {
           this.saveComposante(composante)
             .then(response => {
               if(response.status === 200 || response.status === 201){
+                this.fetchComposantes(this.valueFiltre.id);
                 this.close()
               }
 
             })
             .finally((error) => {              
               this.sendRequest = false;
-              this.fetchComposantes(this.valueFiltre.id);
             });
         }
       }
