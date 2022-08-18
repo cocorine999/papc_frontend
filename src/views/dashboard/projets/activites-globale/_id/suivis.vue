@@ -27,7 +27,7 @@
         </div>
 
         <div class="flex items-center justify-between my-4">
-          <titre>Le suivi activité </titre>
+          <titre>Le suivi activité  </titre>
           <div class="flex items-center space-x-4">
             <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
            
@@ -38,15 +38,16 @@
           <div class=" w-1/3 bg-white shadow p-2">
             <div class="p-4">
               <div>
-                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Activité</span> : Activité demo </p>
-                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Poids</span>:5 </p>
-                <p class=" text-sm   py-2" ><span class="font-bold uppercase px-1">BN</span> :2000000000k</p>
-                <p class=" text-sm   py-2"> <span class="font-bold uppercase px-1">Pret</span> :200000k</p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Activité</span> : {{activite.nom}} </p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Bailleur</span> : {{activite.bailleur.sigle}} </p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Code PTA</span> : {{activite.codePta}} </p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Poids initial</span>:{{activite.poids}} </p>
+     
               </div>
             </div>
           </div>
           <div class="datatable w-full bg-white shadow p-2 ">
-            <vtable :headers="headers" :datas="taches"  ></vtable>
+            <vtable :headers="headers" :datas="dataTable"  ></vtable>
           </div>
         </div>    
     </div>
@@ -62,8 +63,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import extractFormData from "@/utils/extract-data";
+import ActiviteService from "@/services/modules/activite.service.js";
+
 export default {
   components: {
     Vtable,
@@ -83,21 +84,17 @@ export default {
         ],
         cols:2,
         title:'',
-        headers:[
-          {name:'BN',cle:'bn',props:'valeurCible',width:"w-28"},
-          {name:'Pret',cle:'pret',width:"w-28"},
-          {name:'Poids',cle:'poids',width:"w-28"},
-          {name:'Date de creation',cle:'created_at',width:"w-24"},
+        suivis:[],
+        headers: [
+          { name: "Activite", cle: "activite"},
+          { name: "code pta", cle: "codePta"},
+          { name: "poids initial", cle:'poidsInitial'},
+          { name: "poids actuel", cle:'poidsActuel'},
+          { name: "date de creation", cle:'created_at'},
         ],
-        taches: [
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-          {bn:'200000000000',pret:'200000000',poids:"20",created_at:'10-08-2022'},
-        ]
+        activite:[],
+        dataTable:[],
+        suivis:[],
       });
   },
  
@@ -107,10 +104,33 @@ export default {
   },
   
   methods: {
-   
+    getSuivi() {
+      ActiviteService.mySuivis(this.$route.params.id).then((data) => {
+        const datas = data.data.data
+         datas.forEach(element => {
+          const activite = element.activite.nom
+          const codePta = element.tache.codePta
+          const poidsInitial = element.tache.poids
+          const poidsActuel = element.poidsActuel
+          const created_at = element.created_at
+          this.dataTable.push({activte:activite,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+        })
+        console.log("les suiivs",this.dataTable)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    currentActivite() {
+      ActiviteService.get(this.$route.params.id).then((data) => {
+        this.activite= data.data.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
   },
   mounted() {
-   
+    this.getSuivi()
+    this.currentActivite()
   },
 }
 </script>

@@ -2,11 +2,11 @@
 import getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
-import Sinistre from './sinistre'
+import ESuivi from './eSuivi'
 
 const state = () => ({
   errors: [],
-  sinistres: {
+  eSuivis: {
     "currentPage" : null,
     "data" : [],
     "firstPageURL" : null,
@@ -19,10 +19,11 @@ const state = () => ({
     "perPage" : null,
     "prevPage" : null,
     "from" : null,
-    "total" : null
+    "total" : null,
+    
   },
   lists: [],
-  sinistre : new Sinistre()
+  eSuivi : new ESuivi()
 })
 
 export default {

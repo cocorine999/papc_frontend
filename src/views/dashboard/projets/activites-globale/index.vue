@@ -3,22 +3,31 @@
     <div class="w-full px-4">
       <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
         <div style="width:60vw" class="p-4">
-          <form action="">
-            <div  class="grid grid-cols-2 gap-2 my-2" v-for="(date,index) in dates" :key="index">
+          <form @submit.prevent="saveProlongerDate(activiteId,dates)" action="">
+            
+            <div  class="grid grid-cols-2 gap-2 my-2">
               <div class="form-group my-2">
                 <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
+                <input v-model="dates.debut" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
               </div>
               <div class="form-group my-2">
                 <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <div class="flex space-x-2 items-center">
-                  <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
-                  <span title="ajouter une nouvelle date" @click="addDate" class="text-primary"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.6em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg></span>
-                  <span title="supprimer une date " @click="deleteItem(index)" class="bg-red-500 p-1 rounded-full text-white"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" stroke="none"/></svg></span>
-                </div>
+                <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
               </div>
             </div>
-            <button class="bg-primary text-white px-4 py-2 border border-primary font-semibold uppercase">Enregistrer</button>
+            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+              <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                enregistrer
+              </span>
+              <span v-else class="flex items-center space-x-2">
+                <span class="text-xs px-4 font-semibold ">
+                  envoi ...
+                </span>
+                <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </span>
+              </button>
           </form>
         </div>
       </vmodal>
@@ -371,7 +380,6 @@
           </div>
         </div>
         
-
       </div>
 
       <div v-if="seeSuivi">
@@ -456,6 +464,7 @@ import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
 import Activite from '@/store/modules/activites/activite';
 import moment from 'moment'
+import ActiviteService from "@/services/modules/activite.service.js";
 
 export default {
   components: {
@@ -473,6 +482,7 @@ export default {
   },
   data() {
     return {
+      suivis:[],
       valueFiltre: null,
       activiteFiltre: null,
       composanteId: null,
@@ -481,6 +491,7 @@ export default {
       pending: false,
       success: true,
       rejected: false,
+      activiteId:'',
       programmeId: this.currentUser?.programme.id,
       cols: 1,
       sendRequest: false,
@@ -488,11 +499,9 @@ export default {
       rangeValue: 0,
       showFiltre: false,
       showProlonger:false,
+      chargement:false,
       activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'statut', 'poids'],
-      dates:[
-        {}
-      ],
-
+      dates:{debut:'',fin:''},
       planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
       champs:[
         {name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -510,12 +519,10 @@ export default {
       ],
 
       champs2:[
-
         {name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',  errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        
       ],
 
 
@@ -536,7 +543,9 @@ export default {
         { name: "modifier" }
       ],
 
-      dates: [{}],
+      dates: {
+        debut:'',fin:''
+      },
 
       series: [
         {
@@ -793,26 +802,14 @@ export default {
       },
 
       headers: [
-        { name: "activite", cle: "activite" },
-        { name: "Budget Nationnal", cle: "bn" },
-        { name: "Pret", cle: "pret" },
-        { name: "Poids", cle: "poids" },
-        { name: "Structure responsable", cle: "struct_resp" },
-        { name: "Structure associé", cle: "struct_assoc" },
-        { name: "Status", cle: "status" },
+        { name: "Activite", cle: "activite"},
+        { name: "code pta", cle: "codePta"},
+        { name: "poids initial", cle:'poidsInitial'},
+        { name: "poids actuel", cle:'poidsActuel'},
+        { name: "date de creation", cle:'created_at'},
+        
       ],
-
-      dataTable: [
-        {
-          activite: "activite 1",
-          bn: "200000000",
-          pret: "9540000000",
-          poids: "5",
-          struct_resp: "agetur",
-          struct_assoc: "",
-          status: "en cours",
-        },
-      ],
+      dataTable:[],
       
     };
   },
@@ -877,7 +874,35 @@ export default {
       return `${codePta} – ${nom}`
     },
 
+    getSuivi() {
+      ActiviteService.getSuivi().then((data) => {
+        const datas = data.data.data
+        datas.forEach(element => {
+          const activite = element.activite.nom
+          const codePta = element.tache.codePta
+          const poidsInitial = element.tache.poids
+          const poidsActuel = element.poidsActuel
+          const created_at = element.created_at
+          this.dataTable.push({activite:activite,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+        })
+        console.log('mes suivis',this.suivis)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
     supprimerT() {},
+
+    saveProlongerDate(id,data) {
+      this.chargement = true
+      ActiviteService.addDate(id,data).then((data) => {
+        alert('envoyer')
+      }).catch((e) => {
+        console.log(e)
+      })
+
+      this.chargement = false  
+     
+    },
 
     suivreMyActivite(activite) {
       this.$router.push({name:'dashboard_projets_activites_globale_suivis',params:{id:activite.id}})
@@ -922,13 +947,8 @@ export default {
       this.mosaique = true;
       this.line = false;
     },
-    addDate() {
-      this.dates.push({});
-    },
-    deleteItem(item) {
-      this.dates.splice(item, 1);
-      alert(item)
-    },
+   
+    
 
     switch2() {
       this.mosaique = false;
@@ -1016,6 +1036,7 @@ export default {
     },
 
     prolonger(activite) {
+      this.activiteId = activite.id
       this.showProlonger = true
     },
 
@@ -1431,7 +1452,7 @@ export default {
   },
 
   created() {
-
+    this.getSuivi()
     this.programmeId = this.currentUser.programme.id
 
     if(this.programmeId){

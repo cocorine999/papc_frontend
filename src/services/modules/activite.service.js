@@ -16,6 +16,20 @@ const ActiviteService = {
     create(params) {
       return ApiService.post("activites", params);
     },
+    addDate(slug,params) {
+      return ApiService.post(`activites/${slug}/ajouterDuree`, params);
+      //return ApiService.post(`activites/ajouterDuree/${slug}`, params);
+    },
+
+    mySuivis(slug) {
+      return ApiService.get(`activites/${slug}/suivis`);
+    },
+    getSuivi() {
+      const params = {
+        type: "activite"
+      }
+      return ApiService.post(`suivis/filterByModule`, params);
+    },
 
     update(slug, params) {
       return ApiService.update("activites", slug, params);

@@ -106,6 +106,7 @@
             @modifier="modifier(composante)"
             @supprimer="supprimer(composante)"
             @validation="validation(composante)"
+            @suivre="suivreMyComposant(composante)"
           ></card-composante>
         </div>
 
@@ -140,6 +141,7 @@ import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import  { extractFormData, getStringValueOfStatutCode }  from '@/utils/index'
 import Projet from '@/store/modules/projets/projet'
+import ComposanteService from "@/services/modules/composante.service.js";
 
 export default {
   components: {
@@ -195,23 +197,21 @@ export default {
         
       ],
 
-      headers: [
-        { name: "Composante", cle: "nom"},
-        { name: "Description", cle: "description"},
-        { name: "Budget Nationnal", cle: 'budgetNational'},
-        { name: "Pret", cle:'pret'},
-        { name: "Poids",  cle:'poids'},
-        { name: "Status", cle:'statut'},
+       headers: [
+        { name: "Composante", cle: "composante"},
+        { name: "code pta", cle: "codePta"},
+        { name: "poids initial", cle:'poidsInitial'},
+        { name: "poids actuel", cle:'poidsActuel'},
+        { name: "date de creation", cle:'created_at'},
       ],
-      dataTable:[
-        {composante:"tache 1", description:"lorem ipsum", bn:"200000000", pret:"9540000000", poids:"5", status:"en cours"}
-      ],
+      dataTable:[],
       actions: [
         { name: "supprimer", iconne: "" },
       ],
       dates:[
         {}
       ],
+      suivis:[]
      
     }
     
@@ -243,6 +243,28 @@ export default {
       setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setComposantes: 'composantes/SET_LIST_COMPOSANTES'
     }),
+
+    suivreMyComposant(composante) {
+      this.$router.push({name:'dashboard_projets_composantes_globale_suivis',params:{id:composante.id}})
+    },
+
+    getSuivi() {
+      ComposanteService.getSuivi().then((data) => {
+        const datas = data.data.data
+        datas.forEach(element => {
+          const composante = element.composante.nom
+          const codePta = element.tache.codePta
+          const poidsInitial = element.tache.poids
+          const poidsActuel = element.poidsActuel
+          const created_at = element.created_at
+          this.dataTable.push({composante:composante,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+        })
+        console.log("les suiivs",this.dataTable)
+       
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
 
     ...mapActions('composantes', {
       fetchComposantes: "FETCH_LIST_COMPOSANTE_OF_PROJET",
@@ -327,7 +349,6 @@ export default {
       this.submitText="Enregistrer",
 
       this.showCloseModal(true)
-
     },
 
     modifier(composante) {
@@ -534,7 +555,7 @@ export default {
   },
 
   created(){
-
+    this.getSuivi()
     if(this.programmeId){
       this.fetchProjets(this.programmeId)
     } 

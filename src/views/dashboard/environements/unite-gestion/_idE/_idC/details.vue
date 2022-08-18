@@ -32,25 +32,30 @@
     <!--En tete de la checklist-->
     <div v-if="seeChecklist" >
       <div class="mt-4 mb-6">
-        <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">16-07-2022</span> </div>
-        <input type="date" class="px-2 py-1 border border-gray-700">
+        <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
+        <input v-model="valueFiltre" type="date" class="px-2 py-1 border border-gray-700">
 
+      </div>
+      <div class="py-2 my-2 flex justify-center space-x-8">
+          
+          <button  @click="filtre" template="success">Filtrer </button>
+          
       </div>
       <div class="grid grid-cols-4 w-3/4 mb-4">
         <div class="">
           <ul>
             <li class="text-base font-bold py-2">Entreprise</li>
-            <li class="text-base font-bold py-2">Enquité</li>
-            <li class="text-base font-bold py-2">Post enquité</li>
+            <li class="text-base font-bold py-2">Enquêté</li>
+            <li class="text-base font-bold py-2">Post enquêté</li>
             <li class="text-base font-bold py-2">Contact enquité</li>
           </ul>
         </div>
         <div>
           <ul>
-            <li class="text-base  py-2">: indefinit</li>
-            <li class="text-base  py-2">: indefinit</li>
-            <li class="text-base  py-2">: indefinit</li>
-            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: {{entete.entete.entreprise}}</li>
+            <li class="text-base  py-2">: {{entete.entete.responsable}}</li>
+            <li class="text-base  py-2">: {{entete.entete.poste}}</li>
+            <li class="text-base  py-2">: {{entete.entete.contact}}</li>
           </ul>
         </div>
         <div>
@@ -63,10 +68,10 @@
         </div>
         <div>
           <ul>
-            <li class="text-base  py-2">: indefinit</li>
-            <li class="text-base  py-2">: indefinit</li>
-            <li class="text-base  py-2">: indefinit</li>
-            <li class="text-base  py-2">: indefinit</li>
+            <li class="text-base  py-2">: {{entete.entete.bailleur}}</li>
+            <li class="text-base  py-2">: {{entete.entete.site}}</li>
+            <li class="text-base  py-2">: {{entete.entete.missionaire}}</li>
+            <li class="text-base  py-2">: {{entete.entete.numero}}</li>
           </ul>
         </div>
       </div>
@@ -83,32 +88,30 @@
           </thead>
           
           <tbody>
-            <tr  class="border-b border-gray-300" v-for="(activite ,index) in checklists" :key="index">
+            <tr  class="border-b border-gray-300" v-for="(activites ,index) in formulaire" :key="index">
                 
                 <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <span class="font-bold">{{activite.activite}}</span>
-                  <tr class="" v-for="(data ,indexe) in activite.data" :key="indexe">
+                  <span class="font-bold">{{activites.activite.nom}}</span>
+                  <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                     <span class="font-bold">-</span> {{data.label}}
+                     <span class="font-bold">-</span> {{data.nom}}
                     </td>
                   </tr>
                 </td>
                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                 <tr class="" v-for="(data ,indexe) in activite.data" :key="indexe">
+                 <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                     vide
+                     {{data.content}}
                     </td>
                   </tr>
                 </td>
                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <tr class="" v-for="(data ,indexe) in activite.data" :key="indexe">
+                  <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                       vide
                     </td>
                   </tr>
-                </td>
-                
-                
+                </td>                 
             </tr>              
           </tbody>
         </table>
@@ -173,6 +176,7 @@
   import Vtable from '@/components/Vtable'
   import Vform from '@/components/Vform'
   import Vbutton from '@/components/Vbutton'
+  import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   components: {
     CardChecklist,
@@ -184,10 +188,11 @@ export default {
   },
   data() {
     return {
+      valueFiltre: null,
       seeChecklist:true,
       seeForm:false,
-      showModal:false,
-      champs:[],
+      formulaire: [],
+      entete: [],
       headers:[
           {name:'Libelle activite',props:'libelle'},
           {name:'Code activite',props:'code'},
@@ -264,7 +269,25 @@ export default {
         ],
     }
   },
+  computed: {
+    ...mapState({
+      identifiant: (state) => state.auths.identifiant,
+      loading: (state) => state.loading,
+      errors: (state) => state.errors,
+      statuts: (state) => state.statuts,
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      utilisateurs: "utilisateurs/getUtilisateurs",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
   methods: {
+    ...mapActions("formulaires", {
+      getSuivi: "GET_SUIVI",
+    }),
     addActivite() {
       this.title = 'Creer une activité'
       this.showModal = true
@@ -277,28 +300,108 @@ export default {
       this.seeForm = false
       this.seeChecklist = true
     },
-    modifier(data) {
-      alert(data+ " à ete bien modifier")
-    },
-    supprimer(data) {
-      alert(data+ " à ete bien supprimer")
-    },
-    supprimerActivte(data) {
-      alert(data+ " à ete bien supprimer")
-    },
     selectData ({ name}) {
       return `${name}`
     },
+    filtre(){
+      if(this.valueFiltre != null)
+      {
+        var form = {
+          "entrepriseId": this.$route.params.idE,
+          "formulaireId": this.$route.params.idC,
+          "date": this.valueFiltre
+        }; 
+      }
+
+      else
+      {
+        var form = {
+          "entrepriseId": this.$route.params.idE,
+          "formulaireId": this.$route.params.idC,
+        };
+      }
+
+      console.log("Getting suivi ...");
+      this.getSuivi(form).then((response) => {
+      this.formulaire = response.data.data;
+
+      this.formulaire = response.data.data.map((element) => {
+         element = JSON.parse(element);
+         return element;
+       });
+
+       if(this.formulaire.length != 0)
+       {
+          this.entete = this.formulaire[0];
+          this.formulaire.splice(0,1);
+
+          console.log(this.formulaire);
+       }
+
+       else
+       {
+        this.entete = {
+          "entete": {
+            "entreprise" : null,
+            "responsable" : null,
+            "poste" : null,
+            "contact" : null,
+            "site" : null,
+            "date" : null,
+            "bailleur" : null,
+            "missionaire" : null,
+            "numero" : null
+          }
+        };
+
+        this.formulaire = [];
+       }
+    });
+    this.valueFiltre= null;
+    }
+    
   },
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    this.champs = [
-      {name:'Nom activité',type:'text',placeholdere:"libelle activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Code activité',type:'text',placeholdere:"code activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Programme',type:'',placeholdere:'Choisir un programme',isSelect:true,isTextArea:false,data:'',options:programme,required:true,methode:this.selectData},
-      {name:'Date debut',type:'date',placeholdere:"Date debut",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Date fin',type:'date',placeholdere:"Date fin",isSelect:false,isTextArea:false,data:'',required:true,},
-    ]
+    
+    let form = {
+      "entrepriseId": this.$route.params.idE,
+      "formulaireId": this.$route.params.idC
+    };
+
+    console.log("Getting suivi ...");
+    this.getSuivi(form).then((response) => {
+      this.formulaire = response.data.data;
+
+       
+       if(this.formulaire.length != 0)
+       {
+          this.entete = this.formulaire[0];
+          this.formulaire.splice(0,1);
+
+       }
+
+       else
+       {
+        this.entete = {
+          "entete": {
+            "entreprise" : null,
+            "responsable" : null,
+            "poste" : null,
+            "contact" : null,
+            "site" : null,
+            "date" : null,
+            "bailleur" : null,
+            "missionaire" : null,
+            "numero" : null
+          }
+        };
+
+        this.formulaire = [];
+       }
+        console.log(this.formulaire);
+    });
+
   }
 }
 </script>

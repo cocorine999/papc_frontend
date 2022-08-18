@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-export default PermissionsService = {
+const  PermissionsService = {
 
     query(type, params) {
       return ApiService.query("permissions", {
@@ -30,3 +30,5 @@ export default PermissionsService = {
     }
 
   };
+
+  export default PermissionsService;
