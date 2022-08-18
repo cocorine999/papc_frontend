@@ -362,7 +362,7 @@ export default {
         {name:'activite 5'},
       ],
       tacheId:'',
-      tacheAttributs : ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'statut', 'poids'],
+      tacheAttributs : ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'poids'],
 
       champs:[
 
@@ -546,10 +546,11 @@ export default {
       if(window.confirm("Voulez-vous supprimer la tache " + tache.nom)){
         if(this.sendRequest === false){
           this.sendRequest = true;
-          this.deleteTache(tache.id)
+          this.deleteTache(tache.id).then((value) => {
+            this.fetchTaches(this.valueFiltre.id);
+          })
             .finally((error) => {              
               this.sendRequest = false;
-              this.fetchTaches(this.valueFiltre.id);
             });
         }
       }
@@ -637,10 +638,11 @@ export default {
         this.updateTache({
           tache: { statut: -1, activiteId: this.valueFiltre.id },
           id: tache.id,
+        }).then((value) => {
+            this.fetchTaches(this.valueFiltre.id);
         })
           .finally((error) => {      
             this.sendRequest = false;        
-            this.fetchTaches(this.valueFiltre.id);
           })
       }
     },
@@ -662,23 +664,23 @@ export default {
           this.updateTache({ tache: tache, id: this.tache?.id })
             .then((response) => {
               if (response.status === 200 || response.status === 201) {
+                this.fetchTaches(this.valueFiltre.id);
                 this.close();
               }
             })
             .finally((error) => {     
               this.sendRequest = false;               
-              this.fetchTaches(this.valueFiltre.id);
             });
         } else {
           this.saveTache(tache)
             .then((response) => {
               if (response.status === 200 || response.status === 201) {
+                this.fetchTaches(this.valueFiltre.id);
                 this.close();
               }
             })
             .finally((error) => {
               this.sendRequest = false;        
-              this.fetchTaches(this.valueFiltre.id);
             });
         }
 

@@ -500,7 +500,7 @@ export default {
       showFiltre: false,
       showProlonger:false,
       chargement:false,
-      activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'statut', 'poids'],
+      activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'poids'],
       dates:{debut:'',fin:''},
       planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
       champs:[
@@ -514,7 +514,6 @@ export default {
         {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data:'', required: true, options: this.entreprisesExecutante, cle: 'id', value: 'nom',  errors : []},
         {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.mods, cle: 'id', value: 'nom',  errors : []},
-        {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez le statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
 
@@ -1045,10 +1044,13 @@ export default {
         if(this.sendRequest === false){
           this.sendRequest = true;
 
-          this.deleteActivite(activite.id).finally((value) => {
-            this.fetchActivites(this.composanteId);
-            this.sendRequest = false;
-          });
+          this.deleteActivite(activite.id)
+            .then((value) => {
+              this.fetchActivites(this.composanteId);
+            })
+            .finally((value) => {
+              this.sendRequest = false;
+            });
         }
       }
     },
@@ -1063,16 +1065,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if( value.key === "statut" && item === "statut"){
-
-            this.$store.state.statuts.map((value) => {
-              if(value.etat === activite[item]){
-                this.champs[index]['data'] = value
-              }
-            });
-
-          }
-          else if(value.key === item){
+          if(value.key === item){
             this.champs[index]['data'] = activite[item]
           }
 
@@ -1123,9 +1116,11 @@ export default {
         this.sendRequest = true;
 
         this.updateActivite({ activite: { statut: -1, composanteId: this.composanteId }, id: activite.id })
+          .then((value) => {              
+            this.fetchActivites(this.composanteId);
+          })
           .finally((error) => {              
             this.sendRequest = false;
-            this.fetchActivites(this.composanteId);
           });
       }
     },
@@ -1152,23 +1147,23 @@ export default {
           this.updatePlanDeDecaissement({ planDeDecaissement: planDeDecaissement, id: this.planDeDecaissement?.id })
             .then((response) => {
               if (response.status === 200 || response.status === 201) {
+                this.fetchPlanDeDecaissements(this.activiteFiltre.id);
                 this.close2();
               }
             })
             .finally((error) => {              
               this.sendRequest = false;
-              this.fetchPlanDeDecaissements(this.activiteFiltre.id);
             });
         } else {
           this.savePlanDeDecaissement(planDeDecaissement)
             .then((response) => {
               if (response.status === 200 || response.status === 201) {
+                this.fetchPlanDeDecaissements(this.activiteFiltre.id);
                 this.close2();
               }
             })
             .finally((error) => {              
               this.sendRequest = false;
-              this.fetchPlanDeDecaissements(this.activiteFiltre.id);
             });
         }
       }
@@ -1195,29 +1190,27 @@ export default {
 
         activite["type"] = activite.types.type;
 
-        activite.statut = activite.statut.etat;
-
         if (this.activite?.id) {
           this.updateActivite({ activite: activite, id: this.activite?.id })
             .then((response) => {
               if (response.status === 200 || response.status === 201) {
+                this.fetchActivites(this.composanteId);
                 this.close();
               }
             })
             .finally((error) => {            
-              this.sendRequest = false;  
-              this.fetchActivites(this.composanteId);
+              this.sendRequest = false;
             });
         } else {
           this.saveActivite(activite)
             .then((response) => {
               if (response.status === 200 || response.status === 201) {
+                this.fetchActivites(this.composanteId);
                 this.close();
               }
             })
             .finally((error) => {          
               this.sendRequest = false;    
-              this.fetchActivites(this.composanteId);
             });
         }
       }

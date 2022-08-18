@@ -189,7 +189,7 @@ export default {
         {name:"continuer"},
       ],
 
-      sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'statut', 'poids'],
+      sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
 
       champs:[
 
@@ -198,7 +198,6 @@ export default {
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Statut', key: "statut", type: '', placeholdere: 'Selectionnez lr statut', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.statuts, cle: 'etat', value: 'nom', errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
@@ -367,16 +366,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if( value.key === "statut" && item === "statut"){
-
-            this.$store.state.statuts.map((value) => {
-              if(value.etat === sousComposante[item]){
-                this.champs[index]['data'] = value
-              }
-            });
-
-          }
-          else if(value.key === item){
+          if(value.key === item){
             this.champs[index]['data'] = sousComposante[item]
           }
 
@@ -401,16 +391,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if( value.key === "statut" && item === "statut"){
-
-            this.$store.state.statuts.map((value) => {
-              if(value.etat === sousComposante[item]){
-                this.champs[index]['data'] = value
-              }
-            });
-
-          }
-          else if(value.key === item){
+          if(value.key === item){
             this.champs[index]['data'] = sousComposante[item]
           }
 
@@ -447,16 +428,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if( value.key === "statut" && item === "statut"){
-
-            this.$store.state.statuts.map((value) => {
-              if(value.etat === sousComposante[item]){
-                this.champs[index]['data'] = value
-              }
-            });
-
-          }
-          else if(value.key === item){
+          if(value.key === item){
             this.champs[index]['data'] = sousComposante[item]
           }
 
@@ -488,9 +460,11 @@ export default {
         this.sendRequest = true;
 
         this.updateSousComposante({sousComposante: { "statut": -1, "composanteId": this.valueFiltre.id }, id : sousComposante.id})
+        .then((value) => {
+            this.fetchSousComposantes(this.valueFiltre.id);
+        })
           .finally((error) => {
             this.sendRequest = false;
-            this.fetchSousComposantes(this.valueFiltre.id);
           })
 
       }
@@ -507,8 +481,6 @@ export default {
         let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
 
         sousComposante.composanteId = this.valueFiltre.id;
-
-        sousComposante.statut = sousComposante.statut.etat;
                 
         if(this.sousComposante?.id)
         {
@@ -517,13 +489,13 @@ export default {
             .then(response => {
               
               if(response.status === 200 || response.status === 201){
+                this.fetchSousComposantes(this.valueFiltre.id);
                 this.close()
               }
 
             })
             .finally((error) => {
               this.sendRequest = false;
-              this.fetchSousComposantes(this.valueFiltre.id);
             })
 
         }
@@ -534,13 +506,13 @@ export default {
           
             .then(response => {
               if(response.status === 200 || response.status === 201){
+                this.fetchSousComposantes(this.valueFiltre.id);
                 this.close()
               }
 
             })
             .finally((error) => {          
               this.sendRequest = false;    
-              this.fetchSousComposantes(this.valueFiltre.id);
             })
         }
       }
