@@ -31,9 +31,7 @@
           <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
     </div>
-   <pre>
-    {{idProgramme}}
-   </pre>
+   
     <div  id="dataTable">
       <vtable :headers="headers" :datas="utilisateurs" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
     </div>
@@ -71,8 +69,9 @@ export default {
         showModal:false,
         usersAttributes : ['nom', 'email', 'contact', 'prenom','roles'],
         showModal:false,
+        isComment:false,
         title:'',
-         cols:1,
+        cols:1,
         champs:[
           {name:'Nom', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
           {name:'Prenom', key: 'prenom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
@@ -205,10 +204,7 @@ export default {
     showCloseModal(value = false) {
       this.showModal = value;
     },
-    
-    
-      
-      
+
   },
 
    mounted() {

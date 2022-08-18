@@ -29,10 +29,10 @@
       </div>
       <!--  -->
       <div class="cursor-pointer">
-        <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids:  {{ poids }} </span>
+        <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} / {{ poids }} </span>
         <div v-else  class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary   font-bold leading-3 px-8 py-3 "> 
          <span class="text-white"> Poids:</span>
-        <input type="text" @keyup.enter="validerSuivi(id,poids)" v-model="poids" class="border border-primary p-2  outline-none">
+        <input type="text" @keyup.enter="validerSuivi(id,poidsActuel)" v-model="poidsActuel" class="border border-primary p-2  outline-none">
         </div>
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
@@ -122,7 +122,22 @@ export default {
       TacheService.suiviTache(data).then((data) => {
          this.showInput = false
       }).catch((e) => {
-        console.log(e)
+        if (e.response) {
+          const errors ={}
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          //const message = error.response.data.message
+          const errorMessage = e.response.data.errors
+          if(errorMessage != undefined){
+            alert(errorMessage.poidsActuel[0])
+          }
+         
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          console.log('dernier message', error.message);
+        }
       })
      
     },

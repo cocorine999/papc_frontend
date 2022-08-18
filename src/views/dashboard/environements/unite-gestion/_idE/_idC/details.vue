@@ -31,16 +31,12 @@
     </div>
     <!--En tete de la checklist-->
     <div v-if="seeChecklist" >
-      <div class="mt-4 mb-6">
+      <div class="mt-4 mb-6 flex space-x-4 items-center">
         <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
         <input v-model="valueFiltre" type="date" class="px-2 py-1 border border-gray-700">
-
+        <button  @click="filtre" class="bg-primary text-white border-primary border px-4 py-2 shadow rounded">Filtrer </button>
       </div>
-      <div class="py-2 my-2 flex justify-center space-x-8">
-          
-          <button  @click="filtre" template="success">Filtrer </button>
-          
-      </div>
+      
       <div class="grid grid-cols-4 w-3/4 mb-4">
         <div class="">
           <ul>
@@ -117,54 +113,10 @@
         </table>
       </div>
     </div>
-    <div v-else class="my-4">
-       <form action="">
-        <div class="flex justify-center ">
-          <div class="w-3/4">
-            <div v-for="checklist in checklists" :key="checklist.id" class=" border border-dashed border-gray-400 p-6">
-            <h1 class="text-lg font-semibold uppercase text-center py-2">{{checklist.activite}}</h1>
-            <div v-for="form in checklist.data" :key="form.id">
-              <div v-if="form.type=='edit'">
-                  <label   class=" block py-2 text-sm font-semibold " for="">
-                    {{form.label}} <span  class="px-2 text-lg font-black text-red-700">*</span>
-                  </label>
-                  <input  type="text"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
-              </div>
-              <div v-if="form.type=='photos'">
-                <label   class=" block py-2 text-sm font-semibold " for="">
-                  {{form.label}} <span  class="px-2 text-lg font-black text-red-700">*</span>
-                </label>
-                <input  type="file" accept="png,jpg"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
-              </div>
-              <div v-if="form.type=='boolean'">
-                <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.label}}</label>
-                <div class="flex items-center my-4">
-                  <label for="vrai" class="px-4 block text-sm uppercase font-medium text-gray-700">
-                    <input id="vrai" name="verite" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
-                    vrai
-                  </label>
-                  <label for="faux" class="px-4 block text-sm uppercase font-medium text-gray-700">
-                    <input id="faux" name="verite" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
-                    faux
-                  </label>
-                </div>
-              </div>
-              <div class="" v-if="form.type=='multiple'">
-                <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.label}}</label>
-                <label v-for="answers in Answers" :key="answers.id" class="px-4  text-sm uppercase font-medium text-gray-700">
-                  <input  name="multiple" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
-                  {{answers.label}} /
-                </label>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-        <div class="py-2 my-2 flex justify-center space-x-8">
-          <vbutton  type="submit" template="success">Enregistrer </vbutton>
-          
-        </div>
-      </form>
+    <div v-else class="my-4 grid grid-cols-3 gap-4 ">
+       <div v-for="i in 10" :key="i.id" class="p-4 bg-white shadow" id="chart">
+        <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
+      </div>
     </div>
   </div>
   </dashboard>
@@ -200,8 +152,8 @@ export default {
           {name:'Date debut',props:'debut'},
           {name:'Date fin',props:'fin'},
           {name:'Date de creation',props:'created_at'},
-        ],
-        checklists:[
+      ],
+      checklists:[
           {
             "activite": "Preparer et faire valider par le Mo et MOD un PGESC",
             "data": [
@@ -262,11 +214,46 @@ export default {
               }
             ]
           },
-        ],
-        actions:[
+      ],
+      actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
-        ],
+      ],
+      series: [{
+        name: "Desktops",
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 148,150,155,200]
+      }],
+      chartOptions: {
+        chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: '2.20.2 Nombre de séance de sensibilisation realisés ',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: ['Jan', 'Fev', 'Mars', 'Avril', 'Mai', 'Juin', 'Jul', 'Aout', 'Sep','oct','nov','dec'],
+        }
+      },
+          
+          
+        
     }
   },
   computed: {

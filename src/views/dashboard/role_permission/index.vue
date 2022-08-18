@@ -29,7 +29,7 @@
               
           
               <div class="my-4">
-                <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Ajouter une permissions" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="permissions" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                <multiselect v-model="value" :hideSelected="true" :closeOnSelect="false" tag-placeholder="Ajouter un type utilisateur" placeholder="Ajouter une permissions" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="permissions" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
                 <!-- <div v-for="role in errors.roles" :key="role.id" class="text-red-500 text-sm   py-2 font-bold"> {{role}} </div> -->
               </div>
 
@@ -208,7 +208,8 @@ import PermissionsService from "@/services/modules/permission.service.js";
             role:[]
           },
           value:[],
-          saveUpdate:[]
+          saveUpdate:[],
+          isOpen: false,
       };
     },
   
@@ -240,7 +241,8 @@ import PermissionsService from "@/services/modules/permission.service.js";
            }, 3000);
           clearInterval(id)
           this.chargement = false
-           
+           alert('nouveau role Creer')
+           this.showModal = false
         }).catch((e) => {
           this.chargement = false  
           console.log(e)
