@@ -1,7 +1,7 @@
 <template>
   <div>     
-    <div class="activite-stat h-full overflow-auto ">
-      <div class="entete-activite relative  h-52 items-start py-3 bg-yellow-600">
+    <div class="activite-stat h-full  overflow-auto ">
+      <div class="entete-activite   h-24 items-start py-3 bg-yellow-600">
               <div class="flex justify-center ">
                 <div class="flex items-center space-x-2">
                   <div>
@@ -15,7 +15,7 @@
                 </div>
               </div>
 
-              <div style="" class="relative   top-24 px-2 overflow-hidden ">
+              <div style="" class="relative   top-2 px-2  ">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
@@ -28,14 +28,11 @@
                             <th scope="col" class="p-6">
                                 VALEUR ACTUELLE
                             </th>
-                          
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="i in 15" :key="i" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                             indicateur {{i}}
-                        </th>
+                        <hover-ligne code="5555" libelle="lorem ipsum dolor"></hover-ligne>
                         <td class="py-4 px-6">
                             1000
                         </td>
@@ -53,8 +50,9 @@
 </template>
 
 <script>
+import HoverLigne from "@/components/HoverLigne";
 export default {
-
+  components:{HoverLigne}
 }
 </script>
 

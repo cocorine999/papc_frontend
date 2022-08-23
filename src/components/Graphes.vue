@@ -1,5 +1,5 @@
 <template>
-  <div class="graphe">
+  <div class="graphe w-full">
       <div class="histogramme bg-white  p-2 shadow-sm">
         <div class="flex justify-between px-2 my-4 py-2">
           <h2 class="font-semibold text-gray-700 items-center  ">Tableau d'execution physique et financiere</h2>

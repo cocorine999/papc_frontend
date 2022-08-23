@@ -18,9 +18,7 @@
           </thead>
           <tbody>
             <tr v-for="i in 5" :key="i" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, mollitia.
-              </th>
+              <hover-ligne code="5555" libelle="lorem ipsum dolor"></hover-ligne>
               <td class="py-4 whitespace-nowrap text-green-500 px-6">
                   en cours
               </td>
@@ -36,10 +34,12 @@
 </template>
 
 <script>
+import HoverLigne from "@/components/HoverLigne";
 export default {
-
+  components:{HoverLigne}
 }
 </script>
+
 
 <style>
 

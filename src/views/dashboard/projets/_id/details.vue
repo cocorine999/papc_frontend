@@ -81,7 +81,7 @@
       <!-- fin partie description et budgetaire -->
 
       <!--  graphe et indicateurs -->
-      <div class="stat my-6 gap-2 ">
+      <div class="stat2 my-6 gap-2 ">
         <graphes></graphes>
         <indicateurs></indicateurs>
       </div>
@@ -150,5 +150,9 @@ export default {
 .stat {
   display:grid;
   grid-template-columns: 6fr 4fr;
+}
+.stat2 {
+  display:grid;
+  grid-template-columns: 7fr 5fr;
 }
 </style>

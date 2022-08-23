@@ -822,6 +822,26 @@
             <span class="font-semibold text-xs">Sites</span>
           </router-link>
         </div>
+        <div class="mb-10 flex items-center mt-2 text-gray-700 cursor-pointer">
+          <router-link
+            to="/dashboard/config/alert"
+
+            style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
+          >
+            <span class="font-semibold text-xs">Alert systeme</span>
+          </router-link>
+        </div>
+        <div class="mb-10 flex items-center mt-2 text-gray-700 cursor-pointer">
+          <router-link
+            to="/dashboard/config/rappel"
+
+            style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
+          >
+            <span class="font-semibold text-xs">Rappel taches</span>
+          </router-link>
+        </div>
       </div>
       <!-- <div style="width:100%" class=" flex items-center relative z-50 mt-12 mb-16   px-2 py-2 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
         <button @click="logout"  class="w-full bg-Primary text-white p-2 font-medium text-xs flex items-center space-x-3 ">

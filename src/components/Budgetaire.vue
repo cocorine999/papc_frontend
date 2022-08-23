@@ -1,6 +1,6 @@
 <template>
   <div class="stat-fin h-full overflow-auto ">
-          <div class="bg-blue-400 border border-blue-500 shadow grid grid-cols-2 gap-x-3 gap-y-5 p-3 text-white">
+          <div class="bg-primary border border-primary shadow grid grid-cols-2 gap-x-3 gap-y-5 p-3 text-white">
             <div class="flex items-center space-x-2">
               <div>
                 <span>
@@ -47,7 +47,7 @@
             
           </div>
           <div class="activite-stat  my-6">
-            <div class="entete-activite relative  h-52 items-start py-3 bg-gray-600">
+            <div class="entete-activite relative  h-24 items-start py-3 bg-gray-600">
               <div class="grid grid-cols-3 gap-4 ">
                 <div class="flex items-center space-x-2">
                   <div>
@@ -85,7 +85,7 @@
                 </div>
               </div>
 
-              <div  class="relative top-24 px-2 overflow-auto">
+              <div  class="relative top-2 px-2 overflow-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
@@ -103,11 +103,9 @@
                     </thead>
                     <tbody>
                       <tr v-for="i in 13" :key="i" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              1.1.1 activite 
-                        </th>
+                        <hover-ligne code="5555" libelle="lorem ipsum dolor"></hover-ligne>
                         <td class="py-4 px-6">
-                                100
+                            100
                         </td>
                         <td class="py-4 px-6">
                           <span class="text-green-500"> en cours</span>
@@ -123,8 +121,9 @@
 </template>
 
 <script>
+import HoverLigne from "@/components/HoverLigne";
 export default {
-
+  components:{HoverLigne}
 }
 </script>
 
