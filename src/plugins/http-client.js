@@ -1,5 +1,8 @@
 import axios from "axios"
-
+import Vue from 'vue';
+const chargement = (bool) => {
+  Vue.$store.dispatch('SET_LOADER',bool)
+}
 import { API_BASE_URL } from "@/services/configs/environment";
 
 import {
@@ -120,7 +123,10 @@ httpClient.interceptors.response.use(
         break;
 
       case 404:
-        alert(error.response?.data?.message)
+        Vue.$toast.error(error.response?.data?.message)
+        chargement(false)
+
+      
         break;
 
       case 422:
@@ -128,7 +134,8 @@ httpClient.interceptors.response.use(
         break;
     
       default:
-        alert(error.response?.data?.message)
+        Vue.$toast.error(error.response?.data?.message)
+        chargement(false)
         break;
     }
 

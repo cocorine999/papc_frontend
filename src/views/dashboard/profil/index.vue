@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <dashboard>
     <div class=" mb-4 py-8 md:px-6 px-4 xl:px-16">
       <h1 class="text-primary text-2xl py-8 font-bold">Informations de l'utilisateur</h1>
       <div class="block px-2 w-full ">
@@ -166,11 +166,12 @@
         </div>
       </div>
     </div>
-  </div>
+  </dashboard>
 </template>
 
 <script>
 import Dashboard from '@/layouts/Dashboard'
+
 export default {
   components: {Dashboard},
   data() {

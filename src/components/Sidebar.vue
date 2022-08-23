@@ -684,6 +684,19 @@
 
     <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
+        to="/dashboard/historique"
+        style="width: 100%"
+        class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer"
+      >
+        <span class=" ">
+         <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><desc></desc><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><polyline points="12 8 12 12 14 14"></polyline><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path></svg>
+        </span>
+        <span class="font-semibold text-xs uppercase">Flux Activités</span>
+      </router-link>
+    </div>
+    
+    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+      <router-link
         to="/dashboard/utilisateurs"
         style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer"

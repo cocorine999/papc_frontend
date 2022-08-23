@@ -5,6 +5,7 @@ import store from "../store/index";
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
+import historique from "../views/dashboard/historique/index.vue";
 import liens from "../views/liens.vue";
 import password_update from "../views/password_update.vue";
 import reset from "../views/_login/reset.vue";
@@ -167,6 +168,11 @@ const routes = [
     path: "/dashboard/roles",
     name: "role_permission",
     component: role_permission,
+  },
+  {
+    path: "/dashboard/historique",
+    name: "historique",
+    component: historique,
   },
   // {
   //   path: "/dashboard/",
