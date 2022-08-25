@@ -58,7 +58,7 @@
               </div>
               <div class="p-4">
                 <h1 class="text-center py-2 font-bold text-indigo-700 ">DESCRIPTION DU PROJET</h1>
-                <p class="text-sm text-justify">
+                <p class="text-xs italic text-justify">
                   En Afrique subsaharienne, les pays rencontrent 
                   d’énormes difficultés pour assurer aux populations 
                   rurales et urbaines l’accès aux services 
@@ -79,35 +79,14 @@
               </div>
             </div>
             
-            <div class="py-4 px-2 slider grid grid-cols-3 gap-4">
-              <div>
-                <p>
-                  <img src="https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg" class="w-full h-52 object-cover py-2" alt="">
-                </p>
-                <div>
-                  <h2 class="text-sm text-center font-bold text-indigo-700">Entreprise Executante</h2>
-                  <p class="text-xs text-center">SOGEA  <br> sogea@gmail.com </p>
+              <div class="slider grid grid-cols-5 gap-x-4">
+                <div v-for="i in 5" :key="i" class="slide-track ">
+                    <div class="">
+                      <img src="https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg" class="w-full h-52 object-cover py-2" alt="">
+                    </div>
                 </div>
-              </div>
-              <div>
-                <p>
-                  <img src="https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg" class="w-full h-52 object-cover py-2" alt="">
-                </p>
-                <div>
-                  <h2 class="text-sm text-center font-bold text-indigo-700">Entreprise Executante</h2>
-                  <p class="text-xs text-center">SOGEA  <br> sogea@gmail.com </p>
-                </div>
-              </div>
-              <div>
-                <p>
-                  <img src="https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg" class="w-full h-52 object-cover py-2" alt="">
-                </p>
-                <div>
-                  <h2 class="text-sm text-center font-bold text-indigo-700">Entreprise Executante</h2>
-                  <p class="text-xs text-center">SOGEA  <br> sogea@gmail.com </p>
-                </div>
-              </div>
             </div>
+            
             <div class=" grid grid-cols-3">
               <div class="h-2 w-full bg-green-700"></div>
               <div class="h-2 w-full bg-yellow-500"></div>
@@ -123,6 +102,58 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+/*le carousel*/
 
+@-webkit-keyframes scroll {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(calc(-250px * 7));
+    transform: translateX(calc(-250px * 7));
+  }
+}
+
+@keyframes scroll {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(calc(-250px * 7));
+      transform: translateX(calc(-250px * 7));
+  }
+}
+.slider {
+  overflow: hidden;
+  position: relative;
+  top: 0px;
+}
+.slider::before, .slider::after {
+  background: gradient(linear, left top, right top, from(white), to(rgba(255, 255, 255, 0)));
+  background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 100%);
+  content: "";
+  position: absolute;
+  z-index: 2;
+}
+.slider::after {
+  right: 0;
+  top: 0;
+  -webkit-transform: rotateZ(180deg);
+    transform: rotateZ(180deg);
+}
+.slider::before {
+  left: 0;
+  top: 0;
+}
+.slider .slide-track {
+  -webkit-animation: scroll 40s linear infinite;
+  animation: scroll 40s linear infinite;
+  display: -webkit-box;
+  display: flex;
+}
+
+/* fin de la partie carousel*/
 </style>

@@ -133,6 +133,7 @@ export default {
             }
              alertService.update(this.saveData.id,data).then((data) => {
                 this.$toast.success("Mise à jours effectué avec success !")
+                this.getAlert()
                this.close()
             }).catch((e) => {
                 console.log(e)

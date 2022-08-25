@@ -16,8 +16,10 @@
     </div>
    
     <div class="w-full bg-gray-100 pl-0 lg:pl-64 min-h-screen " :class="sideBarOpen ? 'relative' : ''" id="main-content">
+      <vue-element-loading :active="isActive" :is-full-screen="false"/>
       <navbar></navbar>
       <div class=" bg-gray-100 mb-20">
+        
         <slot></slot>
       </div>
     </div>
@@ -29,7 +31,7 @@
   import SidebarBailleur from '@/components/SidebarBailleur'
   import SidebarMod from '@/components/SidebarMod'
   import SidebarMo from '@/components/SidebarMo'
-  // import VueElementLoading from 'vue-element-loading'
+  import VueElementLoading from 'vue-element-loading'
   import { mapState } from 'vuex'
 
   export default {
@@ -41,11 +43,11 @@
       SidebarBailleur,
       SidebarMod,
       SidebarMo,
-      // VueElementLoading
+      VueElementLoading
     },
     
     computed: {
-      ...mapState(['sideBarOpen'])
+      ...mapState(['sideBarOpen','isActive'])
     },
   }
 </script>

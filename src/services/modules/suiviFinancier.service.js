@@ -16,6 +16,9 @@ const SuiviFinanciersService = {
     create(params) {
       return ApiService.post("suiviFinanciers", params);
     },
+    importCSV(params) {
+      return ApiService.post("suiviFinanciers/importation", params);
+    },
 
     update(slug, params) {
       return ApiService.update("suiviFinanciers", slug, params);

@@ -87,7 +87,9 @@
     </div>
 
     <!-- fin de l'image de connexion -->
-    
+    <div class=" absolute right-2 top-4">
+      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center">Cliquez ici pour activez le compte</button>
+    </div>
     <div class="drapeau absolute bottom-0 right-0 left-0 grid grid-cols-3">
       <div class="h-2 bg-green-700"></div>
       <div class="h-2 bg-yellow-500"></div>
@@ -114,7 +116,6 @@ export default {
       
     }
   },
-
   computed:{
 
     //importation des variables du module auths
@@ -132,6 +133,9 @@ export default {
     }),
     chargement(bool) {
       this.$store.dispatch('SET_LOADER',bool)
+    },
+    gotoValidate() {
+      this.$router.push({name:'resendLink',params:{identifiant:this.login}})
     },
     async save() {
 
@@ -181,3 +185,18 @@ export default {
 
 }
 </script>
+<style scoped>
+  .animation {
+    animation: vibration infinite .3s;
+  }
+  @keyframes vibration {
+    to {
+      transform: rotate(0deg);
+      transition: all 0.3s ease-in-out;
+    }
+    from {
+      transform: rotate(3deg);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+</style>

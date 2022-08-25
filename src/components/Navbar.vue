@@ -12,6 +12,7 @@
         </div>
         <!-- right navbar -->
         <div class="flex items-center relative">
+          <span @click="getBackup" class="text-white cursor-pointer " title="lancer une sauvegarde">  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"></path></svg>   </span>
         <div class="absolute inset-y-0 right-0 flex space-x-3 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <router-link class="text-white" to="/dashboard/fileManager"><svg stroke="currentColor" fill="currentColor" class="h-6 w-6" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M13 9h-2v3H8v2h3v3h2v-3h3v-2h-3z"></path><path d="M20 5h-8.586L9.707 3.293A.996.996 0 0 0 9 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z"></path></svg></router-link>
           <button class="bg-gray-100 p-1 rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -24,7 +25,7 @@
 
                   <!-- Profile dropdown -->
           <div class="ml-3 relative">
-                    <div>
+              <div>
                       
                       <button @click="openMenu = !openMenu" type="button" class=" text-sm rounded-full outline-none " id="user-menu" aria-expanded="false" aria-haspopup="true">
                         <div class="flex items-center  mx-2 justify-center w-10 h-10 bg-blue-400 rounded-full shadow-lg cursor-pointer"  >
@@ -33,13 +34,13 @@
 
               
                       </button>
-                    </div>
+              </div>
 
-                    <div v-if="openMenu"  class="origin-top-right absolute z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+              <div v-if="openMenu"  class="origin-top-right absolute z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                       <router-link to="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> {{ currentUser.nom }} {{ currentUser.prenom }} </router-link>
                       <router-link to="/admin/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Parametre</router-link>
                       <span @click.prevent="deconnecter"  class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se deconnecter</span>
-                    </div>
+              </div>
           </div>
         </div>
         </div>
@@ -50,6 +51,8 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import getCigle from '../utils/get-cigle'
+import BackupService from "@/services/modules/backup.service.js";
+
 export default {
     name: 'Navbar',
     computed: {
@@ -60,21 +63,28 @@ export default {
         return {
             cigle : null,
             dropDownOpen: false,
-            openMenu:false
+            openMenu:false,
+           
         }
     },
     methods: {
       //Charger les fonctions 
+    
+       getBackup() {
+        BackupService.getBackup().then(() => {
+            this.$toast.success("Sauvegarde effectué!")
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
+      },
       ...mapActions('auths', { logout: "LOGOUT" }),
 
       toggleSidebar() {
-          this.$store.dispatch('toggleSidebar')
+        this.$store.dispatch('toggleSidebar')
       },
 
       deconnecter() {
-
         this.logout().then((response) => {
-          
           if (response.statut === "success" || response.status === 200) {
             
             window.location.href ='/'

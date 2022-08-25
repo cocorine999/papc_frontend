@@ -76,7 +76,7 @@ export default new Vuex.Store({
     loading : false,
     messageErreur : null,
     errors : [],
-
+    isActive:false,
     types : [
       {
         nom : "pta",
@@ -167,6 +167,12 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    active(state) {
+      state.isActive = true
+    },
+    disabled(state) {
+      state.isActive = false
+    },
     toggleSidebar (state) {
       state.sideBarOpen = !state.sideBarOpen
     },
@@ -189,6 +195,12 @@ export default new Vuex.Store({
   },
 
   actions: {
+    active(context) {
+      context.commit('active')
+    },
+    disabled(context) {
+      context.commit('disabled')
+    },
     toggleSidebar(context) {
       context.commit('toggleSidebar')
     }
