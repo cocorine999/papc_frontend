@@ -96,9 +96,19 @@ export default {
       if (!this.$v.login.$invalid) {
         resetService.get(this.login).then(() => {
           this.$toast.success("Operation effectué avec success !")
-          this.$router.push({name:'confirm',params:{identifiant:this.$route.params.identifiant}})
+          this.$router.push('/info')
         }).catch((e) => {
-          this.$toast.error(e)
+           if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+              }
         })
       }
     },

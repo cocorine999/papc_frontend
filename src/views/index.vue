@@ -138,7 +138,6 @@ export default {
       this.$router.push({name:'resendLink',params:{identifiant:this.login}})
     },
     async save() {
-
       this.identifiant.email = this.login
       this.identifiant.password = this.password
       this.chargement(true)

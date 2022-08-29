@@ -27,9 +27,19 @@ export default {
         this.$router.push('/')
         this.$toast.success(response.message)
         this.disabled()
-      }).catch((e) => {
+      }).catch((error) => {
           this.disabled()
-        this.$toast.error(e)
+           if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+              }
         this.$router.push('/')
       })
     },
