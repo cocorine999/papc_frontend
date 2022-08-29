@@ -36,7 +36,7 @@
       </button>
     </div>
     
-     <vtable :headers="headers" :datas="paps" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+     <vtable :headers="headers" :datas="paps.sinistres" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     
   </div>
   </dashboard>
@@ -72,29 +72,46 @@ export default {
       loading:false,
       showInput:true,
       title:'',
-      papAttributs : ['nom', 'prenoms', 'longitude', 'latitude', 'dateDePaiement', 'contact', 'bailleurId', 'montant'],
+      sexe: [
+        {
+          sigle: 'M',
+          nom: 'Masculin'
+        },
+        {
+          sigle: 'F',
+          nom: 'Feminin'
+        }
+      ],
+      papAttributs : ['nom', 'rue', 'longitude', 'latitude', 'sexe', 'contact', 'siteId', 'montant', 'payer', 'referencePieceIdentite', 'statut', 'modeDePaiement'],
       champs:[
-        {name:' Nom ', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Prenoms ', key:'prenoms',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Montant', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-
-        {name:'Date de paiement', key:'dateDePaiement',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' N° Rue', key:'rue',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Longitude', key:'longitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Latitude', key:'latitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Site', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
+        {name:' Nom et prenoms', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Sexe', key:'sexe',type:'',placeholdere:"Selectionnez le sexe",isSelect:true,isTextArea:false,data:'',options:this.sexe, cle: 'sigle', value: 'nom',required:true,errors : []},
         {name:' Contact ', key:'contact',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Bailleur', key:'bailleurId',type:'',placeholdere:"Selectionnez un bailleur",isSelect:true,isTextArea:false,data:'',options:this.bailleurs, cle: 'id', value: 'sigle',required:true,errors : []},
+        {name:'Référence Pièces identité', key:'referencePieceIdentite',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Statut', key:'statut',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Mode de paiement', key:'modeDePaiement',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Indeminisation', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Transféré', key:'payer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        
       ],
       cols:2,
       headers:[
-        {name:'Nom',cle:'nom'},
-        {name:'Prenoms',cle:'prenoms'},
+        {name:'N° Rue',cle:'rue'},
         {name:'Longitude',cle:'longitude'},
         {name:'Latitude',cle:'latitude'},
-        {name:'Montant(Fcfa)',cle:'montant'},
-        {name:'Date de paiement',cle:'dateDePaiement'},
+        {name:'Site',cle:'site'},
+        {name:'Nom et prenom',cle:'nom'},
+        {name:'Sexe',cle:'sexe'},
         {name:'Contact',cle:'contact'},
-        {name:'Bailleur',cle:'bailleur'},
-        {name:'Date de création',cle:'dateDeCreation'},
+        {name:'Reference Pieèce Identite',cle:'referencePieceIdentite'},
+        {name:'Statut',cle:'statut'},
+        {name:'Mode de paiement',cle:'modeDePaiement'},
+        {name:'Indeminisation',cle:'montant'},
+        {name:'Transféré',cle:'payer'},
       ],
       actions:[
         {name:'supprimer',iconne:''},
@@ -116,7 +133,7 @@ export default {
     ...mapGetters({
       paps: "paps/getPaps", 
       pap: "paps/getPap",
-      bailleurs: "bailleurs/getBailleurs",
+      sites: "sites/getSites",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     })
     
@@ -136,7 +153,7 @@ export default {
       deletePap: "DESTROY_PAP"
     }),
 
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE' }),
 
     addAno() {
       this.title = 'Ajouter un element'
@@ -158,9 +175,14 @@ export default {
       this.title='Ajouter un nouveau pap'
 
       let formData = this.champs.map((value) => {
-          if(value.key === 'bailleurId'){ 
-            value['options'] = this.bailleurs
+          if(value.key === 'siteId'){ 
+            value['options'] = this.sites
           }
+
+          else if(value.key === 'sexe'){ 
+            value['options'] = this.sexe
+          }
+
 
           return value
         })
@@ -210,7 +232,9 @@ export default {
 
       pap.programmeId = this.currentUser?.programme?.id
 
-      pap.bailleurId = pap.bailleurId.id
+      pap.siteId = pap.siteId.id
+
+      pap.sexe = pap.sexe.sigle
 
       console.log(pap)
       
@@ -264,8 +288,8 @@ export default {
     console.log("Fetching paps ...")
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
-          console.log("Fetching list of bailleurs...")
-          this.fetchBailleurs()
+          console.log("Fetching list of sites...")
+          this.fetchSites(this.currentUser?.programme?.id)
         }, 500);
     })
   }
