@@ -7,12 +7,12 @@
           <div class="lg:hidden flex items-center mr-4">
                   <button class="hover:text-blue-500 hover:border-white focus:outline-none navbar-burger" @click="toggleSidebar()">
                     <svg class="h-5 w-5" v-bind:style="{ fill: 'black' }" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-                  </button>
+          </button>
           </div>
         </div>
         <!-- right navbar -->
         <div class="flex items-center relative">
-          <span @click="getBackup" class="text-white cursor-pointer " title="lancer une sauvegarde">  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"></path></svg>   </span>
+      
         <div class="absolute inset-y-0 right-0 flex space-x-3 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <router-link class="text-white" to="/dashboard/fileManager"><svg stroke="currentColor" fill="currentColor" class="h-6 w-6" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M13 9h-2v3H8v2h3v3h2v-3h3v-2h-3z"></path><path d="M20 5h-8.586L9.707 3.293A.996.996 0 0 0 9 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z"></path></svg></router-link>
           <button class="bg-gray-100 p-1 rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -70,13 +70,7 @@ export default {
     methods: {
       //Charger les fonctions 
     
-       getBackup() {
-        BackupService.getBackup().then(() => {
-            this.$toast.success("Sauvegarde effectué!")
-        }).catch((e) => {
-          this.$toast.error(e)
-        })
-      },
+
       ...mapActions('auths', { logout: "LOGOUT" }),
 
       toggleSidebar() {

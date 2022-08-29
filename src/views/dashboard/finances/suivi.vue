@@ -71,7 +71,7 @@
         </div>
       
       </div>
-      <vtable :headers="headers" :datas="suiviFinanciers.suiviFinanciers" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+      <vtable :headers="headers" :datas="suiviFinanciers" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     </div>
   </dashboard>
  

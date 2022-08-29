@@ -12,7 +12,7 @@ import newPassword from "../views/reset.vue";
 import activation from "../views/_identifiant/active.vue";
 import confirm from "../views/_identifiant/confirm.vue";
 import resendLink from "../views/_identifiant/resend_link.vue";
-
+import info from "../views/info.vue";
 import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
 import backup from "../views/dashboard/backup/index.vue";
 
@@ -80,6 +80,7 @@ import config_sinistres from "../views/dashboard/config/sinistres/index.vue";
 import config_main_oeuvre from "../views/dashboard/config/main_oeuvre/index.vue";
 import config_alert from "../views/dashboard/config/alert/index.vue";
 import config_rappel from "../views/dashboard/config/rappel/index.vue";
+import config_backup from "../views/dashboard/config/backup/index.vue";
 
 import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
@@ -188,6 +189,11 @@ const routes = [
     path: "/change-password",
     name: "newPassword",
     component:newPassword,
+  },
+  {
+    path: "/info",
+    name: "info",
+    component:info,
   },
 
 
@@ -737,6 +743,17 @@ const routes = [
     },
     name: "config_categories",
   },
+
+  {
+    path: "/dashboard/config/backup",
+    component: config_backup,
+    meta: {
+      middleware: [auth],
+    },
+    name: "config_backup",
+  },
+
+ 
 
   {
     path: "/dashboard/config/sinistres",

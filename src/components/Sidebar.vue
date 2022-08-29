@@ -696,7 +696,7 @@
     </div>
 
     
-    <!-- <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/historique"
         style="width: 100%"
@@ -706,7 +706,7 @@
           <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"></path></svg>        </span>
         <span class="font-semibold text-xs uppercase">Sauvegarde  </span>
       </router-link>
-    </div> -->
+    </div> 
     
     <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
@@ -833,6 +833,16 @@
             class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
           >
             <span class="font-semibold text-xs">Sites</span>
+          </router-link>
+        </div>
+         <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
+          <router-link
+            to="/dashboard/config/backup"
+
+            style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
+          >
+            <span class="font-semibold text-xs">Frequence de sauvegarde</span>
           </router-link>
         </div>
         <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
