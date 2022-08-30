@@ -44,7 +44,7 @@
           </div>
         </div>
        
-        <vtable :headers="headers" :datas="filteredSuivis"  ></vtable>    
+        <vtable :headers="headers" :datas="filteredSuivis()"  ></vtable>    
     </div>
   </dashboard>
 
