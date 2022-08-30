@@ -31,7 +31,7 @@
     <div class="flex items-center justify-between">
       <titre>Point financier </titre>     
     </div>
-    <vtable :headers="headers" :datas="pointFinancier"></vtable>
+    <vtable :headers="headers" :datas="filteredPointFinancier()"></vtable>
   </div>
   </dashboard>
  
@@ -54,14 +54,14 @@ export default {
     data() {
         return {
         headers:[
-          {name:'Bailleur', cle:'bailleur'},
-          {name:'Montants financier', cle:'montanFinancier'},
-          {name:'Taux de decaissement', cle:'tauxDeDecaissement'},
+          {name:'Bailleur', cle:'sigle'},
+          {name:'Montants financier', cle:'montantFinancement'},
+          {name:'Taux de decaissement', cle:'tauxDecaissement'},
           {name:'PTAB', cle:'ptab'},
           {name:'Decaissement', cle:'decaissement'},
           {name:'Realisation PTAB ', cle:'realisationPta'},
           {name:'TEF', cle:'tef'},
-          {name:'TEF GLOBALE', cle:'tefGlobal'},
+          {name:'TEF GLOBALE', cle:'tefGlobale'},
         ],
         search:'',
       };
@@ -90,7 +90,7 @@ export default {
         var self = this;
 
         return this.pointFinancier.filter(function (pointFinancier){
-          return pointFinancier.bailleur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+          return pointFinancier.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },
 
