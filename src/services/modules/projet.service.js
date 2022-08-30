@@ -35,6 +35,10 @@ const ProjetsService = {
 
     statistiques(slug) {
       return ApiService.get(`projets/${slug}/statistiques`);
+    },
+
+    prolonger(slug, params) {
+      return ApiService.post(`projets/${slug}/prolonger`, params);
     }
 
   };
