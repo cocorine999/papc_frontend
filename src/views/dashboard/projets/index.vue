@@ -248,7 +248,8 @@ export default {
 
         return this.projets.filter(function (projet){
           return projet.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+                 projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },
 
