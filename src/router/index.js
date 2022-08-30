@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import store from "../store/index";
 
 import index from "../views/index.vue";
+import authPage from "../views/401.vue";
 import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
 import historique from "../views/dashboard/historique/index.vue";
@@ -159,6 +160,11 @@ const routes = [
     path: "/demo",
     name: "demo",
     component: demo,
+  },
+  {
+    path: "/401-non-autorise",
+    name: "authPage",
+    component: authPage,
   },
   {
     path: "/dashboard/backup",
