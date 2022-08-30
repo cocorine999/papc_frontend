@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="w-full px-4">
+    <div v-if="bailleurVisible" class="w-full px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4">
@@ -44,50 +44,8 @@
           </div>
         </nav>
 
-        <div class="flex justify-start mt-2">
-          <div class="flex items-center">
-            <span
-              title="vue en mosaique"
-              @click="switchBetweenCode({mosaique: true, line: false})"
-              :class="{ 'border-2': mosaique }"
-              class="p-2 cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"
-              ><svg
-                stroke="currentColor"
-                fill="currentColor"
-                stroke-width="0"
-                viewBox="0 0 24 24"
-                height="1.8em"
-                width="1.8em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path
-                  d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"
-                ></path></svg
-            ></span>
-            <span
-              title="vue en ligne"
-              @click="switchBetweenCode({mosaique: false, line: true})"
-              :class="{ 'border-2': line }"
-              class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500"
-              ><svg
-                stroke="currentColor"
-                fill="currentColor"
-                stroke-width="0"
-                viewBox="0 0 24 24"
-                height="1.8em"
-                width="1.8em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path
-                  d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"
-                ></path></svg
-            ></span>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between my-2">
+      
+        <div v-if="bailleurAdd" class="flex items-center justify-between my-2">
           <titre>Les bailleurs </titre>
           <button
             @click="addBailleur"
@@ -106,11 +64,17 @@
           </button>
         </div>
 
-        <div v-if="mosaique" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5" >
+        <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5" >
           <div v-for="(bailleur, index) in bailleurs" :key="index">
             <div class="relative" >
-              <div class="absolute right-1 top-4 z-10  cursor-pointer">
-                <dropdown @supprimer="supprimer(bailleur)" @modifier="modifier(bailleur)" @duplicate='dupliquer(bailleur)' :option="option"></dropdown>
+              <div v-if="bailleurUpdate" class="absolute right-1 top-4 z-10  cursor-pointer">
+                <dropdown  @modifier="modifier(bailleur)"  :option="optionUp"></dropdown>
+              </div>
+              <div v-if="bailleurDelete" class="absolute right-1 top-4 z-10  cursor-pointer">
+                <dropdown @supprimer="supprimer(bailleur)"  :option="optionD"></dropdown>
+              </div>
+              <div v-if="bailleurUpdate && bailleurDelete " class="absolute right-1 top-4 z-10  cursor-pointer">
+                <dropdown @supprimer="supprimer(bailleur)" @modifier="modifier(bailleur)"  :option="option"></dropdown>
               </div>
               
               <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
@@ -242,7 +206,7 @@
   import Dropdown from '@/components/Dropdown.vue'
   import { mapGetters, mapMutations, mapActions } from "vuex";
   import extractFormData from "@/utils/extract-data";
-  
+  import PermissionsService from "@/services/modules/permission.service.js";
   export default {
     components: {
       Vtable,
@@ -261,10 +225,12 @@
         bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
         showModal: false,
         programmeId: this.currentUser?.programme?.id,
-        line: false,
-        mosaique: true,
         title: "Ajouter un nouveau bailleur",
         submitText: "Enrégistrer",
+        bailleurVisible:false,
+        bailleurAdd:false,
+        bailleurDelete:false,
+        bailleurUpdate:false,
         headers: [
           { name: "Bailleurs", props: "user", cle: "nom"},
           { name: "Sigle", cle: "sigle"},
@@ -350,6 +316,8 @@
         ],
         cols: 1,
 
+        optionD: [{ name: "supprimer" }, { name: "modifier" }],
+        optionUp: [{ name: "supprimer" }, { name: "modifier" }],
         option: [{ name: "supprimer" }, { name: "modifier" }],
       };
     },
@@ -362,6 +330,7 @@
         bailleurs: "bailleurs/getBailleurs",
         currentUser : 'auths/GET_AUTHENTICATE_USER'
       }),
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
 
     methods: {
@@ -375,6 +344,29 @@
         setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
         setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       }),
+      getPermission() {
+        PermissionsService.get().then((data) => {
+          this.permissions = data.data.data
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-bailleur') {
+              this.bailleurVisible = true
+            }
+            if(element.slug === 'creer-un-bailleur') {
+              this.bailleurAdd = true
+            }
+            if(element.slug === 'modifier-un-bailleur') {
+              this.bailleurUpdate = true
+            }
+            if(element.slug ==='supprimer-un-bailleur') {
+              this.bailleurDelete = true
+            }
+           
+          });
+
+        }).catch((e) => {
+          console.log(e)
+        })
+      },
 
       ...mapActions("bailleurs", {
         fetchBailleurs: "FETCH_LIST_BAILLEUR_OF_PROGRAMME",
@@ -512,7 +504,7 @@
     },
 
     mounted(){
-      
+      this.getPermission()
      
     }
   };

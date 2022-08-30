@@ -33,7 +33,7 @@
         <span class="font-semibold text-xs uppercase">Dashboard</span>
       </router-link>
     </div>
-    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div  v-if="programmeVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/programme"
         style="width: 100%"
@@ -59,7 +59,7 @@
       </router-link>
     </div>
 
-    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="uniteeDeGestionVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/unite-gestion"
         style="width: 100%"
@@ -85,7 +85,7 @@
       </router-link>
     </div>
 
-    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="bailleursVsisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/bailleurs"
         style="width: 100%"
@@ -111,7 +111,7 @@
       </router-link>
     </div>
 
-    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="anoVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/ano"
         style="width: 100%"
@@ -137,7 +137,6 @@
       </router-link>
     </div>
 
-   
 
     <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
@@ -878,7 +877,10 @@
   </div>
 </template>
 <script>
+import PermissionsService from "@/services/modules/permission.service.js";
 import { mapState, mapGetters, mapActions } from 'vuex'
+import forEach from 'ramda/src/forEach';
+import uniteeDeGestions from '@/store/modules/uniteeDeGestions';
 export default {
   name: "sidebar",
   computed: {
@@ -887,13 +889,45 @@ export default {
   },
   data() {
     return {
-      currentRole:''
+      currentRole:'',
+      permissions: [],
+      programmeVisible:false,
+      uniteeDeGestionVisible:false,
+      bailleursVsisible:false,
+      anoVisible:false
     }
   },
+  methods: {
+    getPermission() {
+        PermissionsService.get().then((data) => {
+          this.permissions = data.data.data
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-programme') {
+              this.programmeVisible = true
+            }
+            if(element.slug ==='voir-une-unitee-de-gestion') {
+              this.uniteeDeGestionVisible = true
+            }
+            if(element.slug ==='voir-un-bailleur') {
+              this.bailleursVsisible = true
+            }
+            if(element.slug ==='voir-un-ano') {
+              this.anoVisible = true
+            }
+            
+          });
+
+        }).catch((e) => {
+          console.log(e)
+        })
+    },
+  },
   mounted() {
+    this.getPermission()
+    
      if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.role[0].nom
-        console.log("role courant",this.currentRole)
+        console.log("role courant",this.currentUser)
      }
   }
 };

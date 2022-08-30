@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="px-4">
+    <div v-if="anoVisible" class="px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
@@ -28,7 +28,7 @@
 
         </div>
       </nav>
-      <div class="flex items-center justify-between my-2">
+      <div v-if="anoAdd" class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
             class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
@@ -43,8 +43,8 @@
         </button>
       </div>
       <div id="dataTable">
-        <vtable :headers="headers" :datas="anos" :actions="actions" @supprimer="supprimer" @modifier="modifier">
-        </vtable>
+        <vtable v-if="actions != undefined && anoDelete" :headers="headers" :datas="anos" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-else :headers="headers" :datas="anos"  @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
   </dashboard>
@@ -58,7 +58,7 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-
+import PermissionsService from "@/services/modules/permission.service.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import extractFormData from '@/utils/extract-data'
 
@@ -79,6 +79,10 @@ export default {
       loading: false,
       showInput: true,
       title: '',
+      anoVisible:false,
+      anoAdd:false,
+      anoDelete:false,
+      anoUpdate:false,
       champs: [
         { name: 'Nom', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
@@ -126,6 +130,30 @@ export default {
       disabled() {
         this.$store.dispatch('disabled')
       },
+       getPermission() {
+        PermissionsService.get().then((data) => {
+          this.permissions = data.data.data
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-ano') {
+              this.anoVisible = true
+            }
+            if(element.slug === 'creer-un-ano') {
+              this.anoAdd = true
+            }
+            if(element.slug === 'modifier-un-ano') {
+              this.anoUpdate = true
+            }
+            if(element.slug ==='supprimer-un-ano') {
+              this.anoDelete = true
+            }
+           
+          });
+
+        }).catch((e) => {
+          console.log(e)
+        })
+      },
+    
     // call action
     ...mapActions("anos", {
       fetchAnos: "FETCH_LIST_ANO",
@@ -224,7 +252,7 @@ export default {
     //.then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
     console.log("Fetching bailleurs ...");
     this.fetchBailleurs()
-    
+    this.getPermission()
     this.disabled()
     //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },

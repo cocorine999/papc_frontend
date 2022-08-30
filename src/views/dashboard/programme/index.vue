@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="w-full px-4">
+    <div v-if="programmeVisible" class="w-full px-4">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
         <div class="px-4 overflow-auto" >
@@ -30,7 +30,7 @@
 
     <div class="flex items-center justify-between my-2">
       <titre>Mes programmes </titre>
-        <button @click="addProgramme" title="ajouter un programme"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="programmeAdd" @click="addProgramme" title="ajouter un programme"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
           <span class="mx-2 text-sm font-semibold">Ajouter </span>
@@ -45,6 +45,8 @@
             :montantBN="programme.budgetNational"
             :dateFin="programme.fin"
             :description="programme.description"
+            :programmeDelete="programmeDelete"
+            :programmeUpdate="programmeUpdate"
             @supprimer="supprimer(programme)"
             @modifier="modifier(programme)"
             @dupliquer="dupliquer"
@@ -64,7 +66,7 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
-
+import PermissionsService from "@/services/modules/permission.service.js";
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
 import { formatDate, extractFormData } from '@/utils/index'
@@ -85,6 +87,10 @@ export default {
       showModal:false,
       line:false,
       mosaique:true,
+      programmeVisible:false,
+      programmeAdd:false,
+      programmeDelete:false,
+      programmeUpdate:false,
       title: 'Ajouter un nouveau programme',
       submitText:"Enregistrer",
       programmeAttributs : ['nom', 'code', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational'],
@@ -117,7 +123,8 @@ export default {
 
     ...mapGetters('programmes', {
       programmes: "getProgrammes", programme: "getProgramme"
-    })
+    }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     
   },
       
@@ -128,7 +135,29 @@ export default {
     disabled() {
       this.$store.dispatch('disabled')
     },
+    getPermission() {
+        PermissionsService.get().then((data) => {
+          this.permissions = data.data.data
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-programme') {
+              this.programmeVisible = true
+            }
+            if(element.slug === 'creer-un-programme') {
+              this.programmeAdd = true
+            }
+            if(element.slug === 'modifier-un-programme') {
+              this.programmeUpdate = true
+            }
+            if(element.slug ==='supprimer-un-programme') {
+              this.programmeDelete = true
+            }
+           
+          });
 
+        }).catch((e) => {
+          console.log(e)
+        })
+    },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -289,6 +318,7 @@ export default {
   mounted() {
     this.active()
     this.fetchProgrammes()
+    this.getPermission()
     this.disabled()
   }
 
