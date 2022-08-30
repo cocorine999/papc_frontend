@@ -365,6 +365,12 @@
     },
 
     methods: {
+      active() {
+        this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
       ...mapMutations({
         setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
         setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
@@ -496,11 +502,13 @@
     },
 
     created() {
+      
       console.log("Fetching bailleurs ...");
       this.programmeId = this.currentUser.programme.id
       if(this.programmeId){
         this.fetchBailleurs(this.programmeId)
       }
+      
     },
 
     mounted(){

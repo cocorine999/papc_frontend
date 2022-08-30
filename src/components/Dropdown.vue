@@ -4,7 +4,7 @@
       <i class="bx bx-dots-vertical-rounded bx-md pr-2"></i>
     </button>
     <div class="dropdown-content">
-    <span class="option cursor-pointer" @click="actions(link.name)" v-for="(link, indice) in option" :key="indice">{{link.name}}</span>
+    <span class="option cursor-pointer" @click.stop="actions(link.name)" v-for="(link, indice) in option" :key="indice">{{link.name}}</span>
   </div>
 </div>
 </template>

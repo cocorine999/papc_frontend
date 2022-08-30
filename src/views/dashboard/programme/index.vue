@@ -37,7 +37,6 @@
         </button>
     </div>
     <div  class="grid grid-cols-3 gap-4">
-
         <div v-for="programme in programmes" :key="programme.id">
           <card-programme
             :libelle="programme.nom"
@@ -51,7 +50,6 @@
             @dupliquer="dupliquer"
             > </card-programme>
         </div>
-
     </div>
   </div>
   </dashboard>
@@ -124,6 +122,12 @@ export default {
   },
       
   methods: {
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
 
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
@@ -283,8 +287,9 @@ export default {
   },
   
   mounted() {
-    console.log("Fetching programmes ...")
+    this.active()
     this.fetchProgrammes()
+    this.disabled()
   }
 
 }

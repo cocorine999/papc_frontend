@@ -7,11 +7,12 @@
           <div class="lg:hidden flex items-center mr-4">
                   <button class="hover:text-blue-500 hover:border-white focus:outline-none navbar-burger" @click="toggleSidebar()">
                     <svg class="h-5 w-5" v-bind:style="{ fill: 'black' }" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-                  </button>
+          </button>
           </div>
         </div>
         <!-- right navbar -->
         <div class="flex items-center relative">
+      
         <div class="absolute inset-y-0 right-0 flex space-x-3 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <router-link class="text-white" to="/dashboard/fileManager"><svg stroke="currentColor" fill="currentColor" class="h-6 w-6" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M13 9h-2v3H8v2h3v3h2v-3h3v-2h-3z"></path><path d="M20 5h-8.586L9.707 3.293A.996.996 0 0 0 9 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z"></path></svg></router-link>
           <button class="bg-gray-100 p-1 rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -24,7 +25,7 @@
 
                   <!-- Profile dropdown -->
           <div class="ml-3 relative">
-                    <div>
+              <div>
                       
                       <button @click="openMenu = !openMenu" type="button" class=" text-sm rounded-full outline-none " id="user-menu" aria-expanded="false" aria-haspopup="true">
                         <div class="flex items-center  mx-2 justify-center w-10 h-10 bg-blue-400 rounded-full shadow-lg cursor-pointer"  >
@@ -33,13 +34,13 @@
 
               
                       </button>
-                    </div>
+              </div>
 
-                    <div v-if="openMenu"  class="origin-top-right absolute z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+              <div v-if="openMenu"  class="origin-top-right absolute z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                       <router-link to="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> {{ currentUser.nom }} {{ currentUser.prenom }} </router-link>
                       <router-link to="/admin/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Parametre</router-link>
                       <span @click.prevent="deconnecter"  class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se deconnecter</span>
-                    </div>
+              </div>
           </div>
         </div>
         </div>
@@ -50,6 +51,8 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import getCigle from '../utils/get-cigle'
+import BackupService from "@/services/modules/backup.service.js";
+
 export default {
     name: 'Navbar',
     computed: {
@@ -60,21 +63,22 @@ export default {
         return {
             cigle : null,
             dropDownOpen: false,
-            openMenu:false
+            openMenu:false,
+           
         }
     },
     methods: {
       //Charger les fonctions 
+    
+
       ...mapActions('auths', { logout: "LOGOUT" }),
 
       toggleSidebar() {
-          this.$store.dispatch('toggleSidebar')
+        this.$store.dispatch('toggleSidebar')
       },
 
       deconnecter() {
-
         this.logout().then((response) => {
-          
           if (response.statut === "success" || response.status === 200) {
             
             window.location.href ='/'

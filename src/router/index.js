@@ -5,11 +5,16 @@ import store from "../store/index";
 import index from "../views/index.vue";
 import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
+import historique from "../views/dashboard/historique/index.vue";
 import liens from "../views/liens.vue";
 import password_update from "../views/password_update.vue";
-import reset from "../views/_login/reset.vue";
-
+import newPassword from "../views/reset.vue";
+import activation from "../views/_identifiant/active.vue";
+import confirm from "../views/_identifiant/confirm.vue";
+import resendLink from "../views/_identifiant/resend_link.vue";
+import info from "../views/info.vue";
 import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
+import backup from "../views/dashboard/backup/index.vue";
 
 //checklist environment unite de gestion
 import unite_de_gestion_checklist from "../views/dashboard/environements/unite-gestion/_idE/checklist.vue";
@@ -73,6 +78,10 @@ import config_sites from "../views/dashboard/config/site/index.vue";
 import config_categories from "../views/dashboard/config/categories/index.vue";
 import config_sinistres from "../views/dashboard/config/sinistres/index.vue";
 import config_main_oeuvre from "../views/dashboard/config/main_oeuvre/index.vue";
+import config_alert from "../views/dashboard/config/alert/index.vue";
+import config_rappel from "../views/dashboard/config/rappel/index.vue";
+import config_backup from "../views/dashboard/config/backup/index.vue";
+
 import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
 import projets from "../views/dashboard/projets/index.vue";
@@ -152,21 +161,54 @@ const routes = [
     component: demo,
   },
   {
+    path: "/dashboard/backup",
+    name: "backup",
+    component: backup,
+  },
+  {
     path: "/changer-mots-de-passe",
     name: "password_update",
     component: password_update,
   },
   {
-    path: "/confirmer-mots-de-passe",
-    name: "reset",
-    component: reset,
+    path: "/activation/:identifiant",
+    name: "activation",
+    component: activation,
   },
+  {
+    path: "/resend-link/:identifiant",
+    name: "resendLink",
+    component:resendLink,
+  },
+  {
+    path: "/reset_password/:identifiant",
+    name: "confirm",
+    component: confirm,
+  },
+  {
+    path: "/change-password",
+    name: "newPassword",
+    component:newPassword,
+  },
+  {
+    path: "/info",
+    name: "info",
+    component:info,
+  },
+
+
+ 
   
   
   {
     path: "/dashboard/roles",
     name: "role_permission",
     component: role_permission,
+  },
+  {
+    path: "/dashboard/historique",
+    name: "historique",
+    component: historique,
   },
   // {
   //   path: "/dashboard/",
@@ -703,6 +745,17 @@ const routes = [
   },
 
   {
+    path: "/dashboard/config/backup",
+    component: config_backup,
+    meta: {
+      middleware: [auth],
+    },
+    name: "config_backup",
+  },
+
+ 
+
+  {
     path: "/dashboard/config/sinistres",
     component: config_sinistres,
     name: "config_sinistres",
@@ -740,6 +793,22 @@ const routes = [
       middleware: [auth],
     },
     name: "config_sites",
+  },
+  {
+    path: "/dashboard/config/alert",
+    component: config_alert,
+    meta: {
+      middleware: [auth],
+    },
+    name: "config_alert",
+  },
+  {
+    path: "/dashboard/config/rappel",
+    component: config_rappel,
+    meta: {
+      middleware: [auth],
+    },
+    name: "config_rappel",
   },
 
   // espace bailleurs

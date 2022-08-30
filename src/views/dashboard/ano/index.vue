@@ -120,6 +120,12 @@ export default {
   },
 
   methods: {
+      active() {
+        this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
     // call action
     ...mapActions("anos", {
       fetchAnos: "FETCH_LIST_ANO",
@@ -209,7 +215,8 @@ export default {
   },
 
   mounted() {
-    console.log("Fetching anos ...");
+    this.active()
+
     this.fetchAnos()
     //.then((value) => { console.log(value) });
     console.log("Fetching type anos ...");
@@ -217,6 +224,8 @@ export default {
     //.then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
     console.log("Fetching bailleurs ...");
     this.fetchBailleurs()
+    
+    this.disabled()
     //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },
 

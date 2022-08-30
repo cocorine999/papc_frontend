@@ -29,7 +29,7 @@
               
           
               <div class="my-4">
-                <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Ajouter une permissions" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="permissions" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                <multiselect v-model="value" :hideSelected="true" :closeOnSelect="false" tag-placeholder="Ajouter un type utilisateur" placeholder="Ajouter une permissions" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="permissions" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
                 <!-- <div v-for="role in errors.roles" :key="role.id" class="text-red-500 text-sm   py-2 font-bold"> {{role}} </div> -->
               </div>
 
@@ -113,9 +113,7 @@
                 <table class="min-w-full text-center">
                   <thead class="border-b bg-gray-50">
                     <tr>
-                      <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4">
-                        #
-                      </th>
+                    
                       <th scope="col" class="text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         roles
                       </th>
@@ -129,12 +127,11 @@
                   </thead >
                   <tbody>
                    <tr v-for="(data,index) in mesRoles" :key="index" class="bg-white border-b">
-                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"> {{index}} </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                        {{data.nom}}
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
-                        <div class="flex space-x-4 flex-wrap ">
+                        <div class="flex space-x-4 space-y-2 flex-wrap ">
                           <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold text-white border-green-500 rounded-xl"> {{permission.nom}} </span>
                         </div>
                       </td>
@@ -208,7 +205,8 @@ import PermissionsService from "@/services/modules/permission.service.js";
             role:[]
           },
           value:[],
-          saveUpdate:[]
+          saveUpdate:[],
+          isOpen: false,
       };
     },
   
@@ -220,7 +218,12 @@ import PermissionsService from "@/services/modules/permission.service.js";
     },
 
     methods: {
-
+      active() {
+        this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
       createRole() {
         
         this.value.forEach(element => {
@@ -240,7 +243,8 @@ import PermissionsService from "@/services/modules/permission.service.js";
            }, 3000);
           clearInterval(id)
           this.chargement = false
-           
+           alert('nouveau role Creer')
+           this.showModal = false
         }).catch((e) => {
           this.chargement = false  
           console.log(e)
@@ -249,9 +253,11 @@ import PermissionsService from "@/services/modules/permission.service.js";
         
       },
       getRole() {
+        this.active()
         RoleService.get().then((data) => {
           this.mesRoles = data.data.data
           console.log('mes  permissions',this.mesRoles)
+          this.disabled()
         }).catch((e) => {
           console.log(e)
         })

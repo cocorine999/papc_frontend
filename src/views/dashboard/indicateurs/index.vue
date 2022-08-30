@@ -333,6 +333,7 @@ export default {
       console.log('les données apres traitement',data)
       SuiviService.create(data).then((data) => {
         alert('suivi effectué')
+        this.showSuiviModal = false
       }).catch((e) => {
         alert(e)
       }) 

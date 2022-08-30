@@ -1,13 +1,12 @@
 <template>
   <div class="bg-gray-100  grid lg:grid-cols-2 sm:grid-cols-1 relative">
-    
     <!-- le formulaire de connexion -->
     <div class="flex justify-center items-center px-10 md:px-20 h-screen">
       <div class="formulaire sm:max-w-md ">
         <div class=" flex justify-center ">
           <img width="180" height="180" src="../assets/images/login/logo-gouv.webp">
         </div>
-        
+  
         <h1 class="xl:text-2xl text-lg text-center font-bold text-primary py-6 ">PROGRAMME  D’ASSAINISSEMMENT PLUVIAL DE COTONOU</h1>
         <p class="text-base font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte . </p>
         <form @submit.prevent="save" action="">
@@ -32,12 +31,26 @@
               mots de passe tres court
             </div>
           </div>
-          <div class="form-group">
-         <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">Se connecter</button>
+          <div class="py-2 my-4 flex justify-center space-x-8">
+            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">
+                  <span class="text-sm font-semibold uppercase" v-if="!loading">
+                    Se connecter
+                  </span>
+                  <span v-else class="flex justify-center items-center space-x-2">
+                    <span class=" px-4 font-semibold ">
+                      chargement ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+            </button>
+          
           </div>
-        <div class="flex justify-center mt-3">
-          <router-link to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mots de passe oublié ? </router-link>
-        </div>
+          
+          <div class="flex justify-center mt-3">
+            <router-link to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mots de passe oublié ? </router-link>
+          </div>
         </form>
 
         <div class="partner flex space-x-4 py-8 items-center">
@@ -61,8 +74,6 @@
           </div>
         </div>
 
-        
-
         <div>
           <p class="text-md font-semibold text-center text-gray-700">&copy; 2022 Banque Mondiale.Tout droit réservé </p>
         </div>
@@ -76,24 +87,25 @@
     </div>
 
     <!-- fin de l'image de connexion -->
-    
+    <div class=" absolute right-2 top-4">
+      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center">Cliquez ici pour activez le compte</button>
+    </div>
     <div class="drapeau absolute bottom-0 right-0 left-0 grid grid-cols-3">
       <div class="h-2 bg-green-700"></div>
       <div class="h-2 bg-yellow-500"></div>
       <div class="h-2 bg-red-700"></div>
-      
     </div>
   </div>
 </template>
 
 <script>
-
+import Vbutton from '@/components/Vbutton'
 import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'IndexPage',
-  
+
   data() {
     return {
       statePassword:"password",
@@ -101,9 +113,9 @@ export default {
       login: "",
       password: "",
       soumettre :false,
+      
     }
   },
-
   computed:{
 
     //importation des variables du module auths
@@ -119,31 +131,35 @@ export default {
     ...mapActions({
       authentification: "auths/LOGIN"
     }),
-   
+    chargement(bool) {
+      this.$store.dispatch('SET_LOADER',bool)
+    },
+    gotoValidate() {
+      this.$router.push({name:'resendLink',params:{identifiant:this.login}})
+    },
     async save() {
-
       this.identifiant.email = this.login
-      
       this.identifiant.password = this.password
-
+      this.chargement(true)
       await this.authentification(this.identifiant).then((response, status) =>{
-
           if (response.statut === "success" || response.status === 200) {
             this.$router.push('/dashboard/bailleurs')
+            this.$toast.success("vous etes connecté !")
             //window.location.assign(window.location.origin+"/dashboard/bailleurs")
-
           }else{
-            window.alert(response.message)
-          }
-          
-      })
+            this.$toast.success(response.message)
 
+            
+          }   
+      })
+      this.chargement(false)
       this.soumettre = true;
     },
 
     invisible () {
       this.statePassword = !this.show ? 'text' : 'password'
       this.show = !this.show;
+      //this.$toast.success('Profile saved',)
     },
   },
 
@@ -168,3 +184,18 @@ export default {
 
 }
 </script>
+<style scoped>
+  .animation {
+    animation: vibration infinite .3s;
+  }
+  @keyframes vibration {
+    to {
+      transform: rotate(0deg);
+      transition: all 0.3s ease-in-out;
+    }
+    from {
+      transform: rotate(3deg);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+</style>

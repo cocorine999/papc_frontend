@@ -1,6 +1,29 @@
 <template>
   <dashboard>
     <div class="w-full p-4">
+       <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
+        <div style="width:60vw" class="p-4">
+          <form @submit.prevent="saveProlongerDate(tacheId,dates)" action="">
+            <div class="form-group my-2">
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
+            </div>
+            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+              <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                enregistrer
+              </span>
+              <span v-else class="flex items-center space-x-2">
+                <span class="text-xs px-4 font-semibold ">
+                  envoi ...
+                </span>
+                <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </span>
+              </button>
+          </form>
+        </div>
+      </vmodal>
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
             <div class="p-4 overflow-auto">
@@ -46,10 +69,9 @@
                   details
                 </div>
               </div>
-              <div  class="absolute bottom-2 right-2 ">
-                <div class="uppercase text-sm flex items-center rounded-2xl space-x-3 bg-white text-primary px-4 py-3 font-bold">
-                  <span @click.stop="modifierProjet(projet)" title="modifier un projet" class="text-blue-500 cursor-pointer"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
-                  <span @click.stop="supprimerProjet(projet)" title="supprimer un projet"  class="text-red-500 cursor-pointer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M292.7 840h438.6l24.2-512h-487z"></path><path d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"></path></svg></span>
+              <div  class="absolute top-2 left-2 ">
+                <div class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
+                  <dropdown @supprimer="supprimerProjet(projet)" @modifier="modifierProjet(projet)"  @prolonger="prolonger(projet)" :option="option"></dropdown>
                 </div>
               </div>
             </div>
@@ -94,7 +116,7 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-
+import Dropdown from '@/components/Dropdown.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
 import { extractFormData } from '@/utils/index'
@@ -108,20 +130,23 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    Dropdown
   },
   data() {
     return {
       showModal:false,
       line:false,
+      dates: {fin:''},
       submitText:"Enregistrer",
       cols:1,
       mosaique:true,
       programmeId: this.currentUser?.programme?.id,
+      showProlonger:false,
+      projetId:'',
       title: '',
-      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'poids', 'bailleurId'],
+      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'bailleurId'],
       champs:[
         {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true,},
@@ -136,10 +161,10 @@ export default {
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
      
-      option:[
-        {name:'supprimer'},
-        {name:'modifier'},
-        {name:'dupliquer'},
+     option: [
+        { name: "supprimer" },
+        { name: "modifier" },
+        { name: "prolonger" },
       ],
     }
     
@@ -164,6 +189,13 @@ export default {
   },
 
   methods: {
+    prolonger(projet) {
+      this.projetId = projet.id
+      this.showProlonger = true
+    },
+    saveProlongerDate(id,data) {
+    
+    },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
