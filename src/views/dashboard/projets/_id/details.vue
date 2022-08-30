@@ -35,7 +35,7 @@
               </svg>
             </li>
             <li class="flex items-center text-blue-500">
-              <router-link to="/dashboard/projets" class="">id projet</router-link>
+              <router-link to="/dashboard/projets" class="">projet</router-link>
             </li>
           </ol>
         </div>
@@ -75,15 +75,15 @@
 
       <!-- partie description et budgetaire  -->
       <div class="stat gap-2 mb-6 mt-8">
-        <description></description>
-        <budgetaire></budgetaire>
+        <description :projet="projet"></description>
+        <budgetaire :projet="projet"></budgetaire>
       </div>
       <!-- fin partie description et budgetaire -->
 
       <!--  graphe et indicateurs -->
       <div class="stat2 my-6 gap-2 ">
         <graphes></graphes>
-        <indicateurs></indicateurs>
+        <indicateurs :suivis_indicateurs="projet.suivis_indicateurs"></indicateurs>
       </div>
 
       <!-- graphe et indicateurss -->
@@ -140,6 +140,29 @@ export default {
     Indicateurs,
     Environnement,
     OtherGraphe
+  },
+  data() {
+    return {
+      showModal:false,
+      projet: null
+    }
+  },
+
+  computed:{
+
+  },
+
+  methods: {
+    
+    ...mapActions('projets', {
+      detailsProjet: "GET_DETAILS_PROJET"
+    }),
+  },
+
+  created() {
+    this.detailsProjet(this.$route.params.id).then((response) => {
+      this.projet = response.data.data
+    })
   },
 };
 

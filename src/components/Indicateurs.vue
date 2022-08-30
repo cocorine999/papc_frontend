@@ -31,13 +31,15 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="i in 15" :key="i" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <hover-ligne code="5555" libelle="lorem ipsum dolor"></hover-ligne>
+                      <tr v-for="(suivis_indicateur, index) in suivis_indicateurs" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <hover-ligne :code="suivis_indicateur.indicateur.nom" :libelle="suivis_indicateur.commentaire"></hover-ligne>
                         <td class="py-4 px-6">
-                            1000
+                            {{ suivis_indicateur.valeurCible.valeurCible[0] }}
                         </td>
                         <td class="py-4 px-6">
-                          <span > {{i *5}} </span>
+                          <span> 
+                            {{ suivis_indicateur.valeurRealise[0] }} 
+                          </span>
                         </td>
                       </tr>
                       
@@ -52,7 +54,13 @@
 <script>
 import HoverLigne from "@/components/HoverLigne";
 export default {
-  components:{HoverLigne}
+  components:{HoverLigne},
+  props: ['suivis_indicateurs'],
+  data() {
+    return {
+      
+    };
+  },
 }
 </script>
 
