@@ -107,7 +107,7 @@ export default {
 
     if(this.currentUser.nom != undefined)
       nom = this.currentUser.nom
-
+    
     if(this.currentUser.prenom != undefined)
       nom += this.currentUser.prenom
 

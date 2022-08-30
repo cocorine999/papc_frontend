@@ -878,12 +878,24 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   name: "sidebar",
   computed: {
-    ...mapState(["sideBarOpen"]),
+    ...mapState(['sideBarOpen']),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
+  data() {
+    return {
+      currentRole:''
+    }
+  },
+  mounted() {
+     if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.role[0].nom
+        console.log("role courant",this.currentRole)
+     }
+  }
 };
 </script>
 
