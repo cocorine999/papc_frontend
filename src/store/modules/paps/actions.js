@@ -52,6 +52,15 @@ export default {
 
     },
 
+    async IMPORTATION_PAP ({ commit }, payload) {
+        
+        const { data, status } = await PapService.importCSV(payload);
+
+        return { data, status };
+
+    },
+
+
     async UPDATE_PAP ({ commit }, {pap, id}) {
         
         const { data, status } = await PapService.update(id, pap);
