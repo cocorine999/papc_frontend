@@ -20,6 +20,113 @@
       <div class="flex space-x-4">
         <span  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Checklist </span>
       </div>
+      <vue-html2pdf
+        :show-layout="false"
+        :float-layout="true"
+        :enable-download="true"
+        :preview-modal="true"
+        :paginate-elements-by-height="1400"
+        :filename="title_pdf()"
+        :pdf-quality="2"
+        :manual-pagination="false"
+        pdf-format="a4"
+        pdf-orientation="landscape"
+        pdf-content-width="800px"
+ 
+        @progress="onProgress($event)"
+        @hasStartedGeneration="hasStartedGeneration()"
+        @hasGenerated="hasGenerated($event)"
+        ref="html2Pdf"
+    >
+        <section slot="pdf-content">
+            <!-- PDF Content Here -->
+            <div v-if="seeChecklist"  >
+      <div class="mt-4 mb-6 flex space-x-4 items-center">
+        <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
+      </div>
+      
+      <div class="grid grid-cols-4 w-3/4 mb-4">
+        <div class="">
+          <ul>
+            <li class="text-base font-bold py-2">Entreprise</li>
+            <li class="text-base font-bold py-2">Enquêté</li>
+            <li class="text-base font-bold py-2">Post enquêté</li>
+            <li class="text-base font-bold py-2">Contact enquité</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li class="text-base  py-2">: {{entete.entete.entreprise}}</li>
+            <li class="text-base  py-2">: {{entete.entete.responsable}}</li>
+            <li class="text-base  py-2">: {{entete.entete.poste}}</li>
+            <li class="text-base  py-2">: {{entete.entete.contact}}</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li class="text-base font-bold py-2">Bailleur</li>
+            <li class="text-base font-bold py-2">Site</li>
+            <li class="text-base font-bold py-2">Missionaire</li>
+            <li class="text-base font-bold py-2">Numero</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li class="text-base  py-2">: {{entete.entete.bailleur}}</li>
+            <li class="text-base  py-2">: {{entete.entete.site}}</li>
+            <li class="text-base  py-2">: {{entete.entete.missionaire}}</li>
+            <li class="text-base  py-2">: {{entete.entete.numero}}</li>
+          </ul>
+        </div>
+      </div>
+       <!-- fin En tete de la checklist-->
+      <div class=" overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="border-b bg-gray-300">
+            <tr>
+              <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
+              <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
+  
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr  class="border-b border-gray-300" v-for="(activites ,index) in formulaire" :key="index">
+                
+                <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                  <span class="font-bold">{{activites.activite.nom}}</span>
+                  <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                     <span class="font-bold">-</span> {{data.nom}}
+                    </td>
+                  </tr>
+                </td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                 <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                     {{data.content}}
+                    </td>
+                  </tr>
+                </td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                  <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      vide
+                    </td>
+                  </tr>
+                </td>                 
+            </tr>              
+          </tbody>
+        </table>
+      </div>
+    </div>
+        </section>
+    </vue-html2pdf>
+    <button  title="exporter en excel" @click="generateReport()"    class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+            <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+            <span class="mx-2 text-sm font-semibold">Export Pdf</span>
+    </button>
       <button v-if="seeChecklist" @click="goForm" title="Voir le formulaire" class="bg-blue-500 text-white px-3 py-1 text-center">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="1.3em" height="1.3em" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
       </button>
@@ -128,6 +235,7 @@
   import Vtable from '@/components/Vtable'
   import Vform from '@/components/Vform'
   import Vbutton from '@/components/Vbutton'
+  import VueHtml2pdf from 'vue-html2pdf'
   import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   components: {
@@ -136,6 +244,7 @@ export default {
     Vtable,
     Vform,
     Vbutton,
+    VueHtml2pdf
    
   },
   data() {
@@ -153,68 +262,7 @@ export default {
           {name:'Date fin',props:'fin'},
           {name:'Date de creation',props:'created_at'},
       ],
-      checklists:[
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PGESC",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "Plaquette validée et/ou notification de la validation",
-                "content": null
-              }
-            ]
-          },
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PAE",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "PAE approuvé",
-                "content": null
-              }
-            ]
-          },
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PPGED",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "PPGED approuvé",
-                "content": null
-              }
-            ]
-          },
-          {
-            "activite": "Preparer et faire valider par le Mo et MOD un PPSPS",
-            "data": [
-              {
-                "type": "edit",
-                "label": "Date de validation",
-                "content": null
-              },
-              {
-                "type": "edit",
-                "label": "PPSPS approuvé",
-                "content": null
-              }
-            ]
-          },
-      ],
+      
       actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
@@ -275,6 +323,9 @@ export default {
     ...mapActions("formulaires", {
       getSuivi: "GET_SUIVI",
     }),
+    generateReport () {
+      this.$refs.html2Pdf.generatePdf()
+    },
     addActivite() {
       this.title = 'Creer une activité'
       this.showModal = true
@@ -290,6 +341,9 @@ export default {
     selectData ({ name}) {
       return `${name}`
     },
+    title_pdf() {
+        return "checklist-" +"-" + new Date()
+      },
     filtre(){
       if(this.valueFiltre != null)
       {
