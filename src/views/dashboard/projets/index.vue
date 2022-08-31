@@ -3,7 +3,7 @@
     <div class="w-full p-4">
        <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
         <div style="width:60vw" class="p-4">
-          <form @submit.prevent="saveProlongerDate(tacheId,dates)" action="">
+          <form @submit.prevent="saveProlongerDate()" action="">
             <div class="form-group my-2">
                 <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
@@ -153,6 +153,7 @@ export default {
       mosaique:true,
       programmeId: this.currentUser?.programme?.id,
       showProlonger:false,
+      chargement: false,
       projetId:'',
       title: '',
       search:"",
@@ -202,11 +203,29 @@ export default {
 
   methods: {
     prolonger(projet) {
+      console.log(projet);
       this.projetId = projet.id
       this.showProlonger = true
     },
-    saveProlongerDate(id,data) {
-    
+
+    saveProlongerDate() {
+  
+      this.chargement = true
+      
+      this.prolongerDateProjet({projet: this.dates, id : this.projetId}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.showProlonger = false;
+
+            this.fetchProjets(this.programmeId);
+          }
+
+        }).catch((error) => {
+          alert(error.response?.data?.errors['fin']);
+        })
+
+      this.chargement = false  
     },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
@@ -217,6 +236,7 @@ export default {
     ...mapActions('projets', {
       fetchProjets: "FETCH_LIST_PROJET_OF_PROGRAMME",
       saveProjet: "STORE_PROJET",
+      prolongerDateProjet: "PROLONGER_DATE_PROJET",
       updateProjet: "UPDATE_PROJET",
       deleteProjet: "DESTROY_PROJET"
     }),

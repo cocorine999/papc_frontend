@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="px-4">
+    <div v-if="uniteDeGestionVisible" class="px-4">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -32,13 +32,14 @@
       </div>
       <div class="flex items-center justify-between">
         <titre>Unites de gestions </titre>
-          <button @click="addUnite" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <button v-if="uniteDeGestionAdd" @click="addUnite" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">ajouter</span>
           </button>
       </div>
       <div  id="dataTable">
-        <vtable :headers="headers" :datas="uniteeDeGestions" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+        <vtable v-if="actions != undefined && uniteDeGestionDelete" :headers="headers" :datas="uniteeDeGestions" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+        <vtable v-else :headers="headers" :datas="uniteeDeGestions"  @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
       </div>
     </div>
   </dashboard>
@@ -52,7 +53,7 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-
+import PermissionsService from "@/services/modules/permission.service.js";
 import { mapActions, mapMutations, mapGetters} from "vuex";
 import extractFormData from '@/utils/extract-data'
 
@@ -71,6 +72,10 @@ import extractFormData from '@/utils/extract-data'
           uniteeDeGestionAttributs : ['nom', 'email', 'contact', 'programmeId'],
           showModal:false,
           title:'',
+          uniteDeGestionVisible:false,
+          uniteDeGestionAdd:false,
+          uniteDeGestionDelete:false,
+          uniteDeGestionUpdate:false,
           champs:[
           {name:'Nom', key: 'nom', type:'text', placeholdere:"Nom de  l'unité de gestion", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
           {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
@@ -86,9 +91,9 @@ import extractFormData from '@/utils/extract-data'
           {name:'Date de creation', cle:'created_at', edit : false},
 
         ],
-        actions:[
+       actions:[
           {name:'supprimer',iconne:''},
-        ]
+        ] 
       };
     },
   
@@ -102,7 +107,8 @@ import extractFormData from '@/utils/extract-data'
         uniteeDeGestion: "uniteeDeGestions/getUniteeDeGestion",
         uniteeDeGestions: "uniteeDeGestions/getUniteeDeGestions",
         programmes: "programmes/getProgrammes"
-      })
+      }),
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
 
     methods: {
@@ -120,6 +126,30 @@ import extractFormData from '@/utils/extract-data'
       }),
 
       ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
+
+      getPermission() {
+        PermissionsService.get().then((data) => {
+          this.permissions = data.data.data
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-programme') {
+              this.uniteDeGestionVisible = true
+            }
+            if(element.slug === 'creer-un-programme') {
+              this.uniteDeGestionAdd = true
+            }
+            if(element.slug === 'modifier-un-programme') {
+              this.uniteDeGestionUpdate = true
+            }
+            if(element.slug ==='supprimer-un-programme') {
+              this.uniteDeGestionDelete = true
+            }
+           
+          });
+
+        }).catch((e) => {
+          console.log(e)
+        })
+      },
     
       addUnite() {
         this.title='Ajouter une unité de gestion'
@@ -225,6 +255,7 @@ import extractFormData from '@/utils/extract-data'
         setTimeout(() => {
           console.log("Fetching list of programmes...")
           this.fetchProgrammes()
+          this.getPermission()
         }, 100);
       })
     }

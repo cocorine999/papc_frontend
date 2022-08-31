@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/2 md:w-1/3 lg:w-64 fixed md:top-0  md:left-0 h-screen scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter _scrollbar-w-2 _scrolling-touch  o lg:block bg-primary z-30 no-scrollbar overflow-y-auto" :class="sideBarOpen ? '' : 'hidden'" id="main-nav">
+  <div v-if="currentRole=='mod'" class="w-1/2 md:w-1/3 lg:w-64 fixed md:top-0  md:left-0 h-screen scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter _scrollbar-w-2 _scrolling-touch  o lg:block bg-primary z-30 no-scrollbar overflow-y-auto" :class="sideBarOpen ? '' : 'hidden'" id="main-nav">
     <div class="w-full h-20  flex px-4 items-center mb-8">
       <p class="font-semibold text-3xl text-blue-400 pl-4">PAPC</p>
     </div>
@@ -64,11 +64,22 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   name: "sidebar",
+    data() {
+      return {
+        currentRole:''
+      }
+    },
     computed: {
-      ...mapState(['sideBarOpen'])
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    },
+    mounted() {
+      if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.role[0].nom
+        console.log("role courant",this.currentUser)
+      }
     }
 }
 </script>

@@ -36,6 +36,22 @@ export default {
         return { data };
     },   
     
+    GET_DETAILS_PROJET : async ({ commit }, id) => {
+
+        const { data } = await ProjetService.statistiques(id);
+
+        return { data };
+    },   
+    
+    
+    async PROLONGER_DATE_PROJET ({ commit }, {projet, id}) {
+
+        console.log(projet, id)
+        const { data, status } = await ProjetService.prolonger(id, projet);
+
+        return { data, status };
+    },
+    
     FETCH_LIST_PROJET_OF_PROGRAMME : async ({ commit }, id) => {
 
         const { data, status } = await ProgrammeService.projets(id);
