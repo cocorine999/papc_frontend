@@ -40,7 +40,7 @@
     >
         <section slot="pdf-content">
             <!-- PDF Content Here -->
-            <div v-if="seeChecklist"  >
+            <div class="m-12" >
       <div class="mt-4 mb-6 flex space-x-4 items-center">
         <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
       </div>
