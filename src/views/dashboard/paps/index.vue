@@ -23,6 +23,18 @@
           </li>
         </ol>
       </div> 
+      <div class="flex justify-center w-full text-gray-600">
+              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" class="relative  right-10 ">
+              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                    width="512px" height="512px">
+                 <path
+                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+              </svg>
+             </button>
+           </div>
     </nav>
 
     <div class="flex items-center justify-between my-2">
@@ -36,7 +48,7 @@
       </button>
     </div>
     
-     <vtable :headers="headers" :datas="paps" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+     <vtable :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     
   </div>
   </dashboard>
@@ -72,29 +84,47 @@ export default {
       loading:false,
       showInput:true,
       title:'',
-      papAttributs : ['nom', 'prenoms', 'longitude', 'latitude', 'dateDePaiement', 'contact', 'bailleurId', 'montant'],
+      sexe: [
+        {
+          sigle: 'M',
+          nom: 'Masculin'
+        },
+        {
+          sigle: 'F',
+          nom: 'Feminin'
+        }
+      ],
+      search:'',
+      papAttributs : ['nom', 'rue', 'longitude', 'latitude', 'sexe', 'contact', 'siteId', 'montant', 'payer', 'referencePieceIdentite', 'statut', 'modeDePaiement'],
       champs:[
-        {name:' Nom ', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Prenoms ', key:'prenoms',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Montant', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-
-        {name:'Date de paiement', key:'dateDePaiement',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' N° Rue', key:'rue',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Longitude', key:'longitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Latitude', key:'latitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Site', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
+        {name:' Nom et prenoms', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Sexe', key:'sexe',type:'',placeholdere:"Selectionnez le sexe",isSelect:true,isTextArea:false,data:'',options:this.sexe, cle: 'sigle', value: 'nom',required:true,errors : []},
         {name:' Contact ', key:'contact',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Bailleur', key:'bailleurId',type:'',placeholdere:"Selectionnez un bailleur",isSelect:true,isTextArea:false,data:'',options:this.bailleurs, cle: 'id', value: 'sigle',required:true,errors : []},
+        {name:'Référence Pièces identité', key:'referencePieceIdentite',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Statut', key:'statut',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Mode de paiement', key:'modeDePaiement',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Indeminisation', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Transféré', key:'payer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        
       ],
       cols:2,
       headers:[
-        {name:'Nom',cle:'nom'},
-        {name:'Prenoms',cle:'prenoms'},
+        {name:'N° Rue',cle:'rue'},
         {name:'Longitude',cle:'longitude'},
         {name:'Latitude',cle:'latitude'},
-        {name:'Montant(Fcfa)',cle:'montant'},
-        {name:'Date de paiement',cle:'dateDePaiement'},
+        {name:'Site',cle:'site'},
+        {name:'Nom et prenom',cle:'nom'},
+        {name:'Sexe',cle:'sexe'},
         {name:'Contact',cle:'contact'},
-        {name:'Bailleur',cle:'bailleur'},
-        {name:'Date de création',cle:'dateDeCreation'},
+        {name:'Reference Pieèce Identite',cle:'referencePieceIdentite'},
+        {name:'Statut',cle:'statut'},
+        {name:'Mode de paiement',cle:'modeDePaiement'},
+        {name:'Indeminisation',cle:'montant'},
+        {name:'Transféré',cle:'payer'},
       ],
       actions:[
         {name:'supprimer',iconne:''},
@@ -116,7 +146,7 @@ export default {
     ...mapGetters({
       paps: "paps/getPaps", 
       pap: "paps/getPap",
-      bailleurs: "bailleurs/getBailleurs",
+      sites: "sites/getSites",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     })
     
@@ -136,7 +166,7 @@ export default {
       deletePap: "DESTROY_PAP"
     }),
 
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE' }),
 
     addAno() {
       this.title = 'Ajouter un element'
@@ -158,9 +188,14 @@ export default {
       this.title='Ajouter un nouveau pap'
 
       let formData = this.champs.map((value) => {
-          if(value.key === 'bailleurId'){ 
-            value['options'] = this.bailleurs
+          if(value.key === 'siteId'){ 
+            value['options'] = this.sites
           }
+
+          else if(value.key === 'sexe'){ 
+            value['options'] = this.sexe
+          }
+
 
           return value
         })
@@ -169,6 +204,16 @@ export default {
 
       this.showCloseModal(true)
     },
+
+    filteredPap(){
+        var self = this;
+
+        return this.paps.sinistres.filter(function (pap){
+          return pap.site.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 pap.sexe.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 pap.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+      },
 
     async supprimer(pap) {
       if(window.confirm("Voulez-vous supprimer ce pap " + pap.nom + ' '+ pap.prenoms))
@@ -210,7 +255,9 @@ export default {
 
       pap.programmeId = this.currentUser?.programme?.id
 
-      pap.bailleurId = pap.bailleurId.id
+      pap.siteId = pap.siteId.id
+
+      pap.sexe = pap.sexe.sigle
 
       console.log(pap)
       
@@ -264,14 +311,11 @@ export default {
     console.log("Fetching paps ...")
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
-          console.log("Fetching list of bailleurs...")
-          this.fetchBailleurs()
+          console.log("Fetching list of sites...")
+          this.fetchSites(this.currentUser?.programme?.id)
         }, 500);
     })
   }
 }
 </script>
 
-<style>
-
-</style>

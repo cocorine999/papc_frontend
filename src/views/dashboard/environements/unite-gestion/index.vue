@@ -86,8 +86,18 @@
           </ol>
         </div>
         <div>
-          <search-bar></search-bar>
-        </div>
+          <div class="flex justify-center w-full text-gray-600">
+              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" class="relative  right-10 ">
+              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                    width="512px" height="512px">
+                 <path
+                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+              </svg>
+             </button>
+           </div>        </div>
       </nav> 
 
       <div class="flex items-center justify-between my-2">
@@ -110,14 +120,14 @@
       </div>
 
       <div v-if="seeEntreprise" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(entreprise,index) in entreprises" :key="index">
+        <div v-for="(entreprise,index) in filteredEntreprise()" :key="index">
           <div @click="gotoNext(entreprise.id)" class="relative cursor-pointer">
              
             <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
               <span  class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p> </p></span>
               <span  class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{entreprise.nom}}</span>
               
-              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">Entreprise {{index}}</p>
+              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"> {{entreprise.user.nom}}</p>
         
               <div class="flex items-center mt-8 text-gray-600">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
@@ -145,11 +155,11 @@
         </div>
       </div>
       <div v-if="seeActivite">
-        <vtable :headers="headers" :datas="eActivites" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
+        <vtable :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
-          <div v-for="formulaire in formulaires" :key="formulaire.id">
+          <div v-for="formulaire in filteredFormulaire()" :key="formulaire.id">
             <card-checklist
               :libelle=formulaire.nom
               :activite=formulaire.auteur
@@ -211,6 +221,7 @@ export default {
           {name:'Date fin',cle:'fin'},
           {name:'Date de creation',cle:'created_at'},
       ],
+      search:'',
 
       actions:[
         {name:'supprimer',iconne:''},
@@ -290,6 +301,34 @@ export default {
     ...mapActions("entreprisesExecutante", {
       fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
     }),
+
+    filteredEntreprise(){
+        var self = this;
+
+        return this.entreprises.filter(function (entreprise){
+          return entreprise.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+      },
+
+      filteredEActivite(){
+        var self = this;
+
+        return this.eActivites.filter(function (eActivtie){
+          return eActivtie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 eActivtie.entreprise.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 eActivtie.code.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+      },
+
+      filteredFormulaire(){
+        var self = this;
+
+        return this.formulaires.filter(function (formulaire){
+          return formulaire.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+      },
 
     addTag (newTag) {
       const tag = {
