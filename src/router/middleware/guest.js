@@ -1,10 +1,9 @@
-export default function guest ({ next, store }){
+import router from "../../router";
+
+export default function guest ({ next, store,from }){
     
     if(store.getters['auths/GET_ACCESS_TOKEN']){
-        return next({
-            name: 'projets'
-        })
+        return router.back()
     }
-
     return next()
 }
