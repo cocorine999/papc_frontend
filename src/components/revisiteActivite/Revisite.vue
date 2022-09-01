@@ -1,66 +1,5 @@
 <template>
   <div class="w-full px-4">
-      <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
-        <div style="width:60vw" class="p-4">
-          <form @submit.prevent="saveProlongerDate(activiteId,dates)" action="">
-            
-            <div  class="grid grid-cols-2 gap-2 my-2">
-              <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <input v-model="dates.debut" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
-              </div>
-              <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
-              </div>
-            </div>
-            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-              <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                enregistrer
-              </span>
-              <span v-else class="flex items-center space-x-2">
-                <span class="text-xs px-4 font-semibold ">
-                  envoi ...
-                </span>
-                <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </span>
-              </button>
-          </form>
-        </div>
-      </vmodal>
-
-      <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <div class="p-4 overflow-auto">
-          <vform
-            template="default"
-            :champs="champs"
-            :cols="cols"
-            :submitText="submitText"
-            :sendRequest="sendRequest"
-            @sendForm="sendForm"
-            @closeModal="close"
-          ></vform>
-        </div>
-       
-      </modal-top-right>
-
-
-      <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
-        <div class="p-4 overflow-auto">
-          <vform
-            template="default"
-            :champs="champs2"
-            :cols="cols"
-            :submitText="submitText"
-            :sendRequest="sendRequest"
-            @sendForm="savePlanDecaissement"
-            @closeModal="close2"
-          ></vform>
-        </div>
-       
-      </modal-top-right>
 
       <nav
         class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
@@ -135,48 +74,6 @@
           </span>
         </div>
 
-        <button
-          v-if="seeActivite"
-          @click="addActivite"
-          title="ajouter une activite"
-          class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
-        >
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
-            >
-              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
-          ></span>
-          <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
-        </button>
-        <button
-          v-if="seePlan"
-          @click="addPlan"
-          title="ajouter un plan d'ecaissement"
-          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
-        >
-          <span
-            ><svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 24 24"
-              height="1.3em"
-              width="1.3em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path fill="none" d="M0 0h24v24H0V0z"></path>
-              <path
-                d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
-              ></path></svg
-          ></span>
-          <span class="mx-2 text-sm font-semibold"
-            >ajouter un plan de décaissement</span
-          >
-        </button>
       </div>
 
       <div v-if="seeActivite">
@@ -293,11 +190,6 @@
               :fin="activite.fin"
               :statut="getStatus(activite.statut)"
               :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-              @modifier="modifier(activite)"
-              @supprimer="supprimer(activite)"
-              @prolonger="prolonger(activite)"
-              @validation="validation(activite)"
-              @suivre="suivreMyActivite(activite)"
             ></card-activite>
             <!-- End cards Activités -->
           </div>
@@ -305,11 +197,11 @@
       </div>
 
       <div v-if="seePlan">
-        <plan></plan>
+        <plan :results="results"></plan>
       </div>
 
       <div v-if="seeSuivi">
-        <suivi></suivi>
+        <suivi :suivis="results.suivis"></suivi>
       </div>
 
       <div v-if="seeStatistique">
@@ -333,12 +225,10 @@ import Plan from "@/components/revisiteActivite/Plan.vue";
 import Suivi from "@/components/revisiteActivite/Suivi.vue";
 import Statistiques from "@/components/revisiteActivite/Statistiques.vue";
 import Dashboard from "@/layouts/Dashboard";
-import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
-import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import { getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
 import Activite from '@/store/modules/activites/activite';
-import moment from 'moment'
-import ActiviteService from "@/services/modules/activite.service.js";
 
 export default {
   components: {
@@ -351,12 +241,13 @@ export default {
     Multiselect,
     Dropdown,
     CardActivite,
-   
     Vform,
     Plan,
     Suivi,
     Statistiques,
   },
+
+  props:['version'],
   data() {
     return {
       suivis:[],
@@ -372,28 +263,21 @@ export default {
       programmeId: this.currentUser?.programme.id,
       cols: 1,
       sendRequest: false,
-      submitText: "Enregistrer",
       rangeValue: 0,
       showFiltre: false,
-      showProlonger:false,
       chargement:false,
-      activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'poids'],
-      dates:{debut:'',fin:''},
-     
-      champs:[
-        {name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Type', key: "types", type: '', placeholdere: 'Selectionnez le type d\'activite', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.types, cle: 'type', value: 'nom',  errors : []},
-        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data:'', required: true, options: this.entreprisesExecutante, cle: 'id', value: 'nom',  errors : []},
-        {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.mods, cle: 'id', value: 'nom',  errors : []},
-        {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-      ],
-      showModal: false,
+      projets: [],
+      composantes: [],
+      sousComposantes: [],
+      activites: [],
+      taches: [],
+      suivis: [],
+      results: [],
+      planDeDecaissements: [],
+      
+      dates:{debut: '', fin: ''},
+    
+      showModal2: false,
       line: false,
       mosaique: true,
       showInput: true,
@@ -417,22 +301,14 @@ export default {
 
   computed: {
     //importation des variables du module activites
-    ...mapState({
-      activite: (state) => state.activites.activite,
-      loading: (state) => state.loading,
-      errors: (state) => state.errors,
-    }),
 
-    ...mapGetters({
-      mods: "mods/getMods",
+    ...mapGetters({/*
       projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposantes: "sousComposantes/getSousComposantes",
-      entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       activites: "activites/getActivites",
-      activite: "activites/getActivite",
       planDeDecaissements: "planDeDecaissements/getPlanDeDecaissements",
-      planDeDecaissement: "planDeDecaissements/getPlanDeDecaissement",
+      */
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
   },
@@ -440,51 +316,29 @@ export default {
   methods: {
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
-      setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setPlanDeDecaissement: "planDeDecaissements/FILL", // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setPlanDeDecaissements: "planDeDecaissements/SET_LIST_PLAN_DE_DECAISSEMENT",
-      setActivite: "activites/FILL", // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setActivites: "activites/SET_LIST_ACTIVITES",
       setComposantes: 'composantes/SET_LIST_COMPOSANTES',
       setSousComposantes: 'sousComposantes/SET_LIST_SOUSCOMPOSANTE'
     }),
 
     ...mapActions("activites", {
-      fetchActivites: "FETCH_LIST_ACTIVITE_OF_COMPOSANTE",
-      saveActivite: "STORE_ACTIVITE",
-      updateActivite: "UPDATE_ACTIVITE",
-      deleteActivite: "DESTROY_ACTIVITE",
+      fetchActivites: "FETCH_LIST_ACTIVITE_OF_COMPOSANTE"
     }),
 
     ...mapActions("planDeDecaissements", {
-      fetchPlanDeDecaissements: "FETCH_LIST_PLAN_DE_DECAISSEMENT_ACTIVITE",
-      savePlanDeDecaissement: "STORE_PLAN_DE_DECAISSEMENT",
-      updatePlanDeDecaissement: "UPDATE_PLAN_DE_DECAISSEMENT",
-      deletePlanDeDecaissement: "DESTROY_PLAN_DE_DECAISSEMENT",
+      fetchPlanDeDecaissements: "FETCH_LIST_PLAN_DE_DECAISSEMENT_ACTIVITE"
     }),
 
     ...mapActions({
-      fetchMods: "mods/FETCH_LIST_MOD_OF_PROGRAMME",
-      fetchEntreprisesExecutante: "entreprisesExecutante/FETCH_LIST_ENTREPRISE_EXECUTANTE_OF_PROGRAMME",
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
+      getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
     }),
 
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
-    },
-
-    saveProlongerDate(id,data) {
-      this.chargement = true
-      ActiviteService.addDate(id,data).then((data) => {
-        alert('envoyer')
-      }).catch((e) => {
-        console.log(e)
-      })
-
-      this.chargement = false  
-     
     },
 
     suivreMyActivite(activite) {
@@ -524,18 +378,6 @@ export default {
       this.seeStatistique = false;
     },
 
-    
-   
-    addActivite() {
-
-      this.title ="Ajouter une activité"
-
-      this.submitText="Enregistrer",
-
-      this.showCloseModal(true)
-
-    },
-
     getNom(nom, prenom) {
 
       let name = ''
@@ -547,157 +389,8 @@ export default {
       return name;
     },
 
-    prolonger(activite) {
-      this.activiteId = activite.id
-      this.showProlonger = true
-    },
-
-    supprimer(activite) {
-      if(window.confirm("Voulez-vous supprimer l'activite " + activite.nom)){
-        if(this.sendRequest === false){
-          this.sendRequest = true;
-
-          this.deleteActivite(activite.id)
-            .then((value) => {
-              this.fetchActivites(this.composanteId);
-            })
-            .finally((value) => {
-              this.sendRequest = false;
-            });
-        }
-      }
-    },
-
-    modifier(activite) {
-
-      this.title = 'Modifier une activite'
-
-      this.setActivite(activite)
-
-      this.activiteAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-
-          if(value.key === item){
-            this.champs[index]['data'] = activite[item]
-          }
-
-        });
-
-      });
-
-      this.submitText = "Modifier",
-
-      this.showCloseModal(true)
-    },
-
-
-    editerSuivi() {
-      this.showInput = false;
-    },
-
-    toggle() {
-      this.pending = false;
-      this.rejected = false;
-      this.success = true;
-    },
-
-    toggle2() {
-      this.success = false;
-      this.rejected = false;
-      this.pending = true;
-    },
-
-    toggle3() {
-      this.pending = false;
-      this.success = false;
-      this.rejected = true;
-    },
-
     getStatus(status) {
       return getStringValueOfStatutCode(status);
-    },
-
-    validation(activite) {
-      if (this.sendRequest === false) {
-        this.sendRequest = true;
-
-        this.updateActivite({ activite: { statut: -1, composanteId: this.composanteId }, id: activite.id })
-          .then((value) => {              
-            this.fetchActivites(this.composanteId);
-          })
-          .finally((error) => {              
-            this.sendRequest = false;
-          });
-      }
-    },
-
-    sendForm() {
-      if (this.sendRequest === false) {
-        this.sendRequest = true;
-
-        this.champs = this.champs.map((item) => {
-          item.errors = [];
-          return item;
-        });
-
-        let activite = extractFormData(this.champs, this.activiteAttributs);
-
-        activite.composanteId = this.composanteId;
-
-        activite.structureResponsableId = activite.structureResponsableId.id;
-
-        activite.structureAssocieId = activite.structureAssocieId.id;
-
-        activite.userId = activite.structureAssocieId;
-
-        activite["type"] = activite.types.type;
-
-        if (this.activite?.id) {
-          this.updateActivite({ activite: activite, id: this.activite?.id })
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchActivites(this.composanteId);
-                this.close();
-              }
-            })
-            .finally((error) => {            
-              this.sendRequest = false;
-            });
-        } else {
-          this.saveActivite(activite)
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchActivites(this.composanteId);
-                this.close();
-              }
-            })
-            .finally((error) => {          
-              this.sendRequest = false;    
-            });
-        }
-      }
-    },
-
-    close() {
-      this.showCloseModal();
-
-      this.resetForm();
-
-      this.sendRequest = false;
-    },
-
-    resetForm(){
-
-      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
-      
-      window.document.getElementById('vform').reset()
-
-      this.setActivite({})
-    },
-    
-    showCloseModal(value = false) {
-      this.showModal = value;
     }
   },
 
@@ -708,86 +401,15 @@ export default {
 
     errors: function (errors) {
 
-      if(errors instanceof Object && errors.length === undefined){
-        if(this.seePlan){
-            this.champs2.forEach((value) => {
+    },
 
-              if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
-                if(value.key === "types"){
-                
-                  value.errors = errors["type"];
+    results: function(results){
+      this.projets = results['projets'];
 
-                }
-                else value.errors = errors[value.key];
-              }
-            });
-        }
-        else if(this.seeActivite){
-            this.champs.forEach((value) => {
-              if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
-               console.log("seeActivite boucle if ")
-                if(value.key === "types"){
-                  value.errors = errors["type"];
-                }
-                else{
-                  console.log(this.sendRequest)
-                  value.errors = errors[value.key];
-                }
-
-              }
-            });
-        }
-      }
-      else if(errors instanceof Array && errors.length === 0 ){
-        this.champs = this.champs.map(item => { item['errors'] = []; return item})
+      if(results['projets'].length > 0){
+        this.projetFiltre = results[0]
       }
     },
-
-    entreprisesExecutante: function (entreprisesExecutante) {
-
-      this.champs.map((item) => {
-
-        if (item.key === "structureResponsableId") {
-
-          item.options = entreprisesExecutante.map((entrepriseExecutante) => {
-
-            return {
-              id: entrepriseExecutante.user.id,
-              nom: entrepriseExecutante.user.nom,
-            };
-
-          });
-
-        }
-
-        return item;
-
-      });
-
-    },
-
-    mods: function (mods) {
-
-      this.champs.map((item) => {
-
-        if (item.key === "structureAssocieId") {
-
-          item.options = mods.map((mod) => {
-
-            return {
-              id: mod.user.id,
-              nom: mod.user.nom,
-            };
-
-          });
-
-        }
-
-        return item;
-        
-      });
-    },
-
 
     projets: function(projets){
       if(projets.length > 0){
@@ -799,13 +421,18 @@ export default {
 
       if( valeur instanceof Composante || valeur instanceof Object )
       {
-        this.fetchComposantes(valeur.id);
+        this.composantes = this.results['composantes'].filter((value) => {
+          if(value.projetId === valeur.id) return value;
+        })
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
-        this.fetchComposantes(valeur);
+
+        this.composantes = this.results['composantes'].filter((value) => {
+          if(value.projetId === valeur) return value;
+        })
       }
-      else{ 
-        this.setComposantes([])
+      else{
+        this.composantes = [];
       }
     },
     
@@ -822,22 +449,30 @@ export default {
 
       if( valeur instanceof Composante || valeur instanceof Object )
       {
-        this.fetchSousComposantes(valeur.id);
+        this.sousComposantes = this.results['sous-composantes'].filter((value) => {
+          if(value.composanteId === valeur.id) return value;
+        })
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
-        this.fetchSousComposantes(valeur);
+
+        this.sousComposantes = this.results['sous-composantes'].filter((value) => {
+          if(value.composanteId === valeur) return value;
+        })
       }
       else{ 
-        this.setSousComposantes([])
+        this.sousComposantes = [];
       }
     }, 
 
     sousComposantes: function (sousComposantes) {
-      if(sousComposantes.length > 0){ 
+      if(sousComposantes.length > 0){
         this.valueFiltre = sousComposantes[0];
       }
       else if(this.composanteFiltre !== null && typeof this.composanteFiltre !== 'undefined' && this.composanteFiltre.length !== 0  ){
-        this.fetchActivites(this.composanteFiltre.id);
+
+        this.activites = this.results['activites'].filter((value) => {
+          if(value.composanteId === this.composanteFiltre.id) return value;
+        })
         this.composanteId = this.composanteFiltre.id
         this.valueFiltre = null;
       }
@@ -849,12 +484,18 @@ export default {
     valueFiltre: function (valeur) {
       
       if (valeur instanceof Composante || valeur instanceof Object) {
-        this.fetchActivites(valeur.id);
+
+        this.activites = this.results['activites'].filter((value) => {
+          if(value.composanteId === valeur.id) return value;
+        })
         this.composanteId = valeur.id
       } 
 
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
-        this.fetchActivites(valeur);
+
+        this.activites = this.results['activites'].filter((value) => {
+          if(value.composanteId === valeur) return value;
+        })
         this.composanteId = valeur
       }
 
@@ -871,15 +512,22 @@ export default {
     activiteFiltre: function(valeur){
       if( valeur instanceof Activite || valeur instanceof Object )
       {
-        this.fetchPlanDeDecaissements(valeur.id);
+
+        this.planDeDecaissements = this.results['planDeDecaissements'].filter((value) => {
+          if(value.activiteId === valeur.id) return value;
+        })
+
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
-        this.fetchPlanDeDecaissements(valeur);
+
+        this.planDeDecaissements = this.results['planDeDecaissements'].filter((value) => {
+          if(value.activiteId === valeur) return value;
+        })
       }
-      else{ 
-        this.setPlanDeDecaissements([])
+      else{
+        this.planDeDecaissements = [];
       }
-    }, 
+    },
 
     seePlan: function(valeur){
       if(this.activites.length > 0){
@@ -890,18 +538,28 @@ export default {
   },
 
   created() {
-  
-    this.programmeId = this.currentUser.programme.id
 
-    if(this.programmeId){
-      Promise.all([this.fetchProjets(this.programmeId) ]).then((value) => {
-  
-          this.fetchMods(this.programmeId)
+    const params = {
+      "version": this.version,
+      "composantes": null,
+      "sous-composantes": null,
+      "activites": null,
+      "taches": null
+    };
 
-          this.fetchEntreprisesExecutante(this.programmeId)
-      });
-    }
+    this.getPtabReviser(params).then((value) => {
+      this.results = value.data.data
 
+      console.log(this.results);
+    })
+
+
+    /* this.projets = value.data.data.projets
+      this.composantes = value.data.data.composantes
+      this.sousComposantes = value.data.data['sous-composantes']
+      this.activites = value.data.data.activites
+      this.taches = value.data.data.taches
+      this.suivis = value.data.data.suivis */
   }
 
 };
