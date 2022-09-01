@@ -169,8 +169,7 @@ export default {
         var self = this;
 
         return this.suivis.filter(function (suivi){
-          return suivi.trimestre.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 suivi.indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+          return suivi.indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },
       title_csv() {
@@ -192,36 +191,6 @@ export default {
         });
         return tab;
       },
-    sendForm() {
-      this.champs = this.champs.map((item) => {
-        item.errors = [];
-        return item;
-      });
-
-      let suivi = extractFormData(this.champs,this.suiviAttributes);
-      suivi.trimestre = suivi.trimestre.id
-      suivi.indicateurId = suivi.indicateurId.id
-      suivi.valeurCible = [suivi.valeurCible]
-      suivi.valeurRealise = [suivi.valeurRealise]
-    
-     
-
-      if (this.suivi?.id) {
-        this.updateSuivi({ suivi: suivi, id: this.suivi?.id }).then(
-          (response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-            }
-          }
-        );
-      } else {
-        this.saveSuivi(suivi).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            this.close();
-          }
-        });
-      }
-    },
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})

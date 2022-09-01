@@ -17,6 +17,10 @@ const IndicateursService = {
       return ApiService.post("indicateurs", params);
     },
 
+    filtre(params) {
+      return ApiService.post("indicateurs/filtres", params);
+    },
+
     update(slug, params) {
       return ApiService.update("indicateurs", slug, params);
     },
