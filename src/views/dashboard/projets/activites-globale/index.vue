@@ -3,7 +3,7 @@
     <div class="w-full px-4">
       <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
         <div style="width:60vw" class="p-4">
-          <form @submit.prevent="saveProlongerDate(activiteId,dates)" action="">
+          <form @submit.prevent="saveProlongerDate()" action="">
             
             <div  class="grid grid-cols-2 gap-2 my-2">
               <div class="form-group my-2">
@@ -512,7 +512,7 @@ export default {
       showProlonger:false,
       chargement:false,
       activiteAttributs : ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'poids'],
-      dates:{debut:'',fin:''},
+      dates: { debut: '', fin: ''},
       planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
       champs:[
         {name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -552,10 +552,6 @@ export default {
         { name: "supprimer" },
         { name: "modifier" }
       ],
-
-      dates: {
-        debut:'',fin:''
-      },
 
       series: [
         {
@@ -861,6 +857,7 @@ export default {
     ...mapActions("activites", {
       fetchActivites: "FETCH_LIST_ACTIVITE_OF_COMPOSANTE",
       saveActivite: "STORE_ACTIVITE",
+      prolongerDate: "PROLONGER_DATE",
       updateActivite: "UPDATE_ACTIVITE",
       deleteActivite: "DESTROY_ACTIVITE",
     }),
@@ -911,18 +908,6 @@ export default {
       },
 
     supprimerT() {},
-
-    saveProlongerDate(id,data) {
-      this.chargement = true
-      ActiviteService.addDate(id,data).then((data) => {
-        alert('envoyer')
-      }).catch((e) => {
-        console.log(e)
-      })
-
-      this.chargement = false  
-     
-    },
 
     suivreMyActivite(activite) {
       this.$router.push({name:'dashboard_projets_activites_globale_suivis',params:{id:activite.id}})
@@ -1097,6 +1082,37 @@ export default {
       this.submitText = "Modifier",
 
       this.showCloseModal(true)
+    },
+
+    
+    saveProlongerDate() {
+  
+      this.chargement = true
+      
+      this.prolongerDate({dates: this.dates, id : this.activiteId}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.showProlonger = false;
+
+            this.fetchActivites(this.composanteId);
+          }
+
+        }).catch((error) => {
+
+          if(error.response?.data?.message){
+            message = error.response?.message;
+          }
+          if(error.response?.data?.errors['debut']){
+            message += '\n' + error.response?.data?.errors['debut'];
+          }
+          if(error.response?.data?.errors['fin']){
+            message += '\n' + error.response?.data?.errors['fin'];
+          }
+          alert(message);
+        })
+
+      this.chargement = false  
     },
 
     dupliquer() {
@@ -1363,7 +1379,6 @@ export default {
         
       });
     },
-
 
     projets: function(projets){
       if(projets.length > 0){

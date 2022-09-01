@@ -78,6 +78,13 @@ export default {
         return { data, status };
 
     },
+    
+    async PROLONGER_DATE ({ commit }, {dates, id}) {
+
+        const { data, status } = await ActiviteService.prolonger(id, dates);
+
+        return { data, status };
+    },
 
     async DESTROY_ACTIVITE ({ commit }, idActivite) {
         

@@ -203,30 +203,10 @@ export default {
 
   methods: {
     prolonger(projet) {
-      console.log(projet);
       this.projetId = projet.id
       this.showProlonger = true
     },
 
-    saveProlongerDate() {
-  
-      this.chargement = true
-      
-      this.prolongerDateProjet({projet: this.dates, id : this.projetId}).then(response => {
-          
-          if(response.status == 200 || response.status == 201){
-
-            this.showProlonger = false;
-
-            this.fetchProjets(this.programmeId);
-          }
-
-        }).catch((error) => {
-          alert(error.response?.data?.errors['fin']);
-        })
-
-      this.chargement = false  
-    },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -320,6 +300,26 @@ export default {
 
     async supprimerProjet(projet) {
       if(window.confirm("Voulez-vous supprimer ce projet " + projet.nom)) await this.deleteProjet(projet.id)
+    },
+
+    saveProlongerDate() {
+  
+      this.chargement = true
+      
+      this.prolongerDateProjet({projet: this.dates, id : this.projetId}).then(response => {
+          
+          if(response.status == 200 || response.status == 201){
+
+            this.showProlonger = false;
+
+            this.fetchProjets(this.programmeId);
+          }
+
+        }).catch((error) => {
+          alert(error.response?.data?.errors['fin']);
+        })
+
+      this.chargement = false  
     },
 
     dupliquer() {
