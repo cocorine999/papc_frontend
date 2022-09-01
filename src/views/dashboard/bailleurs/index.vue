@@ -217,7 +217,6 @@
   import Dropdown from '@/components/Dropdown.vue'
   import { mapGetters, mapMutations, mapActions } from "vuex";
   import extractFormData from "@/utils/extract-data";
-import { toHash } from "ajv/dist/compile/util";
   
   import PermissionsService from "@/services/modules/permission.service.js";
   export default {

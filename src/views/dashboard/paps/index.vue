@@ -8,6 +8,29 @@
         </div>
       </ModalTopRight>
     </div>
+    <div v-if="showModal2">
+        <vmodal  title="Importez les données "  v-on:close="showModal2 = false">
+          <form @submit.prevent="importData" style="width:500px" class="">
+            <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" @change="previewFiles"   accept=".xlsx"  type="file">
+            <p class="my-4 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">FORMAT XLSX SEULEMENT AUTORISE </p>
+            <div class="flex justify-end">
+              <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    importez
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      chargement ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+              </button>
+            </div>
+          </form>
+        </vmodal>
+      </div>
 
     <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
@@ -42,6 +65,10 @@
       <div class="flex space-x-4">
         <span  class="inline-block cursor-pointer  border-b-8 font-bold text-sm uppercase    border-primary py-2">Tableau recapitulatif </span> 
       </div>
+      <button  @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
+            <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
+            <span class="mx-2 text-sm font-semibold">Importez les données</span>
+      </button>
       <button  @click="addPap" title="ajouter un tabelau"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
         <span class="mx-2 text-xs font-semibold">Ajouter </span> 
@@ -81,6 +108,7 @@ export default {
   data() {
     return {
       showModal:false,
+      showModal2:false,
       loading:false,
       showInput:true,
       title:'',
@@ -163,7 +191,8 @@ export default {
       fetchPaps: "FETCH_LIST_PAP",
       savePap: "STORE_PAP",
       updatePap: "UPDATE_PAP",
-      deletePap: "DESTROY_PAP"
+      deletePap: "DESTROY_PAP",
+      importSinistre: "IMPORTATION_PAP"
     }),
 
     ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE' }),
@@ -203,6 +232,19 @@ export default {
       this.champs = formData
 
       this.showCloseModal(true)
+    },
+
+    importData() {
+  
+      const formData = new FormData();
+      formData.append('fichier', this.file);
+      this.importSinistre(formData).then((data) => {
+      
+        this.$toast.success("importation reussie")
+      }).catch((e) => {
+        this.$toast.error(e)
+      })
+     
     },
 
     filteredPap(){
