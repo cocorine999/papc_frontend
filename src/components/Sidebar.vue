@@ -138,7 +138,7 @@
     </div>
 
 
-    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="roleVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/roles"
         style="width: 100%"
@@ -894,6 +894,7 @@ export default {
       programmeVisible:false,
       uniteeDeGestionVisible:false,
       bailleursVsisible:false,
+      roleVisible:false,
       anoVisible:false
     }
   },
@@ -914,7 +915,10 @@ export default {
             if(element.slug ==='voir-un-ano') {
               this.anoVisible = true
             }
-            
+            if(element.slug ==='voir-un-role') {
+              this.roleVisible = true
+            }
+           
           });
 
         }).catch((e) => {

@@ -185,7 +185,7 @@ import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
 import RoleService from "@/services/modules/role.service.js";
 import PermissionsService from "@/services/modules/permission.service.js";
-
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
   export default {
     components: {
@@ -219,13 +219,17 @@ import PermissionsService from "@/services/modules/permission.service.js";
           value:[],
           saveUpdate:[],
           isOpen: false,
+          roleVisible:false,
+          roleAdd:false,
+          roleDelete:false,
+          roleUpdate:false,
       };
     },
   
     computed: {
 
       //importation des variables du module auths
-
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
    
     },
 
@@ -236,6 +240,29 @@ import PermissionsService from "@/services/modules/permission.service.js";
       disabled() {
         this.$store.dispatch('disabled')
       },
+       getPermission() {
+        PermissionsService.get().then((data) => {
+          this.permissions = data.data.data
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-programme') {
+              this.programmeVisible = true
+            }
+            if(element.slug === 'creer-un-programme') {
+              this.programmeAdd = true
+            }
+            if(element.slug === 'modifier-un-role') {
+              this.programmeUpdate = true
+            }
+            if(element.slug ==='supprimer-un-programme') {
+              this.programmeDelete = true
+            }
+           
+          });
+
+        }).catch((e) => {
+          console.log(e)
+        })
+    },
       createRole() {
         
         this.value.forEach(element => {
@@ -304,14 +331,7 @@ import PermissionsService from "@/services/modules/permission.service.js";
           console.log(e)
         })
       },
-      getPermission() {
-        PermissionsService.get().then((data) => {
-          this.permissions = data.data.data
-          console.log('mes  permissions',this.permisions)
-        }).catch((e) => {
-          console.log(e)
-        })
-      },
+   
       addTag (newTag) {
             const tag = {
               nom: newTag,

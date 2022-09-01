@@ -152,8 +152,9 @@ const routes = [
     path: "/",
     name: "index",
     component: index,
-    meta: { auth: true },
-    middleware: [guest],
+    meta: {
+      middleware: [guest],
+    },
   },
 
   {

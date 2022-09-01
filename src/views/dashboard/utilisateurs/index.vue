@@ -192,7 +192,7 @@ export default {
 
         return this.utilisateurs.filter(function (user){
           return user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          user.prenom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 user.prenom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },

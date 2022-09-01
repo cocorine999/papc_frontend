@@ -25,6 +25,10 @@ const ProjetsService = {
       return ApiService.delete(`sinistres/${slug}`);
     },
 
+    importCSV(params) {
+      return ApiService.post("sinistres/importation", params);
+    },
+
     programme(slug) {
       return ApiService.get(`programmes/${slug}/sinistres`);
     },
