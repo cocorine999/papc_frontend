@@ -28,6 +28,16 @@ export default {
       return { data, status };
   },
 
+  FILTRE_INDICATEUR : async ({ commit }, payload) => {
+
+    const { data, status } = await IndicateurService.filtre(payload);
+
+    if(status === 200 || status === 201) 
+        commit(SET_LIST_INDICATEUR, data.data);
+
+    return { data, status };
+  },
+
   async GET_INDICATEUR ({ commit, getters }, {key, value }) {
 
       let indicateur = null
