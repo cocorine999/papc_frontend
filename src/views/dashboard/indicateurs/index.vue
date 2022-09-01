@@ -371,8 +371,8 @@ export default {
               nom: element.nom,
               description: element.description,
               bailleur: element.bailleur.sigle,
-              categorie: element.categorie.nom,
-              unitee_de_mesure: element.uniteDeMesure.nom,
+              categorie: element.categorie?.nom,
+              unitee_de_mesure: element.uniteeDeMesure.nom,
               valeur_de_base: element.valeurDeBase,
               annee_de_base: element.anneeDeBase
             }
