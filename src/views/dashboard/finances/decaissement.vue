@@ -56,7 +56,7 @@
             <span class="mx-2 text-sm font-semibold">Export Excel</span>
           </button>
         </json-excel>
-        <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
+        <button @click="showFiltreModal2" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
         <button @click="addDecaissement" title="ajouter " class="px-4 py-2 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter</span>
@@ -100,6 +100,7 @@ export default {
           showModal2:false,
           title:'',
           decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
+          decaissementAttributsRecherche : ['type', 'date', 'projetId'],
           champs:[
           {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
@@ -107,9 +108,9 @@ export default {
           {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
         ],
         champsRecherche:[
-          {name:'Date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projets',type:'',placeholdere:"Selectionnez un projet",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:true,},
-          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
+          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
+          {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
           
         ],
         cols:2,
@@ -161,6 +162,7 @@ export default {
 
     ...mapActions('decaissements', {
       fetchDecaissements: "FETCH_LIST_DECAISSEMENT",
+      filter: "FILTRE_DECAISSEMENT",
       saveDecaissement: "STORE_DECAISSEMENT",
       updateDecaissement: "UPDATE_DECAISSEMENT",
       deleteDecaissement: "DESTROY_DECAISSEMENT"
@@ -233,10 +235,31 @@ export default {
       
 
     },  
-      close() {
+    filtre() {
+      this.champsRecherche = this.champsRecherche.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let decaissement = extractFormData(this.champsRecherche,this.decaissementAttributsRecherche);
+      decaissement.projetId = decaissement.projetId?.id
+      decaissement.type = decaissement.type?.id
+
+      console.log(decaissement)
+
+      this.filter(decaissement).then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            this.close2();
+          }
+      });
+    },
+    close() {
         this.showModal = false
-      },
-      addDecaissement() {
+    },
+    close2() {
+        this.showModal2 = false
+    },
+    addDecaissement() {
         this.title ="Ajouter un decaissement"
 
         let formData = this.champs.map((value) => {
@@ -255,12 +278,28 @@ export default {
 
         this.showModal = true
       },
-      modifier(data) {
-        this.title ="Modifier un decaissement"
-        this.showModal = true
-        alert(data +" à ete modifier")
+
+    showFiltreModal2() {
+        this.title ="Filtre"
+
+        let formData = this.champsRecherche.map((value) => {
+          if(value.key === 'projetId'){ 
+            value['options'] = this.projets
+          }
+          
+          else if(value.key === 'type'){
+            value['options'] = this.$store.state.sources;
+          }
+
+          return value
+        })
+
+      this.champsRecherche = formData
+
+        this.showModal2 = true
       },
-      async supprimer(decaissement) {
+    
+    async supprimer(decaissement) {
       if(window.confirm("Voulez-vous supprimer ce decaissement " ))
         await this.deleteDecaissement(decaissement.id)
     },
