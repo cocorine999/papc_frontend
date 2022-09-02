@@ -43,7 +43,7 @@ export default {
     
     ...mapGetters({
       currentUser : 'auths/GET_AUTHENTICATE_USER',
-    }),
+    })
   },
 
   methods: {
