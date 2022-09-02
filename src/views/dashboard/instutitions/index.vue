@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="w-full px-4">
+    <div v-if="institutionVisible" class="w-full px-4">
       <div v-if="showModal">
         <ModalTopRight  :title="title"  v-on:close="close">
           <div class="px-4">
@@ -33,7 +33,8 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>        </div>
+           </div>        
+        </div>
       </nav> 
 
       <div class="flex justify-start mt-2">
@@ -44,7 +45,7 @@
       </div>
       <div class="flex items-center justify-between my-2">
         <titre>Les Institution </titre>
-          <button @click="addInstitution" title="ajouter une instutitions"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <button v-if="institutionVisible" @click="addInstitution" title="ajouter une instutitions"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Ajouter </span>
           </button>
@@ -57,7 +58,9 @@
               class="relative"
             >
                 <div class="absolute right-1 top-4 z-10  cursor-pointer">
-                  <dropdown @gotoNext="gotoNext" @supprimer="supprimerInstitution(institution)"  @modifier="modifierInstitution(institution)" @duplicate='dupliquerInstitution(institution)' :option="option"></dropdown>
+                  <dropdown v-if="institutionDelete && institutionUpdate " @gotoNext="gotoNext" @supprimer="supprimerInstitution(institution)"  @modifier="modifierInstitution(institution)" @duplicate='dupliquerInstitution(institution)' :option="option"></dropdown>
+                  <dropdown v-if="!institutionDelete && institutionUpdate " @gotoNext="gotoNext"   @modifier="modifierInstitution(institution)" @duplicate='dupliquerInstitution(institution)' :option="optionUpdate"></dropdown>
+                  <dropdown v-if="institutionDelete && !institutionUpdate " @gotoNext="gotoNext" @supprimer="supprimerInstitution(institution)"   @duplicate='dupliquerInstitution(institution)' :option="optionD"></dropdown>
                 </div>
                 
                 <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
@@ -93,11 +96,18 @@
         
         <div v-if="line"  class="line my-4">
           <vtable 
+          v-if="institutionDelete && institutionUpdate"
           :headers="headers" 
           :datas="institutions"
           :actions="actions"
           @updateInputData="updateInputData"
           @supprimer="supprimerInstitution" 
+          @modifier="modifierInstitution"></vtable>
+           <vtable 
+           v-if="!institutionDelete && institutionUpdate"
+          :headers="headers" 
+          :datas="institutions"
+          @updateInputData="updateInputData"
           @modifier="modifierInstitution"></vtable>
         </div>
 
@@ -155,6 +165,14 @@
             {name:'modifier',iconne:''},
             {name:'supprimer',iconne:''},
           ],
+          actionsD:[
+            {name:'modifier',iconne:''},
+            {name:'supprimer',iconne:''},
+          ],
+          actionsUpdate:[
+            {name:'modifier',iconne:''},
+            {name:'supprimer',iconne:''},
+          ],
 
           cols:1,
           option:[
@@ -171,6 +189,10 @@
             {name:'Date de creation', cle:'created_at', edit : false},
 
           ],
+          institutionVisible:false,
+          institutionAdd:false,
+          institutionDelete:false,
+          institutionUpdate:false,
         }
       },
 
@@ -181,7 +203,8 @@
             institution: "institutions/getInstitution",
             institutions: "institutions/getInstitutions",
             currentUser : 'auths/GET_AUTHENTICATE_USER'
-          })
+          }),
+          ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
       },
       methods: {
 
@@ -189,6 +212,25 @@
           setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
           setInstitution: 'institutions/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
         }),
+
+         getPermission() {
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-une-institution') {
+              this.institutionVisible = true
+            }
+            if(element.slug === 'modifier-une-institution') {
+              this.institutionAdd = true
+            }
+            if(element.slug === 'modifier-un-pap') {
+              this.institutionUpdate = true
+            }
+            if(element.slug ==='supprimer-une-institution') {
+              this.institutionDelete = true
+            }
+           
+          });
+
+          },
 
         ...mapActions('institutions', {
           fetchInstitutions: "FETCH_LIST_INSTITUTION",
@@ -338,6 +380,7 @@
       },
       
       mounted() {
+        this.getPermission()
         console.log("Fetching institutions ...")
         this.fetchInstitutions()
       }

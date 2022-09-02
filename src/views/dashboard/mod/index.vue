@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="px-4">
+    <div v-if="modVisible" class="px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
@@ -57,6 +57,7 @@
         <div class="flex space-x-4">
           <span
             @click="goMod"
+            v-if="modVisible"
             :class="{ 'border-primary border-b-8': seeMod }"
             class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
             >Listes MOD
@@ -76,7 +77,7 @@
         </div>
 
         <button
-          v-if="seeMod"
+          v-if="seeMod && modVisible"
           @click="addMod"
           title="Ajouter un MOD"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
@@ -121,6 +122,8 @@
             @supprimer="supprimerMod(mod)"
             @modifier="modifierMod(mod)"
             @dupliquer="dupliquerMod(mod)"
+            :isDelete="modDelete"
+            :isUpdate="modUpdate"
           >
           </card-mod>
         </div>
@@ -511,6 +514,10 @@ export default {
         { name: "modifier", iconne: "" },
         { name: "supprimer", iconne: "" },
       ],
+      modVisible:false,
+      modAdd:false,
+      modDelete:false,
+      modUpdate:false,
     };
   },
 
@@ -522,6 +529,7 @@ export default {
       mods: "mods/getMods",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -536,6 +544,24 @@ export default {
       updateMod: "UPDATE_MOD",
       deleteMod: "DESTROY_MOD",
     }),
+     getPermission() {
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-mod') {
+              this.modVisible = true
+            }
+            if(element.slug === 'modifier-un-mod') {
+              this.modAdd = true
+            }
+            if(element.slug === 'modifier-un-mod') {
+              this.modUpdate = true
+            }
+            if(element.slug ==='supprimer-un-mod') {
+              this.modDelete = true
+            }
+           
+          });
+
+      },
 
     addPassation() {
       this.title2 = "Ajouter une Passation";
@@ -685,6 +711,7 @@ export default {
   },
 
   mounted() {
+    this.getPermission()
     console.log("Fetching mods ...");
     this.fetchMods();
   },
