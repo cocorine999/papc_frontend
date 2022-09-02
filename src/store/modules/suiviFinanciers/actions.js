@@ -26,6 +26,15 @@ export default {
 
         return { data, status };
     },
+
+    FILTRE_SUIVIFINANCIER : async ({ commit }, payload) => {
+
+        const { data, status } = await SuiviFinancierService.filtre(payload);
+
+        commit(SET_LIST_SUIVIFINANCIER, data.data);
+
+        return { data, status };
+    },
     
 
     async GET_SUIVIFINANCIER ({ commit, getters }, {key, value }) {

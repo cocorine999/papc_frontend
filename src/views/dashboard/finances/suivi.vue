@@ -63,6 +63,13 @@
           </form>
         </vmodal>
       </div>
+      <div v-if="showModal3">
+      <vmodal  title="Filtre"  v-on:close="showModal3 = false">
+        <div class="px-4" style="width:500px" >
+          <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+        </div>
+      </vmodal>
+       </div>
       <div class="flex items-center justify-between">
         <titre>Suivi financier </titre>
         <div class="flex space-x-3">
@@ -74,6 +81,7 @@
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Export Excel</span>
           </button>
+          <button @click="showFiltreModal" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
           <button @click="addSuivi" title="ajouter " class="py-2 px-4 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
             <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
             <span class="mx-2 text-xs font-semibold">ajouter</span>
@@ -112,16 +120,23 @@ export default {
         return {
           showModal:false,
           showModal2:false,
+          showModal3:false,
           title:'',
           file:'',
           chargement:false,
           suiviAttributs : ['consommer', 'type', 'trimestre', 'annee', 'activiteId'],
+          suiviAttributsRecherche : ['trimestre', 'annee', 'activiteId'],
           champs:[
           {name:'Consommer', key:'consommer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
           {name:'Source', key:'type',placeholdere:'Selectionnez la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value:'nom',required:true,errors : []}, 
           {name:'Année', key:'annee',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
           {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:true,errors : []},
           {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',required:true,errors : []}, 
+        ],
+        champsRecherche:[
+          {name:'Année', key:'annee',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,errors : []},
+          {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:false,errors : []},
+          {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',required:false,errors : []}, 
         ],
         cols:2, 
         headers:[
@@ -168,6 +183,7 @@ export default {
 
     ...mapActions('suiviFinanciers', {
       fetchSuiviFinanciers: "FETCH_LIST_SUIVIFINANCIER",
+      filter: "FILTRE_SUIVIFINANCIER",
       saveSuiviFinancier: "STORE_SUIVIFINANCIER",
       updateSuiviFinancier: "UPDATE_SUIVIFINANCIER",
       deleteSuiviFinancier: "DESTROY_SUIVIFINANCIER"
@@ -210,10 +226,7 @@ export default {
       suivi.activiteId = suivi.activiteId.id
 
       console.log(suivi)
-      
-      
-      
-      
+    
         this.saveSuiviFinancier(suivi).then(response => {
           if(response.status == 200 || response.status == 201){
               this.close()
@@ -222,6 +235,25 @@ export default {
         })
       
 
+    },
+    filtre() {
+      this.champsRecherche = this.champsRecherche.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let suivi = extractFormData(this.champsRecherche,this.suiviAttributsRecherche);
+
+      suivi.trimestre = suivi.trimestre?.valeur
+      suivi.activiteId = suivi.activiteId?.id
+
+      console.log(suivi)
+
+      this.filter(suivi).then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            this.close2();
+          }
+      });
     },
     previewFiles(event) {
       this.file = event.target.files[0]
@@ -246,6 +278,9 @@ export default {
       close() {
         this.showModal = false
       },
+      close2() {
+        this.showModal3 = false
+    },
       addSuivi() {
         this.title ="Ajouter un Suivi"
 
@@ -273,6 +308,25 @@ export default {
       this.champs = formData
 
         this.showModal = true
+      },
+      showFiltreModal() {
+        this.title ="Filtre"
+
+        let formData = this.champsRecherche.map((value) => {
+          if(value.key === 'activiteId'){ 
+            value['options'] = this.activites
+          }
+          
+          else if(value.key === 'trimestre'){
+            value['options'] = this.$store.state.trimestres;
+          }
+
+          return value
+        })
+
+      this.champsRecherche = formData
+
+        this.showModal3 = true
       },
       modifier(data) {
         this.title ="Modifier un Suivi"
