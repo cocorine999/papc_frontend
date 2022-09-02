@@ -46,7 +46,6 @@ export default {
     
     async PROLONGER_DATE_PROJET ({ commit }, {projet, id}) {
 
-        console.log(projet, id)
         const { data, status } = await ProjetService.prolonger(id, projet);
 
         return { data, status };

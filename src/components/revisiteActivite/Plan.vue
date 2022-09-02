@@ -1,25 +1,13 @@
 <template>
   <div>
-    <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
-      <div class="p-4 overflow-auto">
-        <vform
-          template="default"
-          :champs="champs2"
-          :cols="cols"
-          :submitText="submitText"
-          :sendRequest="sendRequest"
-          @sendForm="savePlanDecaissement"
-          @closeModal="close2">
-        </vform>
-      </div> 
-    </modal-top-right>
+    
     <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
       <div class="flex items-center justify-between">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
           <multiselect
             v-model="activiteFiltre"
-            :options="activites"
+            :options="results.activites"
             :preselect-first="true"
             placeholder="selectionnez une activite"
             label="nom"
@@ -36,7 +24,7 @@
             <div class="flex justify-between">
                   <h1 class="font-base font-bold text-gray-900">
                     {{ planDeDecaissement.annee }}
-                  </h1>
+                  </h1><!-- 
                   <div>
                      <dropdown
                       v-if="isUpdate && isDelete"
@@ -44,6 +32,7 @@
                       @supprimer="supprimerPlan(planDeDecaissement)"
                       :option="optionActivite"
                     ></dropdown>
+<<<<<<< HEAD
                      <dropdown
                        v-if="isUpdate && isDelete==false"
                       @modifier="modifierPlan(planDeDecaissement)"
@@ -57,6 +46,9 @@
                       :option="optionActiviteD"
                     ></dropdown>
                   </div>
+=======
+                  </div> -->
+>>>>>>> e231e0ea961d324e9f44d1d597501fae4bfa9e17
             </div>
             <div class="my-2">
               <p class="text-sm font-semibold py-1">
@@ -96,10 +88,8 @@ import Multiselect from "vue-multiselect";
 import ModalTopRight from "@/components/ModalTopRight";
 import Dropdown from "@/components/Dropdown";
 import Card from "@/components/Card";
-import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
-import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
+import { mapMutations } from "vuex";
 
-import moment from 'moment'
 export default {
   components: {
     ModalTopRight,
@@ -107,7 +97,7 @@ export default {
     Multiselect,
     Dropdown,
   },
-  props:['isDelete','isUpdate'],
+  props:['isDelete','isUpdate','results'],
   data() {
     return {
       planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
@@ -130,124 +120,45 @@ export default {
        
         { name: "modifier" }
       ],
-
+  data() {
+    return {
+      planDeDecaissements: [],
     }
   },
   methods: {
 
-    addPlan() {
-      this.title ="Ajouter un un plan de decaissement"
-      this.submitText="Enregistrer"
-      this.showModal2 = true;
-    },
+    //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setPlanDeDecaissements: "planDeDecaissements/SET_LIST_PLAN_DE_DECAISSEMENT",
+    }),
 
-    modifierPlan(planDeDecaissement) {
-      this.title = "Modifier un plan de decaissement";
+    activiteFiltre: function(valeur){
+      if( valeur instanceof Activite || valeur instanceof Object )
+      {
 
-      this.submitText="Modifier"
-      
-      this.setPlanDeDecaissement(planDeDecaissement)
+        this.planDeDecaissements = this.results['planDeDecaissements'].filter((value) => {
+          if(value.activiteId === valeur.id) return value;
+        })
 
-      this.planDeDecaissementAttributs.forEach((item) => {
+      }
+      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
 
-        this.champs2.find((value, index) => {
-
-          if( value.key === "trimestre" && item === "trimestre"){
-
-            this.$store.state.trimestres.map((value) => {
-              if(value.valeur === planDeDecaissement[item]){
-                this.champs2[index]['data'] = value
-              }
-            });
-
-          }
-          else if( value.key === 'annee' ){
-            console.log(  moment( planDeDecaissement.annee + "/" + planDeDecaissement.trimestre + '/01').format("YYYY-MM-DD") )
-            this.champs2[index]['data'] = moment( planDeDecaissement.annee + "/" + planDeDecaissement.trimestre + '/01').format("YYYY-MM-DD")
-          }
-          else if(value.key === item){
-            this.champs2[index]['data'] = planDeDecaissement[item]
-          }
-
-        });
-
-      });
-
-      
-      this.showModal2 = true;
-    },
-
-    supprimerPlan(plan){
-      if(window.confirm("Voulez-vous supprimer ce plan de décaissement ")){
-        if(this.sendRequest === false){
-          this.sendRequest = true;
-          this.deletePlanDeDecaissement(plan.id).finally((value) => {
-              if (response.status === 200 || response.status === 201) {
-                this.sendRequest = false;
-                this.fetchPlanDeDecaissements(this.activiteFiltre.id);
-              }
-          })
-        }
+        this.planDeDecaissements = this.results['planDeDecaissements'].filter((value) => {
+          if(value.activiteId === valeur) return value;
+        })
+      }
+      else{ 
+        this.planDeDecaissements = [];
       }
     },
 
-    savePlanDecaissement() {
-      if (this.sendRequest === false) {
+  },
 
-        this.sendRequest = true;
+  created() {
+    
+    this.activiteFiltre = this.results.activites[0]
+  },
 
-        this.champs2 = this.champs2.map((item) => {
-          item.errors = [];
-          return item;
-        });
-
-        let planDeDecaissement = extractFormData(this.champs2, this.planDeDecaissementAttributs);
-
-        planDeDecaissement['activiteId'] = this.activiteFiltre.id;
-
-        planDeDecaissement.annee = moment(planDeDecaissement.annee).format('YYYY')
-
-        planDeDecaissement.trimestre = planDeDecaissement.trimestre.valeur;
-
-        if (this.planDeDecaissement?.id) {
-          this.updatePlanDeDecaissement({ planDeDecaissement: planDeDecaissement, id: this.planDeDecaissement?.id })
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchPlanDeDecaissements(this.activiteFiltre.id);
-                this.close2();
-              }
-            })
-            .finally((error) => {              
-              this.sendRequest = false;
-            });
-        } else {
-          this.savePlanDeDecaissement(planDeDecaissement)
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchPlanDeDecaissements(this.activiteFiltre.id);
-                this.close2();
-              }
-            })
-            .finally((error) => {              
-              this.sendRequest = false;
-            });
-        }
-      }
-    },
-
-    close2() {
-      this.showModal2 = false;
-      this.resetForm2();
-      this.sendRequest = false;
-    },
-
-    resetForm2(){
-      this.champs2 = this.champs2.map(item => { item['data'] = ''; item['errors'] = []; return item})
-      window.document.getElementById('vform').reset()
-      this.setPlanDeDecaissement({})
-    },
-
-  }
 }
 </script>
 

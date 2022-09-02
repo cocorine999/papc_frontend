@@ -139,7 +139,7 @@
       <div v-if="showModal2">
         <vmodal  title="Filtre indicateur"  v-on:close="showModal2 = false">
           <div class="px-12" style="width:80vw !important">
-            <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+            <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filter" ></vform>
           </div>
         </vmodal>
       </div>
@@ -216,6 +216,7 @@ export default {
         title:'',
         chargement:false,
         indicateurAttributs : ['nom', 'description', 'anneeDeBase', 'valeurDeBase','bailleurId','categorieId','uniteeMesureId'],
+        indicateurAttributsRecherche : ['nom', 'anneeDeBase', 'bailleurId','categorieId','uniteeMesureId'],
         choiceDateOption:true,
         champs:[
           {name:'Nom',type:'text',key:'nom',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
@@ -228,10 +229,11 @@ export default {
         ],
         cols:2,
         champsRecherche:[
-          {name:'Indicateurs',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:['indicateur1','indicateur2','indicateurs3']},
-          {name:'Année de base',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Categories',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:true,},
-          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
+          {name:'Indicateur',key:'nom',type:'text',placeholdere:"Donnez un nom d'indicateur",isSelect:false,isTextArea:false,data:'',required:false},
+          {name:'Année de base',key:'anneeDeBase',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Categories',key:'categorieId',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:this.categories,required:true, cle: 'id', value: 'nom',required:false,},
+          {name:'Unite de mesure',key:'uniteeMesureId',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:this.uniteDeMesure,required:false,cle: 'id', value:'nom',errors : []},
+          {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:false,options:this.bailleurs, cle: 'id', value: 'sigle'},
           
         ],
         headers:[],
@@ -265,6 +267,17 @@ export default {
         }
         return item;
       });
+      this.champsRecherche.map((item) => {
+        if (item.key === "bailleurId") {
+          item.options = bailleurs.map((bailleur) => {
+            return {
+              id: bailleur.id,
+              sigle: bailleur.sigle,
+            };
+          });
+        }
+        return item;
+      });
     },
     categories: function (categories) {
       this.champs.map((item) => {
@@ -278,9 +291,31 @@ export default {
         }
         return item;
       });
+      this.champsRecherche.map((item) => {
+        if (item.key === "categorieId") {
+          item.options = categories.map((categorie) => {
+            return {
+              id: categorie.id,
+              nom: categorie.nom,
+            };
+          });
+        }
+        return item;
+      });
     },
     uniteDeMesure: function (uniteDeMesure) {
       this.champs.map((item) => {
+        if (item.key === "uniteeMesureId") {
+          item.options = uniteDeMesure.map((unite) => {
+            return {
+              id: unite.id,
+              nom: unite.nom,
+            };
+          });
+        }
+        return item;
+      });
+      this.champsRecherche.map((item) => {
         if (item.key === "uniteeMesureId") {
           item.options = uniteDeMesure.map((unite) => {
             return {
@@ -322,6 +357,7 @@ export default {
     ...mapActions("indicateurs", {
       fetchIndicateurs: "FETCH_LIST_INDICATEUR",
       saveIndicateur: "STORE_INDICATEUR",
+      filtre: "FILTRE_INDICATEUR",
       updateIndicateur: "UPDATE_INDICATEUR",
       deleteIndicateur: "DESTROY_INDICATEUR",
     }),
@@ -393,8 +429,8 @@ export default {
               nom: element.nom,
               description: element.description,
               bailleur: element.bailleur.sigle,
-              categorie: element.categorie.nom,
-              unitee_de_mesure: element.uniteDeMesure.nom,
+              categorie: element.categorie?.nom,
+              unitee_de_mesure: element.uniteeDeMesure.nom,
               valeur_de_base: element.valeurDeBase,
               annee_de_base: element.anneeDeBase
             }
@@ -421,7 +457,7 @@ export default {
                  indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },
-    sendForm() {
+      sendForm() {
       this.champs = this.champs.map((item) => {
         item.errors = [];
         return item;
@@ -449,6 +485,26 @@ export default {
         });
       }
     },
+
+    filter() {
+      this.champsRecherche = this.champsRecherche.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let indicateur = extractFormData(this.champsRecherche,this.indicateurAttributsRecherche);
+      indicateur.bailleurId = indicateur.bailleurId?.id
+      indicateur.categorieId = indicateur.categorieId?.id
+      indicateur.uniteeMesureId = indicateur.uniteeMesureId?.id
+      console.log("les indicateurs",indicateur)
+
+      
+        this.filtre(indicateur).then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            this.close2();
+          }
+        });
+    },
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
@@ -474,8 +530,16 @@ export default {
       this.showCloseModal();
       this.resetForm();
     },
+    close2() {
+      this.showCloseModal2();
+      this.resetForm();
+    },
+    
     showCloseModal(value = false) {
       this.showModal = value;
+    },
+    showCloseModal2(value = false) {
+      this.showModal2 = value;
     },
     addIndicateur() {
       this.title ='Ajouter un indicateur'
