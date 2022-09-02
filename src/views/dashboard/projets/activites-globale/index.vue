@@ -22,12 +22,7 @@
 import ActiviteCurrent from "@/components/ActiviteCurrent";
 import Revisite from "@/components/revisiteActivite/Revisite.vue";
 import Dashboard from "@/layouts/Dashboard";
-<<<<<<< HEAD
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-=======
-import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
-
->>>>>>> e231e0ea961d324e9f44d1d597501fae4bfa9e17
 export default {
   components: {
     Dashboard,
@@ -42,28 +37,12 @@ export default {
       planDecaissementVisible:false,
     }
   },
-<<<<<<< HEAD
-  computed: {
-    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
-  },
-  methods: {
-    getPermission() {
-      this.currentUser.role[0].permissions.forEach(element => {
-        if(element.slug ==='voir-une-activite') {
-          this.activiteVisible = true
-        }
-         if(element.slug ==='voir-un-plan-de-decaissement') {
-          this.planDecaissementVisible= true
-        }
-      });
-    },
-=======
-
-  computed: {
+   computed: {
     
     ...mapGetters({
       scopesPtab: "revisionPtab/getScopesPtab"
     }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
   
   methods: {
@@ -72,8 +51,17 @@ export default {
       fetchScopesPtab: "FETCH_LIST_PTAB_VERSION",
       getOldPtab: "GET_OLD_PTAB"
     }),
+    getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-activite') {
+            this.activiteVisible = true
+          }
+          if(element.slug ==='voir-un-plan-de-decaissement') {
+            this.planDecaissementVisible= true
+          }
+        });
+      },
 
->>>>>>> e231e0ea961d324e9f44d1d597501fae4bfa9e17
     choiceVersion(version) {
 
       if(this.scopesPtab.length > 0)
@@ -88,16 +76,16 @@ export default {
       }
     }
   },
-<<<<<<< HEAD
-   mounted() {
-    this.getPermission()
-  }
-=======
+  
 
   created() {
+     this.getPermission()
     this.fetchScopesPtab();
   },
->>>>>>> e231e0ea961d324e9f44d1d597501fae4bfa9e17
+
+ 
+    
+ 
 
 
 };

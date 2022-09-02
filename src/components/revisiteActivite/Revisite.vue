@@ -631,16 +631,7 @@ export default {
   },
 
   created() {
-<<<<<<< HEAD
-  
-    this.programmeId = this.currentUser.programme.id
     this.getPermission()
-    if(this.programmeId){
-      Promise.all([this.fetchProjets(this.programmeId) ]).then((value) => {
-  
-          this.fetchMods(this.programmeId)
-=======
-
     const params = {
       "version": this.version,
       "composantes": null,
@@ -654,7 +645,6 @@ export default {
 
       console.log(this.results);
     })
->>>>>>> e231e0ea961d324e9f44d1d597501fae4bfa9e17
 
 
     /* this.projets = value.data.data.projets
