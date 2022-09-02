@@ -38,10 +38,23 @@
                     {{ planDeDecaissement.annee }}
                   </h1>
                   <div>
-                    <dropdown
+                     <dropdown
+                      v-if="isUpdate && isDelete"
                       @modifier="modifierPlan(planDeDecaissement)"
                       @supprimer="supprimerPlan(planDeDecaissement)"
                       :option="optionActivite"
+                    ></dropdown>
+                     <dropdown
+                       v-if="isUpdate && isDelete==false"
+                      @modifier="modifierPlan(planDeDecaissement)"
+                      @supprimer="supprimerPlan(planDeDecaissement)"
+                      :option="optionActiviteUpdate"
+                    ></dropdown>
+                     <dropdown
+                       v-if="!isUpdate && isDelete"
+                      @modifier="modifierPlan(planDeDecaissement)"
+                      @supprimer="supprimerPlan(planDeDecaissement)"
+                      :option="optionActiviteD"
                     ></dropdown>
                   </div>
             </div>
@@ -94,6 +107,7 @@ export default {
     Multiselect,
     Dropdown,
   },
+  props:['isDelete','isUpdate'],
   data() {
     return {
       planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
@@ -104,6 +118,19 @@ export default {
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
       ],
       showModal2: false,
+
+      optionActivite: [
+        { name: "supprimer" },
+        { name: "modifier" }
+      ],
+       optionActiviteUpdate: [
+        { name: "modifier" }
+      ],
+       optionActiviteD: [
+       
+        { name: "modifier" }
+      ],
+
     }
   },
   methods: {

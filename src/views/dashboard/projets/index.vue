@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="w-full p-4">
+    <div v-if="projetVisible" class="w-full p-4">
        <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
         <div style="width:60vw" class="p-4">
           <form @submit.prevent="saveProlongerDate()" action="">
@@ -64,7 +64,7 @@
           <span  class="inline-block cursor-pointer  border-b-8 font-bold  text-sm uppercase    border-primary py-2">Les projets </span>
         </div>
 
-        <button @click="addProjet"  title="ajouter un projet"    class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="projetAdd" @click="addProjet"  title="ajouter un projet"    class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
@@ -81,8 +81,14 @@
                 </div>
               </div>
               <div  class="absolute top-2 left-2 ">
-                <div class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
+                <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
                   <dropdown @supprimer="supprimerProjet(projet)" @modifier="modifierProjet(projet)"  @prolonger="prolonger(projet)" :option="option"></dropdown>
+                </div>
+                <div v-if="projetUpdate && projetDelete ==false " class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
+                  <dropdown  @modifier="modifierProjet(projet)"  @prolonger="prolonger(projet)" :option="optionUpdate"></dropdown>
+                </div>
+                <div v-if="projetDelete && projetUpdate==false" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
+                  <dropdown @supprimer="supprimerProjet(projet)"  @prolonger="prolonger(projet)" :option="optionD"></dropdown>
                 </div>
               </div>
             </div>
@@ -179,6 +185,18 @@ export default {
         { name: "modifier" },
         { name: "prolonger" },
       ],
+      optionUpdate: [
+        { name: "modifier" },
+        { name: "prolonger" },
+      ],
+       optionD: [
+        { name: "supprimer" },
+        { name: "prolonger" },
+      ],
+      projetVisible:false,
+      projetAdd:false,
+      projetDelete:false,
+      projetUpdate:false,
     }
     
   },
@@ -197,11 +215,28 @@ export default {
       projets: "projets/getProjets", projet: "getProjet",
       bailleurs: "bailleurs/getBailleurs",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
-    })
-    
+    }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-projet') {
+            this.projetVisible = true
+          }
+          if(element.slug === 'creer-un-projet') {
+            this.projetAdd = true
+          }
+            if(element.slug === 'modifier-un-projet') {
+              this.projetUpdate = true
+            }
+            if(element.slug ==='supprimer-un-projet') {
+              this.projetDelete = true
+            }
+           
+        });
+    },
     prolonger(projet) {
       console.log(projet);
       this.projetId = projet.id
@@ -398,6 +433,7 @@ export default {
   
   created() {
     console.log("Fetching projets ...")
+    this.getPermission()
     this.programmeId = this.currentUser.programme.id
     if(this.programmeId){
       this.fetchProjets(this.programmeId).then((value) => {

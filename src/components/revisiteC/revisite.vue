@@ -36,7 +36,7 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
-      <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if="seeComposant && composanteAdd" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter un composant</span>
       </button>
@@ -106,6 +106,8 @@
             @supprimer="supprimer(composante)"
             @validation="validation(composante)"
             @suivre="suivreMyComposant(composante)"
+            :isDelete = "composanteDelete"
+            :isUpdate="composanteUpdate"
           ></card-composante>
         </div>
 
@@ -133,6 +135,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import  { extractFormData, getStringValueOfStatutCode }  from '@/utils/index'
 import Projet from '@/store/modules/projets/projet'
 import Suivi from "@/components/revisiteC/Suivi.vue";
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 export default {
   components: {
     Vmodal,
@@ -186,7 +189,9 @@ export default {
         
       ],
 
-     
+      composanteAdd:false,
+      composanteDelete:false,
+      composanteUpdate:false,
       actions: [
         { name: "supprimer", iconne: "" },
       ],
@@ -214,6 +219,7 @@ export default {
       composante: "composantes/getComposante",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
 
   },
 
@@ -225,7 +231,21 @@ export default {
       setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setComposantes: 'composantes/SET_LIST_COMPOSANTES'
     }),
-
+     getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        
+          if(element.slug === 'creer-une-composante') {
+            this.composanteAdd = true
+          }
+            if(element.slug === 'modifier-une-composante') {
+              this.composanteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-composante') {
+              this.composanteDelete = true
+            }
+           
+        });
+    },
     suivreMyComposant(composante) {
       this.$router.push({name:'dashboard_projets_composantes_globale_suivis',params:{id:composante.id}})
     },
@@ -241,7 +261,7 @@ export default {
     ...mapActions({
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
-
+   
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
@@ -504,6 +524,7 @@ export default {
    
     if(this.programmeId){
       this.fetchProjets(this.programmeId)
+      this.getPermission()
     } 
 
   }

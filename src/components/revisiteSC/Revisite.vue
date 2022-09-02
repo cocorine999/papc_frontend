@@ -210,7 +210,10 @@ export default {
       dates:[
         {}
       ],
-      suivis:[]
+      suivis:[],
+      composanteAdd:false,
+      composanteDelete:false,
+      composanteUpdate:false,
      
     }
     
@@ -232,6 +235,7 @@ export default {
       sousComposantes: "sousComposantes/getSousComposantes",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
 
   },
 
@@ -258,6 +262,22 @@ export default {
 
     suivreMyComposant(sousComposante) {
       this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
+    },
+
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        
+          if(element.slug === 'creer-une-composante') {
+            this.composanteAdd = true
+          }
+            if(element.slug === 'modifier-une-composante') {
+              this.composanteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-composante') {
+              this.composanteDelete = true
+            }
+           
+        });
     },
 
     getSuivi() {
@@ -580,6 +600,7 @@ export default {
 
   created(){
     this.getSuivi()
+    this.getPermission()
     if(this.programmeId){
       this.fetchProjets(this.programmeId)
     }

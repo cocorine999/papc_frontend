@@ -25,7 +25,8 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>        </div>
+           </div>        
+        </div>
       </nav> 
 
       <div v-if="showSuiviModal">
@@ -152,8 +153,8 @@
             <span class="mx-2 text-sm font-semibold">Export Excel</span>
           </button>
           </json-excel>
-          <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
-          <button @click="addIndicateur" title="ajouter un indicateur"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <button @click="showModal2 = true" title="filtre"    class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
+          <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold uppercase">ajouter un indicateur</span>
           </button>
@@ -163,7 +164,8 @@
         </div>
       </div>
      
-      <vtable :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="indicateurUpdate && indicateurDelete " :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="!indicateurDelete && indicateurUpdate " :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -239,8 +241,11 @@ export default {
           {name:'suivre'},
           {name:'supprimer',iconne:''},
           {name:'consulter',iconne:''},
-        ]
-
+        ],
+        indicateurVisible:false,
+        indicateurAdd:false,
+        indicateurDelete:false,
+        indicateurUpdate:false,
       });
   },
   watch: {
@@ -306,7 +311,7 @@ export default {
       categories: "categories/getCategories",
       uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
     }),
-   
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
   methods: {
     ...mapMutations({
@@ -329,6 +334,23 @@ export default {
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
+    getPermission() {
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-indicateur') {
+              this.indicateurVisible = true
+            }
+            if(element.slug === 'creer-un-indicateur') {
+              this.indicateurAdd = true
+            }
+            if(element.slug === 'modifier-un-indicateur') {
+              this.indicateurUpdate = true
+            }
+            if(element.slug ==='supprimer-un-indicateur') {
+              this.indicateurDelete = true
+            }
+           
+          });
+    },
     suivreIndicateur(data){
       this.idIndicateur = data
       this.showSuiviModal = true
@@ -468,6 +490,7 @@ export default {
   },
 
    mounted() {
+     this.getPermission()
     this.fetchIndicateurs().then((value) => {
       setTimeout(() => {
         console.log("Fetching list indicateurs...")
