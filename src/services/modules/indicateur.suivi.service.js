@@ -23,6 +23,10 @@ const IndicateurSuiviService = {
       return ApiService.post("suivi-indicateurs", params);
     },
 
+    filtre(params) {
+      return ApiService.post("suivi-indicateurs/filter", params);
+    },
+
     update(slug, params) {
       return ApiService.update("suivi-indicateurs", slug, params);
     },
