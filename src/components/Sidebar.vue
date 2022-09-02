@@ -206,7 +206,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="projetVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets"
             style="width: 100%"
@@ -216,7 +216,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="composanteVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/composantes-globale"
             style="width: 100%"
@@ -226,7 +226,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="composanteVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/sous-composantes-globale"
             style="width: 100%"
@@ -236,7 +236,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="activiteVisible || planDecaissementVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/activites-globale"
             style="width: 100%"
@@ -246,7 +246,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="tacheVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/taches-globale"
             style="width: 100%"
@@ -294,7 +294,7 @@
         </div> -->
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
-      <div class="tab-content mb-3 bg-white">
+      <div v-if="indicateurVisible" class="tab-content mb-3 bg-white">
         <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/indicateurs/"
@@ -305,7 +305,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="indicateurVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/indicateurs/suivi"
             style="width: 100%"
@@ -895,7 +895,13 @@ export default {
       uniteeDeGestionVisible:false,
       bailleursVsisible:false,
       roleVisible:false,
-      anoVisible:false
+      anoVisible:false,
+      projetVisible:false,
+      composanteVisible:false,
+      activiteVisible:false,
+      tacheVisible:false,
+      indicateurVisible:false,
+      planDecaissementVisible:false
     }
   },
   methods: {
@@ -918,6 +924,26 @@ export default {
             if(element.slug ==='voir-un-role') {
               this.roleVisible = true
             }
+            if(element.slug ==='voir-un-projet') {
+              this.projetVisible = true
+            }
+            if(element.slug ==='voir-une-composante') {
+              this.composanteVisible = true
+            }
+            if(element.slug ==='voir-une-activite') {
+              this.activiteVisible = true
+            }
+            if(element.slug ==='voir-une-tache') {
+              this.tacheVisible = true
+            }
+            if(element.slug ==='voir-un-indicateur') {
+              this.indicateurVisible = true
+            }
+             if(element.slug ==='voir-un-plan-de-decaissement') {
+              this.planDecaissementVisible = true
+            }
+           
+        
            
           });
 

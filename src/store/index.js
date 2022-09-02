@@ -66,6 +66,8 @@ import eSuivis from "./modules/eSuivis/index";
 
 import sites from "./modules/sites/index";
 
+import revisionPtab from "./modules/revisionPtab/index"
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
@@ -221,6 +223,7 @@ export default new Vuex.Store({
     uniteesDeMesure,
     composantes,
     sousComposantes,
+    revisionPtab,
     activites,
     taches,
     paps,

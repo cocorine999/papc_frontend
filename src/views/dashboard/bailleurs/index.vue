@@ -327,6 +327,10 @@
         optionD: [{ name: "supprimer" }, { name: "modifier" }],
         optionUp: [{ name: "supprimer" }, { name: "modifier" }],
         option: [{ name: "supprimer" }, { name: "modifier" }],
+        bailleurVisible:false,
+        bailleurAdd:false,
+        bailleurDelete:false,
+        bailleurUpdate:false,
       };
     },
 

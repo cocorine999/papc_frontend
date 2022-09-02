@@ -39,6 +39,10 @@ const ActiviteService = {
       return ApiService.delete(`activites/${slug}`);
     },
 
+    prolonger(slug, params) {
+      return ApiService.post(`activites/${slug}/ajouterDuree`, params);
+    },
+
     composante(slug) {
       return ApiService.get(`activites/${slug}/composante`);
     },

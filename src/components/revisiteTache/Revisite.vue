@@ -94,7 +94,7 @@
           <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Suivi tache</span>
         </div>
 
-        <button v-if="seeTache"   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="seeTache && tacheVisible"   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +109,7 @@
       </div>
 
       <!-- le filtre -->
-      <div v-if="seeTache">
+      <div v-if="seeTache && tacheVisible">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <!--Filtre sur projet -->
           <div class="w-full grid grid-cols-2 gap-4">
@@ -280,6 +280,8 @@
               @validation="validation(tache)"
               @prolonger="prolonger(tache)"
               @suivre="suivreMyTache(tache)"
+              :isDelete="tacheDelete"
+              :isUpdate="tacheUpdate"
             ></card-tache>
           </div>
         </div>
@@ -372,7 +374,10 @@ export default {
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         
       ],
-
+      tacheVisible:false,
+      tacheAdd:false,
+      tacheDelete:false,
+      tacheUpdate:false,
 
       actions: [
        
@@ -398,6 +403,7 @@ export default {
       tache: "taches/getTache",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -417,6 +423,23 @@ export default {
       updateTache: "UPDATE_TACHE",
       deleteTache: "DESTROY_TACHE",
     }),
+
+     getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-tache') {
+            this.tacheVisible = true
+          }
+          if(element.slug === 'creer-une-tache') {
+            this.tacheAdd = true
+          }
+            if(element.slug === 'modifier-une-tache') {
+              this.tacheUpdate = true
+            }
+            if(element.slug ==='supprimer-une-tache') {
+              this.tacheDelete = true
+            } 
+        });
+    },
 
     ...mapActions({
       fetchActivites: "activites/FETCH_LIST_ACTIVITE_OF_COMPOSANTE",
@@ -808,7 +831,7 @@ export default {
 
   created() {
     this.programmeId = this.currentUser.programme.id
-
+  this.getPermission()
     if(this.programmeId){
       Promise.all([this.fetchProjets(this.programmeId) ]);
     }

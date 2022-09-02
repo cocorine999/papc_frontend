@@ -6,7 +6,9 @@
 
       <span v-if="isValidate" :title="composanteName != undefined ? composanteName.concat(' valider') : 'Composante valider' " class="text-green-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 15.5V2a2 2 0 012-2h8a2 2 0 012 2v13.5a.5.5 0 01-.74.439L8 13.069l-5.26 2.87A.5.5 0 012 15.5zm8.854-9.646a.5.5 0 00-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 10-.708.708l1.5 1.5a.5.5 0 00.708 0l3-3z" stroke="none"/></svg></span>
 
-      <dropdown @supprimer="$emit('supprimer')" @modifier="$emit('modifier')" @suivre="$emit('suivre')"  :option="option"></dropdown>
+      <dropdown v-if="isDelete && isUpdate" @supprimer="$emit('supprimer')" @modifier="$emit('modifier')" @suivre="$emit('suivre')"  :option="option"></dropdown>
+      <dropdown v-if="isDelete && isUpdate==false" @supprimer="$emit('supprimer')"  @suivre="$emit('suivre')"  :option="optionD"></dropdown>
+      <dropdown v-if="isUpdate && isDelete ==false" @modifier="$emit('modifier')" @suivre="$emit('suivre')"  :option="optionUpdate"></dropdown>
     </div>
     <!-- cards composantes -->
     <div class="relative p-4  bg-white sm:rounded-lg overflow-hidden">
@@ -42,14 +44,21 @@
 import Dropdown from '@/components/Dropdown.vue'
 export default {
   components: {Dropdown},
-  props: ['libelle', 'code', 'montantEPM', 'position', 'bailleur', 'poids', 'composanteName', 'statut'],
+  props: ['libelle', 'code', 'montantEPM', 'position', 'bailleur', 'poids', 'composanteName', 'statut','isDelete','isUpdate'],
    data() {
     return {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
         { name: "mes suivis" },
-       
+      ],
+      optionUpdate: [
+        { name: "modifier" },
+        { name: "mes suivis" },
+      ],
+      optionD: [
+        { name: "supprimer" },
+        { name: "mes suivis" },
       ],
       showValidate:false,
       showValidate:false,
