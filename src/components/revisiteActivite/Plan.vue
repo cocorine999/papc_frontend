@@ -32,7 +32,6 @@
                       @supprimer="supprimerPlan(planDeDecaissement)"
                       :option="optionActivite"
                     ></dropdown>
-<<<<<<< HEAD
                      <dropdown
                        v-if="isUpdate && isDelete==false"
                       @modifier="modifierPlan(planDeDecaissement)"
@@ -46,9 +45,7 @@
                       :option="optionActiviteD"
                     ></dropdown>
                   </div>
-=======
                   </div> -->
->>>>>>> e231e0ea961d324e9f44d1d597501fae4bfa9e17
             </div>
             <div class="my-2">
               <p class="text-sm font-semibold py-1">
@@ -120,11 +117,9 @@ export default {
        
         { name: "modifier" }
       ],
-  data() {
-    return {
-      planDeDecaissements: [],
     }
   },
+  
   methods: {
 
     //Charger les fonctions de communication avec le serveur
