@@ -260,7 +260,6 @@ export default {
       success: true,
       rejected: false,
       activiteId:'',
-      programmeId: this.currentUser?.programme.id,
       cols: 1,
       sendRequest: false,
       rangeValue: 0,
@@ -299,50 +298,15 @@ export default {
     };
   },
 
-  computed: {
-    //importation des variables du module activites
-
-    ...mapGetters({/*
-      projets: "projets/getProjets",
-      composantes: "composantes/getComposantes",
-      sousComposantes: "sousComposantes/getSousComposantes",
-      activites: "activites/getActivites",
-      planDeDecaissements: "planDeDecaissements/getPlanDeDecaissements",
-      */
-      currentUser : 'auths/GET_AUTHENTICATE_USER'
-    }),
-  },
-
   methods: {
     //Charger les fonctions de communication avec le serveur
-    ...mapMutations({
-      setPlanDeDecaissements: "planDeDecaissements/SET_LIST_PLAN_DE_DECAISSEMENT",
-      setActivites: "activites/SET_LIST_ACTIVITES",
-      setComposantes: 'composantes/SET_LIST_COMPOSANTES',
-      setSousComposantes: 'sousComposantes/SET_LIST_SOUSCOMPOSANTE'
-    }),
-
-    ...mapActions("activites", {
-      fetchActivites: "FETCH_LIST_ACTIVITE_OF_COMPOSANTE"
-    }),
-
-    ...mapActions("planDeDecaissements", {
-      fetchPlanDeDecaissements: "FETCH_LIST_PLAN_DE_DECAISSEMENT_ACTIVITE"
-    }),
 
     ...mapActions({
-      fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
-      fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
     }),
 
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
-    },
-
-    suivreMyActivite(activite) {
-      this.$router.push({name:'dashboard_projets_activites_globale_suivis',params:{id:activite.id}})
     },
 
     filtreRange(value) {
@@ -354,7 +318,10 @@ export default {
       this.seeActivite = true;
       this.seeSuivi = false;
       this.seeStatistique = false;
-      this.fetchActivites(this.composanteId)
+
+      this.activites = this.results['activites'].filter((value) => {
+        if(value.composanteId === this.composanteId) return value;
+      })
     },
 
     gotoStatistique() {
@@ -395,8 +362,18 @@ export default {
   },
 
   watch: {
-    loading: function (value) {
-      //this.loading = value
+
+    version: function (version) {
+      const params = {
+        "version": version,
+        "composantes": null,
+        "sous-composantes": null,
+        "activites": null
+      };
+
+      this.getPtabReviser(params).then((value) => {
+        this.results = value.data.data
+      })
     },
 
     errors: function (errors) {
@@ -543,23 +520,12 @@ export default {
       "version": this.version,
       "composantes": null,
       "sous-composantes": null,
-      "activites": null,
-      "taches": null
+      "activites": null
     };
 
     this.getPtabReviser(params).then((value) => {
       this.results = value.data.data
-
-      console.log(this.results);
     })
-
-
-    /* this.projets = value.data.data.projets
-      this.composantes = value.data.data.composantes
-      this.sousComposantes = value.data.data['sous-composantes']
-      this.activites = value.data.data.activites
-      this.taches = value.data.data.taches
-      this.suivis = value.data.data.suivis */
   }
 
 };

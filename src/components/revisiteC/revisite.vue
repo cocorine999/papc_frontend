@@ -1,12 +1,5 @@
 <template>
   <div class="w-full p-4">
-      <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
-            <div class="p-4 overflow-auto">
-              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest" @sendForm="sendForm" @closeModal="close"></vform>
-            </div>
-        </modal-top-right>
-      </div>
       
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
@@ -35,11 +28,6 @@
         <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
-      
-      <button v-if="seeComposant" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter un composant</span>
-      </button>
      
     </div>
     
@@ -102,17 +90,13 @@
             :position="composante.position"
             :poids="composante.poids"
             :bailleur="composante.sigle"
-            @modifier="modifier(composante)"
-            @supprimer="supprimer(composante)"
-            @validation="validation(composante)"
-            @suivre="suivreMyComposant(composante)"
           ></card-composante>
         </div>
 
       </div>
     </div>
     <div v-if="seeSuivi">
-      <suivi></suivi>
+      <suivi :suivis="results.suivis"></suivi>
     </div>
     
   </div>
@@ -129,10 +113,10 @@ import Vmodal from '@/components/Vmodal'
 import Vform from '@/components/Vform'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
-import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-import  { extractFormData, getStringValueOfStatutCode }  from '@/utils/index'
-import Projet from '@/store/modules/projets/projet'
+import { mapGetters, mapActions } from "vuex";
+import  { getStringValueOfStatutCode }  from '@/utils/index'
 import Suivi from "@/components/revisiteC/Suivi.vue";
+import Projet from '@/store/modules/projets/projet'
 export default {
   components: {
     Vmodal,
@@ -143,9 +127,9 @@ export default {
     ModalTopRight,
     Dropdown,
     CardComposante,
-    Vtable,
     Suivi
 },
+props: ['version'],
   data() {
     return {
       valueFiltre: null,
@@ -154,94 +138,24 @@ export default {
       rejected:false,
       rangeValue:0,
       showFiltre:false,
-      programmeId: this.currentUser?.programme?.id,
-      cols:1,
-      sendRequest: false,
-      submitText:"Enregistrer",
-      showModal:false,
-      line:false,
-      mosaique:true,
-      isStateChange:false,
       seeComposant:true,
       seeSuivi:false,
-      showInput:true,
       seeStatistique:false,
-      option:[
-        {name:"supprimer"},
-        {name:"modifier"},
-        {name:"dupliquer"},
-        {name:"continuer"},
-      ],
-      
-      composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
-
-      champs:[
-
-        {name: 'Nom de la composante', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-        
-      ],
-
-     
-      actions: [
-        { name: "supprimer", iconne: "" },
-      ],
-      dates:[
-        {}
-      ],
+      results: [],
+      projets: [],
+      composantes: [],
       suivis:[]
      
     }
     
   },
   
-  computed:{
-
-    //importation des variables du module auths
-    ...mapState({
-      composante: state => state.composantes.composante,
-      loading : state => state.loading,
-      errors : state => state.errors
-    }),
-
-    ...mapGetters({
-      projets: "projets/getProjets",
-      composantes: "composantes/getComposantes",
-      composante: "composantes/getComposante",
-      currentUser : 'auths/GET_AUTHENTICATE_USER'
-    }),
-
-  },
-
   methods: {
 
-    //Charger les fonctions de communication avec le serveur
-    ...mapMutations({
-      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
-      setComposantes: 'composantes/SET_LIST_COMPOSANTES'
-    }),
-
-    suivreMyComposant(composante) {
-      this.$router.push({name:'dashboard_projets_composantes_globale_suivis',params:{id:composante.id}})
-    },
-
-   
-    ...mapActions('composantes', {
-      fetchComposantes: "FETCH_LIST_COMPOSANTE_OF_PROJET",
-      saveComposante: "STORE_COMPOSANTE",
-      updateComposante: "UPDATE_COMPOSANTE",
-      deleteComposante: "DESTROY_COMPOSANTE"
-    }),
-
     ...mapActions({
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
+      getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
     }),
-
+    
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
@@ -267,11 +181,7 @@ export default {
       return `${nom}`
     },
 
-    addDate() {
-      this.dates.push({})
-    },
-
-     gotoSuivi() {
+    gotoSuivi() {
       this.seeSuivi = true
       this.seeComposant = false
     },
@@ -279,14 +189,6 @@ export default {
     gotoComposante() {
       this.seeSuivi = false
       this.seeComposant = true
-    },
-
-    gotoNext() {
-      this.$router.push('/dashboard/projets/sous-composantes-globale')
-    },
-
-    editerSuivi(index) {
-      this.showInput = false
     },
 
     toggle() {
@@ -307,205 +209,69 @@ export default {
       this.success = false
       this.rejected = true
     },
-    
-    addComponent() {
-      this.title ="Ajouter un nouveau composant"
-
-      this.submitText="Enregistrer",
-
-      this.showCloseModal(true)
-    },
-
-    modifier(composante) {
-
-      this.title = 'Modifier un composante'
-
-      this.setComposante(composante)
-
-      this.composanteAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-
-          if(value.key === item){
-            this.champs[index]['data'] = composante[item]
-          }
-
-        });
-
-      });
-
-      this.submitText = "Modifier",
-
-      this.showCloseModal(true)
-    },
-
-    supprimer(composante) {
-      if(window.confirm("Voulez-vous supprimer la composante " + composante.nom)){
-        if(this.sendRequest === false){
-
-          this.sendRequest = true;
-
-          this.deleteComposante(composante.id)
-            .then((value) => {           
-              this.fetchComposantes(this.valueFiltre.id);
-            })
-            .finally((error) => {      
-              this.sendRequest = false;        
-            });
-        }
-      }
-    },
-
-    dupliquer(composante) {
-
-      this.title = "Ajouter un nouveau  composant";
-
-      this.submitText = "Enrégistrer";
-
-      this.composanteAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-            this.champs[index]['data'] = composante[item]
-
-        });
-
-      });
-      
-      this.showCloseModal(true);
-      
-    },
-
-    resetForm(){
-
-      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
-      
-      window.document.getElementById('vform').reset()
-
-      this.setComposante({})
-    },
-    
-    gotoNext() {
-      this.$router.push('/dashboard/projets/composantes/sous-composantes')
-    },
 
     getStatus(status){
       return getStringValueOfStatutCode(status);
     },
 
-    validation(composante){
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-          this.updateComposante({composante: { "statut": -1, "projetId": this.valueFiltre.id }, id : composante.id})
-            .then((value) => {
-              this.fetchComposantes(this.valueFiltre.id);
-            })
-            .finally((error) => {              
-              this.sendRequest = false;
-              this.fetchComposantes(this.valueFiltre.id);
-            });
-
-      }
-    },
-    
-    sendForm() {
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-        this.champs = this.champs.map(item => { item.errors = []; return item})
-
-        let composante = extractFormData(this.champs, this.composanteAttributs)
-
-        composante.projetId = this.valueFiltre.id;
-                
-        if(this.composante?.id)
-        {
-
-          this.updateComposante({composante: composante, id : this.composante?.id})
-          
-            .then(response => {
-              
-              if(response.status === 200 || response.status === 201){
-                this.fetchComposantes(this.valueFiltre.id);
-                this.close()
-              }
-
-            })
-            .finally((error) => {              
-              this.sendRequest = false;
-            });
-
-        }
-        else
-        {
-          
-          this.saveComposante(composante)
-            .then(response => {
-              if(response.status === 200 || response.status === 201){
-                this.fetchComposantes(this.valueFiltre.id);
-                this.close()
-              }
-
-            })
-            .finally((error) => {              
-              this.sendRequest = false;
-            });
-        }
-      }
-    },
-
-    close() {
-      this.showCloseModal()
-
-      this.resetForm()
-
-      this.sendRequest = false;
-    }, 
-    
-    showCloseModal(value = false) {
-      this.showModal = value
-    },
-
   },
   watch: {
-    loading: function(value) {
-      //this.loading = value
+
+    version: function (version) {
+
+      const params = {
+        "version": version,
+        "composantes": null
+      };
+
+      this.getPtabReviser(params).then((value) => {
+        this.results = value.data.data
+      })
     },
 
     errors: function(errors) {
-      this.champs.forEach((value) => {
-        if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
-          value.errors = errors[value.key]
-        }
-      })
     },
 
     valueFiltre: function(valeur){
       if( valeur instanceof Projet || valeur instanceof Object )
       {
-        this.fetchComposantes(valeur.id);
+        this.composantes = this.results['composantes'].filter((value) => {
+          if(value.projetId === valeur.id) return value;
+        })
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
-        this.fetchComposantes(valeur);
+        this.composantes = this.results['composantes'].filter((value) => {
+          if(value.projetId === valeur) return value;
+        })
       }
     },
     
+    results: function(results){
+      this.projets = results['projets'];
+
+      if(results['projets'].length > 0){
+        this.projetFiltre = results[0]
+      }
+    },
+
     projets: function(projets){
-      this.valueFiltre = projets[0]
-    }
+      if(projets.length > 0){
+        this.valueFiltre = projets[0]
+      }
+    },
 
   },
 
-  created(){
-   
-    if(this.programmeId){
-      this.fetchProjets(this.programmeId)
-    } 
+  created() {
 
+    const params = {
+      "version": this.version,
+      "composantes": null
+    };
+
+    this.getPtabReviser(params).then((value) => {
+      this.results = value.data.data
+    })
   }
   
 }
