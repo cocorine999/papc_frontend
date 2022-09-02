@@ -43,6 +43,10 @@ const ProgrammeService = {
 
     activites(slug) {
       return ApiService.get(`programmes/${slug}/activites`);
+    },
+
+    scopes(slug) {
+      return ApiService.get(`programmes/${slug}/scopes`);
     }
 
   };

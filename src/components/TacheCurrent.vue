@@ -271,6 +271,7 @@
               :bailleur="tache.bailleur.sigle"
               :statut="getStatus(tache.statut)"
               :poids="tache.poids"
+              :poidsActuel="tache.poidsActuel"
               :libelle="tache.nom"
               :montantNE="tache.montantNE"
               :montantEPM="tache.montantEPM"

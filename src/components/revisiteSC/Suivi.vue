@@ -1,56 +1,31 @@
 <template>
-   <vtable id="datatable"
-        :headers="headers"
-        :datas="dataTable"
-        :sendRequest="sendRequest"
-        :actions="actions"
-        @supprimer="supprimer">
-      </vtable>
+  <vtable id="datatable" :headers="headers" :datas="suivis" sendRequest="false">
+  </vtable>
 </template>
 
 <script>
 import ComposanteService from "@/services/modules/composante.service.js";
-import Vtable from '@/components/Vtable'
+import Vtable from "@/components/Vtable";
 export default {
-  components:{Vtable},
-    data() {
-      return {
-        headers: [
-          { name: "Composante", cle: "composante"},
-          { name: "code pta", cle: "codePta"},
-          { name: "poids initial", cle:'poidsInitial'},
-          { name: "poids actuel", cle:'poidsActuel'},
-          { name: "date de creation", cle:'created_at'},
-        ],
-        dataTable:[],
-      }
-    },
-    methods: {
-      getSuivi() {
-        ComposanteService.getSuivi().then((data) => {
-            const datas = data.data.data
-            datas.forEach(element => {
-            const composante = element.composante.nom
-            const codePta = element.tache.codePta
-            const poidsInitial = element.tache.poids
-            const poidsActuel = element.poidsActuel
-            const created_at = element.created_at
-            this.dataTable.push({composante:composante,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
-            })
-            console.log("les suiivs",this.dataTable)
-        
-        }).catch((e) => {
-            console.log(e)
-        })
-      },
-
-    },
-    mounted() {
-      this.getSuivi()
-    }
-}
+  components: { Vtable },
+  props: ["suivis"],
+  data() {
+    return {
+      headers: [
+        { name: "Composante", props: "composante", cle: "nom", edit: false },
+        { name: "code pta", props: "composante", cle: "codePta", edit: false },
+        {
+          name: "poids initial",
+          props: "composante",
+          cle: "poids",
+          edit: false,
+        },
+        { name: "poids actuel", cle: "poidsActuel", edit: false },
+        { name: "date de creation", cle: "created_at", edit: false },
+      ],
+    };
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

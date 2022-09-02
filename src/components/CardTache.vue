@@ -75,6 +75,7 @@ export default {
 
     "bailleur",
     "poids",
+    "poidsActuel",
     "libelle",
     "montantNE",
     "montantEPM",

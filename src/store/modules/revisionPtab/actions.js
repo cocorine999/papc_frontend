@@ -4,6 +4,7 @@ import {
 } from "@/store/mutations.type"
 
 import RevisionPtabService from "@/services/modules/revision.ptab.service";
+import ProgrammeService from "@/services/modules/programme.service";
 
 export default {
     
@@ -13,6 +14,13 @@ export default {
 
         if(status === 200 || status === 201)
             commit(SET_LIST_SCOPE_PTAB, data.data);
+
+        return { data, status };
+    },
+    
+    FETCH_PROGRAMME_SCOPES : async ({ commit }, id) => {
+
+        const { data, status } = await ProgrammeService.scopes(id);
 
         return { data, status };
     },
