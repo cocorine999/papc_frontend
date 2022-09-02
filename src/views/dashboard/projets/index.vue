@@ -279,23 +279,25 @@ export default {
 
       this.title = 'Modifier un projet'
 
-      this.submitText="Enregistrer",
+      this.submitText = "Modifier"
 
-      this.setProjet(projet)
+      console.log(projet)
 
       this.projetAttributs.forEach((item) => {
 
         this.champs.find((value, index) => {
 
-          if(value.key === item){
-            this.champs[index]['data'] = this.projet[item]
+          if(value.key !== 'bailleurId' && value.key !== 'statut'){ 
+            if(value.key === item){
+              this.champs[index]['data'] = projet[item]
+            }
           }
 
         })
 
       })
 
-      this.showCloseModal(true)
+      this.showCloseModal(true) 
     },
 
     async supprimerProjet(projet) {
