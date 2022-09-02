@@ -82,15 +82,16 @@ export default {
   data() {
       return ({
         suiviAttributes : ['annee', 'trimestre','valeurCible','valeurRealise','indicateurId','commentaire'],
+        suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','nom','bailleurId','categorieId'],
         showModal2:false,
        
         champsRecherche:[
-          {name:'Indicateurs',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:true,options:['indicateur1','indicateur2','indicateurs3']},
-          {name:'Année de base',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Année',type:'year',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[1,2,3,4]},
-          {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
-          {name:'Categories',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:true,}, 
+          {name:'Indicateurs',key:'nom',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:false,options:['indicateur1','indicateur2','indicateurs3']},
+          {name:'Année de base',key:'date_debut',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Année',key:'date_fin',type:'year',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Trimestre',key:'trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:false,options:[1,2,3,4]},
+          {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:false,options:['BM','BOA']},
+          {name:'Categories',key:'categorieId',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:false,}, 
         ],
         cols:2,
         title:'',
@@ -112,7 +113,7 @@ export default {
       //this.loading = value
     },
      indicateurs: function (indicateurs) {
-      this.champs.map((item) => {
+      this.champsRecherche.map((item) => {
         if (item.key === "indicateurId") {
           item.options = indicateurs.map((indicateur) => {
             return {
@@ -126,7 +127,7 @@ export default {
     },
     
     hasErrors: function (errors) {
-      this.champs.forEach((value) => {
+      this.champsRecherche.forEach((value) => {
         value.errors = errors[value.key];
       });
       //this.errors = errors
@@ -157,6 +158,7 @@ export default {
     }),
     ...mapActions("suiviIndicateurs", {
       fetchSuivi: "FETCH_LIST_SUIVI",
+      filter: "FILTRE_SUIVI",
       saveSuivi: "STORE_SUIVI",
       updateSuivi: "UPDATE_SUIVI",
       deleteSuivi: "DESTROY_SUIVI",
@@ -191,9 +193,28 @@ export default {
         });
         return tab;
       },
+      filtre() {
+      this.champsRecherche = this.champsRecherche.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let suivi = extractFormData(this.champsRecherche,this.suiviAttributesRecherche);
+      suivi.bailleurId = suivi.bailleurId?.id
+      suivi.categorieId = suivi.categorieId?.id
+      suivi.uniteeMesureId = suivi.uniteeMesureId?.id
+      console.log("les suivi",suivi)
+
+      
+        this.filter(suivi).then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            this.close2();
+          }
+        });
+    },
     resetForm(){
 
-      this.champs = this.champs.map(item => { item.data = ''; return item})
+      this.champsRecherche = this.champsRecherche.map(item => { item.data = ''; return item})
         
       window.document.getElementById('vform')?.reset()
 
@@ -218,8 +239,15 @@ export default {
       this.showCloseModal();
       this.resetForm();
     },
+    close2() {
+      this.showCloseModal2();
+      this.resetForm();
+    },
     showCloseModal(value = false) {
       this.showModal = value;
+    },
+    showCloseModal2(value = false) {
+      this.showModal2 = value;
     },
     addSuivi() {
         this.title ='Creer un suivi'
