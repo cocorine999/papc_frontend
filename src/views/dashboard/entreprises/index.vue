@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="px-4">
+    <div v-if="entrepriseExecutanteVisible" class="px-4">
       <route-name title="entreprises" />
       <div v-if="showModal">
         <modal-top-right title="Ajouter un entreprise" v-on:close="close">
@@ -11,7 +11,7 @@
       <div class="flex items-center justify-between">
         <div class="flex space-x-4">
           <span
-            @click="goEntreprise"
+            @click="goEntreprise && entrepriseExecutanteVisible"
             :class="{ 'border-primary border-b-8': seeEntreprise }"
             class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
             >Listes entreprises executantes
@@ -25,6 +25,7 @@
         </div>
         <div>
           <button
+          v-if="entrepriseExecutanteVisible"
             @click="addEntrepriseExecutante"
             title="ajouter un bailleur"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
@@ -121,6 +122,7 @@
                   </svg>
                 </div> -->
                   <div
+                  v-if="entrepriseExecutanteUpdate"
                     class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"
                     @click="modifierEntrepriseExecutante(entrepriseExecutante)"
                   >
@@ -139,6 +141,7 @@
                     </svg>
                   </div>
                   <div
+                   v-if="entrepriseExecutanteDelete"
                     class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"
                     @click="supprimerEntrepriseExecutante(entrepriseExecutante)"
                   >
@@ -253,6 +256,10 @@ export default {
           text: "nom",
         },
       ],
+      entrepriseExecutanteVisible:false,
+      entrepriseExecutanteAdd:false,
+      entrepriseExecutanteDelete:false,
+      entrepriseExecutanteUpdate:false,
     };
   },
 
@@ -265,6 +272,7 @@ export default {
       mods: "mods/getMods",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -277,7 +285,24 @@ export default {
       this.seeEntreprise = false;
       this.seeChecklist = true;
     },
+     getPermission() {
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-une-entreprise-executante') {
+              this.entrepriseExecutanteVisible = true
+            }
+            if(element.slug === 'creer-une-entreprise-executante') {
+              this.entrepriseExecutanteAdd = true
+            }
+            if(element.slug === 'modifier-une-entreprise-executante') {
+              this.entrepriseExecutanteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-entreprise-executante') {
+              this.entrepriseExecutanteDelete = true
+            }
+           
+          });
 
+      },
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setEntrepriseExecutante: "entreprisesExecutante/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
@@ -452,7 +477,7 @@ export default {
 
   mounted() {
     console.log("Fetching entreprises executantes ...");
-
+   this.getPermission()
     this.fetchEntreprisesExecutante().then((value) => {
       if (this.currentUser.role.some((role) => role.nom !== "mod")) {
         setTimeout(() => {

@@ -46,9 +46,6 @@
        
       </modal-top-right>
 
-
-   
-
       <nav
         class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
         aria-label="Breadcrumb"
@@ -97,12 +94,14 @@
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
+            v-if="activiteVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeActivite }"
             @click="gotoActivite()"
             class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
             >Activités</span
           >
           <span
+            v-if="planDecaissementVisible"
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
             class="inline-block cursor-pointer text-lg uppercase py-2"
@@ -123,7 +122,7 @@
         </div>
 
         <button
-          v-if="seeActivite"
+          v-if="seeActivite && activiteAdd"
           @click="addActivite"
           title="ajouter une activite"
           class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
@@ -140,7 +139,7 @@
           <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
         </button>
         <button
-          v-if="seePlan"
+          v-if="seePlan && planDeDecaissement"
           @click="addPlan"
           title="ajouter un plan d'ecaissement"
           class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
@@ -166,7 +165,7 @@
         </button>
       </div>
 
-      <div v-if="seeActivite">
+      <div v-if="seeActivite && activiteVisible">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between">
             <!--Filtre sur projet -->
@@ -285,13 +284,15 @@
               @prolonger="prolonger(activite)"
               @validation="validation(activite)"
               @suivre="suivreMyActivite(activite)"
+              :isDelete="activiteDelete"
+              :isUpdate="activiteUpdate"
             ></card-activite>
             <!-- End cards Activités -->
           </div>
         </div>
       </div>
 
-      <div v-if="seePlan">
+      <div v-if="seePlan &&  planDecaissementVisible ">
 
 
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
@@ -323,9 +324,22 @@
                   </h1>
                   <div>
                     <dropdown
+                    v-if="planDeDecaissementUpdate && planDecaissementDelete"
                       @modifier="modifierPlan(planDeDecaissement)"
                       @supprimer="supprimerPlan(planDeDecaissement)"
                       :option="optionActivite"
+                    ></dropdown>
+                     <dropdown
+                       v-if="planDeDecaissementUpdate && planDecaissementDelete==false"
+                      @modifier="modifierPlan(planDeDecaissement)"
+                      @supprimer="supprimerPlan(planDeDecaissement)"
+                      :option="optionActiviteUpdate"
+                    ></dropdown>
+                     <dropdown
+                       v-if="!planDeDecaissementUpdate && planDecaissementDelete"
+                      @modifier="modifierPlan(planDeDecaissement)"
+                      @supprimer="supprimerPlan(planDeDecaissement)"
+                      :option="optionActiviteD"
                     ></dropdown>
                   </div>
                 </div>
@@ -509,7 +523,6 @@ export default {
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
       ],
 
-
       showModal: false,
       showModal2: false,
       line: false,
@@ -524,6 +537,13 @@ export default {
 
       optionActivite: [
         { name: "supprimer" },
+        { name: "modifier" }
+      ],
+       optionActiviteUpdate: [
+        { name: "modifier" }
+      ],
+       optionActiviteD: [
+       
         { name: "modifier" }
       ],
 
@@ -794,7 +814,14 @@ export default {
         
       ],
       dataTable:[],
-      
+      activiteVisible:false,
+      activiteAdd:false,
+      activiteDelete:false,
+      activiteUpdate:false,
+      planDecaissementVisible:false,
+      planDecaissementAdd:false,
+      planDecaissementUpdate:false,
+      planDecaissementDelete:false
     };
   },
 
@@ -818,6 +845,7 @@ export default {
       planDeDecaissement: "planDeDecaissements/getPlanDeDecaissement",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -857,6 +885,39 @@ export default {
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
+     getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+       
+          if(element.slug === 'creer-une-activite') {
+            this.activiteAdd = true
+          }
+           if(element.slug === 'voir-une-activite') {
+            this.activiteVisible = true
+          }
+            if(element.slug === 'modifier-une-activite') {
+              this.activiteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-activite') {
+              this.activiteDelete = true
+            }
+            //plan de decaissement
+
+            if(element.slug ==='voir-un-plan-de-decaissement') {
+              this.planDecaissementVisible= true
+            }
+            if(element.slug ==='creer-un-plan-de-decaissement') {
+              this.planDecaissementAdd= true
+            }
+            if(element.slug ==='modifier-un-plan-de-decaissement') {
+              this.planDecaissementUpdate= true
+            }
+             if(element.slug ==='supprimer-un-plan-de-decaissement') {
+              this.planDecaissementDelete= true
+            }
+           
+        });
+    },
+
 
     getSuivi() {
       ActiviteService.getSuivi().then((data) => {
@@ -1431,6 +1492,7 @@ export default {
 
   created() {
     this.getSuivi()
+    this.getPermission()
     this.programmeId = this.currentUser.programme.id
 
     if(this.programmeId){

@@ -65,7 +65,7 @@
     <div v-if="seeTache">
       <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
         <!--Filtre sur projet -->
-        <div class="w-full grid grid-cols-2 gap-4">
+      <div class="w-full grid grid-cols-2 gap-4">
           <div>
             <label for="" class="block text-sm font-semibold uppercase my-2"
               >Selectionnez un projet</label
@@ -80,21 +80,36 @@
               track-by="id"
             ></multiselect>
           </div>
+      </div>
 
-          <div>
-            <label for="" class="block text-sm font-semibold uppercase my-2"
-              >Selectionnez un composant</label
-            >
-            <multiselect
-              v-model="composanteFiltre"
-              :options="composantes"
-              :custom-label="customLabel"
-              :preselect-first="true"
-              placeholder="selectionnez une composante"
-              label="nom"
-              track-by="id"
-            ></multiselect>
-          </div>
+
+      <!-- le filtre -->
+      <div v-if="seeTache && tacheVisible">
+        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+          <!--Filtre sur projet -->
+          <div class="w-full grid grid-cols-2 gap-4">
+           <div>
+            <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
+            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+           </div>
+
+           <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+             <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+           </div>
+          
+            <div>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
+              <multiselect
+                v-model="sousComposanteFiltre"
+                :options="sousComposantes"
+                :preselect-first="true"
+                :custom-label="customLabel" 
+                placeholder="selectionnez une sous composante"
+                label="nom"
+                track-by="id">
+              </multiselect>
+            </div>
 
           <div>
             <label for="" class="block text-sm font-semibold uppercase my-2"
@@ -252,12 +267,16 @@
             :libelle="tache.nom"
             :montantNE="tache.montantNE"
             :montantEPM="tache.montantEPM"
+            :isDelete="tacheDelete"
+            :isUpdate="tacheUpdate"
           ></card-tache>
         </div>
       </div>
     </div>
     <div v-if="seeSuivi">
       <suivi :suivis="results.suivis"></suivi>
+    </div>
+    </div>
     </div>
   </div>
 </template>
@@ -317,6 +336,40 @@ export default {
       isStateChange: false,
       seeSuivi: false,
       seeTache: true,
+      options:[
+        {name:'activite 1'},
+        {name:'activite 2'},
+        {name:'activite 3'},
+        {name:'activite 4'},
+        {name:'activite 5'},
+      ],
+      tacheId:'',
+      tacheAttributs : ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'poids'],
+
+      champs:[
+
+        {name: 'Nom de la tâche', key: "nom", type: 'text', placeholdere: "Nom de la tâche", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
+        
+      ],
+      champsSuiviTache:[
+        {name: 'Tache ', key: "statut", type: '', placeholdere: 'Selectionnez une tache ', isSelect: true, isTextArea: false, data:'', required: true, options: [{nom:'tache 1'},{nom:'tache 2'}], cle: 'etat', value: 'nom',  errors : []},
+        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        
+      ],
+      tacheVisible:false,
+      tacheAdd:false,
+      tacheDelete:false,
+      tacheUpdate:false,
+
+      actions: [
+       
+      ],
+      
       tacheId: "",
 
       projets: [],
@@ -333,6 +386,7 @@ export default {
     ...mapGetters({
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -340,6 +394,22 @@ export default {
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER",
     }),
 
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-tache') {
+            this.tacheVisible = true
+          }
+          if(element.slug === 'creer-une-tache') {
+            this.tacheAdd = true
+          }
+            if(element.slug === 'modifier-une-tache') {
+              this.tacheUpdate = true
+            }
+            if(element.slug ==='supprimer-une-tache') {
+              this.tacheDelete = true
+            } 
+        });
+    },
     customLabel({ codePta, nom }) {
       return `${codePta} – ${nom}`;
     },
@@ -544,6 +614,7 @@ export default {
   },
 
   created() {
+    this.getPermission()
     const params = {
       "version": this.version,
       "composantes": null,

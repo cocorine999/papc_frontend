@@ -37,7 +37,7 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
       
-      <button v-if="seeSousComposantes" @click="addSousComposante" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if="seeSousComposantes && composanteAdd" @click="addSousComposante" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-2 text-xs font-semibold">ajouter un sous composant</span>
       </button>
@@ -112,6 +112,8 @@
             @supprimer="supprimer(sousComposante)"
             @validation="validation(sousComposante)"
             @suivre="suivreMyComposant(sousComposante)"
+            :isDelete = "composanteDelete"
+            :isUpdate="composanteUpdate"
           ></card-composante>
         </div>
 
@@ -186,9 +188,7 @@ export default {
         {name:"dupliquer"},
         {name:"continuer"},
       ],
-
       sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
-
       champs:[
 
         {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -214,7 +214,10 @@ export default {
       dates:[
         {}
       ],
-      suivis:[]
+      suivis:[],
+      composanteAdd:false,
+      composanteDelete:false,
+      composanteUpdate:false,
      
     }
     
@@ -236,6 +239,7 @@ export default {
       sousComposantes: "sousComposantes/getSousComposantes",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
 
   },
 
@@ -262,6 +266,22 @@ export default {
 
     suivreMyComposant(sousComposante) {
       this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
+    },
+
+     getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+       
+          if(element.slug === 'creer-une-composante') {
+            this.composanteAdd = true
+          }
+            if(element.slug === 'modifier-une-composante') {
+              this.composanteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-composante') {
+              this.composanteDelete = true
+            }
+           
+        });
     },
 
     getSuivi() {
@@ -583,6 +603,7 @@ export default {
   },
 
   created(){
+    this.getPermission()
     if(this.programmeId){
       this.fetchProjets(this.programmeId)
     }

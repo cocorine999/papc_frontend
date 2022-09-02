@@ -26,11 +26,25 @@
                     {{ planDeDecaissement.annee }}
                   </h1><!-- 
                   <div>
-                    <dropdown
+                     <dropdown
+                      v-if="isUpdate && isDelete"
                       @modifier="modifierPlan(planDeDecaissement)"
                       @supprimer="supprimerPlan(planDeDecaissement)"
                       :option="optionActivite"
                     ></dropdown>
+                     <dropdown
+                       v-if="isUpdate && isDelete==false"
+                      @modifier="modifierPlan(planDeDecaissement)"
+                      @supprimer="supprimerPlan(planDeDecaissement)"
+                      :option="optionActiviteUpdate"
+                    ></dropdown>
+                     <dropdown
+                       v-if="!isUpdate && isDelete"
+                      @modifier="modifierPlan(planDeDecaissement)"
+                      @supprimer="supprimerPlan(planDeDecaissement)"
+                      :option="optionActiviteD"
+                    ></dropdown>
+                  </div>
                   </div> -->
             </div>
             <div class="my-2">
@@ -80,12 +94,32 @@ export default {
     Multiselect,
     Dropdown,
   },
-  props: ['results'],
+  props:['isDelete','isUpdate','results'],
   data() {
     return {
-      planDeDecaissements: [],
+      planDeDecaissementAttributs : [ 'annee', 'trimestre', 'pret', 'budgetNational'],
+      champs2:[
+        {name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',  errors : []},
+        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+      ],
+      showModal2: false,
+
+      optionActivite: [
+        { name: "supprimer" },
+        { name: "modifier" }
+      ],
+       optionActiviteUpdate: [
+        { name: "modifier" }
+      ],
+       optionActiviteD: [
+       
+        { name: "modifier" }
+      ],
     }
   },
+  
   methods: {
 
     //Charger les fonctions de communication avec le serveur

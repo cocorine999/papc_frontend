@@ -28,6 +28,16 @@ export default {
       return { data, status };
   },
 
+  FILTRE_SUIVI : async ({ commit }, payload) => {
+
+    const { data, status } = await SuiviIndicateursService.filtre(payload);
+
+    if(status === 200 || status === 201) 
+        commit(SET_LIST_SUIVI, data.data);
+
+    return { data, status };
+},
+
   async GET_SUIVI ({ commit, getters }, {key, value }) {
 
       let suivi = null

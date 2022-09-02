@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-  <div class="px-4">
+  <div  v-if="mission_de_controleVisible" class="px-4">
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4 overflow-y-auto">
@@ -36,7 +36,7 @@
         <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
       </div>
       
-      <button  v-if="seeMo" @click="addMissionDeControle" title="Ajouter un MO"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seeMo && mission_de_controleAdd " @click="addMissionDeControle" title="Ajouter un MO"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
@@ -64,6 +64,8 @@
           @supprimer="supprimerMissionDeControle(missionDeControle)"
           @modifier="modifierMissionDeControle(missionDeControle)"
           @dupliquer="dupliquerMissionDeControle(missionDeControle)"
+          :isDelete="mission_de_controleDelete"
+          :isUpdate="mission_de_controleUpdate"
         >
         </card-mod>
       </div>
@@ -180,6 +182,10 @@ export default {
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
+        mission_de_controleVisible:false,
+        mission_de_controleAdd:false,
+        mission_de_controleDelete:false,
+        mission_de_controleUpdate:false,
     }
     
   },
@@ -191,7 +197,8 @@ export default {
         missionDeControle: "missionDeControles/getMissionDeControle",
         missionDeControles: "missionDeControles/getMissionDeControles",
         currentUser : 'auths/GET_AUTHENTICATE_USER'
-      })
+      }),
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -200,6 +207,7 @@ export default {
         setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
         setMissionDeControle: 'missionDeControles/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       }),
+      
 
       ...mapActions('missionDeControles', {
         fetchMissionDeControles: "FETCH_LIST_MISSION_DE_CONTROLE",
@@ -207,6 +215,24 @@ export default {
         updateMissionDeControle: "UPDATE_MISSION_DE_CONTROLE",
         deleteMissionDeControle: "DESTROY_MISSION_DE_CONTROLE"
       }),
+       getPermission() {
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-une-mission-de-controle') {
+              this.mission_de_controleVisible = true
+            }
+            if(element.slug === 'creer-une-mission-de-controle') {
+              this.mission_de_controleAdd = true
+            }
+            if(element.slug === 'modifier-une-mission-de-controle') {
+              this.mission_de_controleUpdate = true
+            }
+            if(element.slug ==='supprimer-une-mission-de-controle') {
+              this.mission_de_controleDelete = true
+            }
+           
+          });
+
+      },
 
     addPassation() {
       this.title2 = 'Ajouter une Passation'
@@ -381,6 +407,7 @@ export default {
   },
   
   mounted() {
+    this.getPermission()
     console.log("Fetching missions de controle ...")
     this.fetchMissionDeControles()
   }

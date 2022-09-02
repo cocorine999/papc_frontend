@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-   <div class="p-4">
+   <div v-if="activiteVisible || planDecaissementVisible" class="p-4">
     <div class="select w-52">
       <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
         
@@ -33,16 +33,19 @@ export default {
   data() {
     return {
       currentPage:true,
+      version:'current',
+      activiteVisible:false,
+      planDecaissementVisible:false,
       version: '',
       scopes: []
     }
   },
-
-  computed: {
+   computed: {
     
     ...mapGetters({
       currentUser : 'auths/GET_AUTHENTICATE_USER',
     }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
   
   methods: {
@@ -50,6 +53,16 @@ export default {
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES"
     }),
+    getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-activite') {
+            this.activiteVisible = true
+          }
+          if(element.slug ==='voir-un-plan-de-decaissement') {
+            this.planDecaissementVisible= true
+          }
+        });
+      },
 
     choiceVersion(version) {
 
@@ -65,14 +78,20 @@ export default {
       }
     }
   },
+  
 
   created() {
+    this.getPermission()
     if(this.currentUser.programme.id){
       this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
         this.scopes = response.data.data
       });
     }
   },
+
+ 
+    
+ 
 
 
 };

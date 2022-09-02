@@ -59,6 +59,23 @@
       ></span>
 
       <dropdown
+      v-if="isDelete && isUpdate"
+        @supprimer="$emit('supprimer')"
+        @modifier="$emit('modifier')"
+        @prolonger="$emit('prolonger')"
+        @suivre="$emit('suivre')"
+        :option="option"
+      ></dropdown>
+        <dropdown
+        v-if="isDelete && isUpdate==false"
+        @supprimer="$emit('supprimer')"
+        @modifier="$emit('modifier')"
+        @prolonger="$emit('prolonger')"
+        @suivre="$emit('suivre')"
+        :option="Doption"
+      ></dropdown>
+        <dropdown
+        v-if="isUpdate && isDelete ==false"
         @supprimer="$emit('supprimer')"
         @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')"
@@ -166,13 +183,25 @@ export default {
     "structureResponsable",
     "debut",
     "fin",
-    "statut"
+    "statut",
+    "isDelete",
+    "isUpdate"
   ],
   components: { Dropdown },
   data() {
     return {
       option: [
         { name: "supprimer" },
+        { name: "modifier" },
+        { name: "prolonger" },
+        { name: "mes suivis" },
+      ],
+       optionD: [
+        { name: "supprimer" },
+        { name: "prolonger" },
+        { name: "mes suivis" },
+      ],
+      optionUpdate: [
         { name: "modifier" },
         { name: "prolonger" },
         { name: "mes suivis" },

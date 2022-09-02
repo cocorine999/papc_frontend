@@ -118,7 +118,7 @@ import Vform from '@/components/Vform'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
-import { mapActions } from "vuex";
+ import { mapGetters, mapMutations, mapActions,mapState } from "vuex";
 import { getStringValueOfStatutCode } from '@/utils/index'
 import Composante from '@/store/modules/composantes/composante'
 import Suivi from "@/components/revisiteSC/Suivi.vue";
@@ -151,6 +151,44 @@ props: ['version'],
       seeSuivi:false,
       showInput:true,
       seeStatistique:false,
+      option:[
+        {name:"supprimer"},
+        {name:"modifier"},
+        {name:"dupliquer"},
+        {name:"continuer"},
+      ],
+
+      sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
+
+      champs:[
+
+        {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
+        
+      ],
+    headers: [
+        { name: "Composante", cle: "composante"},
+        { name: "code pta", cle: "codePta"},
+        { name: "poids initial", cle:'poidsInitial'},
+        { name: "poids actuel", cle:'poidsActuel'},
+        { name: "date de creation", cle:'created_at'},
+      ],
+      dataTable:[],
+     
+      actions: [
+        { name: "supprimer", iconne: "" },
+      ],
+      dates:[
+        {}
+      ],
+      suivis:[],
+      composanteAdd:false,
+      composanteDelete:false,
+      composanteUpdate:false,
       results: [],
       projets: [],
       composantes: [],
@@ -161,17 +199,70 @@ props: ['version'],
     
   },
 
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      sousComposante: state => state.sousComposantes.composante,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      projets: "projets/getProjets",
+      composantes: "composantes/getComposantes",
+      sousComposante: "sousComposantes/getSousComposante",
+      sousComposantes: "sousComposantes/getSousComposantes",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+
+  },
+
   methods: {
 
     ...mapActions({
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
     }),
 
-    gotoComposante() {
-      this.seeSuivi = false
-      this.seeSousComposantes = true
+    suivreMyComposant(sousComposante) {
+      this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
     },
 
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        
+          if(element.slug === 'creer-une-composante') {
+            this.composanteAdd = true
+          }
+            if(element.slug === 'modifier-une-composante') {
+              this.composanteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-composante') {
+              this.composanteDelete = true
+            }
+           
+        });
+    },
+
+    getSuivi() {
+      ComposanteService.getSuivi().then((data) => {
+        const datas = data.data.data
+        datas.forEach(element => {
+          const composante = element.composante.nom
+          const codePta = element.tache.codePta
+          const poidsInitial = element.tache.poids
+          const poidsActuel = element.poidsActuel
+          const created_at = element.created_at
+          this.dataTable.push({composante:composante,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+        })
+        console.log("les suiivs",this.dataTable)
+       
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+  
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
@@ -289,7 +380,7 @@ props: ['version'],
   },
 
   created() {
-
+    this.getSuivi()
     const params = {
       "version": this.version,
       "composantes": null,

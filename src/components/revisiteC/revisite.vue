@@ -28,6 +28,11 @@
         <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">les composantes </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
+      
+      <button v-if="seeComposant && composanteAdd" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+          <span class="mx-2 text-xs font-semibold">ajouter un composant</span>
+      </button>
      
     </div>
     
@@ -90,6 +95,12 @@
             :position="composante.position"
             :poids="composante.poids"
             :bailleur="composante.sigle"
+            @modifier="modifier(composante)"
+            @supprimer="supprimer(composante)"
+            @validation="validation(composante)"
+            @suivre="suivreMyComposant(composante)"
+            :isDelete = "composanteDelete"
+            :isUpdate="composanteUpdate"
           ></card-composante>
         </div>
 
@@ -113,9 +124,9 @@ import Vmodal from '@/components/Vmodal'
 import Vform from '@/components/Vform'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
-import { mapGetters, mapActions } from "vuex";
 import  { getStringValueOfStatutCode }  from '@/utils/index'
 import Suivi from "@/components/revisiteC/Suivi.vue";
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import Projet from '@/store/modules/projets/projet'
 export default {
   components: {
@@ -141,6 +152,35 @@ props: ['version'],
       seeComposant:true,
       seeSuivi:false,
       seeStatistique:false,
+      option:[
+        {name:"supprimer"},
+        {name:"modifier"},
+        {name:"dupliquer"},
+        {name:"continuer"},
+      ],
+      
+      composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
+
+      champs:[
+
+        {name: 'Nom de la composante', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
+        
+      ],
+
+      composanteAdd:false,
+      composanteDelete:false,
+      composanteUpdate:false,
+      actions: [
+        { name: "supprimer", iconne: "" },
+      ],
+      dates:[
+        {}
+      ],
       results: [],
       projets: [],
       composantes: [],
@@ -150,7 +190,59 @@ props: ['version'],
     
   },
   
+  computed:{
+
+    //importation des variables du module auths
+    ...mapState({
+      composante: state => state.composantes.composante,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      projets: "projets/getProjets",
+      composantes: "composantes/getComposantes",
+      composante: "composantes/getComposante",
+      currentUser : 'auths/GET_AUTHENTICATE_USER'
+    }),
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+
+  },
+
   methods: {
+
+    //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setComposantes: 'composantes/SET_LIST_COMPOSANTES'
+    }),
+     getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        
+          if(element.slug === 'creer-une-composante') {
+            this.composanteAdd = true
+          }
+            if(element.slug === 'modifier-une-composante') {
+              this.composanteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-composante') {
+              this.composanteDelete = true
+            }
+           
+        });
+    },
+    suivreMyComposant(composante) {
+      this.$router.push({name:'dashboard_projets_composantes_globale_suivis',params:{id:composante.id}})
+    },
+
+   
+    ...mapActions('composantes', {
+      fetchComposantes: "FETCH_LIST_COMPOSANTE_OF_PROJET",
+      saveComposante: "STORE_COMPOSANTE",
+      updateComposante: "UPDATE_COMPOSANTE",
+      deleteComposante: "DESTROY_COMPOSANTE"
+    }),
 
     ...mapActions({
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
@@ -263,7 +355,7 @@ props: ['version'],
   },
 
   created() {
-
+    this.getPermission()
     const params = {
       "version": this.version,
       "composantes": null

@@ -49,12 +49,14 @@
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
+            v-if="activiteVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeActivite }"
             @click="gotoActivite()"
             class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
             >Activités</span
           >
           <span
+            v-if="planDecaissementVisible"
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
             class="inline-block cursor-pointer text-lg uppercase py-2"
@@ -74,9 +76,51 @@
           </span>
         </div>
 
+        <button
+          v-if="seeActivite && activiteVisible"
+          @click="addActivite"
+          title="ajouter une activite"
+          class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+        >
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+            >
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+          ></span>
+          <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
+        </button>
+        <button
+          v-if="seePlan && planDecaissementVisible"
+          @click="addPlan"
+          title="ajouter un plan d'ecaissement"
+          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
+        >
+          <span
+            ><svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              height="1.3em"
+              width="1.3em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path fill="none" d="M0 0h24v24H0V0z"></path>
+              <path
+                d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
+              ></path></svg
+          ></span>
+          <span class="mx-2 text-sm font-semibold"
+            >ajouter un plan de décaissement</span
+          >
+        </button>
       </div>
 
-      <div v-if="seeActivite">
+      <div v-if="seeActivite && activiteVisible">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between">
             <!--Filtre sur projet -->
@@ -190,6 +234,13 @@
               :fin="activite.fin"
               :statut="getStatus(activite.statut)"
               :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+              @modifier="modifier(activite)"
+              @supprimer="supprimer(activite)"
+              @prolonger="prolonger(activite)"
+              @validation="validation(activite)"
+              @suivre="suivreMyActivite(activite)"
+              :isDelete="activiteDelete"
+              :isUpdate="activiteUpdate"
             ></card-activite>
             <!-- End cards Activités -->
           </div>
@@ -197,7 +248,7 @@
       </div>
 
       <div v-if="seePlan">
-        <plan :results="results"></plan>
+        <plan :results="results" :isDelete="planDecaissementDelete" :isUpdate="planDecaissementUpdate"></plan>
       </div>
 
       <div v-if="seeSuivi">
@@ -294,6 +345,14 @@ export default {
       dates: {
         debut:'',fin:''
       },
+      activiteVisible:false,
+      activiteAdd:false,
+      activiteDelete:false,
+      activiteUpdate:false,
+      planDecaissementVisible:false,
+      planDecaissementAdd:false,
+      planDecaissementUpdate:false,
+      planDecaissementDelete:false
 
     };
   },
@@ -304,6 +363,40 @@ export default {
     ...mapActions({
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
     }),
+
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+       
+          if(element.slug === 'creer-une-activite') {
+            this.activiteAdd = true
+          }
+           if(element.slug === 'voir-une-activite') {
+            this.activiteVisible = true
+          }
+            if(element.slug === 'modifier-une-activite') {
+              this.activiteUpdate = true
+            }
+            if(element.slug ==='supprimer-une-activite') {
+              this.activiteDelete = true
+            }
+            //plan de decaissement
+
+            if(element.slug ==='voir-un-plan-de-decaissement') {
+              this.planDecaissementVisible= true
+            }
+            if(element.slug ==='creer-un-plan-de-decaissement') {
+              this.planDecaissementAdd= true
+            }
+            if(element.slug ==='modifier-un-plan-de-decaissement') {
+              this.planDecaissementUpdate= true
+            }
+             if(element.slug ==='supprimer-un-plan-de-decaissement') {
+              this.planDecaissementDelete= true
+            }
+           
+        });
+    },
+
 
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
@@ -515,7 +608,7 @@ export default {
   },
 
   created() {
-
+    this.getPermission()
     const params = {
       "version": this.version,
       "composantes": null,

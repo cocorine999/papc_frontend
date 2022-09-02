@@ -38,14 +38,20 @@ export default {
     Dashboard,
     TacheCurrent,
     Revisite,
+    
   },
   data() {
     return {
-      currentPage: true,
-      version: "",
+      currentPage:true,
+      version:'current',
+      tacheVisible:false,
       scopes: []
-    };
+    }
   },
+  computed: {
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+  },
+
 
   computed: {
     
@@ -55,6 +61,13 @@ export default {
   },
 
   methods: {
+     getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-une-tache') {
+          this.tacheVisible = true
+        }
+      });
+    },
 
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES"
@@ -79,6 +92,9 @@ export default {
         this.scopes = response.data.data
       });
     }
+  },
+  mounted() {
+    this.getPermission()
   }
 };
 </script>

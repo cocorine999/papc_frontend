@@ -33,17 +33,15 @@ export default {
   },
   data() {
     return {
-      currentPage: true,
+      currentPage:true,
+      version:'current',
+      composanteVisible:false,
       version: "",
       scopes: [],
-    };
+    }
   },
-
   computed: {
-    
-    ...mapGetters({
-      currentUser : 'auths/GET_AUTHENTICATE_USER',
-    })
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -51,6 +49,13 @@ export default {
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES"
     }),
+       getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-une-composante') {
+            this.composanteVisible = true
+          }
+        });
+    },
 
     choiceVersion(version) {
       if (this.scopes.length > 0) {
@@ -71,6 +76,9 @@ export default {
         this.scopes = response.data.data
       });
     }
+  },
+  mounted() {
+    this.getPermission()
   }
 };
 </script>

@@ -23,8 +23,8 @@
 
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span @click="goPta" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
-        <span @click="goPpm" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
+        <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
+        <span @click="goPpm" v-if="ppmVisible" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
       </div> 
       <div>
         <div v-if="seePta" class="flex space-x-4 items-center">
@@ -80,10 +80,10 @@
       </div>
     </div>
     
-    <div v-if="seePta" class="relative my-4  sm:rounded-lg">
+    <div v-if="seePta && ptaVisible" class="relative my-4  sm:rounded-lg">
       <ptab></ptab>
     </div>
-    <div v-if="seePpm" class="relative my-4  sm:rounded-lg">
+    <div v-if="seePpm && ppmVisible " class="relative my-4  sm:rounded-lg">
       <ptab></ptab>
     </div>
   </div>
@@ -97,6 +97,7 @@
  import Ptab from '@/components/Ptab'
  import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
+ import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   components: {
     Ptab,
@@ -117,9 +118,16 @@ export default {
         {name:'Trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:true,options:[1,2,3,4]},
         {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
       ],
+      ptaVisible:false,
+      ppmVisible:false,
+    
       cols:2,
     }      
   },
+   computed: {
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+  },
+
   methods: {
     exportAsExcel () {
       this.showModal = true
@@ -131,7 +139,22 @@ export default {
     goPpm() {
       this.seePta = false
       this.seePpm = true
-    }
+    },
+    getPermission() {
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir ptab') {
+              this.ptaVisible = true
+            }
+            if(element.slug === 'voir ppm') {
+              this.ppmVisible = true
+            }
+           
+          });
+
+    },
+  },
+  mounted() {
+    this.getPermission()
   }
 }
 </script>
