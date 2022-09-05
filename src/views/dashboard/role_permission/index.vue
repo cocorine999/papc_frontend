@@ -142,8 +142,8 @@
                        {{data.nom}}
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
-                        <div class="flex space-x-4 space-y-2 flex-wrap ">
-                          <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold text-white border-green-500 rounded-xl"> {{permission.nom}} </span>
+                        <div class="flex space-x-4  flex-wrap ">
+                          <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold my-2 text-white border-green-500 rounded-xl"> {{permission.nom}} </span>
                         </div>
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
