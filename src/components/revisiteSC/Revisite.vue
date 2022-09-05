@@ -1,14 +1,6 @@
 <template>
     <div class="w-full p-4">
 
-      <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
-            <div class="p-4 overflow-auto">
-              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest" @sendForm="sendForm" @closeModal="close"></vform>
-            </div>
-        </modal-top-right>
-      </div>
-      
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -36,11 +28,6 @@
         <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Sous composantes </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
-      
-      <button v-if="seeSousComposantes" @click="addSousComposante" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter un sous composant</span>
-      </button>
      
     </div>
     
@@ -107,18 +94,13 @@
             :position="sousComposante.position"
             :poids="sousComposante.poids"
             :bailleur="sousComposante.sigle"
-            @modifier="modifier(sousComposante)"
-            @dupliquer="dupliquer(sousComposante)"
-            @supprimer="supprimer(sousComposante)"
-            @validation="validation(sousComposante)"
-            @suivre="suivreMyComposant(sousComposante)"
           ></card-composante>
         </div>
 
       </div>
     </div>
     <div v-if="seeSuivi">
-        <suivi></suivi>
+        <suivi :suivis="results.suivis"></suivi>
     </div>
     
     </div>
@@ -136,11 +118,10 @@ import Vform from '@/components/Vform'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
-import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
+ import { mapGetters, mapMutations, mapActions,mapState } from "vuex";
+import { getStringValueOfStatutCode } from '@/utils/index'
 import Composante from '@/store/modules/composantes/composante'
 import Suivi from "@/components/revisiteSC/Suivi.vue";
-import ComposanteService from "@/services/modules/composante.service.js";
 export default {
   components: {
     Dashboard,
@@ -155,6 +136,7 @@ export default {
     Suivi,
     Vtable
 },
+props: ['version'],
   data() {
     return {
       valueFiltre: null,
@@ -164,13 +146,6 @@ export default {
       rejected:false,
       rangeValue:0,
       showFiltre:false,
-      programmeId: this.currentUser?.programme?.id,
-      cols:1,
-      sendRequest: false,
-      submitText:"Enregistrer",
-      showModal:false,
-      line:false,
-      mosaique:true,
       isStateChange:false,
       seeSousComposantes:true,
       seeSuivi:false,
@@ -214,6 +189,11 @@ export default {
       composanteAdd:false,
       composanteDelete:false,
       composanteUpdate:false,
+      results: [],
+      projets: [],
+      composantes: [],
+      sousComposantes: [],
+      suivis:[]
      
     }
     
@@ -241,23 +221,8 @@ export default {
 
   methods: {
 
-    //Charger les fonctions de communication avec le serveur
-    ...mapMutations({
-      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setSousComposante: 'sousComposantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
-      setSousComposantes: 'sousComposantes/SET_LIST_SOUS_COMPOSANTE'
-    }),
-
-    ...mapActions('sousComposantes', {
-      fetchSousComposantes: "FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
-      saveSousComposante: "STORE_SOUS_COMPOSANTE",
-      updateSousComposante: "UPDATE_SOUS_COMPOSANTE",
-      deleteSousComposante: "DESTROY_SOUS_COMPOSANTE"
-    }),
-
     ...mapActions({
-      fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
+      getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
     }),
 
     suivreMyComposant(sousComposante) {
@@ -297,9 +262,7 @@ export default {
         console.log(e)
       })
     },
-
-
-
+  
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
@@ -316,21 +279,10 @@ export default {
 
       this.rangeValue = value
 
-      /* let composantes = this.composantes.map((composante) => {
-        
-        if(composante.tep >= this.getIntervale(value) &&  composante.tep <= value){
-            return composante;
-        }
-      }); */
-
     },
 
     selectProjet ({ nom}) {
       return `${nom}`
-    },
-
-    addDate() {
-      this.dates.push({})
     },
 
      gotoSuivi() {
@@ -341,14 +293,6 @@ export default {
     gotoComposante() {
       this.seeSuivi = false
       this.seeSousComposantes = true
-    },
-
-    gotoNext() {
-      this.$router.push('/dashboard/projets/sous-composantes-globale')
-    },
-
-    editerSuivi(index) {
-      this.showInput = false
     },
 
     toggle() {
@@ -369,221 +313,50 @@ export default {
       this.success = false
       this.rejected = true
     },
-    
-    addSousComposante() {
-      this.title ="Ajouter un nouveau composant"
 
-      this.submitText="Enregistrer",
-
-      this.showCloseModal(true)
-
-    },
-
-    dupliquer(sousComposante) {
-
-      this.title ="Ajouter un nouveau composant"
-
-      this.sousComposanteAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-
-          if(value.key === item){
-            this.champs[index]['data'] = sousComposante[item]
-          }
-
-        });
-
-      });
-
-      this.submitText="Enregistrer",
-
-      this.showCloseModal(true)
-    },
-
-    
-
-    modifier(sousComposante) {
-
-      this.title = 'Modifier un sous composant'
-
-      this.setSousComposante(sousComposante)
-
-      this.sousComposanteAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-
-          if(value.key === item){
-            this.champs[index]['data'] = sousComposante[item]
-          }
-
-        });
-
-      });
-
-      this.submitText = "Modifier",
-
-      this.showCloseModal(true)
-    },
-
-    supprimer(sousComposante) {
-      if(window.confirm("Voulez-vous supprimer la sous composante " + sousComposante.nom)){
-        if(this.sendRequest === false){
-
-          this.sendRequest = true;
-
-          this.deleteSousComposante(sousComposante.id).finally((response) => {
-                this.sendRequest = false;
-                this.fetchSousComposantes(this.valueFiltre.id);
-          });
-        }
-      }
-    },
-
-    dupliquer(sousComposante) {
-
-      this.title = "Ajouter un nouveau  composant";
-
-      this.submitText = "Enrégistrer";
-
-      this.sousComposanteAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
-
-          if(value.key === item){
-            this.champs[index]['data'] = sousComposante[item]
-          }
-
-        });
-
-      });
-      
-      this.showCloseModal(true);
-      
-    },
-
-    resetForm(){
-
-      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
-      
-      window.document.getElementById('vform').reset()
-
-      this.setSousComposante({})
-    },
-    
-    gotoNext() {
-      this.$router.push('/dashboard/projets/activites-globale')
-    },
-
-    validation(sousComposante){
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-        this.updateSousComposante({sousComposante: { "statut": -1, "composanteId": this.valueFiltre.id }, id : sousComposante.id})
-        .then((value) => {
-            this.fetchSousComposantes(this.valueFiltre.id);
-        })
-          .finally((error) => {
-            this.sendRequest = false;
-          })
-
-      }
-    },
-    
-    sendForm() {
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-        this.champs = this.champs.map(item => { item.errors = []; return item})
-
-        let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
-
-        sousComposante.composanteId = this.valueFiltre.id;
-                
-        if(this.sousComposante?.id)
-        {
-
-          this.updateSousComposante({sousComposante: sousComposante, id : this.sousComposante?.id})
-            .then(response => {
-              
-              if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.valueFiltre.id);
-                this.close()
-              }
-
-            })
-            .finally((error) => {
-              this.sendRequest = false;
-            })
-
-        }
-        else
-        {
-          
-          this.saveSousComposante(sousComposante)
-          
-            .then(response => {
-              if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.valueFiltre.id);
-                this.close()
-              }
-
-            })
-            .finally((error) => {          
-              this.sendRequest = false;    
-            })
-        }
-      }
-    },
-
-    close() {
-      this.showCloseModal()
-
-      this.resetForm()
-
-      this.sendRequest = false;
-    }, 
-    
-    showCloseModal(value = false) {
-      this.showModal = value
-    },
 
   },
   watch: {
-    loading: function(value) {
-      //this.loading = value
-    },
 
-    errors: function(errors) {
+    version: function (version) {
 
-      this.champs.forEach((value) => {
-        if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
-          value.errors = errors[value.key]
-        }
+      const params = {
+        "version": version,
+        "composantes": null,
+        "sous-composantes": null
+      };
+
+      this.getPtabReviser(params).then((value) => {
+        this.results = value.data.data
       })
-      //this.errors = errors
-    },
+    },    
 
     valueFiltre: function(valeur){
       if( valeur instanceof Composante || valeur instanceof Object )
       {
-        this.fetchSousComposantes(valeur.id);
+        this.sousComposantes = this.results['sous-composantes'].filter((value) => {
+          if(value.composanteId === valeur.id) return value;
+        })
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
-        this.fetchSousComposantes(valeur);
+        
+        this.sousComposantes = this.results['sous-composantes'].filter((value) => {
+          if(value.composanteId === valeur) return value;
+        })
       }
     },
 
     projetFiltre: function(valeur){
       if( valeur instanceof Composante || valeur instanceof Object )
       {
-        this.fetchComposantes(valeur.id);
+        this.composantes = this.results['composantes'].filter((value) => {
+          if(value.projetId === valeur.id) return value;
+        });
       }
       else if( valeur !== null ){
-        this.fetchComposantes(valeur);
+        this.composantes = this.results['composantes'].filter((value) => {
+          if(value.projetId === valeur) return value;
+        });
       }
     },
     
@@ -594,16 +367,30 @@ export default {
     projets: function(projets){
       this.projetFiltre = projets[0]
       this.valueFiltre = []
+    },
+    
+    results: function(results){
+      this.projets = results['projets'];
+
+      if(results['projets'].length > 0){
+        this.projetFiltre = results[0]
+      }
     }
 
   },
 
-  created(){
+  created() {
     this.getSuivi()
-    this.getPermission()
-    if(this.programmeId){
-      this.fetchProjets(this.programmeId)
-    }
+    const params = {
+      "version": this.version,
+      "composantes": null,
+      "sous-composantes": null,
+    };
+
+    this.getPtabReviser(params).then((value) => {
+      this.results = value.data.data
+      console.log("results : ", this.results)
+    })
   }
   
 }

@@ -19,11 +19,11 @@ export default {
   data() {
     return {
         headers: [
-        { name: "Activite", cle: "activite"},
-        { name: "code pta", cle: "codePta"},
-        { name: "poids initial", cle:'poidsInitial'},
-        { name: "poids actuel", cle:'poidsActuel'},
-        { name: "date de creation", cle:'created_at'},
+        { name: "Activite", props:'activite', cle: "nom", edit : false},
+        { name: "code pta", props:'activite', cle: "codePta", edit : false},
+        { name: "poids initial", props:'activite', cle:'poids', edit : false},
+        { name: "poids actuel", cle:'poidsActuel', edit : false},
+        { name: "date de creation", cle:'created_at', edit : false},
       ]
     }
   }
