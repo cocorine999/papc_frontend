@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="projetVisible" class="w-full p-4">
+    <div class="w-full p-4">
        <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
         <div style="width:60vw" class="p-4">
           <form @submit.prevent="saveProlongerDate()" action="">

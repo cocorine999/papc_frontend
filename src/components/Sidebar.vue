@@ -206,7 +206,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div v-if="projetVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets"
             style="width: 100%"
