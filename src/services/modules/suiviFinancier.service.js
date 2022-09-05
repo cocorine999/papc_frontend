@@ -31,6 +31,9 @@ const SuiviFinanciersService = {
     byProgramme(slug) {
       return ApiService.get(`programmes/${slug}/suiviFinanciers`);
     },
+    filtre(params) {
+      return ApiService.post("suiviFinanciers/filtres", params);
+    },
 
   };
 

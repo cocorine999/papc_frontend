@@ -27,7 +27,11 @@ const DecaissementService = {
 
     programmes(slug) {
       return ApiService.get(`decaissements/${slug}/programmes`);
-    }
+    },
+
+    filtre(params) {
+      return ApiService.post("decaissements/filtres", params);
+    },
 
   };
 
