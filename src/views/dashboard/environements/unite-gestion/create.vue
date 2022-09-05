@@ -45,13 +45,8 @@
                   <div class="my-3 w-4/5" v-if="form.inputType=='photos'">
                      <div class="flex justify-between">
                       <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Libelle : {{form.nom}} </label>
-                       <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
-                          <option  value="KM"> KM </option>
-                          <option  value="Mettre"> Metre </option>
-                          <option  value="CM"> CM </option>
-                          <option  value="pourcentage"> pourcentage </option>
-                          <option  value="personnes"> personnes </option>
-                          <option  value="unite"> unité </option>
+                      <select name="" v-model="form.uniteeId"  class="border  block my-1 border-primary py-1 px-2 text-xs "  id="">
+                          <option v-for="(item, i) in uniteesDeMesure" :key="i" :value="item.id">{{item.nom}}</option>
                         </select>
                     </div>
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Saisissez votre libellé de photos">

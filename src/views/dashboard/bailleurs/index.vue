@@ -357,9 +357,7 @@
         setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       }),
       getPermission() {
-        PermissionsService.get().then((data) => {
-          this.permissions = data.data.data
-          this.currentUser.role[0].permissions.forEach(element => {
+         this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-bailleur') {
               this.bailleurVisible = true
             }
@@ -374,10 +372,6 @@
             }
            
           });
-
-        }).catch((e) => {
-          console.log(e)
-        })
       },
 
       ...mapActions("bailleurs", {

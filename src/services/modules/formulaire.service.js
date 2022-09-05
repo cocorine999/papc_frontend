@@ -13,6 +13,10 @@ const FormulaireService = {
       return ApiService.get("formulaires", slug);
     },
 
+    allGenerals(slug) {
+      return ApiService.get("formulaires/generals");
+    },
+
     create(params) {
       return ApiService.post("formulaires", params);
     },

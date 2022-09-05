@@ -7,20 +7,18 @@
             <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configurer le formulaire</h3>
             <div class="my-3 w-full" >
               <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
-              <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
+              <input type="text" v-model="nomFormulaire"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
             </div>
             <div class="border border-dashed border-gray-300 my-4 px-8 py-4" >
               <fieldset  class="border border-dashed border-gray-300 p-3 my-2">
                 <legend class="text-sm uppercase">Creation de la checklist </legend>
-                <div class="my-3 w-full" >
-                  <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>
-                  <input type="text"  class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Nom du formulaire ">
-                </div>
+                
                 <div v-for="(form,index)  in Forms" :key="index">
                   <div class="flex justify-between w-full items-center ">
                     <div class="my-3 w-4/5" v-if="form.inputType=='edit'">
                       <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
                       <input  type="text" v-model="form.nom" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
+                      
                     </div>
 
                     <div class="my-3 w-4/5" v-if="form.inputType=='photos'">
@@ -73,7 +71,9 @@
             </div>
           </div>
         </div>
-       
+        <pre>
+      {{Forms}}
+     </pre>
         <div>
           <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer le formulaire</button>
         </div>
@@ -81,7 +81,7 @@
       </div>
     
       <div v-else class="container mx-auto">
-        <form action="">
+        <form @submit.prevent="sendForm">
           <div class="flex justify-center ">
             <div class="w-3/4 border border-dashed border-gray-700 p-6">
               <h1 class="text-lg font-semibold uppercase text-center py-2">Formulaire generer</h1>
@@ -134,6 +134,7 @@
 <script>
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
+import { mapGetters, mapMutations, mapActions, mapState } from "vuex"
 export default {
   layout:'dashboard',
   components: {Vbutton,Dashboard},
@@ -143,26 +144,51 @@ export default {
       Answers:[],
       multiple_val:'',
       isNotGenere:true,
+      nomFormulaire:'',
       Forms:[],
 
     }
   },
+  computed: {
+    //importation des variables du module auths
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      formulaire: state => state.formulaires.formulaire,
+      loading : state => state.loading,
+      errors : state => state.errors
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      uniteesDeMesure:"uniteesDeMesure/getUniteesDeMesure",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
   methods: {
+    
+    ...mapActions("formulaires", {
+      saveFormulaire: "STORE_FORMULAIRE",
+    }),
+
+    ...mapActions("uniteesDeMesure", {
+      fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
+    }),
     btn_edit() {
-      this.Forms.push({inputType:'edit',nom:null,content:null})
+      this.Forms.push({id:null,inputType:'edit',nom:null,content:null})
     },
     btn_boolean() {
-      this.Forms.push({inputType:'boolean',nom:null,checked:null})
+      this.Forms.push({id:null,inputType:'boolean',nom:null,checked:null})
     },
     btn_multiple() {
-      this.Forms.push({inputType:'multiple',nom:null,reponse:this.Answers})
+      this.Forms.push({id:null,inputType:'multiple',nom:null,reponse:this.Answers})
     },
     btn_photo() {
-      this.Forms.push({inputType:'photos',nom:null,images:null})
+      this.Forms.push({id:null,inputType:'photos',nom:null,images:null})
     },
     addResponse() {
-      this.Answers.push({label:this.multiple_val})
-      this.multiple_val = ''
+      /*this.Answers.push({label:this.multiple_val})
+      this.multiple_val = ''*/
     },
     deleteItems(index) {
       this.Forms.splice(index,1)
@@ -170,8 +196,33 @@ export default {
     
     deleteAnswers(index) {
       this.Answers.splice(index,1)
-    }
+    },
+    sendForm() {
+
+      let formulaire = 
+        {
+          "nom" : this.nomFormulaire,
+          "json" : this.Forms,
+          "type" : 1
+        }
+      
+
+      console.log(formulaire)
+      
+      this.saveFormulaire(formulaire).then(response => {
+        if(response.status == 200 || response.status == 201){
+            this.close()
+        }
+
+      })
+
+    },
   },
+  mounted() {
+    
+    console.log("Fetching unuite de mesure")
+    this.fetchUnite()
+  }
   
 }
 </script>

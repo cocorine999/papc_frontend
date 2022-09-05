@@ -185,6 +185,12 @@ export default {
           tab.push(
             {
               nom: element.indicateur.nom,
+              description: element.indicateur.description,
+              bailleur: element.indicateur.bailleur.sigle,
+              categorie: element.indicateur.categorie?.nom,
+              unitee_de_mesure: element.indicateur.uniteeDeMesure.nom,
+              valeur_de_base: element.indicateur.valeurDeBase,
+              annee_de_base: element.indicateur.anneeDeBase,
               trimestre: element.trimestre,
               valeur_cible: element.valeurCible,
               valeur_realise: element.valeurRealise,

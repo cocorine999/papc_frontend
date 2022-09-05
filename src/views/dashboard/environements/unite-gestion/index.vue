@@ -97,21 +97,22 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>        </div>
+           </div>        
+        </div>
       </nav> 
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
-          <span @click="goActivite" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
+          <span @click="goActivite"  :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
-          <button @click="addActivite" v-if="seeActivite"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <button  @click="addActivite" v-if="seeActivite || activiteEnvAdd"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Creer une activité </span>
           </button>
-          <router-link v-if="seeFormulaire" :to="{name:'unite_de_gestion_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <router-link v-if="seeFormulaire || checklistAdd" :to="{name:'unite_de_gestion_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Creer un formulaire </span>
           </router-link> 
@@ -155,7 +156,8 @@
         </div>
       </div>
       <div v-if="seeActivite">
-        <vtable :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
+        <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
+        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"  @updateInputData="updateInputData"></vtable>    
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
@@ -166,6 +168,8 @@
               @supprimer="supprimer"
               @gotoDetails="gotoDetails(formulaire.id)"
               @onlink="getlink(formulaire.id)"
+              :isdelete="checklistDelete"
+              :isUpdate="checklistUpdate"
               > 
             </card-checklist>
           </div>
@@ -235,12 +239,22 @@ export default {
       seeEntreprise:true,
       seeFormulaire:false,
       seeActivite:false,
-      value:[]
+      value:[],
+      entrepriseExecutanteVisible:false,
+      entrepriseExecutanteAdd:false,
+      activiteEnvVisible:false,
+      activiteEnvAdd:false,
+      activiteEnvDelete:false,
+      activiteEnvUpdate:false,
+      checklistVisible:false,
+      checklistAdd:false,
+      checklistSupprimer:false,
+      checklistUpdate:false,
       
     }
   },
   computed: {
-        ...mapState({
+      ...mapState({
       identifiant: state => state.auths.identifiant,
       eActivite: state => state.eActivites.eActivite,
       formulaire: state => state.formulaires.formulaire,
@@ -257,10 +271,11 @@ export default {
       formulaires: "formulaires/getFormulaires",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   mounted() {
-    
+    this.getPermission()
     console.log("Fetching entreprises executantes ...");
     this.fetchEntreprisesExecutante();
 
@@ -276,7 +291,44 @@ export default {
   },
   methods: {
 
-        //Charger les fonctions de communication avec le serveur
+    //Charger les fonctions de communication avec le serveur
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-entreprise-executante') {
+          this.entrepriseExecutanteVisible = true
+        }
+        if(element.slug === 'creer-une-activite-environnement') {
+          this.activiteEnvAdd = true
+        }
+        if(element.slug === 'modifier-une-activite-environnement') {
+          this.activiteEnvUpdate = true
+        }
+        if(element.slug === 'supprimer-une-activite-environnement') {
+          this.activiteEnvDelete = true
+        }
+        if(element.slug === 'voir-une-activite-environnement') {
+          this.activiteEnvVisible = true
+        }
+        if(element.slug === 'voir-une-checklist') {
+          this.checklistVisible = true
+        }
+        if(element.slug === 'creer-une-checklist') {
+          this.checklistAdd = true
+        }
+        if(element.slug === 'modifier-une-checklist') {
+          this.checklistUpdate = true
+        }
+        if(element.slug === 'supprimer-une-checklist') {
+          this.checklistDelete = true
+        }
+        if(element.slug ==='supprimer-un-decaissement') {
+          this.decaissementDelete = true
+        }
+           
+      });
+
+     },
+
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setEActivite: 'eActivites/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
@@ -307,11 +359,11 @@ export default {
 
         return this.entreprises.filter(function (entreprise){
           return entreprise.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+            entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
-      filteredEActivite(){
+    filteredEActivite(){
         var self = this;
 
         return this.eActivites.filter(function (eActivtie){
@@ -319,16 +371,16 @@ export default {
                  eActivtie.entreprise.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  eActivtie.code.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
-      filteredFormulaire(){
+    filteredFormulaire(){
         var self = this;
 
         return this.formulaires.filter(function (formulaire){
           return formulaire.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
     addTag (newTag) {
       const tag = {
@@ -412,7 +464,6 @@ export default {
         if(response.status == 200 || response.status == 201){
             this.close()
         }
-
       })
       
     },
@@ -421,7 +472,6 @@ export default {
       if(window.confirm("Voulez-vous supprimer cette activité " + activite.nom ))
         await this.deleteEActivite(activite.id)
     },
-
 
     goEntreprise() {
       this.seeEntreprise = true
@@ -443,7 +493,6 @@ export default {
        this.$router.push({name:'unite_de_gestion_checklist',params:{idE:id}})
     },
 
-   
   }
 }
 </script>
