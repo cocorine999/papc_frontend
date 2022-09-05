@@ -141,7 +141,7 @@ export default {
         });
       },
       title_csv() {
-        return "suivi-indicateur-" +"-" + new Date()
+        return "suivi-indicateur-" + indicateur.nom + "-" + new Date()
       },
 
       json_data(){
@@ -150,6 +150,13 @@ export default {
         this.filteredSuivis().forEach(element => {
           tab.push(
             {
+              nom: element.indicateur.nom,
+              description: element.indicateur.description,
+              bailleur: element.indicateur.bailleur.sigle,
+              categorie: element.indicateur.categorie?.nom,
+              unitee_de_mesure: element.indicateur.uniteeDeMesure.nom,
+              valeur_de_base: element.indicateur.valeurDeBase,
+              annee_de_base: element.indicateur.anneeDeBase,
               valeur_cible: element.valeurCible,
               valeur_realise: element.valeurRealise,
             }
