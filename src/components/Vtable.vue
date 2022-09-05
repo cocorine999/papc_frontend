@@ -33,7 +33,7 @@
                   </div>
                 </td>
       
-                <td  class="text-sm  space-x-3 text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
+                <td   v-if="actions != undefined"  class="text-sm  space-x-3 text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
                   <div v-for="(action,index) in actions" :key="index" class="flex item-center justify-center">
                     <div v-if="action.name === 'suivre'" title="suivre" @click="$emit('suivre', data.id)" class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>

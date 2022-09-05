@@ -81,7 +81,7 @@ export default {
         this.logout().then((response) => {
           if (response.statut === "success" || response.status === 200) {
             
-            window.location.href ='/'
+           this.$router.push('/')
 
             this.$toast.show({
               type: 'success',

@@ -164,7 +164,7 @@
       </router-link>
     </div>
 
-    <div class="mb-1 px-6 relative">
+    <div v-if="projetVisible || composanteVisible || activiteVisible || planDecaissementVisible || tacheVisible "  class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -258,7 +258,7 @@
       </div>
     </div>
 
-    <div class="mb-1 px-6 relative">
+    <div v-if="indicateurVisible" class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -317,7 +317,7 @@
       </div>
     </div>
 
-    <div class="mb-1 px-6 relative">
+    <div v-if="decaissementVisible || planDecaissementVisible || planDecaissementVisible || pointFinancierVisible || suiviFinancierVisible "  class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -389,7 +389,7 @@
       </div>
     </div>
 
-    <div class="mb-1 px-6 relative">
+    <div v-if="uniteeDeGestionVisible || modVsisible || missionControleVisible || entrepriseExecutanteVisible" class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -427,7 +427,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div v-if="uniteeDeGestionVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="uniteeDeGestionVisible"  class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/unite-gestion/checklist"
             style="width: 100%"
@@ -438,73 +438,27 @@
             >
           </router-link>
         </div>
-
-        <div class="mb-1 relative cursor-pointer">
-          <input
-            class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
-            type="checkbox"
-            id="chck6"
-          />
-          <header
-            class="flex justify-between items-center mb-1 cursor-pointer select-none tab-label"
-            for="chck6"
-          >
-            <p class="px-4 text-gray-700 text-xs font-bold">MOD</p>
-            <i class="bx bx-chevron-down bx-sm text-primary"></i>
-          </header>
-
-          <div class="tab-content mb-3 bg-white">
-            <div v-if="modVsisible" class="mb-1 flex items-center cursor-pointer">
-              <router-link
-                to="/dashboard/mod/checklist"
-                style="width: 100%"
-                class="flex items-center px-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
-              >
-                <span class="font-semibold pl-4 text-primary text-xs">MOD</span>
-              </router-link>
-            </div>
-            <div class="mb-1 relative cursor-pointer">
-              <input
-                class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
-                type="checkbox"
-                id="chck7"
-              />
-              <header
-                class="flex justify-between items-center cursor-pointer select-none tab-label"
-                for="chck7"
-              >
-                <p class="text-primary text-xs pl-6 font-semibold uppercase">
-                  Mission controle
-                </p>
-                <i class="bx bx-chevron-down bx-sm text-primary"></i>
-              </header>
-              <div class="tab-content bg-white">
-                <div v-if="missionControleVisible" class="mb-1 flex items-center cursor-pointer">
-                  <router-link
-                    to="/dashboard/mission-controle/checklist"
-                    style="width: 100%"
-                    class="flex items-center px-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
-                  >
-                    <span class="font-semibold pl-8 text-primary text-xs"
-                      >Mission de controle</span
-                    >
-                  </router-link>
-                </div>
-                <div v-if="entrepriseExecutanteVisible" class="mb-1 flex items-center cursor-pointer">
-                  <router-link
-                    to="/dashboard/entreprise/checklist"
-                    style="width: 100%"
-                    class="flex items-center px-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
-                  >
-                    <span class="font-semibold pl-8 text-primary text-xs"
-                      >Entreprise</span
-                    >
-                  </router-link>
-                </div>
-              </div>
-            </div>
-          </div>
+         <div v-if="modVsisible" class="mb-1 flex items-center cursor-pointer">
+          <router-link
+            to="/dashboard/mod/checklist"
+            style="width: 100%"
+            class="flex items-center p-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+            <span class="font-semibold uppercase text-primary text-xs">MOD</span>
+          </router-link>
         </div>
+        <div v-if="missionControleVisible" class="mb-1 flex items-center cursor-pointer">
+          <router-link to="/dashboard/mission-controle/checklist" style="width: 100%" class="flex items-center p-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+            <span class="font-semibold uppercase text-primary text-xs">Mission de controle</span>
+            </router-link>
+          </div>
+          <div v-if="entrepriseExecutanteVisible" class="mb-1 flex items-center cursor-pointer">
+            <router-link
+              to="/dashboard/entreprise/checklist"
+              style="width: 100%"
+              class="flex items-center p-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+              <span class="font-semibold uppercase text-primary text-xs" >Entreprise</span>
+            </router-link>
+          </div>
       </div>
     </div>
 
@@ -534,7 +488,7 @@
       </router-link>
     </div>
 
-    <div class="mb-1 px-6 relative">
+    <div v-if="modVsisible || missionControleVisible" class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -603,7 +557,7 @@
       </div>
     </div>
 
-    <div v-if="indicateurVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="institutionVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/instutitions"
         style="width: 100%"
@@ -707,7 +661,7 @@
       </router-link>
     </div> 
     
-    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="utilisateurVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/utilisateurs"
         style="width: 100%"
@@ -915,14 +869,11 @@ export default {
       voirPpmVisible:false,
       institutionVisible:false,
     
-
     }
   },
   methods: {
     getPermission() {
-        PermissionsService.get().then((data) => {
-          this.permissions = data.data.data
-          this.currentUser.role[0].permissions.forEach(element => {
+       this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-utilisateur') {
               this.utilisateurVisible = true
             }
@@ -996,14 +947,11 @@ export default {
            
           });
 
-        }).catch((e) => {
-          console.log(e)
-        })
     },
+
   },
   mounted() {
     this.getPermission()
-    
      if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.role[0].nom
         console.log("role courant",this.currentUser)
