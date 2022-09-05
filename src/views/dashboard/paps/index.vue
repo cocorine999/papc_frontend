@@ -69,6 +69,12 @@
             <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Importez les données</span>
       </button>
+      <json-excel :data="json_data()" header="PAP" type="xlsx" :name="title_csv()"  >
+          <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+            <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+            <span class="mx-2 text-sm font-semibold">Export Excel</span>
+          </button>
+      </json-excel>
       <button v-if="papAdd" @click="addPap" title="ajouter un tabelau"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
         <span class="mx-2 text-xs font-semibold">Ajouter </span> 
@@ -231,7 +237,34 @@ export default {
       this.showCloseModal()
 
       this.resetForm
-    }, 
+    },
+    title_csv() {
+        return "paps-" +"-" + new Date()
+      },
+    
+    json_data(){
+        let tab = [];
+
+        this.filteredPap().forEach(element => {
+          tab.push(
+            {
+              rue: element.rue,
+              longitude: element.longitude,
+              latitude: element.latitude,
+              site: element.site,
+              nom_prenoms: element.nom,
+              sexe: element.sexe,
+              contact: element.contact,
+              reference_piece_identite: element.referencePieceIdentite,
+              statut: element.statut,
+              mode_de_paiement: element.modeDePaiement,
+              indeministation: element.montant,
+              transferer: element.payer
+            }
+          );
+        });
+        return tab;
+      },
     
     showCloseModal(value = false) {
       this.showModal = value
