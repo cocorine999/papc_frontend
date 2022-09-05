@@ -561,7 +561,7 @@ export default {
            
           });
 
-      },
+     },
 
     addPassation() {
       this.title2 = "Ajouter une Passation";

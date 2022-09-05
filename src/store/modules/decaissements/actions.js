@@ -29,6 +29,16 @@ export default {
       return { data, status };
   },
 
+  FILTRE_DECAISSEMENT : async ({ commit }, payload) => {
+
+    const { data, status } = await DecaissementService.filtre(payload);
+
+    if(status === 200 || status === 201) 
+        commit(SET_LIST_DECAISSEMENT, data.data);
+
+    return { data, status };
+  },
+
   async GET_DECAISSEMENT ({ commit, getters }, {key, value }) {
 
       let decaissement = null

@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="px-4">
+    <div v-if="planDecaissementVisible" class="px-4">
       <div v-if="showModal">
         <vmodal  title="Exporter les données"  v-on:close="showModal = false">
           <div class="px-8" style="width:60vw !important">
@@ -106,14 +106,42 @@ export default {
         {name:'Bailleurs',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:['BM','BOA']},
       ],
       cols:2,
+      planDecaissementVisible:false,
+      planDecaissementUpdate:false,
+      planDecaissementDelete:false,
+      planDecaissementAdd:false,
     }      
+  },
+  computed: {
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
   methods: {
     exportAsExcel () {
       this.showModal = true
     },
-    
-  }
+    getPermission() {
+          this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-plan-de-decaissement') {
+              this.planDecaissementVisible = true
+            }
+            if(element.slug === 'creer-un-plan-de-decaissement') {
+              this.planplanDecaissementAdd = true
+            }
+            if(element.slug === 'modifier-un-plan-de-decaissement') {
+              this.decaissementUpdate = true
+            }
+            if(element.slug ==='supprimer-un-plan-de-decaissement') {
+              this.planDecaissementDelete = true
+            }
+           
+          });
+
+    },
+  },
+  
+  mounted() {
+      this.getPermission()
+    }
 }
 </script>
 
