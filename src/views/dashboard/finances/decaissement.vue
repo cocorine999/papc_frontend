@@ -116,7 +116,6 @@ export default {
         cols:2,
 
         search:"",
-          
         headers:[
           {name:'Projets',cle:'projet'},
           {name:'Bailleur',cle:'bailleur'},
@@ -158,7 +157,7 @@ export default {
 
     methods: {
 
-            //Charger les fonctions de communication avec le serveur
+     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setDecaissement: 'decaissements/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`

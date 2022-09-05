@@ -83,6 +83,7 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   components: {
     Vtable,

@@ -97,7 +97,8 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>        </div>
+           </div>        
+        </div>
       </nav> 
 
       <div class="flex items-center justify-between my-2">
@@ -240,7 +241,7 @@ export default {
     }
   },
   computed: {
-        ...mapState({
+      ...mapState({
       identifiant: state => state.auths.identifiant,
       eActivite: state => state.eActivites.eActivite,
       formulaire: state => state.formulaires.formulaire,
@@ -257,6 +258,7 @@ export default {
       formulaires: "formulaires/getFormulaires",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   mounted() {
@@ -276,7 +278,26 @@ export default {
   },
   methods: {
 
-        //Charger les fonctions de communication avec le serveur
+    //Charger les fonctions de communication avec le serveur
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-decaissement') {
+          this.decaissementVisible = true
+        }
+        if(element.slug === 'modifier-un-decaissement') {
+          this.decaissementAdd = true
+        }
+        if(element.slug === 'modifier-un-decaissement') {
+          this.decaissementUpdate = true
+        }
+        if(element.slug ==='supprimer-un-decaissement') {
+          this.decaissementDelete = true
+        }
+           
+      });
+
+     },
+
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setEActivite: 'eActivites/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
@@ -307,11 +328,11 @@ export default {
 
         return this.entreprises.filter(function (entreprise){
           return entreprise.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+            entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
-      filteredEActivite(){
+    filteredEActivite(){
         var self = this;
 
         return this.eActivites.filter(function (eActivtie){
@@ -319,16 +340,16 @@ export default {
                  eActivtie.entreprise.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  eActivtie.code.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
-      filteredFormulaire(){
+    filteredFormulaire(){
         var self = this;
 
         return this.formulaires.filter(function (formulaire){
           return formulaire.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
     addTag (newTag) {
       const tag = {
@@ -412,7 +433,6 @@ export default {
         if(response.status == 200 || response.status == 201){
             this.close()
         }
-
       })
       
     },
@@ -421,7 +441,6 @@ export default {
       if(window.confirm("Voulez-vous supprimer cette activité " + activite.nom ))
         await this.deleteEActivite(activite.id)
     },
-
 
     goEntreprise() {
       this.seeEntreprise = true
@@ -443,7 +462,6 @@ export default {
        this.$router.push({name:'unite_de_gestion_checklist',params:{idE:id}})
     },
 
-   
   }
 }
 </script>

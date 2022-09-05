@@ -147,9 +147,7 @@ export default {
         this.$store.dispatch('disabled')
       },
        getPermission() {
-        PermissionsService.get().then((data) => {
-          this.permissions = data.data.data
-          this.currentUser.role[0].permissions.forEach(element => {
+         this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-ano') {
               this.anoVisible = true
             }
@@ -164,10 +162,6 @@ export default {
             }
            
           });
-
-        }).catch((e) => {
-          console.log(e)
-        })
       },
     
     // call action
