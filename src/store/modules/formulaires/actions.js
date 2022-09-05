@@ -29,6 +29,16 @@ export default {
         return { data, status };
     },
 
+    ALL_GENERAL_FORMULAIRE : async ({ commit }) => {
+
+        const { data, status } = await FormulaireService.allGenerals();
+
+        if(status === 200 || status === 201)
+            commit(SET_LIST_FORMULAIRE, data.data);
+
+        return { data, status };
+    },
+
     async GET_FORMULAIRE ({ commit, getters }, value ) {
 
         let formulaire = null
