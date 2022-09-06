@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="py-2 my-4 flex justify-center space-x-8">
-            <button type="submit" class="bg-primary text-white py-4  text-center w-full hover:opacity-80 transition-all duration-500 ">
+            <button type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
                   <span class="text-sm font-semibold uppercase" v-if="!loading">
                     Se connecter
                   </span>
@@ -102,6 +102,7 @@
 import Vbutton from '@/components/Vbutton'
 import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
+import ifElse from 'ramda/src/ifElse';
 
 export default {
   name: 'IndexPage',
@@ -143,8 +144,23 @@ export default {
       this.chargement(true)
       await this.authentification(this.identifiant).then((response, status) =>{
           if (response.statut === "success" || response.status === 200) {
-            this.$router.push('/dashboard/bailleurs')
-            this.$toast.success("vous etes connecté !")
+            if(response.data.utilisateur.type =='bailleur') {
+              const datas = response.data.utilisateur
+              const bailleurInfo = datas.profil.projet
+              localStorage.setItem('bailleurInfo',JSON.stringify(bailleurInfo));
+
+              this.$toast.success("vous etes connecté !")
+              this.$router.push('/dashboard')
+            }
+            else if(response.data.utilisateur.type =='unitee-de-gestion') {
+              this.$toast.success("vous etes connecté !")
+              this.$router.push('/dashboard/projets')
+            }
+            else if (response.data.utilisateur.type =='') {
+
+            }
+            //this.$router.push('/dashboard/bailleurs')
+            //this.$toast.success("vous etes connecté !")
             //window.location.assign(window.location.origin+"/dashboard/bailleurs")
           }else{
             this.$toast.success(response.message)

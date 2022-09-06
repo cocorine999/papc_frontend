@@ -20,6 +20,7 @@ Vue.use(Vuelidate);
 Vue.use(VueApexCharts)
 Vue.use(VueToast,{
   position: 'top-right',
+  duration:5000
 });
 
 Vue.config.productionTip = false;
