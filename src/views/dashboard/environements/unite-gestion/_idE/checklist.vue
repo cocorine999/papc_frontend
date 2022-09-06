@@ -41,11 +41,12 @@
           :activite=formulaire.auteur
           @supprimer="supprimer"
           @gotoDetails="gotoDetails(formulaire.id)"
+          :isDelete="false"
+          :isUpdate="false"
         > 
         </card-checklist>
       </div>
     </div>
-    
   </div>
   </dashboard>
 </template>

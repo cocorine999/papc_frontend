@@ -326,7 +326,6 @@ export default {
         }
            
       });
-
      },
 
     ...mapMutations({
