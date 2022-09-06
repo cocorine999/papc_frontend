@@ -1,4 +1,4 @@
-const DEVELOPMENT_URL= "http://192.168.8.109:8000"
+const DEVELOPMENT_URL= "http://127.0.0.1:8000"
 
 const STAGGING_URL= "http://89.47.161.3:8001"
 

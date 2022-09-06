@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const ProjetsService = {
+const PapsService = {
 
     query(type, params) {
       return ApiService.query("sinistres", {
@@ -35,5 +35,5 @@ const ProjetsService = {
 
   };
 
-  export default ProjetsService;
+  export default PapsService;
   

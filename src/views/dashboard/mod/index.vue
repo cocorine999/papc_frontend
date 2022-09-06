@@ -23,8 +23,8 @@
               :champs="passationChamps"
               isAllPairSaufDescrip="true"
               :cols="colsPassation"
-              submitText="Creer un MOD"
-              @sendForm="sendForm"
+              submitText="Creer la passation"
+              @sendForm="sendForm2"
             ></vform>
           </div>
         </modal-top-right>
@@ -96,7 +96,7 @@
         <button
           v-if="seePassation"
           @click="addPassation"
-          title="Ajouter un MOD"
+          title="Ajouter une passation de marché"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
         >
           <span
@@ -109,7 +109,7 @@
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
           <span class="mx-2 text-sm font-semibold"
-            >Ajouter un passation de marché</span
+            >Ajouter une passation de marché</span
           >
         </button>
       </div>
@@ -147,7 +147,7 @@
       <div v-if="seePassation">
         <vtable
           :headers="headers"
-          :datas="dataTable"
+          :datas="passations"
           :actions="actions"
           @supprimer="supprimerPassation"
         ></vtable>
@@ -236,127 +236,22 @@ export default {
           errors: [],
         },
       ],
-      passationChamps: [
-        {
-          name: "Selectionnez MOD",
-          type: "",
-          placeholdere: "Selectionnez MOD",
-          isSelect: true,
-          isTextArea: false,
-          data: "",
-          required: true,
-          options: ["Agetur", "Agetur2"],
-        },
-        {
-          name: "Selectionnez Site",
-          type: "",
-          placeholdere: "Selectionnez un site",
-          isSelect: true,
-          isTextArea: false,
-          data: "",
-          options: ["calavi", "cotonou"],
-          required: true,
-        },
-        {
-          name: "Montant passation",
-          type: "number",
-          placeholdere: "Montant passation",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Date obtention",
-          type: "date",
-          placeholdere: "Date obtention",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Date signature",
-          type: "date",
-          placeholdere: "Date signature",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Date Demarrage",
-          type: "date",
-          placeholdere: "Date de Demarrage",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Date previsionnelle",
-          type: "date",
-          placeholdere: "Date de previsionnelle",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Date  obtention avance",
-          type: "date",
-          placeholdere: "Date obtention avance",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Montant avance",
-          type: "number",
-          placeholdere: "Montant avance",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Estimation",
-          type: "number",
-          placeholdere: "Estimation",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Ordre de service",
-          type: "text",
-          placeholdere: "Ordre de service",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Travaux",
-          type: "text",
-          placeholdere: "",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-        },
-        {
-          name: "Responsable sociologue",
-          type: "",
-          placeholdere: "Selectionnez un responsable",
-          isSelect: true,
-          isTextArea: false,
-          data: "",
-          required: true,
-          options: ["Responsable", "Responsable2"],
-        },
+      passationAttributs: ["modId", "siteId", "entrepriseExecutanteId", "dateDobtention", "dateDeSignature", "dateDeDemarrage", "datePrevisionnel", "dateDobtentionAvance", "montantAvance", "estimation", "ordreDeService", "travaux", "responsableSociologue", "montant"],
+      passationChamps:[
+        {name:'Mod',key:'modId',type:'',placeholdere:"Selectionnez un mod",isSelect:true,isTextArea:false,data:'',required:true,options:this.mods, cle: 'id', value: 'nom',errors : []},
+        {name:'Site', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
+        {name:'Entreprise Executante', key:'entrepriseExecutanteId',type:'',placeholdere:"Selectionnez une entreprise",isSelect:true,isTextArea:false,data:'',options:this.entreprisesExecutante, cle: 'id', value: 'nom',required:true,errors : []},
+        {name:'Montant passation',key:'montant',type:'number',placeholdere:"Montant passation",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date obtention',key:'dateDobtention',type:'date',placeholdere:"Date obtention",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date signature',key:'dateDeSignature',type:'date',placeholdere:"Date signature",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date Demarrage',key:'dateDeDemarrage',type:'date',placeholdere:"Date de Demarrage",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date previsionnelle',key:'datePrevisionnel',type:'date',placeholdere:"Date de previsionnelle",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date  obtention avance',key:'dateDobtentionAvance',type:'date',placeholdere:"Date obtention avance",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Montant avance',key:'montantAvance',type:'number',placeholdere:"Montant avance",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Estimation',key:'estimation',type:'number',placeholdere:"Estimation",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Ordre de service',key:'ordreDeService',type:'text',placeholdere:"Ordre de service",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Travaux',key:'travaux',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Responsable sociologue',key:'responsableSociologue',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
       ],
       cols: 1,
       colsPassation: 2,
@@ -389,127 +284,24 @@ export default {
         },
         { name: "Date de creation", cle: "created_at", width: "w-28" },
       ],
-      dataTable: [
-        {
-          createur: "Gomez jacob",
-          mod: "Agetur",
-          site: "Calavi",
-          montant_passation: "20000000000000",
-          date_obtention: "23-0-2022",
-          date_demarrage: "25-0-2022",
-          date_signature: "22-06-2022",
-          date_previsionnelle: "23-06-2025",
-          date_avance: "21-06-2022",
-          montant_avance: "200000000000",
-          estimation: "40000000000000",
-          ordre_service: "lorem",
-          travaux: "lorem",
-          responsable_sociologue: "Ange Klika",
-          created_at: "22-06-2022",
-        },
-        {
-          createur: "Gomez jacob",
-          mod: "Agetur",
-          site: "Calavi",
-          montant_passation: "20000000000000",
-          date_obtention: "23-0-2022",
-          date_demarrage: "25-0-2022",
-          date_signature: "22-06-2022",
-          date_previsionnelle: "23-06-2025",
-          date_avance: "21-06-2022",
-          montant_avance: "200000000000",
-          estimation: "40000000000000",
-          ordre_service: "lorem",
-          travaux: "lorem",
-          responsable_sociologue: "Ange Klika",
-          created_at: "22-06-2022",
-        },
-        {
-          createur: "Gomez jacob",
-          mod: "Agetur",
-          site: "Calavi",
-          montant_passation: "20000000000000",
-          date_obtention: "23-0-2022",
-          date_demarrage: "25-0-2022",
-          date_signature: "22-06-2022",
-          date_previsionnelle: "23-06-2025",
-          date_avance: "21-06-2022",
-          montant_avance: "200000000000",
-          estimation: "40000000000000",
-          ordre_service: "lorem",
-          travaux: "lorem",
-          responsable_sociologue: "Ange Klika",
-          created_at: "22-06-2022",
-        },
-        {
-          createur: "Gomez jacob",
-          mod: "Agetur",
-          site: "Calavi",
-          montant_passation: "20000000000000",
-          date_obtention: "23-0-2022",
-          date_demarrage: "25-0-2022",
-          date_signature: "22-06-2022",
-          date_previsionnelle: "23-06-2025",
-          date_avance: "21-06-2022",
-          montant_avance: "200000000000",
-          estimation: "40000000000000",
-          ordre_service: "lorem",
-          travaux: "lorem",
-          responsable_sociologue: "Ange Klika",
-          created_at: "22-06-2022",
-        },
-        {
-          createur: "Gomez jacob",
-          mod: "Agetur",
-          site: "Calavi",
-          montant_passation: "20000000000000",
-          date_obtention: "23-0-2022",
-          date_demarrage: "25-0-2022",
-          date_signature: "22-06-2022",
-          date_previsionnelle: "23-06-2025",
-          date_avance: "21-06-2022",
-          montant_avance: "200000000000",
-          estimation: "40000000000000",
-          ordre_service: "lorem",
-          travaux: "lorem",
-          responsable_sociologue: "Ange Klika",
-          created_at: "22-06-2022",
-        },
-        {
-          createur: "Gomez jacob",
-          mod: "Agetur",
-          site: "Calavi",
-          montant_passation: "20000000000000",
-          date_obtention: "23-0-2022",
-          date_demarrage: "25-0-2022",
-          date_signature: "22-06-2022",
-          date_previsionnelle: "23-06-2025",
-          date_avance: "21-06-2022",
-          montant_avance: "200000000000",
-          estimation: "40000000000000",
-          ordre_service: "lorem",
-          travaux: "lorem",
-          responsable_sociologue: "Ange Klika",
-          created_at: "22-06-2022",
-        },
-        {
-          createur: "Gomez jacob",
-          mod: "Agetur",
-          site: "Calavi",
-          montant_passation: "20000000000000",
-          date_obtention: "23-0-2022",
-          date_demarrage: "25-0-2022",
-          date_signature: "22-06-2022",
-          date_previsionnelle: "23-06-2025",
-          date_avance: "21-06-2022",
-          montant_avance: "200000000000",
-          estimation: "40000000000000",
-          ordre_service: "lorem",
-          travaux: "lorem",
-          responsable_sociologue: "Ange Klika",
-          created_at: "22-06-2022",
-        },
-      ],
+      headers:[
+          {name:'Site',cle:'site',width:"w-36"},
+          {name:'Mod',cle:'passationable',width:"w-36"},
+          {name:'Montant passation',cle:'montant',width:"w-24"},
+          {name:'Date obtention',cle:'dateDobtention',width:"w-24"},
+          {name:'Date obtention',cle:'dateDobtentionAvance',width:"w-24"},
+          {name:'Date demarrage',cle:'dateDeDemarrage',width:"w-24"},
+          {name:'Date signature',cle:'dateDeSignature',width:"w-24"},
+          {name:'Date previsionnelle',cle:'datePrevisionnel',width:"w-24"},
+          {name:'Montant avance',cle:'montantAvance',width:"w-24"},
+          {name:'Estimation',cle:'estimation',width:"w-24"},
+          {name:'Ordre de service',cle:'ordreDeService',width:"w-24"},
+          {name:'travaux',cle:'travaux',width:"w-24"},
+          {name:'Responsable sociologue',cle:'responsableSociologue',width:"w-24"},
+          {name:'Date de creation',cle:'dateDeCreation',width:"w-28"},
+         
+         
+        ],
       actions: [
         { name: "modifier", iconne: "" },
         { name: "supprimer", iconne: "" },
@@ -527,6 +319,10 @@ export default {
       isLoading: "IS_LOADING",
       mod: "mods/getMod",
       mods: "mods/getMods",
+      passation: "passations/getPassation",
+      passations: "passations/getPassations",
+      entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
+      sites: "sites/getSites",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
@@ -544,7 +340,19 @@ export default {
       updateMod: "UPDATE_MOD",
       deleteMod: "DESTROY_MOD",
     }),
-     getPermission() {
+    ...mapActions('passations', {
+        fetchPassations: "FETCH_LIST_MOD_PASSATION",
+        savePassation: "STORE_PASSATION",
+        updatePassation: "UPDATE_PASSATION",
+        deletePassation: "DESTROY_PASSATION"
+      }),
+      ...mapActions("entreprisesExecutante", {
+        fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
+      }),
+      ...mapActions("sites", {
+        fetchSites: "FETCH_LIST_SITE",
+    }),
+    getPermission() {
           this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-mod') {
               this.modVisible = true
@@ -619,6 +427,10 @@ export default {
       if (window.confirm("Voulez-vous supprimer le mod " + mod.user.nom))
         this.deleteMod(mod.id);
     },
+    supprimerPassation(passation) {
+      if(window.confirm("Voulez-vous supprimer la passation "))
+        this.deletePassation(passation.id)
+    },
 
     dupliquerMod(mod) {
       this.title = "Ajouter d'un nouveau MOD";
@@ -646,6 +458,50 @@ export default {
       this.showCloseModal();
 
       this.resetForm();
+    },
+    close2() {
+      this.showCloseModal2()
+
+      this.resetForm2()
+    },
+    showCloseModal2(value = false) {
+      this.showModal2 = value
+    },
+
+    resetForm2(){
+
+      this.passationChamps = this.passationChamps.map(item => { item.data = ''; return item})
+        
+      window.document.getElementById('vform')?.reset()
+
+      this.setPassation({})
+    },
+    addPassation() {
+      this.title2 = 'Ajouter une nouvelle passation'
+      
+      this.showCloseModal2(true)
+    },
+    sendForm2() {
+
+      this.passationChamps = this.passationChamps.map(item => { item.errors = []; return item})
+
+      let passation = extractFormData(this.passationChamps, this.passationAttributs)
+
+
+      passation.siteId = passation.siteId.id
+
+      passation.modId = passation.modId.id
+
+      passation.entrepriseExecutantId = passation.entrepriseExecutanteId.id
+
+      console.log(passation)
+      
+      this.savePassation(passation).then(response => {
+        if(response.status == 200 || response.status == 201){
+            this.close2()
+        }
+
+      })
     },
 
     showCloseModal(value = false) {
@@ -708,12 +564,63 @@ export default {
       });
       //this.errors = errors
     },
+
+    sites: function (sites) {
+      this.passationChamps.map((item) => {
+        if (item.key === "siteId") {
+          item.options = sites.map((site) => {
+            return {
+              id: site.id,
+              nom: site.nom,
+            };
+          });
+        }
+        return item;
+      });
+    },
+    
+    mods: function (mods) {
+      this.passationChamps.map((item) => {
+        if (item.key === "modId") {
+          item.options = mods.map((m) => {
+            return {
+              id: m.id,
+              nom: m.user.nom,
+            };
+          });
+        }
+        return item;
+      });
+    },
+
+    entreprisesExecutante: function (entrepriseExecutantes) {
+      this.passationChamps.map((item) => {
+        if (item.key === "entrepriseExecutanteId") {
+          item.options = entrepriseExecutantes.map((m) => {
+            return {
+              id: m.id,
+              nom: m.user.nom,
+            };
+          });
+        }
+        return item;
+      });
+    }
   },
 
   mounted() {
     this.getPermission()
     console.log("Fetching mods ...");
     this.fetchMods();
+
+    console.log("Fetching passations ...")
+    this.fetchPassations(this.currentUser?.programme?.id)
+
+    console.log("Fetching entreprise executantes ...")
+    this.fetchEntreprisesExecutante()
+
+    console.log("Fetching sites ...")
+    this.fetchSites(this.currentUser?.programme?.id)
   },
 };
 </script>

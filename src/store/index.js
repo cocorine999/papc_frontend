@@ -68,6 +68,8 @@ import sites from "./modules/sites/index";
 
 import revisionPtab from "./modules/revisionPtab/index"
 
+import passations from "./modules/passations/index";
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
@@ -242,5 +244,6 @@ export default new Vuex.Store({
     planDeDecaissements,
     eSuivis,
     sites,
+    passations,
   }
 });
