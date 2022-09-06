@@ -17,6 +17,7 @@ import info from "../views/info.vue";
 import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
 import form_gestion_generator_general from "../views/dashboard/form/_id/generator_general.vue";
 import backup from "../views/dashboard/backup/index.vue";
+import dashboard from "../views/dashboard/index.vue";
 
 //checklist environment unite de gestion
 import unite_de_gestion_checklist from "../views/dashboard/environements/unite-gestion/_idE/checklist.vue";
@@ -207,10 +208,6 @@ const routes = [
     component:info,
   },
 
-
- 
-  
-  
   {
     path: "/dashboard/roles",
     name: "role_permission",
@@ -240,6 +237,14 @@ const routes = [
     path: "/liens",
     name: "liens",
     component: liens,
+    meta: {
+      middleware: [auth],
+    },
+  },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: dashboard,
     meta: {
       middleware: [auth],
     },
@@ -836,7 +841,7 @@ const routes = [
     name: "dashboard_bailleur",
     component: dashboard_bailleur,
     meta: {
-      middleware: [auth, isBailleur],
+      middleware: [auth],
     },
   },
 

@@ -8,9 +8,9 @@
       <p class="font-semibold text-3xl text-blue-400 pl-4">PAPC</p>
     </div>
 
-    <div class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
-        to="#"
+        to="/dashboard"
         style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer"
       >
@@ -111,7 +111,7 @@
       </router-link>
     </div>
 
-    <div v-if="anoVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="anoVisible || currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/ano"
         style="width: 100%"
@@ -161,6 +161,43 @@
           </svg>
         </span>
         <span class="font-semibold text-xs uppercase">Role et permissions</span>
+      </router-link>
+    </div>
+
+    <div v-if="currentRole ==='bailleur'" class="mb-3 px-4 flex items-center text-white  cursor-pointer">
+      <router-link to="/bailleurs/pta" style="width:100%" class="flex space-x-3 items-center  px-2 py-2 z-10 relative   text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+        <span class=" ">
+         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"></path></svg>
+        </span>
+        <span class="font-semibold text-xs uppercase">PTAB</span>
+      </router-link>
+    </div>
+
+    <div v-if="currentRole ==='bailleur'" class="mb-3 px-4 flex items-center text-white  cursor-pointer ">
+      <router-link   to="/dashboard/projets/composantes-globale" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" t="1569683753031" viewBox="0 0 1024 1024" version="1.1" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><defs></defs><path d="M312.1 591.5c3.1 3.1 8.2 3.1 11.3 0l101.8-101.8 86.1 86.2c3.1 3.1 8.2 3.1 11.3 0l226.3-226.5c3.1-3.1 3.1-8.2 0-11.3l-36.8-36.8c-3.1-3.1-8.2-3.1-11.3 0L517 485.3l-86.1-86.2c-3.1-3.1-8.2-3.1-11.3 0L275.3 543.4c-3.1 3.1-3.1 8.2 0 11.3l36.8 36.8z"></path><path d="M904 160H548V96c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H120c-17.7 0-32 14.3-32 32v520c0 17.7 14.3 32 32 32h356.4v32L311.6 884.1c-3.7 2.4-4.7 7.3-2.3 11l30.3 47.2v0.1c2.4 3.7 7.4 4.7 11.1 2.3L512 838.9l161.3 105.8c3.7 2.4 8.7 1.4 11.1-2.3v-0.1l30.3-47.2c2.4-3.7 1.3-8.6-2.3-11L548 776.3V744h356c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32z m-40 512H160V232h704v440z"></path></svg>
+        <span class="font-semibold text-xs uppercase">Composantes</span>
+      </router-link>
+    </div>
+
+    <div v-if="currentRole ==='bailleur'" class="mb-3 px-4 flex items-center text-white  cursor-pointer">
+      <router-link  to="/dashboard/projets/sous-composantes-globale" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" t="1569683753031" viewBox="0 0 1024 1024" version="1.1" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><defs></defs><path d="M312.1 591.5c3.1 3.1 8.2 3.1 11.3 0l101.8-101.8 86.1 86.2c3.1 3.1 8.2 3.1 11.3 0l226.3-226.5c3.1-3.1 3.1-8.2 0-11.3l-36.8-36.8c-3.1-3.1-8.2-3.1-11.3 0L517 485.3l-86.1-86.2c-3.1-3.1-8.2-3.1-11.3 0L275.3 543.4c-3.1 3.1-3.1 8.2 0 11.3l36.8 36.8z"></path><path d="M904 160H548V96c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H120c-17.7 0-32 14.3-32 32v520c0 17.7 14.3 32 32 32h356.4v32L311.6 884.1c-3.7 2.4-4.7 7.3-2.3 11l30.3 47.2v0.1c2.4 3.7 7.4 4.7 11.1 2.3L512 838.9l161.3 105.8c3.7 2.4 8.7 1.4 11.1-2.3v-0.1l30.3-47.2c2.4-3.7 1.3-8.6-2.3-11L548 776.3V744h356c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32z m-40 512H160V232h704v440z"></path></svg>
+        <span class="font-semibold text-xs uppercase">Sous composantes</span>
+      </router-link>
+    </div>
+
+    <div v-if="currentRole ==='bailleur'" class="mb-3 px-4 flex items-center text-white  cursor-pointer">
+      <router-link  to="/dashboard/projets/activites-globale" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" t="1569683753031" viewBox="0 0 1024 1024" version="1.1" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><defs></defs><path d="M312.1 591.5c3.1 3.1 8.2 3.1 11.3 0l101.8-101.8 86.1 86.2c3.1 3.1 8.2 3.1 11.3 0l226.3-226.5c3.1-3.1 3.1-8.2 0-11.3l-36.8-36.8c-3.1-3.1-8.2-3.1-11.3 0L517 485.3l-86.1-86.2c-3.1-3.1-8.2-3.1-11.3 0L275.3 543.4c-3.1 3.1-3.1 8.2 0 11.3l36.8 36.8z"></path><path d="M904 160H548V96c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H120c-17.7 0-32 14.3-32 32v520c0 17.7 14.3 32 32 32h356.4v32L311.6 884.1c-3.7 2.4-4.7 7.3-2.3 11l30.3 47.2v0.1c2.4 3.7 7.4 4.7 11.1 2.3L512 838.9l161.3 105.8c3.7 2.4 8.7 1.4 11.1-2.3v-0.1l30.3-47.2c2.4-3.7 1.3-8.6-2.3-11L548 776.3V744h356c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32z m-40 512H160V232h704v440z"></path></svg>
+        <span class="font-semibold text-xs uppercase">Activités</span>
+      </router-link>
+    </div>
+
+    <div v-if="currentRole ==='bailleur'" class="mb-3 px-4 flex items-center text-white  cursor-pointer ">
+      <router-link  to="/dashboard/projets/activites-globale" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-white  hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" t="1569683753031" viewBox="0 0 1024 1024" version="1.1" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><defs></defs><path d="M312.1 591.5c3.1 3.1 8.2 3.1 11.3 0l101.8-101.8 86.1 86.2c3.1 3.1 8.2 3.1 11.3 0l226.3-226.5c3.1-3.1 3.1-8.2 0-11.3l-36.8-36.8c-3.1-3.1-8.2-3.1-11.3 0L517 485.3l-86.1-86.2c-3.1-3.1-8.2-3.1-11.3 0L275.3 543.4c-3.1 3.1-3.1 8.2 0 11.3l36.8 36.8z"></path><path d="M904 160H548V96c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H120c-17.7 0-32 14.3-32 32v520c0 17.7 14.3 32 32 32h356.4v32L311.6 884.1c-3.7 2.4-4.7 7.3-2.3 11l30.3 47.2v0.1c2.4 3.7 7.4 4.7 11.1 2.3L512 838.9l161.3 105.8c3.7 2.4 8.7 1.4 11.1-2.3v-0.1l30.3-47.2c2.4-3.7 1.3-8.6-2.3-11L548 776.3V744h356c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32z m-40 512H160V232h704v440z"></path></svg>
+        <span class="font-semibold text-xs uppercase">Taches</span>
       </router-link>
     </div>
 
@@ -258,7 +295,7 @@
       </div>
     </div>
 
-    <div v-if="indicateurVisible" class="mb-1 px-6 relative">
+    <div v-if="indicateurVisible || currentRole ==='bailleur'" class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -294,7 +331,7 @@
         </div> -->
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
-      <div v-if="indicateurVisible" class="tab-content mb-3 bg-white">
+      <div v-if="indicateurVisible || currentRole ==='bailleur'" class="tab-content mb-3 bg-white">
         <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/indicateurs/"
@@ -305,7 +342,7 @@
           </router-link>
         </div>
 
-        <div v-if="indicateurVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="indicateurVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/indicateurs/suivi"
             style="width: 100%"
@@ -317,7 +354,7 @@
       </div>
     </div>
 
-    <div v-if="decaissementVisible || planDecaissementVisible || planDecaissementVisible || pointFinancierVisible || suiviFinancierVisible "  class="mb-1 px-6 relative">
+    <div v-if="currentRole ==='bailleur'|| decaissementVisible || planDecaissementVisible || planDecaissementVisible || pointFinancierVisible || suiviFinancierVisible "  class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -353,7 +390,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div v-if="decaissementVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="decaissementVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/finances/decaissement"
             style="width: 100%"
@@ -363,7 +400,7 @@
           </router-link>
         </div>
 
-        <div v-if="planDecaissementVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="planDecaissementVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/finances/plan_decaissement"
             style="width: 100%"
@@ -373,7 +410,7 @@
           </router-link>
         </div>
 
-        <div v-if="pointFinancierVisible" class="mb-1  flex items-center text-gray-700  cursor-pointer ">
+        <div v-if="pointFinancierVisible || currentRole ==='bailleur'" class="mb-1  flex items-center text-gray-700  cursor-pointer ">
           <router-link to="/dashboard/finances/point-financier" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
             <span class="font-semibold text-xs">Point financier</span>
           </router-link>
@@ -381,7 +418,7 @@
 
         
 
-        <div v-if="suiviFinancierVisible" class="mb-1  flex items-center text-gray-700  cursor-pointer">
+        <div v-if="suiviFinancierVisible || currentRole ==='bailleur'" class="mb-1  flex items-center text-gray-700  cursor-pointer">
           <router-link to="/dashboard/finances/suivi" style="width:100%" class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
             <span class="font-semibold text-xs">Suivi financier</span>
           </router-link>
@@ -389,7 +426,7 @@
       </div>
     </div>
 
-    <div v-if="uniteeDeGestionVisible || modVsisible || missionControleVisible || entrepriseExecutanteVisible" class="mb-1 px-6 relative">
+    <div v-if="currentRole ==='bailleur' || uniteeDeGestionVisible || modVsisible || missionControleVisible || entrepriseExecutanteVisible" class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -427,7 +464,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div v-if="uniteeDeGestionVisible"  class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="uniteeDeGestionVisible || currentRole ==='bailleur'"  class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/unite-gestion/checklist"
             style="width: 100%"
@@ -438,7 +475,7 @@
             >
           </router-link>
         </div>
-         <div v-if="modVsisible" class="mb-1 flex items-center cursor-pointer">
+         <div v-if="modVsisible || currentRole ==='bailleur'" class="mb-1 flex items-center cursor-pointer">
           <router-link
             to="/dashboard/mod/checklist"
             style="width: 100%"
@@ -446,12 +483,12 @@
             <span class="font-semibold uppercase text-primary text-xs">MOD</span>
           </router-link>
         </div>
-        <div v-if="missionControleVisible" class="mb-1 flex items-center cursor-pointer">
+        <div v-if="missionControleVisible || currentRole ==='bailleur'" class="mb-1 flex items-center cursor-pointer">
           <router-link to="/dashboard/mission-controle/checklist" style="width: 100%" class="flex items-center p-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
             <span class="font-semibold uppercase text-primary text-xs">Mission de controle</span>
             </router-link>
           </div>
-          <div v-if="entrepriseExecutanteVisible" class="mb-1 flex items-center cursor-pointer">
+          <div v-if="entrepriseExecutanteVisible || currentRole ==='bailleur'" class="mb-1 flex items-center cursor-pointer">
             <router-link
               to="/dashboard/entreprise/checklist"
               style="width: 100%"
@@ -462,7 +499,7 @@
       </div>
     </div>
 
-    <div v-if="voirPpmVisible && voirPtaVisible " class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="voirPpmVisible || voirPtaVisible || currentRole ==='bailleur' " class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/pta"
         style="width: 100%"
@@ -488,7 +525,7 @@
       </router-link>
     </div>
 
-    <div v-if="modVsisible || missionControleVisible" class="mb-1 px-6 relative">
+    <div v-if="currentRole ==='bailleur' ||  modVsisible || missionControleVisible" class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -525,7 +562,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div v-if="modVsisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="modVsisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/mod"
             style="width: 100%"
@@ -535,7 +572,7 @@
           </router-link>
         </div>
 
-        <div v-if="missionControleVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="missionControleVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/mission-controle"
             style="width: 100%"
@@ -545,7 +582,7 @@
           </router-link>
         </div>
 
-        <div v-if="entrepriseExecutanteVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="entrepriseExecutanteVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/entreprises"
             style="width: 100%"
@@ -609,7 +646,7 @@
       </router-link>
     </div>
 
-    <div v-if="papVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="currentRole ==='bailleur' || papVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/PAP"
         style="width: 100%"
@@ -661,7 +698,7 @@
       </router-link>
     </div> 
     
-    <div v-if="utilisateurVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="utilisateurVisible || currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/utilisateurs"
         style="width: 100%"
@@ -953,7 +990,7 @@ export default {
   mounted() {
     this.getPermission()
      if(this.currentUser != undefined) {
-       this.currentRole = this.currentUser.role[0].nom
+       this.currentRole = this.currentUser.type
         console.log("role courant",this.currentUser)
      }
   }

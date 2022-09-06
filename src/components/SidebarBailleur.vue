@@ -238,8 +238,8 @@ export default {
     },
     mounted() {
       if(this.currentUser != undefined) {
-       this.currentRole = this.currentUser.role[0].nom
-        console.log("role courant",this.currentUser)
+       this.currentRole = this.currentUser.type
+        console.log("role courant",this.currentRole)
       }
     }
 }
