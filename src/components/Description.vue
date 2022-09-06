@@ -30,7 +30,7 @@
 
       <div class="bg-white shadow p-3">
         <h2 class="text-indigo-700 font-semibold">Taux d'execution physique</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
+        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_financier.tef }}%</h4>
         <div class="mt-6 flex justify-between">
           <div class="flex items-center space-x-3">
             <span class="text-gray-700">
@@ -49,15 +49,15 @@
                 ></path>
               </svg>
             </span>
-            <span class="text-sm text-green-700 font-semibold">+ 1.58 </span>
+            <span class="text-sm text-green-700 font-semibold">+ {{ projet.taux_financier.percent }} </span>
           </div>
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
         </div>
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux d'execution physique</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
+        <h2 class="text-indigo-700 font-semibold">Taux de decaissement</h2>
+        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
         <div class="mt-6 flex justify-between">
           <div class="flex items-center space-x-3">
             <span class="text-gray-700">
@@ -76,7 +76,7 @@
                 ></path>
               </svg>
             </span>
-            <span class="text-sm text-red-700 font-semibold">- 1.58 </span>
+            <span class="text-sm text-red-700 font-semibold">- {{ projet.taux_decaissement.percent }} </span>
           </div>
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
         </div>
@@ -156,7 +156,6 @@ export default {
   computed: {},
 
   methods: {
-    
   },
 
   created() {

@@ -84,21 +84,20 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
-          <span @click="goActivite" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
+          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
-          <button @click="addActivite" v-if="seeActivite"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <button @click="addActivite" v-if="seeActivite && activiteEnvAdd"  title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Creer une activité </span>
           </button>
-          <router-link v-if="seeFormulaire" :to="{name:'entreprise_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <router-link v-if="seeFormulaire && checklistAdd" :to="{name:'entreprise_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Creer un formulaire </span>
           </router-link>
         </div>
-         
       </div>
 
       <div v-if="seeEntreprise" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
@@ -137,7 +136,8 @@
         </div>
       </div>
       <div v-if="seeActivite">
-        <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
+        <vtable :headers="headers" v-if="activiteEnvDelete && activiteEnvUpdate" :datas="dataTable" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
+        <vtable :headers="headers" v-if="!activiteEnvDelete && activiteEnvUpdate" :datas="dataTable"></vtable>    
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
@@ -152,13 +152,14 @@
               @dupliquer="dupliquer"
               @gotoDetails="gotoDetails(i)"
               @onlink="getlink(i)"
+              :isDelete="checklistDelete"
+              :isUpdate="checklistUpdate"
               > 
             </card-checklist>
           </div>
         </div>
       </div>
 
-      
   </div>
   </dashboard>
 </template>
@@ -274,12 +275,21 @@ export default {
         {nom:"entreprise 5"},
         {nom:"entreprise 6"},
       ],
-      value:[]
-      
+      value:[],
+      entrepriseExecutanteVisible:false,
+      entrepriseExecutanteAdd:false,
+      activiteEnvVisible:false,
+      activiteEnvAdd:false,
+      activiteEnvDelete:false,
+      activiteEnvUpdate:false,
+      checklistVisible:false,
+      checklistAdd:false,
+      checklistSupprimer:false,
+      checklistUpdate:false,
     }
   },
   mounted() {
-    
+    this.getPermission()
   },
   methods: {
     addTag (newTag) {
@@ -289,6 +299,42 @@ export default {
       this.options.push(tag)
       this.value.push(tag)
     },
+        //Charger les fonctions de communication avec le serveur
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-entreprise-executante') {
+          this.entrepriseExecutanteVisible = true
+        }
+        if(element.slug === 'creer-une-activite-environnement') {
+          this.activiteEnvAdd = true
+        }
+        if(element.slug === 'modifier-une-activite-environnement') {
+          this.activiteEnvUpdate = true
+        }
+        if(element.slug === 'supprimer-une-activite-environnement') {
+          this.activiteEnvDelete = true
+        }
+        if(element.slug === 'voir-une-activite-environnement') {
+          this.activiteEnvVisible = true
+        }
+        if(element.slug === 'voir-une-checklist') {
+          this.checklistVisible = true
+        }
+        if(element.slug === 'creer-une-checklist') {
+          this.checklistAdd = true
+        }
+        if(element.slug === 'modifier-une-checklist') {
+          this.checklistUpdate = true
+        }
+        if(element.slug === 'supprimer-une-checklist') {
+          this.checklistDelete = true
+        }
+        if(element.slug ==='supprimer-un-decaissement') {
+          this.decaissementDelete = true
+        }
+           
+      });
+     },
     getlink(i){
       this.showLink = true
     },

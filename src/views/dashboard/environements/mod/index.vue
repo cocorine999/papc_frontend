@@ -152,13 +152,13 @@
               @dupliquer="dupliquer"
               @gotoDetails="gotoDetails(i)"
               @onlink="getlink(i)"
+              :isDelete="checklistDelete"
+              :isUpdate="checklistUpdate"
               > 
             </card-checklist>
           </div>
         </div>
       </div>
-
-      
   </div>
   </dashboard>
 </template>
@@ -274,11 +274,22 @@ export default {
         {nom:"entreprise 5"},
         {nom:"entreprise 6"},
       ],
-      value:[]
+      value:[],
+      entrepriseExecutanteVisible:false,
+      entrepriseExecutanteAdd:false,
+      activiteEnvVisible:false,
+      activiteEnvAdd:false,
+      activiteEnvDelete:false,
+      activiteEnvUpdate:false,
+      checklistVisible:false,
+      checklistAdd:false,
+      checklistSupprimer:false,
+      checklistUpdate:false,
       
     }
   },
   mounted() {
+    this.getPermission()
     const en = [{name:'papc'},{name:'pool'},{name:'demo'}]
     this.champs = [
       {name:'Nom activité',type:'text',placeholdere:"libelle activité",isSelect:false,isTextArea:false,data:'',required:true,},
@@ -289,6 +300,7 @@ export default {
     ]
   },
   methods: {
+    
     addTag (newTag) {
       const tag = {
         nom: newTag,
@@ -324,9 +336,43 @@ export default {
       this.seeFormulaire = false
       this.seeActivite = true
     },
-    
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-entreprise-executante') {
+          this.entrepriseExecutanteVisible = true
+        }
+        if(element.slug === 'creer-une-activite-environnement') {
+          this.activiteEnvAdd = true
+        }
+        if(element.slug === 'modifier-une-activite-environnement') {
+          this.activiteEnvUpdate = true
+        }
+        if(element.slug === 'supprimer-une-activite-environnement') {
+          this.activiteEnvDelete = true
+        }
+        if(element.slug === 'voir-une-activite-environnement') {
+          this.activiteEnvVisible = true
+        }
+        if(element.slug === 'voir-une-checklist') {
+          this.checklistVisible = true
+        }
+        if(element.slug === 'creer-une-checklist') {
+          this.checklistAdd = true
+        }
+        if(element.slug === 'modifier-une-checklist') {
+          this.checklistUpdate = true
+        }
+        if(element.slug === 'supprimer-une-checklist') {
+          this.checklistDelete = true
+        }
+        if(element.slug ==='supprimer-un-decaissement') {
+          this.decaissementDelete = true
+        }
+           
+      });
+     },
     gotoNext() {
-       this.$router.push({name:'mod_checklist',params:{id:1}})
+      this.$router.push({name:'mod_checklist',params:{id:1}})
     },
 
    

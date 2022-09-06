@@ -111,7 +111,7 @@
           <h2 class="uppercase font-semibold hover:font-bold py-2">
             Realisation globale
           </h2>
-          <p class="hover:font-bold">${{ projet.total_decaissement }}</p>
+          <p class="hover:font-bold">${{ projet.total_realisation }}</p>
         </div>
       </div>
     </div>

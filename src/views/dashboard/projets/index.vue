@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="projetVisible" class="w-full p-4">
+    <div class="w-full p-4">
        <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
         <div style="width:60vw" class="p-4">
           <form @submit.prevent="saveProlongerDate()" action="">
@@ -311,26 +311,29 @@ export default {
     },
 
     modifierProjet(projet) {
+      /*
+        this.title = 'Modifier un projet'
 
-      this.title = 'Modifier un projet'
+        this.submitText = "Modifier"
 
-      this.submitText="Enregistrer",
+        console.log(projet)
 
-      this.setProjet(projet)
+        this.projetAttributs.forEach((item) => {
 
-      this.projetAttributs.forEach((item) => {
+          this.champs.find((value, index) => {
 
-        this.champs.find((value, index) => {
+            if(value.key !== 'bailleurId' && value.key !== 'statut'){ 
+              if(value.key === item){
+                this.champs[index]['data'] = projet[item]
+              }
+            }
 
-          if(value.key === item){
-            this.champs[index]['data'] = this.projet[item]
-          }
+          })
 
         })
 
-      })
-
-      this.showCloseModal(true)
+        this.showCloseModal(true)
+      */
     },
 
     async supprimerProjet(projet) {

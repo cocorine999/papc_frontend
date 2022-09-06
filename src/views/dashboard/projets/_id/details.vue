@@ -117,7 +117,7 @@ import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
 
-import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+import { mapActions } from "vuex";
 
 import Budgetaire from '@/components/Budgetaire.vue';
 import Description from '@/components/Description.vue';
@@ -162,6 +162,8 @@ export default {
   created() {
     this.detailsProjet(this.$route.params.id).then((response) => {
       this.projet = response.data.data
+
+      console.log(this.projet)
     })
   },
 };
