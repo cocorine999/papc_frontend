@@ -288,7 +288,7 @@ export default {
       
       this.saveFormulaire(formulaire).then(response => {
         if(response.status == 200 || response.status == 201){
-            this.close()
+          this.$router.push('/dashboard/unite-gestion/checklist')
         }
 
       })
