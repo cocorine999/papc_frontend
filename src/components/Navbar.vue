@@ -81,7 +81,7 @@ export default {
         this.logout().then((response) => {
           if (response.statut === "success" || response.status === 200) {
            this.$router.push('/')
-            localStorage.clear();
+        
             this.$toast.success("Vous etes deconnecter")
           }else{
             this.$toast.error(response.message)
