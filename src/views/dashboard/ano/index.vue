@@ -191,7 +191,7 @@ export default {
         var self = this;
 
         return this.anos.filter(function (ano){
-          return ano.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
+          return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
                  ano.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  ano.destinataire.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
