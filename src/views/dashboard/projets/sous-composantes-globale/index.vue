@@ -15,6 +15,51 @@
         <revisite v-else :version="version"></revisite>
     </div>
    </div>
+    <div v-if="currentRole ==='bailleur'" class="p-4">
+      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+        <div>
+          <ol class="inline-flex p-0 list-none">
+            <li class="flex items-center ">
+              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+            </li>
+            <li class="flex items-center text-blue-500 ">
+              <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+            </li>
+            <li class="flex items-center text-blue-500 ">
+              <router-link to="/dashboard/projets/composantes-globale" class="">composantes</router-link>
+            </li>
+          </ol>
+        </div>
+        <div>
+          <search-bar ></search-bar>
+        </div>
+      </nav>
+      <div class="my-10">
+       
+        <titre>Sous composantes</titre>
+      </div>
+      <div class="w-1/3">
+          <label for="" class="my-2 block">Selectionnez une composante</label>
+          <multiselect v-model="value" :options="composantes" @input="demoEcoute(value)" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composantes" label="nom" track-by="id"></multiselect>
+      </div>
+       <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+        <div v-for="(composante, index) in sous_composantes" :key="index">
+          <card-composante
+            :libelle="composante.nom"
+            :code="composante.code"
+            :statut="getStatus(composante.statut)"
+            :montantEPM="composante.pret"
+            :position="composante.position"
+            :poids="composante.poids"
+            :bailleur="composante.sigle"
+            :isDelete = "false"
+            :isUpdate="false"
+          ></card-composante>
+        </div>
+      </div>
+    </div>
   </dashboard>
 </template>
 
@@ -23,13 +68,24 @@
 import SousComposanteCurrent from "@/components/SousComposanteCurrent";
 import Revisite from "@/components/revisiteSC/Revisite.vue";
 import Dashboard from "@/layouts/Dashboard";
+import Titre from '@/components/Titre.vue'
+import ComposanteService from "@/services/modules/composante.service.js";
+import SearchBar from '@/components/SearchBar.vue'
+import ProjetService from "@/services/modules/projet.service.js";
+import CardComposante from '@/components/CardComposante.vue'
+import Multiselect from 'vue-multiselect'
+import  { getStringValueOfStatutCode }  from '@/utils/index'
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Dashboard,
     SousComposanteCurrent,
-    Revisite
+     CardComposante,
+    Titre,
+    Revisite,
+    Multiselect,
+    SearchBar
   },
   data() {
     return {
@@ -38,6 +94,12 @@ export default {
       composanteVisible:false,
       version: "",
       scopes: [],
+      currentRole:'',
+      sous_composantes:[],
+      composantes:[],
+      value:''
+   
+      
     }
   },
   computed: {
@@ -46,10 +108,21 @@ export default {
 
  
   methods: {
-
+     active() {
+        this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
+    demoEcoute(value) {
+      this.getSComposante(value.id)
+    },
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES"
     }),
+    customLabel ({ codePta, nom }) {
+      return `${codePta} – ${nom}`
+    },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         if(element.slug ==='voir-une-composante') {
@@ -57,7 +130,30 @@ export default {
           }
         });
     },
-
+      getStatus(status){
+      return getStringValueOfStatutCode(status);
+    },
+    getComposante(id) {
+      ProjetService.composantes(id).then((data) => {
+        const datas = data.data.data
+        this.composantes = datas
+        this.getSComposante(datas[0].id)
+       
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+     getSComposante(id) {
+      this.active()
+      ComposanteService.sousComposantes(id).then((data) => {
+        const datas = data.data.data
+        this.sous_composantes = datas
+        this.disabled()
+      }).catch((e) => {
+        console.log(e)
+        this.disabled()
+      })
+    },
     choiceVersion(version) {
       if (this.scopes.length > 0) {
         if ("" === version) {
@@ -72,7 +168,15 @@ export default {
   },
 
   created() {
-    if(this.currentUser.programme.id){
+     if(this.currentUser.programme.id){
+      this.currentRole = this.currentUser.type
+      const bailleurInfo = JSON.parse(localStorage.getItem("bailleurInfo"));
+      if (bailleurInfo) {
+        const idProjet = bailleurInfo.id
+        this.getComposante(idProjet) 
+      
+       
+      }
       this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
         this.scopes = response.data.data
       });

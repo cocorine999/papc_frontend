@@ -38,9 +38,6 @@
         </div>
       </nav>
       <div class="my-10">
-        <pre>
-          {{composantes}}
-        </pre>
         <titre>Mes composantes</titre>
       </div>
        <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
@@ -69,14 +66,16 @@ import Revisite from "@/components/revisiteC/revisite.vue";
 import Dashboard from "@/layouts/Dashboard";
 import { mapGetters, mapActions } from "vuex";
 import CardComposante from '@/components/CardComposante.vue'
+import SearchBar from '@/components/SearchBar.vue'
 import Titre from '@/components/Titre.vue'
 import  { getStringValueOfStatutCode }  from '@/utils/index'
-
+import ProjetService from "@/services/modules/projet.service.js";
 export default {
   components: {
     Dashboard,
     ComposanteCurrent,
     CardComposante,
+    SearchBar,
     Revisite,
     Titre,
   },
@@ -88,7 +87,8 @@ export default {
       version: "",
       scopes: [],
       currentRole:'',
-      composantes:[]
+      composantes:[],
+     
     }
   },
   computed: {
@@ -96,6 +96,24 @@ export default {
   },
 
   methods: {
+
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    getComposante(id) {
+      this.active()
+      ProjetService.composantes(id).then((data) => {
+        const datas = data.data.data
+        this.composantes = datas
+       this.disabled()
+      }).catch((e) => {
+        console.log(e)
+        this.disabled()
+      })
+    },
     
     getStatus(status){
       return getStringValueOfStatutCode(status);
@@ -104,25 +122,26 @@ export default {
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES"
     }),
-       getPermission() {
-      this.currentUser.role[0].permissions.forEach(element => {
-        if(element.slug ==='voir-une-composante') {
-            this.composanteVisible = true
-          }
-        });
-    },
+      
+      getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-une-composante') {
+              this.composanteVisible = true
+            }
+          });
+      },
 
-    choiceVersion(version) {
-      if (this.scopes.length > 0) {
-        if ("" === version) {
-          this.currentPage = true;
+      choiceVersion(version) {
+        if (this.scopes.length > 0) {
+          if ("" === version) {
+            this.currentPage = true;
+          } else {
+            this.currentPage = false;
+          }
         } else {
-          this.currentPage = false;
+          this.currentPage = true;
         }
-      } else {
-        this.currentPage = true;
-      }
-    },
+      },
   },
 
   created() {
@@ -131,7 +150,8 @@ export default {
       this.currentRole = this.currentUser.type
       const bailleurInfo = JSON.parse(localStorage.getItem("bailleurInfo"));
       if (bailleurInfo) {
-        this.composantes = bailleurInfo.composantes
+        const idProjet = bailleurInfo.id
+        this.getComposante(idProjet) 
       }
       this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
         this.scopes = response.data.data
