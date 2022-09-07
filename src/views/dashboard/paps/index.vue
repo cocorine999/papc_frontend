@@ -130,7 +130,7 @@ export default {
         }
       ],
       search:'',
-      papAttributs : ['nom', 'rue', 'longitude', 'latitude', 'sexe', 'contact', 'siteId', 'montant', 'payer', 'referencePieceIdentite', 'statut', 'modeDePaiement'],
+      papAttributs : ['nom', 'rue', 'longitude', 'latitude', 'sexe', 'contact', 'siteId', 'montant', 'payer', 'referencePieceIdentite', 'statut', 'modeDePaiement', 'dateDePaiement'],
       champs:[
         {name:' N° Rue', key:'rue',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Longitude', key:'longitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
@@ -143,7 +143,7 @@ export default {
         {name:'Statut', key:'statut',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Mode de paiement', key:'modeDePaiement',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Indeminisation', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Transféré', key:'payer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name: 'Date de paiement', key: "dateDePaiement", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true,errors : []},
         
       ],
       cols:2,
@@ -160,6 +160,7 @@ export default {
         {name:'Mode de paiement',cle:'modeDePaiement'},
         {name:'Indeminisation',cle:'montant'},
         {name:'Transféré',cle:'payer'},
+        {name:'Date de paiement',cle:'dateDePaiement'},
       ],
       actions:[
         {name:'supprimer',iconne:''},
