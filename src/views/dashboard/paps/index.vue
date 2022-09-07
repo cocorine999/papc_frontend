@@ -143,6 +143,7 @@ export default {
         {name:'Statut', key:'statut',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Mode de paiement', key:'modeDePaiement',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Indeminisation', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Transféré', key:'payer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name: 'Date de paiement', key: "dateDePaiement", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true,errors : []},
         
       ],
@@ -327,12 +328,7 @@ export default {
 
       this.pap = {}
     },
-    close() {
-        this.showCloseModal();
-
-        this.resetForm();
-      },
-
+    
     async updateInputData(id, attribut, value) {
         
           await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
