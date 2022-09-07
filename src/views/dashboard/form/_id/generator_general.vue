@@ -4,7 +4,20 @@
       <form @submit.prevent="sendForm">
         <div class="flex justify-center">
           <div class="w-3/4">
-            
+            <div class="w-1/5">
+                  <label class="block py-2 text-sm font-semibold" for="">
+                    Date de collecte
+                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                  </label>
+
+                  <input
+                      id="vrai"
+                      name="verite"
+                      type="date"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    v-model="date"
+                    />
+                </div>
             <div
               v-for="(checklist, index) in formulaire"
               :key="index"
@@ -145,8 +158,6 @@ export default {
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
-      utilisateurs: "utilisateurs/getUtilisateurs",
-      entreprises: "entreprisesExecutante/getEntreprisesExecutante",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
@@ -155,37 +166,25 @@ export default {
       getFormulaire: "GET_FORMULAIRE",
     }),
 
-    ...mapActions("eSuivis", {
-      saveESuivi: "STORE_ESUIVI",
-    }),
-
-    ...mapActions("entreprisesExecutante", {
-      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
-    }),
-
-    ...mapActions("utilisateurs", {
-      fetchUtilisateurs: "FETCH_LIST_UTILISATEUR",
+    ...mapActions("reponses", {
+      saveReponse: "STORE_REPONSE",
     }),
 
     sendForm() {
       this.formulaire.forEach((element) => {
-        element.data.forEach((data) => {
-          let form = {
-            "checkListId": data.id,
-            "valeur": data.content,
-            "formulaireId": this.$route.params.id ,
-            "date":this.date
-          };
+        
+        let form = {
+          "questionId": element.id,
+          "valeur": element.content,
+          "formulaireId": this.$route.params.id ,
+          "date":this.date
+        };
 
-          console.log(form);
+        console.log(form);
 
-          this.saveESuivi(form)
-        });
+        this.saveReponse(form)
+      
       });
-
-      
-
-      
     },
   },
   mounted() {
