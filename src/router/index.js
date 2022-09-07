@@ -15,6 +15,7 @@ import confirm from "../views/_identifiant/confirm.vue";
 import resendLink from "../views/_identifiant/resend_link.vue";
 import info from "../views/info.vue";
 import form_gestion_generator from "../views/dashboard/form/_id/generator.vue";
+import form_gestion_generator_general from "../views/dashboard/form/_id/generator_general.vue";
 import backup from "../views/dashboard/backup/index.vue";
 import dashboard from "../views/dashboard/index.vue";
 
@@ -253,6 +254,14 @@ const routes = [
     path: "/form/:id",
     name: "form_gestion_generator",
     component: form_gestion_generator,
+    meta: {
+      middleware: [auth],
+    },
+  },
+  {
+    path: "/formGeneral/:id",
+    name: "form_gestion_generator_general",
+    component: form_gestion_generator_general,
     meta: {
       middleware: [auth],
     },

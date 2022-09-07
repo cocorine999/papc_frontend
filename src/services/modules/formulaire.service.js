@@ -14,7 +14,7 @@ const FormulaireService = {
     },
 
     allGenerals(slug) {
-      return ApiService.get("formulaires/generals");
+      return ApiService.get("formulaire/generals");
     },
 
     create(params) {
@@ -30,7 +30,7 @@ const FormulaireService = {
     },
 
     getSuivi(slug, params) {
-      return ApiService.post("formulaires/getSuivi", params);
+      return ApiService.post("formulaire/getSuivi", params);
     },
     
 

@@ -1,10 +1,10 @@
 <template>
  <dashboard>
   <vmodal v-if="showLink" @close="showLink=false">
-      <div class="m-2 p-2 bg-white shadow" style="width:60vw">
-        <p class="p-2 bg-gray-300 border text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
-          <a  title="cliquez ici" target="_blank" href="/form"> cliquer ici</a>
-        </p>
+      <div class="m-2 p-2 bg-white shadow flex justify-center" style="width:60vw">
+        <router-link title="cliquez ici"  target="_blank" :to="{name:'form_gestion_generator_general',params:{id:formulaireId}}" class="p-2 bg-gray-300 border cursor-pointer text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
+          cliquer ici
+        </router-link>
       </div>
     </vmodal>
     <div class="px-4">
@@ -107,6 +107,7 @@ export default {
       this.$router.push({name:'formulaire_id_details',params:{id:id}})
     },
     getlink(i){
+      this.formulaireId = i
       this.showLink = true
     },
     modifier(data) {

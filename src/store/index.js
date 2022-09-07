@@ -70,6 +70,8 @@ import revisionPtab from "./modules/revisionPtab/index"
 
 import passations from "./modules/passations/index";
 
+import reponses from "./modules/reponses/index";
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
@@ -245,5 +247,6 @@ export default new Vuex.Store({
     eSuivis,
     sites,
     passations,
+    reponses,
   }
 });
