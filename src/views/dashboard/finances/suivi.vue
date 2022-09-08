@@ -91,7 +91,7 @@
         </div>
       
       </div>
-      <vtable v-if="suiviFinancierVisible" :headers="headers" :datas="filteredSuivis" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+      <vtable v-if="suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
       <vtable v-if="!suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis" :actions="actions" @updateInputData="updateInputData"></vtable>
 
       <pre>{{suiviFinanciers.projets}}</pre>

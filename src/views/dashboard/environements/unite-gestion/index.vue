@@ -297,16 +297,16 @@ export default {
           if(element.slug ==='voir-une-entreprise-executante') {
           this.entrepriseExecutanteVisible = true
         }
-        if(element.slug === 'creer-une-activite-environnement') {
+        if(element.slug === 'creer-une-activite-environnementale') {
           this.activiteEnvAdd = true
         }
-        if(element.slug === 'modifier-une-activite-environnement') {
+        if(element.slug === 'modifier-une-activite-environnementale') {
           this.activiteEnvUpdate = true
         }
-        if(element.slug === 'supprimer-une-activite-environnement') {
+        if(element.slug === 'supprimer-une-activite-environnementale') {
           this.activiteEnvDelete = true
         }
-        if(element.slug === 'voir-une-activite-environnement') {
+        if(element.slug === 'voir-une-activite-environnementale') {
           this.activiteEnvVisible = true
         }
         if(element.slug === 'voir-une-checklist') {
