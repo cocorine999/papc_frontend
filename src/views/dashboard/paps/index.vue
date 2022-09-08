@@ -83,6 +83,9 @@
     
      <vtable v-if="papDelete && papUpdate" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
      <vtable v-if="!papDelete && papUpdate" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData"></vtable>
+
+     <pre>{{paps.sites}}</pre>
+     <pre>{{paps.total}}</pre>
      
   </div>
   </dashboard>
@@ -97,6 +100,7 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import JsonExcel from "vue-json-excel"
 
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData } from '@/utils/index'
@@ -110,7 +114,8 @@ export default {
     CardBailleur,
     Titre,
     SearchBar,
-    ModalTopRight
+    ModalTopRight,
+    JsonExcel
   },
   data() {
     return {
@@ -261,7 +266,8 @@ export default {
               statut: element.statut,
               mode_de_paiement: element.modeDePaiement,
               indeministation: element.montant,
-              transferer: element.payer
+              transferer: element.payer,
+              date_de_paiement: element.dateDePaiement
             }
           );
         });

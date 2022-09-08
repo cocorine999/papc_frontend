@@ -93,6 +93,9 @@
       </div>
       <vtable v-if="suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
       <vtable v-if="!suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis()" :actions="actions" @updateInputData="updateInputData"></vtable>
+
+      <pre>{{suiviFinanciers.projets}}</pre>
+      <pre>{{suiviFinanciers.total}}</pre>
     </div>
   </dashboard>
  
@@ -109,6 +112,7 @@ import Dashboard from '@/layouts/Dashboard'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData } from '@/utils/index'
 import SuiviFinancier from "@/services/modules/suiviFinancier.service.js";
+import JsonExcel from "vue-json-excel"
 export default {
   components: {
     Vtable,
@@ -117,7 +121,8 @@ export default {
     Vform,
     Titre,
     SearchBar,
-    ModalTopRight
+    ModalTopRight,
+    JsonExcel
   },
     data() {
         return {
