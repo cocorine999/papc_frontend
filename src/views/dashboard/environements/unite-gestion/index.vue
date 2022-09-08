@@ -492,6 +492,26 @@ export default {
        this.$router.push({name:'unite_de_gestion_checklist',params:{idE:id}})
     },
 
+  },
+  watch: {
+    isLoading: function (value) {
+      //this.loading = value
+    },
+
+    hasErrors: function (errors) {
+      this.champs.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+      //this.errors = errors
+    },
+
+    entreprises: function (entreprises) {
+      this.entreprises.map((item) => {
+        item.nom = item.user.nom
+        return item;
+        
+      });
+    }
   }
 }
 </script>
