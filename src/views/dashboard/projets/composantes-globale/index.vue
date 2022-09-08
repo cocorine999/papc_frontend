@@ -50,6 +50,7 @@
             :position="composante.position"
             :poids="composante.poids"
             :bailleur="composante.sigle"
+            @validation="validation(composante)"
             :isDelete = "false"
             :isUpdate="false"
           ></card-composante>
@@ -102,6 +103,16 @@ export default {
     },
     disabled() {
       this.$store.dispatch('disabled')
+    },
+    validation(data) {
+      ProjetService.composantes(id).then((data) => {
+        const datas = data.data.data
+        this.composantes = datas
+       this.disabled()
+      }).catch((e) => {
+        console.log(e)
+        this.disabled()
+      })
     },
     getComposante(id) {
       this.active()
