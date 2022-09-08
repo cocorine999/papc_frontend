@@ -216,10 +216,10 @@ export default {
               this.suiviFinancierVisible = true
             }
             if(element.slug === 'creer-un-suivi-financier') {
-              this.plansuiviFinancierAdd = true
+              this.suiviFinancierAdd = true
             }
             if(element.slug === 'modifier-un-suivi-financier') {
-              this.decaissementUpdate = true
+              this.suiviFinancierUpdate = true
             }
             if(element.slug ==='supprimer-un-suivi-financier') {
               this.suiviFinancierDelete = true

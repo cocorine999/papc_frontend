@@ -1,7 +1,7 @@
 <template>
   <dashboard>
-  <div class="px-4">
-    <div v-if="reviser">
+  <div v-if="ptaVisible || currentRole=='bailleur' || ppmVisible " class="px-4">
+    <div v-if="reviser ">
       <vmodal title="confirmation !"  v-on:close="reviser = false">
         <div  style="width:60vw !important">
           <div  class="p-4 mb-4 border border-red-300 rounded-lg bg-red-50 dark:bg-red-200" role="alert">
@@ -50,8 +50,8 @@
 
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
-        <span @click="goPpm" v-if="ppmVisible" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
+        <span @click="goPta" v-if="ptaVisible || currentRole=='bailleur' " :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
+        <span @click="goPpm" v-if="ppmVisible || currentRole=='bailleur'" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
       </div> 
       <div>
         <div v-if="seePta" class="flex space-x-4 items-center">
@@ -110,10 +110,10 @@
       </div>
     </div>
     
-    <div v-if="seePta && ptaVisible" class="relative my-4  sm:rounded-lg">
+    <div v-if="seePta" class="relative my-4  sm:rounded-lg">
       <ptab></ptab>
     </div>
-    <div v-if="seePpm && ppmVisible " class="relative my-4  sm:rounded-lg">
+    <div v-if="seePpm " class="relative my-4  sm:rounded-lg">
       <ptab></ptab>
     </div>
   </div>
@@ -154,6 +154,7 @@ export default {
       ptaVisible:false,
       ppmVisible:false,
       cols:2,
+      currentRole:'',
     }      
   },
    computed: {
@@ -201,6 +202,10 @@ export default {
   },
   mounted() {
     this.getPermission()
+     if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.type
+        console.log("role courant",this.currentUser)
+     }
   }
 }
 </script>

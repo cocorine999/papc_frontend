@@ -2,7 +2,7 @@
 
     <div class="p-4">
       <!--Modal de filtre -->
-      <div v-if="showModal">
+      <div v-if="showModal ">
         <vmodal title="Filtre projet" v-on:close="showModal = false">
           <div class="px-6" style="width: 60vw !important">
             <vform
@@ -19,7 +19,7 @@
       <!--Fin Modal de filtre -->
 
        <!--La navigation  -->
-      <nav class="mb-2 text-sm font-semibold" aria-label="Breadcrumb">
+      <nav v-if="currentRole!='bailleur'" class="mb-2 text-sm font-semibold" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -46,7 +46,7 @@
       <!--filte et button de modification  -->
 
       <div class="flex items-center justify-between ">
-        <div class="flex space-x-2 items-center">
+        <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
           <button title="editer un projet" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <span>
               <svg class="mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
@@ -117,7 +117,7 @@ import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 
 
-
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import Budgetaire from '@/components/Budgetaire.vue';
 import Description from '@/components/Description.vue';
 import Graphes from '@/components/Graphes.vue';
@@ -143,13 +143,20 @@ export default {
   data() {
     return {
       showModal:false,
+      currentRole:''
     
     }
   },
 
-  computed:{
-
+  computed: {
+     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
+  mounted(){
+     if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.type
+        console.log("role courant",this.currentUser)
+     }
+  }
 
  
 };
