@@ -24,6 +24,22 @@
                 </div>
                 <div class="w-1/5">
                   <label class="block py-2 text-sm font-semibold" for="">
+                    Site
+                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                  </label>
+                  <select
+                    id="pet-select"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    v-model="siteId"
+                  >
+                    <option value="" disabled selected hidden>
+                      Veuillez choisir un site
+                    </option>
+                    <option v-for="(item, i) in sites" :key="i" :value="item.id">{{item.nom}}</option>
+                  </select>
+                </div>
+                <div class="w-1/5">
+                  <label class="block py-2 text-sm font-semibold" for="">
                     Responsable Enquete
                     <span class="px-2 text-lg font-black text-red-700">*</span>
                   </label>
@@ -233,6 +249,7 @@ export default {
       isLoading: "IS_LOADING",
       utilisateurs: "utilisateurs/getUtilisateurs",
       entreprises: "entreprisesExecutante/getEntreprisesExecutante",
+      sites: "sites/getSites",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
@@ -253,6 +270,10 @@ export default {
       fetchUtilisateurs: "FETCH_LIST_UTILISATEUR",
     }),
 
+    ...mapActions("sites", {
+      fetchSites: "FETCH_LIST_SITE",
+    }),
+
     sendForm() {
       this.formulaire.forEach((element) => {
         element.data.forEach((data) => {
@@ -263,6 +284,7 @@ export default {
             "activiteStatut": element.activite.statut,
             "entrepriseExecutantId": this.entrepriseId,
             "userId": this.userId,
+            "siteId": this.siteId,
             "formulaireId": this.$route.params.id ,
             "date":this.date
           };
@@ -294,6 +316,9 @@ export default {
 
     console.log("Fetching users ...");
     this.fetchUtilisateurs()
+
+    console.log("Fetching sites ...")
+    this.fetchSites(this.currentUser?.programme?.id)
   },
 };
 </script>

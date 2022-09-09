@@ -91,8 +91,8 @@
         </div>
       
       </div>
-      <vtable v-if="suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-      <vtable v-if="!suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis()" :actions="actions" @updateInputData="updateInputData"></vtable>
+      <vtable v-if="suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+      <vtable v-if="!suiviFinancierDelete && suiviFinancierUpdate" :headers="headers" :datas="filteredSuivis" :actions="actions" @updateInputData="updateInputData"></vtable>
 
       <pre>{{suiviFinanciers.projets}}</pre>
       <pre>{{suiviFinanciers.total}}</pre>
@@ -178,12 +178,21 @@ export default {
     }),
 
     ...mapGetters({
-      suiviFinanciers: "suiviFinanciers/getSuiviFinanciers", suiviFinancier: "getSuiviFinancier",
+      suiviFinanciers: "suiviFinanciers/getSuiviFinanciers", 
+      suiviFinancier: "getSuiviFinancier",
       projets: "projets/getProjets",
       activites: "activites/getActivites",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
-    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+
+    filteredSuivis(){
+        var self = this;
+
+        return this.suiviFinanciers?.suiviFinanciers?.filter(function (suiviFinancier){
+          return suiviFinancier.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
+                 suiviFinancier.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+              });
+    },
     
   },
 
@@ -235,14 +244,6 @@ export default {
           })
     },
 
-    filteredSuivis(){
-        var self = this;
-
-        return this.suiviFinanciers.suiviFinanciers.filter(function (suiviFinancier){
-          return suiviFinancier.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 suiviFinancier.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-              });
-      },
 
       title_csv() {
         return "suiviFinancier-" +"-" + new Date()
@@ -251,7 +252,11 @@ export default {
       json_data(){
         let tab = [];
 
-        this.filteredSuivis().forEach(element => {
+        let suivis = this.filteredSuivis;
+
+        console.log(this.filteredSuivis);
+
+        suivis.forEach(element => {
           tab.push(
             {
               codePta: element.codePta,
