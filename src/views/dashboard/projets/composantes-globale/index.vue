@@ -71,6 +71,7 @@ import SearchBar from '@/components/SearchBar.vue'
 import Titre from '@/components/Titre.vue'
 import  { getStringValueOfStatutCode }  from '@/utils/index'
 import ProjetService from "@/services/modules/projet.service.js";
+import ComposantesService from '@/services/modules/composante.service';
 export default {
   components: {
     Dashboard,
@@ -89,6 +90,7 @@ export default {
       scopes: [],
       currentRole:'',
       composantes:[],
+      idProjet:''
      
     }
   },
@@ -105,13 +107,26 @@ export default {
       this.$store.dispatch('disabled')
     },
     validation(data) {
-      ProjetService.composantes(id).then((data) => {
-        const datas = data.data.data
-        this.composantes = datas
-       this.disabled()
-      }).catch((e) => {
-        console.log(e)
-        this.disabled()
+      const id = data.id
+      const datas = {
+        statut:-1,
+        projetId:this.idProjet
+      }
+      ComposantesService.update(id,datas).then(() => {
+       this.$toast.success('validation effectué')
+      
+      }).catch((error) => {
+         if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              }
+       
       })
     },
     getComposante(id) {
@@ -162,6 +177,7 @@ export default {
       const bailleurInfo = JSON.parse(localStorage.getItem("bailleurInfo"));
       if (bailleurInfo) {
         const idProjet = bailleurInfo.id
+        this.idProjet = idProjet
         this.getComposante(idProjet) 
       }
       this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {

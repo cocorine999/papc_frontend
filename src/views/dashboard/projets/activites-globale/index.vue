@@ -60,6 +60,7 @@
               :debut="activite.debut"
               :fin="activite.fin"
               :statut="getStatus(activite.statut)"
+              @validation="validation(activite)"
               :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
               :isDelete="false"
               :isUpdate="false"
@@ -84,6 +85,7 @@ import CardActivite from '@/components/CardActivite.vue'
 import Multiselect from 'vue-multiselect'
 import  { getStringValueOfStatutCode }  from '@/utils/index'
 import { mapGetters, mapActions } from "vuex";
+import ActiviteService from '@/services/modules/activite.service';
 
 export default {
   components: {
@@ -102,6 +104,7 @@ export default {
       activites:[],
       composantes:[],
       sous_composantes:[],
+      idComposante:'',
       value:'',
       valueSC:''
     }
@@ -133,8 +136,31 @@ export default {
             this.planDecaissementVisible= true
           }
         });
-      },
-
+    },
+    validation(data) {
+      const id = data.id
+      const datas = {
+        statut:-1,
+        composanteId:this.idComposante,
+      
+      }
+      ActiviteService.update(id,datas).then(() => {
+       this.$toast.success('validation effectué')
+     
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              }
+       
+      })
+    },
     choiceVersion(version) {
 
       if(this.scopes.length > 0)
@@ -150,6 +176,7 @@ export default {
     },
 
     demoEcoute(value) {
+      this.idComposante = value.id
       this.getSComposante(value.id)
     },
      demoEcouteSC(value) {
@@ -184,8 +211,8 @@ export default {
       ProjetService.composantes(id).then((data) => {
         const datas = data.data.data
         this.composantes = datas
+        this.idComposante = datas[0].id
         this.getSComposante(datas[0].id)
-       
       }).catch((e) => {
         console.log(e)
       })

@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="entrepriseExecutanteVisible" class="px-4">
+    <div v-if="entrepriseExecutanteVisible || currentRole==='bailleur'" class="px-4">
       <route-name title="entreprises" />
       <div v-if="showModal">
         <modal-top-right title="Ajouter un entreprise" v-on:close="close">
@@ -11,21 +11,14 @@
       <div class="flex items-center justify-between">
         <div class="flex space-x-4">
           <span
-            @click="goEntreprise && entrepriseExecutanteVisible"
-            :class="{ 'border-primary border-b-8': seeEntreprise }"
-            class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
+            class="inline-block cursor-pointer border-primary border-b-8 text-lg uppercase font-bold py-2"
             >Listes entreprises executantes
           </span>
-          <span
-            @click="goChecklist"
-            :class="{ 'border-primary border-b-8': seeChecklist }"
-            class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold py-2"
-            >Checklist
-          </span>
+         
         </div>
         <div>
           <button
-          v-if="entrepriseExecutanteVisible"
+             v-if="entrepriseExecutanteVisible"
             @click="addEntrepriseExecutante"
             title="ajouter un bailleur"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
@@ -45,7 +38,7 @@
       </div>
 
       <div
-        v-if="seeEntreprise"
+        v-if="entrepriseExecutanteVisible"
         class="align-middle inline-block w-full overflow-hidden pt-3 rounded-bl-lg rounded-br-lg"
       >
         <table class="w-full">
@@ -78,6 +71,7 @@
               </th>
 
               <th
+               v-if="entrepriseExecutanteDelete || entrepriseExecutanteUpdate"
                 class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider"
               >
                 Actions
@@ -165,23 +159,13 @@
           </tbody>
         </table>
       </div>
-
-      <div class="my-3" v-if="seeChecklist">
-        <div class="grid grid-cols-3 gap-4">
-          <div v-for="i in 6" :key="i.id">
-            <card-checklist
-              libelle="formulaire"
-              code="15555DC"
-              activite="Nombre d'accident routiere"
-              :unites="['personne', '%', 'km']"
-              @supprimer="supprimer"
-              @modifier="modifier"
-              @dupliquer="dupliquer"
-            >
-            </card-checklist>
-          </div>
-        </div>
+      <div>
+        <pre>
+          {{entrepriseExecutanteBailleur}}
+        </pre>
       </div>
+
+    
     </div>
   </dashboard>
 </template>
@@ -192,9 +176,9 @@ import RouteName from "@/components/RouteName";
 import ModalTopRight from "@/components/ModalTopRight";
 import FormComponent from "@/components/FormComponent";
 import Titre from "@/components/Titre";
+import EntrepriseExcutanteService from '@/services/modules/entreprise.executante.service';
 import { mapGetters, mapMutations, mapActions } from "vuex";
-
-import CardChecklist from "@/components/CardChecklist";
+import EntrepriseExecutanteService from '@/services/modules/entreprise.executante.service';
 export default {
   components: {
     ModalTopRight,
@@ -202,7 +186,7 @@ export default {
     RouteName,
     FormComponent,
     Titre,
-    CardChecklist,
+  
   },
   data() {
     return {
@@ -212,7 +196,7 @@ export default {
       seeEntreprise: true,
       showModal: false,
       entrepriseExecutanteAttributs: ["nom", "email", "contact", "mod"],
-
+      currentRole:'',
       champs: [
         { name: "Nom", key: "nom", type: "text", placeholdere: "", isSelect: false, isTextArea: false, data: "", required: true, errors: [],
         },
@@ -256,6 +240,7 @@ export default {
           text: "nom",
         },
       ],
+      entrepriseExecutanteBailleur:[],
       entrepriseExecutanteVisible:false,
       entrepriseExecutanteAdd:false,
       entrepriseExecutanteDelete:false,
@@ -276,32 +261,40 @@ export default {
   },
 
   methods: {
-    goEntreprise() {
-      this.seeEntreprise = true;
+      active() {
+        this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
+      getPermission() {
+            this.currentUser.role[0].permissions.forEach(element => {
+              if(element.slug ==='voir-une-entreprise-executante') {
+                this.entrepriseExecutanteVisible = true
+              }
+              if(element.slug === 'creer-une-entreprise-executante') {
+                this.entrepriseExecutanteAdd = true
+              }
+              if(element.slug === 'modifier-une-entreprise-executante') {
+                this.entrepriseExecutanteUpdate = true
+              }
+              if(element.slug ==='supprimer-une-entreprise-executante') {
+                this.entrepriseExecutanteDelete = true
+              }
+            
+            });
 
-      this.seeChecklist = false;
-    },
-    goChecklist() {
-      this.seeEntreprise = false;
-      this.seeChecklist = true;
-    },
-     getPermission() {
-          this.currentUser.role[0].permissions.forEach(element => {
-            if(element.slug ==='voir-une-entreprise-executante') {
-              this.entrepriseExecutanteVisible = true
-            }
-            if(element.slug === 'creer-une-entreprise-executante') {
-              this.entrepriseExecutanteAdd = true
-            }
-            if(element.slug === 'modifier-une-entreprise-executante') {
-              this.entrepriseExecutanteUpdate = true
-            }
-            if(element.slug ==='supprimer-une-entreprise-executante') {
-              this.entrepriseExecutanteDelete = true
-            }
-           
-          });
-
+      },
+       getEntrepriseBailleur() {
+       this.active()
+          EntrepriseExecutanteService.getByBailleur().then((data) => {
+          const datas = data.data.data
+          this.entrepriseExecutanteBailleur = datas
+          this.disabled()
+        }).catch((e) => {
+          console.log(e)
+          this.disabled()
+        })
       },
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -478,13 +471,22 @@ export default {
   mounted() {
     console.log("Fetching entreprises executantes ...");
    this.getPermission()
-    this.fetchEntreprisesExecutante().then((value) => {
-      if (this.currentUser.role.some((role) => role.nom !== "mod")) {
-        setTimeout(() => {
-          this.fetchMods();
-        }, 500);
-      }
-    });
+    if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.type
+       if(this.currentUser.type ==='bailleur') {
+         this.getEntrepriseBailleur()
+       }
+       else {
+           this.fetchEntreprisesExecutante().then((value) => {
+              if (this.currentUser.role.some((role) => role.nom !== "mod")) {
+                setTimeout(() => {
+                  this.fetchMods();
+                }, 500);
+              }
+            });
+       }
+     }
+  
   },
 };
 </script>

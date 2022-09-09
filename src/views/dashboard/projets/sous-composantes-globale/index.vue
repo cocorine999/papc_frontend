@@ -54,6 +54,7 @@
             :position="composante.position"
             :poids="composante.poids"
             :bailleur="composante.sigle"
+            @validation.once="validation(composante)"
             :isDelete = "false"
             :isUpdate="false"
           ></card-composante>
@@ -96,10 +97,9 @@ export default {
       scopes: [],
       currentRole:'',
       sous_composantes:[],
+      idComposante:'',
       composantes:[],
       value:''
-   
-      
     }
   },
   computed: {
@@ -115,8 +115,10 @@ export default {
         this.$store.dispatch('disabled')
       },
     demoEcoute(value) {
+      this.idComposante = value.id
       this.getSComposante(value.id)
     },
+
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES"
     }),
@@ -130,13 +132,37 @@ export default {
           }
         });
     },
-      getStatus(status){
+    getStatus(status){
       return getStringValueOfStatutCode(status);
+    },
+    validation(data) {
+      const id = data.id
+      const datas = {
+        statut:-1,
+        composanteId:this.idComposante
+      }
+      ComposanteService.update(id,datas).then(() => {
+       this.$toast.success('validation effectué')
+      
+      }).catch((error) => {
+         if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              }
+       
+      })
     },
     getComposante(id) {
       ProjetService.composantes(id).then((data) => {
         const datas = data.data.data
         this.composantes = datas
+        this.idComposante = datas[0].id
         this.getSComposante(datas[0].id)
        
       }).catch((e) => {

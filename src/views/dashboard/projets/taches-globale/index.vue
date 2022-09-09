@@ -47,7 +47,7 @@
       </nav>
       <div class="my-10">
        
-        <titre>Listes des activités</titre>
+        <titre>Listes des taches</titre>
       </div>
       <div class="flex bg-white p-2 shadow space-x-4">
        <div class="w-full">
@@ -74,6 +74,7 @@
               :libelle="tache.nom"
               :montantNE="tache.montantNE"
               :montantEPM="tache.montantEPM"
+              @validation="validation(tache)"
               :isDelete="false"
               :isUpdate="false"
             ></card-tache>
@@ -96,6 +97,7 @@ import CardTache from '@/components/CardTache.vue'
 import Multiselect from 'vue-multiselect'
 import  { getStringValueOfStatutCode }  from '@/utils/index'
 import { mapGetters, mapActions } from "vuex";
+import TachesService from '@/services/modules/tache.service';
 
 export default {
   components: {
@@ -117,6 +119,7 @@ export default {
       value:'',
       valueSC:'',
       valueAc:'',
+      activiteId:''
     }
   },
   computed: {
@@ -168,12 +171,34 @@ export default {
       this.getActivite(value.id)
     },
     demoEcouteAC(value) {
+      this.activiteId = value.id
       this.getTache(value.id)
     },
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES"
     }),
-
+    validation(data) {
+      const id = data.id
+      const datas = {
+        statut:-1,
+        activiteId:this.activiteId
+      }
+      TachesService.update(id,datas).then(() => {
+       this.$toast.success('validation effectué')
+      
+      }).catch((error) => {
+             if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              }
+      })
+    },
     getNom(nom, prenom) {
 
       let name = ''
@@ -219,6 +244,7 @@ export default {
       ComposanteService.activites(id).then((data) => {
         const datas = data.data.data
         this.activites = datas
+        this.activiteId = datas[0].id
         this.getTache(datas[0].id)
        this.disabled()
       }).catch((e) => {
@@ -245,8 +271,6 @@ export default {
       if (bailleurInfo) {
         const idProjet = bailleurInfo.id
         this.getComposante(idProjet) 
-      
-       
       }
       this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
         this.scopes = response.data.data

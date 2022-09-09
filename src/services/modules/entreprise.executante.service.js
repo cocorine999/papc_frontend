@@ -12,6 +12,9 @@ const EntrepriseExecutanteService = {
     get(slug) {
       return ApiService.get("entreprise-executants", slug);
     },
+    getByBailleur() {
+      return ApiService.get("bailleur/entreprisesExecutantes");
+    },
 
     create(params) {
       return ApiService.post("entreprise-executants", params);
