@@ -33,7 +33,7 @@
         <span class="font-semibold text-xs uppercase">Dashboard</span>
       </router-link>
     </div>
-    <div  v-if="programmeVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="currentRole ==='administrateur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/programme"
         style="width: 100%"
@@ -59,7 +59,7 @@
       </router-link>
     </div>
 
-    <div v-if="uniteeDeGestionVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="currentRole ==='administrateur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/unite-gestion"
         style="width: 100%"
