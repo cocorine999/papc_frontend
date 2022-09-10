@@ -57,7 +57,7 @@
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Tache</span> : {{indicateur.nom}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Description</span> : {{indicateur.description}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Bailleur</span> : {{indicateur.bailleur.nom}} </p>
-                <p v-if="indicateur.categorie != null" class=" text-sm   py-2"><span class="font-bold uppercase px-1">Categorie</span> : {{indicateur.categorie}} </p>
+                <p v-if="indicateur.categorie != null" class=" text-sm   py-2"><span class="font-bold uppercase px-1">Categorie</span> : {{indicateur.categorie.nom}} </p>
                 <p v-else class=" text-sm   py-2"><span class="font-bold uppercase px-1">Categorie</span> : Non definit </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Valeur de base </span>:{{indicateur.valeurDeBase}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Unité de mesure  </span>:{{indicateur.unitee_mesure.nom}} </p>
@@ -141,7 +141,7 @@ export default {
         });
       },
       title_csv() {
-        return "suivi-indicateur-" + indicateur.nom + "-" + new Date()
+        return "suivi-indicateur-" + this.indicateur.nom + "-" + new Date()
       },
 
       json_data(){

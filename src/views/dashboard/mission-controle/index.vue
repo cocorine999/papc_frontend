@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-  <div  v-if="mission_de_controleVisible" class="px-4">
+  <div  v-if="mission_de_controleVisible || currentRole == 'bailleur' " class="px-4">
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4 overflow-y-auto">
@@ -33,7 +33,6 @@
       <div class="flex space-x-4">
         <span @click="goMo" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
-        <span @click="goChecklist" :class="{'border-primary border-b-8':seeChecklist}" class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold   py-2">Checklist </span>
       </div>
       
       <button  v-if="seeMo && mission_de_controleAdd " @click="addMissionDeControle" title="Ajouter un MO"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
@@ -70,21 +69,7 @@
         </card-mod>
       </div>
     </div>
-    <div v-if="seeChecklist">
-      <div  class="grid grid-cols-3 gap-4">
-        <div v-for="i in 6" :key="i.id">
-          <card-checklist
-            libelle="formulaire"
-            code="15555DC" 
-            activite="Nombre d'accident routiere" 
-            :unites="['personne','%','km']" 
-            @supprimer="supprimerChecklist"
-            @modifier="modifierChecklist"
-            @dupliquer="dupliquerChecklist"
-            > </card-checklist>
-        </div>
-      </div>
-    </div>
+
     <div v-if="seePassation">
       <vtable :headers="headers" :datas="passations" :actions="actions" @supprimer="supprimerPassation" ></vtable>    
     </div>
@@ -121,7 +106,7 @@ export default {
       seeMo:true,
       seeMod:false,
       seePassation:false,
-      seeChecklist:false,
+      currentRole:'',
       showInput:true,
       uploadFile:false,
       title: "Ajouter une nouvelle mission de controle",
@@ -167,8 +152,6 @@ export default {
           {name:'travaux',cle:'travaux',width:"w-24"},
           {name:'Responsable sociologue',cle:'responsableSociologue',width:"w-24"},
           {name:'Date de creation',cle:'dateDeCreation',width:"w-28"},
-         
-         
         ],
         
         actions:[
@@ -249,18 +232,14 @@ export default {
     goMo() {
       this.seeMo = true
       this.seePassation = false
-      this.seeChecklist = false
+     
     },
     goPassation() {
       this.seeMo = false
       this.seePassation = true
-      this.seeChecklist = false
+    
     },
-    goChecklist() {
-      this.seeMo = false
-      this.seePassation = false
-      this.seeChecklist = true
-    },
+  
 
   
     addMissionDeControle() {
@@ -502,17 +481,21 @@ export default {
   
   mounted() {
     this.getPermission()
-    console.log("Fetching missions de controle ...")
-    this.fetchMissionDeControles()
-
-    console.log("Fetching passations ...")
-    this.fetchPassations(this.currentUser?.programme?.id)
-
-    console.log("Fetching entreprise executantes ...")
-    this.fetchEntreprisesExecutante()
-
-    console.log("Fetching sites ...")
-    this.fetchSites(this.currentUser?.programme?.id)
+     if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.type
+       if(this.currentUser.type ==='bailleur') {
+          this.fetchMissionDeControles()
+          this.fetchPassations(this.currentUser?.programme?.id)
+       }
+       else {
+          this.fetchMissionDeControles()
+          this.fetchEntreprisesExecutante()
+          this.fetchSites(this.currentUser?.programme?.id)
+          this.fetchPassations(this.currentUser?.programme?.id)
+       }
+     }
+  
+    
   }
 }
 </script>

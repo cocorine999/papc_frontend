@@ -12,6 +12,9 @@ const IndicateurSuiviService = {
     get(slug) {
       return ApiService.get("suivi-indicateurs", slug);
     },
+    getBailleurSuivi(slug) {
+      return ApiService.get("bailleur/suiviIndicateurs", slug);
+    },
     
     checksuivi(slug, params) {
       return ApiService.get(`indicateurs/${slug}/checkSuivi/${params}`);

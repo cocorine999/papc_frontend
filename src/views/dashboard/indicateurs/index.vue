@@ -138,7 +138,7 @@
 
       <div v-if="showModal2">
         <vmodal  title="Filtre indicateur"  v-on:close="showModal2 = false">
-          <div class="px-12" style="width:80vw !important">
+          <div class="px-4" style="width:40vw !important">
             <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filter" ></vform>
           </div>
         </vmodal>
@@ -164,6 +164,8 @@
         </div>
       </div>
      
+      
+      <vtable v-if="currentRole == 'bailleur' " :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="indicateurUpdate && indicateurDelete " :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="!indicateurDelete && indicateurUpdate " :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
     </div>
@@ -184,6 +186,7 @@ import CardProgramme from '@/components/CardProgramme'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
 import SuiviService from "@/services/modules/indicateur.suivi.service.js";
+import IndicateurService from "@/services/modules/indicateur.service";
 import JsonExcel from "vue-json-excel";
 export default {
   components: {
@@ -244,6 +247,8 @@ export default {
           {name:'supprimer',iconne:''},
           {name:'consulter',iconne:''},
         ],
+        indicateurBailleurs:'',
+        currentRole:'',
         indicateurVisible:false,
         indicateurAdd:false,
         indicateurDelete:false,
@@ -370,6 +375,13 @@ export default {
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
+    getIndicateurBailleurs() {
+      IndicateurService.getIndicateurBailleur().then((data) => {
+        this.indicateurBailleurs = data.data.data
+      }).catch((e) => {
+          console.log(e)
+      })
+    },
     getPermission() {
           this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-indicateur') {
@@ -418,9 +430,9 @@ export default {
     },
     title_csv() {
         return "indicateur-" +"-" + new Date()
-      },
+    },
 
-      json_data(){
+    json_data(){
         let tab = [];
 
         this.filteredIndicateur().forEach(element => {
@@ -437,7 +449,7 @@ export default {
           );
         });
         return tab;
-      },
+    },
     verifyValeurCible(date) {
       SuiviService.checksuivi(this.idIndicateur,date).then((data) => {
         //recuperation de la valeur de verfication pour la valeur cible
@@ -555,25 +567,45 @@ export default {
 
    mounted() {
      this.getPermission()
-    this.fetchIndicateurs().then((value) => {
-      setTimeout(() => {
-        console.log("Fetching list indicateurs...")
-        this.fetchBailleurs()
-        this.fetchCategories()
-        this.fetchUnite()
-        this.headers = [
-          {name:'Indicateur',cle:'nom',},
-          {name:'description',cle:'description'},
-          {name:'Bailleur',cle:'sigle',props:'bailleur',select:true,options:this.bailleurs,key:'sigle',updateKey:'bailleurId'},
-          {name:'Categorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
-          {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'},
-          {name:'Valeur de base',cle:'valeurDeBase'},
-          {name:'Année de base',cle:'anneeDeBase'},
-          {name:'Date de creation',cle:'created_at'},
-        ]
+      if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.type
+       if(this.currentUser.type ==='bailleur') {
+         this.getIndicateurBailleurs()
+         
+         this.headers = [
+              {name:'Indicateur',cle:'nom',},
+              {name:'description',cle:'description'},
+              {name:'Bailleur',cle:'nom',props:'bailleur',select:true,},
+              {name:'Categorie',cle:'nom',props:'categorie',select:true},
+              {name:'Unité de mesure',cle:'nom',props:'unitee_mesure',select:true},
+              {name:'Valeur de base',cle:'valeurDeBase'},
+              {name:'Année de base',cle:'anneeDeBase'},
+              {name:'Date de creation',cle:'created_at'},
+            ]
+       }
+       else {
+          this.fetchIndicateurs().then((value) => {
+          setTimeout(() => {
+            console.log("Fetching list indicateurs...")
+            this.fetchBailleurs()
+            this.fetchCategories()
+            this.fetchUnite()
+            this.headers = [
+              {name:'Indicateur',cle:'nom',},
+              {name:'description',cle:'description'},
+              {name:'Bailleur',cle:'sigle',props:'bailleur',select:true,options:this.bailleurs,key:'sigle',updateKey:'bailleurId'},
+              {name:'Categorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
+              {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'},
+              {name:'Valeur de base',cle:'valeurDeBase'},
+              {name:'Année de base',cle:'anneeDeBase'},
+              {name:'Date de creation',cle:'created_at'},
+            ]
 
-      }, 100);
-    })
+          }, 100);
+          })
+       }
+     }
+    
   },
 }
 </script>

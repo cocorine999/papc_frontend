@@ -102,6 +102,8 @@ export default {
 
     previewFiles(event) {
       this.file = event.target.files;
+      this.$emit('getFile',this.file)
+      console.log('les fichiers',this.file)
     }
   
   },

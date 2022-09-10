@@ -200,12 +200,12 @@ export default {
       if (bailleurInfo) {
         const idProjet = bailleurInfo.id
         this.getComposante(idProjet) 
-      
-       
-      }
-      this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
+      }else {
+        this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
         this.scopes = response.data.data
-      });
+        });
+      }
+      
     }
   },
   mounted() {

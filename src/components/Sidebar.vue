@@ -716,7 +716,7 @@
       </router-link>
     </div>
 
-    <div v-if="currentRole ==='administrateur' || currentRole ==='unitee-de-gestion' " class="px-6 mb-10 relative">
+    <div v-if=" currentRole ==='unitee-de-gestion' " class="px-6 mb-10 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"

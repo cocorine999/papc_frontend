@@ -232,9 +232,7 @@
         </div>
       </div>
     </div>
-    <pre>
-      {{projet}}
-    </pre>
+    
   </div>
 </template>
 

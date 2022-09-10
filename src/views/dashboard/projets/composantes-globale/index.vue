@@ -179,10 +179,12 @@ export default {
         const idProjet = bailleurInfo.id
         this.idProjet = idProjet
         this.getComposante(idProjet) 
+      }else {
+        this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
+          this.scopes = response.data.data
+        });
       }
-      this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
-        this.scopes = response.data.data
-      });
+     
     }
   },
   mounted() {

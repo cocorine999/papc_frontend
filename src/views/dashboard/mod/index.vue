@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="modVisible" class="px-4">
+    <div v-if="modVisible || currentRole=='bailleur'" class="px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
@@ -57,7 +57,7 @@
         <div class="flex space-x-4">
           <span
             @click="goMod"
-            v-if="modVisible"
+            v-if="modVisible || currentRole =='bailleur'"
             :class="{ 'border-primary border-b-8': seeMod }"
             class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
             >Listes MOD
@@ -186,6 +186,7 @@ export default {
       seeChecklist: false,
       showInput: true,
       uploadFile: false,
+      currentRole:'',
       title: "",
       title2: "",
       submitText: "Enrégistrer",
@@ -610,17 +611,22 @@ export default {
 
   mounted() {
     this.getPermission()
-    console.log("Fetching mods ...");
-    this.fetchMods();
+     if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.type
+       if(this.currentUser.type ==='bailleur') {
+          this.fetchMods();
+          this.fetchPassations(this.currentUser?.programme?.id)
+       }
+       else {
+          this.fetchMods();
+          this.fetchPassations(this.currentUser?.programme?.id)
+          this.fetchEntreprisesExecutante()
+          this.fetchSites(this.currentUser?.programme?.id)
 
-    console.log("Fetching passations ...")
-    this.fetchPassations(this.currentUser?.programme?.id)
-
-    console.log("Fetching entreprise executantes ...")
-    this.fetchEntreprisesExecutante()
-
-    console.log("Fetching sites ...")
-    this.fetchSites(this.currentUser?.programme?.id)
+       }
+     }
+   
+  
   },
 };
 </script>

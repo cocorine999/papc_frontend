@@ -12,6 +12,9 @@ const IndicateursService = {
     get(slug) {
       return ApiService.get("indicateurs", slug);
     },
+    getIndicateurBailleur() {
+      return ApiService.get("bailleur/indicateurs");
+    },
 
     create(params) {
       return ApiService.post("indicateurs", params);

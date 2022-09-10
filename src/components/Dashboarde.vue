@@ -45,19 +45,9 @@
 
       <!--filte et button de modification  -->
 
-      <div class="flex items-center justify-between ">
+      <div class="flex my-5 items-center justify-between ">
         <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
-          <button title="editer un projet" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-            <span>
-              <svg class="mr-1" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path
-                  d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-              </svg>
-            </span>
-            <span class="mx-2 text-xs font-semibold uppercase">editer un projet</span>
-          </button>
-
+         
           <button title="filtre" @click="showModal = true" class="bg-primary text-white px-2 py-1">
             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>

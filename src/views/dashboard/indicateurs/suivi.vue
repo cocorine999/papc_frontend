@@ -50,7 +50,8 @@
           </div>
         </div>
        
-        <vtable :headers="headers" :datas="filteredSuivis()"  ></vtable>    
+        <vtable v-if="currentRole==='bailleur'" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
+        <vtable v-else :headers="headers" :datas="filteredSuivis()"  ></vtable>    
     </div>
   </dashboard>
 
@@ -66,6 +67,7 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
+import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service";
 import JsonExcel from "vue-json-excel";
 
 export default {
@@ -84,7 +86,8 @@ export default {
         suiviAttributes : ['annee', 'trimestre','valeurCible','valeurRealise','indicateurId','commentaire'],
         suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','nom','bailleurId','categorieId'],
         showModal2:false,
-       
+       suiviBailleurs:[],
+       currentRole:'',
         champsRecherche:[
           {name:'Indicateurs',key:'nom',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:false,options:['indicateur1','indicateur2','indicateurs3']},
           {name:'Année de base',key:'date_debut',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:false,},
@@ -96,13 +99,7 @@ export default {
         cols:2,
         title:'',
         search:'',
-        headers:[
-          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
-          {name:'Trimestre',cle:'trimestre',width:"w-24"},
-          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
-          {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
-          {name:'Date de creation',cle:'created_at',width:"w-24"},
-        ],
+        headers:[]
        
         
 
@@ -141,6 +138,7 @@ export default {
       suivis: "suiviIndicateurs/getSuivis",
       suivi: "suiviIndicateurs/getSuivi",
     }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
     years () {
       const year = new Date().getFullYear()+20
       return Array.from({length: year - 1900}, (value, index) => year + index)
@@ -169,7 +167,6 @@ export default {
     },
     filteredSuivis(){
         var self = this;
-
         return this.suivis.filter(function (suivi){
           return suivi.indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
@@ -180,7 +177,6 @@ export default {
 
       json_data(){
         let tab = [];
-
         this.filteredSuivis().forEach(element => {
           tab.push(
             {
@@ -226,7 +222,13 @@ export default {
 
       this.setIndicateur({})
     },
-
+     getSuiviBailleur() {
+      IndicateurSuiviService.getBailleurSuivi().then((data) => {
+        this.suiviBailleurs = data.data.data
+      }).catch((e) => {
+          console.log(e)
+      })
+    },
     async updateInputData(id, attribut, value) {
         await this.updateSuivi({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
           if(this.hasErrors[attribut] !== undefined)
@@ -272,12 +274,38 @@ export default {
       }
   },
   mounted() {
-    this.fetchSuivi().then((value) => {
-      setTimeout(() => {
-        console.log("Fetching list of suivi...")
-        this.fetchIndicateurs()
-      }, 100);
-    })
+    if(this.currentUser != undefined) {
+       this.currentRole = this.currentUser.type
+       if(this.currentUser.type ==='bailleur') {
+           this.getSuiviBailleur()
+            const headers = [
+          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
+          {name:'Trimestre',cle:'trimestre',width:"w-24"},
+          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
+          {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
+          {name:'Date de creation',cle:'created_at',width:"w-24"},
+        ]
+        this.headers = headers
+        }
+        else {
+          const headers = [
+          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
+          {name:'Trimestre',cle:'trimestre',width:"w-24"},
+          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
+          {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
+          {name:'Date de creation',cle:'created_at',width:"w-24"},
+        ]
+        this.headers = headers
+        
+           this.fetchSuivi().then((value) => {
+            setTimeout(() => {
+              console.log("Fetching list of suivi...")
+              this.fetchIndicateurs()
+            }, 100);
+          })
+        }
+      }
+   
    
     
   },
