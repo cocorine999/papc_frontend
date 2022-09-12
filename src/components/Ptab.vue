@@ -1,12 +1,6 @@
 <template>
  <div>
 
-           
-
-
-
-
-
 <div class="flex ">
 
        <!-- fixer les trois premiers collones -->
@@ -137,7 +131,6 @@
     <table class="w-screen table-auto border-collaspe">
       <thead>
         <tr class="ligne1">
-         
           <th class="border-2 border-black w-64" colspan="3">Montant</th>
           <th class="border-2 border-black w-64" colspan="3">Montant</th>
           <th class="border-2 border-black w-24" rowspan="3">Poids</th>
