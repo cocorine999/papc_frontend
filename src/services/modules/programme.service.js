@@ -41,6 +41,10 @@ const ProgrammeService = {
       return ApiService.get(`programmes/${slug}/entreprise-executants`);
     },
 
+    structures(slug) {
+      return ApiService.get(`programmes/${slug}/structures`);
+    },
+
     activites(slug) {
       return ApiService.get(`programmes/${slug}/activites`);
     },

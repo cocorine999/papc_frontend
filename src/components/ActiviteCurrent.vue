@@ -511,8 +511,8 @@ export default {
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data:'', required: true, options: this.entreprisesExecutante, cle: 'id', value: 'nom',  errors : []},
-        {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.mods, cle: 'id', value: 'nom',  errors : []},
+        {name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data:'', required: true, options: this.structures, cle: 'id', value: 'nom',  errors : []},
+        {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.structures, cle: 'id', value: 'nom',  errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
 
@@ -834,11 +834,10 @@ export default {
     }),
 
     ...mapGetters({
-      mods: "mods/getMods",
+      structures: "structures/getStructures",
       projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposantes: "sousComposantes/getSousComposantes",
-      entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       activites: "activites/getActivites",
       activite: "activites/getActivite",
       planDeDecaissements: "planDeDecaissements/getPlanDeDecaissements",
@@ -875,11 +874,13 @@ export default {
     }),
 
     ...mapActions({
-      fetchMods: "mods/FETCH_LIST_MOD_OF_PROGRAMME",
-      fetchEntreprisesExecutante: "entreprisesExecutante/FETCH_LIST_ENTREPRISE_EXECUTANTE_OF_PROGRAMME",
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
+    }),
+
+    ...mapActions("structures", {
+      fetchStructure: "FETCH_LIST_STRUCTURE_OF_PROGRAMME",
     }),
 
     customLabel ({ codePta, nom }) {
@@ -1344,40 +1345,31 @@ export default {
       }
     },
 
-    entreprisesExecutante: function (entreprisesExecutante) {
+
+    structures: function (structures) {
 
       this.champs.map((item) => {
 
-        if (item.key === "structureResponsableId") {
+        if (item.key === "structureAssocieId") {
 
-          item.options = entreprisesExecutante.map((entrepriseExecutante) => {
+          item.options = structures.map((structure) => {
 
             return {
-              id: entrepriseExecutante.user.id,
-              nom: entrepriseExecutante.user.nom,
+              id: structure.id,
+              nom: structure.nom,
             };
 
           });
 
         }
 
-        return item;
+        if (item.key === "structureResponsableId") {
 
-      });
-
-    },
-
-    mods: function (mods) {
-
-      this.champs.map((item) => {
-
-        if (item.key === "structureAssocieId") {
-
-          item.options = mods.map((mod) => {
+          item.options = structures.map((structure) => {
 
             return {
-              id: mod.user.id,
-              nom: mod.user.nom,
+              id: structure.id,
+              nom: structure.nom,
             };
 
           });
@@ -1497,10 +1489,9 @@ export default {
 
     if(this.programmeId){
       Promise.all([this.fetchProjets(this.programmeId) ]).then((value) => {
-  
-          this.fetchMods(this.programmeId)
 
-          this.fetchEntreprisesExecutante(this.programmeId)
+          this.fetchStructure(this.programmeId)
+
       });
     }
 
