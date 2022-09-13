@@ -69,6 +69,9 @@ module.exports = {
       height: {
         128: "43rem",
       },
+      fontSize: {
+        'small': '8px',
+    },
     },
   },
   variants: {

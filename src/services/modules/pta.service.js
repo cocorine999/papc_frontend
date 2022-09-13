@@ -13,11 +13,17 @@ const ptaService = {
       return ApiService.get("ptas/reviserPtab", slug);
     },
     //  create services
-    create(params) {
-      return ApiService.post("ptas/reviserPtab", params);
+    getPta(params) {
+      return ApiService.post("ptas/generer", params);
+    },
+    getFiltre(params) {
+      return ApiService.post("ptas/filtre", params);
     },
     reviser(params) {
-        return ApiService.post("ptas/reviserPtab", params);
+      return ApiService.post("ptas/reviserPtab", params);
+    },
+    getReviser(params) {
+      return ApiService.post("ptas/getOldPtaReviser", params);
     },
     // update services
     update(slug, params) {
