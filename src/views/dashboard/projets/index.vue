@@ -82,7 +82,10 @@
                   details
                 </div>
               </div>
-              <div  class="absolute top-2 left-2 ">
+              <div v-if="projet.statut == -2 "  class="absolute top-2 left-2 ">
+                <button @click.stop="validerProjet(projet.id)" class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
+              </div>
+              <div v-else  class="absolute top-2 left-2 ">
                 <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
                   <dropdown @supprimer="supprimerProjet(projet)" @modifier="modifierProjet(projet)"  @prolonger="prolonger(projet)" :option="option"></dropdown>
                 </div>
@@ -464,6 +467,33 @@ export default {
           }
         })  
       }
+
+    },
+    validerProjet(id) {
+
+      let projet = {}
+      projet.statut =-1
+      this.updateProjet({projet: projet, id : id}).then(response => {
+   
+        if(response.status == 200 || response.status == 201){
+         this.$toast.success("tache valider")
+        }
+
+        }).catch((error) => {
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+             // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+            //console.log('dernier message', error.message);
+          }
+
+        })
+     
 
     },
   },
