@@ -58,8 +58,8 @@
         </button>
       </div>
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :headers="headers" :datas="filteredAno()" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" :datas="filteredAno()"  @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-if="actions != undefined && anoDelete" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-else :headers="headers" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
   </dashboard>

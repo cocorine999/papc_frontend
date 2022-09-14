@@ -44,7 +44,7 @@
     </div>
    
     <div  id="dataTable">
-      <vtable :headers="headers" :datas="filteredUser()" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+      <vtable :headers="headers" :datas="filteredUser()"  :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
     </div>
 
   </div>
@@ -96,7 +96,7 @@ export default {
           {name:'Prenom',  cle:'prenom'},
           {name:'Email',  cle:'email', edit : false},
           {name:'Contact',  cle:'contact'},
-          {name:'type utilisateur', props:'nom', cle:'roles'},
+          {name:'type utilisateur', cle:'type'},
           {name:'Date de creation', cle:'created_at', edit : false},
         ],
         actions:[
