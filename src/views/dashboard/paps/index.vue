@@ -81,8 +81,8 @@
       </button>
     </div>
     
-     <vtable v-if="papDelete && papUpdate" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-     <vtable v-if="!papDelete && papUpdate" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData"></vtable>
+     <vtable v-if="papDelete && papUpdate" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" sendRequest="false"></vtable>
+     <vtable v-if="!papDelete && papUpdate" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData" sendRequest="false"></vtable>
 
      <pre>{{paps.sites}}</pre>
      <pre>{{paps.total}}</pre>
@@ -336,7 +336,7 @@ export default {
     },
     
     async updateInputData(id, attribut, value) {
-        
+        console.log('mise a jour');
           await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
             if(this.hasErrors[attribut] !== undefined)
               alert(this.hasErrors[attribut])            
