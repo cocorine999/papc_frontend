@@ -81,8 +81,8 @@
       </button>
     </div>
     
-     <vtable v-if="papDelete && papUpdate" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" sendRequest="false"></vtable>
-     <vtable v-if="!papDelete && papUpdate" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData" sendRequest="false"></vtable>
+     <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+     <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData"></vtable>
 
      <pre>{{paps.sites}}</pre>
      <pre>{{paps.total}}</pre>

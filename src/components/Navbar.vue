@@ -6,7 +6,7 @@
          <!-- mobile hamburger -->
           <div class="lg:hidden flex items-center mr-4">
                   <button class="hover:text-blue-500 hover:border-white focus:outline-none navbar-burger" @click="toggleSidebar()">
-                    <svg class="h-5 w-5" v-bind:style="{ fill: 'black' }" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                    <svg class="h-5 w-5" v-bind:style="{ fill: 'white' }" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
           </button>
           </div>
         </div>
@@ -25,21 +25,20 @@
 
                   <!-- Profile dropdown -->
           <div class="ml-3 relative">
-              <div>
-                      
-                      <button @click="openMenu = !openMenu" type="button" class=" text-sm rounded-full outline-none " id="user-menu" aria-expanded="false" aria-haspopup="true">
+              <div>   
+                <button @click="openMenu = !openMenu" type="button" class=" text-sm rounded-full outline-none " id="user-menu" aria-expanded="false" aria-haspopup="true">
                         <div class="flex items-center  mx-2 justify-center w-10 h-10 bg-blue-400 rounded-full shadow-lg cursor-pointer"  >
                           <span class="text-sm font-bold text-white uppercase"> {{ cigle }} </span>
                         </div>
 
               
-                      </button>
+                </button>
               </div>
 
               <div v-if="openMenu"  class="origin-top-right absolute z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                      <router-link to="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> {{ currentUser.nom }} {{ currentUser.prenom }} </router-link>
+                <router-link to="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> {{ currentUser.nom }} {{ currentUser.prenom }} </router-link>
                       <router-link to="/admin/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Parametre</router-link>
-                      <span @click.prevent="deconnecter"  class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se deconnecter</span>
+                <span @click.prevent="deconnecter"  class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se deconnecter</span>
               </div>
           </div>
         </div>

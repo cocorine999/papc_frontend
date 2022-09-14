@@ -165,9 +165,9 @@
       </div>
      
       
-      <vtable v-if="currentRole == 'bailleur' " :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurUpdate && indicateurDelete " :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate " :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="currentRole == 'bailleur' " :sendRequest="false" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="indicateurUpdate && indicateurDelete " :sendRequest="false" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="!indicateurDelete && indicateurUpdate " :sendRequest="false" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -468,8 +468,8 @@ export default {
                  indicateur.uniteDeMesure.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
-      sendForm() {
+    },
+    sendForm() {
       this.champs = this.champs.map((item) => {
         item.errors = [];
         return item;

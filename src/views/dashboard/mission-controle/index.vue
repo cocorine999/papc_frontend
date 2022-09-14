@@ -65,6 +65,7 @@
           @dupliquer="dupliquerMissionDeControle(missionDeControle)"
           :isDelete="mission_de_controleDelete"
           :isUpdate="mission_de_controleUpdate"
+          :sendRequest="false"
         >
         </card-mod>
       </div>

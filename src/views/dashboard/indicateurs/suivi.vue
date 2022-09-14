@@ -50,8 +50,8 @@
           </div>
         </div>
        
-        <vtable v-if="currentRole==='bailleur'" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
-        <vtable v-else :headers="headers" :datas="filteredSuivis()"  ></vtable>    
+        <vtable v-if="currentRole==='bailleur'" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
+        <vtable v-else :headers="headers" :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
     </div>
   </dashboard>
 

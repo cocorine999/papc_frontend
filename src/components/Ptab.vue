@@ -3,7 +3,7 @@
 
     <div v-if="openFiltre">
        <vmodal title="filtre"  v-on:close="openFiltre = false">
-        <div  style="width:60vw !important">
+        <div  v-if="currentPage" style="width:60vw !important">
           <form @submit.prevent="getPtaFiltre"  class="p-4">
             <div class="form-group">
               <label for="bailleur"  class="block my-2 font-semibold">Selectionnez un bailleur</label>
@@ -33,6 +33,34 @@
 
           </form>
         </div>
+        <div v-else style="width:60vw !important">
+          <form @submit.prevent=" getPtaReviseFiltre"  class="p-4">
+            
+
+            <div class="form-group">
+              <label for="bailleur" class="block my-2 font-semibold">Année</label>
+              <input v-model="annee" required type="number" min="2000" max="2100" class="px-4 py-2 border w-full border-gray-300" >
+            </div>
+
+            <div class="my-3">
+              <button   class="bg-blue-500 px-4 py-2 shadow text-white border text-sm uppercase border-blue-500">
+                <span class="text-sm font-semibold uppercase" v-if="!loading">
+                  filtrer
+                  </span>
+                  <span v-else class="flex justify-center items-center space-x-2">
+                    <span class=" px-4 font-semibold ">
+                      chargement ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+               </button>
+            </div>
+
+          </form>
+        </div>
+       
       </vmodal>
     </div>
 
@@ -42,7 +70,7 @@
         
         <option value="" selected>Version actuelle</option>
 
-        <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab.id"> {{scopePtab.nom}}</option>
+        <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab"> {{scopePtab.nom}}</option>
       </select>
 
     </div>
@@ -50,7 +78,7 @@
      <div class="border my-4 rounded-lg border-gray-300 shadow-md">
       <!-- pta current -->
       <div v-if="currentPage" class="current">
-        <div class="my-3 flex space-x-4">
+        <div class="my-3 px-3 py-1 justify-end flex space-x-4">
        <button @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
         <span class="mx-2 text-sm font-semibold">Filtre</span>
@@ -749,7 +777,7 @@
 
        <!-- pta revise -->
        <div v-else class="current">
-        <div class="my-3 flex space-x-4">
+        <div class="my-3 px-3 py-1 flex justify-end space-x-4">
        <button @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
         <span class="mx-2 text-sm font-semibold">Filtre</span>
@@ -766,7 +794,7 @@
             :enable-download="true"
             :preview-modal="true"
             :paginate-elements-by-height="1400"
-            :filename="title_pdf"
+            :filename="title_pdfReviser"
             :pdf-quality="2"
             :manual-pagination="false"
             pdf-format="a3"
@@ -1264,6 +1292,7 @@
 
                     </thead>
                     <tbody>
+                     
                         <tr v-for="pta in dataNewR" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{pta.bailleur}}
@@ -1780,6 +1809,7 @@ export default {
       bailleurs:[],
       version:'current',
       version: "",
+      versionSlug:"",
       scopes: [],
       currentPage:true,
     }
@@ -1976,8 +2006,8 @@ export default {
     },
     dataNewR() {
       const  programme = []
-      if (this.ptab != undefined && this.ptab !=null ) {
-        this.ptab.forEach(element => {
+      if (this.ptabR != undefined && this.ptabR !=null ) {
+        this.ptabR.forEach(element => {
           const bailleur = element.bailleur
           const bn = element.budgetNational
           const pret = element.pret
@@ -2162,9 +2192,17 @@ export default {
     title_pdf() {
         if(this.annee ==null) {
         const year = new Date().getFullYear() 
-          return "pta -" + year
+          return "pta reviser -" + year
         }else {
-          return "pta -" + this.annee
+          return "pta reviser -" + this.annee
+        }
+    },
+    title_pdfReviser() {
+        if(this.annee ==null) {
+        const year = new Date().getFullYear() 
+          return "pta " + this.version.nom + "-" + year
+        }else {
+          return "pta " +  + this.version.nom + "-" + this.annee
         }
     },
   },
@@ -2182,9 +2220,8 @@ export default {
       return ` ${sigle}`
     },
     choiceVersion(version) {
-        alert(this.version)
         if (this.scopes.length > 0) {
-          if ("" === version) {
+          if ("" === version.id) {
             this.currentPage = true;
           } else {
             this.currentPage = false;
@@ -2223,15 +2260,39 @@ export default {
       if(this.annee ==null) {
         const year = new Date().getFullYear() 
         data={
-          ptabScopeId:this.version,
+          ptabScopeId:this.version.id,
           programmeId:this.currentUser.programme.id,
           annee:year
         }
       }else {
         data={
-          ptabScopeId:this.version,
+          ptabScopeId:this.version.id,
           programmeId:this.currentUser.programme.id,
           annee:Number(annee)
+        }
+      }
+     
+        PtabService.getReviser(data).then((data) => {
+         this.ptabR =  data.data.data
+        }).catch((e) => {
+          this.$toast.error(e)
+         
+        })
+    },
+    getPtaReviseFiltre() {
+      let data = {}
+      if(this.annee ==null) {
+        const year = new Date().getFullYear() 
+        data={
+          ptabScopeId:this.version.id,
+          programmeId:this.currentUser.programme.id,
+          annee:year
+        }
+      }else {
+        data={
+          ptabScopeId:this.version.id,
+          programmeId:this.currentUser.programme.id,
+          annee:Number(this.annee)
         }
       }
      
@@ -2277,7 +2338,6 @@ export default {
           this.bailleurs = data.data.data
         }).catch((e) => {
             this.$toast.error(e)
-          
         })
     },
   },

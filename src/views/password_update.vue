@@ -97,7 +97,7 @@ export default {
         resetService.get(this.login).then(() => {
           this.$toast.success("Operation effectué avec success !")
           this.$router.push('/info')
-        }).catch((e) => {
+        }).catch((error) => {
            if (error.response) {
               // Requête effectuée mais le serveur a répondu par une erreur.
               const message = error.response.data.message
