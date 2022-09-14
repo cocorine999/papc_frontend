@@ -31,6 +31,22 @@
         </div>
       </vmodal>
 
+        <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
+        <div class="p-4 overflow-auto">
+          <vform
+            template="default"
+            :champs="champs2"
+            :cols="cols"
+            :submitText="submitText"
+            :sendRequest="sendRequest"
+            @sendForm="savePlanDecaissement"
+            @closeModal="close2"
+          ></vform>
+        </div>
+       
+      </modal-top-right>
+
+
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <div class="p-4 overflow-auto">
           <vform
