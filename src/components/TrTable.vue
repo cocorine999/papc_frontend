@@ -50,7 +50,6 @@ export default {
       update() {
         
         this.isVisible = true
-    
         if(this.data !== this.attribut){
             this.$emit('update', this.objet?.id, this.objet?.extra, this.objet?.attribut, this.attribut)
             //this.data = this.attribut

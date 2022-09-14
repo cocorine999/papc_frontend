@@ -4,8 +4,9 @@
     :class="sideBarOpen ? '' : 'hidden'"
     id="main-nav"
   >
+   
     <div class="w-full h-20 flex px-4 items-center mb-8">
-      <p class="font-semibold text-3xl text-blue-400 pl-4">PAPC</p>
+      <p class="font-semibold text-3xl text-blue-400 pl-4">PAPC </p>
     </div>
 
     <div v-if="currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
