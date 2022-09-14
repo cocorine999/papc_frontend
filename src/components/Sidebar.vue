@@ -491,7 +491,7 @@
       </div>
     </div>
 
-    <div v-if="voirPpmVisible || voirPtaVisible || currentRole ==='bailleur' " class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div  class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/pta"
         style="width: 100%"

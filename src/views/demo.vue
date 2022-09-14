@@ -379,16 +379,16 @@ export default {
                 }
             ]
         },
-        {
+       {
             "bailleur": "BM",
-            "projetId": 1,
+            "projetId": "BY5O2zb4XJe1yOmr9b6lGxLKYAnR7aPMAPvg8E5BQzqkwMdpN0j32ZV4epwdmJZ6",
             "nom": "Porojet 1",
             "code": "1.1",
             "budgetNational": 0,
             "pret": 123654789,
             "composantes": [
                 {
-                    "id": 1,
+                    "id": "7lyoYAgMzbr1JkKEy7Dqmn2jBlGWOpX2AxAM3oe9RdvPg08V6ZQNYw4LbdmWRkDG",
                     "nom": "Composante 1",
                     "code": "1.1.1",
                     "budgetNational": 0,
@@ -416,7 +416,7 @@ export default {
                     "poids": 12,
                     "sousComposantes": [
                         {
-                            "id": 2,
+                            "id": "oEqeVjN3wPGze2KpNYo7Qgqkmn8JBExdpxWL39ZR64bAvVMOrd10ylDjd2vO1lYR",
                             "nom": "Sous Composante 1",
                             "budgetNational": 0,
                             "pret": 1263,
@@ -444,7 +444,7 @@ export default {
                             "code": "1.1.1.1",
                             "activites": [
                                 {
-                                    "id": 1,
+                                    "id": "PAB8RJ2NBbgoVdLxZR5E82v4JWQe6j7DRmrAql1kGX9OaD0NKzYnPypweDay0Vov",
                                     "nom": "Activite 1",
                                     "code": "1.1.1.1.1",
                                     "budgetNational": 0,
@@ -470,10 +470,64 @@ export default {
                                         "budgetNational": 0
                                     },
                                     "poids": 12,
-                                    "durees": [1,1,1,1,0,0,0,0,0,1,1,1],
+                                    "durees": [
+                                        1,
+                                        1,
+                                        1,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0
+                                    ],
                                     "structureResponsable": "SOGEA",
                                     "structureAssocie": "SATOM",
-                                    "taches": []
+                                    "taches": [
+                                        {
+                                            "id": "R9kD1Ka44RP3bKL6jY92MXJ1GgqW5xnRLzaw0AmD8EokQ7ldyBZvVrpexBrVjq6p",
+                                            "nom": "Tache1",
+                                            "code": "1.1.1.1.1.0",
+                                            "poids": 11,
+                                            "durees": [
+                                                1,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0
+                                            ]
+                                        },
+                                        {
+                                            "id": "4yxa7MlVk01KrdQW6w3pPqRGlv8bMeOJWz5aBLjDXxE4Y7J29mAZgyVoJ5wG6WqL",
+                                            "nom": "Tache2",
+                                            "code": "1.1.1.1.1.0",
+                                            "poids": 11,
+                                            "durees": [
+                                                0,
+                                                1,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0
+                                            ]
+                                        }
+                                    ]
                                 }
                             ]
                         }

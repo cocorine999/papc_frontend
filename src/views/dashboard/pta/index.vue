@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-  <div v-if="ptaVisible || currentRole=='bailleur' || ppmVisible " class="px-4">
+  <div  class="px-4">
     <div v-if="reviser ">
       <vmodal title="confirmation !"  v-on:close="reviser = false">
         <div  style="width:60vw !important">
@@ -35,7 +35,7 @@
         </div>
       </vmodal>
     </div>
-
+   
     <div class="mt-4">
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
@@ -50,18 +50,15 @@
 
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span @click="goPta" v-if="ptaVisible || currentRole=='bailleur' " :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
-        <span @click="goPpm" v-if="ppmVisible || currentRole=='bailleur'" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
+        <span @click="goPta" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
+        <span @click="goPpm"  :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
       </div> 
       <div>
         <div v-if="seePta" class="flex space-x-4 items-center">
           <button @click="reviser = true" title="reviser pta"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
             <span class="mx-2 text-sm font-semibold"> reviser ptab </span>
           </button>
-          <button @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-           <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Filtre</span>
-          </button>
+         
           <button v-if="seePta" @click="exportAsExcel" title="exporter en excel"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Export Excel</span>
@@ -81,40 +78,12 @@
       </div>
     </div>
 
-    <div v-if="openFiltre" class="bg-primary text-white rounded-2xl space-x-4 p-3 shadow flex justify-between my-4 ">
-      <div class="flex items-center w-full  overflow-x-auto">
-        <div class="flex justify-between items-center">
-          <label class="font-semibold text-sm px-2 w-full">Bailleurs</label>
-          <select class="bg-gray-100 border border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs">
-            <option disabled>BM</option>
-            <option disabled>BOM</option>
-          </select>
-        </div>
-        <div class="flex items-center">
-          <label class="font-semibold text-sm px-2 w-full ">Date debut</label>
-          <input type="date" class="bg-gray-100 border w-full border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs" />
-        </div>
-         
-        <div class="flex items-center">
-          <label class="font-semibold text-sm px-2 w-full">Date Fin</label>
-          <input type="date" class="bg-gray-100 w-full border border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs" />
-        </div>
-        <div class="flex items-center">
-          <label class="font-semibold text-sm px-2 w-full">Annee</label>
-          <input type="date" class="bg-gray-100 w-full border border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs" />
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <button type="submit" class="bg-blue-500 border border-blue-500 py-1 px-2 rounded-2xl outline-none text-xs" >Rechercher </button>
-      </div>
+   
+    <div v-if="seePta"  class="relative my-4  sm:rounded-lg">
+      <ptab  ></ptab>
     </div>
-    
-    <div v-if="seePta" class="relative my-4  sm:rounded-lg">
-      <ptab></ptab>
-    </div>
-    <div v-if="seePpm " class="relative my-4  sm:rounded-lg">
-      <ptab></ptab>
+    <div v-if="seePpm "  class="relative my-4  sm:rounded-lg">
+      <ppm ></ppm>
     </div>
   </div>
   </dashboard>
@@ -125,16 +94,21 @@
 
  import Dashboard from '@/layouts/Dashboard'
  import Ptab from '@/components/Ptab'
+ import Ppm from '@/components/Ppm'
  import Vmodal from '@/components/Vmodal'
  import Vform from '@/components/Vform'
+ import Multiselect from 'vue-multiselect'
  import { mapGetters, mapMutations, mapActions } from "vuex";
  import PtabService from "@/services/modules/pta.service.js";
+
 export default {
   components: {
     Ptab,
+    Ppm,
     Dashboard,
     Vmodal,
     Vform,
+    Multiselect,
     Vmodal
   },
   data() {
@@ -155,6 +129,7 @@ export default {
       ppmVisible:false,
       cols:2,
       currentRole:'',
+
     }      
   },
    computed: {
@@ -162,6 +137,7 @@ export default {
   },
 
   methods: {
+    
     exportAsExcel () {
       this.showModal = true
     },
@@ -198,9 +174,12 @@ export default {
             this.reviser = false
            this.isClick = true
         })
-      },
+    },
+   
+     
   },
   mounted() {
+ 
     this.getPermission()
      if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
@@ -212,4 +191,9 @@ export default {
 
 <style scoped>
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>
