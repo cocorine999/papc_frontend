@@ -25,6 +25,14 @@ const ESuiviService = {
       return ApiService.delete(`eSuivis/${slug}`);
     },
 
+    dates(params) {
+      return ApiService.post("eSuivis/dates", params);
+    },
+
+    formulaires(params) {
+      return ApiService.post("eSuivis/formulaires", params);
+    },
+
   };
 
   export default ESuiviService;

@@ -139,7 +139,13 @@
     <div v-if="seeChecklist" >
       <div class="mt-4 mb-6 flex space-x-4 items-center">
         <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
-        <input v-model="valueFiltre" type="date" class="px-2 py-1 border border-gray-700">
+        
+        <select id="pet-select" class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" v-model="valueFiltre">
+          <option value="" disabled selected hidden>
+                      Veuillez choisir une date
+                    </option>
+                    <option v-for="(item, i) in dates" :key="i" :value="item.date">{{item.date}}</option>
+        </select>
         <button  @click="filtre" class="bg-primary text-white border-primary border px-4 py-2 shadow rounded">Filtrer </button>
       </div>
       
@@ -252,6 +258,7 @@ export default {
       seeChecklist:true,
       seeForm:false,
       formulaire: [],
+      dates: [],
       entete: [],
       headers:[
           {name:'Libelle activite',props:'libelle'},
@@ -322,6 +329,10 @@ export default {
     ...mapActions("formulaires", {
       getSuivi: "GET_SUIVI",
     }),
+    ...mapActions("eSuivis", {
+      getDates: "DATE",
+      formulaires: "FORMULAIRE",
+    }),
     generateReport () {
       this.$refs.html2Pdf.generatePdf()
     },
@@ -365,17 +376,12 @@ export default {
       this.getSuivi(form).then((response) => {
       this.formulaire = response.data.data;
 
-      this.formulaire = response.data.data.map((element) => {
-         element = JSON.parse(element);
-         return element;
-       });
-
+       
        if(this.formulaire.length != 0)
        {
           this.entete = this.formulaire[0];
           this.formulaire.splice(0,1);
 
-          console.log(this.formulaire);
        }
 
        else
@@ -441,7 +447,15 @@ export default {
        }
         console.log(this.formulaire);
     });
-
+    
+    let form1 = {
+      "type": 'unitee-de-gestion',
+      "typeId": this.currentUser.profil.id,
+      "formulaireId": this.$route.params.idC
+    };
+    this.getDates(form1).then((response) => {
+      this.dates = response;
+    });
   }
 }
 </script>
