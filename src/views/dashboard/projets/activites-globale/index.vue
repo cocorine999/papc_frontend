@@ -10,7 +10,7 @@
       </select>
     </div>
     <div class="border my-4 rounded-lg border-gray-300 shadow-md">
-        <activite-current v-if="currentPage"></activite-current>
+        <activite-current :valueComposante="null" :valeurProjet="null" :valueProfondeur="null" v-if="currentPage"></activite-current>
         <revisite v-else :version="version"></revisite>
     </div>
    </div>

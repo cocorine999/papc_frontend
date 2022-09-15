@@ -87,13 +87,13 @@
               </div>
               <div v-else  class="absolute top-2 left-2 ">
                 <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
-                  <dropdown @supprimer="supprimerProjet(projet)" @modifier="modifierProjet(projet)"  @prolonger="prolonger(projet)" :option="option"></dropdown>
+                  <dropdown @supprimer="supprimerProjet(projet)" @gotoNext="gotoNext(projet,index)" @modifier="modifierProjet(projet)"  @prolonger="prolonger(projet)" :option="option"></dropdown>
                 </div>
                 <div v-if="projetUpdate && projetDelete ==false " class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
-                  <dropdown  @modifier="modifierProjet(projet)"  @prolonger="prolonger(projet)" :option="optionUpdate"></dropdown>
+                  <dropdown  @modifier="modifierProjet(projet)" @gotoNext="gotoNext(projet,index)"  @prolonger="prolonger(projet)" :option="optionUpdate"></dropdown>
                 </div>
                 <div v-if="projetDelete && projetUpdate==false" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
-                  <dropdown @supprimer="supprimerProjet(projet)"  @prolonger="prolonger(projet)" :option="optionD"></dropdown>
+                  <dropdown @supprimer="supprimerProjet(projet)" @gotoNext="gotoNext(projet,index)"  @prolonger="prolonger(projet)" :option="optionD"></dropdown>
                 </div>
               </div>
             </div>
@@ -189,14 +189,17 @@ export default {
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
+        { name: "continuer" },
       ],
       optionUpdate: [
         { name: "modifier" },
         { name: "prolonger" },
+        { name: "continuer" },
       ],
        optionD: [
         { name: "supprimer" },
         { name: "prolonger" },
+        { name: "continuer" },
       ],
       projetId:'',
       projetVisible:false,
@@ -251,6 +254,16 @@ export default {
     prolonger(projet) {
       this.projetId = projet.id
       this.showProlonger = true
+    },
+    gotoNext(projet,index) {
+      const profondeurProjet = {
+       isClick:true,
+       position:index,
+       id:projet.id
+      }
+     
+      localStorage.setItem('profondeurProjet',JSON.stringify(profondeurProjet));
+      this.$router.push({name:'dashboard_projets_composantes_globale'})
     },
 
     //Charger les fonctions de communication avec le serveur
@@ -386,9 +399,7 @@ export default {
       this.setProjet({})
     },
 
-    gotoNext() {
-      this.$router.push('/dashboard/projets/composantes')
-    },
+  
 
     sendForm() {
 

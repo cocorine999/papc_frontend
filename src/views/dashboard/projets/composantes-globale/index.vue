@@ -12,7 +12,7 @@
 
       </div>
       <div class="border my-4 rounded-lg border-gray-300 shadow-md">
-        <composante-current v-if="currentPage"></composante-current>
+        <composante-current :valueProfondeur="null" v-if="currentPage"></composante-current>
         <revisite v-else :version="version"></revisite>
       </div>
     </div>
@@ -188,6 +188,7 @@ export default {
     }
   },
   mounted() {
+   
     this.getPermission()
   }
 };

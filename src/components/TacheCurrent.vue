@@ -141,7 +141,7 @@
               <multiselect
                 v-model="valueFiltre"
                 :options="activites"
-                :preselect-first="true"
+              
                 :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
@@ -297,6 +297,10 @@
             >
           </vtable>
       </div>
+      <pre>
+        demo 
+        {{valueComposante}}
+      </pre>
   </div>
 </template>
 
@@ -327,6 +331,7 @@ export default {
     Vtable,
     Vform
   },
+  props:['valeurProjet','valueProfondeur','valueComposante','valueSC'],
   data() {
     return {
       dates: {debut:'',fin:''},
@@ -334,11 +339,11 @@ export default {
       chargement:false,
       showProlonger:false,
       showModalSuivi:false,
-      valueFiltre: null,
+      valueFiltre: this.valueProfondeur,
       composanteId: null,
-      projetFiltre: null,
-      composanteFiltre: null,
-      sousComposanteFiltre: null,
+      projetFiltre: this.valeurProjet,
+      composanteFiltre: this.valueComposante,
+      sousComposanteFiltre: this.valueSC,
       pending:false,
       success:true,
       rejected:false,

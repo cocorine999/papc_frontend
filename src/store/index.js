@@ -96,6 +96,7 @@ export default new Vuex.Store({
         type: 'ppm'
       }
     ],
+    
 
     trimestres : [
       {
