@@ -88,13 +88,21 @@ import config_backup from "../views/dashboard/config/backup/index.vue";
 import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
 import projets from "../views/dashboard/projets/index.vue";
+
 import dashboard_projets_activites_globale from "../views/dashboard/projets/activites-globale/index.vue";
+import dashboard_projets_activites from "../views/dashboard/projets/composantes/sous-composantes/activites/index.vue";
+
 import dashboard_projets_activites_globale_suivis from "../views/dashboard/projets/activites-globale/_id/suivis.vue";
 import dashboard_projets_taches_globale from "../views/dashboard/projets/taches-globale/index.vue";
+import dashboard_projets_taches from "../views/dashboard/projets/composantes/sous-composantes/activites/taches.vue";
 import dashboard_projets_taches_globale_suivis from "../views/dashboard/projets/taches-globale/_id/suivis.vue";
+
 import dashboard_projets_composantes_globale from "../views/dashboard/projets/composantes-globale/index.vue";
+import dashboard_projets_composantes from "../views/dashboard/projets/composantes/index.vue";
+
 import dashboard_projets_composantes_globale_suivis from "../views/dashboard/projets/composantes-globale/_id/suivis.vue";
 import dashboard_projets_sous_composantes_globale from "../views/dashboard/projets/sous-composantes-globale/index.vue";
+import dashboard_projets_sous_composantes from "../views/dashboard/projets/composantes/sous-composantes/index.vue";
 import dashboard_projets_sous_composantes_globale_suivis from "../views/dashboard/projets/sous-composantes-globale/_id/suivis.vue";
 import projets_id_details from "../views/dashboard/projets/_id/details.vue";
 import projets_id_cadreLogique from "../views/dashboard/projets/_id/cadre-logique.vue";
@@ -635,6 +643,22 @@ const routes = [
     name: "dashboard_projets_activites_globale",
   },
   {
+    path: "/dashboard/projets/activites/:nom/:code/:nomP/codeP/:nomC/:codeC",
+    component: dashboard_projets_activites,
+    meta: {
+      middleware: [auth],
+    },
+    name: "dashboard_projets_activites",
+  },
+  {
+    path: "/dashboard/projets/taches/:nom/:code/:nomP/codeP/:nomC/:codeC/:codeSC/:nomSC",
+    component: dashboard_projets_taches,
+    meta: {
+      middleware: [auth],
+    },
+    name: "dashboard_projets_taches",
+  },
+  {
     path: "/dashboard/projets/activites-globale/:id/details",
     component: dashboard_projets_activites_globale_suivis,
     meta: {
@@ -642,11 +666,19 @@ const routes = [
     },
     name: "dashboard_projets_activites_globale_suivis",
   },
-
+  
   {
     path: "/dashboard/projets/composantes-globale",
     component: dashboard_projets_composantes_globale,
     name: "dashboard_projets_composantes_globale",
+    meta: {
+      middleware: [auth],
+    },
+  },
+  {
+    path: "/dashboard/projets/composantes/:code/:nom",
+    component: dashboard_projets_composantes,
+    name: "dashboard_projets_composantes",
     meta: {
       middleware: [auth],
     },
@@ -666,6 +698,14 @@ const routes = [
     path: "/dashboard/projets/sous-composantes-globale",
     component: dashboard_projets_sous_composantes_globale,
     name: "dashboard_projets_sous_composantes_globale",
+    meta: {
+      middleware: [auth],
+    },
+  },
+  {
+    path: "/dashboard/projets/sous-composantes/:nom/:code/:nomP/codeP",
+    component: dashboard_projets_sous_composantes,
+    name: "dashboard_projets_sous_composantes",
     meta: {
       middleware: [auth],
     },

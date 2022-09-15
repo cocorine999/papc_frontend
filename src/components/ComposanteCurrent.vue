@@ -106,11 +106,12 @@
             @supprimer="supprimer(composante)"
             @validation="validation(composante)"
             @suivre="suivreMyComposant(composante)"
+            @gotoNext="gotoNext(composante)"
             :isDelete = "composanteDelete"
             :isUpdate="composanteUpdate"
           ></card-composante>
         </div>
-
+       
       </div>
     </div>
     <div v-if="seeSuivi">
@@ -154,9 +155,10 @@ export default {
     CardComposante,
     Vtable
 },
+props:['valueProfondeur'],
   data() {
     return {
-      valueFiltre: null,
+      valueFiltre: this.valueProfondeur,
       pending:false,
       success:true,
       rejected:false,
@@ -212,6 +214,9 @@ export default {
       composanteAdd:false,
       composanteDelete:false,
       composanteUpdate:false,
+      position:0,
+      isClick:false,
+      idProjet:''
     }
     
   },
@@ -331,8 +336,13 @@ export default {
       this.seeComposant = true
     },
 
-    gotoNext() {
-      this.$router.push('/dashboard/projets/sous-composantes-globale')
+    gotoNext(composante) {
+      const codeP = this.valueFiltre.codePta
+      const nomP = this.valueFiltre.nom
+      const nom = composante.nom
+      const code = composante.codePta
+     
+      this.$router.push({name:'dashboard_projets_sous_composantes',params:{code:code,nom:nom,codeP:codeP,nomP:nomP}})
     },
 
     editerSuivi(index) {
@@ -434,9 +444,7 @@ export default {
       this.setComposante({})
     },
     
-    gotoNext() {
-      this.$router.push('/dashboard/projets/composantes/sous-composantes')
-    },
+   
 
     getStatus(status){
       return getStringValueOfStatutCode(status);
@@ -534,23 +542,61 @@ export default {
       })
     },
 
-    valueFiltre: function(valeur){
+   valueFiltre: function(valeur,old){
       if( valeur instanceof Projet || valeur instanceof Object )
       {
-        this.fetchComposantes(valeur.id);
+        let demo = valeur
+        console.log('demo valueur',demo)
+        console.log('valeur old',old)
+        console.log('valeur premier',valeur)
+       
+
+        /*  */
+      
+         if(this.isClick ==false) { 
+           this.fetchComposantes(valeur.id);
+         }
+         else {
+            this.fetchComposantes(this.idProjet); 
+            this.isClick = false
+         }
+       
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
+         console.log('valeur second',valeur)
         this.fetchComposantes(valeur);
       }
     },
     
     projets: function(projets){
-      this.valueFiltre = projets[0]
+      alert('fdlkdkj')
+      console.log('dfgkjjgfkjkfhjfgkhjgkhjghkghj')
+      if(this.isClick ==false) {
+        this.valueFiltre = projets[0]
+        alert('nok')
+      }else {
+        this.valueFiltre = projets[this.position]
+        alert('ok')
+      }
+   
     }
-
+ 
   },
 
   created(){
+   const profondeurProjet = JSON.parse(localStorage.getItem('profondeurProjet'))
+    console.log("profondeur",profondeurProjet)
+    if(profondeurProjet != undefined || profondeurProjet != null) {
+      this.isClick = profondeurProjet.isClick
+      if(this.isClick) {
+        this.idProjet = profondeurProjet.id
+        this.position = profondeurProjet.position
+       
+      }else {
+       this.position = 0
+      }
+
+    } 
     this.getSuivi()
     this.getPermission()
     if(this.programmeId){

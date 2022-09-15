@@ -112,6 +112,7 @@
             @supprimer="supprimer(sousComposante)"
             @validation="validation(sousComposante)"
             @suivre="suivreMyComposant(sousComposante)"
+            @gotoNext="gotoNext(sousComposante)"
             :isDelete = "composanteDelete"
             :isUpdate="composanteUpdate"
           ></card-composante>
@@ -119,6 +120,7 @@
 
       </div>
     </div>
+    
     <div v-if="seeSuivi">
       <vtable id="datatable"
         :headers="headers"
@@ -149,6 +151,7 @@ import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
 import Composante from '@/store/modules/composantes/composante'
 import ComposanteService from "@/services/modules/composante.service.js";
 export default {
+  props:['valeurProjet','valueProfondeur'],
   components: {
     Dashboard,
     Vmodal,
@@ -163,8 +166,8 @@ export default {
 },
   data() {
     return {
-      valueFiltre: null,
-      projetFiltre: null,
+      valueFiltre: this.valueProfondeur,
+      projetFiltre: this.valeurProjet,
       pending:false,
       success:true,
       rejected:false,
@@ -347,9 +350,20 @@ export default {
       this.seeSousComposantes = true
     },
 
-    gotoNext() {
-      this.$router.push('/dashboard/projets/sous-composantes-globale')
+     gotoNext(sousComposante) {
+  
+      const codeC = this.valueProfondeur.codePta
+      const nomC = this.valueProfondeur.nom
+      const codeP = this.valeurProjet.codePta
+      const nomP = this.valeurProjet.nom
+      const nom = sousComposante.nom
+      const code = sousComposante.codePta
+     
+      this.$router.push({name:'dashboard_projets_activites',params:{code:code,nom:nom,codeP:codeP,nomP:nomP,nomC,codeC}})
     },
+
+
+    
 
     editerSuivi(index) {
       this.showInput = false

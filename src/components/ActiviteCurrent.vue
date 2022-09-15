@@ -300,6 +300,7 @@
               @prolonger="prolonger(activite)"
               @validation="validation(activite)"
               @suivre="suivreMyActivite(activite)"
+              @gotoNext="gotoNext(activite)"
               :isDelete="activiteDelete"
               :isUpdate="activiteUpdate"
             ></card-activite>
@@ -495,14 +496,15 @@ export default {
     Vtable,
     Vform
   },
+  props:['valeurProjet','valueProfondeur','valueComposante'],
   data() {
     return {
       suivis:[],
-      valueFiltre: null,
+      valueFiltre: this.valueProfondeur,
       activiteFiltre: null,
       composanteId: null,
-      projetFiltre: null,
-      composanteFiltre: null,
+      projetFiltre: this.valeurProjet,
+      composanteFiltre: this.valueComposante,
       pending: false,
       success: true,
       rejected: false,
@@ -897,6 +899,19 @@ export default {
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
+      gotoNext(activite) {
+       
+       const codeSC = this.valueFiltre.codePta
+      const nomSC = this.valueFiltre.nom
+      const codeC = this.composanteFiltre.codePta
+      const nomC = this.composanteFiltre.nom
+      const codeP = this.projetFiltre.codePta
+      const nomP = this.projetFiltre.nom
+      const nom = activite.nom
+      const code = activite.codePta
+     
+      this.$router.push({name:'dashboard_projets_taches',params:{code:code,nom:nom,codeP:codeP,nomP:nomP,nomC,codeC,nomSC,codeSC}})
+    },
 
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
@@ -1144,9 +1159,7 @@ export default {
       this.title = "Dupliquer une activité";
       this.showModal = true;
     },
-    gotoNext() {
-      this.$router.push("/dashboard/projets/taches-globale");
-    },
+   
     editerSuivi() {
       this.showInput = false;
     },

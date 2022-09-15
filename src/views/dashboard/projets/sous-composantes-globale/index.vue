@@ -11,7 +11,7 @@
         </select>
     </div>
     <div class="border my-4 rounded-lg border-gray-300 shadow-md">
-        <sous-composante-current v-if="currentPage"></sous-composante-current>
+        <sous-composante-current :valeurProjet="null" :valueProfondeur="null" v-if="currentPage"></sous-composante-current>
         <revisite v-else :version="version"></revisite>
     </div>
    </div>
