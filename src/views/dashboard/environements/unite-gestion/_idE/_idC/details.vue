@@ -331,7 +331,6 @@ export default {
     }),
     ...mapActions("eSuivis", {
       getDates: "DATE",
-      formulaires: "FORMULAIRE",
     }),
     generateReport () {
       this.$refs.html2Pdf.generatePdf()
