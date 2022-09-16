@@ -899,18 +899,46 @@ export default {
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
-      gotoNext(activite) {
-       
-       const codeSC = this.valueFiltre.codePta
-      const nomSC = this.valueFiltre.nom
-      const codeC = this.composanteFiltre.codePta
-      const nomC = this.composanteFiltre.nom
-      const codeP = this.projetFiltre.codePta
-      const nomP = this.projetFiltre.nom
-      const nom = activite.nom
-      const code = activite.codePta
+      gotoNext(activite,index) {
+        let indexP = 0
+        let  indexC = 0
+        let indexSC = 0
+        for (let index = 0; index < this.projets.length; index++) {
+          const element = this.projets[index];
+          if(element.id == activite.projetId ) {
+            indexP = index
+          }
+        }
+        for (let index = 0; index < this.componentes.length; index++) {
+          const element = this.composantes[index];
+          if(element.id == activite.composanteId ) {
+            indexC = index
+          }
+          
+        }
+        for (let index = 0; index < this.sousComposantes.length; index++) {
+          const element = this.sousComposantes[index];
+          if(element.id == activite.sousComposanteId ) {
+            indexSC = index
+          }
+          
+        }
+
+        const profondeurActivite = {
+          isClick:true,
+          positionP:indexP,
+          idP:activite.projetId,
+          positionC:indexC,
+          idC:activite.composanteId,
+          positionSC:indexSC,
+          idSC:activite.sousComposanteId,
+          positionAc:index,
+          idAc:activite.id
+        }
      
-      this.$router.push({name:'dashboard_projets_taches',params:{code:code,nom:nom,codeP:codeP,nomP:nomP,nomC,codeC,nomSC,codeSC}})
+      localStorage.setItem('profondeurActivite',JSON.stringify(profondeurActivite));
+     
+      this.$router.push({name:'dashboard_projets_taches_globale'})
     },
 
     customLabel ({ codePta, nom }) {

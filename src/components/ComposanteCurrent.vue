@@ -106,7 +106,7 @@
             @supprimer="supprimer(composante)"
             @validation="validation(composante)"
             @suivre="suivreMyComposant(composante)"
-            @gotoNext="gotoNext(composante)"
+            @gotoNext="gotoNext(composante,index)"
             :isDelete = "composanteDelete"
             :isUpdate="composanteUpdate"
           ></card-composante>
@@ -336,13 +336,27 @@ props:['valueProfondeur'],
       this.seeComposant = true
     },
 
-    gotoNext(composante) {
-      const codeP = this.valueFiltre.codePta
-      const nomP = this.valueFiltre.nom
-      const nom = composante.nom
-      const code = composante.codePta
+    gotoNext(composante,index) {
+      let indexP = 0
+      
+      for (let index = 0; index < this.projets.length; index++) {
+        const element = this.projets[index];
+        if(element.id == composante.projetId ) {
+          indexP = index
+        }
+        
+      }
+
+      const profondeurComposante = {
+        isClick:true,
+        positionP:indexP,
+        idP:composante.id,
+        positionC:index,
+        idC:composante.id
+      }
      
-      this.$router.push({name:'dashboard_projets_sous_composantes',params:{code:code,nom:nom,codeP:codeP,nomP:nomP}})
+      localStorage.setItem('profondeurComposante',JSON.stringify(profondeurComposante));
+      this.$router.push({name:'dashboard_projets_sous_composantes_globale'})
     },
 
     editerSuivi(index) {

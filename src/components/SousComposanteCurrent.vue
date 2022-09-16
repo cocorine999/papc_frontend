@@ -350,16 +350,37 @@ export default {
       this.seeSousComposantes = true
     },
 
-     gotoNext(sousComposante) {
+     gotoNext(sousComposante,index) {
   
-      const codeC = this.valueProfondeur.codePta
-      const nomC = this.valueProfondeur.nom
-      const codeP = this.valeurProjet.codePta
-      const nomP = this.valeurProjet.nom
-      const nom = sousComposante.nom
-      const code = sousComposante.codePta
+      let indexP = 0
+      let  indexC = 0
+      for (let index = 0; index < this.projets.length; index++) {
+        const element = this.projets[index];
+        if(element.id == sousComposante.projetId ) {
+          indexP = index
+        }
+      }
+      for (let index = 0; index < this.componentes.length; index++) {
+        const element = this.composantes[index];
+        if(element.id == sousComposante.composanteId ) {
+          indexC = index
+        }
+        
+      }
+
+      const profondeurSC = {
+        isClick:true,
+        positionP:indexP,
+        idP:sousComposante.projetId,
+        positionC:index,
+        idC:sousComposante.composanteId,
+        positionSC:index,
+        idSC:composante.id
+      }
      
-      this.$router.push({name:'dashboard_projets_activites',params:{code:code,nom:nom,codeP:codeP,nomP:nomP,nomC,codeC}})
+      localStorage.setItem('profondeurSC',JSON.stringify(profondeurSC));
+     
+      this.$router.push({name:'dashboard_projets_activites_globale'})
     },
 
 
