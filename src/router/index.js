@@ -28,9 +28,9 @@ import unite_de_gestion_checklist_entreprise from "../views/dashboard/environeme
 //checklist environment unite de gestion
 
 //checklist environement mod
-import mod_checklist from "../views/dashboard/environements/mod/_id/checklist.vue";
+import mod_checklist from "../views/dashboard/environements/mod/_idE/checklist.vue";
 //import mod_generator from "../views/dashboard/environements/mod/generator.vue";
-import mod_checklist_details from "../views/dashboard/environements/mod/_id/_id/details.vue";
+import mod_checklist_details from "../views/dashboard/environements/mod/_idE/_idC/details.vue";
 import mod_checklist_create from "../views/dashboard/environements/mod/create.vue";
 import mod_checklist_entreprise from "../views/dashboard/environements/mod/index.vue";
 
@@ -314,7 +314,7 @@ const routes = [
 
   // checklist mod
   {
-    path: "/dashboard/mod/entreprise/:id/checklist",
+    path: "/dashboard/mod/entreprise/:idE/checklist",
     name: "mod_checklist",
     component: mod_checklist,
     meta: {
@@ -323,7 +323,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/mod/checklist/:id/checklist/:id/details",
+    path: "/dashboard/mod/checklist/:idE/checklist/:idC/details",
     name: "mod_checklist_details",
     component: mod_checklist_details,
     meta: {
