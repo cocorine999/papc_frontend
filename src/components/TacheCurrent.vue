@@ -115,12 +115,12 @@
           <div class="w-full grid grid-cols-2 gap-4">
            <div>
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect    @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
            <div>
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-             <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+             <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
            </div>
           
             <div>
@@ -128,6 +128,7 @@
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
+                @input="changeSC(sousComposanteFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -141,7 +142,7 @@
               <multiselect
                 v-model="valueFiltre"
                 :options="activites"
-              
+                @input="changeActivite(valueFiltre)"
                 :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
@@ -297,10 +298,7 @@
             >
           </vtable>
       </div>
-      <pre>
-        demo 
-        {{valueComposante}}
-      </pre>
+
   </div>
 </template>
 
@@ -339,11 +337,11 @@ export default {
       chargement:false,
       showProlonger:false,
       showModalSuivi:false,
-      valueFiltre: this.valueProfondeur,
+      valueFiltre: null,
       composanteId: null,
-      projetFiltre: this.valeurProjet,
-      composanteFiltre: this.valueComposante,
-      sousComposanteFiltre: this.valueSC,
+      projetFiltre: null,
+      composanteFiltre:null,
+      sousComposanteFiltre:null,
       pending:false,
       success:true,
       rejected:false,
@@ -385,7 +383,6 @@ export default {
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
       ],
 
-   
       headers: [
         { name: "Tache", cle: "tache"},
         { name: "code pta", cle: "codePta"},
@@ -404,7 +401,16 @@ export default {
       tacheAdd:false,
       tacheDelete:false,
       tacheUpdate:false,
-      
+      idProjet:'',
+      idComposante:'',
+      idSC:'',
+      idActivite:'',
+      newProjet:null,
+      newComponent:null,
+      newSC:null,
+      newActivite:null,
+      isClick:false
+
     };
   },
 
@@ -430,6 +436,55 @@ export default {
   },
 
   methods: {
+    changeProjet(projet) {
+      if(this.isClick) {
+        this.projetFiltre = this.newProjet
+        this.fetchComposantes(this.idProjet);
+        this.isClick = false
+        localStorage.removeItem('profondeurActivite');
+      }else {
+        this.fetchComposantes(projet.id);
+      }
+     
+    },
+    changeComposante(composante) {
+      if(this.isClick) {
+        this.composanteFiltre = this.newComponent
+        this.fetchSousComposantes(this.idComposante);
+        this.isClick = false
+        localStorage.removeItem('profondeurActivite');
+      }else {
+        this.fetchSousComposantes(composante.id);
+      }
+
+     
+    },
+     changeSC(Scomposante) {
+      if(this.isClick) {
+        this.sousComposanteFiltre = this.newSC
+        this.valueFiltre = this.newActivite
+        this.fetchActivites(this.idSC);
+        this.isClick = false
+        localStorage.removeItem('profondeurActivite');
+      }else {
+        this.fetchActivites(Scomposante.id);
+       
+      }
+     
+    },
+     changeActivite(activite) {
+      if(this.isClick) {
+       
+   
+        this.fetchTaches(this.idActivite);
+        this.isClick = false
+        localStorage.removeItem('profondeurActivite');
+      }else {
+        this.fetchTaches(activite.id);
+      }
+
+     
+    },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -770,7 +825,7 @@ export default {
 
     },
     
-    projets: function(projets){
+   /*  projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -863,11 +918,29 @@ export default {
         this.fetchTaches(valeur);
       }
 
-    }
+    } */
 
   },
 
   created() {
+    const profondeurActivite = JSON.parse(localStorage.getItem('profondeurActivite'))
+    console.log("profondeur",profondeurActivite)
+    if(profondeurActivite != undefined || profondeurActivite != null) {
+      this.isClick = profondeurActivite.isClick
+      if(this.isClick) {
+
+        this.idProjet = profondeurActivite.id
+        this.idSC = profondeurActivite.idSC
+        this.idComposante = profondeurActivite.idC
+        this.idActivite = profondeurActivite.idActivite
+       
+        this.newProjet = profondeurActivite.projet
+        this.newComponent = profondeurActivite.composente
+        this.newSC = profondeurActivite.sousComposante
+        this.newActivite = profondeurActivite.activite
+      }
+
+    } 
     this.getSuivi()
     this.getPermission()
     this.programmeId = this.currentUser.programme.id

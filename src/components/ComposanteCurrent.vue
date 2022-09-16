@@ -338,21 +338,28 @@ props:['valueProfondeur'],
 
     gotoNext(composante,index) {
       let indexP = 0
-      
+      let codeP = ''
+      let nomP =''
       for (let index = 0; index < this.projets.length; index++) {
         const element = this.projets[index];
         if(element.id == composante.projetId ) {
           indexP = index
+          codeP = element.codePta
+          nomP = element.nom
         }
         
       }
+      let codeC = composante.codePta
+      let nomC = composante.nom
 
       const profondeurComposante = {
         isClick:true,
         positionP:indexP,
-        idP:composante.id,
+        idP:composante.projetId,
         positionC:index,
-        idC:composante.id
+        idC:composante.id,
+        projet:{codePta:codeP,nom:nomP},
+        composante:{codePta:codeC,nom:nomC}
       }
      
       localStorage.setItem('profondeurComposante',JSON.stringify(profondeurComposante));
@@ -573,6 +580,7 @@ props:['valueProfondeur'],
          else {
             this.fetchComposantes(this.idProjet); 
             this.isClick = false
+            localStorage.removeItem('profondeurProjet');
          }
        
       }
@@ -583,14 +591,11 @@ props:['valueProfondeur'],
     },
     
     projets: function(projets){
-      alert('fdlkdkj')
-      console.log('dfgkjjgfkjkfhjfgkhjgkhjghkghj')
+    
       if(this.isClick ==false) {
         this.valueFiltre = projets[0]
-        alert('nok')
       }else {
         this.valueFiltre = projets[this.position]
-        alert('ok')
       }
    
     }
