@@ -188,12 +188,12 @@
             <div class="w-full grid grid-cols-2 items-center gap-4">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre" @input="changeProjet(projetFiltre)" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
               </div>
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="composanteFiltre" @input="changeComposante(composanteFiltre)" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
               <div>
                 
@@ -201,6 +201,7 @@
                 <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
+                @input="changeSC(valueFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -839,7 +840,14 @@ export default {
       planDecaissementVisible:false,
       planDecaissementAdd:false,
       planDecaissementUpdate:false,
-      planDecaissementDelete:false
+      planDecaissementDelete:false,
+      idProjet:'',
+      idComposante:'',
+      idSC:'',
+      newProjet:null,
+      newComponent:null,
+      newSC:null,
+      isClick:false
     };
   },
 
@@ -866,6 +874,42 @@ export default {
   },
 
   methods: {
+      changeProjet(projet) {
+      if(this.isClick) {
+        this.projetFiltre = this.newProjet
+        this.fetchComposantes(this.idProjet);
+        this.isClick = false
+        localStorage.removeItem('profondeurSC');
+      }else {
+        this.fetchComposantes(projet.id);
+      }
+     
+    },
+    changeComposante(composante) {
+      if(this.isClick) {
+        this.composanteFiltre = this.newComponent
+        this.fetchSousComposantes(this.idComposante);
+        this.isClick = false
+        localStorage.removeItem('profondeurSC');
+      }else {
+        this.fetchSousComposantes(composante.id);
+      }
+
+     
+    },
+     changeSC(Scomposante) {
+      if(this.isClick) {
+        this.valueFiltre = this.newSC
+        this.fetchActivites(this.idSC);
+        this.isClick = false
+        localStorage.removeItem('profondeurSC');
+      }else {
+        this.fetchActivites(Scomposante.id);
+       
+      }
+
+     
+    },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -897,44 +941,62 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
       gotoNext(activite,index) {
-        let indexP = 0
-        let  indexC = 0
-        let indexSC = 0
+
+        let idProjet = ''
+        let idComposante = ''
+        let idSC = activite.composanteId
+        let codeP = ''
+        let nomP =''
+        let codeC=''
+        let nomC=''
+        let codeSC=''
+        let nomSC=''
+        let codeActivite = activite.codePta
+        let nomActivite = activite.nom
+         for (let index = 0; index < this.sousComposantes.length; index++) {
+          const element = this.sousComposantes[index];
+          if(element.id == activite.composanteId ) {
+         
+            codeSC = element.codePta
+            nomSC = element.nom
+            idProjet = element.projetId
+            idComposante = element.composanteId
+          }
+          
+        }
+        for (let index = 0; index < this.composantes.length; index++) {
+          const element = this.composantes[index];
+          if(element.id == idComposante ) {
+          
+            codeC = element.codePta
+            nomC = element.nom
+          
+          }
+        }
         for (let index = 0; index < this.projets.length; index++) {
           const element = this.projets[index];
-          if(element.id == activite.projetId ) {
-            indexP = index
+          if(element.id == idProjet ) {
+           
+            codeP = element.codePta
+            nomP = element.nom
           }
         }
-        for (let index = 0; index < this.componentes.length; index++) {
-          const element = this.composantes[index];
-          if(element.id == activite.composanteId ) {
-            indexC = index
-          }
-          
-        }
-        for (let index = 0; index < this.sousComposantes.length; index++) {
-          const element = this.sousComposantes[index];
-          if(element.id == activite.sousComposanteId ) {
-            indexSC = index
-          }
-          
-        }
-
+     
+      
         const profondeurActivite = {
           isClick:true,
-          positionP:indexP,
-          idP:activite.projetId,
-          positionC:indexC,
-          idC:activite.composanteId,
-          positionSC:indexSC,
-          idSC:activite.sousComposanteId,
-          positionAc:index,
-          idAc:activite.id
+          idP:idProjet,
+          idC:idComposante,
+          idSC:idSC,
+          idActivite:activite.id,
+          projet:{codePta:codeP,nom:nomP},
+          composante:{codePta:codeC,nom:nomC},
+          sousComposante:{codePta:codeSC,nom:nomSC},
+          activite:{codePta:codeActivite,nom:nomActivite}
         }
      
-      localStorage.setItem('profondeurActivite',JSON.stringify(profondeurActivite));
-     
+        localStorage.setItem('profondeurActivite',JSON.stringify(profondeurActivite));
+        console.log('profondeur Activite',profondeurActivite)
       this.$router.push({name:'dashboard_projets_taches_globale'})
     },
 
@@ -1439,7 +1501,7 @@ export default {
     },
 
 
-    projets: function(projets){
+   /*  projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -1509,7 +1571,8 @@ export default {
       }
 
     },
-    
+  */  
+
     activites: function (activites) {
       if(this.seePlan){
         if(activites.length > 0){
@@ -1529,7 +1592,7 @@ export default {
       else{ 
         this.setPlanDeDecaissements([])
       }
-    }, 
+    },  
 
     seePlan: function(valeur){
       if(this.activites.length > 0){
@@ -1540,6 +1603,23 @@ export default {
   },
 
   created() {
+    const profondeurSC = JSON.parse(localStorage.getItem('profondeurSC'))
+    console.log("profondeur",profondeurSC)
+    if(profondeurSC != undefined || profondeurSC != null) {
+      this.isClick = profondeurSC.isClick
+      if(this.isClick) {
+
+        this.idProjet = profondeurSC.id
+        this.idSC = profondeurSC.idSC
+        this.idComposante = profondeurSC.idC
+       
+        this.newProjet = profondeurSC.projet
+        this.newComponent = profondeurSC.composente
+        this.newSC = profondeurSC.sousComposante
+       
+      }
+
+    } 
     this.getSuivi()
     this.getPermission()
     this.programmeId = this.currentUser.programme.id

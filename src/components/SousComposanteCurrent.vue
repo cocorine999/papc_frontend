@@ -49,9 +49,10 @@
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
-          <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+      
+          <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" @input="changeProjet(projetFiltre)" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
 
-          <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+          <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel" @input="changeComposante(valueFiltre)" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
           
           <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1">
             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
@@ -120,6 +121,8 @@
 
       </div>
     </div>
+
+
     
     <div v-if="seeSuivi">
       <vtable id="datatable"
@@ -166,8 +169,8 @@ export default {
 },
   data() {
     return {
-      valueFiltre: this.valueProfondeur,
-      projetFiltre: this.valeurProjet,
+      valueFiltre:null,
+      projetFiltre: null,
       pending:false,
       success:true,
       rejected:false,
@@ -221,6 +224,13 @@ export default {
       composanteAdd:false,
       composanteDelete:false,
       composanteUpdate:false,
+      positionP:0,
+      idProjet:'',
+      positionC:0,
+      idComposante:'',
+      newProjet:null,
+      newComponent:null,
+      isClick:false
      
     }
     
@@ -247,7 +257,31 @@ export default {
   },
 
   methods: {
+    changeProjet(projet) {
+      if(this.isClick) {
+        this.projetFiltre = this.newProjet
+      
+        this.fetchComposantes(this.idProjet);
+        this.isClick = false
+        localStorage.removeItem('profondeurComposante');
+      }else {
+        this.fetchComposantes(projet.id);
+      }
+     
+    },
+    changeComposante(composante) {
+      if(this.isClick) {
+         this.valueFiltre = this.newComponent
+        this.fetchSousComposantes(this.idComposante);
+        this.isClick = false
+        localStorage.removeItem('profondeurComposante');
+      }else {
+        this.fetchSousComposantes(composante.id);
+       
+      }
 
+     
+    },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -306,7 +340,6 @@ export default {
     },
 
 
-
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
@@ -351,31 +384,39 @@ export default {
     },
 
      gotoNext(sousComposante,index) {
+     
   
-      let indexP = 0
-      let  indexC = 0
+     
+      let codeP = ''
+      let nomP =''
+      let codeC=''
+      let nomC=''
+      let codeSC=sousComposante.codePta
+      let nomSC=sousComposante.nom
       for (let index = 0; index < this.projets.length; index++) {
         const element = this.projets[index];
         if(element.id == sousComposante.projetId ) {
-          indexP = index
+          codeP = element.codePta
+          nomP = element.nom
         }
       }
-      for (let index = 0; index < this.componentes.length; index++) {
+      for (let index = 0; index < this.composantes.length; index++) {
         const element = this.composantes[index];
         if(element.id == sousComposante.composanteId ) {
-          indexC = index
+          codeC = element.codePta
+          nomC = element.nom
         }
         
       }
 
       const profondeurSC = {
         isClick:true,
-        positionP:indexP,
         idP:sousComposante.projetId,
-        positionC:index,
         idC:sousComposante.composanteId,
-        positionSC:index,
-        idSC:composante.id
+        idSC:composante.id,
+        projet:{codePta:codeP,nom:nomP},
+        composante:{codePta:codeC,nom:nomC},
+        sousComposante:{codePta:codeSC,nom:nomSC}
       }
      
       localStorage.setItem('profondeurSC',JSON.stringify(profondeurSC));
@@ -509,9 +550,7 @@ export default {
       this.setSousComposante({})
     },
     
-    gotoNext() {
-      this.$router.push('/dashboard/projets/activites-globale')
-    },
+   
 
     validation(sousComposante){
 
@@ -606,10 +645,21 @@ export default {
       //this.errors = errors
     },
 
-    valueFiltre: function(valeur){
+   /*  valueFiltre: function(valeur){
       if( valeur instanceof Composante || valeur instanceof Object )
       {
-        this.fetchSousComposantes(valeur.id);
+        if(this.isClick ==false) { 
+
+            this.fetchSousComposantes(valeur.id);
+             
+         }
+         else {
+          
+            this.fetchSousComposantes(this.idComposante);
+            //this.isClick = false
+           
+         }
+        
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
         this.fetchSousComposantes(valeur);
@@ -619,25 +669,65 @@ export default {
     projetFiltre: function(valeur){
       if( valeur instanceof Composante || valeur instanceof Object )
       {
-        this.fetchComposantes(valeur.id);
+        if(this.isClick ==false) { 
+            this.fetchComposantes(valeur.id);
+         }
+         else {
+            this.fetchComposantes(this.idProjet);
+           
+            
+           
+          
+         }
+        
+       
       }
       else if( valeur !== null ){
+      
         this.fetchComposantes(valeur);
       }
     },
     
     composantes: function(composantes){
-      this.valueFiltre = composantes[0]
-    },
+      alert(this.isClick)
+       if(this.isClick ==false) { 
+         
+          this.valueFiltre = composantes[0]
+         
+       }else {
+         
+          this.valueFiltre = composantes[this.positionC]
+        
+          
+       }
     
-    projets: function(projets){
-      this.projetFiltre = projets[0]
-      this.valueFiltre = []
-    }
-
+    } */
+     
+   
   },
 
   created(){
+
+    const profondeurComposante = JSON.parse(localStorage.getItem('profondeurComposante'))
+    console.log("profondeur",profondeurComposante)
+    if(profondeurComposante != undefined || profondeurComposante != null) {
+      this.isClick = profondeurComposante.isClick
+      if(this.isClick) {
+        console.log(profondeurComposante)
+        this.idProjet = profondeurComposante.id
+        this.positionP = profondeurComposante.positionP
+        this.idComposante = profondeurComposante.idC
+        this.positionC = profondeurComposante.positionC
+        this.newProjet = profondeurComposante.projet
+        this.newComponent = profondeurComposante.composante
+       
+      }else {
+       this.positionP = 0
+       this.positionC = 0
+      }
+
+    } 
+
     this.getPermission()
     if(this.programmeId){
       this.fetchProjets(this.programmeId)
