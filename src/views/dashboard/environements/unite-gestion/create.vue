@@ -108,9 +108,6 @@
           </div>
         </div>
       </div>
-     <pre>
-      {{Forms}}
-     </pre>
       <div>
         <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer le formulaire</button>
       </div>

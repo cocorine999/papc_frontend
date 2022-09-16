@@ -12,19 +12,6 @@
             </div>
 
           <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Code de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required v-model="code" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
-          </div>
-
-          <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Statut <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <select  v-model="statut" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent">
-              <option value="">---Select Statut---</option>
-             <option v-for="(item, i) in statuts" :key="i" :value="item.etat">{{item.nom}}</option>
-            </select>
-          </div>
-          
-          <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <div class="flex justify-between my-3">
               <div>
@@ -56,7 +43,7 @@
             Enregistrer 
           </button>
 
-          <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
+          <button type="" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
             Annuler
           </button>
 

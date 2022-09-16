@@ -74,6 +74,7 @@ export default {
       seeActivite:false,
       showModal:false,
       showLink:false,
+      formulaires: [],
       activitesAttributs : ['nom', 'debut', 'fin', 'statut', 'entrepriseExecutantId'],
       champs:[
         {name:'Nom de l\'activite',key:"nom",type:'text',placeholdere:"Nom de l'activité",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
@@ -113,7 +114,6 @@ export default {
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
-      formulaires: "formulaires/getFormulaires",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
@@ -127,6 +127,9 @@ export default {
 
     ...mapActions("formulaires", {
       fetchFormulaires: "FETCH_LIST_FORMULAIRE",
+    }),
+    ...mapActions("eSuivis", {
+      getFormulaires: "FORMULAIRE",
     }),
     getlink(i){
       this.formulaireId = i
@@ -157,7 +160,15 @@ export default {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
     
     console.log("Fetching list formulaires ...")
-    this.fetchFormulaires()
+    let form = {
+      "type": 'unitee-de-gestion',
+      "typeId": this.currentUser.profil.id,
+      "entrepriseExecutantId": this.$route.params.idE
+    };
+
+    this.getFormulaires(form).then((response) => {
+      this.formulaires = response;
+    });
 
   }
 }

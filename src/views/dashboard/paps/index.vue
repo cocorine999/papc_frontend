@@ -336,7 +336,7 @@ export default {
     },
     
     async updateInputData(id, attribut, value) {
-        
+        console.log('mise a jour');
           await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
             if(this.hasErrors[attribut] !== undefined)
               alert(this.hasErrors[attribut])            
@@ -347,8 +347,6 @@ export default {
     },
 
     sendForm() {
-
-      console.log(this.champs)
 
       this.champs = this.champs.map(item => { item.errors = []; return item})
 
@@ -362,37 +360,14 @@ export default {
 
       console.log(pap)
       
-      if(this.pap?.id)
-      {
-
-        this.updatePap({pap: pap, id : this.pap?.id}).then(response => {
-          
-          if(response.status == 200 || response.status == 201){
-
-            this.close()
-          }
-
-        }).catch((error) => {
-
-          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-          this.champs.map(value => value.errors = this.erreurs[value.key])
-
-        })
-
-      }
-      else
-      {
-      
-        this.savePap(pap).then(response => {
+      this.savePap(pap).then(response => {
           if(response.status == 200 || response.status == 201){
               this.close()
           }
 
         })
-      }
 
-    },
+    }
     
   },
 

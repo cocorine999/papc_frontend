@@ -185,6 +185,8 @@ export default {
         this.saveReponse(form)
       
       });
+
+      this.$router.push('/dashboard/formulaire')
     },
   },
   mounted() {

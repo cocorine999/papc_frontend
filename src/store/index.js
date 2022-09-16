@@ -72,6 +72,8 @@ import passations from "./modules/passations/index";
 
 import reponses from "./modules/reponses/index";
 
+import structures from "./modules/structures/index";
+
 import { SET_LOADER, SET_ERRORS_MESSAGE, RESET_ERROR_MESSAGE_MUTATIONS } from "@/store/mutations.type";
 
 Vue.use(Vuex);
@@ -249,5 +251,6 @@ export default new Vuex.Store({
     sites,
     passations,
     reponses,
+    structures,
   }
 });
