@@ -409,9 +409,18 @@ export default {
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
     
-    let form = {
-      "entrepriseId": this.$route.params.idE,
+    let form1 = {
+      "type": 'unitee-de-gestion',
+      "typeId": this.currentUser.profil.id,
       "formulaireId": this.$route.params.idC
+    };
+    this.getDates(form1).then((response) => {
+      this.dates = response;
+
+      let form = {
+      "entrepriseId": this.$route.params.idE,
+      "formulaireId": this.$route.params.idC,
+      "date": this.dates[0].date
     };
 
     console.log("Getting suivi ...");
@@ -446,14 +455,6 @@ export default {
        }
         console.log(this.formulaire);
     });
-    
-    let form1 = {
-      "type": 'unitee-de-gestion',
-      "typeId": this.currentUser.profil.id,
-      "formulaireId": this.$route.params.idC
-    };
-    this.getDates(form1).then((response) => {
-      this.dates = response;
     });
   }
 }

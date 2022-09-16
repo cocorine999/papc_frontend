@@ -316,6 +316,7 @@ export default {
       loading: (state) => state.loading,
       errors: (state) => state.errors,
       statuts: (state) => state.statuts,
+      modSelect : state => state.modSelect
     }),
 
     ...mapGetters({
@@ -409,52 +410,53 @@ export default {
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
     
-    let form = {
-      "entrepriseId": this.$route.params.idE,
-      "formulaireId": this.$route.params.idC
-    };
-
-    console.log("Getting suivi ...");
-    this.getSuivi(form).then((response) => {
-      this.formulaire = response.data.data;
-
-       
-       if(this.formulaire.length != 0)
-       {
-          this.entete = this.formulaire[0];
-          this.formulaire.splice(0,1);
-
-       }
-
-       else
-       {
-        this.entete = {
-          "entete": {
-            "entreprise" : null,
-            "responsable" : null,
-            "poste" : null,
-            "contact" : null,
-            "site" : null,
-            "date" : null,
-            "bailleur" : null,
-            "missionaire" : null,
-            "numero" : null
-          }
-        };
-
-        this.formulaire = [];
-       }
-        console.log(this.formulaire);
-    });
-    
     let form1 = {
-      "type": 'unitee-de-gestion',
-      "typeId": this.currentUser.profil.id,
-      "formulaireId": this.$route.params.idC
-    };
-    this.getDates(form1).then((response) => {
-      this.dates = response;
-    });
+        "type": 'mod',
+        "typeId": this.modSelect,
+        "formulaireId": this.$route.params.idC
+      };
+      this.getDates(form1).then((response) => {
+        this.dates = response;
+
+        let form = {
+        "entrepriseId": this.$route.params.idE,
+        "formulaireId": this.$route.params.idC,
+        "date": this.dates[0].date
+      };
+  
+      console.log("Getting suivi ...");
+      this.getSuivi(form).then((response) => {
+        this.formulaire = response.data.data;
+  
+         
+         if(this.formulaire.length != 0)
+         {
+            this.entete = this.formulaire[0];
+            this.formulaire.splice(0,1);
+  
+         }
+  
+         else
+         {
+          this.entete = {
+            "entete": {
+              "entreprise" : null,
+              "responsable" : null,
+              "poste" : null,
+              "contact" : null,
+              "site" : null,
+              "date" : null,
+              "bailleur" : null,
+              "missionaire" : null,
+              "numero" : null
+            }
+          };
+  
+          this.formulaire = [];
+         }
+          console.log(this.formulaire);
+        });
+      });
   }
 }
 </script>

@@ -110,7 +110,8 @@ export default {
       formulaire: state => state.formulaires.formulaire,
       loading : state => state.loading,
       errors : state => state.errors,
-      statuts : state => state.statuts
+      statuts : state => state.statuts,
+      modSelect : state => state.modSelect
     }),
 
     ...mapGetters({
@@ -118,6 +119,7 @@ export default {
       isLoading: "IS_LOADING",
       mods: "mods/getMods",
       currentUser: "auths/GET_AUTHENTICATE_USER",
+      
     }),
   },
 
@@ -125,7 +127,8 @@ export default {
         //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setFormulaire: 'formulaires/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setModSelect: 'setModSelect',
     }),
 
     ...mapActions("formulaires", {
@@ -170,6 +173,8 @@ export default {
              "typeId": this.valueFiltre,
              "entrepriseExecutantId": this.$route.params.idE
         };
+
+        this.setModSelect(this.valueFiltre)
       }
 
       else
@@ -179,6 +184,8 @@ export default {
              "typeId": this.mods[0]?.id,
              "entrepriseExecutantId": this.$route.params.idE
         };
+
+        this.setModSelect(this.mods[0]?.id)
       }
 
       console.log("Getting formulaire ...");
@@ -199,6 +206,8 @@ export default {
          "entrepriseExecutantId": this.$route.params.idE
       };
 
+      this.setModSelect(this.mods[0]?.id)
+      
       this.getFormulaires(form).then((response) => {
         this.formulaires = response;
       });  

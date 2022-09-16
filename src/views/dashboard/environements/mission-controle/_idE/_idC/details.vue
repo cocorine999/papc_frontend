@@ -316,6 +316,7 @@
         loading: (state) => state.loading,
         errors: (state) => state.errors,
         statuts: (state) => state.statuts,
+        missionDeControleSelect : state => state.missionDeControleSelect
       }),
   
       ...mapGetters({
@@ -368,6 +369,7 @@
           var form = {
             "entrepriseId": this.$route.params.idE,
             "formulaireId": this.$route.params.idC,
+            "date": this.dates[0].date
           };
         }
   
@@ -409,9 +411,19 @@
     mounted() {
       const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
       
-      let form = {
-        "entrepriseId": this.$route.params.idE,
+      
+      let form1 = {
+        "type": 'mission-de-controle',
+        "typeId": this.missionDeControleSelect,
         "formulaireId": this.$route.params.idC
+      };
+      this.getDates(form1).then((response) => {
+        this.dates = response;
+
+        let form = {
+        "entrepriseId": this.$route.params.idE,
+        "formulaireId": this.$route.params.idC,
+        "date": this.dates[0].date
       };
   
       console.log("Getting suivi ...");
@@ -445,15 +457,7 @@
           this.formulaire = [];
          }
           console.log(this.formulaire);
-      });
-      
-      let form1 = {
-        "type": 'unitee-de-gestion',
-        "typeId": this.currentUser.profil.id,
-        "formulaireId": this.$route.params.idC
-      };
-      this.getDates(form1).then((response) => {
-        this.dates = response;
+        });
       });
     }
   }

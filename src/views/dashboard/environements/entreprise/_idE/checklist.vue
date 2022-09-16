@@ -136,7 +136,7 @@ export default {
       this.showLink = true
     },
     gotoDetails(id) {
-      this.$router.push({name:'unite_de_gestion_checklist_details',params:{idC:id}})
+      this.$router.push({name:'entreprise_checklist_details',params:{idC:id}})
     },
     
     modifier(data) {

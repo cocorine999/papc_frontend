@@ -112,7 +112,8 @@ export default {
       formulaire: state => state.formulaires.formulaire,
       loading : state => state.loading,
       errors : state => state.errors,
-      statuts : state => state.statuts
+      statuts : state => state.statuts,
+      missionDeControleSelect : state => state.missionDeControleSelect
     }),
 
     ...mapGetters({
@@ -126,6 +127,7 @@ export default {
             //Charger les fonctions de communication avec le serveur
             ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setMissionDeControleSelect: 'setMissionDeControleSelect',
       setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
 
@@ -143,7 +145,7 @@ export default {
       this.showLink = true
     },
     gotoDetails(id) {
-      this.$router.push({name:'mod_checklist_details',params:{idC:id}})
+      this.$router.push({name:'mission_controle_checklist_details',params:{idC:id}})
     },
     
     modifier(data) {
@@ -171,6 +173,8 @@ export default {
              "typeId": this.valueFiltre,
              "entrepriseExecutantId": this.$route.params.idE
         };
+
+        this.setMissionDeControleSelect(this.valueFiltre)
       }
 
       else
@@ -180,6 +184,8 @@ export default {
              "typeId": this.missionDeControles[0]?.id,
              "entrepriseExecutantId": this.$route.params.idE
         };
+
+        this.setMissionDeControleSelect(this.missionDeControles[0]?.id)
       }
 
       console.log("Getting formulaire ...");
@@ -200,6 +206,8 @@ export default {
          "typeId": this.missionDeControles[0]?.id,
          "entrepriseExecutantId": this.$route.params.idE
       };
+
+      this.setMissionDeControleSelect(this.missionDeControles[0]?.id)
 
       this.getFormulaires(form).then((response) => {
         this.formulaires = response;
