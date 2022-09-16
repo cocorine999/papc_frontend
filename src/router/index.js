@@ -37,9 +37,9 @@ import mod_checklist_entreprise from "../views/dashboard/environements/mod/index
 //fin checklist environment mod
 
 //checklist environement mission-controle
-import mission_controle_checklist from "../views/dashboard/environements/mission-controle/_id/checklist.vue";
+import mission_controle_checklist from "../views/dashboard/environements/mission-controle/_idE/checklist.vue";
 //import mission_controle_generator from "../views/dashboard/environements/mission-controle/generator.vue";
-import mission_controle_checklist_details from "../views/dashboard/environements/mission-controle/_id/_id/details.vue";
+import mission_controle_checklist_details from "../views/dashboard/environements/mission-controle/_idE/_idC/details.vue";
 import mission_controle_checklist_create from "../views/dashboard/environements/mission-controle/create.vue";
 import mission_controle_checklist_entreprise from "../views/dashboard/environements/mission-controle/index.vue";
 //checklist environment mission-controle
@@ -352,7 +352,7 @@ const routes = [
 
   // checklist mission-controle
   {
-    path: "/dashboard/mission-controle/checklist/:id/checklist",
+    path: "/dashboard/mission-controle/checklist/:idE/checklist",
     name: "mission_controle_checklist",
     component: mission_controle_checklist,
     meta: {
@@ -361,7 +361,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/mission-controle/checklist/:id/checklist/:id/details",
+    path: "/dashboard/mission-controle/checklist/:idE/checklist/:idC/details",
     name: "mission_controle_checklist_details",
     component: mission_controle_checklist_details,
     meta: {
