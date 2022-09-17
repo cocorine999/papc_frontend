@@ -97,7 +97,7 @@
           </nav>
         </div>
       </div>
-      <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+      <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(sousComposante, index) in sousComposantes" :key="index">
           <card-composante
             :libelle="sousComposante.nom"
@@ -122,7 +122,7 @@
       </div>
     </div>
 
-
+    
     
     <div v-if="seeSuivi">
       <vtable id="datatable"
@@ -230,7 +230,8 @@ export default {
       idComposante:'',
       newProjet:null,
       newComponent:null,
-      isClick:false
+      isClick:false,
+      isShow:true
      
     }
     
@@ -266,12 +267,37 @@ export default {
         localStorage.removeItem('profondeurComposante');
       }else {
         this.fetchComposantes(projet.id);
+        let indexProjet = 0
+        for (let index = 0; index < this.projets.length; index++) {
+          const element = this.projets[index];
+          if(projet.id == element.id) {
+            indexProjet = index
+          }
+          
+        }
+        let composantes = this.projets[indexProjet].composantes
+        let indexComposante = ''
+        if(composantes[0] != null ) {
+          let code = composantes[0].codePta
+          let nom = composantes[0].nom
+          this.valueFiltre = {codePta:code,nom:nom}
+          indexComposante = composantes[0].id
+          this.fetchSousComposantes(indexComposante);
+          this.isShow = true
+        }
+        else {
+          this.isShow = false
+          this.valueFiltre = null
+        }
+       
+       
+        //this.fetchSousComposantes(composante.id);
       }
      
     },
     changeComposante(composante) {
       if(this.isClick) {
-         this.valueFiltre = this.newComponent
+        this.valueFiltre = this.newComponent
         this.fetchSousComposantes(this.idComposante);
         this.isClick = false
         localStorage.removeItem('profondeurComposante');

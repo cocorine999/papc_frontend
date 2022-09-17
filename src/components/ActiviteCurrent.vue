@@ -307,6 +307,7 @@
             ></card-activite>
             <!-- End cards Activités -->
           </div>
+         
         </div>
       </div>
 
@@ -847,7 +848,8 @@ export default {
       newProjet:null,
       newComponent:null,
       newSC:null,
-      isClick:false
+      isClick:false,
+      isShow:false,
     };
   },
 
@@ -882,6 +884,27 @@ export default {
         localStorage.removeItem('profondeurSC');
       }else {
         this.fetchComposantes(projet.id);
+        let indexProjet = 0
+        for (let index = 0; index < this.projets.length; index++) {
+          const element = this.projets[index];
+          if(projet.id == element.id) {
+            indexProjet = index
+          }
+        }
+        let composantes = this.projets[indexProjet].composantes
+        let indexComposante = ''
+        if(composantes[0] != null ) {
+          let code = composantes[0].codePta
+          let nom = composantes[0].nom
+          this.composanteFiltre = {codePta:code,nom:nom}
+          indexComposante = composantes[0].id
+          this.fetchSousComposantes(indexComposante);
+          this.isShow = true
+        }
+        else {
+          this.isShow = false
+          this.composanteFiltre = null
+        }
       }
      
     },
@@ -941,7 +964,6 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
       gotoNext(activite,index) {
-
         let idProjet = ''
         let idComposante = ''
         let idSC = activite.composanteId
