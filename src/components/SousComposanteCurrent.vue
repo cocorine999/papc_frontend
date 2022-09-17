@@ -231,7 +231,6 @@ export default {
       newProjet:null,
       newComponent:null,
       isClick:false
-     
     }
     
   },
@@ -266,10 +265,15 @@ export default {
         localStorage.removeItem('profondeurComposante');
       }else {
         this.fetchComposantes(projet.id);
+        this.changeComposante()
+        
+
       }
      
     },
     changeComposante(composante) {
+      alert('demo')
+      console.log('')
       if(this.isClick) {
          this.valueFiltre = this.newComponent
         this.fetchSousComposantes(this.idComposante);
@@ -384,9 +388,7 @@ export default {
     },
 
      gotoNext(sousComposante,index) {
-     
-  
-     
+
       let codeP = ''
       let nomP =''
       let codeC=''
@@ -413,7 +415,7 @@ export default {
         isClick:true,
         idP:sousComposante.projetId,
         idC:sousComposante.composanteId,
-        idSC:composante.id,
+        idSC:sousComposante.id,
         projet:{codePta:codeP,nom:nomP},
         composante:{codePta:codeC,nom:nomC},
         sousComposante:{codePta:codeSC,nom:nomSC}
@@ -674,13 +676,9 @@ export default {
          }
          else {
             this.fetchComposantes(this.idProjet);
-           
-            
-           
-          
+
          }
         
-       
       }
       else if( valeur !== null ){
       
@@ -707,7 +705,8 @@ export default {
   },
 
   created(){
-
+    this.fetchComposantes()
+   
     const profondeurComposante = JSON.parse(localStorage.getItem('profondeurComposante'))
     console.log("profondeur",profondeurComposante)
     if(profondeurComposante != undefined || profondeurComposante != null) {
