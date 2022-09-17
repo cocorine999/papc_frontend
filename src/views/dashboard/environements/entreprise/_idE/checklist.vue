@@ -2,7 +2,7 @@
   <dashboard>
     <vmodal v-if="showLink" @close="showLink=false">
       <div class="m-2 p-2 bg-white shadow flex justify-center " style="width:60vw">
-        <router-link title="cliquez ici"  target="_blank" :to="{name:'form_gestion_generator',params:{id:2}}" class="p-2 bg-gray-300 border cursor-pointer text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
+        <router-link title="cliquez ici"  target="_blank" :to="{name:'form_gestion_generator',params:{id:formulaireId}}" class="p-2 bg-gray-300 border cursor-pointer text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
           cliquer ici
         </router-link>
       </div>
@@ -10,12 +10,12 @@
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default"  :champs="champs" :cols="cols" submitText="Creer un MOD" @sendForm="sendForm" ></vform>
+          <vform template="default"  :champs="champs"  submitText="Creer une activite" @sendForm="sendForm" ></vform>
         </div>
       </modal-top-right>
     </div>
   <div class="px-4">
-    <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
+    <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">
@@ -30,26 +30,23 @@
     </nav>
     <div class="flex items-center justify-between my-4">
       <div class="flex space-x-4">
-        <span class="inline-block cursor-pointer border-primary border-b-8 text-lg utext-lg uppercase font-bold   py-2">Suivi formulaire </span>
+        <span class="inline-block cursor-pointer border-primary border-b-8 text-lg utext-lg uppercase font-bold   py-2">Formulaire </span>
       </div>
-      
+     
     </div>
     <div  class="grid grid-cols-3 gap-4">
-      <div v-for="i in 6" :key="i.id">
+      <div v-for="formulaire in formulaires" :key="formulaire.id">
         <card-checklist
-          libelle="formulaire"
-          code="15555DC" 
-          activite="Nombre d'accident routiere" 
-          :unites="['personne','%','km']" 
+          :libelle=formulaire.nom
+          :activite=formulaire.auteur
           @supprimer="supprimer"
-          @modifier="modifier"
-          @dupliquer="dupliquer"
-          @gotoDetails="gotoDetails(i)"
-          @onlink="getlink(i)"
-          > </card-checklist>
+          @gotoDetails="gotoDetails(formulaire.id)"
+          :isDelete="false"
+          :isUpdate="false"
+        > 
+        </card-checklist>
       </div>
     </div>
-    
   </div>
   </dashboard>
 </template>
@@ -61,6 +58,7 @@
   import Vform from '@/components/Vform'
   import ModalTopRight from '@/components/ModalTopRight'
   import Vmodal from '@/components/Vmodal'
+  import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   components: {
     CardChecklist,
@@ -76,7 +74,15 @@ export default {
       seeActivite:false,
       showModal:false,
       showLink:false,
-      champs:[],
+      formulaires: [],
+      activitesAttributs : ['nom', 'debut', 'fin', 'statut', 'entrepriseExecutantId'],
+      champs:[
+        {name:'Nom de l\'activite',key:"nom",type:'text',placeholdere:"Nom de l'activité",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Date debut',key:"debut",type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+        {name:'Date fin',type:'date',key:"fin",placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:'Entreprise',key:"entrepriseExecutantId",type:'',placeholdere:'Selectionnez une entreprise',isSelect:true,isTextArea:false,data:'',required:true,options:this.entreprises, cle: 'id', value: 'nom', errors : []},
+        {name:'Status',key:"statut",type:'',placeholdere:'Selectionnez un status',isSelect:true,isTextArea:false,data:'',required:true,options:this.$store.state.statuts, cle: 'etat', value: 'nom', errors : []},
+      ],
       headers:[
           {name:'Libelle activite',cle:'libelle'},
           {name:'Date debut',cle:'debut'},
@@ -93,10 +99,40 @@ export default {
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
+        formulaireId:""
     }
   },
+  computed: {
+        ...mapState({
+      identifiant: state => state.auths.identifiant,
+      formulaire: state => state.formulaires.formulaire,
+      loading : state => state.loading,
+      errors : state => state.errors,
+      statuts : state => state.statuts
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+  },
+
   methods: {
+        //Charger les fonctions de communication avec le serveur
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions("formulaires", {
+      fetchFormulaires: "FETCH_LIST_FORMULAIRE",
+    }),
+    ...mapActions("eSuivis", {
+      getFormulaires: "FORMULAIRE",
+    }),
     getlink(i){
+      this.formulaireId = i
       this.showLink = true
     },
     gotoDetails(id) {
@@ -115,16 +151,25 @@ export default {
     selectData ({ name}) {
       return `${name}`
     },
+    async supprimer(eActivite) {
+      if(window.confirm("Voulez-vous supprimer cette activité " + eActivite.nom))
+        await this.deleteEActivite(eActivite.id)
+    },
   },
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    this.champs = [
-      {name:'Nom activité',type:'text',placeholdere:"libelle activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Code activité',type:'text',placeholdere:"code activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Programme',type:'',placeholdere:'Choisir un programme',isSelect:true,isTextArea:false,data:'',options:programme,required:true,methode:this.selectData},
-      {name:'Date debut',type:'date',placeholdere:"Date debut",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Date fin',type:'date',placeholdere:"Date fin",isSelect:false,isTextArea:false,data:'',required:true,},
-    ]
+    
+    console.log("Fetching list formulaires ...")
+    let form = {
+      "type": 'entreprise',
+      "typeId": this.$route.params.idE,
+      "entrepriseExecutantId": this.$route.params.idE
+    };
+
+    this.getFormulaires(form).then((response) => {
+      this.formulaires = response;
+    });
+
   }
 }
 </script>

@@ -8,38 +8,33 @@
        
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+              <input required v-model="nom" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom de l'activite" />
             </div>
 
-          <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Code de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
-          </div>
-          
           <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-lg font-black text-red-700">*</span></label>
             <div class="flex justify-between my-3">
               <div>
-                <input type="radio" @click="allEntreprise= false" id="all" name="entreprise" value="all" >
+                <input  type="radio" @click="allEntreprise= false" id="all" name="entreprise" value="all" >
                 <label class="px-2" for="all">Tout les entreprises</label>
               </div>
               <div>
-                <input type="radio" @click="allEntreprise= true" id="sauf" name="entreprise" value="sauf">
+                <input  type="radio" @click="allEntreprise= true" id="sauf" name="entreprise" value="sauf">
                 <label class="px-2" for="sauf">Tout sauf</label>
               </div>
             </div>
           
-            <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+            <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises"  :multiple="true" :taggable="true" @tag="addTag"></multiselect>
           </div>
 
           <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date debut <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required v-model="debut" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
           </div>
 
           <div class="my-4">
             <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
+            <input required v-model="fin" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
           </div>
         
 
@@ -48,7 +43,7 @@
             Enregistrer 
           </button>
 
-          <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
+          <button type="" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
             Annuler
           </button>
 
@@ -84,9 +79,9 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
-          <span @click="goActivite" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
+          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
           <button @click="addActivite" v-if="seeActivite"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
@@ -102,63 +97,60 @@
       </div>
 
       <div v-if="seeEntreprise" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(bailleur,index) in bailleurs" :key="index">
-          <div @click="gotoNext" class="relative cursor-pointer">
+        <div v-for="(entreprise,index) in filteredEntreprise()" :key="index">
+          <div @click="gotoNext(entreprise.id)" class="relative cursor-pointer">
              
             <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
-              <span :class="bailleur.color" class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p>Code : {{bailleur.code}} </p></span>
-              <span :class="bailleur.color" class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{bailleur.sigle}}</span>
+              <span  class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p> </p></span>
+              <span  class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{entreprise.nom}}</span>
               
-              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">Entreprise {{index}}</p>
+              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"> {{entreprise.user.nom}}</p>
         
               <div class="flex items-center mt-8 text-gray-600">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">Dhaka, Street, State, Postal Code Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quod sunt tempore iste eligendi unde molestias ipsum omnis dolorum totam!</div>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.adresse}}</div>
               </div>
         
               <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">+880 1234567890</div>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.contact}}</div>
               </div>
         
               <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">info@demo.com</div>
+                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.email}}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div v-if="seeActivite">
-        <vtable :headers="headers" :datas="dataTable" :actions="actions" @supprimer="supprimerActivte" ></vtable>    
+        <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
+        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"  @updateInputData="updateInputData"></vtable>    
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
-          <div v-for="i in 6" :key="i.id">
+          <div v-for="formulaire in filteredFormulaire()" :key="formulaire.id">
             <card-checklist
-              libelle="formulaire"
-              code="15555DC" 
-              activite="Nombre d'accident routiere" 
-              :unites="['personne','%','km']" 
+              :libelle=formulaire.nom
+              :activite=formulaire.auteur
               @supprimer="supprimer"
-              @modifier="modifier"
-              @dupliquer="dupliquer"
-              @gotoDetails="gotoDetails(i)"
-              @onlink="getlink(i)"
-              :isDelete="checklistDelete"
+              @gotoDetails="gotoDetails(formulaire.id)"
+              @onlink="getlink(formulaire.id)"
+              :isdelete="checklistDelete"
               :isUpdate="checklistUpdate"
               > 
             </card-checklist>
           </div>
         </div>
-      </div>
+      </div>   
   </div>
   </dashboard>
 </template>
@@ -175,6 +167,7 @@ import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import CardChecklist from '@/components/CardChecklist'
 import Multiselect from 'vue-multiselect'
+import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 
 export default {
  
@@ -198,66 +191,22 @@ export default {
       showModal:false,
       allEntreprise:false,
       champs:[],
-      bailleurs:[
-         {
-          bailleur:'Banque Mondiale ',
-          sigle:'BM',
-          code:"4.1.1.3.1",
-          created_at:"22-06-2022",
-          color:' bg-yellow-500'
-          },
-        {
-        bailleur:'BANQUE AFRICAINE DE DEVELOPPEMENT-BAD',
-        sigle:'BAD & AGTF',
-        code:"4.1.1.3.2",
-        created_at:"22-06-2022",
-        color:' bg-red-500'
-        },
-        {
-        bailleur:'BANQUE OUEST-AFRICAINE DE DEVELOPPEMENT-BOAD',
-        sigle:'BOAD',
-        code:"4.1.1.3.3",
-        created_at:"22-06-2022",
-        color:' bg-pink-500'
-        },
-        {
-        bailleur:"BANQUE EUROPEENNE D'INVESTISSEMENT-BEI",
-        sigle:'BEI',
-        code:"4.1.1.3.4",
-        created_at:"22-06-2022",
-        color:' bg-blue-500'
-        },
-        {
-        bailleur:"AGENCE FRANCAISE DE DEVELOPPEMENT-AFD",
-        sigle:'AFD',
-        code:"4.1.1.3.5",
-        created_at:"22-06-2022",
-        color:' bg-yellow-900'
-        },
-        {
-        bailleur:"BANQUE BANQUE ISLAMIQUE DE DEVELOPPEMENT-BID",
-        sigle:'BID',
-        code:"4.1.1.3.6",
-        created_at:"22-06-2022",
-        color:' bg-indigo-500'
-        },
-
-      ],
+      
       showLink:false,
       headers:[
-          {name:'Libelle activite',cle:'libelle'},
+          {name:'Libelle activite',cle:'nom'},
           {name:'code',cle:'code'},
           {name:'Entreprise',cle:'entreprise'},
           {name:'Date debut',cle:'debut'},
           {name:'Date fin',cle:'fin'},
           {name:'Date de creation',cle:'created_at'},
       ],
-      dataTable:[
-          {libelle:'preparer et faire valider par le MO et le MOD un PGESC',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PAE',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PPGED',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
-          {libelle:'preparer et faire valider par le MO et le MOD un PPSPS',code:"DD555F",entreprise:'liste entreprise',debut:'31-01-2020',fin:"23-0-2022",created_at:"22-06-2022"},
+      search:'',
+
+      actions:[
+        {name:'supprimer',iconne:''},
       ],
+      
       option:[
         {name:'supprimer'},
         {name:'modifier'},
@@ -266,14 +215,6 @@ export default {
       seeEntreprise:true,
       seeFormulaire:false,
       seeActivite:false,
-      entreprises: [
-        {nom:"entreprise 1"},
-        {nom:"entreprise 2"},
-        {nom:"entreprise 3"},
-        {nom:"entreprise 4"},
-        {nom:"entreprise 5"},
-        {nom:"entreprise 6"},
-      ],
       value:[],
       entrepriseExecutanteVisible:false,
       entrepriseExecutanteAdd:false,
@@ -288,69 +229,59 @@ export default {
       
     }
   },
+  computed: {
+      ...mapState({
+      identifiant: state => state.auths.identifiant,
+      eActivite: state => state.eActivites.eActivite,
+      formulaire: state => state.formulaires.formulaire,
+      loading : state => state.loading,
+      errors : state => state.errors,
+      statuts : state => state.statuts
+    }),
+
+    ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
+      entreprises: "entreprisesExecutante/getEntreprisesExecutante",
+      eActivites: "eActivites/getEActivites",
+      formulaires: "formulaires/getFormulaires",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
+    }),
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+  },
   mounted() {
     this.getPermission()
+
+    console.log("Fetching entreprises executantes ...");
+    this.fetchEntreprisesExecutante();
+
+    console.log("Fetching e-activites ...")
+    this.fetchEActivites(this.currentUser?.programme?.id)
+
+    console.log("Fetching list formulaires ...")
+    this.fetchFormulaires()
+
     const en = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    this.champs = [
-      {name:'Nom activité',type:'text',placeholdere:"libelle activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Code activité',type:'text',placeholdere:"code activité",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Programme',type:'',placeholdere:'Choisir un programme',isSelect:true,isTextArea:false,data:'',options:programme,required:true,methode:this.selectData},
-      {name:'Date debut',type:'date',placeholdere:"Date debut",isSelect:false,isTextArea:false,data:'',required:true,},
-      {name:'Date fin',type:'date',placeholdere:"Date fin",isSelect:false,isTextArea:false,data:'',required:true,},
-    ]
+    
   },
   methods: {
-    
-    addTag (newTag) {
-      const tag = {
-        nom: newTag,
-      }
-      this.options.push(tag)
-      this.value.push(tag)
-    },
-    getlink(i){
-      this.showLink = true
-    },
-    gotoDetails(id) {
-      this.$router.push({name:'mod_checklist_details',params:{id:id}})
-    },
-    selectData ({ name}) {
-      return `${name}`
-    },
-    addActivite() {
-      this.title = 'Creer une activité'
-      this.showModal = true
-    },
-    goEntreprise() {
-      this.seeEntreprise = true
-      this.seeFormulaire = false
-      this.seeActivite = false
-    },
-    goFormulaire() {
-      this.seeEntreprise = false
-      this.seeFormulaire = true
-      this.seeActivite = false
-    },
-    goActivite() {
-      this.seeEntreprise = false
-      this.seeFormulaire = false
-      this.seeActivite = true
-    },
+
+    //Charger les fonctions de communication avec le serveur
      getPermission() {
-        this.currentUser.role[0].permissions.forEach(element => {
+      this.currentUser.role[0].permissions.forEach(element => {
           if(element.slug ==='voir-une-entreprise-executante') {
           this.entrepriseExecutanteVisible = true
         }
-        if(element.slug === 'creer-une-activite-environnement') {
+        if(element.slug === 'creer-une-activite-environnementale') {
           this.activiteEnvAdd = true
         }
-        if(element.slug === 'modifier-une-activite-environnement') {
+        if(element.slug === 'modifier-une-activite-environnementale') {
           this.activiteEnvUpdate = true
         }
-        if(element.slug === 'supprimer-une-activite-environnement') {
+        if(element.slug === 'supprimer-une-activite-environnementale') {
           this.activiteEnvDelete = true
         }
-        if(element.slug === 'voir-une-activite-environnement') {
+        if(element.slug === 'voir-une-activite-environnementale') {
           this.activiteEnvVisible = true
         }
         if(element.slug === 'voir-une-checklist') {
@@ -371,11 +302,191 @@ export default {
            
       });
      },
-    gotoNext() {
-      this.$router.push({name:'mod_checklist',params:{id:1}})
+
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setEActivite: 'eActivites/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setFormulaire: 'formulaires/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+    }),
+
+    ...mapActions("eActivites", {
+      fetchEActivites: "FETCH_LIST_EACTIVITE",
+      saveEActivite: "STORE_EACTIVITE",
+      updateEActivite: "UPDATE_EACTIVITE",
+      deleteEActivite: "DESTROY_EACTIVITE"
+    }),
+
+    ...mapActions("formulaires", {
+      fetchFormulaires: "FETCH_LIST_FORMULAIRE",
+      saveFormulaire: "STORE_FORMULAIRE",
+      updateFormulaire: "UPDATE_FORMULAIRE",
+      deleteFormulaire: "DESTROY_FORMULAIRE"
+    }),
+
+    
+    ...mapActions("entreprisesExecutante", {
+      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
+    }),
+
+    filteredEntreprise(){
+        var self = this;
+
+        return this.entreprises.filter(function (entreprise){
+          return entreprise.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+            entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
     },
 
-   
+    filteredEActivite(){
+        var self = this;
+
+        return this.eActivites.filter(function (eActivtie){
+          return eActivtie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 eActivtie.entreprise.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 eActivtie.code.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+    },
+
+    filteredFormulaire(){
+        var self = this;
+
+        return this.formulaires.filter(function (formulaire){
+          return formulaire.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+    },
+
+    addTag (newTag) {
+      const tag = {
+        nom: newTag,
+      }
+      this.options.push(tag)
+      this.value.push(tag)
+    },
+    getlink(i){
+      this.formulaireId = i
+      this.showLink = true
+    },
+    gotoDetails(id) {
+      this.$router.push({name:'mod_checklist_details',params:{idE:id}})
+    },
+    selectData ({ name}) {
+      return `${name}`
+    },
+    close() {
+        this.showCloseModal();
+
+        this.resetForm();
+      },
+    addActivite() {
+      this.title = 'Creer une activité'
+      this.showModal = true
+    },
+    
+    async updateInputData(id, attribut, value) {
+        
+          await this.updateEActivite({eActivite: {[attribut] : value}, id : id}).catch((value, status) => {
+            if(this.hasErrors[attribut] !== undefined)
+              alert(this.hasErrors[attribut])            
+          }).finally(() => {
+            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+          })
+
+    },
+
+    sendForm() {
+
+      var isIn = false
+      var entrepriseExecutantId = []
+
+      if(this.allEntreprise)
+      {
+        this.entreprises.forEach(entreprise => {
+          this.value.forEach(element => {
+            if(entreprise === element)
+            {
+              isIn = true
+            }
+          });
+
+          if(isIn == false)
+          {
+            entrepriseExecutantId.push(entreprise.id)
+          }
+        });
+      }
+
+      else
+      {
+        this.entreprises.forEach(element => {
+          entrepriseExecutantId.push(element.id)
+        });
+      }
+
+      let eActivite = {
+        "nom" : this.nom,
+        "debut" : this.debut,
+        "fin" : this.fin,
+        "code" : this.code,
+        "statut" : this.statut,
+        "entrepriseExecutantId" : entrepriseExecutantId
+      }
+
+      console.log(eActivite)
+      
+      this.saveEActivite(eActivite).then(response => {
+        if(response.status == 200 || response.status == 201){
+            this.close()
+        }
+      })
+      
+    },
+
+    async supprimerActivite(activite) {
+      if(window.confirm("Voulez-vous supprimer cette activité " + activite.nom ))
+        await this.deleteEActivite(activite.id)
+    },
+
+    goEntreprise() {
+      this.seeEntreprise = true
+      this.seeFormulaire = false
+      this.seeActivite = false
+    },
+    goFormulaire() {
+      this.seeEntreprise = false
+      this.seeFormulaire = true
+      this.seeActivite = false
+    },
+    goActivite() {
+      this.seeEntreprise = false
+      this.seeFormulaire = false
+      this.seeActivite = true
+    },
+    
+    gotoNext(id) {
+       this.$router.push({name:'mod_checklist',params:{idE:id}})
+    },
+
+  },
+  watch: {
+    isLoading: function (value) {
+      //this.loading = value
+    },
+
+    hasErrors: function (errors) {
+      this.champs.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+      //this.errors = errors
+    },
+
+    entreprises: function (entreprises) {
+      this.entreprises.map((item) => {
+        item.nom = item.user.nom
+        return item;
+        
+      });
+    }
   }
 }
 </script>

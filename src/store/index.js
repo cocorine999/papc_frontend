@@ -85,6 +85,8 @@ export default new Vuex.Store({
     messageErreur : null,
     errors : [],
     isActive:false,
+    modSelect: "",
+    missionDeControleSelect: "",
     types : [
       {
         nom : "pta",
@@ -170,9 +172,17 @@ export default new Vuex.Store({
     GET_MESSAGE_ERREUR: state => {
       return state.messageErreur
     },
-  
+    
     GET_ERREURS: state => {
       return state.errors
+    },
+
+    getModSelect: state => {
+      return state.modSelect
+    },
+
+    getMissionDeControleSelect: state => {
+      return state.missionDeControleSelect
     }
   },
   mutations: {
@@ -184,6 +194,16 @@ export default new Vuex.Store({
     },
     toggleSidebar (state) {
       state.sideBarOpen = !state.sideBarOpen
+    },
+
+    setModSelect(state, value)
+    {
+      state.modSelect = value
+    },
+
+    setMissionDeControleSelect(state, value)
+    {
+      state.missionDeControleSelect = value
     },
 
     [SET_LOADER](state, value) {
