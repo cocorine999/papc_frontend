@@ -59,14 +59,21 @@
           <span
             class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
         </div>
-        <button @click="addAno" title="ajouter un tabelau"
-          class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-            style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
-            <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
-          </svg>
-          <span class="mx-2 text-sm font-semibold">Ajouter </span>
-        </button>
+        <div class="flex space-x-4">
+          <button @click="relancerAno" title="Relancer Ano"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
+            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm120 190.77h-89l36.88-36.88-5.6-6.51a87.38 87.38 0 10-62.94 148 87.55 87.55 0 0082.42-58.25l5.37-15.13 30.17 10.67-5.3 15.13a119.4 119.4 0 11-112.62-159.18 118.34 118.34 0 0186.36 36.95l.56.62 4.31 5L376 149.81z"></path></svg>
+            <span class="mx-2 text-sm font-semibold">relancer </span>
+          </button>
+          <button @click="addAno" title="ajouter un tabelau"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+            </svg>
+            <span class="mx-2 text-sm font-semibold">Ajouter </span>
+          </button>
+        </div>
       </div>
       <div id="dataTable">
         <vtable v-if="actions != undefined && anoDelete" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @supprimer="supprimer" @modifier="modifier"></vtable>
@@ -162,6 +169,9 @@ export default {
   },
 
   methods: {
+    relancerAno() {
+
+    },
     previewFile() {
       this.pdfFile = this.pdf[0].url
       this.readPDF = true

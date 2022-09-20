@@ -324,7 +324,6 @@
           {name:'Logo',type:'file',isImage:true,placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true, errors: []},
         ],
         cols: 1,
-
         optionD: [{ name: "supprimer" }, { name: "modifier" }],
         optionUp: [{ name: "supprimer" }, { name: "modifier" }],
         option: [{ name: "supprimer" }, { name: "modifier" }],
@@ -363,7 +362,8 @@
         setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
         setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       }),
-      getPermission() {
+     
+     getPermission() {
          this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-bailleur') {
               this.bailleurVisible = true
@@ -494,7 +494,24 @@
             }
           );
         } else {
-          this.saveBailleur(bailleur).then((response) => {
+          const demo = {
+            "nom": bailleur.nom,
+            "email": bailleur.email,
+            "contact": bailleur.contact,
+            "code": bailleur.code,
+            "pays": bailleur.pays,
+            "sigle": bailleur.sigle,
+          }
+    
+          const formData = new FormData();
+          formData.append('nom',demo.nom)
+          formData.append('email',demo.email)
+          formData.append('contact',demo.contact)
+          formData.append('code',demo.code)
+          formData.append('pays',demo.pays)
+          formData.append('sigle',demo.sigle)
+          formData.append('image',this.image)
+          this.saveBailleur(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
             }
