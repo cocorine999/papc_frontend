@@ -27,7 +27,7 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
             <div class="p-4 overflow-auto">
-              <vform template="default" @getFile="getFile" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
+              <vform template="default" @getFile="getFile" @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
             </div>
         </modal-top-right>
       </div>
@@ -140,7 +140,6 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
-
 import { extractFormData } from '@/utils/index'
 
 export default {
@@ -168,7 +167,7 @@ export default {
       projetId:'',
       title: '',
       search:"",
-      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut','fichiers', 'bailleurId'],
+      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut','fichiers','image', 'bailleurId'],
       champs:[
         {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -176,7 +175,8 @@ export default {
         {name: 'Date debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true,},
         {name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Piece jointe',key:'fichiers', type: 'file', placeholdere: 'Choississez une couverture', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
+        {name: 'couverture du projet',key:'image', type: 'file', placeholdere: 'Choississez une couverture',isImage:true, isSelect: false, isTextArea: false, data:'', required: false, errors : []},
+        {name: 'Piece jointe',key:'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data:'', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors : []},
         {name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data:'', required: true, options: this.bailleurs, cle: 'id', value: 'sigle',  errors : []},
         {name: 'Status', key: "statut", type: '', placeholdere: 'Selectionnez un status', isSelect: true, isTextArea: false, data:'', required: true, options:this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
@@ -184,7 +184,6 @@ export default {
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
-     
      option: [
         { name: "supprimer" },
         { name: "modifier" },
@@ -206,6 +205,8 @@ export default {
       projetAdd:false,
       projetDelete:false,
       projetUpdate:false,
+      fichiers:[],
+      image:{}
     }
     
   },
@@ -230,9 +231,19 @@ export default {
 
   methods: {
     getFile(data) {
-    
+      this.champs[7].data = data
+      for (const property in data) {
+        this.fichiers.push(data[property])
+      }
+      this.fichiers.pop()
+      this.fichiers.pop()
+     console.log('les fichiers dddd',this.fichiers)
+     
+    },
+     getImage(data) {
       this.champs[6].data = data
-      console.log('dans datas',this.champs)
+      this.image = data
+      console.log('image',this.image)
     },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
@@ -310,7 +321,7 @@ export default {
                  projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
     addProjet() {
 
@@ -399,7 +410,6 @@ export default {
       this.setProjet({})
     },
 
-  
 
     sendForm() {
 
@@ -415,7 +425,6 @@ export default {
       console.log('details projet',projet)
       if(projet?.id)
       {
-      
         this.updateProjet({projet: projet, id : projet?.id}).then(response => {
           
           if(response.status == 200 || response.status == 201){
@@ -434,52 +443,52 @@ export default {
       }
       else
       { 
-       /*  console.log("creation de projet ",projet)
+        console.log("creation de projet ",projet)
         const demo = {
-          "nom": "demo",
-          "description": "demo",
-          "debut": "2022-09-10",
-          "fin": "2022-09-17",
-          "objectifGlobaux": "demo",
-          "budgetNational": "2000",
-          "pret": "0",
-          "couleur": "#473333",
-          "ville": "cotonou",
+          "nom": projet.nom,
+          "description": projet.description,
+          "debut": projet.debut,
+          "fin": projet.fin,
+          "objectifGlobaux": projet.objectifGlobaux,
+          "budgetNational": projet.budgetNational,
+          "pret": projet.pret,
+          "couleur": projet.couleur,
+          "ville": projet.ville,
           "statut": -1,
-          "fichiers": {
-              "0": {},
-              "1": {}
-          },
-          "bailleurId": "ZjbYdm2360518Aexbrk7pLadY2OJDVzpkXnEwlW3gNGmvqMBoRjyZPK4voAP0q5w",
-          "programmeId": "Kl4ankW8vn18AZDLmoaqz3YdgwkG5RE9AEMKBQOP2y9le4pXrj60Wbx71mr7dxLq",
+          "bailleurId": projet.bailleurId,
+          "programmeId": projet.programmeId,
           "id": ""
         }
-        
+    
         const formData = new FormData();
         formData.append('nom',demo.nom)
         formData.append('description',demo.description)
         formData.append('debut',demo.debut)
+        formData.append('fin',demo.fin)
         formData.append('objectifGlobaux',demo.objectifGlobaux)
         formData.append('budgetNational',demo.budgetNational)
         formData.append('pret',demo.pret)
-        formData.append('couleur',demo.budge)
-        formData.append('budgetNational',demo.budgetNational)
+        formData.append('couleur',demo.couleur)
+        formData.append('budgetNational',Number(demo.budgetNational))
         formData.append('pret',demo.pret)
         formData.append('couleur',demo.couleur)
         formData.append('ville',demo.ville)
         formData.append('statut',demo.statut)
-        formData.append('fichiers',demo.fichiers)
+        formData.append('image',this.image)
+        formData.append('fichier',this.fichiers)
         formData.append('bailleurId',demo.bailleurId)
-        formData.append('programmeId',demo.programmeId) */
+        formData.append('programmeId',demo.programmeId) 
         
-       this.saveProjet(projet).then(response => {
+       this.saveProjet(formData).then(response => {
           if(response.status == 200 || response.status == 201){
             this.close()
           }
         })  
+       
       }
 
     },
+
     validerProjet(id) {
 
       let projet = {}

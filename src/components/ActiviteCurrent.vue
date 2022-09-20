@@ -284,8 +284,8 @@
           </div>
 
         </div>
-        <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(activite, index) in activites" :key="index">
+        <div  v-if="isShow" class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div  v-for="(activite, index) in activites" :key="index">
             <card-activite
               :bailleur="activite.bailleur.sigle"
               :libelle="activite.nom"
@@ -307,6 +307,7 @@
             ></card-activite>
             <!-- End cards Activités -->
           </div>
+         
         </div>
       </div>
 
@@ -479,6 +480,7 @@ import Dashboard from "@/layouts/Dashboard";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
+import ComposanteService from "@/services/modules/composante.service.js";
 import Activite from '@/store/modules/activites/activite';
 import moment from 'moment'
 import ActiviteService from "@/services/modules/activite.service.js";
@@ -534,7 +536,6 @@ export default {
         {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.structures, cle: 'id', value: 'nom',  errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
-
       champs2:[
         {name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',  errors : []},
@@ -553,7 +554,7 @@ export default {
       seeActivite: true,
       seeSuivi: false,
       option: [{ name: "supprimer" }, { name: "modifier" }],
-
+    
       optionActivite: [
         { name: "supprimer" },
         { name: "modifier" }
@@ -847,7 +848,9 @@ export default {
       newProjet:null,
       newComponent:null,
       newSC:null,
-      isClick:false
+      isClick:false,
+      isShow:true,
+      sous_composantes:[]
     };
   },
 
@@ -874,7 +877,7 @@ export default {
   },
 
   methods: {
-      changeProjet(projet) {
+    changeProjet(projet) {
       if(this.isClick) {
         this.projetFiltre = this.newProjet
         this.fetchComposantes(this.idProjet);
@@ -882,9 +885,56 @@ export default {
         localStorage.removeItem('profondeurSC');
       }else {
         this.fetchComposantes(projet.id);
+        let indexProjet = 0
+        for (let index = 0; index < this.projets.length; index++) {
+          const element = this.projets[index];
+          if(projet.id == element.id) {
+            indexProjet = index
+          }
+        }
+        let composantes = this.projets[indexProjet].composantes
+         console.log('composante',composantes)
+        if(composantes[0] != null ) {
+        
+          let code = composantes[0].codePta
+          let nom = composantes[0].nom
+          this.composanteFiltre = {codePta:code,nom:nom}
+          let indexComposante = composantes[0].id
+          this.fetchSousComposantes(indexComposante);
+           ComposanteService.sousComposantes(indexComposante).then((data) => {
+            const sous_composantes  = data.data.data
+           
+            if(sous_composantes[0] != null ) { 
+          
+              let code = sous_composantes[0].codePta
+              let nom = sous_composantes[0].nom
+              this.valueFiltre = {codePta:code,nom:nom}
+              let  indexSC = sous_composantes[0].id
+              this.fetchActivites(indexSC);
+              this.isShow = true
+           }
+           else {
+              this.isShow = false
+             this.valueFiltre = null
+              this.composanteFiltre = null 
+           }
+        
+          }).catch((e) => {
+            console.log(e)
+       
+           })
+
+        }
+        else {
+          this.isShow = false
+          this.composanteFiltre = null
+          this.valueFiltre = null 
+        }
+
+        //this.fetchActivites(Scomposante.id);
       }
-     
     },
+    
     changeComposante(composante) {
       if(this.isClick) {
         this.composanteFiltre = this.newComponent
@@ -905,10 +955,21 @@ export default {
         localStorage.removeItem('profondeurSC');
       }else {
         this.fetchActivites(Scomposante.id);
-       
       }
 
      
+    },
+     getSComposante(id) {
+    
+      ComposanteService.sousComposantes(id).then((data) => {
+        const datas = data.data.data
+        this.sous_composantes = datas
+        console.log('resultat',datas)
+      
+      }).catch((e) => {
+        console.log(e)
+       
+      })
     },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
@@ -941,7 +1002,6 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
       gotoNext(activite,index) {
-
         let idProjet = ''
         let idComposante = ''
         let idSC = activite.composanteId

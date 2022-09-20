@@ -169,7 +169,7 @@ export default {
         console.log(e)
       })
     },
-     getSComposante(id) {
+    getSComposante(id) {
       this.active()
       ComposanteService.sousComposantes(id).then((data) => {
         const datas = data.data.data

@@ -52,11 +52,11 @@
           class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
           >Taches</span
         >
-        <span
+       <!--  <span
           :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
           @click="gotoSuivi()"
           class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
-          >Suivi tache</span
+          >Suivi tache</span -->
         >
       </div>
     </div>
@@ -273,9 +273,9 @@
         </div>
       </div>
     </div>
-    <div v-if="seeSuivi">
+    <!-- <div v-if="seeSuivi">
       <suivi :suivis="results.suivis"></suivi>
-    </div>
+    </div> -->
     </div>
     </div>
   </div>

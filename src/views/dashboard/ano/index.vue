@@ -58,8 +58,8 @@
         </button>
       </div>
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-if="actions != undefined && anoDelete" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-else :headers="headers" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
       </div>
     </div>
   </dashboard>
@@ -89,7 +89,7 @@ export default {
 
   data() {
     return {
-      anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'typeId'],
+      anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
       showModal: false,
       loading: false,
       showInput: true,
@@ -100,34 +100,33 @@ export default {
       anoDelete:false,
       anoUpdate:false,
       champs: [
-        { name: 'Nom', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Type', key: 'typeId', type: '', placeholdere: "Selectionnez un type", isSelect: true, isTextArea: false, data: '', options: this.typeAnos, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        {name: 'Piece jointe',key:'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
       cols: 1,
       headers: [
-        { name: 'Nom', cle: 'dossier' },
+        { name: 'dossier', cle: 'dossier' },
         { name: 'Bailleur', props: 'bailleur', cle: 'sigle' },
-        { name: 'Type', props: 'typeAno', cle: 'nom' },
         { name: 'Date soumission', cle: 'dateDeSoumission' },
         { name: 'Destinataire', cle: 'destinataire' },
         { name: 'Status', cle: 'status', status: true },
         { name: 'Date de creation', cle: 'created_at' },
       ],
-
       actions: [
         { name: 'supprimer', iconne: '' },
-      ]
+        { name:'fichier'}
+      ],
+      fichiers:[],
     }
   },
 
   computed: {
     //importation des variables du module auths
-
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
@@ -140,13 +139,20 @@ export default {
   },
 
   methods: {
+    getFile(data) {
+     for (const property in data) {
+        this.fichiers.push(data[property])
+      }
+      this.fichiers.pop()
+      this.fichiers.pop()
+    },
       active() {
         this.$store.dispatch('active')
       },
       disabled() {
         this.$store.dispatch('disabled')
       },
-       getPermission() {
+      getPermission() {
          this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-ano') {
               this.anoVisible = true
@@ -188,16 +194,15 @@ export default {
     },
 
     filteredAno(){
-        var self = this;
-
-        return this.anos.filter(function (ano){
-          return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 ano.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 ano.destinataire.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      var self = this;
+      return this.anos.filter(function (ano){
+        return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
+          ano.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.destinataire.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
     sendForm() {
       this.champs = this.champs.map((item) => {
@@ -220,6 +225,23 @@ export default {
           }
         );
       } else {
+      
+        const demo = {
+          "dossier": projet.dossier,
+          "statut": projet.statut,
+          "dateSoumission": projet.dateSoumission,
+          "destinataire": projet.destinataire,
+          "bailleurId": projet.bailleurId,
+        }
+      
+        const formData = new FormData();
+        formData.append('dossier',demo.dossier)
+        formData.append('statut',demo.statut)
+        formData.append('dateSoumission',demo.dateSoumission)
+        formData.append('destinataire',demo.destinataire)
+        formData.append('bailleurId',demo.bailleurId)
+        formData.append('fichiers',this.fichiers)
+    
         this.saveAno(ano).then((response) => {
           if (response.status == 200 || response.status == 201) {
             this.close();
@@ -227,7 +249,6 @@ export default {
         });
       }
     },
-
 
     addAno() {
       this.title = 'Ajouter un element'

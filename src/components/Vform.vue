@@ -6,10 +6,16 @@
           <label   class=" block py-2 text-sm font-semibold " for="">
           {{champ.name}} <span v-if="champ.required" class="px-2 w-full text-lg font-black text-red-700">*</span>
           </label>
-          <input v-if="champ.type !='file' " :required="champ.required" v-model='champ.data' :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
+          <input v-if="champ.type !='file'" :required="champ.required" v-model='champ.data' :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
           
            <div v-else class="">
-              <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+              <div v-if="champ.isImage">
+                <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage">
+              </div>
+              <div v-else>
+                <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+              </div>
+            
             </div>
            
           <div  v-for="(error, key) in champ.errors" :key="key">
@@ -81,12 +87,11 @@ export default {
   datas() {
     return {
       file:'',
+      image:''
     }
   },
   methods: {
-    previewFiles(event) {
-      this.file = event.target.files
-    },
+   
     save() {
       if(this.sendRequest !== undefined && this.sendRequest === false){
         this.$emit('sendForm')
@@ -104,6 +109,11 @@ export default {
       this.file = event.target.files;
       this.$emit('getFile',this.file)
       console.log('les fichiers',this.file)
+    },
+    previewImage(event) {
+      this.image = event.target.files[0];
+      this.$emit('getImage',this.image)
+
     }
   
   },
