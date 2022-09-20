@@ -510,7 +510,7 @@
           formData.append('code',demo.code)
           formData.append('pays',demo.pays)
           formData.append('sigle',demo.sigle)
-          formData.append('image',this.image)
+          formData.append('logo',this.image)
           this.saveBailleur(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
