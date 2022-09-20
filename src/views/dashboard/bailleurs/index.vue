@@ -6,6 +6,7 @@
           <div class="px-4">
             <vform
               template="default"
+              @getImage="getImage"
               :champs="champs"
               :cols="cols"
               :submitText="submitText"
@@ -320,7 +321,7 @@
             errors: [],
           },
 
-          {name:'Logo',type:'file',placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true, errors: []},
+          {name:'Logo',type:'file',isImage:true,placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true, errors: []},
         ],
         cols: 1,
 
@@ -331,6 +332,7 @@
         bailleurAdd:false,
         bailleurDelete:false,
         bailleurUpdate:false,
+        image:{}
       };
     },
 
@@ -346,6 +348,11 @@
     },
 
     methods: {
+    getImage(data) {
+      this.champs[6].data = data
+      this.image = data
+      console.log('image',this.image)
+    },
       active() {
         this.$store.dispatch('active')
       },
