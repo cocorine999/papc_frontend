@@ -1,6 +1,17 @@
 <template>
   <dashboard>
     <div v-if="anoVisible" class="px-4">
+
+      <vmodal v-if="readPDF" title="fichier.extention"  v-on:close="readPDF = false">
+        <div style="height: 70vh;width:80vw">
+          <vue-pdf-app  :pdf="pdfFile"></vue-pdf-app> 
+        </div>
+      </vmodal>
+      <vmodal v-if="true" @close="showDetail = false" >
+        <div style="width:60vw">
+          <preview @previewFile="previewFile" ></preview>
+        </div>
+      </vmodal>
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
@@ -73,6 +84,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import Preview from '@/components/Preview.vue'
+import VuePdfApp from "vue-pdf-app";
 import PermissionsService from "@/services/modules/permission.service.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import extractFormData from '@/utils/extract-data'
@@ -84,7 +97,9 @@ export default {
     Vmodal,
     Vform,
     SearchBar,
-    ModalTopRight
+    ModalTopRight,
+    Preview,
+    VuePdfApp
   },
 
   data() {
@@ -93,12 +108,15 @@ export default {
       showModal: false,
       loading: false,
       showInput: true,
+      showDetail:false,
       search:"",
       title: '',
       anoVisible:false,
       anoAdd:false,
       anoDelete:false,
       anoUpdate:false,
+      readPDF:false,
+      pdfFile:'',
       champs: [
         { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
@@ -122,6 +140,11 @@ export default {
         { name:'fichier'}
       ],
       fichiers:[],
+       pdf:[
+          {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
+          {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
+      
+        ]
     }
   },
 
@@ -139,6 +162,10 @@ export default {
   },
 
   methods: {
+    previewFile() {
+      this.pdfFile = this.pdf[0].url
+      this.readPDF = true
+    },
     getFile(data) {
      for (const property in data) {
         this.fichiers.push(data[property])

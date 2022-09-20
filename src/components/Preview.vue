@@ -45,7 +45,7 @@
                   <span class="ml-2 w-0 flex-1 truncate">pta-2022.pdf</span>
                 </div>
                 <div class="ml-4 flex-shrink-0">
-                  <button  class="font-medium text-indigo-600 hover:text-indigo-500">ouvrir</button>
+                  <button @click="$emit('previewFile')" class="font-medium text-indigo-600 hover:text-indigo-500">ouvrir</button>
                 </div>
               </li>
             </ul>
