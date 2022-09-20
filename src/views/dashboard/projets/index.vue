@@ -232,12 +232,12 @@ export default {
   methods: {
     getFile(data) {
       this.champs[7].data = data
-      this.fichiers = data
-     /*  for (const property in data) {
+      
+     for (const property in data) {
         this.fichiers.push(data[property])
       }
       this.fichiers.pop()
-      this.fichiers.pop() */
+      this.fichiers.pop() 
      console.log('les fichiers dddd',this.fichiers)
      
     },
@@ -476,7 +476,12 @@ export default {
         formData.append('ville',demo.ville)
         formData.append('statut',demo.statut)
         formData.append('image',this.image)
-        formData.append('fichier',this.fichiers)
+        for( let i = 0; i < this.fichiers.length; i++ ){
+          let file = this.fichiers[i];
+          console.log(file);
+          formData.append('fichier'+ i , file);
+        }
+       
         formData.append('bailleurId',demo.bailleurId)
         formData.append('programmeId',demo.programmeId) 
         
