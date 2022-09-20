@@ -232,11 +232,12 @@ export default {
   methods: {
     getFile(data) {
       this.champs[7].data = data
-      for (const property in data) {
+      this.fichiers = data
+     /*  for (const property in data) {
         this.fichiers.push(data[property])
       }
       this.fichiers.pop()
-      this.fichiers.pop()
+      this.fichiers.pop() */
      console.log('les fichiers dddd',this.fichiers)
      
     },
