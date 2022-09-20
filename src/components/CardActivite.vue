@@ -63,7 +63,6 @@
         @supprimer="$emit('supprimer')"
         @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')"
-        @suivre="$emit('suivre')"
         @gotoNext="$emit('gotoNext')"
         :option="option"
       ></dropdown>
@@ -72,7 +71,6 @@
         @supprimer="$emit('supprimer')"
         @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')"
-        @suivre="$emit('suivre')"
         @gotoNext="$emit('gotoNext')"
         :option="Doption"
       ></dropdown>
@@ -81,7 +79,6 @@
         @supprimer="$emit('supprimer')"
         @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')"
-        @suivre="$emit('suivre')"
         @gotoNext="$emit('gotoNext')"
         :option="option"
       ></dropdown>
@@ -197,19 +194,16 @@ export default {
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
-        { name: "mes suivis" },
         { name: "continuer" },
       ],
        optionD: [
         { name: "supprimer" },
         { name: "prolonger" },
-        { name: "mes suivis" },
         { name: "continuer" },
       ],
       optionUpdate: [
         { name: "modifier" },
         { name: "prolonger" },
-        { name: "mes suivis" },
         { name: "continuer" },
       ],
       showValidate: false,

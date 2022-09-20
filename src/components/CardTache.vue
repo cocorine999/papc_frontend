@@ -27,15 +27,32 @@
             Valider
           </button>
         </div>
+        <div v-else>
+           <button
+           v-if="statut.code !=2"
+            title="suivre tache"
+            @click="validerSuivi(id)"
+            class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold "
+            >
+            suivre
+          </button>
+           <button
+            title="suivre tache"
+            v-else
+            class="bg-gray-500 text-gray-300  rounded-lg text-sm px-3 py-1 font-semibold "
+          >
+            effectuée
+          </button>
+        </div>
 
       </div>
       <!--  -->
       <div class="cursor-pointer">
-        <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} / {{ poids }} </span>
+        <!-- <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} / {{ poids }} </span>
         <div v-else  class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary   font-bold leading-3 px-8 py-3 "> 
          <span class="text-white"> Poids:</span>
         <input type="text" @keyup.enter="validerSuivi(id,poidsActuel)" v-model="poidsActuel" class="border border-primary p-2  outline-none">
-        </div>
+        </div> -->
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
           <span
@@ -44,7 +61,7 @@
             {{ statut.libelle }} <i class="bx bx-time-five ml-1"></i
           ></span>
         </div>
-        
+       
         <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 ">
           <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{ libelle }} 
         </p>
@@ -95,30 +112,31 @@ export default {
         { name: "modifier" },
         { name: "dupliquer" },
         { name: "prolonger" },
-        { name: "mes suivis" },
+        
       ],
       optionUpdate: [
         { name: "modifier" },
         { name: "dupliquer" },
         { name: "prolonger" },
-        { name: "mes suivis" },
+    
       ],
       optionD: [
         { name: "modifier" },
         { name: "dupliquer" },
         { name: "prolonger" },
-        { name: "mes suivis" },
+       /*  { name: "mes suivis" }, */
       ],
       showValidate:false,
       delay: 700,
       clicks: 0,
       timer: null,
       showInput:false,
+      isDone:false,
       isValidate: this.statut.code > -2,
     }
   },
   methods:{
-    suivreTache(poids) {
+    /* suivreTache(poids) {
       this.clicks++;
       if (this.clicks === 1) {
         this.timer = setTimeout( () => {
@@ -129,15 +147,15 @@ export default {
         this.showInput = true
         this.clicks = 0;
       }      
-    },
+    }, */
     
-    validerSuivi(id,poids){
+    validerSuivi(id){
+    
       const data = {
-        poidsActuel:poids,
         tacheId:id
       }
       TacheService.suiviTache(data).then((data) => {
-         this.showInput = false
+        this.isDone = true
       }).catch((e) => {
         if (e.response) {
           const errors ={}
@@ -169,6 +187,18 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped >
+ .animation {
+    animation: vibration infinite .3s;
+  }
+  @keyframes vibration {
+    to {
+      transform: rotate(0deg);
+      transition: all 0.3s ease-in-out;
+    }
+    from {
+      transform: rotate(3deg);
+      transition: all 0.3s ease-in-out;
+    }
+  }
 </style>

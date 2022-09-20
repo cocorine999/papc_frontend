@@ -91,7 +91,7 @@
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Taches</span>
-          <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Suivi tache</span>
+         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Suivi tache</span> -->
         </div>
 
         <button v-if="seeTache && tacheVisible "   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
@@ -265,7 +265,7 @@
             </nav>
           </div>
         </div>
-        <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+        <div v-if="isShow" class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(tache, index) in taches" :key="index">
             <card-tache
               :id="tache.id"
@@ -288,7 +288,7 @@
           </div>
         </div>
       </div>
-      <div v-if="seeSuivi">
+      <!-- <div v-if="seeSuivi">
           <vtable
             id="datatable"
             :headers="headers"
@@ -297,7 +297,7 @@
 
             >
           </vtable>
-      </div>
+      </div> -->
 
   </div>
 </template>
@@ -316,7 +316,9 @@ import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
 import Activite from "@/store/modules/activites/activite";
+import ComposanteService from "@/services/modules/composante.service.js";
 import TacheService from "@/services/modules/tache.service.js";
+import ActiviteService from '@/services/modules/activite.service';
 export default {
   components: {
     Dashboard,
@@ -409,7 +411,8 @@ export default {
       newComponent:null,
       newSC:null,
       newActivite:null,
-      isClick:false
+      isClick:false,
+      isShow:true
 
     };
   },
@@ -422,7 +425,6 @@ export default {
       errors: (state) => state.errors,
     }),
     
-
     ...mapGetters({
       projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
@@ -436,22 +438,89 @@ export default {
   },
 
   methods: {
-    changeProjet(projet) {
+
+     changeProjet(projet) {
+    
       if(this.isClick) {
         this.projetFiltre = this.newProjet
+        this.composanteFiltre = this.newComponent
         this.fetchComposantes(this.idProjet);
-        this.isClick = false
+
         localStorage.removeItem('profondeurActivite');
       }else {
         this.fetchComposantes(projet.id);
+        let indexProjet = 0
+        for (let index = 0; index < this.projets.length; index++) {
+          const element = this.projets[index];
+          if(projet.id == element.id) {
+            indexProjet = index
+          }
+        }
+        let composantes = this.projets[indexProjet].composantes
+        
+        if(composantes[0] != null ) {
+        
+          let code = composantes[0].codePta
+          let nom = composantes[0].nom
+          this.composanteFiltre = {codePta:code,nom:nom}
+          let indexComposante = composantes[0].id
+          this.fetchSousComposantes(indexComposante);
+           ComposanteService.sousComposantes(indexComposante).then((data) => {
+            const sous_composantes  = data.data.data
+          
+          if(sous_composantes[0] != null ) { 
+          
+              let code = sous_composantes[0].codePta
+              let nom = sous_composantes[0].nom
+              this.sousComposanteFiltre = {codePta:code,nom:nom}
+              let  indexSC = sous_composantes[0].id
+              this.fetchActivites(indexSC)
+              ComposanteService.activites(indexSC).then((data) => {
+                const activites = data.data.data
+                if(activites[0] != null) {
+                  const idActivite = activites[0].id
+                  let code = activites[0].codePta
+                  let nom = activites[0].nom
+                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.fetchTaches(idActivite);
+                  this.isShow = true
+                }
+                else {
+                  this.isShow = false
+                  this.valueFiltre = null
+                }
+               
+              
+              })
+            
+           }
+           else {
+              this.isShow = false
+              this.sousComposanteFiltre = null
+              this.composanteFiltre = null 
+              this.valueFiltre = null
+           }
+        
+          }).catch((e) => {
+            console.log(e)
+       
+           })
+
+        }
+        else {
+          this.isShow = false
+          this.composanteFiltre = null
+          this.valueFiltre = null 
+          this.sousComposanteFiltre = null
+        }
+
+        //this.fetchActivites(Scomposante.id);
       }
      
     },
     changeComposante(composante) {
       if(this.isClick) {
-        this.composanteFiltre = this.newComponent
         this.fetchSousComposantes(this.idComposante);
-        this.isClick = false
         localStorage.removeItem('profondeurActivite');
       }else {
         this.fetchSousComposantes(composante.id);
@@ -463,8 +532,9 @@ export default {
       if(this.isClick) {
         this.sousComposanteFiltre = this.newSC
         this.valueFiltre = this.newActivite
+        this.fetchTaches(this.idActivite);
         this.fetchActivites(this.idSC);
-        this.isClick = false
+        
         localStorage.removeItem('profondeurActivite');
       }else {
         this.fetchActivites(Scomposante.id);
@@ -475,7 +545,6 @@ export default {
      changeActivite(activite) {
       if(this.isClick) {
        
-   
         this.fetchTaches(this.idActivite);
         this.isClick = false
         localStorage.removeItem('profondeurActivite');
@@ -483,7 +552,6 @@ export default {
         this.fetchTaches(activite.id);
       }
 
-     
     },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
@@ -716,7 +784,6 @@ export default {
     validation(tache) {
       if (this.sendRequest === false) {
         this.sendRequest = true;
-
         this.updateTache({
           tache: { statut: -1, activiteId: this.valueFiltre.id },
           id: tache.id,

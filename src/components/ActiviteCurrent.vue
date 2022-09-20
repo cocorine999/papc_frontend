@@ -536,7 +536,6 @@ export default {
         {name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data:'', required: true, options: this.structures, cle: 'id', value: 'nom',  errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description de l\'activité', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
-
       champs2:[
         {name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data:'', required: true, options: this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',  errors : []},
@@ -850,7 +849,7 @@ export default {
       newComponent:null,
       newSC:null,
       isClick:false,
-      isShow:false,
+      isShow:true,
       sous_composantes:[]
     };
   },
@@ -878,8 +877,7 @@ export default {
   },
 
   methods: {
-      changeProjet(projet) {
-    
+    changeProjet(projet) {
       if(this.isClick) {
         this.projetFiltre = this.newProjet
         this.fetchComposantes(this.idProjet);
@@ -925,9 +923,7 @@ export default {
             console.log(e)
        
            })
-       
-         
-           
+
         }
         else {
           this.isShow = false
@@ -935,9 +931,8 @@ export default {
           this.valueFiltre = null 
         }
 
-          //this.fetchActivites(Scomposante.id);
+        //this.fetchActivites(Scomposante.id);
       }
-     
     },
     
     changeComposante(composante) {
