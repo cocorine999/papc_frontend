@@ -1,13 +1,12 @@
 <template>
   <dashboard>
     <div v-if="anoVisible" class="px-4">
-
       <vmodal v-if="readPDF" title="fichier.extention"  v-on:close="readPDF = false">
         <div style="height: 70vh;width:80vw">
           <vue-pdf-app  :pdf="pdfFile"></vue-pdf-app> 
         </div>
       </vmodal>
-      <vmodal v-if="true" @close="showDetail = false" >
+      <vmodal v-if="false" @close="showDetail = false" >
         <div style="width:60vw">
           <preview @previewFile="previewFile" ></preview>
         </div>
@@ -15,8 +14,15 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
-            <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols"
+            <vform template="default" isAllPairSaufDescrip="true" :champs="champs" @getFile="getFile"
               submitText="Creer un ano" @sendForm="sendForm"></vform>
+          </div>
+        </modal-top-right>
+      </div>
+      <div v-if="showRelance">
+        <modal-top-right :title="title" v-on:close="showRelance = false">
+          <div class="px-4 overflow-y-auto">
+           
           </div>
         </modal-top-right>
       </div>
@@ -133,13 +139,20 @@ export default {
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
+      statut:[
+        {name:'en cours',value:0},
+        {name:'valider',value:-1},
+        {name:'non valider',value:-2}
+      
+      ],
+     
       cols: 1,
       headers: [
         { name: 'dossier', cle: 'dossier' },
         { name: 'Bailleur', props: 'bailleur', cle: 'sigle' },
         { name: 'Date soumission', cle: 'dateDeSoumission' },
         { name: 'Destinataire', cle: 'destinataire' },
-        { name: 'Status', cle: 'status', status: true },
+        { name: 'Status', cle: 'statut', status: true },
         { name: 'Date de creation', cle: 'created_at' },
       ],
       actions: [
@@ -151,7 +164,8 @@ export default {
           {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
           {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
       
-        ]
+        ],
+        showRelance:false,
     }
   },
 
@@ -169,8 +183,12 @@ export default {
   },
 
   methods: {
-    relancerAno() {
+    seeUpload() {
 
+    },
+    relancerAno() {
+      this.showRelance = true
+      this.title = "Relancer un amo"
     },
     previewFile() {
       this.pdfFile = this.pdf[0].url
@@ -248,7 +266,6 @@ export default {
       });
       let ano = extractFormData(this.champs, this.anoAttributs);
 
-      ano.typeId = ano.typeId.id
       ano.bailleurId = ano.bailleurId.id
       ano.statut = ano.statut.etat
       console.log(ano);
@@ -264,11 +281,11 @@ export default {
       } else {
       
         const demo = {
-          "dossier": projet.dossier,
-          "statut": projet.statut,
-          "dateSoumission": projet.dateSoumission,
-          "destinataire": projet.destinataire,
-          "bailleurId": projet.bailleurId,
+          "dossier": ano.dossier,
+          "statut": ano.statut,
+          "dateSoumission": ano.dateSoumission,
+          "destinataire": ano.destinataire,
+          "bailleurId": ano.bailleurId,
         }
       
         const formData = new FormData();
@@ -277,9 +294,12 @@ export default {
         formData.append('dateSoumission',demo.dateSoumission)
         formData.append('destinataire',demo.destinataire)
         formData.append('bailleurId',demo.bailleurId)
-        formData.append('fichiers',this.fichiers)
+        for( let i = 0; i < this.fichiers.length; i++ ){
+          let file = this.fichiers[i];
+          formData.append('fichier'+ i , file);
+        }
     
-        this.saveAno(ano).then((response) => {
+        this.saveAno(formData).then((response) => {
           if (response.status == 200 || response.status == 201) {
             this.close();
           }
@@ -328,7 +348,7 @@ export default {
     this.fetchAnos()
     //.then((value) => { console.log(value) });
     console.log("Fetching type anos ...");
-    this.fetchTypeAnos()
+ 
     //.then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
     console.log("Fetching bailleurs ...");
     this.fetchBailleurs()
@@ -347,19 +367,7 @@ export default {
       //this.errors = errors
     },
 
-    typeAnos: function (typeAnos) {
-      this.champs.map((item) => {
-        if (item.key === "typeId") {
-          item.options = typeAnos.map((typeAno) => {
-            return {
-              id: typeAno.id,
-              nom: typeAno.nom,
-            };
-          });
-        }
-        return item;
-      });
-    },
+  
 
     bailleurs: function (bailleurs) {
       this.champs.map((item) => {

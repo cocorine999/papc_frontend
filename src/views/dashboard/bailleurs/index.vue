@@ -5,6 +5,7 @@
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4">
             <vform
+              v-if="!isUpdate"
               template="default"
               @getImage="getImage"
               :champs="champs"
@@ -13,8 +14,39 @@
               @sendForm="sendForm"
               @closeModal="close" 
             ></vform>
+             <vform
+              v-else
+              template="default"
+              @getImage="getImage"
+              :champs="champsUpdate"
+              :cols="cols"
+              :submitText="submitText"
+              @sendForm="sendForm"
+              @closeModal="close" 
+            ></vform>
           </div>
         </modal-top-right>
+      </div>
+      <div v-if="showUpdateImage">
+        <vmodal title="changer le logo" v-on:close="showUpdateImage = false">
+          <div style="width:500px" title="cliquer pour changer" @click="isChange = true" v-if="!isChange" class="cursor-pointer">
+           <img v-if="logo != null || logo != undefined" 
+              class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+              :src="`${base_url}${logo.url}`">
+            <img v-else class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+              src="@/assets/images/login/logo-gouv.webp"
+              alt="">
+          </div>
+          <div v-else class="px-6" style="width: 60vw !important">
+            <vform
+              template="default"
+              :champs="champsLogo"
+               @getImage="getImage" 
+              submitText="Changer"
+              @sendForm="saveImage"
+            ></vform>
+          </div>
+        </vmodal>
       </div>
       <div class="w-full p-4">
         <nav
@@ -80,19 +112,25 @@
           <div v-for="(bailleur, index) in filteredBailleur()" :key="index">
             <div class="relative" >
               <div v-if="bailleurUpdate" class="absolute right-1 top-4 z-10  cursor-pointer">
-                <dropdown  @modifier="modifier(bailleur)"  :option="optionUp"></dropdown>
+                <dropdown  @modifier="modifier(bailleur)" @couverture="changeLogo(bailleur)" :option="optionUp"></dropdown>
               </div>
               <div v-if="bailleurDelete" class="absolute right-1 top-4 z-10  cursor-pointer">
-                <dropdown @supprimer="supprimer(bailleur)"  :option="optionD"></dropdown>
+                <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" :option="optionD"></dropdown>
               </div>
               <div v-if="bailleurUpdate && bailleurDelete " class="absolute right-1 top-4 z-10  cursor-pointer">
-                <dropdown @supprimer="supprimer(bailleur)" @modifier="modifier(bailleur)"  :option="option"></dropdown>
+                <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" @modifier="modifier(bailleur)"  :option="option"></dropdown>
               </div>
               
               <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
                 <span class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right "><p>Code : {{ bailleur.code }}</p></span>
                 <div class="flex h-20 top-0 absolute  text-4xl sm:text-5xl text-white tracking-tight font-bold  py-2 rounded-lg uppercase">
-                  <img  class="w-full object-contain " src="@/assets/images/login/logo-gouv.webp" alt="AFD">
+               
+                   <img v-if="bailleur.logo != null || bailleur.logo != undefined" 
+                    class=" max-h-52 w-full object-contain transition-transform duration-300 transform group-hover:scale-100"
+                    :src="`${base_url}${bailleur.logo.url}`">
+                  <img v-else class=" max-h-52 w-full object-contain transition-transform duration-300 transform group-hover:scale-100"
+                    src="@/assets/images/login/logo-gouv.webp"
+                    alt="">
                 </div>
                 <!-- dots 
                 <span class="absolute right-0 cursor-pointer"
@@ -190,6 +228,7 @@
             </div>
           </div>
         </div>
+       
 <!-- 
         <div v-if="line" class="line my-4">
           <vtable id="datatable"
@@ -218,7 +257,8 @@
   import Dropdown from '@/components/Dropdown.vue'
   import { mapGetters, mapMutations, mapActions } from "vuex";
   import extractFormData from "@/utils/extract-data";
-  
+  import {API_BASE_URL} from "@/services/configs/environment.js";
+  import BailleurService from "@/services/modules/bailleur.service.js";
   import PermissionsService from "@/services/modules/permission.service.js";
   export default {
     components: {
@@ -235,8 +275,15 @@
     
     data() {
       return {
+        base_url:API_BASE_URL,
+        isUpdate:false,
         bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
         showModal: false,
+        champsLogo:[
+          {name: 'Changer le logo', type: 'file', placeholdere: 'Changer le logo',isImage:true, isSelect: false, isTextArea: false, data:'', required: false, errors : []},
+        ],
+        image:{},
+        showUpdateImage:false,
         programmeId: this.currentUser?.programme?.id,
         title: "Ajouter un nouveau bailleur",
         submitText: "Enrégistrer",
@@ -323,15 +370,87 @@
 
           {name:'Logo',type:'file',isImage:true,placeholdere:'Votre logo ',isSelect:false,isTextArea:false,data:'',required:true, errors: []},
         ],
+        champsUpdate: [
+          {
+            name: "Nom",
+            type: "text",
+            key: "nom",
+            placeholdere: "Nom du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Code",
+            type: "number",
+            key: "code",
+            placeholdere: "Code du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Sigle",
+            type: "text",
+            key: "sigle",
+            placeholdere: "Sigle du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Email",
+            type: "email",
+            key: "email",
+            placeholdere: "Votre Email",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Contact",
+            type: "number",
+            key: "contact",
+            placeholdere: "Votre contact",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+          {
+            name: "Pays",
+            type: "text",
+            key: "pays",
+            placeholdere: "Pays du bailleur",
+            isSelect: false,
+            isTextArea: false,
+            data: "",
+            required: true,
+            errors: [],
+          },
+
+        ],
         cols: 1,
-        optionD: [{ name: "supprimer" }, { name: "modifier" }],
-        optionUp: [{ name: "supprimer" }, { name: "modifier" }],
-        option: [{ name: "supprimer" }, { name: "modifier" }],
+        optionD: [{ name: "supprimer" }, { name: "modifier" },{name:'couverture'}],
+        optionUp: [{ name: "supprimer" }, { name: "modifier" },{name:'couverture'}],
+        option: [{ name: "supprimer" }, { name: "modifier" },{name:'changer logo'}],
         bailleurVisible:false,
         bailleurAdd:false,
         bailleurDelete:false,
         bailleurUpdate:false,
-        image:{}
+        isChange:false,
+        logo:{},
+        idBailleur:''
+       
       };
     },
 
@@ -348,9 +467,36 @@
 
     methods: {
     getImage(data) {
-      this.champs[6].data = data
       this.image = data
-      console.log('image',this.image)
+     
+    },
+    saveImage() {
+   
+     
+        const formData = new FormData();
+        formData.append('logo',this.image)
+        BailleurService.update(this.idBailleur,formData).then(() => {
+        this.$toast.success('Le logo  à éte bien changer')
+        this.showUpdateImage = false 
+        }).catch((error) => {
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
+        })
+      
+      
+    },
+    changeLogo(data) {
+      this.logo = data.logo
+      this.idBailleur = data.id
+      this.showUpdateImage = true
     },
       active() {
         this.$store.dispatch('active')
@@ -403,17 +549,17 @@
 
       modifier(bailleur) {
         this.title = "Modifier le bailleur";
-
+        this.isUpdate = true
         this.submitText = "Modifier";
 
         this.setBailleur(bailleur);
 
         this.bailleurAttributs.forEach((item) => {
-          this.champs.find((value, index) => {
+          this.champsUpdate.find((value, index) => {
             if (value.key === item) {
               if (item === "nom" || item === "email" || item === "contact")
-                this.champs[index]["data"] = this.bailleur.user[item];
-              else this.champs[index]["data"] = this.bailleur[item];
+                this.champsUpdate[index]["data"] = this.bailleur.user[item];
+              else this.champsUpdate[index]["data"] = this.bailleur[item];
             }
           });
         });
@@ -480,8 +626,13 @@
           item.errors = [];
           return item;
         });
-
-        let bailleur = extractFormData(this.champs, this.bailleurAttributs);
+        let bailleur ={}
+        if(this.isUpdate) {
+          bailleur = extractFormData(this.champsUpdate, this.bailleurAttributs);
+        }else {
+           bailleur = extractFormData(this.champs, this.bailleurAttributs);
+        }
+       
 
         bailleur.programmeId = this.programmeId;
 
@@ -502,7 +653,7 @@
             "pays": bailleur.pays,
             "sigle": bailleur.sigle,
           }
-    
+         
           const formData = new FormData();
           formData.append('nom',demo.nom)
           formData.append('email',demo.email)
@@ -511,6 +662,8 @@
           formData.append('pays',demo.pays)
           formData.append('sigle',demo.sigle)
           formData.append('logo',this.image)
+          formData.append('programmeId',this.programmeId)
+          
           this.saveBailleur(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
@@ -534,7 +687,7 @@
     },
 
     created() {
-      
+      console.log("current users",this.currentUser)
       console.log("Fetching bailleurs ...");
       this.programmeId = this.currentUser.programme.id
       if(this.programmeId){

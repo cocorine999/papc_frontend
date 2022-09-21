@@ -85,12 +85,13 @@
     <div class="bg-white my-3 shadow">
       <div class="grid grid-cols-2 p-3">
         <div>
-          <p>
-            <img
-              src="https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg"
-              class="w-full object-cover"
-              alt=""
-            />
+          <p class="border border-gray-100 shadow rounded-md">
+             <img v-if="image != null || image != undefined" 
+                class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+                :src="`${base_url}${image.url}`">
+              <img v-else class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+                src="@/assets/images/login/logo-gouv.webp"
+                alt="">
           </p>
           <p class="py-2 text-indigo-700 uppercase text-center font-bold">
             du {{ projet.debut }} au {{ projet.fin }} 
@@ -145,11 +146,13 @@
 </template>
 
 <script>
+import {API_BASE_URL} from "@/services/configs/environment.js";
 export default {
-  props:['projet'],
+
+  props:['projet','image'],
   data() {
     return {
-      
+      base_url:API_BASE_URL,
     };
   },
 

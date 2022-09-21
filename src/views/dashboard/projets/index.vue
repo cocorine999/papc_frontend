@@ -27,7 +27,8 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
             <div class="p-4 overflow-auto">
-              <vform template="default" @getFile="getFile" @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
+              <vform template="default" v-if="!isUpdate" @getFile="getFile" @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
+              <vform template="default" v-if="isUpdate" :champs="champsUpdate" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
             </div>
         </modal-top-right>
       </div>
@@ -98,7 +99,10 @@
               </div>
             </div>
             <div class="relative mb-2">
-              <img class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+              <img v-if="projet.image != null || projet.image != undefined" 
+                class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+                :src="`${base_url}${projet.image.url}`">
+              <img v-else class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
                 src="@/assets/images/login/logo-gouv.webp"
                 alt="">
                 <div class="absolute bottom-0 right-0">
@@ -124,7 +128,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </dashboard>
   
@@ -140,6 +144,7 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import {API_BASE_URL} from "@/services/configs/environment.js";
 import { extractFormData } from '@/utils/index'
 
 export default {
@@ -155,9 +160,11 @@ export default {
   },
   data() {
     return {
+      base_url:API_BASE_URL,
       showModal:false,
       line:false,
       dates: {fin:''},
+      isUpdate:false,
       submitText:"Enregistrer",
       cols:1,
       mosaique:true,
@@ -177,6 +184,20 @@ export default {
         {name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture',isImage:true, isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
+        {name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data:'', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors : []},
+        {name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data:'', required: true, options: this.bailleurs, cle: 'id', value: 'sigle',  errors : []},
+        {name: 'Status', key: "statut", type: '', placeholdere: 'Selectionnez un status', isSelect: true, isTextArea: false, data:'', required: true, options:this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
+        {name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea:true, data:'', required: false, errors : []},
+        {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
+      ],
+      champsUpdate:[
+        {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Date debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true,},
+        {name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data:'', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors : []},
         {name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data:'', required: true, options: this.bailleurs, cle: 'id', value: 'sigle',  errors : []},
         {name: 'Status', key: "statut", type: '', placeholdere: 'Selectionnez un status', isSelect: true, isTextArea: false, data:'', required: true, options:this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
@@ -232,7 +253,6 @@ export default {
   methods: {
     getFile(data) {
       this.champs[7].data = data
-      
      for (const property in data) {
         this.fichiers.push(data[property])
       }
@@ -325,9 +345,8 @@ export default {
     },
 
     addProjet() {
-
       this.title='Ajouter un nouveau projet'
-
+      this.isUpdate = false
       let formData = this.champs.map((value) => {
           if(value.key === 'bailleurId'){ 
             value['options'] = this.bailleurs
@@ -347,7 +366,7 @@ export default {
     },
 
     modifierProjet(projet) {
-      
+        this.isUpdate = true
         this.title = 'Modifier un projet'
 
         this.submitText = "Modifier"
@@ -356,11 +375,11 @@ export default {
 
         this.projetAttributs.forEach((item) => {
 
-          this.champs.find((value, index) => {
+          this.champsUpdate.find((value, index) => {
 
             if(value.key !== 'bailleurId' && value.key !== 'statut'){ 
               if(value.key === item){
-                this.champs[index]['data'] = projet[item]
+                this.champsUpdate[index]['data'] = projet[item]
               }
             }
 
@@ -415,8 +434,15 @@ export default {
     sendForm() {
 
       this.champs = this.champs.map(item => { item.errors = []; return item})
+      this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item})
+      let projet = {}
+      if(this.isUpdate) {
+        projet = extractFormData(this.champsUpdate, this.projetAttributs)
+      }else {
+        projet = extractFormData(this.champs, this.projetAttributs)
+      }
 
-      let projet = extractFormData(this.champs, this.projetAttributs)
+     
 
       projet.programmeId = this.programmeId
 
