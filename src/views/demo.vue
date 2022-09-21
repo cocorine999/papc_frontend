@@ -1,25 +1,18 @@
 <template>
   <div>
-    <h1>demo select</h1>
-    <p> {{value}} </p>
-    <select name="" v-model="value" class="px-4 py-2 border " id="">
-      <option value="jacob">jacob</option>
-      <option value="gomez">gomez</option>
-      <option  value="ambroise" selected>ambroise</option>
-     
-    </select>
-     <multiselect v-model="value" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
-
-       <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
-       <preview></preview>
+      <modal-chat v-if="true" title="espace commentaire" v-on:close="false">
+        <chat></chat>
+      </modal-chat>
+  
   </div>
 </template>
 
 <script>
+import ModalChat from '@/components/ModalChat'
 import Multiselect from 'vue-multiselect'
-import Preview from '@/components/Preview.vue'
+import Chat from '@/components/Chat.vue'
 export default {
-  components:{Multiselect,Preview},
+  components:{Multiselect,Chat,ModalChat},
   data() {
     return {
       value: '',

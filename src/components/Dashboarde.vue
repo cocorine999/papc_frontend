@@ -9,13 +9,52 @@
               template="default"
               isAllPairSaufDescrip="true"
               :champs="champsRecherche"
-              :cols="cols"
               submitText="Rechercher"
               @sendForm="filtre"
             ></vform>
           </div>
         </vmodal>
       </div>
+      <div v-if="showUpdateImage">
+        <vmodal title="changer la couverture" v-on:close="showUpdateImage = false">
+          <div style="width:500px" title="cliquer pour changer" @click="isChange = true" v-if="!isChange" class="cursor-pointer">
+            <img v-if="images != null || images != undefined" 
+              class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+              :src="`${base_url}${images.url}`">
+            <img v-else class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+              src="@/assets/images/login/logo-gouv.webp"
+              alt="">
+          </div>
+          <div v-else class="px-6" style="width: 60vw !important">
+            <vform
+              template="default"
+              :champs="champs"
+               @getImage="getImage" 
+              submitText="Changer"
+              @sendForm="updateProjet"
+            ></vform>
+          </div>
+        </vmodal>
+      </div>
+       <div v-if="showUpdateFile">
+        <vmodal title="televerser des documents" v-on:close="showUpdateFile = false">
+        
+          <div class="px-6" style="width: 60vw !important">
+            <vform
+              template="default"
+              :champs="champsFile"
+              @getFile="getFile"
+              submitText="Televerser"
+              @sendForm="updateFile"
+            ></vform>
+          </div>
+        </vmodal>
+      </div>
+      <vmodal v-if="showPreview" @close="showPreview = false" >
+        <div style="width:60vw">
+          <preview template="details-projet" :datas="datas" @previewFile="previewFile" ></preview>
+        </div>
+      </vmodal>
       <!--Fin Modal de filtre -->
 
        <!--La navigation  -->
@@ -48,11 +87,13 @@
       <div class="flex my-5 items-center justify-between ">
         <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
          
-          <button title="filtre" @click="showModal = true" class="bg-primary text-white px-2 py-1">
+          <button title="filtre" @click="showModal = true" class="bg-primary text-white p-2">
             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
           </button>
+          <button @click="showUpdateImage=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">changer la couverture</button>
+          <button @click="showUpdateFile=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">ajouter piece jointe </button>
         </div>
         <div class="border border-gray-300 p-2 bg-white shadow">
           <router-link class="text-sm font-semibold" to="/dashboard/projets/composantes-globale">Composantes /</router-link>
@@ -61,11 +102,18 @@
         </div>
       </div>
 
+      <div class="flex justify-end">
+        <button @click="showPreview = true" class="text-white flex space-x-2 items-center bg-blue-500 px-4 py-2 rounded-md">
+          <span class="h-5 w-5  "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M464 128H272l-64-64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48z"></path></svg></span>
+          <span>Mes documents</span>
+        </button>
+      </div>
+
       <!--fin filte et button de modification  -->
 
       <!-- partie description et budgetaire  -->
       <div class="stat gap-2 mb-6 mt-8">
-        <description :projet="projet"></description>
+        <description :image="images" :projet="projet"></description>
         <budgetaire :projet="projet"></budgetaire>
       </div>
       <!-- fin partie description et budgetaire -->
@@ -105,15 +153,16 @@ import Titre from "@/components/Titre";
 import Vtable from "@/components/Vtable";
 import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
-
-
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import Budgetaire from '@/components/Budgetaire.vue';
 import Description from '@/components/Description.vue';
+import Preview from '@/components/Preview.vue';
 import Graphes from '@/components/Graphes.vue';
 import Indicateurs from '@/components/Indicateurs.vue';
 import Environnement from '@/components/Environnement.vue';
 import OtherGraphe from '@/components/OtherGraphe.vue';
+import ProjetService from "@/services/modules/projet.service.js";
+import {API_BASE_URL} from "@/services/configs/environment.js";
 
 export default {
  props:['projet'],
@@ -128,27 +177,106 @@ export default {
     Graphes,
     Indicateurs,
     Environnement,
-    OtherGraphe
+    OtherGraphe,
+    Preview
   },
   data() {
     return {
+      base_url:API_BASE_URL,
       showModal:false,
-      currentRole:''
-    
+      showUpdateImage:false,
+      showUpdateFile:false,
+      isChange:false,
+      currentRole:'',
+       champs:[
+        {name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture',isImage:true, isSelect: false, isTextArea: false, data:'', required: false, errors : []},
+      ],
+      champsFile:[
+        {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
+      ],
+      image:{},
+      fichiers:[],
+      showPreview:false
     }
   },
 
   computed: {
-     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
+    datas() {
+      if(this.projet != null || this.projet != undefined) {
+        return this.projet.fichiers
+      } 
+    },
+    images() {
+      if(this.projet != null || this.projet != undefined) {
+        return this.projet.image
+      } 
+    }
+  },
+  methods:{
+    getFile(data) {
+     for (const property in data) {
+        this.fichiers.push(data[property])
+      }
+      this.fichiers.pop()
+      this.fichiers.pop() 
+     console.log('les fichiers dddd',this.fichiers)
+     
+    },
+    getImage(data) {
+      this.image = data
+      console.log('image',data)
+    },
+    updateProjet() {
+      const id = this.projet.id
+      const formData = new FormData();
+      formData.append('image',this.image)
+      ProjetService.update(id,formData).then(() => {
+       this.$toast.success('La couverture à éte bien changer')
+       this.showUpdateImage = false 
+      }).catch((error) => {
+         if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+           //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+      })
+    },
+     updateFile() {
+      const id = this.projet.id
+      const formData = new FormData();
+      for( let i = 0; i < this.fichiers.length; i++ ){
+        let file = this.fichiers[i];
+        formData.append('fichier'+ i , file);
+      }
+      ProjetService.update(id,formData).then(() => {
+       this.$toast.success('televersement reuissi')
+       this.showUpdateFile = false 
+      }).catch((error) => {
+         if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+           //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+      })
+    },
   },
   mounted(){
      if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
-        console.log("role courant",this.currentUser)
+       console.log("role courant",this.currentUser)
      }
   }
-
- 
 };
 
 

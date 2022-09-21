@@ -37,6 +37,9 @@ export default {
       if(option == 'mes suivis') {
         this.$emit('suivre')
       }
+      if(option == 'changer logo') {
+        this.$emit('couverture')
+      }
       
     }
   }

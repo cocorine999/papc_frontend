@@ -12,7 +12,9 @@
                   </label>
                 </th>
                 <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> {{head.name}} </th>
+                 <th scope="col" v-if="statut != undefined" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Statut</th>
                 <th scope="col" v-if="actions != undefined" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Actions</th>
+               
               </tr>
             </thead>
           
@@ -32,7 +34,11 @@
                     <tr-table :status="head.status" :data="data[head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[extra] }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"> </tr-table>
                   </div>
                 </td>
-      
+                <td v-if="statut != undefined" class="text-sm  space-x-3 text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
+                   <span v-if="statut ==0" class="bg-purple-500 text-white px-2 py-1 rounded-md">  en cours </span>
+                   <span v-if="statut ==-1" class="bg-green-500 text-white px-2 py-1 rounded-md">  valider </span>
+                   <span v-if="statut ==-2" class="bg-red-500 text-white px-2 py-1 rounded-md">  non valider </span>
+                </td>
                 <td   v-if="actions != undefined"  class="text-sm  space-x-3 text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
                   <div v-for="(action,index) in actions" :key="index" class="flex item-center justify-center">
                     <div v-if="action.name === 'suivre'" title="suivre" @click="$emit('suivre', data.id)" class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110">
@@ -84,7 +90,13 @@ export default {
       currentPage:1,
       perPage:5,
       selectedRows: [],
-      listeSelection:[]
+      listeSelection:[],
+      statut:[
+        {name:'en cours',value:0},
+        {name:'valider',value:-1},
+        {name:'non valider',value:-2}
+      
+      ],
     }
   },
   computed: {

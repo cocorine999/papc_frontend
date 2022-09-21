@@ -7,6 +7,7 @@ import authPage from "../views/401.vue";
 import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
 import historique from "../views/dashboard/historique/index.vue";
+import notification from "../views/dashboard/notification/index.vue";
 import liens from "../views/liens.vue";
 import password_update from "../views/password_update.vue";
 import newPassword from "../views/reset.vue";
@@ -236,6 +237,14 @@ const routes = [
     path: "/dashboard/ano",
     name: "ano",
     component: ano,
+    meta: {
+      middleware: [auth],
+    },
+  },
+  {
+    path: "/dashboard/notification",
+    name: "notification",
+    component: notification,
     meta: {
       middleware: [auth],
     },
