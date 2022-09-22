@@ -10,7 +10,7 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
-            <vform template="default" isAllPairSaufDescrip="true" :champs="champs" @getFile="getFile"
+            <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" @getFile="getFile"
               submitText="Creer un ano" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
@@ -29,15 +29,26 @@
                 <label class="my-2 block" for="">Pieces jointes </label>
                 <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
             </div>
-            <div class="my-6">
-              <button type="submit" class="bg-blue-500 text-sm text-white font-semi-bold outline-none px-4 py-2 uppercase rounded-md">valider </button>
-            </div>
+            <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
+                <vbutton type="reset" template="danger" @close="showRelance =false"> annuler </vbutton>
+              </div>
           </form>
         </modal-top-right>
       </div>
-      <modal-chat v-if="showCommentaire" title="espace commentaire" v-on:close="showCommentaire=false">
-        <chat @sendMessage="sendMessage" :isOnlyRead="false"></chat>
-      </modal-chat>
+     
       <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -91,9 +102,7 @@
         <vtable v-if="actions != undefined && anoDelete" :statut="true" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @relancerAno="relancerAno" @supprimer="supprimer" @modifier="modifier"></vtable>
         <vtable v-else :headers="headers" @relancerAno="relancerAno" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
       </div>
-      <div title="laissez un commentaire" @click="showCommentaire = true" class="fixed cursor-pointer  z-50 bottom-5 text-blue-500 animation  right-6 ">
-        <svg stroke="currentColor" class="h-10 w-10" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z"></path></svg>
-      </div>
+     
     </div>
   </dashboard>
 
@@ -107,9 +116,8 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Preview from '@/components/Preview.vue'
+import Vbutton from '@/components/Vbutton.vue'
 import PermissionsService from "@/services/modules/permission.service.js";
-import Chat from '@/components/Chat.vue'
-import ModalChat from '@/components/ModalChat'
 import AnosService from "@/services/modules/ano.service.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import extractFormData from '@/utils/extract-data'
@@ -123,8 +131,7 @@ export default {
     SearchBar,
     ModalTopRight,
     Preview,
-    Chat,
-    ModalChat
+   Vbutton
    
   },
 
@@ -133,7 +140,6 @@ export default {
       anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
       showModal: false,
       loading: false,
-      showCommentaire:false,
       showInput: true,
       showDetail:false,
       search:"",
@@ -144,6 +150,7 @@ export default {
       anoUpdate:false,
       readPDF:false,
       pdfFile:'',
+      chargement:false,
       Relance:{
         statut:null,
         files:[]
@@ -176,6 +183,7 @@ export default {
         { name:'fichier'},
         { name:'relancer'},
       ],
+       sendRequest: false,
       fichiers:[],
        pdf:[
           {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
@@ -286,7 +294,9 @@ export default {
         });
     },
     sendRelancer() {
-      const formData = new FormData();
+      if(this.chargement == false) {
+         this.chargement = true
+        const formData = new FormData();
         formData.append('statut',this.Relance.statut)
         formData.append('anoId',this.anosId)
         
@@ -297,9 +307,12 @@ export default {
       AnosService.reponseAnos(formData).then(() => {
         this.$toast.success('operation effectué avec success !!!')
         this.showRelance = false
+        this.chargement = false
       }).catch((e) => {
         this.$toast.error(e)
+         this.chargement = false
       })
+      }
       
     },
     sendForm() {
@@ -308,21 +321,25 @@ export default {
         return item;
       });
       let ano = extractFormData(this.champs, this.anoAttributs);
-
       ano.bailleurId = ano.bailleurId.id
       ano.statut = ano.statut.etat
       console.log(ano);
 
-      if (this.ano?.id) {
+      if(this.sendRequest == false) {
+        this.sendRequest = true
+        if (this.ano?.id) {
         this.updateAno({ ano: ano, id: this.ano?.id }).then(
           (response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.sendRequest = false
             }
           }
-        );
+        ).catch((e) => {
+          this.sendRequest = false
+      });
       } else {
-      
+         this.sendRequest = true
         const demo = {
           "dossier": ano.dossier,
           "statut": ano.statut,
@@ -345,8 +362,12 @@ export default {
         this.saveAno(formData).then((response) => {
           if (response.status == 200 || response.status == 201) {
             this.close();
+             this.sendRequest = false
           }
-        });
+        }).catch((e) => {
+          this.sendRequest = false
+        })
+      }
       }
     },
 

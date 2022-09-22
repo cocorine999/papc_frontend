@@ -550,6 +550,7 @@ export default {
         localStorage.removeItem('profondeurActivite');
       }else {
         this.fetchTaches(activite.id);
+        this.isShow = true
       }
 
     },

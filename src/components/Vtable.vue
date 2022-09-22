@@ -13,7 +13,7 @@
                 </th>
                 
                 <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> {{head.name}} </th>
-                 <th scope="col" v-if="statut != undefined" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Statut</th>
+                 <th scope="col" v-if="statut" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Statut</th>
                 <th scope="col" v-if="actions != undefined" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Actions</th>
                
               </tr>
