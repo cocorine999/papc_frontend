@@ -11,6 +11,7 @@
                     <input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline" @click="selectAllCheckbox($event);">
                   </label>
                 </th>
+                
                 <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> {{head.name}} </th>
                  <th scope="col" v-if="statut != undefined" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Statut</th>
                 <th scope="col" v-if="actions != undefined" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Actions</th>
@@ -34,10 +35,10 @@
                     <tr-table :status="head.status" :data="data[head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[extra] }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"> </tr-table>
                   </div>
                 </td>
-                <td v-if="statut != undefined" class="text-sm  space-x-3 text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
-                   <span v-if="statut ==0" class="bg-purple-500 text-white px-2 py-1 rounded-md">  en cours </span>
-                   <span v-if="statut ==-1" class="bg-green-500 text-white px-2 py-1 rounded-md">  valider </span>
-                   <span v-if="statut ==-2" class="bg-red-500 text-white px-2 py-1 rounded-md">  non valider </span>
+                <td v-if="statut" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                   <span v-if="data.statut ==0" class="bg-purple-500 text-white px-2 py-1 rounded-md">  en cours </span>
+                   <span v-if="data.statut ==-1" class="bg-green-500 text-white px-2 py-1 rounded-md">  valider </span>
+                   <span v-if="data.statut ==-2" class="bg-red-500 text-white px-2 py-1 rounded-md">  non valider </span>
                 </td>
                 <td   v-if="actions != undefined"  class="text-sm  space-x-3 text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
                   <div v-for="(action,index) in actions" :key="index" class="flex item-center justify-center">
@@ -50,9 +51,14 @@
                     <div v-if="action.name === 'consulter'" title="consulter les suivis" @click="$emit('consulter', data.id)" class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
                     </div>
-                    <div v-if="action.name === 'fichier'" title="consulter les fichiers" @click="$emit('seeUpload', data.id)">
+                    <div v-if="action.name === 'fichier'" title="consulter les fichiers" @click="$emit('seeUpload', data)">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 14 16" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM1 3h5v1H1V3zm6 9v-2c-.98-.02-1.84.22-2.55.7-.71.48-1.19 1.25-1.45 2.3.02-1.64.39-2.88 1.13-3.73C4.86 8.43 5.82 8 7.01 8V6l4 3-4 3H7z"></path></svg>
                     </div>
+
+                    <div v-if="action.name === 'relancer'" title="relancer ano" @click="$emit('relancerAno', data)">
+                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm120 190.77h-89l36.88-36.88-5.6-6.51a87.38 87.38 0 10-62.94 148 87.55 87.55 0 0082.42-58.25l5.37-15.13 30.17 10.67-5.3 15.13a119.4 119.4 0 11-112.62-159.18 118.34 118.34 0 0186.36 36.95l.56.62 4.31 5L376 149.81z"></path></svg>
+                    </div>
+
                     
                   </div> 
                   <div v-if="isComment" @click="$emit('commentairer', index)" title="lacher un commentaire" class=" mr-2 cursor-pointer transform text-indigo-300 hover:text-indigo-400 hover:scale-110">
@@ -84,19 +90,14 @@ import TrTable from '@/components/TrTable'
 import Pagination from '@/components/Pagination'
 export default {
   components: { TrTable,Pagination },
-  props:['datas', 'headers', 'actions', 'extra', 'sendRequest','isComment'],
+  props:['datas', 'headers', 'actions', 'extra','statut', 'sendRequest','isComment'],
   data() {
     return{
       currentPage:1,
       perPage:5,
       selectedRows: [],
       listeSelection:[],
-      statut:[
-        {name:'en cours',value:0},
-        {name:'valider',value:-1},
-        {name:'non valider',value:-2}
       
-      ],
     }
   },
   computed: {

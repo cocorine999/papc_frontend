@@ -16,6 +16,10 @@ const AnosService = {
     create(params) {
       return ApiService.post("anos", params);
     },
+    reponseAnos(params) {
+      return ApiService.post("reponseAnos", params);
+    },
+    
     // update services
     update(slug, params) {
       return ApiService.update("anos", slug, params);

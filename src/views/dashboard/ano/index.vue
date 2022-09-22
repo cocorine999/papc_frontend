@@ -1,14 +1,10 @@
 <template>
   <dashboard>
     <div v-if="anoVisible" class="px-4">
-      <vmodal v-if="readPDF" title="fichier.extention"  v-on:close="readPDF = false">
-        <div style="height: 70vh;width:80vw">
-          <vue-pdf-app  :pdf="pdfFile"></vue-pdf-app> 
-        </div>
-      </vmodal>
-      <vmodal v-if="false" @close="showDetail = false" >
+
+      <vmodal v-if="showDetail" @close="showDetail = false" >
         <div style="width:60vw">
-          <preview @previewFile="previewFile" ></preview>
+          <preview template="ano" :datas="datas" @previewFile="previewFile" ></preview>
         </div>
       </vmodal>
       <div v-if="showModal">
@@ -21,14 +17,29 @@
       </div>
       <div v-if="showRelance">
         <modal-top-right :title="title" v-on:close="showRelance = false">
-          <div class="px-4 overflow-y-auto">
-           
-          </div>
+          <form @submit.prevent="sendRelancer" class="px-4 overflow-y-auto">
+            <div class="my-2">
+              <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
+              <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="" selected>Selectionnez le statut</option>
+                <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{statut.name}}</option>
+             </select>
+            </div>
+            <div class="my-2">
+                <label class="my-2 block" for="">Pieces jointes </label>
+                <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+            </div>
+            <div class="my-6">
+              <button type="submit" class="bg-blue-500 text-sm text-white font-semi-bold outline-none px-4 py-2 uppercase rounded-md">valider </button>
+            </div>
+          </form>
         </modal-top-right>
       </div>
+      <modal-chat v-if="showCommentaire" title="espace commentaire" v-on:close="showCommentaire=false">
+        <chat @sendMessage="sendMessage" :isOnlyRead="false"></chat>
+      </modal-chat>
       <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
         <div>
-
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -42,7 +53,6 @@
               <router-link to="" class="">ano</router-link>
             </li>
           </ol>
-
         </div>
 
         <div>
@@ -66,11 +76,7 @@
             class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
         </div>
         <div class="flex space-x-4">
-          <button @click="relancerAno" title="Relancer Ano"
-            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
-            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm120 190.77h-89l36.88-36.88-5.6-6.51a87.38 87.38 0 10-62.94 148 87.55 87.55 0 0082.42-58.25l5.37-15.13 30.17 10.67-5.3 15.13a119.4 119.4 0 11-112.62-159.18 118.34 118.34 0 0186.36 36.95l.56.62 4.31 5L376 149.81z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">relancer </span>
-          </button>
+          
           <button @click="addAno" title="ajouter un tabelau"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -82,8 +88,11 @@
         </div>
       </div>
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
+        <vtable v-if="actions != undefined && anoDelete" :statut="true" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @relancerAno="relancerAno" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-else :headers="headers" @relancerAno="relancerAno" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
+      </div>
+      <div title="laissez un commentaire" @click="showCommentaire = true" class="fixed cursor-pointer  z-50 bottom-5 text-blue-500 animation  right-6 ">
+        <svg stroke="currentColor" class="h-10 w-10" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z"></path></svg>
       </div>
     </div>
   </dashboard>
@@ -98,8 +107,10 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Preview from '@/components/Preview.vue'
-import VuePdfApp from "vue-pdf-app";
 import PermissionsService from "@/services/modules/permission.service.js";
+import Chat from '@/components/Chat.vue'
+import ModalChat from '@/components/ModalChat'
+import AnosService from "@/services/modules/ano.service.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import extractFormData from '@/utils/extract-data'
 
@@ -112,7 +123,9 @@ export default {
     SearchBar,
     ModalTopRight,
     Preview,
-    VuePdfApp
+    Chat,
+    ModalChat
+   
   },
 
   data() {
@@ -120,6 +133,7 @@ export default {
       anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
       showModal: false,
       loading: false,
+      showCommentaire:false,
       showInput: true,
       showDetail:false,
       search:"",
@@ -130,6 +144,10 @@ export default {
       anoUpdate:false,
       readPDF:false,
       pdfFile:'',
+      Relance:{
+        statut:null,
+        files:[]
+      },
       champs: [
         { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
@@ -139,33 +157,32 @@ export default {
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
-      statut:[
+      statuts:[
         {name:'en cours',value:0},
         {name:'valider',value:-1},
         {name:'non valider',value:-2}
-      
       ],
-     
+      datas:[],
       cols: 1,
       headers: [
         { name: 'dossier', cle: 'dossier' },
         { name: 'Bailleur', props: 'bailleur', cle: 'sigle' },
         { name: 'Date soumission', cle: 'dateDeSoumission' },
         { name: 'Destinataire', cle: 'destinataire' },
-        { name: 'Status', cle: 'statut', status: true },
         { name: 'Date de creation', cle: 'created_at' },
       ],
       actions: [
         { name: 'supprimer', iconne: '' },
-        { name:'fichier'}
+        { name:'fichier'},
+        { name:'relancer'},
       ],
       fichiers:[],
        pdf:[
           {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
           {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
-      
         ],
         showRelance:false,
+        anosId:''
     }
   },
 
@@ -183,17 +200,28 @@ export default {
   },
 
   methods: {
-    seeUpload() {
-
+    sendMessage(data) {
+      alert(data+' envoyé')
     },
-    relancerAno() {
+    previewFiles(event) {
+      const data = event.target.files
+      for (const property in data) {
+        this.Relance.files.push(data[property])
+      }
+      this.Relance.files.pop()
+      this.Relance.files.pop()
+     
+    },
+    seeUpload(data) {
+      this.datas = data
+      this.showDetail = true
+    },
+    relancerAno(data) {
+      this.anosId = data.id
       this.showRelance = true
       this.title = "Relancer un amo"
     },
-    previewFile() {
-      this.pdfFile = this.pdf[0].url
-      this.readPDF = true
-    },
+    
     getFile(data) {
      for (const property in data) {
         this.fichiers.push(data[property])
@@ -221,7 +249,6 @@ export default {
             if(element.slug ==='supprimer-un-ano') {
               this.anoDelete = true
             }
-           
           });
       },
     
@@ -258,7 +285,23 @@ export default {
           ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
     },
-
+    sendRelancer() {
+      const formData = new FormData();
+        formData.append('statut',this.Relance.statut)
+        formData.append('anoId',this.anosId)
+        
+        for( let i = 0; i < this.Relance.files.length; i++ ){
+          let file = this.Relance.files[i];
+          formData.append('fichier'+ i , file);
+        }
+      AnosService.reponseAnos(formData).then(() => {
+        this.$toast.success('operation effectué avec success !!!')
+        this.showRelance = false
+      }).catch((e) => {
+        this.$toast.error(e)
+      })
+      
+    },
     sendForm() {
       this.champs = this.champs.map((item) => {
         item.errors = [];
@@ -400,5 +443,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+ .animation {
+    animation: vibration infinite .3s;
+  }
+  @keyframes vibration {
+    to {
+      transform: rotate(0deg);
+      transition: all 0.3s ease-in-out;
+    }
+    from {
+      transform: rotate(3deg);
+      transition: all 0.3s ease-in-out;
+    }
+  }
 </style>
