@@ -29,6 +29,10 @@
           </form>
         </div>
       </vmodal>
+
+       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
+          <commentaire  module="tache" :datas="commentaires"></commentaire>
+       </modal-chat>
       
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
           <div class="p-4">
@@ -115,7 +119,7 @@
           <div class="w-full grid grid-cols-2 gap-4">
            <div>
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect    @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
            <div>
@@ -282,6 +286,7 @@
               @validation="validation(tache)"
               @prolonger="prolonger(tache)"
               @suivre="suivreMyTache(tache)"
+              @commentaire="showComment = true"
               :isDelete="tacheDelete"
               :isUpdate="tacheUpdate"
             ></card-tache>
@@ -319,6 +324,8 @@ import Activite from "@/store/modules/activites/activite";
 import ComposanteService from "@/services/modules/composante.service.js";
 import TacheService from "@/services/modules/tache.service.js";
 import ActiviteService from '@/services/modules/activite.service';
+import ModalChat from '@/components/ModalChat'
+import Commentaire from '@/components/Commentaire.vue'
 export default {
   components: {
     Dashboard,
@@ -329,14 +336,37 @@ export default {
     Multiselect,
     CardTache,
     Vtable,
-    Vform
+    Vform,
+    ModalChat,
+    Composante,
+    Commentaire
   },
   props:['valeurProjet','valueProfondeur','valueComposante','valueSC'],
   data() {
     return {
       dates: {debut:'',fin:''},
       suivis:[],
+       commentaires:[
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
+      ],
       chargement:false,
+      showComment:false,
       showProlonger:false,
       showModalSuivi:false,
       valueFiltre: null,

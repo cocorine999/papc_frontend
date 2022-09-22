@@ -1,58 +1,61 @@
 <template>
   <dashboard>
-    <div class="px-4">
-        <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-          <div>
-            <ol class="inline-flex p-0 list-none">
-              <li class="flex items-center text-blue-500">
-                <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
-                <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-              </li>
-              <li class="flex items-center ">
-                <router-link to="" class="text-gray-600">Suivi evaluation</router-link>
-              </li>
-            </ol>
-          </div>
-          <div>
-            <div class="flex justify-center w-full text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
-              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
-                    width="512px" height="512px">
-                 <path
-                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-              </svg>
-             </button>
-           </div>          </div>
-        </nav> 
-        
-        <div v-if="showModal2">
-          <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
-            <div class="px-4">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
+        <commentaire  module="suivi" :datas="commentaires"></commentaire>
+      </modal-chat>
+      <div class="px-4">
+          <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+            <div>
+              <ol class="inline-flex p-0 list-none">
+                <li class="flex items-center text-blue-500">
+                  <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+                  <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+                </li>
+                <li class="flex items-center ">
+                  <router-link to="" class="text-gray-600">Suivi evaluation</router-link>
+                </li>
+              </ol>
             </div>
-          </modal-top-right>
-        </div>
-
-        <div class="flex items-center justify-between my-4">
-          <titre>Le suivi d'evaluation </titre>
-          <div class="flex items-center space-x-4">
-            <json-excel :data="json_data()" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
-          <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
-            <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Export Excel</span>
-          </button>
-          </json-excel>
-            <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
-           
+            <div>
+              <div class="flex justify-center w-full text-gray-600">
+                <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
+                <button type="submit" class="relative  right-10 ">
+                <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                      viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                      width="512px" height="512px">
+                  <path
+                      d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                </svg>
+              </button>
+            </div>          </div>
+          </nav> 
+          
+          <div v-if="showModal2">
+            <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
+              <div class="px-4">
+                <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+              </div>
+            </modal-top-right>
           </div>
-        </div>
-       
-        <vtable v-if="currentRole==='bailleur'" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
-        <vtable v-else :headers="headers" :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
-    </div>
+
+          <div class="flex items-center justify-between my-4">
+            <titre>Le suivi d'evaluation </titre>
+            <div class="flex items-center space-x-4">
+              <json-excel :data="json_data()" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
+            <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+              <span class="mx-2 text-sm font-semibold">Export Excel</span>
+            </button>
+            </json-excel>
+              <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
+            
+            </div>
+          </div>
+        
+          <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
+          <vtable v-else :headers="headers" @commenter="commenter" :isComment="true" :actions="actions"  :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
+      </div>
   </dashboard>
 
 </template>
@@ -69,6 +72,8 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
 import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service";
 import JsonExcel from "vue-json-excel";
+import ModalChat from '@/components/ModalChat'
+import Commentaire from '@/components/Commentaire.vue'
 
 export default {
   components: {
@@ -79,7 +84,9 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
-    JsonExcel
+    JsonExcel,
+    ModalChat,
+    Commentaire
   },
   data() {
       return ({
@@ -88,6 +95,7 @@ export default {
         showModal2:false,
        suiviBailleurs:[],
        currentRole:'',
+       actions:[{name:''}],
         champsRecherche:[
           {name:'Indicateurs',key:'nom',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:false,options:['indicateur1','indicateur2','indicateurs3']},
           {name:'Année de base',key:'date_debut',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:false,},
@@ -99,10 +107,27 @@ export default {
         cols:2,
         title:'',
         search:'',
-        headers:[]
-       
-        
-
+        headers:[],
+        showComment:false,
+        commentaires:[
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
+      ],
       });
   },
   watch: {
@@ -161,6 +186,9 @@ export default {
       updateSuivi: "UPDATE_SUIVI",
       deleteSuivi: "DESTROY_SUIVI",
     }),
+    commenter(data) {
+      this.showComment = true
+    },
     suivreIndicateur(data){
       this.showModal = true
       this.title = `Suivre l'indicateur ${data}`
@@ -182,9 +210,9 @@ export default {
             {
               nom: element.indicateur.nom,
               description: element.indicateur.description,
-              bailleur: element.indicateur.bailleur.sigle,
+              //bailleur: element.indicateur.bailleur.sigle,
               categorie: element.indicateur.categorie?.nom,
-              unitee_de_mesure: element.indicateur.uniteeDeMesure.nom,
+              //unitee_de_mesure: element.indicateur.uniteeDeMesure.nom,
               valeur_de_base: element.indicateur.valeurDeBase,
               annee_de_base: element.indicateur.anneeDeBase,
               trimestre: element.trimestre,

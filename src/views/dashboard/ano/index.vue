@@ -1,7 +1,9 @@
 <template>
   <dashboard>
     <div v-if="anoVisible" class="px-4">
-
+      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
+          <commentaire  module="ano" :datas="commentaires"></commentaire>
+       </modal-chat>
       <vmodal v-if="showDetail" @close="showDetail = false" >
         <div style="width:60vw">
           <preview template="ano" :datas="datas" @previewFile="previewFile" ></preview>
@@ -99,8 +101,8 @@
         </div>
       </div>
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :statut="true" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @relancerAno="relancerAno" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" @relancerAno="relancerAno" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
+        <vtable v-if="actions != undefined && anoDelete" :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @relancerAno="relancerAno" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-else :headers="headers" @relancerAno="relancerAno" :isComment="true" @commenter="commenter" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
       </div>
      
     </div>
@@ -120,6 +122,8 @@ import Vbutton from '@/components/Vbutton.vue'
 import PermissionsService from "@/services/modules/permission.service.js";
 import AnosService from "@/services/modules/ano.service.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
+import ModalChat from '@/components/ModalChat'
+import Commentaire from '@/components/Commentaire.vue'
 import extractFormData from '@/utils/extract-data'
 
 export default {
@@ -131,13 +135,33 @@ export default {
     SearchBar,
     ModalTopRight,
     Preview,
-   Vbutton
-   
+   Vbutton,
+   ModalChat,
+   Commentaire
   },
 
   data() {
     return {
       anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
+      commentaires:[
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
+      ],
       showModal: false,
       loading: false,
       showInput: true,
@@ -190,7 +214,8 @@ export default {
           {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
         ],
         showRelance:false,
-        anosId:''
+        anosId:'',
+        showComment:false
     }
   },
 
@@ -208,9 +233,6 @@ export default {
   },
 
   methods: {
-    sendMessage(data) {
-      alert(data+' envoyé')
-    },
     previewFiles(event) {
       const data = event.target.files
       for (const property in data) {
@@ -237,13 +259,13 @@ export default {
       this.fichiers.pop()
       this.fichiers.pop()
     },
-      active() {
+    active() {
         this.$store.dispatch('active')
-      },
-      disabled() {
+    },
+    disabled() {
         this.$store.dispatch('disabled')
-      },
-      getPermission() {
+    },
+    getPermission() {
          this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-ano') {
               this.anoVisible = true
@@ -258,7 +280,7 @@ export default {
               this.anoDelete = true
             }
           });
-      },
+    },
     
     // call action
     ...mapActions("anos", {
@@ -394,6 +416,9 @@ export default {
 
       })
       this.showCloseModal(true)
+    },
+    commenter(data) {
+      this.showComment = true
     },
 
     async supprimer(ano) {

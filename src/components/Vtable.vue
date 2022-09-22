@@ -59,9 +59,8 @@
                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm120 190.77h-89l36.88-36.88-5.6-6.51a87.38 87.38 0 10-62.94 148 87.55 87.55 0 0082.42-58.25l5.37-15.13 30.17 10.67-5.3 15.13a119.4 119.4 0 11-112.62-159.18 118.34 118.34 0 0186.36 36.95l.56.62 4.31 5L376 149.81z"></path></svg>
                     </div>
 
-                    
                   </div> 
-                  <div v-if="isComment" @click="$emit('commentairer', index)" title="lacher un commentaire" class=" mr-2 cursor-pointer transform text-indigo-300 hover:text-indigo-400 hover:scale-110">
+                  <div v-if="isComment" @click="$emit('commenter', data)" title="lacher un commentaire" class=" mr-2 cursor-pointer transform text-indigo-500 hover:text-indigo-700 hover:scale-110">
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path></svg>
                   </div>       
                 </td>
@@ -80,8 +79,7 @@
         @pagechanged="onPageChange"
       ></pagination>
       </div>
-    <!--  -->
-     
+
   </div>
 </template>
 
