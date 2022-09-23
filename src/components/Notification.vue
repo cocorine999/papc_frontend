@@ -42,38 +42,14 @@
                 }
             });
 
-            /*var pusher = new Echo({
-                broadcaster: 'pusher',
-                key: PUSHER_APP_KEY,
-                wsHost: 'localhost',
-                authEndpoint: 'http://localhost:8000/api/broadcasting/auth',
-                encrypted: true,
-                forceTLS: false,
-                wsPort: 6001,
-                wssPort: 6001,
-                disableStats: true,
-                enabledTransports: ['ws', 'wss'],
-                auth: {
-                    headers: {
-                    authorization: `Bearer ${token}`,
-                    }
-                }
-            })*/
-          
-            /*var channel = pusher.private("notification." + this.currentUser?.id)
-            channel.listen('notification.posted', function (data) {
-                                    console.log('OKKKK')
-                                    console.log(data);
-                                });*/
-
             var channel = pusher.subscribe("private-notification." + this.currentUser?.id);
-            //var channel = pusher.subscribe("test");
-
+            
             console.log(channel);
 
             channel.bind('notification.posted', function (data) {
                 console.log('OKKKK');
-                console.log(JSON.stringify(data));
+                //console.log(JSON.stringify(data));
+                console.log(data);
             });
         }
       },
