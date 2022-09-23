@@ -1,7 +1,13 @@
-const DEVELOPMENT_URL= "http://127.0.0.1:8000"
+const API_BASE_URL = "http://127.0.0.1:8000"
 
-const STAGGING_URL= "http://89.47.161.3:8001"
+const STAGGING_URL = "http://89.47.161.3:8001"
 
-const DEPLOYMENT_URL= "http://89.47.161.3:8001"
+const DEPLOYMENT_URL = "http://89.47.161.3:8001"
 
-export const API_BASE_URL = DEVELOPMENT_URL
+const PUSHER_BASE_URL = "http://127.0.0.1"
+
+const PUSHER_APP_KEY = "ae75f3a73201ef37c668"
+
+const PUSHER_APP_CLUSTER = "eu"
+
+export  {API_BASE_URL , PUSHER_APP_CLUSTER, PUSHER_APP_KEY, PUSHER_BASE_URL}

@@ -1,0 +1,84 @@
+<!-- ./src/components/Notification.vue -->
+<script>
+    import Pusher from 'pusher-js' 
+    import Echo from 'laravel-echo'
+    import { API_BASE_URL, PUSHER_APP_CLUSTER } from "@/services/configs/environment";
+    import { PUSHER_APP_KEY } from "@/services/configs/environment";
+    import { PUSHER_BASE_URL } from "@/services/configs/environment";
+    import { mapActions, mapMutations, mapGetters } from "vuex";
+    import store from  "@/store/index"
+    
+    export default {
+      // ...
+      mounted () {
+        // ...
+        this.subscribe()
+      },
+      computed: {
+        //importation des variables du module auths
+        ...mapGetters({
+        currentUser: "auths/GET_AUTHENTICATE_USER",
+        })
+      },
+      methods: {
+        // ...
+        subscribe () {
+            let token = store.getters['auths/GET_ACCESS_TOKEN'] // modules.auths?.getters?.GET_ACCESS_TOKEN(modules.auths.state)
+
+            var pusher = new Pusher(PUSHER_APP_KEY , {
+                authEndpoint:  API_BASE_URL+ '/api/broadcasting/auth',
+                cluster: PUSHER_APP_CLUSTER,
+                encrypted: true,
+                forceTLS: false,
+                wsHost: 'localhost',
+                wsPort: 6001,
+                wssPort: 6001,
+                disableStats: true,
+                enabledTransports: ['ws', 'wss'],
+                auth: {
+                    headers: {
+                    authorization: `Bearer ${token}`,
+                    }
+                }
+            });
+
+            /*var pusher = new Echo({
+                broadcaster: 'pusher',
+                key: PUSHER_APP_KEY,
+                wsHost: 'localhost',
+                authEndpoint: 'http://localhost:8000/api/broadcasting/auth',
+                encrypted: true,
+                forceTLS: false,
+                wsPort: 6001,
+                wssPort: 6001,
+                disableStats: true,
+                enabledTransports: ['ws', 'wss'],
+                auth: {
+                    headers: {
+                    authorization: `Bearer ${token}`,
+                    }
+                }
+            })*/
+          
+            /*var channel = pusher.private("notification." + this.currentUser?.id)
+            channel.listen('notification.posted', function (data) {
+                                    console.log('OKKKK')
+                                    console.log(data);
+                                });*/
+
+            var channel = pusher.subscribe("private-notification." + this.currentUser?.id);
+            //var channel = pusher.subscribe("test");
+
+            console.log(channel);
+
+            channel.bind('notification.posted', function (data) {
+                console.log('OKKKK');
+                console.log(JSON.stringify(data));
+            });
+        }
+      },
+      // ...
+    }
+</script>
+
+    
