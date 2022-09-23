@@ -124,10 +124,10 @@
         <modal-top-right :title="title"  v-on:close="close">
           <div  class="px-4 overflow-y-auto">
             <div v-if="title =='Modifier un indicateur'">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm"   @closeModal="close"  ></vform>
+              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
             <div v-if="title =='Ajouter un indicateur'">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm"   @closeModal="close"  ></vform>
+              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
             <div v-if="title =='Dupliquer un indicateur'">
               <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer à partir de "   @closeModal="close"  @sendForm="sendForm" ></vform>
@@ -165,9 +165,9 @@
       </div>
      
       
-      <vtable v-if="currentRole == 'bailleur' " :sendRequest="false" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurUpdate && indicateurDelete " :sendRequest="false" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate " :sendRequest="false" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="currentRole == 'bailleur' " :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="indicateurUpdate && indicateurDelete " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="!indicateurDelete && indicateurUpdate " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -202,14 +202,16 @@ export default {
     JsonExcel
   },
   data() {
-      return ({
+    return {
+        sendRequest: false,
         suiviIndicateurs:{
           annee:'',
           trimestre:'',
           dateSuivie:'',
           valeurCible:0,
           valeurRealise:0,
-          commentaire:''
+          commentaire:'',
+
         },
         showModal:false,
         showModal2:false,
@@ -253,7 +255,7 @@ export default {
         indicateurAdd:false,
         indicateurDelete:false,
         indicateurUpdate:false,
-      });
+    };
   },
   watch: {
     isLoading: function (value) {
@@ -408,25 +410,30 @@ export default {
       this.$router.push({name:'indicateurs_suivi_details',params:{id:id}})
     },
     saveSuivi() {
-      this.chargement = true
-      const data = this.suiviIndicateurs
-      data.valeurRealise = [data.valeurRealise]
-      data.valeurCible = [data.valeurCible]
-      data.indicateurId = this.idIndicateur
-      if(this.choiceDateOption == true){
-        delete data.trimestre
+      if(this.chargement == false) {
+          this.chargement = true
+          const data = this.suiviIndicateurs
+          data.valeurRealise = [data.valeurRealise]
+          data.valeurCible = [data.valeurCible]
+          data.indicateurId = this.idIndicateur
+          if(this.choiceDateOption == true){
+            delete data.trimestre
+          }
+          else {
+            delete data.dateSuivie
+          }
+         
+          SuiviService.create(data).then((data) => {
+            this.$toast.success('suivi éffectué')
+            this.showSuiviModal = false
+            this.chargement = false
+          }).catch((e) => {
+            this.$toast.error(e)
+            this.chargement = false
+          }) 
       }
-      else {
-        delete data.dateSuivie
-      }
-      console.log('les données apres traitement',data)
-      SuiviService.create(data).then((data) => {
-        alert('suivi effectué')
-        this.showSuiviModal = false
-      }).catch((e) => {
-        alert(e)
-      }) 
-      this.chargement = false  
+     
+      
     },
     title_csv() {
         return "indicateur-" +"-" + new Date()
@@ -479,23 +486,36 @@ export default {
       indicateur.bailleurId = indicateur.bailleurId.id
       indicateur.categorieId = indicateur.categorieId.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId.id
-      console.log("les indicateurs",indicateur)
-
-      if (this.indicateur?.id) {
-        this.updateIndicateur({ indicateur: indicateur, id: this.indicateur?.id }).then(
-          (response) => {
+      if(this.sendRequest ==false) {
+        this.sendRequest = true
+        if (this.indicateur?.id) {
+          this.updateIndicateur({ indicateur: indicateur, id: this.indicateur?.id }).then(
+            (response) => {
+              if (response.status == 200 || response.status == 201) {
+                this.$toast.success('operation effectué avec success')
+                this.sendRequest = false
+                this.close();
+              }
+            }
+          ).catch((e) => {
+            this.$toast.error(e)
+            this.sendRequest = false
+          })
+          } else {
+          this.saveIndicateur(indicateur).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              his.$toast.success('operation effectué avec success')
+              this.sendRequest = false
             }
-          }
-        );
-      } else {
-        this.saveIndicateur(indicateur).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            this.close();
-          }
-        });
+          }).catch((e) => {
+              this.$toast.error(e)
+              this.sendRequest = false
+            })
+        }
       }
+
+     
     },
 
     filter() {
