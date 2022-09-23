@@ -27,8 +27,8 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
             <div class="p-4 overflow-auto">
-              <vform template="default" v-if="!isUpdate" @getFile="getFile" @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
-              <vform template="default" v-if="isUpdate" :champs="champsUpdate" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
+              <vform template="default" v-if="!isUpdate" :sendRequest="sendRequest" @getFile="getFile" @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
+              <vform template="default" v-if="isUpdate" :sendRequest="sendRequest" :champs="champsUpdate" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close" ></vform>
             </div>
         </modal-top-right>
       </div>
@@ -226,6 +226,7 @@ export default {
       projetAdd:false,
       projetDelete:false,
       projetUpdate:false,
+      sendRequest: false,
       fichiers:[],
       image:{}
     }
@@ -326,7 +327,7 @@ export default {
     
     close() {
       this.showCloseModal()
-
+      this.sendRequest = false;
       this.resetForm
     }, 
     
@@ -432,94 +433,104 @@ export default {
 
 
     sendForm() {
+      if( this.sendRequest === false ){
+        this.sendRequest = true;
 
-      this.champs = this.champs.map(item => { item.errors = []; return item})
-      this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item})
-      let projet = {}
-      if(this.isUpdate) {
-        projet = extractFormData(this.champsUpdate, this.projetAttributs)
-      }else {
-        projet = extractFormData(this.champs, this.projetAttributs)
-      }
+        this.champs = this.champs.map(item => { item.errors = []; return item})
+        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item})
+        let projet = {}
+        if(this.isUpdate) {
+          projet = extractFormData(this.champsUpdate, this.projetAttributs)
+        }else {
+          projet = extractFormData(this.champs, this.projetAttributs)
+        }
 
+        projet.programmeId = this.programmeId
+
+        projet.bailleurId = projet.bailleurId.id
+        projet.id = this.projetId
+        projet.statut = projet.statut.etat
+        console.log('details projet',projet)
+        if(projet?.id)
+        {
+          this.updateProjet({projet: projet, id : projet?.id}).then(response => {
+            
+            if(response.status == 200 || response.status == 201){
+              this.sendRequest = false;
+              this.close()
+            }
+
+          }).catch((error) => {
+
+            this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
+            this.sendRequest = false;
+            this.champs.map(value => value.errors = this.erreurs[value.key])
+
+          })
+
+        }
+        else
+        { 
+          this.sendRequest = true;
+          console.log("creation de projet ",projet)
+          const demo = {
+            "nom": projet.nom,
+            "description": projet.description,
+            "debut": projet.debut,
+            "fin": projet.fin,
+            "objectifGlobaux": projet.objectifGlobaux,
+            "budgetNational": projet.budgetNational,
+            "pret": projet.pret,
+            "couleur": projet.couleur,
+            "ville": projet.ville,
+            "statut": -1,
+            "bailleurId": projet.bailleurId,
+            "programmeId": projet.programmeId,
+            "id": ""
+          }
+      
+          const formData = new FormData();
+          formData.append('nom',demo.nom)
+          formData.append('description',demo.description)
+          formData.append('debut',demo.debut)
+          formData.append('fin',demo.fin)
+          formData.append('objectifGlobaux',demo.objectifGlobaux)
+          formData.append('budgetNational',demo.budgetNational)
+          formData.append('pret',demo.pret)
+          formData.append('couleur',demo.couleur)
+          formData.append('budgetNational',Number(demo.budgetNational))
+          formData.append('pret',demo.pret)
+          formData.append('couleur',demo.couleur)
+          formData.append('ville',demo.ville)
+          formData.append('statut',demo.statut)
+          formData.append('image',this.image)
+          for( let i = 0; i < this.fichiers.length; i++ ){
+            let file = this.fichiers[i];
+            console.log(file);
+            formData.append('fichier'+ i , file);
+          }
+        
+          formData.append('bailleurId',demo.bailleurId)
+          formData.append('programmeId',demo.programmeId) 
+          
+          this.saveProjet(formData).then(response => {
+            if(response.status == 200 || response.status == 201){
+              this.close()
+              this.sendRequest = false;
+            }
+          }).catch((error) => {
+
+           
+            this.sendRequest = false;
+           
+
+          }) 
+        
+        }
+        }
      
 
-      projet.programmeId = this.programmeId
-
-      projet.bailleurId = projet.bailleurId.id
-      projet.id = this.projetId
-      projet.statut = projet.statut.etat
-      console.log('details projet',projet)
-      if(projet?.id)
-      {
-        this.updateProjet({projet: projet, id : projet?.id}).then(response => {
-          
-          if(response.status == 200 || response.status == 201){
-
-            this.close()
-          }
-
-        }).catch((error) => {
-
-          this.setErrors({message: error?.response?.data?.message, errors: error.response.data.errors})
-
-          this.champs.map(value => value.errors = this.erreurs[value.key])
-
-        })
-
-      }
-      else
-      { 
-        console.log("creation de projet ",projet)
-        const demo = {
-          "nom": projet.nom,
-          "description": projet.description,
-          "debut": projet.debut,
-          "fin": projet.fin,
-          "objectifGlobaux": projet.objectifGlobaux,
-          "budgetNational": projet.budgetNational,
-          "pret": projet.pret,
-          "couleur": projet.couleur,
-          "ville": projet.ville,
-          "statut": -1,
-          "bailleurId": projet.bailleurId,
-          "programmeId": projet.programmeId,
-          "id": ""
-        }
-    
-        const formData = new FormData();
-        formData.append('nom',demo.nom)
-        formData.append('description',demo.description)
-        formData.append('debut',demo.debut)
-        formData.append('fin',demo.fin)
-        formData.append('objectifGlobaux',demo.objectifGlobaux)
-        formData.append('budgetNational',demo.budgetNational)
-        formData.append('pret',demo.pret)
-        formData.append('couleur',demo.couleur)
-        formData.append('budgetNational',Number(demo.budgetNational))
-        formData.append('pret',demo.pret)
-        formData.append('couleur',demo.couleur)
-        formData.append('ville',demo.ville)
-        formData.append('statut',demo.statut)
-        formData.append('image',this.image)
-        for( let i = 0; i < this.fichiers.length; i++ ){
-          let file = this.fichiers[i];
-          console.log(file);
-          formData.append('fichier'+ i , file);
-        }
-       
-        formData.append('bailleurId',demo.bailleurId)
-        formData.append('programmeId',demo.programmeId) 
-        
-       this.saveProjet(formData).then(response => {
-          if(response.status == 200 || response.status == 201){
-            this.close()
-          }
-        })  
-       
-      }
-
-    },
+      },
 
     validerProjet(id) {
 
@@ -528,7 +539,7 @@ export default {
       this.updateProjet({projet: projet, id : id}).then(response => {
    
         if(response.status == 200 || response.status == 201){
-         this.$toast.success("tache valider")
+         this.$toast.success("projet valider")
         }
 
         }).catch((error) => {

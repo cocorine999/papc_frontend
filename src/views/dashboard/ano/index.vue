@@ -1,34 +1,58 @@
 <template>
   <dashboard>
     <div v-if="anoVisible" class="px-4">
-      <vmodal v-if="readPDF" title="fichier.extention"  v-on:close="readPDF = false">
-        <div style="height: 70vh;width:80vw">
-          <vue-pdf-app  :pdf="pdfFile"></vue-pdf-app> 
-        </div>
-      </vmodal>
-      <vmodal v-if="false" @close="showDetail = false" >
+      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
+          <commentaire  module="ano" :datas="commentaires"></commentaire>
+       </modal-chat>
+      <vmodal v-if="showDetail" @close="showDetail = false" >
         <div style="width:60vw">
-          <preview @previewFile="previewFile" ></preview>
+          <preview template="ano" :datas="datas" @previewFile="previewFile" ></preview>
         </div>
       </vmodal>
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
-            <vform template="default" isAllPairSaufDescrip="true" :champs="champs" @getFile="getFile"
+            <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" @getFile="getFile"
               submitText="Creer un ano" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
       </div>
       <div v-if="showRelance">
         <modal-top-right :title="title" v-on:close="showRelance = false">
-          <div class="px-4 overflow-y-auto">
-           
-          </div>
+          <form @submit.prevent="sendRelancer" class="px-4 overflow-y-auto">
+            <div class="my-2">
+              <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
+              <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="" selected>Selectionnez le statut</option>
+                <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{statut.name}}</option>
+             </select>
+            </div>
+            <div class="my-2">
+                <label class="my-2 block" for="">Pieces jointes </label>
+                <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+            </div>
+            <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
+                <vbutton type="reset" template="danger" @close="showRelance =false"> annuler </vbutton>
+              </div>
+          </form>
         </modal-top-right>
       </div>
+     
       <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
         <div>
-
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -42,7 +66,6 @@
               <router-link to="" class="">ano</router-link>
             </li>
           </ol>
-
         </div>
 
         <div>
@@ -66,11 +89,7 @@
             class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
         </div>
         <div class="flex space-x-4">
-          <button @click="relancerAno" title="Relancer Ano"
-            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
-            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm120 190.77h-89l36.88-36.88-5.6-6.51a87.38 87.38 0 10-62.94 148 87.55 87.55 0 0082.42-58.25l5.37-15.13 30.17 10.67-5.3 15.13a119.4 119.4 0 11-112.62-159.18 118.34 118.34 0 0186.36 36.95l.56.62 4.31 5L376 149.81z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">relancer </span>
-          </button>
+          
           <button @click="addAno" title="ajouter un tabelau"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -82,9 +101,10 @@
         </div>
       </div>
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
+        <vtable v-if="actions != undefined && anoDelete" :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @relancerAno="relancerAno" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-else :headers="headers" @relancerAno="relancerAno" :isComment="true" @commenter="commenter" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
       </div>
+     
     </div>
   </dashboard>
 
@@ -98,9 +118,12 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Preview from '@/components/Preview.vue'
-import VuePdfApp from "vue-pdf-app";
+import Vbutton from '@/components/Vbutton.vue'
 import PermissionsService from "@/services/modules/permission.service.js";
+import AnosService from "@/services/modules/ano.service.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
+import ModalChat from '@/components/ModalChat'
+import Commentaire from '@/components/Commentaire.vue'
 import extractFormData from '@/utils/extract-data'
 
 export default {
@@ -112,12 +135,33 @@ export default {
     SearchBar,
     ModalTopRight,
     Preview,
-    VuePdfApp
+   Vbutton,
+   ModalChat,
+   Commentaire
   },
 
   data() {
     return {
       anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
+      commentaires:[
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+        {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
+      ],
       showModal: false,
       loading: false,
       showInput: true,
@@ -130,6 +174,11 @@ export default {
       anoUpdate:false,
       readPDF:false,
       pdfFile:'',
+      chargement:false,
+      Relance:{
+        statut:null,
+        files:[]
+      },
       champs: [
         { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
@@ -139,33 +188,34 @@ export default {
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
-      statut:[
+      statuts:[
         {name:'en cours',value:0},
         {name:'valider',value:-1},
         {name:'non valider',value:-2}
-      
       ],
-     
+      datas:[],
       cols: 1,
       headers: [
         { name: 'dossier', cle: 'dossier' },
         { name: 'Bailleur', props: 'bailleur', cle: 'sigle' },
         { name: 'Date soumission', cle: 'dateDeSoumission' },
         { name: 'Destinataire', cle: 'destinataire' },
-        { name: 'Status', cle: 'statut', status: true },
         { name: 'Date de creation', cle: 'created_at' },
       ],
       actions: [
         { name: 'supprimer', iconne: '' },
-        { name:'fichier'}
+        { name:'fichier'},
+        { name:'relancer'},
       ],
+       sendRequest: false,
       fichiers:[],
        pdf:[
           {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
           {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
-      
         ],
         showRelance:false,
+        anosId:'',
+        showComment:false
     }
   },
 
@@ -183,17 +233,25 @@ export default {
   },
 
   methods: {
-    seeUpload() {
-
+    previewFiles(event) {
+      const data = event.target.files
+      for (const property in data) {
+        this.Relance.files.push(data[property])
+      }
+      this.Relance.files.pop()
+      this.Relance.files.pop()
+     
     },
-    relancerAno() {
+    seeUpload(data) {
+      this.datas = data
+      this.showDetail = true
+    },
+    relancerAno(data) {
+      this.anosId = data.id
       this.showRelance = true
       this.title = "Relancer un amo"
     },
-    previewFile() {
-      this.pdfFile = this.pdf[0].url
-      this.readPDF = true
-    },
+    
     getFile(data) {
      for (const property in data) {
         this.fichiers.push(data[property])
@@ -201,13 +259,13 @@ export default {
       this.fichiers.pop()
       this.fichiers.pop()
     },
-      active() {
+    active() {
         this.$store.dispatch('active')
-      },
-      disabled() {
+    },
+    disabled() {
         this.$store.dispatch('disabled')
-      },
-      getPermission() {
+    },
+    getPermission() {
          this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-ano') {
               this.anoVisible = true
@@ -221,9 +279,8 @@ export default {
             if(element.slug ==='supprimer-un-ano') {
               this.anoDelete = true
             }
-           
           });
-      },
+    },
     
     // call action
     ...mapActions("anos", {
@@ -258,28 +315,53 @@ export default {
           ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
     },
-
+    sendRelancer() {
+      if(this.chargement == false) {
+         this.chargement = true
+        const formData = new FormData();
+        formData.append('statut',this.Relance.statut)
+        formData.append('anoId',this.anosId)
+        
+        for( let i = 0; i < this.Relance.files.length; i++ ){
+          let file = this.Relance.files[i];
+          formData.append('fichier'+ i , file);
+        }
+      AnosService.reponseAnos(formData).then(() => {
+        this.$toast.success('operation effectué avec success !!!')
+        this.showRelance = false
+        this.chargement = false
+      }).catch((e) => {
+        this.$toast.error(e)
+         this.chargement = false
+      })
+      }
+      
+    },
     sendForm() {
       this.champs = this.champs.map((item) => {
         item.errors = [];
         return item;
       });
       let ano = extractFormData(this.champs, this.anoAttributs);
-
       ano.bailleurId = ano.bailleurId.id
       ano.statut = ano.statut.etat
       console.log(ano);
 
-      if (this.ano?.id) {
+      if(this.sendRequest == false) {
+        this.sendRequest = true
+        if (this.ano?.id) {
         this.updateAno({ ano: ano, id: this.ano?.id }).then(
           (response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.sendRequest = false
             }
           }
-        );
+        ).catch((e) => {
+          this.sendRequest = false
+      });
       } else {
-      
+         this.sendRequest = true
         const demo = {
           "dossier": ano.dossier,
           "statut": ano.statut,
@@ -302,8 +384,12 @@ export default {
         this.saveAno(formData).then((response) => {
           if (response.status == 200 || response.status == 201) {
             this.close();
+             this.sendRequest = false
           }
-        });
+        }).catch((e) => {
+          this.sendRequest = false
+        })
+      }
       }
     },
 
@@ -330,6 +416,9 @@ export default {
 
       })
       this.showCloseModal(true)
+    },
+    commenter(data) {
+      this.showComment = true
     },
 
     async supprimer(ano) {
@@ -400,5 +489,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+ .animation {
+    animation: vibration infinite .3s;
+  }
+  @keyframes vibration {
+    to {
+      transform: rotate(0deg);
+      transition: all 0.3s ease-in-out;
+    }
+    from {
+      transform: rotate(3deg);
+      transition: all 0.3s ease-in-out;
+    }
+  }
 </style>

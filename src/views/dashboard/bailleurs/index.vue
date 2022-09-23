@@ -12,6 +12,7 @@
               :cols="cols"
               :submitText="submitText"
               @sendForm="sendForm"
+              :sendRequest="sendRequest"
               @closeModal="close" 
             ></vform>
              <vform
@@ -20,6 +21,7 @@
               @getImage="getImage"
               :champs="champsUpdate"
               :cols="cols"
+              :sendRequest="sendRequest"
               :submitText="submitText"
               @sendForm="sendForm"
               @closeModal="close" 
@@ -41,6 +43,7 @@
             <vform
               template="default"
               :champs="champsLogo"
+              :sendRequest="sendRequest"
                @getImage="getImage" 
               submitText="Changer"
               @sendForm="saveImage"
@@ -449,7 +452,9 @@
         bailleurUpdate:false,
         isChange:false,
         logo:{},
-        idBailleur:''
+        idBailleur:'',
+        sendRequest: false,
+        code:''
        
       };
     },
@@ -471,14 +476,18 @@
      
     },
     saveImage() {
-   
-     
+      if(this.sendRequest == false) {
+        this.sendRequest = true
         const formData = new FormData();
         formData.append('logo',this.image)
+        formData.append('code',this.code)
+        formData.append('programmeId',this.programmeId)
         BailleurService.update(this.idBailleur,formData).then(() => {
         this.$toast.success('Le logo  à éte bien changer')
         this.showUpdateImage = false 
+        this.sendRequest = false
         }).catch((error) => {
+          this.sendRequest = false
           if (error.response) {
             // Requête effectuée mais le serveur a répondu par une erreur.
             const message = error.response.data.message
@@ -490,12 +499,13 @@
               // Une erreur s'est produite lors de la configuration de la demande
             }
         })
-      
-      
+      }
     },
     changeLogo(data) {
       this.logo = data.logo
       this.idBailleur = data.id
+      this.code = data.code
+      console.log(data)
       this.showUpdateImage = true
     },
       active() {
@@ -632,43 +642,71 @@
         }else {
            bailleur = extractFormData(this.champs, this.bailleurAttributs);
         }
-       
 
         bailleur.programmeId = this.programmeId;
+        if(this.sendRequest == false) {
+          this.sendRequest = true
+          if (this.bailleur?.id) {
+            this.updateBailleur({ bailleur: bailleur, id: this.bailleur?.id }).then(
+              (response) => {
+                if (response.status == 200 || response.status == 201) {
+                  this.close();
+                  this.sendRequest = false
+                }
+              }
+            ).catch((error) => {
+              this.sendRequest = false
+              if (error.response) {
+                // Requête effectuée mais le serveur a répondu par une erreur.
+                const message = error.response.data.message
+                this.$toast.error(message)
+              } else if (error.request) {
+             
+              } else {
+              
+              }
+              })
+      
 
-        if (this.bailleur?.id) {
-          this.updateBailleur({ bailleur: bailleur, id: this.bailleur?.id }).then(
-            (response) => {
+          } else {
+            const demo = {
+              "nom": bailleur.nom,
+              "email": bailleur.email,
+              "contact": bailleur.contact,
+              "code": bailleur.code,
+              "pays": bailleur.pays,
+              "sigle": bailleur.sigle,
+            }
+          
+            const formData = new FormData();
+            formData.append('nom',demo.nom)
+            formData.append('email',demo.email)
+            formData.append('contact',demo.contact)
+            formData.append('code',demo.code)
+            formData.append('pays',demo.pays)
+            formData.append('sigle',demo.sigle)
+            formData.append('logo',this.image)
+            formData.append('programmeId',this.programmeId)
+            
+            this.saveBailleur(formData).then((response) => {
               if (response.status == 200 || response.status == 201) {
                 this.close();
+                this.sendRequest = false
               }
-            }
-          );
-        } else {
-          const demo = {
-            "nom": bailleur.nom,
-            "email": bailleur.email,
-            "contact": bailleur.contact,
-            "code": bailleur.code,
-            "pays": bailleur.pays,
-            "sigle": bailleur.sigle,
+            }).catch((error) => {
+            this.sendRequest = false
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+                this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+              } else {
+                // Une erreur s'est produite lors de la configuration de la demande
+              }
+            })
           }
-         
-          const formData = new FormData();
-          formData.append('nom',demo.nom)
-          formData.append('email',demo.email)
-          formData.append('contact',demo.contact)
-          formData.append('code',demo.code)
-          formData.append('pays',demo.pays)
-          formData.append('sigle',demo.sigle)
-          formData.append('logo',this.image)
-          formData.append('programmeId',this.programmeId)
-          
-          this.saveBailleur(formData).then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-            }
-          });
         }
       },
     },

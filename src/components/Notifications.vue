@@ -1,20 +1,21 @@
 <template>
   <div >
-    <div class="">
-      <div title="cliquer ici" class="relative cursor-pointer" @click="active">
-        <!-- <span> <img class="h-9 w-7 md:w-8" src="/img/cloche.gif" /> </span> -->
-        <span v-if="true" class="" ><svg stroke="currentColor" class=" h-7 w-7 " fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M427.68 351.43C402 320 383.87 304 383.87 217.35 383.87 138 343.35 109.73 310 96c-4.43-1.82-8.6-6-9.95-10.55C294.2 65.54 277.8 48 256 48s-38.21 17.55-44 37.47c-1.35 4.6-5.52 8.71-9.95 10.53-33.39 13.75-73.87 41.92-73.87 121.35C128.13 304 110 320 84.32 351.43 73.68 364.45 83 384 101.61 384h308.88c18.51 0 27.77-19.61 17.19-32.57zM320 384v16a64 64 0 01-128 0v-16"></path></svg></span>
-        <span  class="bg-red-500 md:w-5 md:h-5 w-4 h-4 text-white text-xs text-center font-semibold px-1 shadow rounded-full position-notif">5</span>
-      </div>
-    </div>
-    <div v-if="show && closeNotifBox" @click="closeNotifModal" class="fixed top-0 right-0 left-0 bottom-0 bg-gray-900 z-40 bg-opacity-60 ">
-      <div style="height:50vh" class="absolute w-full md:w-2/5  position-card-notif z-50 shadow overflow-auto transform translate-x-0 transition ease-in-out duration-700" id="notification" ref="notification">
-        <div class=" shadow-2xl w-full h-full rounded-2xl  bg-white overflow-y-auto p-8 absolute left-0 right-0">
+   
+    <div @click.stop="$emit('closeNotifModal')"  class="fixed top-0 right-0 left-0 bottom-0 bg-gray-900 z-40 bg-opacity-60 ">
+     
+      <div style="height:50vh"  class="absolute w-full md:w-2/5  position-card-notif z-50 shadow overflow-auto transform translate-x-0 transition ease-in-out duration-700" id="notification" ref="notification">
+        
+        <div @click.stop="$emit('openNotif')" class=" shadow-2xl w-full h-full rounded-2xl  bg-white overflow-y-auto p-8 absolute left-0 right-0">
           <div class="flex items-center justify-between">
-            <p tabindex="0" class="focus:outline-none text-2xl font-semibold leading-6 ">
+            <div @click="$emit('closeNotifModal')" class="absolute -top-3 -left-0 z-50">
+               <div class="py-4  text-red-500  ">
+               <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path></svg>
+            </div>
+            </div>
+            <p tabindex="0" class="focus:outline-none mt-4 text-2xl font-semibold leading-6 ">
               Notifications
             </p>
-            <div>
+            <div class="mt-4">
               <button class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500  ">Effacer tout</button>
             </div>
           </div>
@@ -70,6 +71,9 @@
               </p>
             </div>
           </div>
+          <div class="mt-4 flex justify-end ">
+            <button @click="gotoNotification" class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500 uppercase">voir tout  </button>
+           </div>
         </div>
       </div>
     </div>
@@ -82,7 +86,7 @@
 export default {
   data() {
     return {
-      show: false,
+      show: true,
       notifications:[],
       closeNotifBox:true,
     };
@@ -92,6 +96,9 @@ export default {
       if(this.show == true) {
         this.closeNotifBox = false
       }
+    },
+    gotoNotification() {
+      this.$router.push('/dashboard/notification')
     },
     active() {
       this.show = true

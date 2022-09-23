@@ -1,5 +1,8 @@
 <template>
   <dashboard>
+     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
+        <commentaire  module="decaissement" :datas="commentaires"></commentaire>
+      </modal-chat>
     <div v-if="decaissementVisible" class="px-4">
     <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
       <div>
@@ -64,8 +67,8 @@
       </div>
      
     </div>
-    <vtable v-if="decaissementDelete && decaissementUpdate " :sendRequest="false" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-    <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementDelete && decaissementUpdate " :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
   </div>
   </dashboard>
  
@@ -82,7 +85,8 @@ import Dashboard from '@/layouts/Dashboard'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex"
 import { extractFormData } from '@/utils/index'
 import JsonExcel from "vue-json-excel"
-
+import ModalChat from '@/components/ModalChat'
+import Commentaire from '@/components/Commentaire.vue'
 
 export default {
   components: {
@@ -93,7 +97,9 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
-    JsonExcel
+    JsonExcel,
+    ModalChat,
+    Commentaire
   },
     data() {
         return {
@@ -115,7 +121,26 @@ export default {
           
         ],
         cols:2,
-
+         showComment:false,
+          commentaires:[
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
+          {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
+        ],
         search:"",
         headers:[
           {name:'Projets',cle:'projet'},
@@ -163,7 +188,7 @@ export default {
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setDecaissement: 'decaissements/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
-    getPermission() {
+      getPermission() {
           this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-decaissement') {
               this.decaissementVisible = true
@@ -181,8 +206,9 @@ export default {
           });
 
      },
-
-
+      commenter(data) {
+      this.showComment = true
+    },
     ...mapActions('decaissements', {
       fetchDecaissements: "FETCH_LIST_DECAISSEMENT",
       filter: "FILTRE_DECAISSEMENT",

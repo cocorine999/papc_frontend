@@ -8,9 +8,10 @@
 </template>
 
 <script>
-import ModalChat from '@/components/ModalChat'
+
 import Multiselect from 'vue-multiselect'
 import Chat from '@/components/Chat.vue'
+import ModalChat from '@/components/ModalChat'
 export default {
   components:{Multiselect,Chat,ModalChat},
   data() {
