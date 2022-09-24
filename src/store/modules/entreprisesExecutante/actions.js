@@ -22,7 +22,7 @@ export default {
     
     FETCH_LIST_ENTREPRISE_EXECUTANTE : async ({ commit }) => {
 
-        const { data, status } = await EntrepriseExecutanteService.get();
+        const { data, status } = await ProgrammeService.entreprisesExecutante(0);
 
         if(status === 200 || status === 201)
             commit(SET_LIST_ENTREPRISE_EXECUTANTE, data.data);

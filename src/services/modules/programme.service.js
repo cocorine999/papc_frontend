@@ -37,6 +37,10 @@ const ProgrammeService = {
       return ApiService.get(`programmes/${slug}/mods`);
     },
 
+    decaissements(slug) {
+      return ApiService.get(`programmes/${slug}/decaissements`);
+    },
+
     entreprisesExecutante(slug) {
       return ApiService.get(`programmes/${slug}/entreprise-executants`);
     },
