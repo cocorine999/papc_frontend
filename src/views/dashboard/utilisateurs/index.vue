@@ -31,7 +31,7 @@
     <div v-if="showModal">
       <modal-top-right title="Ajouter un utilisateur" v-on:close="close">
        <div class="px-4">
-          <vform template="default" :champs="champs" :cols="cols" submitText="Ajouter un utilisateur" @sendForm="sendForm" @closeModal="close"></vform>
+          <vform template="default" :sendRequest="sendRequest"  :champs="champs" :cols="cols" submitText="Ajouter un utilisateur" @sendForm="sendForm" @closeModal="close"></vform>
        </div>
       </modal-top-right>
     </div>
@@ -44,7 +44,7 @@
     </div>
    
     <div  id="dataTable">
-      <vtable :headers="headers" :datas="filteredUser()"  :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+      <vtable :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
     </div>
 
   </div>
@@ -81,6 +81,7 @@ export default {
         usersAttributes : ['nom', 'email', 'contact', 'prenom','roles'],
         showModal:false,
         isComment:false,
+        sendRequest: false,
         title:'',
         cols:1,
         search:'',
@@ -171,21 +172,33 @@ export default {
       let utilisateur = extractFormData(this.champs,this.usersAttributes);
       utilisateur.roles = [utilisateur.roles.id]
       utilisateur.programmeId = this.idProgramme
-
-      if (this.utilisateur?.id) {
-        this.updateUtilisateur({ utilisateur: utilisateur, id: this.utilisateur?.id }).then(
-          (response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
+      if(this.sendRequest == false ) {
+        this.sendRequest = true
+        if (this.utilisateur?.id) {
+          this.updateUtilisateur({ utilisateur: utilisateur, id: this.utilisateur?.id }).then(
+            (response) => {
+              if (response.status == 200 || response.status == 201) {
+                this.$toast.success('operation effectuer avec sucess')
+                this.sendRequest = false
+                this.close();
+              }
             }
+          ).catch((e) => {
+            this.$toast.error(e)
+            this.sendRequest = false
+          })
+          } else {
+          this.saveUtilisateurs(utilisateur).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.$toast.success('nouveau utilisateur creer')
+              this.close();
+              this.sendRequest = false
+            }
+          }).catch((e) => {
+            this.$toast.error(e)
+            this.sendRequest = false
+          })
           }
-        );
-      } else {
-        this.saveUtilisateurs(utilisateur).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            this.close();
-          }
-        });
       }
     },
     filteredUser(){

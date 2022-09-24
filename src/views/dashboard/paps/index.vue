@@ -88,7 +88,7 @@
      <pre>{{paps.total}}</pre>
      
   </div>
-  <notification></notification>
+
   </dashboard>
 </template>
 
@@ -100,7 +100,7 @@ import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
-import Notification from '@/components/Notification'
+
 import Dashboard from '@/layouts/Dashboard'
 import JsonExcel from "vue-json-excel"
 
@@ -118,7 +118,7 @@ export default {
     SearchBar,
     ModalTopRight,
     JsonExcel,
-    Notification
+    
   },
   data() {
     return {

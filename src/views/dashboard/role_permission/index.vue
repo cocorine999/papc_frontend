@@ -273,23 +273,21 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           description:this.roles.description,
           permissions:this.roles.role
         }
-         
         
-        RoleService.create(data).then((data) => {
-           const id =setInterval(() => { 
-              this.chargement = true
-              console.log(this.chargement)
-           }, 3000);
-          clearInterval(id)
-          this.chargement = false
-           alert('nouveau role Creer')
-           this.showModal = false
-        }).catch((e) => {
-          this.chargement = false  
-          console.log(e)
-        })
-        
-        
+        if(this.chargement == false) {
+          this.chargement = true
+          RoleService.create(data).then((data) => {
+            this.chargement = false
+            this.$toast.success('nouveau role creer')
+            this.showModal = false
+            this.getRole()
+
+          }).catch((e) => {
+            this.chargement = false  
+            this.$toast.error(e)
+          })
+        }
+
       },
       getRole() {
         this.active()

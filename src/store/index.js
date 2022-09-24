@@ -81,6 +81,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     sideBarOpen: false,
+    counter:0,
     loading : false,
     messageErreur : null,
     errors : [],
@@ -157,6 +158,9 @@ export default new Vuex.Store({
     ],
   },
   getters: {
+    getCount: state => {
+      return state.counter
+    },
     sideBarOpen: state => {
       return state.sideBarOpen
     },
@@ -194,6 +198,10 @@ export default new Vuex.Store({
     },
     toggleSidebar (state) {
       state.sideBarOpen = !state.sideBarOpen
+    },
+    updateCounter (state,value) {
+    
+      state.counter = value
     },
 
     setModSelect(state, value)

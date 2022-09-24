@@ -3,6 +3,7 @@
     <modal-chat v-if="showCommentaire" title="espace commentaire" v-on:close="showCommentaire=false">
       <chat @sendMessage="sendMessage" :isOnlyRead="false"></chat>
     </modal-chat>
+    <notification></notification>
     <div class="flex flex-wrap">
     
     <div v-if="espace==undefined">
@@ -43,6 +44,7 @@
   import VueElementLoading from 'vue-element-loading'
   import Chat from '@/components/Chat.vue'
   import ModalChat from '@/components/ModalChat'
+  import Notification from '@/components/Notification'
  import { mapState, mapGetters, mapActions } from 'vuex'
 
   export default {
@@ -56,7 +58,8 @@
       SidebarMo,
       VueElementLoading,
       Chat,
-      ModalChat
+      ModalChat,
+      Notification
     },
     data() {
       return {
@@ -76,7 +79,6 @@
     mounted() {
       if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
-       
       }
     }
   }

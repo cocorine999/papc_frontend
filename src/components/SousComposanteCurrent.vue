@@ -303,10 +303,7 @@ export default {
         localStorage.removeItem('profondeurComposante');
       }else {
         this.fetchSousComposantes(composante.id);
-       
       }
-
-     
     },
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
