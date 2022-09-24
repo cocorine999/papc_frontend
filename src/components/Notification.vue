@@ -9,28 +9,37 @@
     import store from  "@/store/index"
     
     export default {
+      data() {
+        return {
+          notifications:[]
+        }
+      },
       // ...
       mounted () {
         // ...
         this.subscribe()
+       
       },
       computed: {
         //importation des variables du module auths
         ...mapGetters({
         currentUser: "auths/GET_AUTHENTICATE_USER",
-        })
+        }),
+        ...mapGetters([
+          'getCount',
+         ])
       },
       methods: {
         // ...
         subscribe () {
+            let vm = this 
             let token = store.getters['auths/GET_ACCESS_TOKEN'] // modules.auths?.getters?.GET_ACCESS_TOKEN(modules.auths.state)
-
             var pusher = new Pusher(PUSHER_APP_KEY , {
                 authEndpoint:  API_BASE_URL+ '/api/broadcasting/auth',
                 cluster: PUSHER_APP_CLUSTER,
                 encrypted: true,
                 forceTLS: false,
-                wsHost: 'localhost',
+                wsHost: PUSHER_BASE_URL,
                 wsPort: 6001,
                 wssPort: 6001,
                 disableStats: true,
@@ -47,9 +56,15 @@
             console.log(channel);
 
             channel.bind('notification.posted', function (data) {
-                console.log('OKKKK');
-                //console.log(JSON.stringify(data));
-                console.log(data);
+              const count = data.notification.unread
+              vm.$store.commit('updateCounter',count)
+              const datas = data.notification.notification
+              const module = datas.module
+              const texte = datas.texte
+              //this.notifications = {module,texte}
+              vm.$toast.default(` ${module} : ${texte}`)
+
+              
             });
         }
       },

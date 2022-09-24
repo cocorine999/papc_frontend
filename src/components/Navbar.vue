@@ -15,11 +15,13 @@
       
         <div class="absolute inset-y-0 right-0 flex space-x-3 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <router-link class="text-white" to="/dashboard/fileManager"><svg stroke="currentColor" fill="currentColor" class="h-6 w-6" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M13 9h-2v3H8v2h3v3h2v-3h3v-2h-3z"></path><path d="M20 5h-8.586L9.707 3.293A.996.996 0 0 0 9 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z"></path></svg></router-link>
-          <button @click="showNotification = true" class="bg-white p-1 relative rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-
+          <button @click="viewNotification" class="bg-white p-1 relative rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+           
           <!-- Heroicon name: outline/bell -->
           <img src="/img/bell.gif" class="h-6 w-6 object-contain" alt="">
-          <span class=" text-small px-1 absolute top-0 -right-3 bg-red-500 text-white rounded-full" > 99+ </span>
+         
+          <span v-if="getCount > 100 " class=" text-small px-1 absolute top-0 -right-3 bg-red-500 text-white rounded-full" > 99+ </span>
+          <span  v-else class=" text-small px-1 absolute top-0 -right-3 bg-red-500 text-white rounded-full" > {{getCount}} </span>
           </button>
 
                   <!-- Profile dropdown -->
@@ -43,7 +45,8 @@
         </div>
         </div>
       </div>
-       <notifications v-if="showNotification" @openNotif="openNotif" @closeNotifModal="closeNotifModal"></notifications>
+    
+      <notifications v-if="showNotification"  :datas="notifications" @openNotif="openNotif" @closeNotifModal="closeNotifModal"></notifications>
     </div>
 </template>
 
@@ -51,6 +54,7 @@
 import Notifications from '@/components/Notifications'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import getCigle from '../utils/get-cigle'
+import NotificationService from "@/services/modules/notification.service.js";
 import BackupService from "@/services/modules/backup.service.js";
 
 export default {
@@ -60,21 +64,39 @@ export default {
     },
     computed: {
       ...mapState(['sideBarOpen']),
-      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
+      ...mapGetters([
+        'getCount',
+      ])
     },
     data() {
         return {
           cigle : null,
           dropDownOpen: false,
           openMenu:false,
-          showNotification:false
+          showNotification:false,
+          notifications:[],
+          total:0
         }
     },
     methods: {
       //Charger les fonctions 
-    
+       getNotification() {
+          NotificationService.get().then((data) => {
+            const datas = data.data.data
+            this.total = datas.length
+             this.$store.commit('updateCounter',this.total)
+            this.notifications =  datas.slice(Math.max(datas.length - 5, 0))
+          }).catch((e) => {
+            console.log(e)
+          })
+        },
       closeNotifModal() {
         this.showNotification = false
+      },
+      viewNotification() {
+        this.getNotification()
+        this.showNotification = true
       },
       openNotif() {
         this.showNotification = true
@@ -100,7 +122,7 @@ export default {
     },
 
     mounted() {
-
+    this.getNotification()
     let nom
 
     if(this.currentUser.nom != undefined)
@@ -110,7 +132,7 @@ export default {
       nom += this.currentUser.prenom
 
     this.cigle = getCigle(nom)
-    
+   
     /* const usersInfo = JSON.parse(localStorage.getItem('usersInfos'))
       if(usersInfo) {
         this.currentUsers = usersInfo

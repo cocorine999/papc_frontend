@@ -21,56 +21,72 @@
           </div>
           <div class="my-2  h-1 bg-gray-200 "></div>
 
-          <div  class="w-full p-3 mt-4 bg-white rounded ">
-            <h2 class="text-gray-700 text-sm mt-2 font-semibold mb-3">Aujourd'hui</h2>
-            <div  class="pl-3 my-3 flex items-center justify-between" >
-              <div class="flex space-x-3">
-                <p class="w-8 h-8 bg-blue-900 rounded-full"></p>
-                <p class="w-3/5 focus:outline-none text-sm leading-none">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, expedita?
-                </p>
-              </div>
-              <p class="focus:outline-none hover:text-red-500  transition-all duration-500  -mt-1 text-gray-700 leading-3 p-2 ">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z"></path></g></svg>
-              </p>
+          <div  v-for="(data,index) in datas" :key="index" class="w-full p-3 mt-4 bg-white rounded shadow flex flex-shrink-0">
+            <div
+           
+              tabindex="0"
+              aria-label="group icon"
+              role="img"
+              class="
+                focus:outline-none
+                w-8
+                h-8
+                border
+                rounded-full
+                border-gray-200
+                flex flex-shrink-0
+                items-center
+                justify-center
+              "
+            >
+             <svg stroke="currentColor" class="w-10 h-10  rounded-full" fill="currentColor" stroke-width="0" viewBox="0 0 496 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"></path></svg>
             </div>
-            <div  class="pl-3 my-3 flex items-center justify-between" >
-              <div class="flex space-x-3">
-                <p class="w-8 h-8 bg-blue-900 rounded-full"></p>
-                <p class="w-3/5 focus:outline-none text-sm leading-none">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, expedita?
+            <div class="pl-3 w-full">
+              <div class="flex items-center justify-between w-full">
+                <p tabindex="0" class="focus:outline-none text-sm leading-6">
+                  <span class="text-indigo-700 uppercase font-semibold">{{data.module}} :</span> {{data.texte}} par 
+                  <span class="text-indigo-700 font-bold">Gomez jacob </span>
                 </p>
+                <div
+                @click="viewNotification(data.id,index)"
+                  tabindex="0"
+                  aria-label="close icon"
+                  role="button"
+                  class="focus:outline-none cursor-pointer"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10.5 3.5L3.5 10.5"
+                      stroke="#4B5563"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M3.5 3.5L10.5 10.5"
+                      stroke="#4B5563"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
-              <p class="focus:outline-none hover:text-red-500  transition-all duration-500  -mt-1 text-gray-700 leading-3 p-2 ">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z"></path></g></svg>
+              <p
+                tabindex="0"
+                class="focus:outline-none text-xs leading-3 pt-1 text-gray-500"
+              >
+               {{data.created_at}}
               </p>
             </div>
           </div>
-          <div  class="w-full p-3 mt-4 bg-white rounded ">
-            <h2 class="text-gray-700 text-sm mt-2 font-semibold mb-3">11 Mars 2022</h2>
-            <div  class="pl-3 my-3 flex items-center justify-between" >
-              <div class="flex space-x-3">
-                <p class="w-8 h-8 bg-blue-900 rounded-full"></p>
-                <p class="w-3/5 focus:outline-none text-sm leading-none">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, expedita?
-                </p>
-              </div>
-              <p class="focus:outline-none hover:text-red-500  transition-all duration-500  -mt-1 text-gray-700 leading-3 p-2 ">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z"></path></g></svg>
-              </p>
-            </div>
-            <div  class="pl-3 my-3 flex items-center justify-between" >
-              <div class="flex space-x-3">
-                <p class="w-8 h-8 bg-blue-900 rounded-full"></p>
-                <p class="w-3/5 focus:outline-none text-sm leading-none">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, expedita?
-                </p>
-              </div>
-              <p class="focus:outline-none hover:text-red-500  transition-all duration-500  -mt-1 text-gray-700 leading-3 p-2 ">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z"></path></g></svg>
-              </p>
-            </div>
-          </div>
+         
           <div class="mt-4 flex justify-end ">
             <button @click="gotoNotification" class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500 uppercase">voir tout  </button>
            </div>
@@ -82,16 +98,29 @@
 </template>
 
 <script>
-
+import NotificationService from "@/services/modules/notification.service.js";
 export default {
+  props:['datas'],
   data() {
     return {
       show: true,
-      notifications:[],
       closeNotifBox:true,
     };
   },
   methods: {
+    viewNotification(id,index) {
+      const data = {
+        id:id
+      }
+       if (index > -1) { // only splice array when item is found
+          this.datas.splice(index, 1); // 2nd parameter means remove one item only
+      }
+      NotificationService.checkMessage(data).then((data) => {
+           
+          }).catch((e) => {
+          console.log(e)
+      })
+    },
     closeNotifModal(){
       if(this.show == true) {
         this.closeNotifBox = false
@@ -128,11 +157,9 @@ export default {
        
       }
     },
-  },
-  mounted() {
     
-  }
- 
+  },
+  
  
 };
 </script>
