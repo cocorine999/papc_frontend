@@ -30,7 +30,7 @@
                 cluster: PUSHER_APP_CLUSTER,
                 encrypted: true,
                 forceTLS: false,
-                wsHost: 'localhost',
+                wsHost: PUSHER_BASE_URL,
                 wsPort: 6001,
                 wssPort: 6001,
                 disableStats: true,
