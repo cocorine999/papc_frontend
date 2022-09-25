@@ -112,7 +112,7 @@ import fileManager from "../views/dashboard/fileManager/index.vue";
 import demo from "../views/demo.vue";
 import instutitions from "../views/dashboard/instutitions/index.vue";
 import paps from "../views/dashboard/paps/index.vue";
-
+import collecteur_mod from "../views/dashboard/agetur/index.vue";
 import formulaire from "../views/dashboard/formulaire/index.vue";
 import formulaire_create from "../views/dashboard/formulaire/create.vue";
 import formulaire_id_details from "../views/dashboard/formulaire/_id/suivi.vue";
@@ -139,7 +139,7 @@ import ong_bailleur from "../views/espaces_bailleurs/ong/index.vue";
 import pta_bailleur from "../views/espaces_bailleurs/pta/index.vue";
 
 /* espace MOD */
-import collecteur_mod from "../views/espaces_mod/agetur/index.vue";
+
 import indicateurs_mod from "../views/espaces_mod/indicateurs/index.vue";
 import suivi_indicateur_mod from "../views/espaces_mod/indicateurs/suivi/index.vue";
 import entreprises_mod from "../views/espaces_mod/entreprises/index.vue";
@@ -248,6 +248,15 @@ const routes = [
     meta: {
       middleware: [auth],
     },
+  },
+  {
+    path: "/dashboard/collecteur",
+    name: "collecteur_mod",
+    component: collecteur_mod,
+    meta: {
+      middleware: [auth],
+    },
+   
   },
 
   {
@@ -1038,30 +1047,18 @@ const routes = [
     },
   },
   // espace Mod
-  {
-    path: "/mod/collecteur",
-    name: "collecteur_mod",
-    component: collecteur_mod,
-    meta: {
-      middleware: [auth, isMod],
-    },
-  },
+ 
 
   {
     path: "/mod/indicateurs",
     component: indicateurs_mod,
-    meta: {
-      middleware: [auth, isMod],
-    },
+   
     name: "indicateurs_mod",
   },
 
   {
     path: "/mod/indicateurs/suivi",
     component: suivi_indicateur_mod,
-    meta: {
-      middleware: [auth, isMod],
-    },
     name: "suivi_indicateur_mod",
   },
 
@@ -1069,27 +1066,21 @@ const routes = [
     path: "/mod/mission-controle",
     name: "missioncontrole_mod",
     component: missioncontrole_mod,
-    meta: {
-      middleware: [auth, isMod],
-    },
+   
   },
 
   {
     path: "/mod/entreprises",
     name: "entreprises_mod",
     component: entreprises_mod,
-    meta: {
-      middleware: [auth, isMod],
-    },
+   
   },
 
   {
     path: "/mod/ong",
     name: "ong_mod",
     component: ong_mod,
-    meta: {
-      middleware: [auth, isMod],
-    },
+   
   },
 
   // espace Mo

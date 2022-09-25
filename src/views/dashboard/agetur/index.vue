@@ -1,78 +1,54 @@
 <template>
-  <dashboard espace="mod">
+  <dashboard>
     <div class="px-4">
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="save" class="p-4" >
+        <form action="" @submit.prevent="createCollecteur" class="p-4" >
           <div class="form-group my-2">
             <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Bailleurs <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                <option value="">BM</option>
-                <option value="">AFD</option>
-                <option value="">BAD</option>
-                <option value="">BOAD</option>
+              <select v-model="postData.bailleirId" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+               <option v-for="(bailleur,index) in bailleurs " :key="index" :value="bailleur.id" > {{bailleur.sigle}} </option>
               </select>
             </div>
           </div>
-          <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light">Collecteurs <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="" />
-          </div>
-          <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Lots <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <div class="flex items-center  justify-evenly">
-              <label class=""> <input  class="px-3 mx-2 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="lot" id="travaux" value="travaux" type="radio" />Travaux</label>
-              <label class=""> <input  class="px-3 mx-2 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="lot" id="maitrise d'oeuvre" value="travaux" type="radio" />Maitrise d'oeuvre</label>
-            </div>
-          </div>
+          
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Attributaires <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+             <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Selectionez un attribut" label="name" track-by="name"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
           </div>
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Estimation de l'accord financement <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+            <input v-model="postData.estimation" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Engagements (FCFA HT) <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+            <input v-model="postData.engagement" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">References contrats <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+            <input v-model="postData.reference" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
           </div>
-          <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Taux decaissement (%) <span class="px-2 text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+          <div class="my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Commentaires <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <textarea v-model="postData.commentaire" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"  name="" id=""  rows="2"></textarea>
           </div>
+          
         
-          <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 '>
-              <button v-if="title == 'Ajouter un element'" type="submit" class='w-auto p-1 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-                <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-                Enregistrer et fermer
-                </span>
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-
-              <button v-if="title == 'Modifier une activite'" type="submit" class='w-full px-1 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-                <span  class="mx-2 text-xs font-semibold uppercase" v-if="loading == false">
-                  Modifier
-                </span>
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-
-              <button v-if="title == 'Ajouter un element'" type="submit" class='w-auto p-1 font-medium text-white  shadow-xl bg-primary hover:opacity-80'> 
-                <span  class="mx-2 text-sm font-semibold uppercase" v-if="loading == false">
-                Enregistrer et ajouter
-                </span>
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
+          <div class="py-2 my-4 flex justify-center space-x-8">
+            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+            </button>
+            <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
           </div>
         </form>
       </modal-top-right>
@@ -240,28 +216,40 @@
           </tbody>
         </table>
       </div>
+     <pre>
+       {{entreprises}}
+     </pre>
     </div>
   </dashboard>
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
 import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
+import CollecteurService from "@/services/modules/maitrise.oeuvres.service.js";
+import BailleurService from "@/services/modules/bailleur.service.js";
+import EntrepriseService from "@/services/modules/entreprise.executante.service.js";
 import Dashboard from '@/layouts/Dashboard'
+import Vbutton from '@/components/Vbutton'
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 export default {
   components: {
     Dashboard,
     SearchBar,
-    ModalTopRight
+    ModalTopRight,
+    Vbutton,
+    Multiselect
   },
   data() {
     return {
       showModal:false,
-      loading:false,
+      value:[],
       seeAgetur:true,
       seeFileManager:false,
       showInput:true,
       uploadFile:false,
+      chargement:false,
       title:'',
       dataTable:[
         {baileur:'BM'},
@@ -269,11 +257,80 @@ export default {
         {baileur:'BAD'},
         {baileur:'BOAD'},
         {baileur:'BEI'},
-      ]
+      ],
+      collecteurs:[],
+      programmeId:'',
+      bailleurs:[],
+      entreprises:[],
+      postData:{
+        estimation:'',
+        reference:'',
+        engagement:'',
+        commentaire:'',
+        attributaire:[],
+        bailleirId:''
+      }
     }
     
   },
+  computed: {
+      //importation des variables du module auths
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    },
   methods: {
+
+     addTag (newTag) {
+            const tag = {
+              name: newTag,
+            }
+            this.options.push(tag)
+            this.value.push(tag)
+      },
+    createCollecteur() {
+        this.value.forEach(element => {
+          this.postData.attributaire.push(element.id)
+        })
+        if(this.chargement == false) {
+          this.chargement = true
+        
+          CollecteurService.create(this.postData).then((data) => {
+            this.chargement = false
+            this.$toast.success('nouveau element')
+            this.showModal = false
+            this.getCollection()
+          }).catch((e) => {
+            this.chargement = false  
+            this.$toast.error(e)
+          })
+        }
+
+    },
+    getCollection() {
+      CollecteurService.getDatas(this.programmeId).then((data) => {
+        this.collecteurs = data.data.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    getBailleur() {
+      BailleurService.bailleursOfProgramme(this.programmeId).then((data) => {
+        this.bailleurs = data.data.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    getEntreprise() {
+      EntrepriseService.get().then((data) => {
+        const datas =  data.data.data 
+        datas.forEach(element => {
+          const id = element.id
+          const name = element.user.nom
+          this.entreprises.push({name,id})
+        });
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
     createTable() {
       this.title = 'Ajouter un element'
       this.showModal = true
@@ -294,6 +351,13 @@ export default {
       this.showModal = false
     },
     
+  },
+  mounted() {
+    this.programmeId = this.currentUser.programme.id
+    console.log(this.programmeId)
+    this.getCollection()
+    this.getBailleur()
+    this.getEntreprise()
   }
 }
 </script>

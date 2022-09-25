@@ -33,24 +33,11 @@
                       <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_true">vrai</label>
                       <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_false">faux</label>
                     </div>
-                    <div class="my-3 w-4/5" v-if="form.inputType=='multiple'">
-                      <div class="">
-                        <label for="" class=" block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">{{form.nom}} </label>
-                        <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block" placeholder="Saisissez votre libellé multiple">
-                      </div>
-                      <div class="my-4 flex justify-between items-center " v-for="(answers,index) in Answers" :key="index">
-                        <label for="" class="px-4  block mb-4 text-primary text-sm uppercase font-semibold  py-2">
-                          <input class="mx-2" type="radio" name="answers" id="answers_true">{{answers.label}}
-                        </label>
-                        <span  @click.prevent.stop="deleteAnswers(index)" class="text-gray-800  cursor-pointer "> 
-                          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path></svg>
-                        </span>
-                      </div>
-                      <div class="my-4">
-                        <input type="text" class="px-2 py-2 border text-sm outile-none border-gray-700 w-full" placeholder="ajoutez des propositions de reponse" v-model="multiple_val" >
-                        <button class="bg-blue-500 text-white px-4 py-2 shadow-xs my-2 rounded-sm focus:outline-none" @click="addResponse">Ajouter</button>
-                      </div>
+                    <div class="my-3 w-4/5" v-if="form.inputType=='file'">
+                      <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Televerser un fichier">
+                      <input  type="file"  class="px-2 py-2  text-sm border border-primary w-2/3 outline-none block " placeholder="Saisissez votre libellé">
                     </div>
+                   
                     <div class="my-3">
                       <span @click.prevent.stop="deleteItems(index)" class="text-red-500  cursor-pointer "> 
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2.5em" width="2.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path></svg>
@@ -63,11 +50,11 @@
           </div>
           <div class="w-full sticky top-20" style="height:200px">
             <h3 class="p-4 bg-gray-400 text-sm uppercase font-bold shadow-sm ">Les options</h3>
-            <div class="grid grid-cols-3 my-2 gap-2">
-              <button @click="btn_edit" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">text</button>
-              <button @click="btn_photo" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">photos</button>
-              <button @click="btn_multiple" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">choix multiple</button>
-              <button @click="btn_boolean" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">vrai ou faux</button>
+            <div class="flex space-3 flew-wrap mt-6  gap-2">
+              <button @click="btn_edit"  class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">text</button>
+              <button @click="btn_photo"  class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">photos</button>
+              <button @click="btn_file"  class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">fichiers</button>
+              <button @click="btn_boolean"  class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold whitespace-nowrap shadow-sm px-2 py-1">Realiser ou non realiser</button>
             </div>
           </div>
         </div>
@@ -109,12 +96,11 @@
                     </label>
                   </div>
                 </div>
-                <div class="" v-if="form.inputType=='multiple'">
-                  <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.nom}}</label>
-                  <label v-for="answers in Answers" :key="answers.id" class="px-4  text-sm uppercase font-medium text-gray-700">
-                    <input  name="multiple" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"/>
-                    {{answers.label}} /
+                <div class="" v-if="form.inputType=='file'">
+                   <label   class=" block py-2 text-sm font-semibold " for="">
+                    {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                   </label>
+                  <input  accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
                 </div>
               </div>
             </div>
@@ -178,12 +164,13 @@ export default {
     btn_boolean() {
       this.Forms.push({id:null,inputType:'boolean',nom:null,checked:null})
     },
-    btn_multiple() {
-      this.Forms.push({id:null,inputType:'multiple',nom:null,reponse:this.Answers})
+    btn_file() {
+      this.Forms.push({id:null,inputType:'file',inputType:'file',nom:null,file:null,})
     },
     btn_photo() {
       this.Forms.push({id:null,inputType:'photos',nom:null,images:null})
     },
+
     addResponse() {
       /*this.Answers.push({label:this.multiple_val})
       this.multiple_val = ''*/

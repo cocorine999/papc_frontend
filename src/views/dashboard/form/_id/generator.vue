@@ -73,6 +73,7 @@
               </div>
             </div>
 
+
             <div
               v-for="(checklist, index) in formulaire"
               :key="index"
@@ -171,25 +172,9 @@
                     </label>
                   </div>
                 </div>
-                <div class="" v-if="form.inputType == 'multiple'">
-                  <label
-                    for="name"
-                    class="my-4 block text-xl font-medium text-gray-700"
-                    >{{ form.nom }}</label
-                  >
-                  <label
-                    v-for="answers in Answers"
-                    :key="answers.id"
-                    class="px-4 text-sm uppercase font-medium text-gray-700"
-                  >
-                    <input
-                      name="multiple"
-                      v-model="form.content"
-                      type="radio"
-                      class="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300"
-                    />
-                    {{ answers.label }} /
-                  </label>
+                <div class="my-3 w-4/5" v-if="form.inputType=='file'">
+                  <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Televerser un fichier">
+                  <input  type="file" @change=" previewFiles" class="px-2 py-2  text-sm border border-primary w-2/3 outline-none block " placeholder="Saisissez votre libellé">
                 </div>
               </div>
             </div>
@@ -234,6 +219,10 @@ export default {
         { name: "modifier", iconne: "" },
         { name: "supprimer", iconne: "" },
       ],
+      image:'',
+      file:'',
+      images:[],
+      fichiers:[]
     };
   },
   computed: {
@@ -254,10 +243,21 @@ export default {
     }),
   },
   methods: {
+    previewImage(event) {
+      this.image = event.target.files[0];
+      this.images.push({image:this.image})
+      console.log(this.images)
+     
+    },
+    previewFiles(event) {
+      this.file = event.target.files;
+      this.images.push({fichier:this.file})
+      console.log(this.fichiers)
+    },
     ...mapActions("formulaires", {
       getFormulaire: "GET_FORMULAIRE",
     }),
-
+    
     ...mapActions("eSuivis", {
       saveESuivi: "STORE_ESUIVI",
     }),

@@ -1,8 +1,13 @@
 <template>
   <div>
-      <modal-chat v-if="true" title="espace commentaire" v-on:close="false">
-        <chat></chat>
-      </modal-chat>
+    <div  class="flex justify-center" v-for="(i,index) in 10 " :key="index">
+       <div class="w-1/2">
+          <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage">
+      </div>
+    </div>
+     <pre>
+       {{images}}
+     </pre>
   
   </div>
 </template>
@@ -27,21 +32,20 @@ export default {
         {id:'7',nom:'projet 7'},
       ],
       file:[],
-      fichiers:[]
+      images:[]
     }
   },
   methods:{
     customLabel ({ nom }) {
       return `${nom}`
     },
-    previewFiles(event) {
-      this.file = event.target.files;
-       for (const property in this.file) {
-        this.fichiers.push(this.file[property])
-      }
-      this.fichiers.pop()
-      this.fichiers.pop()
-    },
+    previewImage(event) {
+      this.image = event.target.files[0];
+      this.images.push({image:this.image})
+      console.log(this.images)
+     
+    }
+   
   },
   mounted() {
     this.value = {id:'8',nom:'projet 8'}

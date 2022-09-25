@@ -12,7 +12,7 @@
     <div v-if="espace=='bailleur' && currentRole=='bailleur' ">
       <sidebar-bailleur></sidebar-bailleur>
     </div>
-    <div v-if="espace=='mod' && currentRole=='mod'">
+    <div v-if="espace=='mod'">
       <sidebar-mod></sidebar-mod>
     </div>
 

@@ -15,7 +15,6 @@
               <div v-else>
                 <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
               </div>
-            
             </div>
            
           <div  v-for="(error, key) in champ.errors" :key="key">
@@ -32,10 +31,10 @@
           </label>
           <multiselect v-model="champ.data" :required="champ.required" :preselect-first="true" :options="champ.options" :custom-label="champ.methode" :placeholder="champ.placeholdere" :label="champ.value" :track-by="champ.cle"></multiselect>
           <div  v-for="(error, key) in champ.errors" :key="key">
-              <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
-              <div class="text-red-500 text-sm   py-2 font-semibold">
-                  {{ error }}
-              </div>
+            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
+            <div class="text-red-500 text-sm   py-2 font-semibold">
+              {{ error }}
+            </div>
           </div>
 
         </div>
@@ -113,7 +112,6 @@ export default {
     previewImage(event) {
       this.image = event.target.files[0];
       this.$emit('getImage',this.image)
-
     }
   
   },
