@@ -22,7 +22,7 @@ export default {
     
     FETCH_LIST_MOD : async ({ commit }) => {
 
-        const { data, status } = await ModService.get();
+        const { data, status } = await ProgrammeService.mods(0);
 
         if(status === 200 || status === 201)
             commit(SET_LIST_MOD, data.data);

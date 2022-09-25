@@ -15,13 +15,14 @@ import {
 } from "@/store/mutations.type"
 
 import DecaissementService from "@/services/modules/decaissement.service";
+import ProgrammeService from "@/services/modules/programme.service";
 import Decaissement from "./decaissement";
 
 export default {
   
   FETCH_LIST_DECAISSEMENT : async ({ commit }) => {
 
-      const { data, status } = await DecaissementService.get();
+      const { data, status } = await ProgrammeService.decaissements(0);
 
       if(status === 200 || status === 201) 
           commit(SET_LIST_DECAISSEMENT, data.data);
