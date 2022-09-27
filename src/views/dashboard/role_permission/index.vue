@@ -34,7 +34,7 @@
             <form @submit.prevent="createRole" v-if="title =='Creer un nouveau role' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le role  </label>
-                <input required type="text" v-model="roles.nom" placeholder="Taper le role"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
+                <input required type="text" v-model="roles.nom" placeholder="Entrer le rôle"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
               
@@ -68,10 +68,10 @@
                 <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
               </div>
             </form>
-            <form @submit.prevent="updateRole" v-if="title =='Modifier un role' ">
+            <form @submit.prevent="updateRole" v-if="title =='Modifier un rôle' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le role  </label>
-                <input required type="text" v-model="saveUpdate.nom" placeholder="Taper le role"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
+                <input required type="text" v-model="saveUpdate.nom" placeholder="Entrer le rôle"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
               
