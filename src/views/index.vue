@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-100  grid lg:grid-cols-2 sm:grid-cols-1 relative">
     <!-- le formulaire de connexion -->
-    <div class="flex justify-center items-center px-10 md:px-20">
+    <div class="flex justify-center items-center px-10 md:px-20 h-screen">
       <div class="formulaire sm:max-w-md ">
         <div class=" flex justify-center ">
           <img width="180" height="180" src="../assets/images/login/logo-gouv.webp">
@@ -29,7 +29,7 @@
               Ce champ est obligatoire 
             </div>
             <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.minLength && soumettre' >
-              mots de passe très court
+              mot de passe très court
             </div>
           </div>
           <div class="py-2 my-4 flex justify-center space-x-8">
