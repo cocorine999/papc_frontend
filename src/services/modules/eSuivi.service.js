@@ -33,6 +33,10 @@ const ESuiviService = {
       return ApiService.post("eSuivis/formulaires", params);
     },
 
+    graphes(params) {
+      return ApiService.post("eSuivis/graphes", params);
+    },
+
   };
 
   export default ESuiviService;

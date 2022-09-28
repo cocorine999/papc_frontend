@@ -32,7 +32,6 @@ const FormulaireService = {
     getSuivi(slug, params) {
       return ApiService.post("formulaire/getSuivi", params);
     },
-    
 
   };
 
