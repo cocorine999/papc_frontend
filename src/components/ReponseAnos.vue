@@ -4,25 +4,26 @@
       <div class="border-t border-gray-200">
         <dl>
           <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-xs font-medium text-gray-500">27-09-2022 ~~ <span class="text-gray-700 font-semibold"> Pool papc </span> </dt>
+            <dt class="text-xs font-medium text-gray-500">{{datas.date}} ~~ <span class="text-gray-700 font-semibold"> {{datas.auteur}} </span> </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              <ul role="list" class="divide-y divide-gray-200 rounded-md border border-gray-200">
-                <li  class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
-                          <div class="flex w-0 flex-1 items-center">
-                            <svg stroke="currentColor" class="h-5 w-5" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-                            <span class="ml-2 w-0 flex-1 truncate">document.pdf</span>
-                          </div>
-                          <div class="ml-4 flex-shrink-0">
-<!--                             <a :href="`${base_url}${data.url}`" target="_blank" :download="document.pdf" class="font-medium text-indigo-600 hover:text-indigo-500">telecharger</a>
- -->                            <a :href="``" target="_blank" download="document.pdf" class="font-medium text-indigo-600 hover:text-indigo-500">voir document</a>
-                          </div>
+              <ul v-if="datas.documents.length > 0" role="list" class="divide-y divide-gray-200 rounded-md border border-gray-200">
+                <li v-for="document in datas.documents" :key="document.id"  class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
+                  <div class="flex w-0 flex-1 items-center">
+                    <svg stroke="currentColor" class="h-5 w-5" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                    <span  class="ml-2 w-0 flex-1 truncate">{{document.nom}}</span>
+                  </div>
+                  <div class="ml-4 flex-shrink-0">                           
+                    <a :href="`${base_url}${document.url}`" target="_blank" :download="document.pdf" class="font-medium text-indigo-600 hover:text-indigo-500">voir document</a>
+                  </div>
                 </li>
               </ul>
+              <div v-else class="font-semibold"> pas de documents lié à cette reponse </div>
             </dd>
           </div>
         </dl>
         <div class="bg-yellow-50 text-xs my-3 shadow rounded-sm p-2">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque, itaque?
+          <p v-if="datas.commentaire != null || datas.commentaire != undefined">  {{datas.commentaire}}</p>
+          <p v-else class="font-semibold"> pas de commentaire pour cette reponse </p>
         </div>
         <div class="flex px-6 justify-end">
           <button @click="isReponse = ! isReponse" class="bg-green-500 flex space-x-3 text-white px-4 py-2 rounded-md border-green-500 outile-none">
@@ -34,47 +35,49 @@
     <hr v-if="isReponse" class="my-2">
     <form v-if="isReponse" @submit.prevent="sendRelancer" class="px-4 overflow-y-auto">
       <div class="my-2">
-                <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
-                <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <option value="" selected>Selectionnez le statut</option>
-                  <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{statut.name}}</option>
-              </select>
+        <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
+        <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option value="" selected>Selectionnez le statut</option>
+          <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{statut.name}}</option>
+        </select>
       </div>
       <div class="my-2">
-                <label class="my-2 block" for="">Pieces jointes </label>
-                <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+        <label class="my-2 block" for="">Pieces jointes </label>
+        <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
       </div>
       <div class="my-2">
-                <label class="my-2 block">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
-                <textarea v-model="Relance.commentaire"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
+        <label class="my-2 block">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
+        <textarea v-model="Relance.commentaire"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
       </div>
       <div class="py-2 my-4 flex justify-center space-x-8">
-                  <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-                    <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                      enregistrer
-                    </span>
-                    <span v-else class="flex items-center space-x-2">
-                      <span class="text-xs px-4 font-semibold ">
-                        envoi ...
-                      </span>
-                      <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                    </span>
-                  </button>
-                  <vbutton type="reset" template="danger" @close="showRelance =false"> annuler </vbutton>
+        <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+          <span class="text-sm font-semibold uppercase" v-if="!chargement">
+            enregistrer
+          </span>
+          <span v-else class="flex items-center space-x-2">
+            <span class="text-xs px-4 font-semibold ">
+              envoi ...
+            </span>
+            <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </span>
+        </button>
+        <vbutton type="reset" template="danger" @close="showRelance =false"> annuler </vbutton>
       </div>
     </form> 
   </div>
 </template>
 
 <script>
+import {API_BASE_URL} from "@/services/configs/environment.js";
 import Vbutton from '@/components/Vbutton.vue'
 export default {
   components:{Vbutton},
   props:['datas'],
   data() {
     return {
+      base_url:API_BASE_URL,
       isReponse:false,
       Relance:{
         statut:null,

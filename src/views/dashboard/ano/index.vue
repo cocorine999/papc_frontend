@@ -1,8 +1,16 @@
 <template>
   <dashboard>
     <div v-if="anoVisible" class="px-4">
-      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
-        <commentaire  module="ano" :data="data" :datas="commentaires"></commentaire>
+      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
+         <div v-if="anosReponses.length > 0"  style="height:800px" class="overflow-auto ">
+            <div v-for="data in anosReponses" :key="data.id">
+              <reponse-anos :datas="data"></reponse-anos>
+            </div>
+         </div>
+         <div v-else class="font-bold text-gray-600 py-5  text-center">
+           pas de commentaire
+         </div>
+        
        </modal-chat>
       <vmodal v-if="showDetail" @close="showDetail = false" >
         <div style="width:60vw">
@@ -18,13 +26,8 @@
         </modal-top-right>
       </div>
       <div v-if="showReponse">
-        <modal-chat :title="title" v-on:close="showReponse = false">
-         <div v-if="anosReponses.length > 0" style="height:800px" class="overflow-auto ">
-            <div v-for="i in 10" :key="i.id">
-              <reponse-anos datas="datas"></reponse-anos>
-            </div>
-         </div>
-          <form v-else @submit.prevent="sendReponse" class="px-4 overflow-y-auto">
+        <modal-chat :title="title" v-on:close="closeReponse">
+          <form  @submit.prevent="sendReponse" class="px-4 overflow-y-auto">
             <div class="my-2">
                       <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
                       <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -59,7 +62,7 @@
           </form> 
         </modal-chat>
       </div>
-     
+   
       <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -132,6 +135,7 @@ import AnosService from "@/services/modules/ano.service.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
+
 import ReponseAnos from '@/components/ReponseAnos.vue'
 
 import extractFormData from '@/utils/extract-data'
@@ -176,8 +180,8 @@ export default {
       },
       statuts:[
         {name:'en cours',value:0},
-        {name:'valider',value:-1},
-        {name:'non valider',value:-2}
+        {name:'valider',value:1},
+        {name:'non valider',value:-1}
       ],
       champs: [
         { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -243,16 +247,43 @@ export default {
       this.datas = data
       this.showDetail = true
     },
+    closeReponse() {
+      this.showReponse = false
+    },
+    closeCommentaire() {
+      this.showComment = false
+      this.anosReponses = []
+    },
     reponseAno(data) {
       this.anosId = data.id
       this.showReponse = true
       this.title = "Reponse un ano"
       
-      this.getAnosReponse(data.id)
     },
-     getAnosReponse(id) {
+    commenter(data) {
+      this.anosId = data.id
+      this.getAnosReponse(data.id)
+      this.showComment = true
+      this.title = "reponses"
+      
+     
+    },
+    getAnosReponse(id) {
       AnosService.getReponseAnos(id).then((data) => {
-        this.anosReponses = data.data.data
+        const datas = data.data.data
+        datas.forEach(element => {
+          let auteur = 'non definit'
+          if(element.auteur != null) {
+            auteur = element.auteur.nom
+          }
+          const anoid = element.anosId
+          const commentaire = element.commentaire
+          const bailleur = element.bailleur.sigle
+          const date = element.created_at
+          const documents = element.documents
+          const idReponse = element.id
+          this.anosReponses.push({anoid,commentaire,bailleur,date,documents,idReponse,date,auteur})
+        });
       }).catch((e) => {
         console.log(e)
       })
@@ -424,17 +455,7 @@ export default {
       })
       this.showCloseModal(true)
     },
-    commenter(data) {
-      const commentaires = data.commentaires
-      commentaires.forEach(element => {
-        const nom = element.auteur.nom
-        const message = element.message
-        const date = element.date
-        this.commentaires.push({nom,message,date})
-      });
-      this.data = data
-     
-    },
+ 
 
     async supprimer(ano) {
       if (window.confirm("Voulez-vous supprimer ce ano ?" + ano.nom))

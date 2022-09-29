@@ -907,8 +907,13 @@ export default {
       anoVisible:false,
       projetVisible:false,
       composanteVisible:false,
+      composanteReVisible:false,
       activiteVisible:false,
+      activiteReVisible:false,
       tacheVisible:false,
+      tacheReVisible:false,
+      suiviTacheVisible:false,
+      suiviTacheReVisible:false,
       indicateurVisible:false,
       planDecaissementVisible:false,
       modVsisible:false,
@@ -923,7 +928,24 @@ export default {
       voirPtaVisible:false,
       voirPpmVisible:false,
       institutionVisible:false,
+      dashboardProjetVisible:false,
+      raccourcieElementVisible:false,
+      statistiqueActiviteVisible:false,
+      statistiqueActiviteReVisible:false,
+      voirDecaissementVisible:false,
+      suiviIndicateurVisible:false,
+      revisionVisible:false,
+      listeEntrepriseModVisible:false,
+      listeEntrepriseMoVisible:false,
+      activiteEnvMoVisible:false,
+      listeEntrepriseExecVisible:false,
+      passationModVisible:false,
+      passationMissionVisible:false,
+      passationEntrepriseVisible:false,
+      checklistModVisible:false,
+      gouvernementVisible:false,
     
+     
     }
   },
   methods: {
@@ -986,18 +1008,89 @@ export default {
             if(element.slug ==='voir-une-composante') {
               this.composanteVisible = true
             }
+            if(element.slug ==='voir-une-composante-revise') {
+              this.composanteReVisible = true
+            }
             if(element.slug ==='voir-une-activite') {
               this.activiteVisible = true
+            }
+            if(element.slug ==='voir-une-activite-revise') {
+              this.activiteReVisible = true
             }
             if(element.slug ==='voir-une-tache') {
               this.tacheVisible = true
             }
+            if(element.slug ==='voir-un-suivi-tache') {
+              this.suiviTacheVisible = true
+            }
+            if(element.slug ==='voir-une-tache-revise') {
+              this.tacheReVisible = true
+            }
+            if(element.slug ==='voir-un-suivi-tache-revise') {
+              this.suiviTacheReVisible = true
+            }
             if(element.slug ==='voir-un-indicateur') {
               this.indicateurVisible = true
             }
-             if(element.slug ==='voir-un-plan-de-decaissement') {
+            if(element.slug ==='voir-un-suivi-indicateur') {
+              this.suiviIndicateurVisible= true
+            }
+            
+            if(element.slug ==='voir-un-plan-de-decaissement') {
               this.planDecaissementVisible = true
             }
+            if(element.slug ==='voir-un-dashboard') {
+              this.dashboardProjetVisible = true
+            }
+            if(element.slug ==='voir-raccourcir-composante-activite-tache') {
+              this.raccourcieElementVisible = true
+            }
+            if(element.slug ==='voir-une-statistique') {
+              this.statistiqueActiviteVisible = true
+            }
+            if(element.slug ==='voir-une-statistique-revise') {
+              this.statistiqueActiviteReVisible = true
+            }
+            if(element.slug ==='voir-un-decaissement') {
+              this.decaissementVisible = true
+            }
+            if(element.slug ==='voir-une-revision') {
+              this.revisionVisible = true
+            }
+            if(element.slug ==='voir-un-point-financier') {
+              this.pointFinancierVisible = true
+            }
+            if(element.slug ==='voir-une-liste-entreprise-mod') {
+              this.listeEntrepriseModVisible = true
+            }
+            if(element.slug ==='voir-une-liste-entreprise-mission-de-controle') {
+              this.listeEntrepriseMoVisible = true
+            }
+            if(element.slug ==='voir-activite-environnementale-mission-de-controle') {
+              this.activiteEnvMoVisible= true
+            }
+            if(element.slug ==='voir-activite-environnementale-mission-de-controle') {
+              this.activiteEnvMoVisible= true
+            }
+            if(element.slug ==='voir-une-liste-entreprise-entreprise-exec') {
+              this.listeEntrepriseExecVisible = false
+            }
+            if(element.slug ==='voir-passation-mission-de-controle') {
+              this.passationMissionVisible = false
+            }
+            if(element.slug ==='voir-passation-entreprise-executante') {
+              this.passationEntrepriseVisible = false
+            }
+            if(element.slug ==='voir-passation-mod') {
+              this.passationModVisible = false
+            }
+            if(element.slug ==='voir-une-checklist-mod') {
+              this.checklistModVisible = false
+            }
+            if(element.slug ==='voir-un-gouvernement') {
+              this.gouvernementVisible = false
+            }
+
           });
 
     },
@@ -1006,7 +1099,7 @@ export default {
   mounted() {
     this.getPermission()
      if(this.currentUser != undefined) {
-       this.currentRole = this.currentUser.type
+        this.currentRole = this.currentUser.type
         console.log("role courant",this.currentUser)
      }
   }
