@@ -1,7 +1,7 @@
 <template>
   <dashboard>
-     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
-        <commentaire  module="suivi" :datas="commentaires"></commentaire>
+     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
+        <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
       <div class="px-4">
           <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
@@ -49,12 +49,12 @@
             </button>
             </json-excel>
               <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
-            
             </div>
           </div>
         
           <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
           <vtable v-else :headers="headers" @commenter="commenter" :isComment="true" :actions="actions"  :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
+        
       </div>
   </dashboard>
 
@@ -109,25 +109,9 @@ export default {
         search:'',
         headers:[],
         showComment:false,
-        commentaires:[
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-        {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
-      ],
+        commentaires:[],
+        data:'',
+        
       });
   },
   watch: {
@@ -187,6 +171,15 @@ export default {
       deleteSuivi: "DESTROY_SUIVI",
     }),
     commenter(data) {
+      const commentaires = data.commentaires
+      commentaires.forEach(element => {
+        const nom = element.auteur.nom
+        const message = element.message
+        const date = element.date
+        this.commentaires.push({nom,message,date})
+      });
+  
+      this.data = data
       this.showComment = true
     },
     suivreIndicateur(data){
@@ -198,12 +191,12 @@ export default {
         return this.suivis.filter(function (suivi){
           return suivi.indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
-      title_csv() {
+    },
+    title_csv() {
         return "suivi-indicateur-" +"-" + new Date()
-      },
+    },
 
-      json_data(){
+    json_data(){
         let tab = [];
         this.filteredSuivis().forEach(element => {
           tab.push(
@@ -222,8 +215,8 @@ export default {
           );
         });
         return tab;
-      },
-      filtre() {
+    },
+    filtre() {
       this.champsRecherche = this.champsRecherche.map((item) => {
         item.errors = [];
         return item;
@@ -250,12 +243,16 @@ export default {
 
       this.setIndicateur({})
     },
-     getSuiviBailleur() {
+    getSuiviBailleur() {
       IndicateurSuiviService.getBailleurSuivi().then((data) => {
         this.suiviBailleurs = data.data.data
       }).catch((e) => {
           console.log(e)
       })
+    },
+    closeCommentaire() {
+      this.showComment = false
+      this.commentaires = []
     },
     async updateInputData(id, attribut, value) {
         await this.updateSuivi({suivi: {[attribut] : value}, id : id}).catch((value, status) => {

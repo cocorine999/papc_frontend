@@ -3,6 +3,7 @@
   
     <ol style="height:90%" class="px-3 relative border-l overflow-auto border-gray-200 dark:border-gray-700">                  
       <li v-for="data in datas" :key="data.id" class="mb-10 ml-4">
+      
         <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
         <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{{data.date}} </time>
         <h3 class=" font-semibold text-gray-900 dark:text-white">{{data.nom}} </h3>
@@ -37,13 +38,20 @@
 
 <script>
 import AnosService from "@/services/modules/ano.service.js";
+import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service";
+import DecaissementService from "@/services/modules/decaissement.service";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
-  props:['datas','module'],
+  props:['datas','module','data'],
   data() {
     return {
       show:false,
-      message:''
+      message:'',
+      nom:''
     }
+  },
+  computed: {
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
   },
   methods:{
     save(message) {
@@ -54,10 +62,41 @@ export default {
 
       // This arrangement can be altered based on how we want the date's format to appear.
       let currentDate = `${day}-${month}-${year}`;
-      let nom = "demo user"
-      if(module ==="ano") {
-        AnosService.commentaire(formData).then(() => {
-          this.datas.push({nom:nom,message:message,date:currentDate})
+      
+      if(this.module ==="ano") {
+         const data = {
+          commentaire : message,
+        }
+        AnosService.update(this.data.id,data).then(() => {
+          this.datas.push({nom:this.currentUser.nom,message:message,date:currentDate})
+          this.message = ''
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
+      }
+      if(this.module ==="suivi") {
+        const indicateur = this.data.indicateur
+        const data = {
+          commentaire : message,
+          indicateurId:indicateur.id,
+         
+        }
+        this.datas.push({nom:this.currentUser.nom,message:message,date:currentDate})
+        IndicateurSuiviService.update(this.data.id,data).then(() => {
+          this.message = ''
+        }).catch((e) => {
+          this.$toast.error(e)
+        })
+      }
+       if(this.module ==="decaissemement") {
+        const indicateur = this.data.indicateur
+        const data = {
+          commentaire : message,
+       
+         
+        }
+        this.datas.push({nom:this.currentUser.nom,message:message,date:currentDate})
+        DecaissementService.update(this.data.id,data).then(() => {
           this.message = ''
         }).catch((e) => {
           this.$toast.error(e)
@@ -66,6 +105,9 @@ export default {
       
       
     }
+  },
+  mounted() {
+    console.log('data',this.data)
   }
 }
 </script>

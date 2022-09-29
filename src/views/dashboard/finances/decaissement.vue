@@ -1,7 +1,7 @@
 <template>
   <dashboard>
-     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
-        <commentaire  module="decaissement" :datas="commentaires"></commentaire>
+     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
+        <commentaire  module="decaissement" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
     <div v-if="decaissementVisible" class="px-4">
     <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
@@ -160,6 +160,8 @@ export default {
         decaissementAdd:false,
         decaissementDelete:false,
         decaissementUpdate:false,
+        data:{},
+        commentaires:[],
       };
     },
     computed:{
@@ -206,7 +208,16 @@ export default {
           });
 
      },
-      commenter(data) {
+     commenter(data) {
+      const commentaires = data.commentaires
+      commentaires.forEach(element => {
+        const nom = element.auteur.nom
+        const message = element.message
+        const date = element.date
+        this.commentaires.push({nom,message,date})
+      });
+  
+      this.data = data
       this.showComment = true
     },
     ...mapActions('decaissements', {
@@ -233,8 +244,7 @@ export default {
         var self = this;
 
         return this.decaissements.filter(function (decaissement){
-          return decaissement.bailleur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 decaissement.projet.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          return decaissement.projet.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  decaissement.date.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  decaissement.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
@@ -301,6 +311,10 @@ export default {
             this.close2();
           }
       });
+    },
+    closeCommentaire() {
+      this.showComment = false
+      this.commentaires = []
     },
     close() {
         this.showModal = false

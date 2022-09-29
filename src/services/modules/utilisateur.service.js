@@ -12,7 +12,10 @@ const UtilisateurService = {
     get(slug) {
       return ApiService.get("utilisateurs", slug);
     },
-
+    getByProgramme(id) {
+      return ApiService.get(`programmes/${id}/users`);
+    },
+   
     create(params) {
       return ApiService.post("utilisateurs", params);
     },

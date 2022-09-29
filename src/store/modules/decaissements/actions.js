@@ -22,7 +22,7 @@ export default {
   
   FETCH_LIST_DECAISSEMENT : async ({ commit }) => {
 
-      const { data, status } = await ProgrammeService.decaissements(0);
+      const { data, status } = await DecaissementService.get();
 
       if(status === 200 || status === 201) 
           commit(SET_LIST_DECAISSEMENT, data.data);

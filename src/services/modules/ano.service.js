@@ -12,6 +12,10 @@ const AnosService = {
     get(slug) {
       return ApiService.get("anos", slug);
     },
+    getReponseAnos(slug) {
+      return ApiService.get(`ano/${slug}/reponses`);
+    },
+   
     //  create services
     create(params) {
       return ApiService.post("anos", params);
