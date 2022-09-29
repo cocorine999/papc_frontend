@@ -76,7 +76,7 @@
         </div>
 
         <div>
-          <p class="text-md font-semibold text-center text-gray-700 mb-8">&copy; 2022 Banque Mondiale | PAPC</p>
+          <p class="text-md font-semibold text-center text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC</p>
         </div>
       </div>
     </div>
