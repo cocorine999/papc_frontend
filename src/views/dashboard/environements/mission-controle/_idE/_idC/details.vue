@@ -226,9 +226,9 @@
         </div>
       </div>
       <div v-else class="my-4 grid grid-cols-3 gap-4 ">
-         <div v-for="i in 10" :key="i.id" class="p-4 bg-white shadow" id="chart">
-          <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
-        </div>
+        <div v-for="graphe in graphes"  class="p-4 bg-white shadow" id="chart">
+        <apexchart type="bar" height="350" :options="chartOptions(graphe)" :series="series(graphe)"></apexchart>
+      </div>
       </div>
     </div>
     </dashboard>
@@ -260,6 +260,7 @@
         formulaire: [],
         dates: [],
         entete: [],
+        graphes: [],
         headers:[
             {name:'Libelle activite',props:'libelle'},
             {name:'Code activite',props:'code'},
@@ -273,40 +274,6 @@
             {name:'modifier',iconne:''},
             {name:'supprimer',iconne:''},
         ],
-        series: [{
-          name: "Desktops",
-          data: [10, 41, 35, 51, 49, 62, 69, 91, 148,150,155,200]
-        }],
-        chartOptions: {
-          chart: {
-            height: 350,
-            type: 'line',
-            zoom: {
-              enabled: false
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          stroke: {
-            curve: 'straight'
-          },
-          title: {
-            text: '2.20.2 Nombre de séance de sensibilisation realisés ',
-            align: 'left'
-          },
-          grid: {
-            row: {
-              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-              opacity: 0.5
-            },
-          },
-          xaxis: {
-            categories: ['Jan', 'Fev', 'Mars', 'Avril', 'Mai', 'Juin', 'Jul', 'Aout', 'Sep','oct','nov','dec'],
-          }
-        },
-            
-            
           
       }
     },
@@ -333,6 +300,9 @@
       ...mapActions("eSuivis", {
         getDates: "DATE",
       }),
+      ...mapActions("eSuivis", {
+      getGraphes: "GRAPHES",
+    }),
       generateReport () {
         this.$refs.html2Pdf.generatePdf()
       },
@@ -404,8 +374,76 @@
           this.formulaire = [];
          }
       });
-      this.valueFiltre= null;
+      if(this.valueFiltre != null)
+      {
+        var form = {
+          "formulaireId": this.$route.params.idC,
+          "date": this.valueFiltre
+        }; 
       }
+
+      else
+      {
+        var form = {
+          "formulaireId": this.$route.params.idC,
+          "date": this.dates[0].date
+        };
+      }
+
+      console.log("Getting graphes ...");
+      this.getGraphes(form).then((response) => {
+      this.graphes = response;
+
+    });
+
+    this.valueFiltre= null;
+    },
+    series(graphe)
+    {
+      return [{
+            data: graphe.valeurs
+          }]
+    },
+    chartOptions(graphe)
+    {
+      return {
+            chart: {
+              height: 350,
+              type: 'bar',
+              events: {
+                click: function(chart, w, e) {
+                  // console.log(chart, w, e)
+                }
+              }
+            },
+            //colors: colors,
+            plotOptions: {
+              bar: {
+                columnWidth: '45%',
+                distributed: true,
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            title: {
+              text: graphe.checklist,
+              align: 'left'
+            },
+            legend: {
+              show: false
+            },
+            xaxis: {
+              categories: graphe.entreprises,
+              labels: {
+                style: {
+                  //colors: colors,
+                  fontSize: '12px'
+                }
+              }
+            }
+          }
+    }
       
     },
     mounted() {
@@ -458,6 +496,16 @@
          }
           console.log(this.formulaire);
         });
+        var form3 = {
+          "formulaireId": this.$route.params.idC,
+          "date": this.dates[0].date
+        };
+
+      console.log("Getting graphes ...");
+      this.getGraphes(form3).then((response) => {
+      this.graphes = response;
+
+      });
       });
     }
   }

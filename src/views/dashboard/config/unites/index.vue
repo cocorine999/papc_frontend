@@ -60,6 +60,7 @@
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">#</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Nom</th>
+            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Type</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -68,8 +69,8 @@
             
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{i+1}} </td>
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{uniteeDeMesure.nom}}</td>
-
-            
+            <td  v-if= "uniteeDeMesure.type" class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">Numérique</td>
+            <td  v-if = "uniteeDeMesure.type == 0" class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">Non numérique</td>
             <td class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5">
               <div class="flex item-center justify-center">
                 <!-- <div title="details"  class="cursor-pointer w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
@@ -137,9 +138,23 @@ export default {
           data: "",
           required: true,
           errors: [],
+        },
+        {
+          name: "Type",
+          type: "",
+          key: "type",
+          placeholdere: "Type de l'unitée",
+          isSelect: true,
+          isTextArea: false,
+          options: [{id: 1, nom: "Numérique"}, {id:0, nom:"Non Numérique"}],
+          data:"",
+          cle: 'id',
+          value:'nom',
+          required: true,
+          errors: [],
         }
       ],
-      uniteeDeMesureAttributs: ["nom"]        
+      uniteeDeMesureAttributs: ['nom', 'type']        
     });
   },
 
@@ -249,6 +264,8 @@ export default {
         });
 
         let uniteeDeMesure = extractFormData(this.champs, this.uniteeDeMesureAttributs);
+        
+        uniteeDeMesure.type = uniteeDeMesure.type.id;
 
         if (this.uniteeDeMesure?.id) {
           this.updateUniteeDeMesure({ uniteeDeMesure: uniteeDeMesure, id: this.uniteeDeMesure?.id }).then(

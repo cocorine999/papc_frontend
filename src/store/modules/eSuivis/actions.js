@@ -68,6 +68,14 @@ export default {
 
     },
 
+    async GRAPHES ({ commit }, payload) {
+        
+        const { data, status } = await ESuiviService.graphes(payload);
+
+        return data.data;
+
+    },
+
     async UPDATE_ESUIVI ({ commit }, {eSuivi, id}) {
         
         const { data, status } = await ESuiviService.update(id, eSuivi);
