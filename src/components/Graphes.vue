@@ -35,6 +35,8 @@
 
 <script>
 export default {
+  props:['projet'],
+
   data() {
     return {
       series: [{
@@ -79,13 +81,13 @@ export default {
             }]
       },
 
-      seriesCam1: [44, 55, 13],
+      seriesCam1: this.projet.tep_allProjets.percent,
       chartOptionsCam1: {
             chart: {
               width: 380,
               type: 'donut',
             },
-            labels:['demo 1','demo 2','demo 3'],
+            labels:this.projet.tep_allProjets.bailleurs,
             dataLabels: {
               enabled: false
             },
@@ -107,7 +109,7 @@ export default {
             }
       },
 
-      seriesCam2: [70],
+      seriesCam2: [this.projet.taux_financier.percent],
       chartOptionsCam2: {
         chart: {
           height: 350,
