@@ -9,14 +9,14 @@
     <div v-if="espace==undefined">
       <sidebar></sidebar>
     </div>
-    <div v-if="espace=='bailleur' && currentRole=='bailleur' ">
+    <div v-if="espace=='bailleur'">
       <sidebar-bailleur></sidebar-bailleur>
     </div>
     <div v-if="espace=='mod'">
       <sidebar-mod></sidebar-mod>
     </div>
 
-     <div v-if="espace=='mo' && currentRole=='mission-de-controle'">
+     <div v-if="espace=='mo'">
       <sidebar-mo></sidebar-mo>
     </div>
    

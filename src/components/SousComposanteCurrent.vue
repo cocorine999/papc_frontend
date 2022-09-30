@@ -34,7 +34,7 @@
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
         <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Sous composantes </span>
-        <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
+       
       </div>
       
       <button v-if="seeSousComposantes && composanteAdd" @click="addSousComposante" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
@@ -122,18 +122,7 @@
       </div>
     </div>
 
-    
-    
-    <div v-if="seeSuivi">
-      <vtable id="datatable"
-        :headers="headers"
-        :datas="dataTable"
-        :sendRequest="sendRequest"
-        :actions="actions"
-        @supprimer="supprimer">
-      </vtable>
-    </div>
-    
+  
     </div>
  
 </template>

@@ -1089,9 +1089,7 @@ const routes = [
     path: "/mo/mission-controle",
     name: "missioncontrole_mo",
     component: missioncontrole_mo,
-    meta: {
-      middleware: [auth, isMissionDeControle],
-    },
+    
   },
 
   {

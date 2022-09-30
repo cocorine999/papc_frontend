@@ -26,7 +26,6 @@
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
         <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Sous composantes </span>
-        <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
       </div>
      
     </div>
@@ -99,9 +98,7 @@
 
       </div>
     </div>
-    <div v-if="seeSuivi">
-        <suivi :suivis="results.suivis"></suivi>
-    </div>
+    
     
     </div>
  

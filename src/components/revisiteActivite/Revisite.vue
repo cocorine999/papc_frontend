@@ -62,12 +62,7 @@
             class="inline-block cursor-pointer text-lg uppercase py-2"
             >Plan d'ecaissement
           </span>
-          <span
-            :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
-            @click="gotoSuivi()"
-            class="inline-block cursor-pointer text-lg uppercase py-2"
-            >Le suivi evaluation
-          </span>
+         
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
@@ -251,10 +246,6 @@
         <plan :results="results" :isDelete="planDecaissementDelete" :isUpdate="planDecaissementUpdate"></plan>
       </div>
 
-      <div v-if="seeSuivi">
-        <suivi :suivis="results.suivis"></suivi>
-      </div>
-
       <div v-if="seeStatistique">
         <statistiques ></statistiques>
       </div>
@@ -335,7 +326,6 @@ export default {
       seeStatistique: false,
       seePlan: false,
       seeActivite: true,
-      seeSuivi: false,
       option: [{ name: "supprimer" }, { name: "modifier" }],
       optionActivite: [
         { name: "supprimer" },
@@ -411,7 +401,6 @@ export default {
       this.seeActivite = true;
       this.seeSuivi = false;
       this.seeStatistique = false;
-
       this.activites = this.results['activites'].filter((value) => {
         if(value.composanteId === this.composanteId) return value;
       })
@@ -420,23 +409,18 @@ export default {
     gotoStatistique() {
       this.seePlan = false;
       this.seeActivite = false;
-      this.seeSuivi = false;
+     
       this.seeStatistique = true;
     },
 
     gotoPlan() {
       this.seePlan = true;
       this.seeActivite = false;
-      this.seeSuivi = false;
+     
       this.seeStatistique = false;
     },
 
-    gotoSuivi() {
-      this.seeSuivi = true;
-      this.seePlan = false;
-      this.seeActivite = false;
-      this.seeStatistique = false;
-    },
+   
 
     getNom(nom, prenom) {
 

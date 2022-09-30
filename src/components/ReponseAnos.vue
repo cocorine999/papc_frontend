@@ -32,6 +32,7 @@
         </div>
       </div>
     </div>
+  
     <hr v-if="isReponse" class="my-2">
     <form v-if="isReponse" @submit.prevent="sendRelancer" class="px-4 overflow-y-auto">
       <div class="my-2">
@@ -63,7 +64,7 @@
             </svg>
           </span>
         </button>
-        <vbutton type="reset" template="danger" @close="showRelance =false"> annuler </vbutton>
+        <vbutton type="reset" template="danger" > annuler </vbutton>
       </div>
     </form> 
   </div>
@@ -71,6 +72,7 @@
 
 <script>
 import {API_BASE_URL} from "@/services/configs/environment.js";
+import AnosService from "@/services/modules/ano.service.js";
 import Vbutton from '@/components/Vbutton.vue'
 export default {
   components:{Vbutton},
@@ -86,9 +88,10 @@ export default {
       },
       statuts:[
         {name:'en cours',value:0},
-        {name:'valider',value:-1},
-        {name:'non valider',value:-2}
+        {name:'valider',value:1},
+        {name:'non valider',value:-1}
       ],
+      chargement:false,
     }
   },
   methods:{
@@ -106,16 +109,17 @@ export default {
         this.chargement = true
         const formData = new FormData();
         formData.append('statut',this.Relance.statut)
-        formData.append('anoId',this.anosId)
-        
+        formData.append('commentaire',this.Relance.commentaire)
+        formData.append('anoId',this.datas.anoId)
+        formData.append('reponseId',this.datas.idReponse)
         for( let i = 0; i < this.Relance.files.length; i++ ){
           let file = this.Relance.files[i];
           formData.append('fichier'+ i , file);
         }
       AnosService.reponseAnos(formData).then(() => {
-        this.$toast.success('operation effectué avec success !!!')
-        this.showRelance = false
+        this.$toast.success('envoyé !!!')
         this.chargement = false
+         this.isReponse = false
       }).catch((e) => {
         this.$toast.error(e)
          this.chargement = false

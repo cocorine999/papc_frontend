@@ -123,12 +123,7 @@
             class="inline-block cursor-pointer text-lg uppercase py-2"
             >Plan d'ecaissement
           </span>
-          <span
-            :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
-            @click="gotoSuivi()"
-            class="inline-block cursor-pointer text-lg uppercase py-2"
-            >Le suivi evaluation
-          </span>
+          
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
@@ -552,7 +547,6 @@ export default {
       seeStatistique: false,
       seePlan: false,
       seeActivite: true,
-      seeSuivi: false,
       option: [{ name: "supprimer" }, { name: "modifier" }],
     
       optionActivite: [
@@ -960,12 +954,10 @@ export default {
      
     },
      getSComposante(id) {
-    
       ComposanteService.sousComposantes(id).then((data) => {
         const datas = data.data.data
         this.sous_composantes = datas
         console.log('resultat',datas)
-      
       }).catch((e) => {
         console.log(e)
        
@@ -1142,7 +1134,6 @@ export default {
     gotoActivite() {
       this.seePlan = false;
       this.seeActivite = true;
-      this.seeSuivi = false;
       this.seeStatistique = false;
       this.fetchActivites(this.composanteId)
     },
@@ -1150,26 +1141,16 @@ export default {
     gotoStatistique() {
       this.seePlan = false;
       this.seeActivite = false;
-      this.seeSuivi = false;
       this.seeStatistique = true;
     },
 
     gotoPlan() {
       this.seePlan = true;
       this.seeActivite = false;
-      this.seeSuivi = false;
       this.seeStatistique = false;
     },
 
-    gotoSuivi() {
-      this.seeSuivi = true;
-      this.seePlan = false;
-      this.seeActivite = false;
-      this.seeStatistique = false;
-    },
-
-   
-
+  
     switch1() {
       this.mosaique = true;
       this.line = false;
