@@ -120,7 +120,7 @@
 
       <!--  graphe et indicateurs -->
       <div class="stat2 my-6 gap-2 ">
-        <graphes></graphes>
+        <graphes :projet="projet"></graphes>
         <indicateurs :suivis_indicateurs="projet.suivis_indicateurs"></indicateurs>
       </div>
 
