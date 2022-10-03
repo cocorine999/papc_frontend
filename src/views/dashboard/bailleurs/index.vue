@@ -124,7 +124,7 @@
                 <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" @modifier="modifier(bailleur)"  :option="option"></dropdown>
               </div>
               
-              <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
+              <div class="relative p-6 max-w-80 bg-white rounded-lg overflow-hidden _shadow-md mb-4">
                 <span class="absolute bottom-0 left-0 w-full h-8 text-white font-semibold leading-3 px-8 py-2 text-right "><p>Code : {{ bailleur.code }}</p></span>
                 <div class="flex h-20 top-0 absolute  text-4xl sm:text-5xl text-white tracking-tight font-bold  py-2 rounded-lg uppercase">
                

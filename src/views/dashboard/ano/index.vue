@@ -21,7 +21,7 @@
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" @getFile="getFile"
-              submitText="Creer un ano" @sendForm="sendForm"></vform>
+              submitText="Créer un ano" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -192,14 +192,15 @@ export default {
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
+      
       datas:[],
       cols: 1,
       headers: [
-        { name: 'dossier', cle: 'dossier' },
+        { name: 'Dossier', cle: 'dossier' },
         { name: 'Bailleur', props: 'bailleur', cle: 'sigle' },
         { name: 'Date soumission', cle: 'dateDeSoumission' },
         { name: 'Destinataire', cle: 'destinataire' },
-        { name: 'Date de creation', cle: 'created_at' },
+        { name: 'Date de création', cle: 'created_at' },
       ],
       actions: [
         { name: 'supprimer', iconne: '' },
@@ -275,13 +276,13 @@ export default {
           if(element.auteur != null) {
             auteur = element.auteur.nom
           }
-          const anoId = element.anoId
+          const anoid = element.anosId
           const commentaire = element.commentaire
           const bailleur = element.bailleur.sigle
           const date = element.created_at
           const documents = element.documents
           const idReponse = element.id
-          this.anosReponses.push({anoId,commentaire,bailleur,date,documents,idReponse,date,auteur})
+          this.anosReponses.push({anoid,commentaire,bailleur,date,documents,idReponse,date,auteur})
         });
       }).catch((e) => {
         console.log(e)

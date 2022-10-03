@@ -126,7 +126,7 @@
             <div v-if="title =='Modifier un indicateur'">
               <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
-            <div v-if="title =='Ajouter un indicateur'">
+            <div v-if="title =='Ajouter'">
               <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
             <div v-if="title =='Dupliquer un indicateur'">
@@ -154,9 +154,9 @@
           </button>
           </json-excel>
           <button @click="showModal2 = true" title="filtre"    class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
-          <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-4 py-2 flex overflow-hidden justify-around items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold uppercase">ajouter un indicateur</span>
+            <span class="   text-sm font-semibold uppercase">ajouter un indicateur</span>
           </button>
           <router-link to="/dashboard/indicateurs/suivi"  title="voir suivi"   class="px-4 py-2 overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
             <span  class="mx-2 text-sm font-semibold uppercase ">Voir suivi indicateur</span>
@@ -574,7 +574,7 @@ export default {
       this.showModal2 = value;
     },
     addIndicateur() {
-      this.title ='Ajouter un indicateur'
+      this.title ='Ajouter'
       this.showModal = true
     },
     modifier() {
@@ -600,7 +600,7 @@ export default {
               {name:'Unité de mesure',cle:'nom',props:'unitee_mesure',select:true},
               {name:'Valeur de base',cle:'valeurDeBase'},
               {name:'Année de base',cle:'anneeDeBase'},
-              {name:'Date de creation',cle:'created_at'},
+              {name:'Date de création',cle:'created_at'},
             ]
        }
        else {
@@ -612,13 +612,13 @@ export default {
             this.fetchUnite()
             this.headers = [
               {name:'Indicateur',cle:'nom',},
-              {name:'description',cle:'description'},
+              {name:'Description',cle:'description'},
               {name:'Bailleur',cle:'sigle',props:'bailleur',select:true,options:this.bailleurs,key:'sigle',updateKey:'bailleurId'},
-              {name:'Categorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
+              {name:'Catégorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
               {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'},
               {name:'Valeur de base',cle:'valeurDeBase'},
               {name:'Année de base',cle:'anneeDeBase'},
-              {name:'Date de creation',cle:'created_at'},
+              {name:'Date de création',cle:'created_at'},
             ]
 
           }, 100);
