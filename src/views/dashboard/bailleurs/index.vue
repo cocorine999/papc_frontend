@@ -288,7 +288,7 @@
         image:{},
         showUpdateImage:false,
         programmeId: this.currentUser?.programme?.id,
-        title: "Ajouter un nouveau bailleur",
+        title: "Ajouter",
         submitText: "Enrégistrer",
         search:"",
         bailleurUpdate:false,
@@ -550,7 +550,7 @@
       },
 
       addBailleur() {
-        this.title = "Ajouter un bailleur";
+        this.title = "Ajouter";
 
         this.submitText = "Enrégistrer";
 

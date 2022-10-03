@@ -31,7 +31,7 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div  class="px-4">
-            <form @submit.prevent="createRole" v-if="title =='Creer un nouveau role' ">
+            <form @submit.prevent="createRole" v-if="title =='Créer' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le rôle  </label>
                 <input required type="text" v-model="roles.nom" placeholder="Taper le rôle"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
@@ -108,7 +108,7 @@
           </div>
         </modal-top-right>
       </div>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between ">
         <titre>Rôles et permissions </titre>
           <button v-if="roleAdd" @click="addRole" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
@@ -353,7 +353,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
 
       addRole() {
-        this.title='Creer un nouveau role'
+        this.title='Créer'
         this.showCloseModal(true)
       },
 

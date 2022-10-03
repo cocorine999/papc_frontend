@@ -432,7 +432,7 @@ export default {
     },
 
     addAno() {
-      this.title = 'Ajouter un element'
+      this.title = 'Ajouter'
       this.showModal = true
     },
 
