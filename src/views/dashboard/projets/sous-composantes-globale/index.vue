@@ -210,6 +210,9 @@ export default {
   },
   mounted() {
     this.getPermission()
+    if(!this.composanteVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
   }
 
 

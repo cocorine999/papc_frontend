@@ -110,21 +110,17 @@ export default {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
-        { name: "dupliquer" },
         { name: "prolonger" },
         { name: "commenter" },
-        
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "dupliquer" },
         { name: "prolonger" },
         { name: "commenter" },
     
       ],
       optionD: [
         { name: "modifier" },
-        { name: "dupliquer" },
         { name: "prolonger" },
         { name: "commenter" },
        /*  { name: "mes suivis" }, */

@@ -235,8 +235,9 @@
         </div> -->
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
+
       <div class="tab-content mb-3 bg-white">
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="projetVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets"
             style="width: 100%"
@@ -288,7 +289,7 @@
       </div>
     </div>
 
-    <div v-if="indicateurVisible || currentRole ==='bailleur'" class="mb-1 px-6 relative">
+    <div v-if="indicateurVisible || suiviIndicateurVisible  " class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -324,7 +325,7 @@
         </div> -->
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
-      <div v-if="indicateurVisible || currentRole ==='bailleur'" class="tab-content mb-3 bg-white">
+      <div v-if="indicateurVisible" class="tab-content mb-3 bg-white">
         <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/indicateurs/"
@@ -335,7 +336,7 @@
           </router-link>
         </div>
 
-        <div v-if="indicateurVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="suiviIndicateurVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/indicateurs/suivi"
             style="width: 100%"
@@ -347,7 +348,7 @@
       </div>
     </div>
 
-    <div v-if="currentRole ==='bailleur'|| decaissementVisible || planDecaissementVisible || planDecaissementVisible || pointFinancierVisible || suiviFinancierVisible "  class="mb-1 px-6 relative">
+    <div v-if="currentRole ==='bailleur'|| decaissementVisible || planDecaissementVisible  || pointFinancierVisible || suiviFinancierVisible "  class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -419,7 +420,7 @@
       </div>
     </div>
 
-    <div v-if="currentRole ==='bailleur' || uniteeDeGestionVisible || modVsisible || missionControleVisible || entrepriseExecutanteVisible" class="mb-1 px-6 relative">
+    <div v-if="activiteEnVisible || entrepriseExecutanteVisible || formulaireVisible " class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -457,7 +458,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div v-if="uniteeDeGestionVisible || currentRole ==='bailleur'"  class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="activiteEnVisible || entrepriseExecutanteVisible || formulaireVisible"  class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/unite-gestion/checklist"
             style="width: 100%"
@@ -468,7 +469,7 @@
             >
           </router-link>
         </div>
-         <div v-if="modVsisible || currentRole ==='bailleur'" class="mb-1 flex items-center cursor-pointer">
+         <div v-if="activiteEnVisible || entrepriseExecutanteVisible || formulaireVisible" class="mb-1 flex items-center cursor-pointer">
           <router-link
             to="/dashboard/mod/checklist"
             style="width: 100%"
@@ -476,12 +477,12 @@
             <span class="font-semibold uppercase text-primary text-xs">MOD</span>
           </router-link>
         </div>
-        <div v-if="missionControleVisible || currentRole ==='bailleur'" class="mb-1 flex items-center cursor-pointer">
+        <div v-if="activiteEnVisible || entrepriseExecutanteVisible || formulaireVisible" class="mb-1 flex items-center cursor-pointer">
           <router-link to="/dashboard/mission-controle/checklist" style="width: 100%" class="flex items-center p-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
             <span class="font-semibold uppercase text-primary text-xs">Mission de controle</span>
             </router-link>
           </div>
-          <div v-if="entrepriseExecutanteVisible || currentRole ==='bailleur'" class="mb-1 flex items-center cursor-pointer">
+          <div v-if="activiteEnVisible || entrepriseExecutanteVisible || formulaireVisible" class="mb-1 flex items-center cursor-pointer">
             <router-link
               to="/dashboard/entreprise/checklist"
               style="width: 100%"
@@ -944,6 +945,9 @@ export default {
       passationEntrepriseVisible:false,
       checklistModVisible:false,
       gouvernementVisible:false,
+      activiteEnVisible:false,
+      formulaireVisible:false,
+     
     
      
     }
@@ -1033,7 +1037,7 @@ export default {
               this.indicateurVisible = true
             }
             if(element.slug ==='voir-un-suivi-indicateur') {
-              this.suiviIndicateurVisible= true
+              this.suiviIndicateurVisible = true
             }
             
             if(element.slug ==='voir-un-plan-de-decaissement') {
@@ -1073,22 +1077,28 @@ export default {
               this.activiteEnvMoVisible= true
             }
             if(element.slug ==='voir-une-liste-entreprise-entreprise-exec') {
-              this.listeEntrepriseExecVisible = false
+              this.listeEntrepriseExecVisible = true
             }
             if(element.slug ==='voir-passation-mission-de-controle') {
-              this.passationMissionVisible = false
+              this.passationMissionVisible = true
             }
             if(element.slug ==='voir-passation-entreprise-executante') {
-              this.passationEntrepriseVisible = false
+              this.passationEntrepriseVisible = true
             }
             if(element.slug ==='voir-passation-mod') {
-              this.passationModVisible = false
+              this.passationModVisible = true
             }
             if(element.slug ==='voir-une-checklist-mod') {
-              this.checklistModVisible = false
+              this.checklistModVisible = true
             }
             if(element.slug ==='voir-un-gouvernement') {
-              this.gouvernementVisible = false
+              this.gouvernementVisible = true
+            }
+            if(element.slug === 'voir-une-activite-environnementale') {
+              this.activiteEnVisible = true
+            }
+            if(element.slug ==='voir-un-formulaire') {
+              this.formulaireVisible = true
             }
 
           });

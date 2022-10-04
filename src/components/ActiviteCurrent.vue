@@ -44,7 +44,7 @@
           ></vform>
         </div>
        
-      </modal-top-right>
+        </modal-top-right>
 
 
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
@@ -150,7 +150,7 @@
           <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
         </button>
         <button
-          v-if="seePlan && planDeDecaissement"
+          v-if="seePlan "
           @click="addPlan"
           title="ajouter un plan d'ecaissement"
           class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
@@ -206,74 +206,7 @@
               </div>
            
               <div></div>
-              <button
-                v-if="!showFiltre"
-                title="filtre"
-                @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1"
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  height="1.5em"
-                  width="1.5em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-                  ></polygon>
-                </svg>
-                <span>progression des activités</span>
-              </button>
-              <div v-else class="px-6 w-full">
-                <div class="bg-gray-300 h-2 w-full rounded-full relative">
-                  <span
-                    class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
-                    :style="`left:${rangeValue}%`"
-                  ></span>
-                  <span
-                    class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"
-                    :style="`width:${rangeValue}%`"
-                  ></span>
-                </div>
-                <div class="flex justify-between mt-2 text-xs text-gray-600">
-                  <span
-                    @click="filtreRange(0)"
-                    class="w-8 cursor-pointer text-left"
-                    >0%</span
-                  >
-                  <span
-                    @click="filtreRange(25)"
-                    class="w-8 cursor-pointer text-center"
-                    >25%</span
-                  >
-                  <span
-                    @click="filtreRange(50)"
-                    class="w-8 cursor-pointer text-center"
-                    >50%</span
-                  >
-                  <span
-                    @click="filtreRange(75)"
-                    class="w-8 cursor-pointer text-center"
-                    >75%</span
-                  >
-                  <span
-                    @click="filtreRange(100)"
-                    class="w-8 cursor-pointer text-right"
-                    >100%</span
-                  >
-                  <button
-                    @click="showFiltre = false"
-                    class="text-white bg-blue-300 p-1"
-                  >
-                    revenir
-                  </button>
-                </div>
-              </div>
+              
             </div>
            
           </div>
@@ -307,8 +240,6 @@
       </div>
 
       <div v-if="seePlan &&  planDecaissementVisible ">
-
-
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between">
             <!--Filtre sur projet -->
@@ -396,16 +327,7 @@
         
       </div>
 
-      <div v-if="seeSuivi">
-        <vtable
-          id="datatable"
-          :headers="headers"
-          :datas="dataTable"
-          :actions="actions"
-          @supprimer="supprimerT"
-        >
-        </vtable>
-      </div>
+     
 
       <div v-if="seeStatistique">
         <div class="">
@@ -947,11 +869,12 @@ export default {
         this.fetchActivites(this.idSC);
         this.isClick = false
         localStorage.removeItem('profondeurSC');
+        this.isShow = true
       }else {
         this.fetchActivites(Scomposante.id);
+        this.isShow = true
       }
 
-     
     },
      getSComposante(id) {
       ComposanteService.sousComposantes(id).then((data) => {

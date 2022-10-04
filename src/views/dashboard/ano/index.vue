@@ -1,6 +1,7 @@
 <template>
   <dashboard>
-    <div v-if="anoVisible" class="px-4">
+    <div  class="px-4">
+
       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
          <div v-if="anosReponses.length > 0"  style="height:800px" class="overflow-auto ">
             <div v-for="data in anosReponses" :key="data.id">
@@ -12,11 +13,13 @@
          </div>
         
        </modal-chat>
+
       <vmodal v-if="showDetail" @close="showDetail = false" >
         <div style="width:60vw">
           <preview template="ano" :datas="datas" @previewFile="previewFile" ></preview>
         </div>
       </vmodal>
+
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
@@ -25,6 +28,7 @@
           </div>
         </modal-top-right>
       </div>
+
       <div v-if="showReponse">
         <modal-chat :title="title" v-on:close="closeReponse">
           <form  @submit.prevent="sendReponse" class="px-4 overflow-y-auto">
@@ -95,7 +99,7 @@
            </div>
         </div>
       </nav>
-      <div v-if="anoAdd" class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
             class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
@@ -113,8 +117,11 @@
         </div>
       </div>
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" @reponseAno="reponseAno" :isComment="true" @commenter="commenter" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
+        <vtable v-if="anoDelete &&  commentaireVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDelete"  @supprimer="supprimer" ></vtable>
+        <vtable v-if="anoDelete ==false &&  commentaireVisible ==false && voirDetailAno ==true && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDetail" @seeUpload="seeUpload" ></vtable>
+        <vtable v-if="anoRelancer && anoDelete==false && commentaireVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true" :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()" @seeUpload="seeUpload" ></vtable>
+        <vtable v-if="anoRelancer==false && anoDelete==false && commentaireVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :isComment="true" @commenter="commenter" :headers="headers" :datas="filteredAno()" ></vtable>
+        <vtable v-if="anoUpdate && anoDelete " :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
   </dashboard>
@@ -170,6 +177,10 @@ export default {
       anoAdd:false,
       anoDelete:false,
       anoUpdate:false,
+      voirDetailAno:false,
+      commentaireVisible:false,
+      anoRelancer:false,
+
       readPDF:false,
       pdfFile:'',
       chargement:false,
@@ -203,10 +214,20 @@ export default {
       ],
       actions: [
         { name: 'supprimer', iconne: '' },
-        { name:'fichier'},
+        { name:'detail'},
         { name:'reponse'},
       ],
-       sendRequest: false,
+      actionsDetail: [
+        { name:'detail'},
+      ],
+      actionsDelete: [
+        { name: 'supprimer', iconne: '' }, 
+      ],
+      actionsReponse: [
+        { name:'reponse'},
+      ],
+      sendRequest: false,
+
       fichiers:[],
        pdf:[
           {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
@@ -302,20 +323,20 @@ export default {
         this.$store.dispatch('disabled')
     },
     getPermission() {
-         this.currentUser.role[0].permissions.forEach(element => {
-            if(element.slug ==='voir-un-ano') {
-              this.anoVisible = true
-            }
-            if(element.slug === 'creer-un-ano') {
-              this.anoAdd = true
-            }
-            if(element.slug === 'modifier-un-ano') {
-              this.anoUpdate = true
-            }
-            if(element.slug ==='supprimer-un-ano') {
-              this.anoDelete = true
-            }
-          });
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-ano') {
+          this.anoVisible = true
+        }
+        if(element.slug === 'creer-un-ano') {
+          this.anoAdd = true
+        }
+        if(element.slug === 'modifier-un-ano') {
+          this.anoUpdate = true
+        }
+        if(element.slug ==='supprimer-un-ano') {
+          this.anoDelete = true
+        }
+      });
     },
     
     // call action
@@ -467,7 +488,6 @@ export default {
   },
 
   mounted() {
-    this.active()
 
     this.fetchAnos()
     //.then((value) => { console.log(value) });
@@ -477,7 +497,10 @@ export default {
     console.log("Fetching bailleurs ...");
     this.fetchBailleurs()
     this.getPermission()
-    this.disabled()
+    if(!this.anoVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
+
     //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },
 
