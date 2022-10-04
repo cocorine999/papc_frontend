@@ -96,7 +96,7 @@
           <titre>Les bailleurs </titre>
           <button
             @click="addBailleur"
-            title="ajouter un bailleur"
+            title="ajouter"
             class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
           >
             <svg
