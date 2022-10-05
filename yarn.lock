@@ -7522,6 +7522,11 @@
   "resolved" "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.7.tgz"
   "version" "0.7.7"
 
+"vueperslides@^2.15.3":
+  "integrity" "sha512-prAK0N6dt5lztfZL/AS6Am7g+sGFiQT6i/F7VqpQwMPl16AwBmYLowNmMFVOLCxT4AdLBALUbx5zy4quupwErg=="
+  "resolved" "https://registry.npmjs.org/vueperslides/-/vueperslides-2.15.3.tgz"
+  "version" "2.15.3"
+
 "vuex@^3.6.2":
   "integrity" "sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw=="
   "resolved" "https://registry.npmmirror.com/vuex/-/vuex-3.6.2.tgz"
