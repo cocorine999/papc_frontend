@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="bailleurVisible" class="w-full px-4">
+    <div  class="w-full px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4">
@@ -52,7 +52,7 @@
         </vmodal>
       </div>
       <div class="w-full p-4">
-        <nav
+          <nav
           class="mb-2 text-sm font-semibold flex justify-between items-center"
           aria-label="Breadcrumb"
         >
@@ -89,12 +89,12 @@
            </button>
   </div>
           </div>
-        </nav>
-
-      
+          </nav>
+        
         <div v-if="bailleurAdd" class="flex items-center justify-between my-2">
           <titre>Les bailleurs </titre>
           <button
+            v-if="bailleurAdd"
             @click="addBailleur"
             title="ajouter"
             class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
@@ -117,9 +117,11 @@
               <div v-if="bailleurUpdate" class="absolute right-1 top-4 z-10  cursor-pointer">
                 <dropdown  @modifier="modifier(bailleur)" @couverture="changeLogo(bailleur)" :option="optionUp"></dropdown>
               </div>
+              
               <div v-if="bailleurDelete" class="absolute right-1 top-4 z-10  cursor-pointer">
-                <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" :option="optionD"></dropdown>
+                <dropdown @supprimer="supprimer(bailleur)" :option="optionD"></dropdown>
               </div>
+
               <div v-if="bailleurUpdate && bailleurDelete " class="absolute right-1 top-4 z-10  cursor-pointer">
                 <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" @modifier="modifier(bailleur)"  :option="option"></dropdown>
               </div>
@@ -443,8 +445,9 @@
 
         ],
         cols: 1,
-        optionD: [{ name: "supprimer" }, { name: "modifier" },{name:'couverture'}],
-        optionUp: [{ name: "supprimer" }, { name: "modifier" },{name:'couverture'}],
+        optionLogo: [{name:'couverture'}],
+        optionD: [{ name: "supprimer" }],
+        optionUp: [{ name: "modifier" },{name:'couverture'}],
         option: [{ name: "supprimer" }, { name: "modifier" },{name:'changer logo'}],
         bailleurVisible:false,
         bailleurAdd:false,
@@ -508,18 +511,18 @@
       console.log(data)
       this.showUpdateImage = true
     },
-      active() {
+    active() {
         this.$store.dispatch('active')
-      },
-      disabled() {
+    },
+    disabled() {
         this.$store.dispatch('disabled')
-      },
-      ...mapMutations({
+    },
+    ...mapMutations({
         setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
         setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       }),
      
-     getPermission() {
+    getPermission() {
          this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-bailleur') {
               this.bailleurVisible = true
@@ -533,31 +536,31 @@
             if(element.slug ==='supprimer-un-bailleur') {
               this.bailleurDelete = true
             }
-           
           });
-      },
+    },
 
-      ...mapActions("bailleurs", {
+    ...mapActions("bailleurs", {
         fetchBailleurs: "FETCH_LIST_BAILLEUR_OF_PROGRAMME",
         saveBailleur: "STORE_BAILLEUR",
         updateBailleur: "UPDATE_BAILLEUR",
         deleteBailleur: "DESTROY_BAILLEUR",
       }),
 
-      switchBetweenCode({mosaique, line}) {
+    switchBetweenCode({mosaique, line}) {
         this.mosaique = mosaique
         this.line = line
-      },
+    },
 
-      addBailleur() {
-        this.title = "Ajouter";
+
+    addBailleur() {
+        this.title = "Ajouter un bailleur";
 
         this.submitText = "Enrégistrer";
 
         this.showCloseModal(true);
-      },
+    },
 
-      modifier(bailleur) {
+    modifier(bailleur) {
         this.title = "Modifier le bailleur";
         this.isUpdate = true
         this.submitText = "Modifier";
@@ -575,32 +578,32 @@
         });
 
         this.showCloseModal(true);
-      },
+    },
 
-      supprimer(bailleur) {
+    supprimer(bailleur) {
         console.log(bailleur)
         if (
           window.confirm("Voulez-vous supprimer le bailleur " + bailleur.user.nom)
         )
           this.deleteBailleur(bailleur.id);
-      },
+    },
 
-      dupliquer() {
+    dupliquer() {
         this.title = "Dupliquer un bailleur";
         this.showCloseModal();
-      },
+    },
 
-      close() {
+    close() {
         this.showCloseModal();
 
         this.resetForm();
-      },
+    },
 
-      showCloseModal(value = false) {
+    showCloseModal(value = false) {
         this.showModal = value;
-      },
+    },
 
-      resetForm() {
+    resetForm() {
         this.champs = this.champs.map((item) => {
           item.data = "";
           return item;
@@ -609,18 +612,18 @@
         window.document.getElementById("vform")?.reset();
 
         this.setBailleur({});
-      },
+    },
 
-      async updateInputData(id, attribut, value) {
+    async updateInputData(id, attribut, value) {
         await this.updateBailleur({bailleur: {[attribut] : value}, id : id}).then((value) => {
           this.setBailleur({})
         }).catch((value, status) => {
           if(this.hasErrors[attribut] !== undefined)
             alert(this.hasErrors[attribut])        
         })
-      },
+    },
 
-      filteredBailleur(){
+    filteredBailleur(){
         var self = this;
 
         return this.bailleurs.filter(function (bailleur){
@@ -628,9 +631,9 @@
                  bailleur.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  bailleur.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
-      sendForm() {
+    sendForm() {
         
         this.champs = this.champs.map((item) => {
           item.errors = [];
@@ -708,7 +711,7 @@
             })
           }
         }
-      },
+    },
     },
 
     watch: {
@@ -736,6 +739,9 @@
 
     mounted(){
       this.getPermission()
+      if(!this.bailleurVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
      
     }
   };

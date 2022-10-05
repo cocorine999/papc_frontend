@@ -205,7 +205,7 @@ export default {
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
-     option: [
+      option: [
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
@@ -213,14 +213,14 @@ export default {
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "prolonger" },
         { name: "continuer" },
       ],
-       optionD: [
+      optionD: [
         { name: "supprimer" },
-        { name: "prolonger" },
         { name: "continuer" },
       ],
+  
+
       projetId:'',
       projetVisible:false,
       projetAdd:false,
@@ -533,7 +533,6 @@ export default {
       },
 
     validerProjet(id) {
-
       let projet = {}
       projet.statut =-1
       this.updateProjet({projet: projet, id : id}).then(response => {
@@ -575,13 +574,16 @@ export default {
   created() {
     console.log("Fetching projets ...")
     this.getPermission()
+     if(!this.projetVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     this.programmeId = this.currentUser.programme.id
     if(this.programmeId){
       this.fetchProjets(this.programmeId).then((value) => {
-          setTimeout(() => {
-            console.log("Fetching list of bailleurs...")
-            this.fetchBailleurs(this.programmeId)
-          });
+        setTimeout(() => {
+          console.log("Fetching list of bailleurs...")
+          this.fetchBailleurs(this.programmeId)
+        });
       })
     }
   }

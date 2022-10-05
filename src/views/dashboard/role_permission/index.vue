@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="roleVisible" class="px-4">
+    <div  class="px-4">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -116,8 +116,8 @@
           </button>
       </div>
    
-      <div  id="dataTable">
-       <div class="flex flex-col">
+      <div id="dataTable">
+        <div class="flex flex-col">
           <div class="overflow-x-auto ">
             <div class="py-4 inline-block min-w-full ">
               <div class="overflow-hidden">
@@ -184,7 +184,6 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
 import RoleService from "@/services/modules/role.service.js";
-import PermissionsService from "@/services/modules/permission.service.js";
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
   export default {
@@ -240,10 +239,8 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
       disabled() {
         this.$store.dispatch('disabled')
       },
-       getPermission() {
-        PermissionsService.get().then((data) => {
-          this.permissions = data.data.data
-          this.currentUser.role[0].permissions.forEach(element => {
+      getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-role') {
               this.roleVisible = true
             }
@@ -257,12 +254,8 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
               this.roleDelete = true
             }
            
-          });
-
-        }).catch((e) => {
-          console.log(e)
-        })
-    },
+        });
+      },
       createRole() {
         
         this.value.forEach(element => {
@@ -311,7 +304,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
       updateRole() {
         let roles =[]
           this.saveUpdate.permissions.forEach(element => {
-          roles.push(element.id)
+          roles.role.push(element.id)
         })
         const data = {
           nom:this.saveUpdate.nom,
@@ -319,9 +312,9 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           permissions:this.roles
         }
         RoleService.update(this.saveUpdate.id,data).then((data) => {
-           const id =setInterval(() => { 
-              this.chargement = true
-           },3000);
+          const id =setInterval(() => { 
+            this.chargement = true
+          },3000);
           clearInterval(id)
           this.chargement = false
         }).catch((e) => {
@@ -331,11 +324,11 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
       },
    
       addTag (newTag) {
-            const tag = {
-              nom: newTag,
-            }
-            this.options.push(tag)
-            this.value.push(tag)
+        const tag = {
+          nom: newTag,
+        }
+        this.options.push(tag)
+        this.value.push(tag)
       },
       modifier(data) {
         this.saveUpdate = data
@@ -350,7 +343,6 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           return role.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },
-
 
       addRole() {
         this.title='Creer un nouveau role'
@@ -370,6 +362,9 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
     mounted() {
       this.getRole()
       this.getPermission()
+      if(!this.roleVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     }
   }
 </script>
