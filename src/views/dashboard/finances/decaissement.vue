@@ -3,7 +3,7 @@
      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="decaissement" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
-    <div v-if="decaissementVisible" class="px-4">
+    <div class="px-4">
     <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
@@ -28,7 +28,8 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>      </div>
+        </div>      
+    </div>
     </nav> 
     <div v-if="showModal">
       <modal-top-right :title="title" v-on:close="close">
@@ -67,9 +68,9 @@
       </div>
      
     </div>
-    <vtable v-if="decaissementDelete && decaissementUpdate " :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
-  </div>
+    </div>
   </dashboard>
  
 </template>
@@ -118,7 +119,6 @@ export default {
           {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
           {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
           {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
-          
         ],
         cols:2,
          showComment:false,
@@ -190,7 +190,7 @@ export default {
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setDecaissement: 'decaissements/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
-      getPermission() {
+     getPermission() {
           this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-decaissement') {
               this.decaissementVisible = true
@@ -230,17 +230,17 @@ export default {
 
     ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET_OF_PROGRAMME' }),
 
-    async updateInputData(id, attribut, value) {
-        
-          await this.updateDecaissement({decaissement: {[attribut] : value}, id : id}).catch((value, status) => {
-            if(this.hasErrors[attribut] !== undefined)
-              alert(this.hasErrors[attribut])            
-          }).finally(() => {
-            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
-          })
-    },
+      async updateInputData(id, attribut, value) {
+          
+            await this.updateDecaissement({decaissement: {[attribut] : value}, id : id}).catch((value, status) => {
+              if(this.hasErrors[attribut] !== undefined)
+                alert(this.hasErrors[attribut])            
+            }).finally(() => {
+              $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+            })
+      },
 
-    filteredDecaissement(){
+      filteredDecaissement(){
         var self = this;
 
         return this.decaissements.filter(function (decaissement){
@@ -271,105 +271,108 @@ export default {
         return tab;
       },
 
-    sendForm() {
+      sendForm() {
 
-      console.log(this.champs)
+        console.log(this.champs)
 
-      this.champs = this.champs.map(item => { item.errors = []; return item})
+        this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let decaissement = extractFormData(this.champs, this.decaissementAttributs)
+        let decaissement = extractFormData(this.champs, this.decaissementAttributs)
 
-      decaissement.type = decaissement.type.id
-      decaissement.projetId = decaissement.projetId.id
+        decaissement.type = decaissement.type.id
+        decaissement.projetId = decaissement.projetId.id
 
-      console.log(decaissement)
-      
-      
-      this.saveDecaissement(decaissement).then(response => {
-        if(response.status == 200 || response.status == 201){
-            this.close()
-        }
-
-      })
-      
-
-    },  
-    filtre() {
-      this.champsRecherche = this.champsRecherche.map((item) => {
-        item.errors = [];
-        return item;
-      });
-
-      let decaissement = extractFormData(this.champsRecherche,this.decaissementAttributsRecherche);
-      decaissement.projetId = decaissement.projetId?.id
-      decaissement.type = decaissement.type?.id
-
-      console.log(decaissement)
-
-      this.filter(decaissement).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            this.close2();
+        console.log(decaissement)
+        
+        
+        this.saveDecaissement(decaissement).then(response => {
+          if(response.status == 200 || response.status == 201){
+              this.close()
           }
-      });
-    },
-    closeCommentaire() {
-      this.showComment = false
-      this.commentaires = []
-    },
-    close() {
+
+        })
+        
+      },  
+
+      filtre() {
+        this.champsRecherche = this.champsRecherche.map((item) => {
+          item.errors = [];
+          return item;
+        });
+
+        let decaissement = extractFormData(this.champsRecherche,this.decaissementAttributsRecherche);
+        decaissement.projetId = decaissement.projetId?.id
+        decaissement.type = decaissement.type?.id
+
+        console.log(decaissement)
+
+        this.filter(decaissement).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.close2();
+            }
+        });
+      },
+      closeCommentaire() {
+        this.showComment = false
+        this.commentaires = []
+      },
+      close() {
         this.showModal = false
-    },
-    close2() {
-        this.showModal2 = false
-    },
-    addDecaissement() {
-        this.title ="Ajouter un decaissement"
+      },
+      close2() {
+          this.showModal2 = false
+      },
+      addDecaissement() {
+          this.title ="Ajouter un decaissement"
 
-        let formData = this.champs.map((value) => {
-          if(value.key === 'projetId'){ 
-            value['options'] = this.projets
-          }
-          
-          else if(value.key === 'type'){
-            value['options'] = this.$store.state.sources;
-          }
+          let formData = this.champs.map((value) => {
+            if(value.key === 'projetId'){ 
+              value['options'] = this.projets
+            }
+            
+            else if(value.key === 'type'){
+              value['options'] = this.$store.state.sources;
+            }
 
-          return value
-        })
+            return value
+          })
 
-      this.champs = formData
+        this.champs = formData
 
-        this.showModal = true
+          this.showModal = true
       },
 
-    showFiltreModal2() {
-        this.title ="Filtre"
+      showFiltreModal2() {
+          this.title ="Filtre"
 
-        let formData = this.champsRecherche.map((value) => {
-          if(value.key === 'projetId'){ 
-            value['options'] = this.projets
-          }
-          
-          else if(value.key === 'type'){
-            value['options'] = this.$store.state.sources;
-          }
+          let formData = this.champsRecherche.map((value) => {
+            if(value.key === 'projetId'){ 
+              value['options'] = this.projets
+            }
+            
+            else if(value.key === 'type'){
+              value['options'] = this.$store.state.sources;
+            }
 
-          return value
-        })
+            return value
+          })
 
-      this.champsRecherche = formData
+        this.champsRecherche = formData
 
-        this.showModal2 = true
+          this.showModal2 = true
+        },
+      
+      async supprimer(decaissement) {
+        if(window.confirm("Voulez-vous supprimer ce decaissement " ))
+          await this.deleteDecaissement(decaissement.id)
       },
-    
-    async supprimer(decaissement) {
-      if(window.confirm("Voulez-vous supprimer ce decaissement " ))
-        await this.deleteDecaissement(decaissement.id)
-    },
     },
 
     mounted() {
       this.getPermission()
+      if(!this.decaissementVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
       console.log("Fetching decaissements ...")
         this.fetchDecaissements().then((value) => {
         setTimeout(() => {

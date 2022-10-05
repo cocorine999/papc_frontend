@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="tacheVisible" class="p-4">
+    <div  class="p-4">
       <div class="select w-52">
         <select
           id="choice"
@@ -282,6 +282,9 @@ export default {
   },
   mounted() {
     this.getPermission()
+     if(!this.tacheVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
   }
 };
 </script>

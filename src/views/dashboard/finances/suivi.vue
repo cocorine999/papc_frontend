@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="suiviFinancierVisible" class="px-4">
+    <div  class="px-4">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -94,8 +94,6 @@
       <vtable v-if="suiviFinancierDelete && suiviFinancierUpdate" :sendRequest="false" :headers="headers" :datas="filteredSuivis" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
       <vtable v-if="!suiviFinancierDelete && suiviFinancierUpdate" :sendRequest="false" :headers="headers" :datas="filteredSuivis" :actions="actions" @updateInputData="updateInputData"></vtable>
 
-      <pre>{{suiviFinanciers.projets}}</pre>
-      <pre>{{suiviFinanciers.total}}</pre>
     </div>
   </dashboard>
  
@@ -394,6 +392,9 @@ export default {
 
     mounted() {
       this.getPermission()
+      if(!this.suiviFinancierVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
       console.log("Fetching suivi financier ...")
         this.fetchSuiviFinanciers(this.currentUser?.programme?.id).then((value) => {
         setTimeout(() => {

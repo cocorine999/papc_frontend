@@ -111,6 +111,8 @@ export default {
         showComment:false,
         commentaires:[],
         data:'',
+        suiviIndicateurVisible:false,
+        
         
       });
   },
@@ -285,20 +287,32 @@ export default {
     addSuivi() {
         this.title ='Creer un suivi'
         this.showModal = true
-      },
-      modifier() {
+    },
+    modifier() {
         this.title ='Modifier un suivi'
         this.showModal = true
-      },
-      supprimer(data) {
+    },
+    supprimer(data) {
         alert(data+" à ete bien supprimer")
-      },
-      dupliquer() {
+    },
+    dupliquer() {
         this.title ='Dupliquer un suivi'
         this.showModal = true
-      }
+    },
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-suivi-indicateur') {
+          this.suiviIndicateurVisible = true
+        }
+           
+      });
+    },
   },
   mounted() {
+    this.getPermission()
+    if(!this.suiviIndicateurVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
        if(this.currentUser.type ==='bailleur') {
