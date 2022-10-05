@@ -79,7 +79,7 @@
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
               <p class="max-h-48 line-clamp-7 px-2"> {{ projet.description }} </p>
               <div  class="absolute bottom-5 ">
-                <div class="uppercase text-sm flex items-center rounded-2xl shadow space-x-3 bg-white text-primary px-4 py-3 font-bold">
+                <div v-if="dashboardProjetVisible" class="uppercase text-sm flex items-center rounded-2xl shadow space-x-3 bg-white text-primary px-4 py-3 font-bold">
                   details
                 </div>
               </div>
@@ -226,6 +226,7 @@ export default {
       projetAdd:false,
       projetDelete:false,
       projetUpdate:false,
+      dashboardProjetVisible:false,
       sendRequest: false,
       fichiers:[],
       image:{}
@@ -281,6 +282,9 @@ export default {
             if(element.slug ==='supprimer-un-projet') {
               this.projetDelete = true
             }
+            if(element.slug ==='voir-un-dashboard') {
+              this.dashboardProjetVisible = true
+            }
            
         });
     },
@@ -316,8 +320,10 @@ export default {
     ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR_OF_PROGRAMME' }),
 
     gotoDetails(projet) {
-      console.log(projet)
-      this.$router.push({name:'projets_id_details',params:{id:projet.id, projet: projet}})
+     if(this.dashboardProjetVisible) {
+        this.$router.push({name:'projets_id_details',params:{id:projet.id, projet: projet}})
+     }
+    
      
     },
 

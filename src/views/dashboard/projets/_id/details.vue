@@ -23,7 +23,8 @@ export default {
   data() {
     return {
       showModal:false,
-      projet: null
+      projet: null,
+      detailsProjetVisible:false,
     }
   },
 
@@ -36,9 +37,20 @@ export default {
     ...mapActions('projets', {
       detailsProjet: "GET_DETAILS_PROJET"
     }),
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-dashboard') {
+          this.detailsProjetVisible = true
+        }  
+        });
+    },
   },
 
   created() {
+    this.getPermission()
+    if(!this.detailsProjetVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     this.detailsProjet(this.$route.params.id).then((response) => {
       this.projet = response.data.data
 
