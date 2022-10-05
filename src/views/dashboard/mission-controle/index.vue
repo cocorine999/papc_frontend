@@ -113,12 +113,13 @@ export default {
       title: "Ajouter une nouvelle mission de controle",
       submitText: "Enregistrer la mission de controle",
       title2:'Ajouter une nouvelle passation',
-      missionDeControleAttributs: ["nom", "email", "contact"],
+      missionDeControleAttributs: ["nom", "email", "contact", "bailleurId"],
       passationAttributs: ["missionDeControleId", "siteId", "entrepriseExecutanteId", "dateDobtention", "dateDeSignature", "dateDeDemarrage", "datePrevisionnel", "dateDobtentionAvance", "montantAvance", "estimation", "ordreDeService", "travaux", "responsableSociologue", "montant"],
       champs:[
         {name:'Nom',key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Email',key:'email',type:'email',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
         {name:'Contact',key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors: []},
+        {name:'Bailleur', key:'bailleurId',type:'',placeholdere:"Selectionnez un bailleur",isSelect:true,isTextArea:false,data:'',options:this.bailleurs, cle: 'id', value: 'sigle',required:true,errors : []},
       ],
       passationChamps:[
         {name:'Mission de controle',key:'missionDeControleId',type:'',placeholdere:"Selectionnez une mission de controle",isSelect:true,isTextArea:false,data:'',required:true,options:this.missionDeControles, cle: 'id', value: 'nom',errors : []},
@@ -177,6 +178,7 @@ export default {
         passations: "passations/getPassations",
         entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
         sites: "sites/getSites",
+        bailleurs: "bailleurs/getBailleurs",
         currentUser : 'auths/GET_AUTHENTICATE_USER'
       }),
       ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
@@ -208,6 +210,9 @@ export default {
       }),
       ...mapActions("sites", {
         fetchSites: "FETCH_LIST_SITE",
+      }),
+      ...mapActions("bailleurs", {
+        fetchBailleurs: "FETCH_LIST_BAILLEUR",
       }),
       
        getPermission() {
@@ -365,8 +370,9 @@ export default {
         this.champs = this.champs.map(item => { item.errors = []; return item})
 
         let missionDeControle = extractFormData(this.champs, this.missionDeControleAttributs)
-
+        
         missionDeControle.programmeId = this.currentUser?.programme?.id
+        missionDeControle.bailleurId = missionDeControle.bailleurId.id
 
         console.log(missionDeControle)
 
@@ -449,6 +455,20 @@ export default {
         return item;
       });
     },
+
+    bailleurs: function (bailleurs) {
+      this.champs.map((item) => {
+        if (item.key === "bailleurId") {
+          item.options = bailleurs.map((bailleur) => {
+            return {
+              id: bailleur.id,
+              sigle: bailleur.sigle,
+            };
+          });
+        }
+        return item;
+      });
+    },
     
     missionDeControles: function (missionDeControles) {
       this.passationChamps.map((item) => {
@@ -491,6 +511,7 @@ export default {
        else {
           this.fetchMissionDeControles()
           this.fetchEntreprisesExecutante()
+          this.fetchBailleurs()
           this.fetchSites(this.currentUser?.programme?.id)
           this.fetchPassations(this.currentUser?.programme?.id)
        }
