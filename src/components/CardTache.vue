@@ -29,7 +29,7 @@
         </div>
         <div v-else>
            <button
-           v-if="statut.code !=2"
+           v-if="statut.code !=2 && isSuivi"
             title="suivre tache"
             @click="validerSuivi(id)"
             class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold "
@@ -102,7 +102,8 @@ export default {
     "statut",
     "id",
     "isDelete",
-    "isUpdate"
+    "isUpdate",
+    "isSuivi"
   ],
   components:{ Dropdown},
   data() {

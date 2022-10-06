@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="uniteDeGestionVisible" class="px-4">
+    <div  class="px-4">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -222,14 +222,13 @@ import extractFormData from '@/utils/extract-data'
             }
 
           })
-
         }
         else
         {
           
           this.saveUniteeDeGestion(uniteeDeGestion).then(response => {
             if(response.status == 200 || response.status == 201){
-                this.close()
+              this.close()
             }
 
           })
@@ -256,6 +255,9 @@ import extractFormData from '@/utils/extract-data'
           console.log("Fetching list of programmes...")
           this.fetchProgrammes()
           this.getPermission()
+          if(!this.uniteDeGestionVisible) {
+            this.$router.push('/401-non-autorise')
+          } 
         }, 100);
       })
     }

@@ -94,6 +94,7 @@
         </div>
         <button
           @click="addSite"
+          v-if="siteAdd"
           title="ajouter un tabelau"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline"
         >
@@ -110,6 +111,21 @@
       </div>
       <div id="dataTable">
         <vtable
+          v-if="siteDelete && !siteUpdate"
+          :headers="headers"
+          :datas="filteredSite"
+          :actions="actionsD"
+          @supprimer="supprimer"
+        >
+         <vtable
+          v-if="!siteDelete && siteUpdate"
+          :headers="headers"
+          :datas="filteredSite"
+          :actions="actionsD"
+          @updateInputData="updateInputData"
+        >
+         <vtable
+          v-if="siteDelete && siteUpdate"
           :headers="headers"
           :datas="filteredSite"
           :actions="actions"
@@ -166,6 +182,16 @@ export default {
         { name: 'modifier', iconne: '' },
         { name: 'supprimer', iconne: '' },
       ],
+      actionsD: [
+        { name: 'supprimer', iconne: '' },
+      ],
+      actionsUp: [
+        { name: 'modifier', iconne: '' },
+      ],
+      siteVisible:false,
+      siteAdd:false,
+      siteDelete:false,
+      siteUpdate:false,      
     };
   },
 
@@ -219,6 +245,25 @@ export default {
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setSite: "Sites/FILL", // map `this.CREATE_INSTANCE_ANO()` to `this.$store.commit('CREATE_INSTANCE_ANO')`
     }),
+
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-site') {
+              this.siteVisible = true
+            }
+            if(element.slug === 'creer-un-site') {
+              this.siteAdd = true
+            }
+            if(element.slug === 'modifier-un-site') {
+              this.siteUpdate = true
+            }
+            if(element.slug ==='supprimer-un-site') {
+              this.siteDelete = true
+            }
+            
+          });
+
+      },
 
     async updateInputData(id, attribut, value) {
         console.log('update');
@@ -284,6 +329,10 @@ export default {
   },
 
   mounted() {
+    this.getPermission()
+    if(!this.siteVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     console.log("Fetching sites ...")
     this.fetchSites(this.currentUser?.programme?.id)
 

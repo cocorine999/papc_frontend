@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="programmeVisible" class="w-full px-4">
+    <div class="w-full px-4">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
         <div class="px-4 overflow-auto" >
@@ -30,11 +30,10 @@
 
     <div class="flex items-center justify-between my-2">
       <titre>Mes programmes </titre>
-        <button v-if="programmeAdd" @click="addProgramme" title="ajouter un programme"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        
+      <button v-if="programmeAdd" @click="addProgramme" title="ajouter un programme"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
           <span class="mx-2 text-sm font-semibold">Ajouter </span>
-        </button>
+      </button>
     </div>
     <div  class="grid grid-cols-3 gap-4">
         <div v-for="programme in programmes" :key="programme.id">
@@ -312,6 +311,9 @@ export default {
     this.active()
     this.fetchProgrammes()
     this.getPermission()
+    if(!this.programmeVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     this.disabled()
   }
 

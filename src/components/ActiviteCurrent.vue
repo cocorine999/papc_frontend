@@ -31,7 +31,7 @@
         </div>
       </vmodal>
 
-        <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
+      <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
         <div class="p-4 overflow-auto">
           <vform
             template="default"
@@ -44,8 +44,7 @@
           ></vform>
         </div>
        
-        </modal-top-right>
-
+      </modal-top-right>
 
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <div class="p-4 overflow-auto">
@@ -125,6 +124,7 @@
           </span>
           
           <span
+          v-if="StatistiqueVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
             class="inline-block cursor-pointer text-lg uppercase py-2"
@@ -327,9 +327,7 @@
         
       </div>
 
-     
-
-      <div v-if="seeStatistique">
+      <div v-if="seeStatistique && StatistiqueVisible">
         <div class="">
           <select
             class="px-11 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -758,6 +756,7 @@ export default {
       planDecaissementAdd:false,
       planDecaissementUpdate:false,
       planDecaissementDelete:false,
+      StatistiqueVisible:false,
       idProjet:'',
       idComposante:'',
       idSC:'',
@@ -1010,6 +1009,9 @@ export default {
             }
              if(element.slug ==='supprimer-un-plan-de-decaissement') {
               this.planDecaissementDelete= true
+            }
+            if(element.slug ==='voir-une-statistique') {
+              this.StatistiqueVisible= true
             }
            
         });

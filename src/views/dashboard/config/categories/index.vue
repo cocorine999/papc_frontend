@@ -45,7 +45,7 @@
     
     <div class="my-8 flex justify-between items-center ">
       <titre>les categories</titre>
-      <button  @click="addCategorie" title="ajouter une categorie"   class="py-2 px-4  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if="categorieAdd" @click="addCategorie" title="ajouter une categorie"   class="py-2 px-4  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
         <span class="mx-2 text-sm font-semibold">ajouter une categorie</span>
       </button>
@@ -78,12 +78,12 @@
                   </svg>
                 </div> -->
                 
-                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="modifierCategorie(categorie)">
+                <div v-if="categorieUpdate" class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="modifierCategorie(categorie)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
                 </div>
-                <div   class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="supprimerCategorie(categorie)">
+                <div v-if="categorieDelete"  class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="supprimerCategorie(categorie)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
@@ -137,6 +137,10 @@ export default {
           errors: [],
         }
       ],
+      categorieVisible:false,
+      categorieAdd:false,
+      categorieDelete:false,
+      categorieUpdate:false,      
         
       });
     },
@@ -185,6 +189,24 @@ export default {
         });
 
         this.showCloseModal(true);
+      },
+      getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-une-categorie') {
+              this.categorieVisible = true
+            }
+            if(element.slug === 'creer-une-categorie') {
+              this.categorieAdd = true
+            }
+            if(element.slug === 'modifier-une-categorie') {
+              this.categorieUpdate = true
+            }
+            if(element.slug ==='supprimer-une-categorie') {
+              this.categorieDelete = true
+            }
+            
+          });
+
       },
 
       supprimerCategorie(categorie) {
@@ -272,6 +294,10 @@ export default {
   },
 
   mounted() {
+    this.getPermission()
+    if(!this.categorieVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     console.log("Fetching unitees de mesure ...");
     this.fetchCategories()
   },
