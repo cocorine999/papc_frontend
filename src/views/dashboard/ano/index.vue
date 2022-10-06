@@ -106,7 +106,7 @@
         </div>
         <div class="flex space-x-4">
           
-          <button @click="addAno" title="ajouter un tabelau"
+          <button v-if="anoAdd" @click="addAno" title="ajouter un tabelau"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
               style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
