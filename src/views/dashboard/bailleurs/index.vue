@@ -453,6 +453,7 @@
         bailleurAdd:false,
         bailleurDelete:false,
         bailleurUpdate:false,
+        
         isChange:false,
         logo:{},
         idBailleur:'',

@@ -583,7 +583,7 @@
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
       <div class="tab-content mb-3 bg-white">
-        <div v-if="modVsisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="modVsisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/mod"
             style="width: 100%"
@@ -593,7 +593,7 @@
           </router-link>
         </div>
 
-        <div v-if="missionControleVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="missionControleVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/mission-controle"
             style="width: 100%"
@@ -603,7 +603,7 @@
           </router-link>
         </div>
 
-        <div v-if="entrepriseExecutanteVisible || currentRole ==='bailleur'" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="entrepriseExecutanteVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/entreprises"
             style="width: 100%"
@@ -693,7 +693,7 @@
       </router-link>
     </div>
 
-    <div v-if="currentRole ==='administrateur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="historiqueVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/historique"
         style="width: 100%"
@@ -707,7 +707,7 @@
     </div>
 
     
-    <div v-if="currentRole ==='administrateur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="historiqueVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/historique"
         style="width: 100%"
@@ -944,7 +944,8 @@ export default {
       uniteDeMesureVisible:false,
       categorieVisible:false,
       siteVisible:false,
-      alertVisible:false
+      alertVisible:false,
+      historiqueVisible:false
     }
   },
   methods: {
@@ -1107,6 +1108,9 @@ export default {
             }
             if(element.slug ==='voir-une-unite-de-mesure') {
               this.uniteeDeGestionVisible = true
+            }
+            if(element.slug ==='voir-un-historique') {
+              this.historiqueVisible = true
             }
 
           });

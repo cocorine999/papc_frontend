@@ -117,10 +117,10 @@
         </div>
       </div>
       <div id="dataTable">
-        <vtable v-if="anoDelete &&  commentaireVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDelete"  @supprimer="supprimer" ></vtable>
-        <vtable v-if="anoDelete ==false &&  commentaireVisible ==false && voirDetailAno ==true && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDetail" @seeUpload="seeUpload" ></vtable>
-        <vtable v-if="anoRelancer && anoDelete==false && commentaireVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true" :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()" @seeUpload="seeUpload" ></vtable>
-        <vtable v-if="anoRelancer==false && anoDelete==false && commentaireVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :isComment="true" @commenter="commenter" :headers="headers" :datas="filteredAno()" ></vtable>
+        <vtable v-if="anoDelete &&  reponseAnoVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDelete"  @supprimer="supprimer" ></vtable>
+        <vtable v-if="anoDelete ==false &&  reponseAnoVisible ==false && voirDetailAno ==true && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDetail" @seeUpload="seeUpload" ></vtable>
+        <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true" :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()" @seeUpload="seeUpload" ></vtable>
+        <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :isComment="true" @commenter="commenter" :headers="headers" :datas="filteredAno()" ></vtable>
         <vtable v-if="anoUpdate && anoDelete " :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
@@ -180,7 +180,8 @@ export default {
       voirDetailAno:false,
       commentaireVisible:false,
       anoRelancer:false,
-
+      reponseAnoVisible:false,
+      reponseAnoAdd:false,
       readPDF:false,
       pdfFile:'',
       chargement:false,
@@ -335,6 +336,12 @@ export default {
         }
         if(element.slug ==='supprimer-un-ano') {
           this.anoDelete = true
+        }
+        if(element.slug ==='voir-une-reponse-ano') {
+          this.reponseAnoVisible = true
+        }
+        if(element.slug ==='creer-une-reponse-ano') {
+          this.reponseAnoVisible = true
         }
       });
     },
