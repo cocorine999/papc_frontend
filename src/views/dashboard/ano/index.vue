@@ -496,17 +496,14 @@ export default {
 
   mounted() {
 
-    this.fetchAnos()
-    //.then((value) => { console.log(value) });
-    console.log("Fetching type anos ...");
- 
-    //.then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
-    console.log("Fetching bailleurs ...");
-    this.fetchBailleurs()
     this.getPermission()
     if(!this.anoVisible) {
       this.$router.push('/401-non-autorise')
     } 
+    else {
+      this.fetchAnos()
+      this.fetchBailleurs()
+    }
 
     //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },
