@@ -120,7 +120,7 @@ export default {
       this.$toast.show({
         type: 'success',
         title: 'Success',
-        message: 'vous etes déconnecter',
+        message: 'Déconnexion réussie',
       })
     },
     

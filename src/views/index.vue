@@ -5,30 +5,31 @@
       <div class="formulaire sm:max-w-md ">
         <div class=" flex justify-center ">
           <img width="180" height="180" src="../assets/images/login/logo-gouv.webp">
+          <img width="180" height="180" src="../assets/images/login/logo-sirat.webp">
         </div>
   
         <h1 class="xl:text-2xl text-lg text-center font-bold text-primary py-6 ">PROGRAMME  D’ASSAINISSEMMENT PLUVIAL DE COTONOU</h1>
-        <p class="text-base font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte . </p>
+        <p class="text-base font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte. </p>
         <form @submit.prevent="save" action="">
           <div class="form-group my-3 relative">
-            <input v-model.trim='$v.login.$model' type="text" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Taper votre Email">
+            <input v-model.trim='$v.login.$model' type="text" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email">
             <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
             <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.required && soumettre' >
-              Ce champs est obligatoire
+              Ce champ est obligatoire
             </div>
             <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre' >
             Email invalide
             </div>
           </div>
           <div class="form-group my-3 relative">
-            <input  v-model.trim='$v.password.$model' :type="statePassword" class="w-full bg-gray-100 outline-none border :placeholder-gray-500 py-3 px-4 text-sm font-semibold border-gray-300 " placeholder="Taper votre mots de passe">
+            <input  v-model.trim='$v.password.$model' :type="statePassword" class="w-full bg-gray-100 outline-none border :placeholder-gray-500 py-3 px-4 text-sm font-semibold border-gray-300 " placeholder="Entrer votre mot de passe">
             <span @click="invisible" v-if="show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><defs><clipPath><path fill="none" d="M124-288l388-672 388 672H124z" clip-rule="evenodd"></path></clipPath></defs><path d="M508 624a112 112 0 0 0 112-112c0-3.28-.15-6.53-.43-9.74L498.26 623.57c3.21.28 6.45.43 9.74.43zm370.72-458.44L836 122.88a8 8 0 0 0-11.31 0L715.37 232.23Q624.91 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.7 119.43 136.55 191.45L112.56 835a8 8 0 0 0 0 11.31L155.25 889a8 8 0 0 0 11.31 0l712.16-712.12a8 8 0 0 0 0-11.32zM332 512a176 176 0 0 1 258.88-155.28l-48.62 48.62a112.08 112.08 0 0 0-140.92 140.92l-48.62 48.62A175.09 175.09 0 0 1 332 512z"></path><path d="M942.2 486.2Q889.4 375 816.51 304.85L672.37 449A176.08 176.08 0 0 1 445 676.37L322.74 798.63Q407.82 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5z"></path></svg></span>
             <span @click="invisible" v-if="!show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path></svg></span>
             <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.required && soumettre' >
-              Ce champs est obligatoire 
+              Ce champ est obligatoire 
             </div>
             <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.minLength && soumettre' >
-              mots de passe tres court
+              mot de passe très court
             </div>
           </div>
           <div class="py-2 my-4 flex justify-center space-x-8">
@@ -49,11 +50,14 @@
           </div>
           
           <div class="flex justify-center mt-3">
-            <router-link to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mots de passe oublié ? </router-link>
+            <router-link to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mot de passe oublié ? </router-link>
           </div>
         </form>
 
         <div class="partner flex space-x-4 py-8 items-center">
+          <div class="img">
+            <img src="../assets/images/login/partners/wb-logo.webp" alt="WB">
+          </div>
           <div class="img">
             <img src="../assets/images/login/partners/adf-logo.webp" alt="AFD">
           </div>
@@ -69,13 +73,10 @@
           <div class="img">
             <img src="../assets/images/login/partners/boad-logo.webp" alt="BOAD">
           </div>
-          <div class="img">
-            <img src="../assets/images/login/partners/wb-logo.webp" alt="WB">
-          </div>
         </div>
 
         <div>
-          <p class="text-md font-semibold text-center text-gray-700">&copy; 2022 Banque Mondiale.Tout droit réservé </p>
+          <p class="text-md font-semibold text-center text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC</p>
         </div>
       </div>
     </div>
@@ -88,9 +89,9 @@
 
     <!-- fin de l'image de connexion -->
     <div class=" absolute right-2 top-4">
-      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center">Cliquez ici pour activez le compte</button>
+      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center">Cliquez-ici pour activer le compte</button>
     </div>
-    <div class="drapeau absolute bottom-0 right-0 left-0 grid grid-cols-3">
+    <div class="drapeau fixed bottom-0 right-0 left-0 grid grid-cols-3">
       <div class="h-2 bg-green-700"></div>
       <div class="h-2 bg-yellow-500"></div>
       <div class="h-2 bg-red-700"></div>
@@ -149,18 +150,18 @@ export default {
               const bailleurInfo = datas.profil.projet
               localStorage.setItem('bailleurInfo',JSON.stringify(bailleurInfo));
 
-              this.$toast.success("vous etes connecté !")
+              this.$toast.success("Connexion réussie")
               this.$router.push('/dashboard')
             }
             else if(response.data.utilisateur.type =='unitee-de-gestion') {
-              this.$toast.success("vous etes connecté !")
+              this.$toast.success("Connexion réussie")
               this.$router.push('/dashboard/projets')
             }
             else if (response.data.utilisateur.type =='') {
 
             }
             //this.$router.push('/dashboard/bailleurs')
-            //this.$toast.success("vous etes connecté !")
+            //this.$toast.success("Connexion réussie")
             //window.location.assign(window.location.origin+"/dashboard/bailleurs")
           }else{
             this.$toast.success(response.message)
