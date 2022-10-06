@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="modVisible || currentRole=='bailleur'" class="px-4">
+    <div  class="px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
@@ -57,27 +57,23 @@
         <div class="flex space-x-4">
           <span
             @click="goMod"
-            v-if="modVisible || currentRole =='bailleur'"
+            v-if="modVisible"
             :class="{ 'border-primary border-b-8': seeMod }"
             class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
             >Listes MOD
           </span>
           <span
+            v-if="passationVisible"
             @click="goPassation"
             :class="{ 'border-primary border-b-8': seePassation }"
             class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
             >Passation de marché
           </span>
-          <span
-            @click="goChecklist"
-            :class="{ 'border-primary border-b-8': seeChecklist }"
-            class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold py-2"
-            >Checklist
-          </span>
+         
         </div>
 
         <button
-          v-if="seeMod && modVisible"
+          v-if="seeMod && modAdd"
           @click="addMod"
           title="Ajouter un MOD"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
@@ -94,7 +90,7 @@
           <span class="mx-2 text-sm font-semibold">Ajouter un MOD</span>
         </button>
         <button
-          v-if="seePassation"
+          v-if="seePassation && passationAdd"
           @click="addPassation"
           title="Ajouter une passation de marché"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
@@ -128,22 +124,7 @@
           </card-mod>
         </div>
       </div>
-      <div v-if="seeChecklist">
-        <div class="grid grid-cols-3 gap-4">
-          <div v-for="i in 6" :key="i.id">
-            <card-checklist
-              libelle="formulaire"
-              code="15555DC"
-              activite="Nombre d'accident routiere"
-              :unites="['personne', '%', 'km']"
-              @supprimer="supprimerChecklist"
-              @modifier="modifierChecklist"
-              @dupliquer="dupliquerChecklist"
-            >
-            </card-checklist>
-          </div>
-        </div>
-      </div>
+     
       <div v-if="seePassation">
         <vtable
           :headers="headers"
@@ -311,6 +292,10 @@ export default {
       modAdd:false,
       modDelete:false,
       modUpdate:false,
+      passationVisible:false,
+      passationAdd:false,
+      passationDelete:false,
+      passationUpdate:false,
     };
   },
 
@@ -354,7 +339,7 @@ export default {
         fetchSites: "FETCH_LIST_SITE",
     }),
     getPermission() {
-          this.currentUser.role[0].permissions.forEach(element => {
+      this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-mod') {
               this.modVisible = true
             }
@@ -366,6 +351,18 @@ export default {
             }
             if(element.slug ==='supprimer-un-mod') {
               this.modDelete = true
+            }
+            if(element.slug ==='voir-une-passation') {
+              this.passationVisible = true
+            }
+            if(element.slug === 'modifier-une-passation') {
+              this.passationAdd = true
+            }
+            if(element.slug === 'modifier-une-passation') {
+              this.passationUpdate = true
+            }
+            if(element.slug ==='supprimer-une-passation') {
+              this.passationDelete = true
             }
            
           });
@@ -380,19 +377,13 @@ export default {
     goMod() {
       this.seeMod = true;
       this.seePassation = false;
-      this.seeChecklist = false;
     },
 
     goPassation() {
       this.seeMod = false;
       this.seePassation = true;
-      this.seeChecklist = false;
     },
-    goChecklist() {
-      this.seeMod = false;
-      this.seePassation = false;
-      this.seeChecklist = true;
-    },
+   
 
     supprimerPassation(data) {
       alert(data + " à ete bien supprimer");
@@ -428,6 +419,7 @@ export default {
       if (window.confirm("Voulez-vous supprimer le mod " + mod.user.nom))
         this.deleteMod(mod.id);
     },
+
     supprimerPassation(passation) {
       if(window.confirm("Voulez-vous supprimer la passation "))
         this.deletePassation(passation.id)
@@ -460,11 +452,13 @@ export default {
 
       this.resetForm();
     },
+
     close2() {
       this.showCloseModal2()
 
       this.resetForm2()
     },
+
     showCloseModal2(value = false) {
       this.showModal2 = value
     },
@@ -477,11 +471,13 @@ export default {
 
       this.setPassation({})
     },
+
     addPassation() {
       this.title2 = 'Ajouter une nouvelle passation'
       
       this.showCloseModal2(true)
     },
+
     sendForm2() {
 
       this.passationChamps = this.passationChamps.map(item => { item.errors = []; return item})
@@ -610,8 +606,12 @@ export default {
   },
 
   mounted() {
+   
     this.getPermission()
-     if(this.currentUser != undefined) {
+    if(!this.modVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
+    if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
        if(this.currentUser.type ==='bailleur') {
           this.fetchMods();
