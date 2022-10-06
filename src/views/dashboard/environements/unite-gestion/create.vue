@@ -95,13 +95,13 @@
                     <label   class=" block py-2 text-sm font-semibold " for="">
                       {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                     </label>
-                    <input  type="text"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
+                    <input  type="text"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"  />
                 </div>
                 <div v-if="form.inputType=='photos'">
                   <label   class=" block py-2 text-sm font-semibold " for="">
                     {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                   </label>
-                  <input  type="file" accept="png,jpg"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
+                  <input  type="file" accept="png,jpg"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"  />
                 </div>
                 <div v-if="form.inputType=='boolean'">
                   <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.nom}}</label>
@@ -120,7 +120,7 @@
                    <label   class=" block py-2 text-sm font-semibold " for="">
                     {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
                   </label>
-                  <input  accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"  />
+                  <input  accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"  />
                 </div>
               </div>
             </div>

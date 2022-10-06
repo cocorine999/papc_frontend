@@ -80,7 +80,7 @@
               <!-- dots -->
               <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
               <!-- ./dots -->
-              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate">{{bailleur.bailleur}}</p>
+              <p class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 mt-16 truncate">{{bailleur.bailleur}}</p>
     
               <div class="flex items-center mt-8 text-gray-600">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">

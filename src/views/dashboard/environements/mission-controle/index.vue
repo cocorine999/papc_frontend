@@ -103,7 +103,7 @@
               <span  class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p> </p></span>
               <span  class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{entreprise.nom}}</span>
               
-              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"> {{entreprise.user.nom}}</p>
+              <p class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 mt-16 truncate"> {{entreprise.user.nom}}</p>
         
               <div class="flex items-center mt-8 text-gray-600">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">

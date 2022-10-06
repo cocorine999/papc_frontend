@@ -141,7 +141,7 @@
                 ></span>
                  ./dots -->
                 <p
-                  class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"
+                  class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 mt-16 truncate"
                 >
                   {{ bailleur.user.nom }}
                 </p>
