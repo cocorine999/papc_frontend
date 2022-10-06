@@ -23,7 +23,7 @@
         <li v-for="historique in historiques" :key="historique.id" class="ml-4 my-6">
             <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
             <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"> {{historique.created_at}} </time>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">  {{historique.action}} </h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">  {{historique.action}}  a partir {{historique.ip}} </h3>
             <p class="text-base font-normal text-gray-500 dark:text-gray-400"> {{historique.description}} </p>
             <p class="text-base font-normal text-gray-500 dark:text-gray-400"> <span class="font-bold px-2 ">Depuis </span> {{historique.agent}} </p>
         </li>

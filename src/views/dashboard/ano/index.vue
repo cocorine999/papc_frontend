@@ -116,15 +116,15 @@
           </button>
         </div>
       </div>
+     
       <div id="dataTable">
-        <vtable v-if="anoDelete &&  reponseAnoVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDelete"  @supprimer="supprimer" ></vtable>
-        <vtable v-if="anoDelete ==false &&  reponseAnoVisible ==false && voirDetailAno ==true && anoUpdate == false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDetail" @seeUpload="seeUpload" ></vtable>
-        <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true" :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()" @seeUpload="seeUpload" ></vtable>
-        <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false && voirDetailAno ==false && anoUpdate == false" :statut="true"  :sendRequest="false" :isComment="true" @commenter="commenter" :headers="headers" :datas="filteredAno()" ></vtable>
-        <vtable v-if="anoUpdate && anoDelete " :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDelete"  @supprimer="supprimer" ></vtable>
+        <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true" :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()" :actions="actionsReponse" :isComment="true" @commenter="commenter"   @seeUpload="seeUpload" ></vtable>
+        <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" ></vtable>
+        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers"  :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
-  </dashboard>
+  </dashboard>  
 
 </template>
 
@@ -177,6 +177,7 @@ export default {
       anoAdd:false,
       anoDelete:false,
       anoUpdate:false,
+      bailleurVisible:false,
       voirDetailAno:false,
       commentaireVisible:false,
       anoRelancer:false,
@@ -223,21 +224,23 @@ export default {
       ],
       actionsDelete: [
         { name: 'supprimer', iconne: '' }, 
+         { name:'detail'},
       ],
       actionsReponse: [
         { name:'reponse'},
+         { name:'detail'},
       ],
       sendRequest: false,
 
       fichiers:[],
-       pdf:[
+      pdf:[
           {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
           {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
-        ],
-        showReponse:false,
-        anosId:'',
-        showComment:false,
-        anosReponses:[]
+      ],
+      showReponse:false,
+      anosId:'',
+      showComment:false,
+      anosReponses:[]
     }
   },
 
@@ -341,7 +344,11 @@ export default {
           this.reponseAnoVisible = true
         }
         if(element.slug ==='creer-une-reponse-ano') {
-          this.reponseAnoVisible = true
+          this.reponseAnoAdd = true
+        }
+       
+        if(element.slug ==='voir-un-bailleur') {
+          this.bailleurVisible = true
         }
       });
     },
@@ -495,15 +502,19 @@ export default {
   },
 
   mounted() {
-
+    
     this.getPermission()
     if(!this.anoVisible) {
       this.$router.push('/401-non-autorise')
-    } 
+    }
     else {
       this.fetchAnos()
-      this.fetchBailleurs()
+      if(this.bailleurVisible) {
+        this.fetchBailleurs()
+      } 
     }
+   
+   
 
     //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },

@@ -296,6 +296,9 @@ export default {
       passationAdd:false,
       passationDelete:false,
       passationUpdate:false,
+      siteVisible:false,
+      entreprisesExecutanteVisible:false,
+
     };
   },
 
@@ -364,10 +367,15 @@ export default {
             if(element.slug ==='supprimer-une-passation') {
               this.passationDelete = true
             }
-           
+            if(element.slug ==='voir-une-entreprise-executante') {
+              this.entreprisesExecutanteVisible = true
+            }
+            if(element.slug ==='voir-un-site') {
+              this.siteVisible = true
+            }  
           });
 
-     },
+    },
 
     addPassation() {
       this.title2 = "Ajouter une Passation";
@@ -611,21 +619,17 @@ export default {
     if(!this.modVisible) {
       this.$router.push('/401-non-autorise')
     } 
-    if(this.currentUser != undefined) {
-       this.currentRole = this.currentUser.type
-       if(this.currentUser.type ==='bailleur') {
-          this.fetchMods();
-          this.fetchPassations(this.currentUser?.programme?.id)
-       }
-       else {
-          this.fetchMods();
-          this.fetchPassations(this.currentUser?.programme?.id)
-          this.fetchEntreprisesExecutante()
-          this.fetchSites(this.currentUser?.programme?.id)
-
-       }
+    else{
+      this.fetchMods();
+      this.fetchPassations(this.currentUser?.programme?.id)
+      if(this.entreprisesExecutanteVisible) {
+        this.fetchEntreprisesExecutante()
+      }
+      if(this.siteVisible) {
+        this.fetchSites(this.currentUser?.programme?.id)
+      }
+    
      }
-   
   
   },
 };
