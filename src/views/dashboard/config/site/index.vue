@@ -117,6 +117,7 @@
           :actions="actionsD"
           @supprimer="supprimer"
         >
+         </vtable>
          <vtable
           v-if="!siteDelete && siteUpdate"
           :headers="headers"
@@ -124,6 +125,7 @@
           :actions="actionsD"
           @updateInputData="updateInputData"
         >
+         </vtable>
          <vtable
           v-if="siteDelete && siteUpdate"
           :headers="headers"

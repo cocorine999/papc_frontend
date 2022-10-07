@@ -1,22 +1,7 @@
 <template>
   <dashboard>
     <div  class="p-4">
-      <div class="select w-52">
-        
-      <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        
-        <option value="" selected>Version actuelle</option>
-
-        <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab.id"> {{scopePtab.nom}}</option>
-      </select>
-
-      </div>
-      <div class="border my-4 rounded-lg border-gray-300 shadow-md">
-        <composante-current :valueProfondeur="null" v-if="currentPage"></composante-current>
-        <revisite v-else :version="version"></revisite>
-      </div>
-    </div>
-    <div v-if="currentRole ==='bailleur'" class="p-4">
+      <div v-if="currentRole ==='bailleur'" class="p-4">
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -57,7 +42,24 @@
         </div>
 
       </div>
+      </div>
+      <div v-else>
+         <div class="select w-52">
+          <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            
+            <option value="" selected>Version actuelle</option>
+
+            <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab.id"> {{scopePtab.nom}}</option>
+          </select>
+        </div>
+        <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+          <composante-current :valueProfondeur="null" v-if="currentPage"></composante-current>
+          <revisite v-else :version="version"></revisite>
+        </div>
+      </div>
+     
     </div>
+
   </dashboard>
 </template>
 

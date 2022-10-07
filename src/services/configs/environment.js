@@ -1,14 +1,11 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> 059e792f52b89620ed9cef5b928bf19a074b8116
-const API_BASE_URL = "http://89.47.161.3:8001"
+const API_BASE_URL = "http://192.168.8.104:8000"
 
 const STAGGING_URL = "http://89.47.161.3:8001"
 
 const DEPLOYMENT_URL = "http://89.47.161.3:8001"
 
-const PUSHER_BASE_URL = "127.0.0.1"
+const PUSHER_BASE_URL = "89.47.161.3"
 
 const PUSHER_APP_KEY = "ae75f3a73201ef37c668"
 

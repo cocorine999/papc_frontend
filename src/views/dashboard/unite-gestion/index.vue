@@ -128,9 +128,7 @@ import extractFormData from '@/utils/extract-data'
       ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
 
       getPermission() {
-        PermissionsService.get().then((data) => {
-          this.permissions = data.data.data
-          this.currentUser.role[0].permissions.forEach(element => {
+        this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-programme') {
               this.uniteDeGestionVisible = true
             }
@@ -145,10 +143,6 @@ import extractFormData from '@/utils/extract-data'
             }
            
           });
-
-        }).catch((e) => {
-          console.log(e)
-        })
       },
     
       addUnite() {

@@ -124,17 +124,31 @@
         </div>
       </div>
 
-      <div class="slider grid grid-cols-5 gap-x-4">
-        <div v-for="i in 5" :key="i" class="slide-track">
-          <div class="">
-            <img
+      <div class="w-5/6 mx-auto p-1">
+        <vueper-slides 
+          class="no-shadow "
+          :bullets="false"
+          :visible-slides="3"
+          :slide-ratio="1 / 4"
+          :gap="3"
+          autoplay
+          arrows-inside
+        :pause-on-hover="pauseOnHover"
+        @autoplay-pause="internalAutoPlaying = false"
+        @autoplay-resume="internalAutoPlaying = true"
+        
+        :dragging-distance="70">
+
+         <vueper-slide v-for="i in slide" :key="i" :title="i.title" :content="i.content"  :image="i.image" :link = "i.link" />
+         </vueper-slides>
+      </div>
+
+      
+      <!-- <img
               src="https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg"
               class="w-full h-52 object-cover py-2"
               alt=""
-            />
-          </div>
-        </div>
-      </div>
+            /> -->
 
       <div class="grid grid-cols-3">
         <div class="h-2 w-full bg-green-700"></div>
@@ -147,12 +161,44 @@
 
 <script>
 import {API_BASE_URL} from "@/services/configs/environment.js";
+import { VueperSlides, VueperSlide } from 'vueperslides'
+import 'vueperslides/dist/vueperslides.css'
 export default {
-
+  name: 'Description',
   props:['projet','image'],
+  components: {
+    VueperSlides, 
+    VueperSlide
+  },
   data() {
     return {
       base_url:API_BASE_URL,
+      pauseOnHover: true,
+      autoPlaying: true,
+     internalAutoPlaying: true,
+    slide : [
+      {
+        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
+        link :  'https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk'     
+      },
+      {
+        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
+      
+        link :  'https://www.google.com'     
+      },
+      {
+        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
+        link :  'https://www.facebook.com'     
+      },
+      {
+        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
+        link :  'https://www.deepl.com'     
+      },
+      {
+        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
+        link :  'https://www.youtube.com'     
+      }
+    ]
     };
   },
 
@@ -168,65 +214,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 /*le carousel*/
-
-@-webkit-keyframes scroll {
-  0% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(calc(-250px * 7));
-    transform: translateX(calc(-250px * 7));
-  }
+.vueperslide--active {
+ 
+  opacity: 1;
+  border: 3px solid black;
+  border-radius: 12px;
+  border-color: #000 ;
 }
-
-@keyframes scroll {
-  0% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(calc(-250px * 7));
-    transform: translateX(calc(-250px * 7));
-  }
+.vueperslides__arrow svg {
+  color: rgb(0, 26, 255);
+  font-size: 16px;
+  stroke-width: 2;
+  width: 14px;
 }
-.slider {
-  overflow: hidden;
-  position: relative;
-  top: 0px;
-}
-.slider::before,
-.slider::after {
-  background: gradient(
-    linear,
-    left top,
-    right top,
-    from(white),
-    to(rgba(255, 255, 255, 0))
-  );
-  background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 100%);
-  content: "";
-  position: absolute;
-  z-index: 2;
-}
-.slider::after {
-  right: 0;
-  top: 0;
-  -webkit-transform: rotateZ(180deg);
-  transform: rotateZ(180deg);
-}
-.slider::before {
-  left: 0;
-  top: 0;
-}
-.slider .slide-track {
-  -webkit-animation: scroll 40s linear infinite;
-  animation: scroll 40s linear infinite;
-  display: -webkit-box;
-  display: flex;
-}
-
 /* fin de la partie carousel*/
 </style>
