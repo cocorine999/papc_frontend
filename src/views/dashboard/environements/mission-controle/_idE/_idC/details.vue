@@ -11,14 +11,15 @@
             </li>
   
             <li class="flex items-center text-blue-500 ">
-              <router-link to="" class="">Checklist</router-link>
+              <router-link to="" class="">Rapport mission de controle</router-link>
             </li>
           </ol>
         </div> 
       </nav>
       <div class="flex items-center justify-between my-4">
         <div class="flex space-x-4">
-          <span  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Checklist </span>
+          <span v-if="seeChecklist"  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Rapport mission de controle </span>
+        <span v-else  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Graphes d'analyse </span>
         </div>
         <vue-html2pdf
           :show-layout="false"
