@@ -221,6 +221,7 @@
               @commentaire="showComment = true"
               :isDelete="tacheDelete"
               :isUpdate="tacheUpdate"
+              :isSuivi="tacheSuivi"
             ></card-tache>
           </div>
         </div>
@@ -333,14 +334,12 @@ export default {
       tacheAttributs : ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'poids'],
 
       champs:[
-
         {name: 'Nom de la tâche', key: "nom", type: 'text', placeholdere: "Nom de la tâche", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-        
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},  
       ],
       champsSuiviTache:[
         {name: 'Tache ', key: "statut", type: '', placeholdere: 'Selectionnez une tache ', isSelect: true, isTextArea: false, data:'', required: true, options: [{nom:'tache 1'},{nom:'tache 2'}], cle: 'etat', value: 'nom',  errors : []},
@@ -365,6 +364,7 @@ export default {
       tacheAdd:false,
       tacheDelete:false,
       tacheUpdate:false,
+      tacheSuivi:false,
       idProjet:'',
       idComposante:'',
       idSC:'',
@@ -375,7 +375,6 @@ export default {
       newActivite:null,
       isClick:false,
       isShow:true
-
     };
   },
 
@@ -540,7 +539,7 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
-     getPermission() {
+    getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
           if(element.slug ==='voir-une-tache') {
             this.tacheVisible = true
@@ -553,6 +552,9 @@ export default {
             }
             if(element.slug ==='supprimer-une-tache') {
               this.tacheDelete = true
+            } 
+            if(element.slug ==='voir-un-suivi-tache') {
+              this.tacheSuivi = true
             } 
         });
     },
@@ -605,6 +607,7 @@ export default {
       })
     },
     suivreMyTache(tache) {
+      if(this.tacheSuivi)
       this.$router.push({name:'dashboard_projets_taches_globale_suivis',params:{id:tache.id}})
     },
     close() {
@@ -723,17 +726,20 @@ export default {
         "/dashboard/projets/composantes/sous-composantes/activites/taches"
       );
     },
-     toggle() {
+
+    toggle() {
       this.pending = false
       this.rejected = false
       this.success = true
 
     },
+
     toggle2() {
       this.success = false
       this.rejected = false
       this.pending = true
     },
+
     toggle3() {
       this.pending = false
       this.success = false
@@ -819,10 +825,12 @@ export default {
     showCloseModal(value = false) {
       this.showModal = value;
     },
+
     gotoSuivi() {
       this.seeSuivi = true
       this.seeTache = false
     },
+
     gotoTache() {
       this.seeSuivi = false
       this.seeTache = true

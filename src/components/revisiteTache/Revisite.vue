@@ -365,7 +365,7 @@ export default {
       tacheAdd:false,
       tacheDelete:false,
       tacheUpdate:false,
-
+      tacheSuivi:false,
       actions: [
        
       ],
@@ -407,8 +407,11 @@ export default {
             }
             if(element.slug ==='supprimer-une-tache') {
               this.tacheDelete = true
+            }
+            if(element.slug ==='voir-un-suivi-tache-revise') {
+              this.tacheSuivi = true
             } 
-        });
+      });
     },
     customLabel({ codePta, nom }) {
       return `${codePta} – ${nom}`;
@@ -437,16 +440,19 @@ export default {
         "/dashboard/projets/composantes/sous-composantes/activites/taches"
       );
     },
+
     toggle() {
       this.pending = false;
       this.rejected = false;
       this.success = true;
     },
+
     toggle2() {
       this.success = false;
       this.rejected = false;
       this.pending = true;
     },
+
     toggle3() {
       this.pending = false;
       this.success = false;

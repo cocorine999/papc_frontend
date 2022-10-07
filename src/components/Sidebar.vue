@@ -34,7 +34,8 @@
         <span class="font-semibold text-xs uppercase">Dashboard</span>
       </router-link>
     </div>
-    <div v-if="currentRole ==='administrateur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+
+    <div v-if="programmeVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/programme"
         style="width: 100%"
@@ -60,7 +61,7 @@
       </router-link>
     </div>
 
-    <div v-if="currentRole ==='administrateur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="uniteeDeGestionVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/unite-gestion"
         style="width: 100%"
@@ -194,7 +195,7 @@
       </router-link>
     </div>
 
-    <div v-if="projetVisible || composanteVisible || composanteReVisible || activiteVisible || activiteReVisible  || planDecaissementVisible || tacheVisible || tacheReVisible || dashboardProjetVisible "  class="mb-1 px-6 relative">
+    <div v-if="projetVisible || composanteVisible || composanteReVisible || activiteVisible || activiteReVisible  || planDecaissementVisible || tacheVisible || tacheReVisible  "  class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -237,7 +238,7 @@
       </header>
 
       <div class="tab-content mb-3 bg-white">
-        <div v-if="projetVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="projetVisible " class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets"
             style="width: 100%"
@@ -247,7 +248,7 @@
           </router-link>
         </div>
 
-        <div v-if="composanteVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="composanteVisible || composanteReVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/composantes-globale"
             style="width: 100%"
@@ -257,7 +258,7 @@
           </router-link>
         </div>
 
-        <div v-if="composanteVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="composanteVisible || composanteReVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/sous-composantes-globale"
             style="width: 100%"
@@ -267,7 +268,7 @@
           </router-link>
         </div>
 
-        <div v-if="activiteVisible || planDecaissementVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="activiteVisible || activiteReVisible || planDecaissementVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/activites-globale"
             style="width: 100%"
@@ -277,7 +278,7 @@
           </router-link>
         </div>
 
-        <div v-if="tacheVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="tacheVisible || tacheReVisible " class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/projets/taches-globale"
             style="width: 100%"
@@ -493,7 +494,7 @@
       </div>
     </div>
 
-    <div  class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="voirPtaVisible || voirPpmVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/pta"
         style="width: 100%"
@@ -518,7 +519,8 @@
         <span class="font-semibold text-xs uppercase">PTAB</span>
       </router-link>
     </div>
-     <div  class="mb-1 px-4 flex items-center text-white cursor-pointer">
+
+    <div  class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/collecteur"
         style="width: 100%"
@@ -665,7 +667,7 @@
       </router-link>
     </div>
 
-    <div v-if="currentRole ==='bailleur' || papVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="papVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/PAP"
         style="width: 100%"
@@ -717,7 +719,7 @@
       </router-link>
     </div> 
     
-    <div v-if="utilisateurVisible || currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="utilisateurVisible " class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/utilisateurs"
         style="width: 100%"
@@ -793,7 +795,7 @@
         </div>
 
          -->
-        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+        <div v-if="uniteDeMesureVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/config/unites"
             style="width: 100%"
@@ -803,7 +805,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
+        <div v-if="categorieVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/config/categories"
             style="width: 100%"
@@ -813,7 +815,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
+        <div  class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/config/main_oeuvre"
             style="width: 100%"
@@ -825,16 +827,8 @@
 
        
 
-        <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
-          <router-link
-            to="/dashboard/config/types"
-            style="width: 100%"
-            class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
-          >
-            <span class="font-semibold text-xs">Type PTAB</span>
-          </router-link>
-        </div>
-         <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
+       
+         <div v-if="siteVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/config/sites"
 
@@ -854,7 +848,7 @@
             <span class="font-semibold text-xs">Frequence de sauvegarde</span>
           </router-link>
         </div>
-        <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
+        <div v-if="alertVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link
             to="/dashboard/config/alert"
 
@@ -947,9 +941,10 @@ export default {
       gouvernementVisible:false,
       activiteEnVisible:false,
       formulaireVisible:false,
-     
-    
-     
+      uniteDeMesureVisible:false,
+      categorieVisible:false,
+      siteVisible:false,
+      alertVisible:false
     }
   },
   methods: {
@@ -961,12 +956,13 @@ export default {
             if(element.slug ==='voir-une-institution') {
               this.institutionVisible = true
             }
-            if(element.slug ==='voir ptab') {
+            if(element.slug ==='voir-un-ptab') {
               this.voirPtaVisible = true
             }
-            if(element.slug ==='voir ppm') {
+            if(element.slug ==='voir-un-ppm') {
               this.voirPpmVisible = true
             }
+           
             if(element.slug ==='voir-un-decaissement') {
               this.decaissementVisible = true
             }
@@ -1099,6 +1095,18 @@ export default {
             }
             if(element.slug ==='voir-un-formulaire') {
               this.formulaireVisible = true
+            }
+            if(element.slug ==='voir-une-configuration-alerte') {
+              this.alertVisible = true
+            }
+            if(element.slug ==='voir-un-site') {
+              this.siteVisible = true
+            }
+            if(element.slug ==='voir-une-categorie') {
+              this.categorieVisible = true
+            }
+            if(element.slug ==='voir-une-unite-de-mesure') {
+              this.uniteeDeGestionVisible = true
             }
 
           });

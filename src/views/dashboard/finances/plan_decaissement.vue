@@ -63,6 +63,7 @@ export default {
       planDecaissementUpdate:false,
       planDecaissementDelete:false,
       planDecaissementAdd:false,
+      exporterDecaissement:false,
     }      
   },
   computed: {
@@ -85,6 +86,9 @@ export default {
             }
             if(element.slug ==='supprimer-un-plan-de-decaissement') {
               this.planDecaissementDelete = true
+            }
+            if(element.slug ==='exporter-un-plan-decaissement') {
+              this.exporterDecaissement = true
             }
            
           });

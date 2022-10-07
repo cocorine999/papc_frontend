@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 059e792f52b89620ed9cef5b928bf19a074b8116
 const API_BASE_URL = "http://89.47.161.3:8001"
 
 const STAGGING_URL = "http://89.47.161.3:8001"
