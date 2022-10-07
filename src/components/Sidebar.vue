@@ -663,7 +663,7 @@
             ></path>
           </svg>
         </span>
-        <span class="font-semibold text-xs uppercase">Formulaire</span>
+        <span class="font-semibold text-xs uppercase">Rapports</span>
       </router-link>
     </div>
 
