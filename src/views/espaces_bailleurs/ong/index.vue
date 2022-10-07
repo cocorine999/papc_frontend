@@ -25,7 +25,7 @@
       </modal-top-right>
     </div>
     
-    <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
@@ -51,8 +51,8 @@
     <div class="flex items-center justify-between my-2">
        <div class="flex space-x-4">
           <span @click="goOng" :class="{'border-primary border-b-8':seeOng}" class="inline-block cursor-pointer  text-lg uppercase font-bold  py-2">Les ONG/AGENCES DE COMMUNICATIONs </span>
-          <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
-          <span @click="gochecklist" :class="{'border-primary border-b-8':seechecklist}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Mes checklist </span>
+          <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2">Passation de marché </span>
+          <span @click="gochecklist" :class="{'border-primary border-b-8':seechecklist}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2">Mes checklist </span>
         </div>
       
         <button v-if="seeOng" @click="addBailleur" title="ajouter une instutitions"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">

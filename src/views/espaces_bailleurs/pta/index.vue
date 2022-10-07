@@ -23,8 +23,8 @@
 
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span @click="goPta" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
-        <span @click="goPpm" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
+        <span @click="goPta" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-base uppercase font-bold    py-2">Le pta </span>
+        <span @click="goPpm" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2">Le PPM </span>
       </div> 
       <div>
         <div v-if="seePta" class="flex space-x-4 items-center">

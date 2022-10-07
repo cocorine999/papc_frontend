@@ -94,8 +94,8 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Taches</span>
-         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase border-primary py-2">Suivi tache</span> -->
+          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-base uppercase border-primary py-2">Taches</span>
+         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-base uppercase border-primary py-2">Suivi tache</span> -->
         </div>
 
         <button v-if="seeTache && tacheVisible "   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
@@ -158,7 +158,7 @@
                 v-if="!showFiltre"
                 title="filtre"
                 @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1"
+                class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
               >
                 <svg
                   stroke="currentColor"
@@ -237,7 +237,7 @@
                 >
                   attentes
                   <span
-                    class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+                    class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
                   >
                     5
                   </span>

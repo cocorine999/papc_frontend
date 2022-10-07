@@ -254,25 +254,25 @@
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeActivite }"
             @click="gotoActivite()"
-            class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
+            class="inline-block cursor-pointer text-base uppercase border-primary py-2"
             >Activités</span
           >
           <span
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
-            class="inline-block cursor-pointer text-lg uppercase py-2"
+            class="inline-block cursor-pointer text-base uppercase py-2"
             >Plan d'ecaissement
           </span>
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
             @click="gotoSuivi()"
-            class="inline-block cursor-pointer text-lg uppercase py-2"
+            class="inline-block cursor-pointer text-base uppercase py-2"
             >Le suivi evaluation
           </span>
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
-            class="inline-block cursor-pointer text-lg uppercase py-2"
+            class="inline-block cursor-pointer text-base uppercase py-2"
             >Statistiques
           </span>
         </div>
@@ -298,7 +298,7 @@
           v-if="seePlan"
           @click="addPlan"
           title="ajouter un plan d'ecaissement"
-          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
+          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"
         >
           <span
             ><svg
@@ -344,7 +344,7 @@
                 v-if="!showFiltre"
                 title="filtre"
                 @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1"
+                class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
               >
                 <svg
                   stroke="currentColor"
@@ -418,7 +418,7 @@
               >
                 attentes
                 <span
-                  class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+                  class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
                 >
                   5
                 </span>

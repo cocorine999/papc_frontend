@@ -1,7 +1,7 @@
 <template>
   <div class="w-full px-4">
     
-    <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">
@@ -20,7 +20,7 @@
     </nav> 
     
     <div class="flex space-x-4">
-      <span :class="{'border-primary border-b-8 font-bold':seeActivite}" @click="gotoActivite()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Activités</span>
+      <span :class="{'border-primary border-b-8 font-bold':seeActivite}" @click="gotoActivite()" class="inline-block cursor-pointer  text-base uppercase    border-primary py-2">Activités</span>
       <span :class="{'border-primary border-b-8 font-bold':seePlan}" @click="gotoPlan()" class="inline-block cursor-pointer text-lg uppercase  py-2">Plan d'ecaissement </span>
       <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
     </div>
