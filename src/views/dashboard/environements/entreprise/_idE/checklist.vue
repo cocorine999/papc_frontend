@@ -99,7 +99,8 @@ export default {
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
-        formulaireId:""
+        formulaireId:"",
+        entrepriseExecutanteVisible:false
     }
   },
   computed: {
@@ -155,10 +156,23 @@ export default {
       if(window.confirm("Voulez-vous supprimer cette activité " + eActivite.nom))
         await this.deleteEActivite(eActivite.id)
     },
+    getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-suivi-environnementale') {
+          this.entrepriseExecutanteVisible = true
+        }
+       
+           
+      });
+     },
+
   },
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    
+     this.getPermission()
+     if( !this.entrepriseExecutanteVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     console.log("Fetching list formulaires ...")
     let form = {
       "type": 'entreprise',

@@ -103,7 +103,8 @@ export default {
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
-        formulaireId:""
+        formulaireId:"",
+        entrepriseExecutanteVisible:false,
     }
   },
   computed: {
@@ -169,11 +170,10 @@ export default {
       if(this.valueFiltre != null)
       {
         var form = {
-             "type": 'mission-de-controle',
-             "typeId": this.valueFiltre,
-             "entrepriseExecutantId": this.$route.params.idE
+          "type": 'mission-de-controle',
+          "typeId": this.valueFiltre,
+          "entrepriseExecutantId": this.$route.params.idE
         };
-
         this.setMissionDeControleSelect(this.valueFiltre)
       }
 
@@ -193,9 +193,22 @@ export default {
       this.getFormulaires(form).then((response) => {
         this.formulaires = response;
       });
-    }
+    },
+    getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-suivi-environnementale') {
+          this.entrepriseExecutanteVisible = true
+        }
+       
+           
+      });
+    },
   },
   mounted() {
+    this.getPermission()
+    if( !this.entrepriseExecutanteVisible) {
+      this.$router.push('/401-non-autorise')
+     } 
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
 
     console.log("Fetching list missions de controle ...")

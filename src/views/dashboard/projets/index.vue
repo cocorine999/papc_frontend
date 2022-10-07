@@ -227,6 +227,7 @@ export default {
       projetDelete:false,
       projetUpdate:false,
       dashboardProjetVisible:false,
+      bailleurVisible:false,
       sendRequest: false,
       fichiers:[],
       image:{}
@@ -284,6 +285,9 @@ export default {
             }
             if(element.slug ==='voir-un-dashboard') {
               this.dashboardProjetVisible = true
+            }
+            if(element.slug ==='voir-un-bailleur') {
+              this.bailleurVisible = true
             }
            
         });
@@ -588,7 +592,9 @@ export default {
       this.fetchProjets(this.programmeId).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of bailleurs...")
-          this.fetchBailleurs(this.programmeId)
+          if(this.bailleurVisible) {
+            this.fetchBailleurs(this.programmeId)
+          }  
         });
       })
     }

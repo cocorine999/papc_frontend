@@ -226,7 +226,7 @@
       </div>
     </div>
     <div v-else class="my-4 grid grid-cols-3 gap-4 ">
-       <div v-for="graphe in graphes"  class="p-4 bg-white shadow" id="chart">
+       <div v-for="graphe in graphes" :key="graphe.id"  class="p-4 bg-white shadow" id="chart">
         <apexchart type="bar" height="350" :options="chartOptions(graphe)" :series="series(graphe)"></apexchart>
       </div>
     </div>
@@ -273,7 +273,8 @@ export default {
       actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
-      ],  
+      ],
+      entrepriseExecutanteVisible:false
     }
   },
   computed: {
@@ -441,12 +442,23 @@ export default {
               }
             }
           }
-    }
-    
+    },
+    getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-suivi-environnementale') {
+          this.entrepriseExecutanteVisible = true
+        }
+       
+           
+      });
+    },
   },
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    
+    this.getPermission()
+     if( !this.entrepriseExecutanteVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     let form1 = {
       "type": 'unitee-de-gestion',
       "typeId": this.currentUser.profil.id,
