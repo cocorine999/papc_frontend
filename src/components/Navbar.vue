@@ -9,7 +9,7 @@
             <svg class="h-5 w-5" v-bind:style="{ fill: 'white' }" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
           </button>
           </div>
-        </div>&é
+        </div>
         <!-- right navbar -->
         <div class="flex items-center relative">
       
@@ -36,10 +36,10 @@
                 </button>
               </div>
 
-              <div v-if="openMenu"  class="origin-top-right absolute z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+              <div v-if="openMenu"  class="origin-top-right absolute divide-y z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                 <router-link to="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> {{ currentUser.nom }} {{ currentUser.prenom }} </router-link>
-                      <router-link to="/admin/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Parametre</router-link>
-                <span @click.prevent="deconnecter"  class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se deconnecter</span>
+                      <router-link to="/admin/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Paramètres</router-link>
+                <span @click.prevent="deconnecter"  class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se déconnecter</span>
               </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default {
           if (response.statut === "success" || response.status === 200) {
            this.$router.push('/')
         
-            this.$toast.success("Vous etes deconnecter")
+            this.$toast.success("Déconnexion réussie")
           }else{
             this.$toast.error(response.message)
           }

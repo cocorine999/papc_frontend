@@ -707,9 +707,9 @@
     </div>
 
     
-    <div v-if="historiqueVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="backupVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
-        to="/dashboard/historique"
+        to="/dashboard/backup"
         style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer"
       >
@@ -824,8 +824,6 @@
             <span class="font-semibold text-xs">Main d'oeuvre</span>
           </router-link>
         </div>
-
-       
 
        
          <div v-if="siteVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
@@ -945,7 +943,8 @@ export default {
       categorieVisible:false,
       siteVisible:false,
       alertVisible:false,
-      historiqueVisible:false
+      historiqueVisible:false,
+      backupVisible:false,
     }
   },
   methods: {
@@ -1112,6 +1111,10 @@ export default {
             if(element.slug ==='voir-un-historique') {
               this.historiqueVisible = true
             }
+            if(element.slug ==='faire-un-backup') {
+              this.backupVisible = true
+            }
+           
 
           });
 

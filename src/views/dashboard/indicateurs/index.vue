@@ -126,7 +126,7 @@
             <div v-if="title =='Modifier un indicateur'">
               <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
-            <div v-if="title =='Ajouter un indicateur'">
+            <div v-if="title =='Ajouter'">
               <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm"   @closeModal="close"  ></vform>
             </div>
             <div v-if="title =='Dupliquer un indicateur'">
@@ -586,7 +586,7 @@ export default {
       this.showModal2 = value;
     },
     addIndicateur() {
-      this.title ='Ajouter un indicateur'
+      this.title ='Ajouter'
       this.showModal = true
     },
     modifier() {
@@ -614,7 +614,7 @@ export default {
               {name:'Unité de mesure',cle:'nom',props:'unitee_mesure',select:true},
               {name:'Valeur de base',cle:'valeurDeBase'},
               {name:'Année de base',cle:'anneeDeBase'},
-              {name:'Date de creation',cle:'created_at'},
+              {name:'Date de création',cle:'created_at'},
             ]
        }
        else {
@@ -626,13 +626,13 @@ export default {
             this.fetchUnite()
             this.headers = [
               {name:'Indicateur',cle:'nom',},
-              {name:'description',cle:'description'},
+              {name:'Description',cle:'description'},
               {name:'Bailleur',cle:'sigle',props:'bailleur',select:true,options:this.bailleurs,key:'sigle',updateKey:'bailleurId'},
-              {name:'Categorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
+              {name:'Catégorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
               {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'},
               {name:'Valeur de base',cle:'valeurDeBase'},
               {name:'Année de base',cle:'anneeDeBase'},
-              {name:'Date de creation',cle:'created_at'},
+              {name:'Date de création',cle:'created_at'},
             ]
 
           }, 100);

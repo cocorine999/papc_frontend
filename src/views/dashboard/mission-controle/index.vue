@@ -1,6 +1,7 @@
 <template>
   <dashboard>
-  <div  v-if="mission_de_controleVisible || currentRole == 'bailleur' " class="px-4">
+  <div   class="px-4">
+
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="close">
         <div  class="px-4 overflow-y-auto">
@@ -8,6 +9,7 @@
         </div>
       </modal-top-right>
     </div>
+
     <div v-if="showModal2">
       <modal-top-right :title="title2"  v-on:close="close2">
         <div  class="px-4 overflow-y-auto">
@@ -15,6 +17,7 @@
         </div>
       </modal-top-right>
     </div>
+
     <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
@@ -31,8 +34,8 @@
     </nav>
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span @click="goMo" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
-        <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
+        <span @click="goMo" v-if="mission_de_controleVisible" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
+        <span @click="goPassation" v-if="passationVisible" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
       </div>
       
       <button  v-if="seeMo && mission_de_controleAdd " @click="addMissionDeControle" title="Ajouter un MO"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
@@ -42,7 +45,7 @@
           </svg></span>
         <span class="mx-2 text-sm font-semibold">Ajouter un MO</span>
       </button>
-      <button  v-if="seePassation" @click="addPassation" title="Ajouter une passation de marché"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seePassation  && passationAdd" @click="addPassation" title="Ajouter une passation de marché"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
@@ -164,6 +167,12 @@ export default {
         mission_de_controleAdd:false,
         mission_de_controleDelete:false,
         mission_de_controleUpdate:false,
+        passationVisible:false,
+        passationAdd:false,
+        passationDelete:false,
+        passationUpdate:false,
+        entreprisesExecutanteVisible:false,
+        siteVisible:false,
     }
     
   },
@@ -215,8 +224,8 @@ export default {
         fetchBailleurs: "FETCH_LIST_BAILLEUR",
       }),
       
-       getPermission() {
-          this.currentUser.role[0].permissions.forEach(element => {
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-une-mission-de-controle') {
               this.mission_de_controleVisible = true
             }
@@ -229,24 +238,40 @@ export default {
             if(element.slug ==='supprimer-une-mission-de-controle') {
               this.mission_de_controleDelete = true
             }
+            if(element.slug ==='voir-une-passation') {
+              this.passationVisible = true
+            }
+            if(element.slug === 'modifier-une-passation') {
+              this.passationAdd = true
+            }
+            if(element.slug === 'modifier-une-passation') {
+              this.passationUpdate = true
+            }
+            if(element.slug ==='supprimer-une-passation') {
+              this.passationDelete = true
+            }
+            if(element.slug ==='voir-une-entreprise-executante') {
+              this.entreprisesExecutanteVisible = true
+            }
+            if(element.slug ==='voir-un-site') {
+              this.siteVisible = true
+            }  
            
           });
 
-      },
-
+    },
     
     goMo() {
       this.seeMo = true
       this.seePassation = false
      
     },
+
     goPassation() {
       this.seeMo = false
       this.seePassation = true
     
     },
-  
-
   
     addMissionDeControle() {
       this.title = "Ajouter une nouvelle mission de controle"
@@ -339,6 +364,7 @@ export default {
     showCloseModal(value = false) {
       this.showModal = value
     },
+
     showCloseModal2(value = false) {
       this.showModal2 = value
     },
@@ -407,6 +433,7 @@ export default {
             })
         }
     },
+
     sendForm2() {
 
       this.passationChamps = this.passationChamps.map(item => { item.errors = []; return item})
@@ -502,22 +529,21 @@ export default {
   
   mounted() {
     this.getPermission()
-     if(this.currentUser != undefined) {
-       this.currentRole = this.currentUser.type
-       if(this.currentUser.type ==='bailleur') {
-          this.fetchMissionDeControles()
-          this.fetchPassations(this.currentUser?.programme?.id)
-       }
-       else {
-          this.fetchMissionDeControles()
-          this.fetchEntreprisesExecutante()
-          this.fetchBailleurs()
-          this.fetchSites(this.currentUser?.programme?.id)
-          this.fetchPassations(this.currentUser?.programme?.id)
-       }
+    if(!this.mission_de_controleVisible) {
+      this.$router.push('/401-non-autorise')
+    }
+    else {
+      if(this.entreprisesExecutanteVisible) {
+        this.fetchEntreprisesExecutante()
+      }
+      if(this.siteVisible) {
+        this.fetchSites(this.currentUser?.programme?.id)
+      }
+      this.fetchMissionDeControles()
+      this.fetchBailleurs()
+      this.fetchPassations(this.currentUser?.programme?.id)
      }
   
-    
   }
 }
 </script>
