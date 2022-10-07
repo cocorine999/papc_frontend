@@ -520,7 +520,7 @@
       </router-link>
     </div>
 
-    <div  class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div v-if="maitriseOeuvreVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/collecteur"
         style="width: 100%"
@@ -546,7 +546,7 @@
       </router-link>
     </div>
 
-    <div v-if="currentRole ==='bailleur' ||  modVsisible || missionControleVisible" class="mb-1 px-6 relative">
+    <div v-if="entrepriseExecutanteVisible ||  modVsisible || missionControleVisible" class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -945,6 +945,7 @@ export default {
       alertVisible:false,
       historiqueVisible:false,
       backupVisible:false,
+      maitriseOeuvreVisible:false,
     }
   },
   methods: {
@@ -1113,6 +1114,9 @@ export default {
             }
             if(element.slug ==='faire-un-backup') {
               this.backupVisible = true
+            }
+            if(element.slug === 'voir-une-maitrise-oeuvre') {
+              this.maitriseOeuvreVisible = true
             }
            
 
