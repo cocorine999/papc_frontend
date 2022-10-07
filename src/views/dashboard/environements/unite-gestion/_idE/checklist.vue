@@ -99,7 +99,8 @@ export default {
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
         ],
-        formulaireId:""
+        formulaireId:"",
+        entrepriseExecutanteVisible:false,
     }
   },
   computed: {
@@ -131,6 +132,16 @@ export default {
     ...mapActions("eSuivis", {
       getFormulaires: "FORMULAIRE",
     }),
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-suivi-environnementale') {
+          this.entrepriseExecutanteVisible = true
+        }
+       
+           
+      });
+     },
+
     getlink(i){
       this.formulaireId = i
       this.showLink = true
@@ -157,6 +168,10 @@ export default {
     },
   },
   mounted() {
+    this.getPermission()
+     if( !this.entrepriseExecutanteVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
     
     console.log("Fetching list formulaires ...")

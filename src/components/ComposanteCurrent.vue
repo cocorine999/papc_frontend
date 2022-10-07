@@ -580,7 +580,7 @@ props:['valueProfondeur'],
       }
 
     } 
-    this.getSuivi()
+   
     this.getPermission()
     if(this.programmeId){
       this.fetchProjets(this.programmeId)

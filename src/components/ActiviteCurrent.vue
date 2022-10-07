@@ -1586,7 +1586,6 @@ export default {
       }
 
     } 
-    this.getSuivi()
     this.getPermission()
     this.programmeId = this.currentUser.programme.id
 

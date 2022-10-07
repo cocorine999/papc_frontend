@@ -20,10 +20,10 @@
           <search-bar ></search-bar>
         </div>
       </nav>
-      <div class=" p-4 my-10">
+      <div class="p-4">
         <titre>Listes des taches</titre>
       </div>
-     <div v-if="currentRole ==='bailleur'" class="p-4">
+    <!--  <div v-if="currentRole ==='bailleur'" class="p-4">
      
       <div class="flex bg-white p-2 shadow space-x-4">
        <div class="w-full">
@@ -56,8 +56,8 @@
             ></card-tache>
           </div>
       </div>
-    </div>
-    <div v-else  class="p-4">
+    </div> -->
+    <div  class="p-4">
       <div class="select w-52">
         <select
           id="choice"
