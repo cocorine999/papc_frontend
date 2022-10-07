@@ -1,8 +1,8 @@
-const API_BASE_URL = "http://192.168.8.10:8000"
+const API_BASE_URL = "http://192.168.8.100:8000"
 
 // const API_BASE_URL = "http://89.47.161.3:8001"
 
-
+    
 const STAGGING_URL = "http://89.47.161.3:8001"
 
 const DEPLOYMENT_URL = "http://89.47.161.3:8001"

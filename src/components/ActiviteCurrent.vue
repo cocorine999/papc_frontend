@@ -135,7 +135,7 @@
         <button
           v-if="seeActivite && activiteAdd"
           @click="addActivite"
-          title="ajouter une activite"
+          title="ajouter"
           class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
         >
           <span>
@@ -147,12 +147,12 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
+          <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
         <button
           v-if="seePlan && planDeDecaissement"
           @click="addPlan"
-          title="ajouter un plan d'ecaissement"
+          title="ajouter"
           class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"
         >
         <span>
@@ -165,7 +165,7 @@
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
           <span class="mx-2 text-sm font-semibold"
-            >ajouter un plan de décaissement</span
+            >ajouter</span
           >
         </button>
       </div>
@@ -1159,7 +1159,7 @@ export default {
 
     addPlan() {
 
-      this.title ="Ajouter un un plan de decaissement"
+      this.title ="Ajouter"
 
       this.submitText="Enregistrer"
 
@@ -1218,7 +1218,7 @@ export default {
 
     addActivite() {
 
-      this.title ="Ajouter une activité"
+      this.title ="Ajouter"
 
       this.submitText="Enregistrer",
 

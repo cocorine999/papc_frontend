@@ -107,7 +107,7 @@
               style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             </span>
-          <span class="mx-2 text-xs font-semibold">ajouter une tâche</span>
+          <span class="mx-2 text-xs font-semibold">ajouter</span>
         </button>
        
       </div>
@@ -696,7 +696,7 @@ export default {
 
     addTache() {
 
-      this.title ="Ajouter une activité"
+      this.title ="Ajouter"
 
       this.submitText="Enregistrer",
 

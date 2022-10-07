@@ -346,7 +346,7 @@ export default {
     },
 
     addProjet() {
-      this.title='Ajouter un nouveau projet'
+      this.title='Ajouter'
       this.isUpdate = false
       let formData = this.champs.map((value) => {
           if(value.key === 'bailleurId'){ 

@@ -375,7 +375,7 @@ export default {
         this.resetForm();
       },
     addActivite() {
-      this.title = 'Creer une activité'
+      this.title = 'Creer'
       this.showModal = true
     },
     

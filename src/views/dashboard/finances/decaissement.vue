@@ -33,7 +33,7 @@
     <div v-if="showModal">
       <modal-top-right :title="title" v-on:close="close">
        <div class="px-4">
-         <div v-if="title =='Ajouter un decaissement'">
+         <div v-if="title =='Ajouter'">
             <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
          </div>
          <div v-if="title =='Modifier un decaissement'">
@@ -323,7 +323,7 @@ export default {
         this.showModal2 = false
     },
     addDecaissement() {
-        this.title ="Ajouter un decaissement"
+        this.title ="Ajouter"
 
         let formData = this.champs.map((value) => {
           if(value.key === 'projetId'){ 
