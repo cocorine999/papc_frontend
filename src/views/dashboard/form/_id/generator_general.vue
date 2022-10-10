@@ -203,18 +203,36 @@ export default {
         this.usersId.push(element.id)
       })
       this.formulaire.forEach((element) => {
+
+        if(this.usersId.length)
+        {
+          let form = {
+            "questionId": element.id,
+            "valeur": element.content,
+            "formulaireId": this.$route.params.id ,
+            "date":this.date,
+            "shared": this.usersId
+          };
+
+         console.log(form);
+
+         this.saveReponse(form)
+        }
+
+        else
+        {
+          let form = {
+            "questionId": element.id,
+            "valeur": element.content,
+            "formulaireId": this.$route.params.id ,
+            "date":this.date,
+          };
+
+          console.log(form);
+
+          this.saveReponse(form)
+        }
         
-        let form = {
-          "questionId": element.id,
-          "valeur": element.content,
-          "formulaireId": this.$route.params.id ,
-          "date":this.date,
-          "shared": this.usersId
-        };
-
-        console.log(form);
-
-        this.saveReponse(form)
       
       });
 

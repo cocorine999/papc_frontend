@@ -192,6 +192,7 @@ export default {
 
       let utilisateur = extractFormData(this.champs,this.usersAttributes);
       utilisateur.roles = [utilisateur.roles.id]
+      //utilisateur.roles = utilisateur.roles.id
       utilisateur.programmeId = this.idProgramme
       if(this.sendRequest == false ) {
         this.sendRequest = true

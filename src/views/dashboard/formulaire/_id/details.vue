@@ -264,7 +264,7 @@
         {
           var form = {
             "userId": this.currentUser.id,
-            "formulaireId": this.$route.params.idC,
+            "formulaireId": this.$route.params.id,
             "date": this.valueFiltre
           }; 
         }
@@ -305,7 +305,7 @@
         if(this.valueFiltre != null)
         {
           var form = {
-            "formulaireId": this.$route.params.idC,
+            "formulaireId": this.$route.params.id,
             "date": this.valueFiltre
           }; 
         }
@@ -313,7 +313,7 @@
         else
         {
           var form = {
-            "formulaireId": this.$route.params.idC,
+            "formulaireId": this.$route.params.id,
             "date": this.dates[0].date
           };
         }
@@ -395,6 +395,8 @@
       };
       this.getDates(form1).then((response) => {
         this.dates = response;
+
+        console.log(this.dates);
   
         let form = {
         "userId": this.currentUser.id,
