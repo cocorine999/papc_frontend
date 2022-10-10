@@ -790,6 +790,14 @@ const routes = [
     },
     name: "indicateurs_suivi_mod",
   },
+  {
+    path: "/dashboard/indicateurs/suivi",
+    component: indicateurs_suivi,
+    meta: {
+      middleware: [auth],
+    },
+    name: "indicateurs_suivi",
+  },
 
   {
     path: "/dashboard/indicateurs/:id/suivi-mod",

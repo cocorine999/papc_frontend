@@ -233,9 +233,6 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
        permissions() {
         return this.currentUser.role[0].permissions
        }
-
-
-   
     },
 
     methods: {
@@ -263,7 +260,6 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
         });
       },
       createRole() {
-        
         this.value.forEach(element => {
           this.roles.role.push(element.id)
         })

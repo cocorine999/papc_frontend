@@ -1984,7 +1984,7 @@ export default {
         } else {
           this.currentPage = true;
         }
-      },
+    },
     getPta() {
       let data = {}
       if(this.annee ==null) {
@@ -2096,12 +2096,16 @@ export default {
     },
   },
   mounted() {
-    this.getPta()
-    this.getBailleur()
     this.getPermission()
-    this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
-    this.scopes = response.data.data
-    });
+   
+    if(this.revisionVisible || this.ppmVisible || this.ptaVisible ) {
+      this.getPta()
+      this.getBailleur()
+      this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
+        this.scopes = response.data.data
+      });
+    }
+   
   
   }
 }

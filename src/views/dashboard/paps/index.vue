@@ -81,6 +81,7 @@
       </button>
     </div>
     
+     <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
      <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
      <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData"></vtable>
 
@@ -396,7 +397,8 @@ export default {
     this.getPermission()
     if(!this.papVisible) {
       this.$router.push('/401-non-autorise')
-    } 
+    }
+   
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of sites...")
