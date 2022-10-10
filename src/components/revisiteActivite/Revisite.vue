@@ -46,7 +46,7 @@
         </div>
       </nav>
 
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
           <span
             v-if="activiteVisible"

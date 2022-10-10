@@ -84,7 +84,7 @@
         <span class="mx-2 text-sm font-semibold">Filtre</span>
       </button>
        <button @click="generateReport" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        <span class="mx-2 text-sm font-semibold">generer pdf </span>
+        <span class="mx-2 text-sm font-semibold">générer pdf </span>
       </button>
         </div>
 

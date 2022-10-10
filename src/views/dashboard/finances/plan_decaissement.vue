@@ -16,18 +16,18 @@
               <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
             </li>
             <li class="flex items-center text-blue-500">
-              <router-link to="/dasboard/projet" class="">Plan de decaissement</router-link>
+              <router-link to="/dasboard/projet" class="">Plan de décaissement</router-link>
             </li>
           </ol>
       </div>
 
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div>
-          <span data-v-7b9b4c0e="" class="inline-block cursor-pointer border-primary border-b-8 text-base uppercase font-bold   py-2">Plan de decaissement </span>
+          <span data-v-7b9b4c0e="" class="inline-block cursor-pointer border-primary border-b-8 text-base uppercase font-bold   py-2">Plan de décaissement </span>
         </div> 
-      <div  class="flex space-x-4 items-center">
+      <div  class="flex space-x-4 items-center flex-wrap justify-end">
 
-            <button @click="openFiltre = !openFiltre" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex  space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+            <button @click="openFiltre = !openFiltre" title="filtrer les données"   class="py-2 px-4 mb-2 overflow-hidden flex  space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Filtre</span>
             </button>

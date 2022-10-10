@@ -30,7 +30,7 @@
         </ol>
       </div>
       <div>
-        <div class="flex justify-center w-full text-gray-600">
+        <div class="w-full flex text-gray-600">
             <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
             <button type="submit" class="relative  right-10 ">
             <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"

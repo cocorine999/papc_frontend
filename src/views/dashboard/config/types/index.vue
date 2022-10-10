@@ -15,7 +15,7 @@
           </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-4 text-sm font-semibold" aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
@@ -39,7 +39,7 @@
           </ol>
         </div>
       </nav>
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
           <span
             class="inline-block cursor-pointer border-b-8 font-bold text-base uppercase border-primary py-2"
@@ -59,7 +59,7 @@
           >
             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
           </svg>
-          <span class="mx-2 text-sm font-semibold">Ajouter </span>
+          <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
         </button>
       </div>
       <div id="dataTable">

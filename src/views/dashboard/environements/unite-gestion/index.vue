@@ -73,7 +73,7 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
+          <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -88,20 +88,20 @@
         </div>
       </nav> 
 
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
           <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-base uppercase font-bold    py-2"> Listes des entreprises </span>
-          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les activités </span>
           <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
           <button  @click="addActivite" v-if="seeActivite && activiteEnvAdd"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Creer une activité </span>
+            <span class="mx-2 text-sm font-semibold">Créer</span>
           </button>
           <router-link v-if="seeFormulaire && checklistAdd" :to="{name:'unite_de_gestion_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Creer un formulaire </span>
+            <span class="mx-2 text-sm font-semibold">Créer</span>
           </router-link> 
         </div>
          
@@ -205,12 +205,12 @@ export default {
       
       showLink:false,
       headers:[
-          {name:'Libelle activite',cle:'nom'},
-          {name:'code',cle:'code'},
+          {name:'Libellé activité',cle:'nom'},
+          {name:'Code',cle:'code'},
           {name:'Entreprise',cle:'entreprise'},
-          {name:'Date debut',cle:'debut'},
+          {name:'Date début',cle:'debut'},
           {name:'Date fin',cle:'fin'},
-          {name:'Date de creation',cle:'created_at'},
+          {name:'Date de création',cle:'created_at'},
       ],
       search:'',
 

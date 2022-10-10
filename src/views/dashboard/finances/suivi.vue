@@ -14,7 +14,7 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
+          <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -72,19 +72,19 @@
        </div>
       <div class="flex items-center justify-between">
         <titre>Suivi financier </titre>
-        <div class="flex space-x-3">
-          <button  @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
+        <div class="flex space-x-3 flex-wrap justify-end ">
+          <button  @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 mb-2 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
             <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Importez les données</span>
           </button>
           <json-excel :data="json_data()" header="SUIVI FINANCIER" type="xlsx" :name="title_csv()"  >
-          <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+          <button  title="exporter en excel"   class="py-2  px-4 mb-2 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
             <span class="mx-2 text-sm font-semibold">Export Excel</span>
           </button>
         </json-excel>
-          <button @click="showFiltreModal" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
-          <button v-if="suiviFinancierAdd" @click="addSuivi" title="ajouter " class="py-2 px-4 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <button @click="showFiltreModal" title="filtre" class="bg-primary mb-2 text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
+          <button v-if="suiviFinancierAdd" @click="addSuivi" title="ajouter " class="py-2 px-4 mb-2 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
             <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
             <span class="mx-2 text-xs font-semibold">ajouter</span>
           </button>
@@ -138,13 +138,13 @@ export default {
           {name:'Consommer', key:'consommer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
           {name:'Source', key:'type',placeholdere:'Selectionnez la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value:'nom',required:true,errors : []}, 
           {name:'Année', key:'annee',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-          {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:true,errors : []},
-          {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',required:true,errors : []}, 
+          {name:'Activité', key:'activiteId',type:'',placeholdere:'Sélectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:true,errors : []},
+          {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Sélectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',required:true,errors : []}, 
         ],
         champsRecherche:[
           {name:'Année', key:'annee',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,errors : []},
-          {name:'Activité', key:'activiteId',type:'',placeholdere:'Selectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:false,errors : []},
-          {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Selectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',required:false,errors : []}, 
+          {name:'Activité', key:'activiteId',type:'',placeholdere:'Sélectionnez une activité',isSelect:true,isTextArea:false,data:'',options:this.activites, cle: 'id', value: 'nom',required:false,errors : []},
+          {name:'Trimestre', key:'trimestre',type:'',placeholdere:'Sélectionnez un trimestre',isSelect:true,isTextArea:false,data:'',options:this.$store.state.trimestres, cle: 'valeur', value: 'trimestre',required:false,errors : []}, 
         ],
         cols:2, 
         headers:[
@@ -153,7 +153,7 @@ export default {
           {name:'Trimestre',cle:'trimestre'},
           {name:'Consommer',cle:'consommer'},
           {name:'Année',cle:'annee'},
-          {name:'Date de creation',cle:'created_at'},
+          {name:'Date de création',cle:'created_at'},
         ],
         search:'',
         actions:[

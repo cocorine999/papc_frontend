@@ -292,7 +292,7 @@
     </vmodal> -->
 
     <nav
-      class="mb-2 text-sm font-semibold flex justify-between items-center"
+      class="mb-2 text-xs md:text-sm font-semibold flex justify-between items-center"
       aria-label="Breadcrumb"
     >
       <div>
@@ -376,7 +376,7 @@
         ></span>
       </div>
     </div>
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
         <span
           :class="{ 'border-primary border-b-8 font-bold': seeTache }"

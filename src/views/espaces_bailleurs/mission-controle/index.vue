@@ -29,7 +29,7 @@
         </ol>
       </div> 
     </nav>
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
         <span @click="goMod" :class="{'border-primary border-b-8':seeMod}" class="inline-block cursor-pointer  text-base uppercase font-bold    py-2">Listes MO </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2">Passation de marché </span>

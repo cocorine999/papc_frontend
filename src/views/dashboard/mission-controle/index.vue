@@ -29,20 +29,20 @@
         </ol>
       </div> 
     </nav>
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
         <span @click="goMo" :class="{'border-primary border-b-8':seeMo}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Listes MO </span>
         <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Passation de marché </span>
       </div>
       
-      <button  v-if="seeMo && mission_de_controleAdd " @click="addMissionDeControle" title="Ajouter un MO"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seeMo && mission_de_controleAdd " @click="addMissionDeControle" title="Ajouter un MO"  class="py-1 px-2  md:py-2 md:px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
           </svg></span>
         <span class="mx-2 text-sm font-semibold">Ajouter</span>
       </button>
-      <button  v-if="seePassation" @click="addPassation" title="Ajouter une passation de marché"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if="seePassation" @click="addPassation" title="Ajouter une passation de marché"  class="py-1 px-2  md:py-2 md:px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>

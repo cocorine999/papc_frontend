@@ -53,10 +53,10 @@
       </div>
       <div class="w-full p-4">
         <nav
-          class="mb-2 text-sm font-semibold flex justify-between items-center"
+          class="mb-2 text-xs md:text-sm font-semibold flex justify-between items-center"
           aria-label="Breadcrumb"
         >
-          <div>
+          <div class="hidden sm:block">
             <ol class="inline-flex p-0 list-none">
               <li class="flex items-center text-blue-500">
                 <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -75,10 +75,11 @@
               </li>
             </ol>
           </div>
+          <div></div>
           <div>
-            <div class="flex justify-center w-full text-gray-600">
-            <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-            <button type="submit" class="relative  right-10 ">
+            <div class="w-full flex text-gray-600">
+            <input @input="$emit('search',$event.target.value)" class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+            <button type="submit" class="relative">
             <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
             viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -92,7 +93,7 @@
         </nav>
 
       
-        <div v-if="bailleurAdd" class="flex items-center justify-between my-2">
+        <div v-if="bailleurAdd" class="flex items-center justify-between my-2" >
           <titre>Les bailleurs </titre>
           <button
             @click="addBailleur"
@@ -107,7 +108,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
             </svg>
-            <span class="mx-2 text-sm font-semibold">Ajouter </span>
+            <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
           </button>
         </div>
 

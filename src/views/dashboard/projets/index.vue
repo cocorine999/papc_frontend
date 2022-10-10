@@ -32,8 +32,8 @@
             </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"  aria-label="Breadcrumb">
+        <div  class="hidden sm:block" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -45,9 +45,11 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
+        </div>
+        <div>
+          <div class="w-full flex text-gray-600">
+              <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"   class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"    class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -60,9 +62,9 @@
         </div>
       </nav> 
       
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="">
-          <span  class="inline-block cursor-pointer  border-b-8 font-bold  text-sm uppercase    border-primary py-2">Les projets </span>
+          <span  class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-sm uppercase    border-primary py-2">Les projets </span>
         </div>
 
         <button v-if="projetAdd" @click="addProjet"  title="ajouter un projet"    class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
@@ -162,6 +164,7 @@ export default {
     return {
       base_url:API_BASE_URL,
       showModal:false,
+      showSearch:false,
       line:false,
       dates: {fin:''},
       isUpdate:false,

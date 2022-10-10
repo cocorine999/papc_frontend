@@ -51,8 +51,8 @@
                   <div class="my-3 w-4/5" v-if="form.inputType=='boolean'">
                     
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block  " placeholder="Saisissez votre libellé vrai ou faux ">
-                    <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_true">Realiser</label>
-                    <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_false">Non realiser</label>
+                    <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_true">Réaliser</label>
+                    <label for="" class="px-4 uppercase text-sm"><input class="uppercase mx-2" type="radio" name="answers" id="answers_false">Non réaliser</label>
                   </div>
                   <div class="my-3 w-4/5" v-if="form.inputType=='file'">
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Televerser un fichier">
@@ -74,12 +74,12 @@
             <button @click="btn_edit" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">text</button>
             <button @click="btn_photo" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">photos</button>
             <button @click="btn_file" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">fichiers</button>
-            <button @click="btn_boolean" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold whitespace-nowrap shadow-sm px-2 py-1">Realiser ou non realiser</button>
+            <button @click="btn_boolean" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold whitespace-nowrap shadow-sm px-2 py-1">Réaliser ou non réaliser</button>
           </div>
         </div>
       </div>
       <div>
-        <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Generer le formulaire</button>
+        <button  @click="isNotGenere =false" class="bg-blue-500 text-white px-4 py-2">Générer le formulaire</button>
       </div>
       
     </div>
@@ -127,8 +127,8 @@
           </div>
         </div>
         <div class="py-2 my-2 flex justify-center space-x-8">
-          <vbutton  type="submit" template="success">Enregistrer </vbutton>
-          <button @click="isNotGenere = true" class="text-white bg-red-500 px-4 py-2 outline-none border-red-500 font-semibold" > retour en arriere </button>
+          <vbutton  type="submit" template="success">Enrégistrer </vbutton>
+          <button @click="isNotGenere = true" class="text-white bg-red-500 px-4 py-2 outline-none border-red-500 font-semibold" > retour en arrière </button>
         </div>
       </form>
     </div>

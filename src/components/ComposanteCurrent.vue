@@ -30,7 +30,7 @@
       </nav> 
 
     
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
         <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-base uppercase    border-primary py-2">les composantes </span>
       
