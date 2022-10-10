@@ -349,6 +349,65 @@
       </div>
     </div>
 
+    <div v-if="indicateurModVisible || suiviIndicateurModVisible  " class="mb-1 px-6 relative">
+      <input
+        class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
+        type="checkbox"
+        id="chck33"
+      />
+      <header
+        class="flex justify-between mb-3 items-center cursor-pointer select-none tab-label"
+        for="chck3"
+      >
+        <div class="flex space-x-3">
+          <span class="text-white">
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              height="1.3em"
+              width="1.3em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path
+                d="M20 15H4v-2h16v2zm0 2H4v2h16v-2zm-5-6l5-3.55V5l-5 3.55L10 5 4 8.66V11l5.92-3.61L15 11z"
+              ></path>
+            </svg>
+          </span>
+          <p class="text-white text-xs font-semibold uppercase">Indicateurs MOD</p>
+        </div>
+        <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
+          <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div> -->
+        <i class="bx bx-chevron-down bx-sm text-white"></i>
+      </header>
+      <div v-if="indicateurModVisible" class="tab-content mb-3 bg-white">
+        <div class="mb-1 flex items-center text-gray-700 cursor-pointer">
+          <router-link
+            to="/dashboard/indicateurs/"
+            style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
+          >
+            <span class="font-semibold text-xs">Indicateurs</span>
+          </router-link>
+        </div>
+
+        <div v-if="suiviIndicateurModVisible" class="mb-1 flex items-center text-gray-700 cursor-pointer">
+          <router-link
+            to="/dashboard/indicateurs/suivi"
+            style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer"
+          >
+            <span class="font-semibold text-xs">Suivi</span>
+          </router-link>
+        </div>
+      </div>
+    </div>
+
     <div v-if="currentRole ==='bailleur'|| decaissementVisible || planDecaissementVisible  || pointFinancierVisible || suiviFinancierVisible "  class="mb-1 px-6 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
@@ -908,6 +967,7 @@ export default {
       suiviTacheVisible:false,
       suiviTacheReVisible:false,
       indicateurVisible:false,
+      indicateurModVisible:false,
       planDecaissementVisible:false,
       modVsisible:false,
       missionControleVisible:false,
@@ -927,6 +987,7 @@ export default {
       statistiqueActiviteReVisible:false,
       voirDecaissementVisible:false,
       suiviIndicateurVisible:false,
+      suiviIndicateurModVisible:false,
       revisionVisible:false,
       listeEntrepriseModVisible:false,
       listeEntrepriseMoVisible:false,
@@ -1032,8 +1093,11 @@ export default {
             if(element.slug ==='voir-un-indicateur') {
               this.indicateurVisible = true
             }
-            if(element.slug ==='voir-un-suivi-indicateur') {
-              this.suiviIndicateurVisible = true
+            if(element.slug ==='voir-un-indicateur-mod') {
+              this.indicateurModVisible = true
+            }
+            if(element.slug ==='voir-un-suivi-indicateur-mod') {
+              this.suiviIndicateurModVisible = true
             }
             
             if(element.slug ==='voir-un-plan-de-decaissement') {

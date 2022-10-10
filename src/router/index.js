@@ -72,6 +72,11 @@ import unite_gestion from "../views/dashboard/unite-gestion/index.vue";
 import indicateurs from "../views/dashboard/indicateurs/index.vue";
 import indicateurs_suivi from "../views/dashboard/indicateurs/suivi.vue";
 import indicateurs_suivi_details from "../views/dashboard/indicateurs/_id/suivi.vue";
+/*mod indicateur */
+import indicateurs_mod from "../views/dashboard/indicateurs_mod/index.vue";
+import indicateurs_suivi_mod from "../views/dashboard/indicateurs_mod/suivi.vue";
+import indicateurs_suivi_mod_details from "../views/dashboard/indicateurs_mod/_id/suivi.vue";
+/* fin indicateur mod */
 import programme from "../views/dashboard/programme/index.vue";
 import finances_decaissement from "../views/dashboard/finances/decaissement.vue";
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
@@ -762,23 +767,31 @@ const routes = [
     },
     name: "indicateurs",
   },
-
   {
-    path: "/dashboard/indicateurs/suivi",
-    component: indicateurs_suivi,
+    path: "/dashboard/indicateurs-mod",
+    component: indicateurs_mod,
     meta: {
       middleware: [auth],
     },
-    name: "indicateurs_suivi",
+    name: "indicateurs_mod",
   },
 
   {
-    path: "/dashboard/indicateurs/:id/suivi",
-    component: indicateurs_suivi_details,
+    path: "/dashboard/indicateurs/suivi-mod",
+    component: indicateurs_suivi_mod,
     meta: {
       middleware: [auth],
     },
-    name: "indicateurs_suivi_details",
+    name: "indicateurs_suivi_mod",
+  },
+
+  {
+    path: "/dashboard/indicateurs/:id/suivi-mod",
+    component: indicateurs_suivi_mod_details,
+    meta: {
+      middleware: [auth],
+    },
+    name: "indicateurs_suivi_mod_details",
   },
 
   {
