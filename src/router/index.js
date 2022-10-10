@@ -126,7 +126,37 @@ import formulaire_id_details from "../views/dashboard/formulaire/_id/suivi.vue";
 
 import profil from "../views/dashboard/profil/index.vue";
 
+/* espace bailleurs */
+import dashboard_bailleur from "../views/espaces_bailleurs/dashboard/index.vue";
+import ano_bailleur from "../views/espaces_bailleurs/ano/index.vue";
+import composantes_bailleur from "../views/espaces_bailleurs/projets/composantes-globale/index.vue";
+import sous_composantes_bailleur from "../views/espaces_bailleurs/projets/sous-composantes-globale/index.vue";
+import activites_bailleur from "../views/espaces_bailleurs/projets/activites-globale/index.vue";
+import taches_bailleur from "../views/espaces_bailleurs/projets/taches-globale/index.vue";
+import indicateurs_bailleur from "../views/espaces_bailleurs/indicateurs/index.vue";
+import suivi_indicateur_bailleur from "../views/espaces_bailleurs/indicateurs/suivi/index.vue";
+import finances_decaissement_bailleur from "../views/espaces_bailleurs/finances/decaissement.vue";
+import finances_suivi_bailleur from "../views/espaces_bailleurs/finances/suivi.vue";
+import finances_plan_decaissement_bailleur from "../views/espaces_bailleurs/finances/plan_decaissement.vue";
+import entreprises_bailleur from "../views/espaces_bailleurs/entreprises/index.vue";
+import missioncontrole_bailleur from "../views/espaces_bailleurs/mission-controle/index.vue";
+import mod_bailleur from "../views/espaces_bailleurs/mod/index.vue";
+import paps_bailleur from "../views/espaces_bailleurs/paps/index.vue";
+import ong_bailleur from "../views/espaces_bailleurs/ong/index.vue";
+import pta_bailleur from "../views/espaces_bailleurs/pta/index.vue";
 
+
+
+/* espace MOD */
+import entreprises_mo from "../views/espaces_mo/entreprises/index.vue";
+import missioncontrole_mo from "../views/espaces_mo/mission-controle/index.vue";
+import ong_mo from "../views/espaces_mo/ong/index.vue";
+import guest from "./middleware/guest";
+import middlewarePipeline from "./middlewarePipeline";
+import auth from "./middleware/auth";
+import isBailleur from "./middleware/isBailleur";
+import isMod from "./middleware/isMod";
+import isMissionDeControle from "./middleware/isMissionDeControle";
 /*  componemts */
 // const BailleursClild = () => import('../components/dashboard/Bailleurs');
 
@@ -882,10 +912,187 @@ const routes = [
     name: "config_rappel",
   },
 
- 
+  // espace bailleurs
+  {
+    path: "/bailleurs/dashboard",
+    name: "dashboard_bailleur",
+    component: dashboard_bailleur,
+    meta: {
+      middleware: [auth],
+    },
+  },
+
+  {
+    path: "/bailleurs/ano",
+    name: "ano_bailleur",
+    component: ano_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+  },
+
+  {
+    path: "/bailleurs/activites",
+    component: activites_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "activites_bailleur",
+  },
+
+  {
+    path: "/bailleurs/composantes",
+    component: composantes_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "composantes_bailleur",
+  },
+
+  {
+    path: "/bailleurs/sous-composantes",
+    component: sous_composantes_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "sous_composantes_bailleur,",
+  },
+
+  {
+    path: "/bailleurs/taches",
+    component: taches_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "taches_bailleur",
+  },
+
+  {
+    path: "/bailleurs/indicateurs",
+    component: indicateurs_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "indicateurs_bailleur",
+  },
+
+  {
+    path: "/bailleurs/indicateurs/suivi",
+    component: suivi_indicateur_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "suivi_indicateur_bailleur",
+  },
+
+  {
+    path: "/bailleurs/finances/decaissement",
+    component: finances_decaissement_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "finances_decaissement",
+  },
+
+  {
+    path: "/bailleurs/finances/suivi",
+    component: finances_suivi_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "finances_suivi_bailleur",
+  },
+
+  {
+    path: "/bailleurs/finances/plan_decaissement",
+    component: finances_plan_decaissement_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+    name: "finances_plan_decaissement_bailleur",
+  },
+
+  {
+    path: "/bailleurs/mission-controle",
+    name: "missioncontrole_bailleur",
+    component: missioncontrole_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+  },
+
+  {
+    path: "/bailleurs/mod",
+    name: "mod_bailleur",
+    component: mod_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+  },
+
+  {
+    path: "/bailleurs/entreprises",
+    name: "entreprises_bailleur",
+    component: entreprises_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+  },
+
+  {
+    path: "/bailleurs/PAP",
+    name: "paps_bailleur",
+    component: paps_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+  },
+
+  {
+    path: "/bailleurs/ong",
+    name: "ong_bailleur",
+    component: ong_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+  },
+
+  {
+    path: "/bailleurs/pta",
+    name: "pta_bailleur",
+    component: pta_bailleur,
+    meta: {
+      middleware: [auth, isBailleur],
+    },
+  },
 
 
-  
+  // espace Mo
+
+  {
+    path: "/mo/mission-controle",
+    name: "missioncontrole_mo",
+    component: missioncontrole_mo,
+    
+  },
+
+  {
+    path: "/mo/entreprises",
+    name: "entreprises_mo",
+    component: entreprises_mo,
+    meta: {
+      middleware: [auth, isMissionDeControle],
+    },
+  },
+
+  {
+    path: "/mo/ong",
+    name: "ong_mo",
+    component: ong_mo,
+    meta: {
+      middleware: [auth, isMissionDeControle],
+    },
+  },
 ];
 
 const router = new VueRouter({

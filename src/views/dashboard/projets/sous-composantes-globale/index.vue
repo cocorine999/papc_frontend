@@ -47,7 +47,7 @@
       </div>
     </div> -->
    <div class="p-4">
-    <div class="select w-52">
+    <div v-if="composanteReVisible" class="select w-52">
         
         <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           
@@ -94,6 +94,7 @@ export default {
       currentPage:true,
       version:'current',
       composanteVisible:false,
+      composanteReVisible:false,
       version: "",
       scopes: [],
       currentRole:'',
@@ -130,6 +131,9 @@ export default {
       this.currentUser.role[0].permissions.forEach(element => {
         if(element.slug ==='voir-une-composante') {
             this.composanteVisible = true
+          }
+          if(element.slug ==='voir-une-composante-revise') {
+            this.composanteReVisible = true
           }
         });
     },
