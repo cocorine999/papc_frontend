@@ -126,43 +126,7 @@ import formulaire_id_details from "../views/dashboard/formulaire/_id/suivi.vue";
 
 import profil from "../views/dashboard/profil/index.vue";
 
-/* espace bailleurs */
-import dashboard_bailleur from "../views/espaces_bailleurs/dashboard/index.vue";
-import ano_bailleur from "../views/espaces_bailleurs/ano/index.vue";
-import composantes_bailleur from "../views/espaces_bailleurs/projets/composantes-globale/index.vue";
-import sous_composantes_bailleur from "../views/espaces_bailleurs/projets/sous-composantes-globale/index.vue";
-import activites_bailleur from "../views/espaces_bailleurs/projets/activites-globale/index.vue";
-import taches_bailleur from "../views/espaces_bailleurs/projets/taches-globale/index.vue";
-import indicateurs_bailleur from "../views/espaces_bailleurs/indicateurs/index.vue";
-import suivi_indicateur_bailleur from "../views/espaces_bailleurs/indicateurs/suivi/index.vue";
-import finances_decaissement_bailleur from "../views/espaces_bailleurs/finances/decaissement.vue";
-import finances_suivi_bailleur from "../views/espaces_bailleurs/finances/suivi.vue";
-import finances_plan_decaissement_bailleur from "../views/espaces_bailleurs/finances/plan_decaissement.vue";
-import entreprises_bailleur from "../views/espaces_bailleurs/entreprises/index.vue";
-import missioncontrole_bailleur from "../views/espaces_bailleurs/mission-controle/index.vue";
-import mod_bailleur from "../views/espaces_bailleurs/mod/index.vue";
-import paps_bailleur from "../views/espaces_bailleurs/paps/index.vue";
-import ong_bailleur from "../views/espaces_bailleurs/ong/index.vue";
-import pta_bailleur from "../views/espaces_bailleurs/pta/index.vue";
 
-/* espace MOD */
-
-import indicateurs_mod from "../views/espaces_mod/indicateurs/index.vue";
-import suivi_indicateur_mod from "../views/espaces_mod/indicateurs/suivi/index.vue";
-import entreprises_mod from "../views/espaces_mod/entreprises/index.vue";
-import missioncontrole_mod from "../views/espaces_mod/mission-controle/index.vue";
-import ong_mod from "../views/espaces_mod/ong/index.vue";
-
-/* espace MOD */
-import entreprises_mo from "../views/espaces_mo/entreprises/index.vue";
-import missioncontrole_mo from "../views/espaces_mo/mission-controle/index.vue";
-import ong_mo from "../views/espaces_mo/ong/index.vue";
-import guest from "./middleware/guest";
-import middlewarePipeline from "./middlewarePipeline";
-import auth from "./middleware/auth";
-import isBailleur from "./middleware/isBailleur";
-import isMod from "./middleware/isMod";
-import isMissionDeControle from "./middleware/isMissionDeControle";
 /*  componemts */
 // const BailleursClild = () => import('../components/dashboard/Bailleurs');
 
