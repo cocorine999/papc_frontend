@@ -112,7 +112,7 @@
             <option value="" disabled selected hidden>
                         Veuillez choisir une date
                       </option>
-                      <option v-for="(item, i) in dates" :key="i" :value="item.date">{{item.date}}</option>
+                      <option v-for="(item, i) in dates" :key="i" :value="item.date">{{item.date}} ({{item.userId}})</option>
           </select>
           <button  @click="filtre" class="bg-primary text-white border-primary border px-4 py-2 shadow rounded">Filtrer </button>
         </div>
@@ -314,7 +314,7 @@
         {
           var form = {
             "formulaireId": this.$route.params.id,
-            "date": this.dates[0].date
+            "date": this.dates[0]?.date
           };
         }
   
@@ -401,7 +401,7 @@
         let form = {
         "userId": this.currentUser.id,
         "formulaireId": this.$route.params.id,
-        "date": this.dates[0].date
+        "date": this.dates[0]?.date
       };
   
       console.log("Getting suivi ...");
