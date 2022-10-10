@@ -202,6 +202,8 @@ export default {
       this.value.forEach(element => {
         this.usersId.push(element.id)
       })
+      
+      this.date = this.date + ' ' + this.$moment().format('hh:mm:s');
       this.formulaire.forEach((element) => {
 
         if(this.usersId.length)
@@ -250,6 +252,8 @@ export default {
       });*/
     });
     this.fetchUtilisateurs();
+
+    console.log(this.$moment().format('hh:mm:s:z'));
   },
 };
 </script>
