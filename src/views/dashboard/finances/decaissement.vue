@@ -68,6 +68,7 @@
       </div>
      
     </div>
+    <vtable v-if="!decaissementDelete && !decaissementUpdate"  :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
     </div>

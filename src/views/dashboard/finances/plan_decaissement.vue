@@ -19,7 +19,7 @@
         </div> 
       </div>
 
-      <div class="relative my-4  sm:rounded-lg">
+      <div v-if="planDecaissementVisible" class="relative my-4  sm:rounded-lg">
         <ptab></ptab>
       </div>
     </div>

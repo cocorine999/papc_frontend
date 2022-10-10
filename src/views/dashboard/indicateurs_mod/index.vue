@@ -9,7 +9,7 @@
               <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
             </li>
             <li class="flex items-center ">
-              <router-link to="" class="text-gray-600">Indicateurs</router-link>
+              <router-link to="" class="text-gray-600">Indicateurs mod </router-link>
             </li>
           </ol>
         </div>
@@ -145,7 +145,7 @@
       </div>
 
       <div class="flex items-center justify-between">
-        <titre>Les indicateurs </titre>
+        <titre>Les indicateurs MOD </titre>
         <div class="flex items-center space-x-4">
           <button @click="showModal2 = true" title="filtre"    class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
           <json-excel v-if="exporterIndicateur" :data="json_data()" header="INDICATEUR" type="xlsx" :name="title_csv()"  >
@@ -220,17 +220,18 @@ export default {
         search:"",
         title:'',
         chargement:false,
-        indicateurAttributs : ['nom', 'description', 'anneeDeBase', 'valeurDeBase','bailleurId','categorieId','uniteeMesureId'],
+        indicateurAttributs : ['nom', 'description','definition', 'anneeDeBase', 'valeurDeBase','source','frequence','responsable', 'uniteeMesureId'],
         indicateurAttributsRecherche : ['nom', 'anneeDeBase', 'bailleurId','categorieId','uniteeMesureId'],
         choiceDateOption:true,
+        Frequence:[
+          {id:"anuelle",value:"Annuelle"},
+          {id:"semestrielle",value:"Semestrielle"},
+          {id:"bi annuelle",value:"Bi anuelle"},
+          {id:"mensuelle",value:"Mensuelle"},
+          {id:"hebdomadaire",value:"Hebdomaire"}
+        ],
         champs:[
-          {name:'Nom',type:'text',key:'nom',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-          {name:'Année de base',key:'anneeDeBase',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-          {name:'Valeur de base',key:'valeurDeBase',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-          {name:'Unite de mesure',key:'uniteeMesureId',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:this.uniteDeMesure,required:true,cle: 'id', value:'nom',errors : []},
-          {name:'Categories',key:'categorieId',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:this.categories,required:true, cle: 'id', value: 'nom', errors : []},
-          {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:this.bailleurs, cle: 'id', value: 'sigle',errors : []},
-          {name:'Description',key:'description',type:'',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:true,},
+          
         ],
         cols:2,
         champsRecherche:[
@@ -265,54 +266,7 @@ export default {
       //this.loading = value
     },
     
-    bailleurs: function (bailleurs) {
-      this.champs.map((item) => {
-        if (item.key === "bailleurId") {
-          item.options = bailleurs.map((bailleur) => {
-            return {
-              id: bailleur.id,
-              sigle: bailleur.sigle,
-            };
-          });
-        }
-        return item;
-      });
-      this.champsRecherche.map((item) => {
-        if (item.key === "bailleurId") {
-          item.options = bailleurs.map((bailleur) => {
-            return {
-              id: bailleur.id,
-              sigle: bailleur.sigle,
-            };
-          });
-        }
-        return item;
-      });
-    },
-    categories: function (categories) {
-      this.champs.map((item) => {
-        if (item.key === "categorieId") {
-          item.options = categories.map((categorie) => {
-            return {
-              id: categorie.id,
-              nom: categorie.nom,
-            };
-          });
-        }
-        return item;
-      });
-      this.champsRecherche.map((item) => {
-        if (item.key === "categorieId") {
-          item.options = categories.map((categorie) => {
-            return {
-              id: categorie.id,
-              nom: categorie.nom,
-            };
-          });
-        }
-        return item;
-      });
-    },
+    
     uniteDeMesure: function (uniteDeMesure) {
       this.champs.map((item) => {
         if (item.key === "uniteeMesureId") {
@@ -349,11 +303,9 @@ export default {
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
-      indicateur: "indiateurs/getIndicateur",
-      indicateurs: "indicateurs/getIndicateurs",
-      categories: "categories/getCategorie",
-      bailleurs: "bailleurs/getBailleurs",
-      categories: "categories/getCategories",
+      indicateur: "indiateurs_mod/getIndicateur",
+      indicateurs: "indicateurs_mod/getIndicateurs",
+     
       uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
@@ -364,19 +316,14 @@ export default {
       setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
     }),
 
-    ...mapActions("indicateurs", {
+    ...mapActions("indicateurs_mod", {
       fetchIndicateurs: "FETCH_LIST_INDICATEUR",
       saveIndicateur: "STORE_INDICATEUR",
       filtre: "FILTRE_INDICATEUR",
       updateIndicateur: "UPDATE_INDICATEUR",
       deleteIndicateur: "DESTROY_INDICATEUR",
     }),
-    ...mapActions("bailleurs", {
-      fetchBailleurs: "FETCH_LIST_BAILLEUR",
-    }),
-    ...mapActions("categories", {
-      fetchCategories: "FETCH_LIST_CATEGORIE",
-    }),
+
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
@@ -389,28 +336,27 @@ export default {
     },
     getPermission() {
           this.currentUser.role[0].permissions.forEach(element => {
-            if(element.slug ==='voir-un-indicateur') {
+            if(element.slug ==='voir-un-indicateur-mod') {
               this.indicateurVisible = true
             }
-            if(element.slug === 'creer-un-indicateur') {
+            if(element.slug === 'creer-un-indicateur-mod') {
               this.indicateurAdd = true
             }
-            if(element.slug === 'modifier-un-indicateur') {
+            if(element.slug === 'modifier-un-indicateur-mod') {
               this.indicateurUpdate = true
             }
-            if(element.slug ==='supprimer-un-indicateur') {
+            if(element.slug ==='supprimer-un-indicateur-mod') {
               this.indicateurDelete = true
             }
-            if(element.slug ==='creer-un-suivi-indicateur') {
+            if(element.slug ==='creer-un-suivi-indicateur-mod') {
               this.suiviIndicateurAdd =  true
             }
-            if(element.slug == 'voir-un-suivi-indicateur' ) {
+            if(element.slug == 'voir-un-suivi-indicateur-mod' ) {
               this.suiviIndicateurVisible = true
             }
-            if(element.slug == 'exporter-un-indicateur' ) {
+            if(element.slug == 'exporter-un-indicateur-mod' ) {
               this.exporterIndicateur = true
             }
-           
           });
     },
     suivreIndicateur(data){
@@ -482,10 +428,10 @@ export default {
 
         return this.indicateurs.filter(function (indicateur){
           return indicateur.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 indicateur.bailleur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 indicateur.categorie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 indicateur.uniteDeMesure.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+          indicateur.bailleur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          indicateur.categorie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          indicateur.uniteDeMesure.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
     },
     sendForm() {
@@ -495,9 +441,11 @@ export default {
       });
 
       let indicateur = extractFormData(this.champs,this.indicateurAttributs);
-      indicateur.bailleurId = indicateur.bailleurId.id
-      indicateur.categorieId = indicateur.categorieId.id
+      const modId = this.currentUser.profil.id
+      indicateur.frequence = indicateur.frequence.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId.id
+      indicateur.modId = modId
+
       if(this.sendRequest ==false) {
         this.sendRequest = true
         if (this.indicateur?.id) {
@@ -527,7 +475,6 @@ export default {
         }
       }
 
-     
     },
 
     filter() {
@@ -567,7 +514,7 @@ export default {
         })
     },
     async supprimer(indicateur) {
-      if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + indicateur.nom))
+      if(window.confirm("Voulez-vous supprimer cet indicateur" + indicateur.nom))
         await this.deleteIndicateur(indicateur.id)
     },
     close() {
@@ -590,8 +537,8 @@ export default {
       this.showModal = true
     },
     modifier() {
-        this.title ='Modifier un indicateur'
-        this.showModal = true
+      this.title ='Modifier un indicateur'
+      this.showModal = true
     }
       
   },
@@ -606,29 +553,41 @@ export default {
        if(this.currentUser.type ==='bailleur') {
          this.getIndicateurBailleurs()
          
-         this.headers = [
-              {name:'Indicateur',cle:'nom',},
-              {name:'description',cle:'description'},
-              {name:'Bailleur',cle:'nom',props:'bailleur',select:true,},
-              {name:'Categorie',cle:'nom',props:'categorie',select:true},
-              {name:'Unité de mesure',cle:'nom',props:'unitee_mesure',select:true},
-              {name:'Valeur de base',cle:'valeurDeBase'},
-              {name:'Année de base',cle:'anneeDeBase'},
-              {name:'Date de création',cle:'created_at'},
-            ]
+        this.headers = [
+          {name:'Indicateur',cle:'nom',},
+          {name:'description',cle:'description'},
+          {name:'Bailleur',cle:'nom',props:'bailleur',select:true,},
+          {name:'Categorie',cle:'nom',props:'categorie',select:true},
+          {name:'Unité de mesure',cle:'nom',props:'unitee_mesure',select:true},
+          {name:'Valeur de base',cle:'valeurDeBase'},
+          {name:'Année de base',cle:'anneeDeBase'},
+          {name:'Date de création',cle:'created_at'},
+        ]
        }
        else {
           this.fetchIndicateurs().then((value) => {
           setTimeout(() => {
             console.log("Fetching list indicateurs...")
-            this.fetchBailleurs()
-            this.fetchCategories()
+         
             this.fetchUnite()
+            this.champs = [
+              {name:'Nom',type:'text',key:'nom',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+              {name:'Année de base',key:'anneeDeBase',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+              {name:'Valeur de base',key:'valeurDeBase',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+              {name:'Unite de mesure',key:'uniteeMesureId',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:this.uniteDeMesure,required:true,cle: 'id', value:'nom',errors : []},
+              {name:'Frequence',key:'frequence',type:'',placeholdere:"",isSelect:true,isTextArea:false,data:'',options:this.Frequence,required:true, cle: 'id', value: 'value', errors : []},
+              {name:'Definition',key:'definition',type:'',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+              {name:'Responable',type:'text',key:'responsable',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+              {name:'Source',key:'source',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+              {name:'Description',key:'description',type:'',placeholdere:"Description",isSelect:false,isTextArea:true,data:'',required:true,},
+            ]
             this.headers = [
               {name:'Indicateur',cle:'nom',},
               {name:'Description',cle:'description'},
-              {name:'Bailleur',cle:'sigle',props:'bailleur',select:true,options:this.bailleurs,key:'sigle',updateKey:'bailleurId'},
-              {name:'Catégorie',cle:'nom',props:'categorie',select:true,options:this.categories,key:'nom',updateKey:'categorieId'},
+              {name:'Definition',cle:'definition'},
+              {name:'Responsable',cle:'responsable'},
+              {name:'Frequence',cle:'frequence'},
+              {name:'Source',cle:'source'},
               {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'},
               {name:'Valeur de base',cle:'valeurDeBase'},
               {name:'Année de base',cle:'anneeDeBase'},

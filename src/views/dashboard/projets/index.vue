@@ -84,7 +84,7 @@
                 </div>
               </div>
               <div v-if="projet.statut == -2 "  class="absolute top-2 left-2 ">
-                <button @click.stop="validerProjet(projet.id)" class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
+                <button v-if="validation" @click.stop="validerProjet(projet.id)" class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
               </div>
               <div v-else  class="absolute top-2 left-2 ">
                 <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
@@ -219,8 +219,6 @@ export default {
         { name: "supprimer" },
         { name: "continuer" },
       ],
-  
-
       projetId:'',
       projetVisible:false,
       projetAdd:false,
@@ -228,6 +226,7 @@ export default {
       projetUpdate:false,
       dashboardProjetVisible:false,
       bailleurVisible:false,
+      validation:false,
       sendRequest: false,
       fichiers:[],
       image:{}
@@ -288,6 +287,9 @@ export default {
             }
             if(element.slug ==='voir-un-bailleur') {
               this.bailleurVisible = true
+            }
+            if(element.slug === 'validation' ) {
+              this.validation = true
             }
            
         });
