@@ -13,7 +13,7 @@
                   </label>
                   <select
                     id="pet-select"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                     v-model="entrepriseId"
                   >
                     <option value="" disabled selected hidden>
@@ -29,7 +29,7 @@
                   </label>
                   <select
                     id="pet-select"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                     v-model="siteId"
                   >
                     <option value="" disabled selected hidden>
@@ -45,7 +45,7 @@
                   </label>
                   <select
                     id="pet-select"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                     v-model="userId"
                   >
                     <option value="" disabled selected hidden>
@@ -64,7 +64,7 @@
                       id="vrai"
                       name="verite"
                       type="date"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                     v-model="date"
                     />
                 </div>
@@ -123,7 +123,7 @@
                   <input
                     type="text"
                     v-model="form.content"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                   />
                 </div>
                 <div v-if="form.inputType == 'photos'">
@@ -134,7 +134,7 @@
                   <input
                     type="file"
                     accept="png,jpg"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                   />
                 </div>
                 <div v-if="form.inputType == 'boolean'">

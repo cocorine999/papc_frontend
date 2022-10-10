@@ -79,9 +79,9 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
-          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-base uppercase font-bold    py-2"> Listes des entreprises </span>
+          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
           <button @click="addActivite" v-if="seeActivite"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
@@ -104,7 +104,7 @@
               <span  class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p> </p></span>
               <span  class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{entreprise.nom}}</span>
               
-              <p class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"> {{entreprise.user.nom}}</p>
+              <p class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 mt-16 truncate"> {{entreprise.user.nom}}</p>
         
               <div class="flex items-center mt-8 text-gray-600">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
@@ -375,7 +375,7 @@ export default {
         this.resetForm();
       },
     addActivite() {
-      this.title = 'Creer une activité'
+      this.title = 'Creer'
       this.showModal = true
     },
     

@@ -23,7 +23,7 @@
 
       <div class="flex items-center justify-between my-2">
         <div>
-          <span  class="inline-block cursor-pointer border-primary border-b-8 text-lg uppercase font-bold   py-2">Plan de decaissement </span>
+          <span data-v-7b9b4c0e="" class="inline-block cursor-pointer border-primary border-b-8 text-base uppercase font-bold   py-2">Plan de decaissement </span>
         </div> 
       <div  class="flex space-x-4 items-center">
 

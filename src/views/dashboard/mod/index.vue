@@ -59,19 +59,19 @@
             @click="goMod"
             v-if="modVisible || currentRole =='bailleur'"
             :class="{ 'border-primary border-b-8': seeMod }"
-            class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
+            class="inline-block cursor-pointer text-base uppercase font-bold py-2"
             >Listes MOD
           </span>
           <span
             @click="goPassation"
             :class="{ 'border-primary border-b-8': seePassation }"
-            class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
+            class="inline-block cursor-pointer text-base uppercase font-bold py-2"
             >Passation de marché
           </span>
           <span
             @click="goChecklist"
             :class="{ 'border-primary border-b-8': seeChecklist }"
-            class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold py-2"
+            class="inline-block cursor-pointer text-base utext-lg uppercase font-bold py-2"
             >Checklist
           </span>
         </div>
@@ -91,7 +91,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-sm font-semibold">Ajouter un MOD</span>
+          <span class="mx-2 text-sm font-semibold">Ajouter</span>
         </button>
         <button
           v-if="seePassation"
@@ -109,7 +109,7 @@
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
           <span class="mx-2 text-sm font-semibold"
-            >Ajouter une passation de marché</span
+            >Ajouter</span
           >
         </button>
       </div>
@@ -399,7 +399,7 @@ export default {
     },
 
     addMod() {
-      this.title = "Ajouter d'un nouveau MOD";
+      this.title = "Ajouter";
 
       this.submitText = "Enrégistrer";
 
@@ -478,7 +478,7 @@ export default {
       this.setPassation({})
     },
     addPassation() {
-      this.title2 = 'Ajouter une nouvelle passation'
+      this.title2 = 'Ajouter'
       
       this.showCloseModal2(true)
     },

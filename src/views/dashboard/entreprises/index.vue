@@ -3,7 +3,7 @@
     <div v-if="entrepriseExecutanteVisible || currentRole==='bailleur'" class="px-4">
       <route-name title="entreprises" />
       <div v-if="showModal">
-        <modal-top-right title="Ajouter un entreprise" v-on:close="close">
+        <modal-top-right title="Ajouter" v-on:close="close">
           <form-component :form="form" @send="sendForm" />
         </modal-top-right>
       </div>
@@ -11,7 +11,7 @@
       <div class="flex items-center justify-between">
         <div class="flex space-x-4">
           <span
-            class="inline-block cursor-pointer border-primary border-b-8 text-lg uppercase font-bold py-2"
+            class="inline-block cursor-pointer border-primary border-b-8 text-base uppercase font-bold py-2"
             >Listes entreprises executantes
           </span>
          

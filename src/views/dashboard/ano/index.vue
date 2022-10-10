@@ -98,7 +98,7 @@
       <div v-if="anoAdd" class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
-            class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
+            class="inline-block cursor-pointer  border-b-8 font-bold text-base uppercase    border-primary py-2">Tableau recapitulatif </span>
         </div>
         <div class="flex space-x-4">
           

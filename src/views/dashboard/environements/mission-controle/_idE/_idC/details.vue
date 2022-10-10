@@ -140,7 +140,7 @@
         <div class="mt-4 mb-6 flex space-x-4 items-center">
           <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
           
-          <select id="pet-select" class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" v-model="valueFiltre">
+          <select id="pet-select" class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm" v-model="valueFiltre">
             <option value="" disabled selected hidden>
                         Veuillez choisir une date
                       </option>

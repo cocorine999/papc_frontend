@@ -110,7 +110,7 @@
                       v-model="input.data"
                       :placeholder="input.placeholdere"
                       :type="input.type"
-                      class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                      class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                     />
                   </div>
                 </div>
@@ -126,7 +126,7 @@
                   </label>
                   <textarea
                     v-model="area.data"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent"
+                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
                     required
                     rows="3"
                   ></textarea>
