@@ -52,6 +52,8 @@ import entreprise_checklist_details from "../views/dashboard/environements/entre
 import entreprise_checklist_create from "../views/dashboard/environements/entreprise/create.vue";
 import entreprise_checklist_entreprise from "../views/dashboard/environements/entreprise/index.vue";
 
+import general_checklist_details from "../views/dashboard/formulaire/_id/details.vue";
+
 //fin checklist environment entreprise
 
 import entreprises from "../views/dashboard/entreprises/index.vue";
@@ -431,6 +433,15 @@ const routes = [
   },
 
   {
+    path: "/dashboard/rapport/:id/details",
+    name: "general_checklist_details",
+    component: general_checklist_details,
+    meta: {
+      middleware: [auth],
+    },
+  },
+
+  {
     path: "/dashboard/entreprise/checklist/create",
     name: "entreprise_checklist_create",
     component: entreprise_checklist_create,
@@ -449,6 +460,7 @@ const routes = [
   },
   //fin checklist de entreprise
 
+  
   {
     path: "/dashboard/entreprises",
     name: "entreprises",

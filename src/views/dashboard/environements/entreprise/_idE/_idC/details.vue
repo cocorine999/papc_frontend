@@ -11,14 +11,15 @@
           </li>
 
           <li class="flex items-center text-blue-500 ">
-            <router-link to="" class="">Checklist</router-link>
+            <router-link to="" class="">Rapport entreprise</router-link>
           </li>
         </ol>
       </div> 
     </nav>
     <div class="flex items-center justify-between my-4">
       <div class="flex space-x-4">
-        <span  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Checklist </span>
+        <span v-if="seeChecklist"  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Rapport entreprise </span>
+        <span v-else  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Graphes d'analyse </span>
       </div>
       <vue-html2pdf
         :show-layout="false"
@@ -226,7 +227,7 @@
       </div>
     </div>
     <div v-else class="my-4 grid grid-cols-3 gap-4 ">
-      <div v-for="graphe in graphes"  class="p-4 bg-white shadow" id="chart">
+      <div v-for="graphe in graphes" :key="graphe.id" class="p-4 bg-white shadow" id="chart">
         <apexchart type="bar" height="350" :options="chartOptions(graphe)" :series="series(graphe)"></apexchart>
       </div>
     </div>
@@ -274,6 +275,7 @@ export default {
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
       ],
+      entrepriseExecutanteVisible:false,
         
     }
   },
@@ -441,10 +443,23 @@ export default {
               }
             }
           }
-    }
+    },
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-suivi-environnementale') {
+          this.entrepriseExecutanteVisible = true
+        }
+       
+           
+      });
+    },
     
   },
   mounted() {
+    this.getPermission()
+     if( !this.entrepriseExecutanteVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
     
     let form1 = {

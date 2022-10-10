@@ -287,7 +287,7 @@ export default {
               this.dashboardProjetVisible = true
             }
             if(element.slug ==='voir-un-bailleur') {
-              this.dashboardProjetVisible = true
+              this.bailleurVisible = true
             }
            
         });
@@ -594,7 +594,7 @@ export default {
           console.log("Fetching list of bailleurs...")
           if(this.bailleurVisible) {
             this.fetchBailleurs(this.programmeId)
-          }
+          }  
         });
       })
     }

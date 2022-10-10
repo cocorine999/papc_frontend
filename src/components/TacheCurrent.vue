@@ -979,7 +979,10 @@ export default {
       }
 
     } 
-    this.getSuivi()
+    if(this.tacheSuivi) {
+      this.getSuivi()
+    }
+   
     this.getPermission()
     this.programmeId = this.currentUser.programme.id
 

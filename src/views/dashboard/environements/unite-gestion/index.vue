@@ -90,7 +90,7 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Rapports unitée de gestion </span>
           <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
           <span @click="goFormulaire" v-if="formulaireVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
@@ -157,6 +157,7 @@
               @onlink="getlink(formulaire.id)"
               :isdelete="formulaireDelete"
               :isUpdate="formulaireUpdate"
+              :isGotoLink="suiviEnvAdd"
               > 
             </card-checklist>
           </div>
@@ -236,6 +237,7 @@ export default {
       formulaireAdd:false,
       formulaireDelete:false,
       formulaireUpdate:false,
+      suiviEnvAdd:false,
       
     }
   },
@@ -283,7 +285,7 @@ export default {
     //Charger les fonctions de communication avec le serveur
      getPermission() {
         this.currentUser.role[0].permissions.forEach(element => {
-          if(element.slug ==='voir-une-entreprise-executante') {
+        if(element.slug ==='voir-un-suivi-environnementale') {
           this.entrepriseExecutanteVisible = true
         }
         if(element.slug === 'creer-une-activite-environnementale') {
@@ -309,6 +311,9 @@ export default {
         }
         if(element.slug ==='supprimer-un-formulaire') {
           this.formulaireUpdate = true
+        }
+        if(element.slug === 'creer-un-suivi-environnementale' ) {
+          this.suiviEnvAdd = true
         }
            
       });
@@ -363,7 +368,7 @@ export default {
 
         return this.formulaires.filter(function (formulaire){
           return formulaire.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+            formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
     },
 
@@ -375,8 +380,11 @@ export default {
       this.value.push(tag)
     },
     getlink(i){
-      this.formulaireId = i
-      this.showLink = true
+      if(this.suiviEnvAdd) {
+        this.formulaireId = i
+        this.showLink = true
+      }
+   
     },
     gotoDetails(id) {
       this.$router.push({name:'unite_de_gestion_checklist_details',params:{id:id}})
@@ -388,7 +396,7 @@ export default {
         this.showCloseModal();
 
         this.resetForm();
-      },
+    },
     addActivite() {
       this.title = 'Creer une activité'
       this.showModal = true

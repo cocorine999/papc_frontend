@@ -79,7 +79,7 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Listes des entreprises </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Rapports mod </span>
           <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
           <span @click="goFormulaire" v-if="formulaireVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
@@ -146,6 +146,7 @@
               @onlink="getlink(formulaire.id)"
               :isdelete="formulaireDelete"
               :isUpdate="formulaireUpdate"
+              :isGotoLink="suiviEnvAdd"
               > 
             </card-checklist>
           </div>
@@ -225,6 +226,7 @@ export default {
       formulaireAdd:false,
       formulaireDelete:false,
       formulaireUpdate:false,
+      suiviEnvAdd:false,
     }
   },
   computed: {
@@ -268,7 +270,7 @@ export default {
 
      getPermission() {
         this.currentUser.role[0].permissions.forEach(element => {
-          if(element.slug ==='voir-une-entreprise-executante') {
+          if(element.slug ==='voir-un-suivi-environnementale') {
           this.entrepriseExecutanteVisible = true
         }
         if(element.slug === 'creer-une-activite-environnementale') {
@@ -294,6 +296,9 @@ export default {
         }
         if(element.slug ==='supprimer-un-formulaire') {
           this.formulaireUpdate = true
+        }
+        if(element.slug === 'creer-un-suivi-environnementale' ) {
+          this.suiviEnvAdd = true
         }
            
       });
