@@ -58,7 +58,7 @@
       </div>
     </div> -->
     <div  class="p-4">
-      <div class="select w-52">
+      <div v-if="tacheReVisible" class="select w-52">
         <select
           id="choice"
           v-model="version"
@@ -112,6 +112,7 @@ export default {
       currentPage:true,
       version:'current',
       tacheVisible:false,
+      tacheReVisible:false,
       scopes: [],
       activites:[],
       composantes:[],
@@ -146,6 +147,9 @@ export default {
       this.currentUser.role[0].permissions.forEach(element => {
         if(element.slug ==='voir-une-tache') {
           this.tacheVisible = true
+        }
+        if(element.slug ==='voir-une-tache-revise') {
+          this.tacheReVisible = true
         }
       });
     },

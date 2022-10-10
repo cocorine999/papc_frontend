@@ -26,7 +26,7 @@
        
         <titre>Listes des activités</titre>
       </div>
-      <div class="select w-52">
+      <div v-if="activiteReVisible" class="select w-52">
         <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           
           <option value="" selected>Version actuelle</option>
@@ -69,6 +69,7 @@ export default {
       currentPage:true,
       version:'current',
       activiteVisible:false,
+      activiteReVisible:false,
       planDecaissementVisible:false,
       version: '',
       scopes: [],
@@ -105,6 +106,9 @@ export default {
           }
           if(element.slug ==='voir-un-plan-de-decaissement') {
             this.planDecaissementVisible= true
+          }
+          if(element.slug ==='voir-une-activite-revise') {
+            this.activiteReVisible = true
           }
         });
     },

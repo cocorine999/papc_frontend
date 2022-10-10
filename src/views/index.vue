@@ -157,8 +157,9 @@ export default {
               this.$toast.success("Connexion réussie")
               this.$router.push('/dashboard/projets')
             }
-            else if (response.data.utilisateur.type =='') {
-
+            else if (response.data.utilisateur.type =='administrateur') {
+              this.$toast.success("Connexion réussie")
+              this.$router.push('/dashboard/programmes')
             }
             //this.$router.push('/dashboard/bailleurs')
             //this.$toast.success("Connexion réussie")

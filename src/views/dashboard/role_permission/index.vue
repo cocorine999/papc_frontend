@@ -206,7 +206,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           chargement:false,
           title:'',
           saveUpdate:{},
-          permissions: [],
+  
           idRole:'',
           search:"",
           description:'',
@@ -228,7 +228,13 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
     computed: {
 
       //importation des variables du module auths
-      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
+
+       permissions() {
+        return this.currentUser.role[0].permissions
+       }
+
+
    
     },
 

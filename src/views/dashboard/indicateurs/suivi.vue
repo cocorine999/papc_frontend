@@ -52,9 +52,9 @@
             </div>
           </div>
         
-          <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
+         <!--  <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>     -->
           <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
-          <vtable v-if="!commenterSuivi" :headers="headers"   :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
+          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
         
       </div>
   </dashboard>
