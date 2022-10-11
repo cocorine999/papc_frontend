@@ -168,6 +168,7 @@ export default {
       isLoading: "IS_LOADING",
       uniteeDeMesure: "uniteesDeMesure/getUniteeDeMesure",
       uniteesDeMesure: "uniteesDeMesure/getUniteesDeMesure",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
 
@@ -177,6 +178,7 @@ export default {
               if(element.slug ==='voir-une-unite-de-mesure') {
                 this.uniteVisible = true
               }
+              
               if(element.slug === 'creer-une-unite-de-mesure') {
                 this.uniteAdd = true
               }
@@ -284,10 +286,17 @@ export default {
           return item;
         });
 
-        let uniteeDeMesure = extractFormData(this.champs, this.uniteeDeMesureAttributs);
-        
-        uniteeDeMesure.type = uniteeDeMesure.type.id;
+        let uniteeDeMesure = {
+          nom:"",
+          type:""
+        }
 
+        uniteeDeMesure.nom = this.champs[0].data
+
+        uniteeDeMesure.type = this.champs[1].data.id
+
+        console.log(uniteeDeMesure)
+        
         if (this.uniteeDeMesure?.id) {
           this.updateUniteeDeMesure({ uniteeDeMesure: uniteeDeMesure, id: this.uniteeDeMesure?.id }).then(
             (response) => {
@@ -321,6 +330,9 @@ export default {
   },
 
   mounted() {
+    this.getPermission();
+    console.log('ajout')
+    console.log(this.uniteAdd)
     if(!this.uniteVisible) {
       this.$router.push('/401-non-autorise')
     } 

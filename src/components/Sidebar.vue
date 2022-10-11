@@ -1176,7 +1176,7 @@ export default {
               this.categorieVisible = true
             }
             if(element.slug ==='voir-une-unite-de-mesure') {
-              this.uniteeDeGestionVisible = true
+              this.uniteDeMesureVisible = true
             }
             if(element.slug ==='voir-un-historique') {
               this.historiqueVisible = true
