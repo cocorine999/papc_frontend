@@ -368,8 +368,13 @@ export default {
       this.value.push(tag)
     },
     getlink(i){
-      this.formulaireId = i
-      this.showLink = true
+      /*if(this.suiviEnvAdd) {
+        this.formulaireId = i
+        this.showLink = true
+      }*/
+
+      this.$router.push({name:'form_gestion_generator',params:{id:i}})
+   
     },
     gotoDetails(id) {
       this.$router.push({name:'mission_controle_checklist_details',params:{idE:id}})
