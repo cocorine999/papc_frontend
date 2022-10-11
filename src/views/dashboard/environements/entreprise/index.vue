@@ -79,9 +79,9 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Rapports entreprises </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Rapports entreprise </span>
           <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
+          <span @click="goFormulaire" v-if="formulaireVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
           <button @click="addActivite" v-if="seeActivite && activiteEnvAdd"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
@@ -133,7 +133,9 @@
       </div>
       <div v-if="seeActivite">
         <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
-        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"  @updateInputData="updateInputData"></vtable>    
+        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @supprimer="supprimerActivite"></vtable>    
+        <vtable v-if="!activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @updateInputData="updateInputData"></vtable>
+        <vtable v-if="!activiteEnvDelete && !activiteEnvUpdate && activiteEnvVisible" :headers="headers" :datas="filteredEActivite()"></vtable>        
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">

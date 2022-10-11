@@ -144,7 +144,9 @@
       </div>
       <div v-if="seeActivite">
         <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
-        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"  @updateInputData="updateInputData"></vtable>    
+        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @supprimer="supprimerActivite"></vtable>    
+        <vtable v-if="!activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @updateInputData="updateInputData"></vtable>
+        <vtable v-if="!activiteEnvDelete && !activiteEnvUpdate && activiteEnvVisible" :headers="headers" :datas="filteredEActivite()" :actions="actions"></vtable>        
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
