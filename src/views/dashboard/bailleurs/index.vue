@@ -98,7 +98,7 @@
           <button
             @click="addBailleur"
             title="ajouter"
-            class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+            class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.pays }}
                   </div>
@@ -197,7 +197,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.user.contact }}
                   </div>
@@ -223,7 +223,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.user.email }}
                   </div>

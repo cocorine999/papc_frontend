@@ -6,15 +6,15 @@
           <table class="min-w-full">
             <thead class="border-b bg-gray-300">
               <tr>
-                <th  scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                <th  scope="col" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline" @click="selectAllCheckbox($event);">
                   </label>
                 </th>
                 
-                <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> {{head.name}} </th>
-                 <th scope="col" v-if="statut" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Statut</th>
-                <th scope="col" v-if="actions != undefined" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Actions</th>
+                <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> {{head.name}} </th>
+                 <th scope="col" v-if="statut" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Statut</th>
+                <th scope="col" v-if="actions != undefined" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Actions</th>
                
               </tr>
             </thead>

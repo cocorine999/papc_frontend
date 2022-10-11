@@ -222,7 +222,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-sm font-semibold">ajouter une activité</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter une activité</span>
         </button>
         <button v-if="seePlan" @click="addPlan" title="ajouter un plan d'ecaissement"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
            <span>
@@ -234,7 +234,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-sm font-semibold">ajouter un plan d'ecaissement</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter un plan d'ecaissement</span>
         </button>
       </div>
      
@@ -316,24 +316,24 @@
                   <!--  -->
                   <div class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
                     <i class='bx bxs-pin bx-sm'></i>
-                    <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Responsable : 
+                    <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">S. Responsable : 
                       <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
                   </div>
                   <div class="flex items-center text-gray-600 dark:text-gray-400 mb-1">
                     <i class='bx bxs-pin bx-sm'></i>
-                    <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">S. Associée : 
+                    <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">S. Associée : 
                       <span class="font-bold italic text-lg uppercase"> {{activite.StructureAssociée}} </span></div>
                   </div>
                   <!--  -->
                   <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
                     <i class='bx bxs-wallet bx-sm'></i>
-                    <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">EMP : 
+                    <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">EMP : 
                       <span class="font-bold italic text-lg"> {{activite.montantEPM}} </span><span class="ml-2 uppercase font-bold">fcfa</span>
                     </div>
                   </div>
                   <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
                     <i class='bx bxs-wallet bx-sm'></i>
-                    <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">BN : <span
+                    <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">BN : <span
                         class="font-bold italic text-lg">{{activite.montantBN}}</span><span class="ml-2 uppercase font-bold">fcfa</span>
                     </div>
                   </div>

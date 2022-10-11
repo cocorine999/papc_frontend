@@ -1,8 +1,9 @@
 <template>
   <dashboard>
     <div v-if="roleVisible" class="px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+        <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -34,7 +35,7 @@
             <form @submit.prevent="createRole" v-if="title =='Créer' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le rôle  </label>
-                <input required type="text" v-model="roles.nom" placeholder="Taper le rôle"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm" >
+                <input required type="text" v-model="roles.nom" placeholder="Taper le rôle"  class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" >
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
               
@@ -71,7 +72,7 @@
             <form @submit.prevent="updateRole" v-if="title =='Modifier un rôle' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le rôle  </label>
-                <input required type="text" v-model="saveUpdate.nom" placeholder="Taper le role"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm" >
+                <input required type="text" v-model="saveUpdate.nom" placeholder="Taper le role"  class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" >
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
               
@@ -112,7 +113,7 @@
         <titre>Rôles et permissions </titre>
           <button v-if="roleAdd" @click="addRole" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">créer un rôle</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">créer un rôle</span>
           </button>
       </div>
    
@@ -125,13 +126,13 @@
                   <thead class="border-b bg-gray-50">
                     <tr>
                     
-                      <th scope="col" class="text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         rôles
                       </th>
-                      <th scope="col" class="text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         permissions
                       </th>
-                      <th scope="col" class="text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         actions
                       </th>
                     </tr>

@@ -49,10 +49,10 @@
       </modal-top-right>
 
       <nav
-        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb"
       >
-        <div>
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
               <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -94,11 +94,11 @@
 
       <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
-          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-base uppercase border-primary py-2">Taches</span>
-         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-base uppercase border-primary py-2">Suivi tache</span> -->
+          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">Taches</span>
+         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">Suivi tache</span> -->
         </div>
 
-        <button v-if="seeTache && tacheVisible "   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="seeTache && tacheVisible "   @click="addTache" title="ajouter une tache" class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@
               style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             </span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
        
       </div>
@@ -116,18 +116,18 @@
       <div v-if="seeTache && tacheVisible ">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <!--Filtre sur projet -->
-          <div class="w-full grid grid-cols-2 gap-4">
-           <div>
+          <div class="w-full grid sm:grid-cols-2 sm:gap-4">
+           <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
             <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
-           <div>
+           <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
              <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
            </div>
           
-            <div>
+            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
               <multiselect
                 v-model="sousComposanteFiltre"
@@ -141,7 +141,7 @@
               </multiselect>
             </div>
 
-            <div>
+            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
               <multiselect
                 v-model="valueFiltre"
@@ -226,10 +226,10 @@
         </div>
 
         <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
-          <div class="flex   justify-between">
+          <div class="flex   justify-between flex-wrap items-center">
              <!--Filtre sur projet -->
-             <h2 class="uppercase font-bold">Listes des taches </h2>
-            <nav class="flex text-sm align-middle justify-evenly">
+             <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>
+            <nav class="flex text-sm align-middle justify-evenly w-full sm:w-2/5">
                 <span
                   @click="toggle2"
                   :class="{ 'border-yellow-600 text-yellow-600': pending }"

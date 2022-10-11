@@ -9,7 +9,7 @@
     </vmodal>
     <div class="px-4">
       <nav
-        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb"
       >
         <div>
@@ -61,7 +61,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-xs font-semibold">Ajouter </span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span>
         </router-link>
       </div>
       <div  class="grid grid-cols-3 gap-4">

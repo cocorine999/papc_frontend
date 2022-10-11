@@ -3,7 +3,7 @@
    
     <RouteName />
 
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between flex-wrap">
       <titre>Les communes </titre>
       <div class="form-group my-2">
         <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Communes</label>

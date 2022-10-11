@@ -381,7 +381,7 @@
         <span
           :class="{ 'border-primary border-b-8 font-bold': seeTache }"
           @click="gotoTache()"
-          class="inline-block cursor-pointer text-base uppercase border-primary py-2"
+          class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2"
           >taches</span
         >
        
@@ -408,7 +408,7 @@
               d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
             ></path></svg
         ></span>
-        <span class="mx-2 text-sm font-semibold">ajouter une tache</span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter une tache</span>
       </button>
     </div>
    

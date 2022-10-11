@@ -1,7 +1,7 @@
 <template>
   <div class="w-full px-4">
     <nav
-      class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
+      class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
       aria-label="Breadcrumb"
     >
       <div>
@@ -49,13 +49,13 @@
         <span
           :class="{ 'border-primary border-b-8 font-bold': seeTache }"
           @click="gotoTache()"
-          class="inline-block cursor-pointer text-base uppercase border-primary py-2"
+          class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2"
           >Taches</span
         >
        <!--  <span
           :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
           @click="gotoSuivi()"
-          class="inline-block cursor-pointer text-base uppercase border-primary py-2"
+          class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2"
           >Suivi tache</span -->
         >
       </div>

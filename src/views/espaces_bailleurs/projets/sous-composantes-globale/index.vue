@@ -245,7 +245,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-sm font-semibold">ajouter</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter</span>
       </button>
       <button v-if="seeActivite" @click="addActivite" title="ajouter un projet"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
          <span>
@@ -257,7 +257,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-        <span class="mx-2 text-sm font-semibold">ajouter une activite</span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter une activite</span>
       </button>
       
     </div>

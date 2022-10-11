@@ -60,7 +60,8 @@
       </div>
     </vmodal>
     <div class="w-full px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -86,11 +87,11 @@
         <div>
           <button @click="addActivite" v-if="seeActivite && activiteEnvAdd"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Creer une activité </span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Creer une activité </span>
           </button>
           <router-link v-if="seeFormulaire && checklistVisible"  :to="{name:'mission_controle_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Creer un formulaire </span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Creer un formulaire </span>
           </router-link>
         </div>
       </div>
@@ -110,21 +111,21 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.adresse}}</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.adresse}}</div>
               </div>
         
               <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.contact}}</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.contact}}</div>
               </div>
         
               <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.email}}</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.email}}</div>
               </div>
             </div>
           </div>

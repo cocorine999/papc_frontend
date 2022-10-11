@@ -81,10 +81,10 @@
         <div class="my-3 px-3 py-1 justify-end flex space-x-4">
        <button @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
-        <span class="mx-2 text-sm font-semibold">Filtre</span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
       </button>
        <button @click="generateReport" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        <span class="mx-2 text-sm font-semibold">générer pdf </span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">générer pdf </span>
       </button>
         </div>
 
@@ -780,10 +780,10 @@
         <div class="my-3 px-3 py-1 flex justify-end space-x-4">
        <button @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
-        <span class="mx-2 text-sm font-semibold">Filtre</span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
       </button>
        <button @click="generateReport" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        <span class="mx-2 text-sm font-semibold">generer pdf </span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">generer pdf </span>
       </button>
         </div>
 

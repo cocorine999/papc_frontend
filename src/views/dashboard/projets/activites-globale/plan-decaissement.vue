@@ -254,25 +254,25 @@
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeActivite }"
             @click="gotoActivite()"
-            class="inline-block cursor-pointer text-base uppercase border-primary py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2"
             >Activités</span
           >
           <span
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
-            class="inline-block cursor-pointer text-base uppercase py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2"
             >Plan d'ecaissement
           </span>
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
             @click="gotoSuivi()"
-            class="inline-block cursor-pointer text-base uppercase py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2"
             >Le suivi evaluation
           </span>
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
-            class="inline-block cursor-pointer text-base uppercase py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2"
             >Statistiques
           </span>
         </div>
@@ -281,7 +281,7 @@
           v-if="seeActivite"
           @click="addActivite"
           title="ajouter une activite"
-          class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+          class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
         >
           <span>
             <svg
@@ -292,7 +292,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter une activité</span>
         </button>
         <button
           v-if="seePlan"
@@ -315,7 +315,7 @@
                 d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
               ></path></svg
           ></span>
-          <span class="mx-2 text-sm font-semibold"
+          <span class="mx-2 text-xs  md:text-sm font-semibold"
             >ajouter un plan d'ecaissement</span
           >
         </button>
@@ -323,7 +323,7 @@
 
       <div v-if="seeActivite">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">
             

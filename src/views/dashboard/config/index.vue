@@ -3,7 +3,7 @@
    
     <RouteName />
 
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between flex-wrap">
       <titre>Pays </titre>
     </div>
 
