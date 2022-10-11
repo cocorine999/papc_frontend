@@ -3,7 +3,7 @@
     <div class="px-4">
       <nav class="mb-2 mt-4 
  text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
-        <div>
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -145,9 +145,9 @@
         </vmodal>
       </div>
 
-      <div class="flex items-center justify-between flex-wrap">
+      <div class="flex items-end justify-between">
         <titre>Les indicateurs </titre>
-        <div class="flex items-center justify-end  space-x-4 flex-wrap">
+        <div class="flex items-center justify-end w-full space-x-4 flex-wrap">
             <div class="flex my-1 mr-1" >
 
                       <json-excel :data="json_data()" header="INDICATEUR" type="xlsx" :name="title_csv()"  >
@@ -160,12 +160,12 @@
 
             </div>
             <div class=" flex flex-wrap justify-end items-center" >
-              <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-1 sm:px-4 py-2 ml-0 my-1 mr-1 flex overflow-hidden justify-around items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+              <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-1 sm:px-4 py-2 ml-0 my-1 mr-1 flex overflow-hidden justify-around items-center  text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-                <span class="   text-sm  font-semibold uppercase">ajouter un indicateur</span>
+                <span class="text-xs md:text-sm  font-semibold uppercase">ajouter un indicateur</span>
               </button>
               <router-link to="/dashboard/indicateurs/suivi"  title="voir suivi"   class="px-1 sm:px-4 py-2 mr-1 overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-                <span  class="mx-2 text-sm font-semibold uppercase ">Voir suivi indicateur</span>
+                <span  class="mx-2 text-xs md:text-sm font-semibold uppercase ">Voir suivi indicateur</span>
               </router-link>
             </div>
         </div>

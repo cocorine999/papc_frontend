@@ -4,15 +4,15 @@
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
       <div class="px-4">
-          <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
-            <div>
+          <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+            <div class="mb-2">
               <ol class="inline-flex p-0 list-none">
                 <li class="flex items-center text-blue-500">
                   <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
                   <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
                 </li>
                 <li class="flex items-center ">
-                  <router-link to="" class="text-gray-600">Suivi evaluation</router-link>
+                  <router-link to="" class="text-gray-600">Suivi évaluation</router-link>
                 </li>
               </ol>
             </div>
@@ -40,8 +40,8 @@
           </div>
 
           <div class="flex items-center justify-between my-4">
-            <titre>Le suivi d'evaluation </titre>
-            <div class="flex items-center space-x-4">
+            <titre>Le suivi d'évaluation </titre> 
+            <div class="flex items-center space-x-1 sm:space-x-2 md:space-x-4 ">
               <json-excel :data="json_data()" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
             <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
               <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
@@ -307,8 +307,8 @@ export default {
           {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
           {name:'Trimestre',cle:'trimestre',width:"w-24"},
           {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
-          {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
-          {name:'Date de creation',cle:'created_at',width:"w-24"},
+          {name:'valeur réalisée',cle:'valeurRealise',width:"w-28"},
+          {name:'Date de création',cle:'created_at',width:"w-24"},
         ]
         this.headers = headers
         }
@@ -317,7 +317,7 @@ export default {
           {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
           {name:'Trimestre',cle:'trimestre',width:"w-24"},
           {name:'Valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
-          {name:'Valeur realisé',cle:'valeurRealise',width:"w-28"},
+          {name:'Valeur réalisée',cle:'valeurRealise',width:"w-28"},
           {name:'Date de création',cle:'created_at',width:"w-24"},
         ]
         this.headers = headers
