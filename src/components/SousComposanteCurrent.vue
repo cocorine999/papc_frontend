@@ -81,6 +81,8 @@
       <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(sousComposante, index) in sousComposantes" :key="index">
           <card-composante
+            :isComposante="false"
+            :data="sousComposante"
             :libelle="sousComposante.nom"
             :code="sousComposante.code"
             composanteName="Sous Composante"
@@ -92,7 +94,6 @@
             @modifier="modifier(sousComposante)"
             @dupliquer="dupliquer(sousComposante)"
             @supprimer="supprimer(sousComposante)"
-            @validation="validation(sousComposante)"
             @suivre="suivreMyComposant(sousComposante)"
             @gotoNext="gotoNext(sousComposante)"
             :isDelete = "composanteDelete"
@@ -138,6 +139,8 @@ export default {
     return {
       valueFiltre:null,
       projetFiltre: null,
+      projetId:'',
+      composanteId:'',
       pending:false,
       success:true,
       rejected:false,
@@ -226,9 +229,9 @@ export default {
 
   methods: {
     changeProjet(projet) {
+      this.projetId = projet.id
       if(this.isClick) {
         this.projetFiltre = this.newProjet
-      
         this.fetchComposantes(this.idProjet);
         this.isClick = false
         localStorage.removeItem('profondeurComposante');
@@ -240,15 +243,15 @@ export default {
           if(projet.id == element.id) {
             indexProjet = index
           }
-          
         }
         let composantes = this.projets[indexProjet].composantes
         let indexComposante = ''
-        if(composantes[0] != null ) {
+        if(composantes[0] != null || composantes[0] != undefined ) {
           let code = composantes[0].codePta
           let nom = composantes[0].nom
           this.valueFiltre = {codePta:code,nom:nom}
           indexComposante = composantes[0].id
+          this.composanteId = indexComposante
           this.fetchSousComposantes(indexComposante);
           this.isShow = true
         }
@@ -265,10 +268,12 @@ export default {
     changeComposante(composante) {
       if(this.isClick) {
         this.valueFiltre = this.newComponent
+        this.composanteId = this.idComposante
         this.fetchSousComposantes(this.idComposante);
         this.isClick = false
         localStorage.removeItem('profondeurComposante');
       }else {
+        this.composanteId = composante.id
         this.fetchSousComposantes(composante.id);
       }
     },
@@ -412,9 +417,6 @@ export default {
       this.$router.push({name:'dashboard_projets_activites_globale'})
     },
 
-
-    
-
     editerSuivi(index) {
       this.showInput = false
     },
@@ -469,7 +471,6 @@ export default {
     },
 
     
-
     modifier(sousComposante) {
 
       this.title = 'Modifier un sous composant'
@@ -538,25 +539,6 @@ export default {
       this.setSousComposante({})
     },
     
-   
-
-    validation(sousComposante){
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-        this.updateSousComposante({sousComposante: { "statut": -1, "composanteId": this.valueFiltre.id }, id : sousComposante.id})
-        .then((value) => {
-            this.fetchSousComposantes(this.valueFiltre.id);
-        })
-          .finally((error) => {
-            this.sendRequest = false;
-          })
-
-      }
-    },
-    
     sendForm() {
 
       if( this.sendRequest === false ){
@@ -567,7 +549,7 @@ export default {
 
         let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
 
-        sousComposante.composanteId = this.valueFiltre.id;
+        sousComposante.composanteId = this.composanteId
                 
         if(this.sousComposante?.id)
         {
@@ -593,7 +575,7 @@ export default {
           
             .then(response => {
               if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.valueFiltre.id);
+                this.fetchSousComposantes(this.composanteId);
                 this.close()
               }
 
