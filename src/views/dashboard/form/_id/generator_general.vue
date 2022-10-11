@@ -238,7 +238,7 @@ export default {
       
       });
 
-      this.$router.push('/dashboard/formulaire')
+      this.$router.go(-1)
     },
   },
   mounted() {
@@ -253,7 +253,6 @@ export default {
     });
     this.fetchUtilisateurs();
 
-    console.log(this.$moment().format('hh:mm:s:z'));
   },
 };
 </script>

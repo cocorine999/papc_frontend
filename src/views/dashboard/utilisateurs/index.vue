@@ -93,8 +93,7 @@ export default {
           {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: this.roles, cle: 'id', value: 'nom', required:true, errors : []}
         ],
         headers:[
-          {name:'Nom',  cle:'nom'},
-          {name:'Prenom',  cle:'prenom'},
+          {name:'Nom et Prénoms',  cle:'nom'},
           {name:'Email',  cle:'email', edit : false},
           {name:'Contact',  cle:'contact'},
           {name:'type utilisateur', cle:'type'},
