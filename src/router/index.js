@@ -69,6 +69,7 @@ import pta from "../views/dashboard/pta/index.vue";
 // import config from "../views/dashboard/config/index.vue";
 // import dashboard from "../views/dashboard/index.vue";
 import unite_gestion from "../views/dashboard/unite-gestion/index.vue";
+import gouvernement from "../views/dashboard/gouvernement/index.vue";
 import indicateurs from "../views/dashboard/indicateurs/index.vue";
 import indicateurs_suivi from "../views/dashboard/indicateurs/suivi.vue";
 import indicateurs_suivi_details from "../views/dashboard/indicateurs/_id/suivi.vue";
@@ -611,6 +612,14 @@ const routes = [
     path: "/dashboard/unite-gestion",
     name: "unite_gestion",
     component: unite_gestion,
+    meta: {
+      middleware: [auth],
+    },
+  },
+  {
+    path: "/dashboard/gouvernement",
+    name: "gouvernement",
+    component: gouvernement,
     meta: {
       middleware: [auth],
     },
