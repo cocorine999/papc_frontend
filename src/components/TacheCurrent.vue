@@ -215,7 +215,6 @@
               @supprimer="supprimer(tache)"
               @dupliquer="dupliquer(tache)"
               @modifier="modifier(tache)"
-              @validation="validation(tache)"
               @prolonger="prolonger(tache)"
               @suivre="suivreMyTache(tache)"
               @commentaire="showComment = true"
@@ -750,20 +749,6 @@ export default {
       return getStringValueOfStatutCode(status);
     },
 
-    validation(tache) {
-      if (this.sendRequest === false) {
-        this.sendRequest = true;
-        this.updateTache({
-          tache: { statut: -1, activiteId: this.valueFiltre.id },
-          id: tache.id,
-        }).then((value) => {
-            this.fetchTaches(this.valueFiltre.id);
-        })
-          .finally((error) => {      
-            this.sendRequest = false;        
-          })
-      }
-    },
 
     sendForm() {
       if (this.sendRequest === false) {
@@ -775,7 +760,7 @@ export default {
         }); */
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
-
+        console.log('tache',tache)
         tache['activiteId'] = this.valueFiltre.id;
         
         if (this.tache?.id) {

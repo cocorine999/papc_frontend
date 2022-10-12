@@ -77,6 +77,8 @@
       <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
         <div v-for="(composante, index) in composantes" :key="index">
           <card-composante
+            :isComposante = "true"
+            :data = "composante"
             :libelle="composante.nom"
             :code="composante.code"
             :statut="getStatus(composante.statut)"
@@ -86,7 +88,6 @@
             :bailleur="composante.sigle"
             @modifier="modifier(composante)"
             @supprimer="supprimer(composante)"
-            @validation="validation(composante)"
             @suivre="suivreMyComposant(composante)"
             @gotoNext="gotoNext(composante,index)"
             :isDelete = "composanteDelete"
@@ -435,23 +436,7 @@ props:['valueProfondeur'],
       return getStringValueOfStatutCode(status);
     },
 
-    validation(composante){
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-          this.updateComposante({composante: { "statut": -1, "projetId": this.valueFiltre.id }, id : composante.id})
-            .then((value) => {
-              this.fetchComposantes(this.valueFiltre.id);
-            })
-            .finally((error) => {              
-              this.sendRequest = false;
-              this.fetchComposantes(this.valueFiltre.id);
-            });
-
-      }
-    },
+   
     
     sendForm() {
 

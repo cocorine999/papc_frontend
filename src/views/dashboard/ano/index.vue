@@ -229,14 +229,14 @@ export default {
       ],
       actionsReponse: [
         { name:'reponse'},
-         { name:'detail'},
+        { name:'detail'},
       ],
       sendRequest: false,
 
       fichiers:[],
       pdf:[
-          {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
-          {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
+        {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
+        {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
       ],
       showReponse:false,
       anosId:'',
@@ -394,6 +394,7 @@ export default {
         formData.append('statut',this.Relance.statut)
         formData.append('commentaire',this.Relance.commentaire)
         formData.append('anoId',this.anosId)
+        formData.append('reponseId',null)
         
         for( let i = 0; i < this.Relance.files.length; i++ ){
           let file = this.Relance.files[i];

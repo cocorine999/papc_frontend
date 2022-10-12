@@ -35,7 +35,7 @@
   
     <hr v-if="isReponse" class="my-2">
     <form v-if="isReponse" @submit.prevent="sendRelancer" class="px-4 overflow-y-auto">
-      <div class="my-2">
+      <div v-if="currentRole=='bailleur'" class="my-2">
         <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
         <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           <option value="" selected>Selectionnez le statut</option>
@@ -74,6 +74,7 @@
 import {API_BASE_URL} from "@/services/configs/environment.js";
 import AnosService from "@/services/modules/ano.service.js";
 import Vbutton from '@/components/Vbutton.vue'
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   components:{Vbutton},
   props:['datas'],
@@ -81,6 +82,7 @@ export default {
     return {
       base_url:API_BASE_URL,
       isReponse:false,
+      currentRole:'',
       Relance:{
         statut:null,
         files:[],
@@ -93,6 +95,10 @@ export default {
       ],
       chargement:false,
     }
+  },
+   computed: {
+   
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
   methods:{
     previewFiles(event) {
@@ -127,6 +133,12 @@ export default {
       }
       
     },
+  },
+  mounted() {
+    if(this.currentUser != undefined) {
+      this.currentRole = this.currentUser.type
+      console.log("role courant",this.currentUser)
+    }
   }
 }
 </script>

@@ -215,6 +215,7 @@
         <div  v-if="isShow" class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div  v-for="(activite, index) in activites" :key="index">
             <card-activite
+              :data="activite"
               :bailleur="activite.bailleur.sigle"
               :libelle="activite.nom"
               :poids="activite.poids"
@@ -227,7 +228,6 @@
               @modifier="modifier(activite)"
               @supprimer="supprimer(activite)"
               @prolonger="prolonger(activite)"
-              @validation="validation(activite)"
               @suivre="suivreMyActivite(activite)"
               @gotoNext="gotoNext(activite)"
               :isDelete="activiteDelete"
@@ -820,11 +820,13 @@ export default {
             const sous_composantes  = data.data.data
            
             if(sous_composantes[0] != null ) { 
-          
+      
               let code = sous_composantes[0].codePta
               let nom = sous_composantes[0].nom
               this.valueFiltre = {codePta:code,nom:nom}
-              let  indexSC = sous_composantes[0].id
+              /* id sous composante */
+              let indexSC = sous_composantes[0].id
+              this.composanteId = indexSC
               this.fetchActivites(indexSC);
               this.isShow = true
            }
@@ -862,7 +864,9 @@ export default {
 
      
     },
-     changeSC(Scomposante) {
+    changeSC(Scomposante) {
+       console.log("id SC",Scomposante.id)
+       this.composanteId = Scomposante.id
       if(this.isClick) {
         this.valueFiltre = this.newSC
         this.fetchActivites(this.idSC);
@@ -1243,19 +1247,7 @@ export default {
       return getStringValueOfStatutCode(status);
     },
 
-    validation(activite) {
-      if (this.sendRequest === false) {
-        this.sendRequest = true;
-
-        this.updateActivite({ activite: { statut: -1, composanteId: this.composanteId }, id: activite.id })
-          .then((value) => {              
-            this.fetchActivites(this.composanteId);
-          })
-          .finally((error) => {              
-            this.sendRequest = false;
-          });
-      }
-    },
+    
 
     savePlanDecaissement() {
       if (this.sendRequest === false) {
