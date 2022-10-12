@@ -98,7 +98,7 @@
          <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">Suivi tache</span> -->
         </div>
 
-        <button v-if="seeTache && tacheVisible "   @click="addTache" title="ajouter une tache" class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="tacheAdd "   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,74 +154,6 @@
               </multiselect>
             </div>
               
-            <button
-                v-if="!showFiltre"
-                title="filtre"
-                @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  height="1.5em"
-                  width="1.5em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-                  ></polygon>
-                </svg>
-                <span>progression des taches </span>
-            </button>
-            <div v-else class="px-6 w-full">
-                <div class="bg-gray-300 h-2 w-full rounded-full relative">
-                  <span
-                    class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
-                    :style="`left:${rangeValue}%`"
-                  ></span>
-                  <span
-                    class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"
-                    :style="`width:${rangeValue}%`"
-                  ></span>
-                </div>
-                <div class="flex justify-between mt-2 text-xs text-gray-600">
-                  <span
-                    @click="filtreRange(0)"
-                    class="w-8 cursor-pointer text-left"
-                    >0%</span
-                  >
-                  <span
-                    @click="filtreRange(25)"
-                    class="w-8 cursor-pointer text-center"
-                    >25%</span
-                  >
-                  <span
-                    @click="filtreRange(50)"
-                    class="w-8 cursor-pointer text-center"
-                    >50%</span
-                  >
-                  <span
-                    @click="filtreRange(75)"
-                    class="w-8 cursor-pointer text-center"
-                    >75%</span
-                  >
-                  <span
-                    @click="filtreRange(100)"
-                    class="w-8 cursor-pointer text-right"
-                    >100%</span
-                  >
-                  <button
-                    @click="showFiltre = false"
-                    class="text-white bg-blue-300 p-1"
-                  >
-                    revenir
-                  </button>
-                </div>
-            </div>
           </div>
         </div>
 
@@ -289,6 +221,7 @@
               @commentaire="showComment = true"
               :isDelete="tacheDelete"
               :isUpdate="tacheUpdate"
+              :isSuivi="tacheSuivi"
             ></card-tache>
           </div>
         </div>
@@ -401,14 +334,12 @@ export default {
       tacheAttributs : ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'poids'],
 
       champs:[
-
         {name: 'Nom de la tâche', key: "nom", type: 'text', placeholdere: "Nom de la tâche", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-        
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},  
       ],
       champsSuiviTache:[
         {name: 'Tache ', key: "statut", type: '', placeholdere: 'Selectionnez une tache ', isSelect: true, isTextArea: false, data:'', required: true, options: [{nom:'tache 1'},{nom:'tache 2'}], cle: 'etat', value: 'nom',  errors : []},
@@ -433,6 +364,7 @@ export default {
       tacheAdd:false,
       tacheDelete:false,
       tacheUpdate:false,
+      tacheSuivi:false,
       idProjet:'',
       idComposante:'',
       idSC:'',
@@ -443,7 +375,6 @@ export default {
       newActivite:null,
       isClick:false,
       isShow:true
-
     };
   },
 
@@ -608,7 +539,7 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
-     getPermission() {
+    getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
           if(element.slug ==='voir-une-tache') {
             this.tacheVisible = true
@@ -621,6 +552,9 @@ export default {
             }
             if(element.slug ==='supprimer-une-tache') {
               this.tacheDelete = true
+            } 
+            if(element.slug ==='voir-un-suivi-tache') {
+              this.tacheSuivi = true
             } 
         });
     },
@@ -673,6 +607,7 @@ export default {
       })
     },
     suivreMyTache(tache) {
+      if(this.tacheSuivi)
       this.$router.push({name:'dashboard_projets_taches_globale_suivis',params:{id:tache.id}})
     },
     close() {
@@ -791,17 +726,20 @@ export default {
         "/dashboard/projets/composantes/sous-composantes/activites/taches"
       );
     },
-     toggle() {
+
+    toggle() {
       this.pending = false
       this.rejected = false
       this.success = true
 
     },
+
     toggle2() {
       this.success = false
       this.rejected = false
       this.pending = true
     },
+
     toggle3() {
       this.pending = false
       this.success = false
@@ -887,10 +825,12 @@ export default {
     showCloseModal(value = false) {
       this.showModal = value;
     },
+
     gotoSuivi() {
       this.seeSuivi = true
       this.seeTache = false
     },
+
     gotoTache() {
       this.seeSuivi = false
       this.seeTache = true
@@ -1039,7 +979,10 @@ export default {
       }
 
     } 
-    this.getSuivi()
+    if(this.tacheSuivi) {
+      this.getSuivi()
+    }
+   
     this.getPermission()
     this.programmeId = this.currentUser.programme.id
 

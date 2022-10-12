@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div v-if="openFiltre">
+    <div v-if="openFiltre && revisionVisible">
        <vmodal title="filtre"  v-on:close="openFiltre = false">
         <div  v-if="currentPage" style="width:60vw !important">
           <form @submit.prevent="getPtaFiltre"  class="p-4">
@@ -77,14 +77,14 @@
     
      <div class="border my-4 rounded-lg border-gray-300 shadow-md">
       <!-- pta current -->
-      <div v-if="currentPage" class="current">
+      <div v-if="currentPage && ptaVisible" class="current">
         <div class="my-3 px-3 py-1 justify-end flex space-x-4">
-       <button @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+       <button v-if="filtrePta" @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
         <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
       </button>
-       <button @click="generateReport" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        <span class="mx-2 text-xs  md:text-sm font-semibold">générer pdf </span>
+       <button v-if="exporterSuiviPta" @click="generateReport" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <span class="mx-2 text-sm font-semibold">generer pdf </span>
       </button>
         </div>
 
@@ -778,12 +778,12 @@
        <!-- pta revise -->
        <div v-else class="current">
         <div class="my-3 px-3 py-1 flex justify-end space-x-4">
-       <button @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+       <button v-if="filtreRePta" @click="openFiltre = !openFiltre"  title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
         <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
       </button>
-       <button @click="generateReport" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        <span class="mx-2 text-xs  md:text-sm font-semibold">generer pdf </span>
+       <button v-if="exporterSuiviRePta" @click="generateReport" title="filtrer les données"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <span class="mx-2 text-sm font-semibold">generer pdf </span>
       </button>
         </div>
 
@@ -1495,314 +1495,6 @@ export default {
     return {
       ptab:[],
       ptabR:[],
-      data: [
-        {
-            "bailleur": "BM",
-            "projetId": 1,
-            "nom": "Porojet 1",
-            "code": "1.1",
-            "budgetNational": 0,
-            "pret": 123654789,
-            "composantes": [
-                {
-                    "id": 1,
-                    "nom": "Composante 1",
-                    "code": "1.1.1",
-                    "budgetNational": 0,
-                    "pret": 13266,
-                    "sousComposantes": [
-                        {
-                            "id": 2,
-                            "nom": "Sous Composante 1",
-                            "budgetNational": 0,
-                            "pret": 1263,
-                            "code": "1.1.1.1",
-                            "activites": [
-                                {
-                                    "id": 1,
-                                    "nom": "Activite 1",
-                                    "code": "1.1.1.1.1",
-                                    "budgetNational": 0,
-                                    "pret": 1236,
-                                    "taches": []
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-       {
-            "bailleur": "BM",
-            "projetId": "BY5O2zb4XJe1yOmr9b6lGxLKYAnR7aPMAPvg8E5BQzqkwMdpN0j32ZV4epwdmJZ6",
-            "nom": "Porojet 1",
-            "code": "1.1",
-            "budgetNational": 0,
-            "pret": 123654789,
-            "composantes": [
-                {
-                    "id": "7lyoYAgMzbr1JkKEy7Dqmn2jBlGWOpX2AxAM3oe9RdvPg08V6ZQNYw4LbdmWRkDG",
-                    "nom": "Composante 1",
-                    "code": "1.1.1",
-                    "budgetNational": 0,
-                    "pret": 13266,
-                    "trimestre1": {
-                        "pret": 0,
-                        "budgetNational": 0
-                    },
-                    "trimestre2": {
-                        "pret": 0,
-                        "budgetNational": 0
-                    },
-                    "trimestre3": {
-                        "pret": 0,
-                        "budgetNational": 0
-                    },
-                    "trimestre4": {
-                        "pret": 0,
-                        "budgetNational": 0
-                    },
-                    "budgetise": {
-                        "pret": 0,
-                        "budgetNational": 0
-                    },
-                    "poids": 12,
-                    "sousComposantes": [
-                        {
-                            "id": "oEqeVjN3wPGze2KpNYo7Qgqkmn8JBExdpxWL39ZR64bAvVMOrd10ylDjd2vO1lYR",
-                            "nom": "Sous Composante 1",
-                            "budgetNational": 0,
-                            "pret": 1263,
-                            "trimestre1": {
-                                "pret": 0,
-                                "budgetNational": 0
-                            },
-                            "trimestre2": {
-                                "pret": 0,
-                                "budgetNational": 0
-                            },
-                            "trimestre3": {
-                                "pret": 0,
-                                "budgetNational": 0
-                            },
-                            "trimestre4": {
-                                "pret": 0,
-                                "budgetNational": 0
-                            },
-                            "budgetise": {
-                                "pret": 0,
-                                "budgetNational": 0
-                            },
-                            "poids": 12,
-                            "code": "1.1.1.1",
-                            "activites": [
-                                {
-                                    "id": "PAB8RJ2NBbgoVdLxZR5E82v4JWQe6j7DRmrAql1kGX9OaD0NKzYnPypweDay0Vov",
-                                    "nom": "Activite 1",
-                                    "code": "1.1.1.1.1",
-                                    "budgetNational": 0,
-                                    "pret": 1236,
-                                    "trimestre1": {
-                                        "pret": 0,
-                                        "budgetNational": 0
-                                    },
-                                    "trimestre2": {
-                                        "pret": 0,
-                                        "budgetNational": 0
-                                    },
-                                    "trimestre3": {
-                                        "pret": 0,
-                                        "budgetNational": 0
-                                    },
-                                    "trimestre4": {
-                                        "pret": 0,
-                                        "budgetNational": 0
-                                    },
-                                    "budgetise": {
-                                        "pret": 0,
-                                        "budgetNational": 0
-                                    },
-                                    "poids": 12,
-                                    "durees": [
-                                        1,
-                                        1,
-                                        1,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0
-                                    ],
-                                    "structureResponsable": "SOGEA",
-                                    "structureAssocie": "SATOM",
-                                    "taches": [
-                                        {
-                                            "id": "R9kD1Ka44RP3bKL6jY92MXJ1GgqW5xnRLzaw0AmD8EokQ7ldyBZvVrpexBrVjq6p",
-                                            "nom": "Tache1",
-                                            "code": "1.1.1.1.1.0",
-                                            "poids": 11,
-                                            "durees": [
-                                                1,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0
-                                            ]
-                                        },
-                                        {
-                                            "id": "4yxa7MlVk01KrdQW6w3pPqRGlv8bMeOJWz5aBLjDXxE4Y7J29mAZgyVoJ5wG6WqL",
-                                            "nom": "Tache2",
-                                            "code": "1.1.1.1.1.0",
-                                            "poids": 11,
-                                            "durees": [
-                                                0,
-                                                1,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                                0
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-
-        {
-            "bailleur": "DE",
-            "projetId": 3,
-            "nom": "projet gojanda",
-            "code": "24.12",
-            "composantes": [
-                {
-                    "id": 9,
-                    "nom": "composante gojanda",
-                    "code": "24.12.0",
-                    "sousComposantes": []
-                }
-            ]
-        },
-        {
-            "bailleur": "CH",
-            "projetId": 6,
-            "nom": "PROJET CH",
-            "code": "24.6",
-            "composantes": [
-                {
-                    "id": 18,
-                    "nom": "23",
-                    "code": "24.6.0",
-                    "sousComposantes": []
-                },
-                {
-                    "id": 15,
-                    "nom": "Composante CH #1",
-                    "code": "24.6.1",
-                    "sousComposantes": []
-                },
-                {
-                    "id": 16,
-                    "nom": "Conposante CH #12",
-                    "code": "24.6.2",
-                    "sousComposantes": [
-                        {
-                            "id": 20,
-                            "nom": "sous c 56478",
-                            "code": "24.6.2.0",
-                            "activites": [
-                                {
-                                    "id": 9,
-                                    "nom": "Act-794378-843798347",
-                                    "code": "24.6.2.0.0",
-                                    "taches": [
-                                        {
-                                            "id": "J5RDkGaEYaKVv7WMJQjGmEXlqxwd4bnKpOR62kDy9Bo35pP0Ler1AZg80BLKgeYy",
-                                            "nom": "taches-5435435-2454",
-                                            "position": 0,
-                                            "poids": 45,
-                                            "activiteId": 9,
-                                            "description": "Avant de poursuivre votre navigation, nous vous invitons \u00e0 nous communiquer vos pr\u00e9f\u00e9rences ci-dessous ou \u00e0 continuer sans accepter, ce qui \u00e9quivaut \u00e0 refuser les cookies. Vous pouvez mettre \u00e0 jour vos choix \u00e0 tout moment en cliquant sur le lien \"G\u00e9rer les Cookies\" en bas de notre site.",
-                                            "created_at": "2022-09-09T11:26:32.000000Z",
-                                            "updated_at": "2022-09-09T11:26:32.000000Z",
-                                            "deleted_at": null,
-                                            "durees": [
-                                                {
-                                                    "id": "gaDpKxw6P8jMJa4g9lORXryQ0bwp3VB3noGY2KNkZm7qAvD6zLxenW1dzR0WXJPO",
-                                                    "debut": "2022-09-01",
-                                                    "fin": "2022-09-13",
-                                                    "dureeable_type": "App\\Models\\Tache",
-                                                    "dureeable_id": 8,
-                                                    "created_at": "2022-09-09T11:26:32.000000Z",
-                                                    "updated_at": "2022-09-09T11:26:32.000000Z",
-                                                    "deleted_at": null
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "id": "GY6xWvREM8BDxlV7mAGWYoKk3eEg14z8kOjdX0qPbJawyr6RQv5Lp2Z97rq1ygaV",
-                                            "nom": "tache-73267",
-                                            "position": 0,
-                                            "poids": 4,
-                                            "activiteId": 9,
-                                            "description": "Avant de poursuivre votre navigation, nous vous invitons \u00e0 nous communiquer vos pr\u00e9f\u00e9rences ci-dessous ou \u00e0 continuer sans accepter, ce qui \u00e9quivaut \u00e0 refuser les cookies. Vous pouvez mettre \u00e0 jour vos choix \u00e0 tout moment en cliquant sur le lien \"G\u00e9rer les Cookies\" en bas de notre site.",
-                                            "created_at": "2022-09-09T11:27:00.000000Z",
-                                            "updated_at": "2022-09-09T11:27:00.000000Z",
-                                            "deleted_at": null,
-                                            "durees": [
-                                                {
-                                                    "id": "wMq01PVaYgQa19m8AnGzlWNx43ZbjKEWGEML6XpeqkD7OrJvwy0PR2VdzXkNQO9J",
-                                                    "debut": "2022-09-22",
-                                                    "fin": "2022-09-27",
-                                                    "dureeable_type": "App\\Models\\Tache",
-                                                    "dureeable_id": 9,
-                                                    "created_at": "2022-09-09T11:27:00.000000Z",
-                                                    "updated_at": "2022-09-09T11:27:00.000000Z",
-                                                    "deleted_at": null
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "id": 19,
-                            "nom": "sous c 123",
-                            "code": "24.6.2.1",
-                            "activites": []
-                        }
-                    ]
-                },
-                {
-                    "id": 17,
-                    "nom": "12",
-                    "code": "24.6.3",
-                    "sousComposantes": []
-                }
-            ]
-        }
-      ],
       openFiltre:false,
       annee:null,
       bailleur:'',
@@ -1812,6 +1504,21 @@ export default {
       versionSlug:"",
       scopes: [],
       currentPage:true,
+      revisionAdd:false,
+      revisionVisible:false,
+      ptaVisible:false,
+      filtrePta:false,
+      filtrePpm:false,
+      filtreRePta:false,
+      filtreRePpm:false,
+      planDecaissementPtaVisible:false,
+      ppmVisible:false,
+      exporterSuiviPpm:false,
+      exporterSuiviPta:false,
+      exporterSuiviRePpm:false,
+      exporterSuiviRePta:false,
+
+
     }
   },
   computed: {
@@ -2216,6 +1923,53 @@ export default {
     chargement(bool) {
       this.$store.dispatch('SET_LOADER',bool)
     },
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='exporter-un-suivi-ppm') {
+          this.exporterSuiviPpm = true
+        }
+       if(element.slug === 'exporter-un-suivi-ptab') {
+        this.exporterSuiviPta = true
+      }
+      if(element.slug === 'exporter-un-suivi-ppm-revise') {
+        this.exporterSuiviRePpm = true
+      }
+      if(element.slug ==='exporter-un-suivi-pta-revise') {
+        this.exporterSuiviRePta = true
+      }
+      if(element.slug ==='voir-plan-decaissement-ptab') {
+        this.planDecaissementPtaVisible= true
+      }
+      if(element.slug ==='exporter-un-suivi-financier') {
+        this.exporterSuiviFinance = true
+      }
+      if(element.slug ==='voir-un-ptab') {
+        this.ptaVisible = true
+      }
+      if(element.slug ==='voir-un-ppm') {
+        this.ppmVisible = true
+      }
+      if(element.slug ==='voir-une-revision') {
+        this.revisionVisible = true
+      }
+      if(element.slug ==='filtre-ptab') {
+        this.filtrePta = true
+      }
+      if(element.slug ==='filtre-ppm') {
+        this.filtrePpm = true
+      }
+      if(element.slug ==='filtre-ptab-revise') {
+        this.filtreRePta = true
+      }
+      if(element.slug ==='filtre-ppm-revise') {
+        this.filtreRePpm = true
+      }
+
+           
+    });
+
+    },
+
     customLabel ({  sigle }) {
       return ` ${sigle}`
     },
@@ -2230,7 +1984,7 @@ export default {
         } else {
           this.currentPage = true;
         }
-      },
+    },
     getPta() {
       let data = {}
       if(this.annee ==null) {
@@ -2342,12 +2096,16 @@ export default {
     },
   },
   mounted() {
-    this.getPta()
-    this.getBailleur()
+    this.getPermission()
    
-    this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
-    this.scopes = response.data.data
-    });
+    if(this.revisionVisible || this.ppmVisible || this.ptaVisible ) {
+      this.getPta()
+      this.getBailleur()
+      this.fetchProgrammeScopes(this.currentUser.programme.id).then((response) => {
+        this.scopes = response.data.data
+      });
+    }
+   
   
   }
 }

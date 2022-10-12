@@ -64,6 +64,7 @@
           </span>
          
           <span
+          v-if="StatistiqueVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
             class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2"
@@ -242,11 +243,11 @@
         </div>
       </div>
 
-      <div v-if="seePlan">
+      <div v-if="seePlan && planDecaissementVisible">
         <plan :results="results" :isDelete="planDecaissementDelete" :isUpdate="planDecaissementUpdate"></plan>
       </div>
 
-      <div v-if="seeStatistique">
+      <div v-if="seeStatistique && statistiqueActiviteVisible ">
         <statistiques ></statistiques>
       </div>
   </div>
@@ -342,8 +343,8 @@ export default {
       planDecaissementVisible:false,
       planDecaissementAdd:false,
       planDecaissementUpdate:false,
-      planDecaissementDelete:false
-
+      planDecaissementDelete:false,
+      StatistiqueVisible:false
     };
   },
 
@@ -357,31 +358,34 @@ export default {
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
        
-          if(element.slug === 'creer-une-activite') {
+          if(element.slug === 'creer-une-activite-revise') {
             this.activiteAdd = true
           }
-           if(element.slug === 'voir-une-activite') {
+           if(element.slug === 'voir-une-activite-revise') {
             this.activiteVisible = true
           }
-            if(element.slug === 'modifier-une-activite') {
+            if(element.slug === 'modifier-une-activite-revise') {
               this.activiteUpdate = true
             }
-            if(element.slug ==='supprimer-une-activite') {
+            if(element.slug ==='supprimer-une-activite-revise') {
               this.activiteDelete = true
             }
             //plan de decaissement
 
-            if(element.slug ==='voir-un-plan-de-decaissement') {
+            if(element.slug ==='voir-un-plan-de-decaissement-revise') {
               this.planDecaissementVisible= true
             }
-            if(element.slug ==='creer-un-plan-de-decaissement') {
+            if(element.slug ==='creer-un-plan-de-decaissement-revise') {
               this.planDecaissementAdd= true
             }
-            if(element.slug ==='modifier-un-plan-de-decaissement') {
+            if(element.slug ==='modifier-un-plan-de-decaissement-revise') {
               this.planDecaissementUpdate= true
             }
-             if(element.slug ==='supprimer-un-plan-de-decaissement') {
+            if(element.slug ==='supprimer-un-plan-de-decaissement-revise') {
               this.planDecaissementDelete= true
+            }
+            if(element.slug ==='voir-une-statistique-revise') {
+              this.StatistiqueVisible= true
             }
            
         });

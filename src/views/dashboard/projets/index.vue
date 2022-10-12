@@ -81,12 +81,12 @@
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
               <p class="max-h-48 line-clamp-7 px-2"> {{ projet.description }} </p>
               <div  class="absolute bottom-5 ">
-                <div class="uppercase text-sm flex items-center rounded-2xl shadow space-x-3 bg-white text-primary px-4 py-3 font-bold">
+                <div v-if="dashboardProjetVisible" class="uppercase text-sm flex items-center rounded-2xl shadow space-x-3 bg-white text-primary px-4 py-3 font-bold">
                   details
                 </div>
               </div>
               <div v-if="projet.statut == -2 "  class="absolute top-2 left-2 ">
-                <button @click.stop="validerProjet(projet.id)" class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
+                <button v-if="validation" @click.stop="validerProjet(projet.id)" class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
               </div>
               <div v-else  class="absolute top-2 left-2 ">
                 <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
@@ -208,7 +208,7 @@ export default {
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
-     option: [
+      option: [
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
@@ -216,12 +216,10 @@ export default {
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "prolonger" },
         { name: "continuer" },
       ],
-       optionD: [
+      optionD: [
         { name: "supprimer" },
-        { name: "prolonger" },
         { name: "continuer" },
       ],
       projetId:'',
@@ -229,6 +227,9 @@ export default {
       projetAdd:false,
       projetDelete:false,
       projetUpdate:false,
+      dashboardProjetVisible:false,
+      bailleurVisible:false,
+      validation:false,
       sendRequest: false,
       fichiers:[],
       image:{}
@@ -284,6 +285,15 @@ export default {
             if(element.slug ==='supprimer-un-projet') {
               this.projetDelete = true
             }
+            if(element.slug ==='voir-un-dashboard') {
+              this.dashboardProjetVisible = true
+            }
+            if(element.slug ==='voir-un-bailleur') {
+              this.bailleurVisible = true
+            }
+            if(element.slug === 'validation' ) {
+              this.validation = true
+            }
            
         });
     },
@@ -319,8 +329,10 @@ export default {
     ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR_OF_PROGRAMME' }),
 
     gotoDetails(projet) {
-      console.log(projet)
-      this.$router.push({name:'projets_id_details',params:{id:projet.id, projet: projet}})
+     if(this.dashboardProjetVisible) {
+        this.$router.push({name:'projets_id_details',params:{id:projet.id, projet: projet}})
+     }
+    
      
     },
 
@@ -536,7 +548,6 @@ export default {
       },
 
     validerProjet(id) {
-
       let projet = {}
       projet.statut =-1
       this.updateProjet({projet: projet, id : id}).then(response => {
@@ -578,13 +589,18 @@ export default {
   created() {
     console.log("Fetching projets ...")
     this.getPermission()
+     if(!this.projetVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     this.programmeId = this.currentUser.programme.id
     if(this.programmeId){
       this.fetchProjets(this.programmeId).then((value) => {
-          setTimeout(() => {
-            console.log("Fetching list of bailleurs...")
+        setTimeout(() => {
+          console.log("Fetching list of bailleurs...")
+          if(this.bailleurVisible) {
             this.fetchBailleurs(this.programmeId)
-          });
+          }  
+        });
       })
     }
   }

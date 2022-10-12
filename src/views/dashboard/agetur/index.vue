@@ -4,9 +4,13 @@
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <form action="" @submit.prevent="createCollecteur" class="p-4" >
           <div class="form-group my-2">
+             <div class="form-group my-2">
+              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Collecteur  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <input v-model="postData.nom" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+            </div>
             <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Bailleurs <span class="px-2 text-lg font-black text-red-700">*</span></label>
-              <select v-model="postData.bailleirId" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <select v-model="postData.bailleurId" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
                <option v-for="(bailleur,index) in bailleurs " :key="index" :value="bailleur.id" > {{bailleur.sigle}} </option>
               </select>
             </div>
@@ -224,9 +228,7 @@
           </tbody>
         </table>
       </div>
-     <pre>
-       {{entreprises}}
-     </pre>
+    
     </div>
   </dashboard>
 </template>
@@ -271,12 +273,13 @@ export default {
       bailleurs:[],
       entreprises:[],
       postData:{
+        nom:'',
         estimation:'',
         reference:'',
         engagement:'',
         commentaire:'',
         attributaire:[],
-        bailleirId:''
+        bailleurId:''
       }
     }
     
@@ -286,21 +289,19 @@ export default {
       ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
   methods: {
-
      addTag (newTag) {
-            const tag = {
-              name: newTag,
-            }
-            this.options.push(tag)
-            this.value.push(tag)
-      },
+      const tag = {
+        name: newTag,
+      }
+      this.options.push(tag)
+      this.value.push(tag)
+    },
     createCollecteur() {
         this.value.forEach(element => {
           this.postData.attributaire.push(element.id)
         })
         if(this.chargement == false) {
           this.chargement = true
-        
           CollecteurService.create(this.postData).then((data) => {
             this.chargement = false
             this.$toast.success('nouveau element')

@@ -50,17 +50,14 @@ export default {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
-       
         { name: "continuer" },
       ],
       optionUpdate: [
         { name: "modifier" },
-      
         { name: "continuer" },
       ],
       optionD: [
         { name: "supprimer" },
-      
         { name: "continuer" },
       ],
       showValidate:false,

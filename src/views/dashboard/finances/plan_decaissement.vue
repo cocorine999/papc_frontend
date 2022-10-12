@@ -1,14 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="planDecaissementVisible" class="px-4">
-      <div v-if="showModal">
-        <vmodal  title="Exporter les données"  v-on:close="showModal = false">
-          <div class="px-8" style="width:60vw !important">
-            <vform template="default" isAllPairSaufDescrip="true" :champs="champsExport" :cols="cols" submitText="Exporter" @sendForm="Exporter" ></vform>
-          </div>
-        </vmodal>
-      </div>
-
+    <div  class="p-4">
       <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -25,49 +17,9 @@
         <div>
           <span data-v-7b9b4c0e="" class="inline-block cursor-pointer border-primary border-b-8 text-base uppercase font-bold   py-2">Plan de décaissement </span>
         </div> 
-      <div  class="flex space-x-4 items-center flex-wrap justify-end">
-
-            <button @click="openFiltre = !openFiltre" title="filtrer les données"   class="py-2 px-4 mb-2 overflow-hidden flex  space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-            <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24m0 24H0"></path><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z"></path><path fill="none" d="M0 0h24v24H0V0z"></path></svg>
-            <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
-            </button>
-            <button  @click="exportAsExcel" title="exporter en excel" class="px-4 py-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-              <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
-            </button>
-        </div>
       </div>
 
-      <div v-if="openFiltre" class="bg-primary text-white rounded-2xl space-x-4 p-3 shadow flex justify-between my-4 ">
-        <div class="flex items-center w-full  overflow-x-auto">
-          <div class="flex justify-between items-center">
-            <label class="font-semibold text-sm px-2 w-full">Bailleurs</label>
-            <select class="bg-gray-100 border border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs">
-              <option disabled>BM</option>
-              <option disabled>BOM</option>
-            </select>
-          </div>
-          <div class="flex items-center">
-            <label class="font-semibold text-sm px-2 w-full ">Date debut</label>
-            <input type="date" class="bg-gray-100 border w-full border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs" />
-          </div>
-          
-          <div class="flex items-center">
-            <label class="font-semibold text-sm px-2 w-full">Date Fin</label>
-            <input type="date" class="bg-gray-100 w-full border border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs" />
-          </div>
-          <div class="flex items-center">
-            <label class="font-semibold text-sm px-2 w-full">Annee</label>
-            <input type="date" class="bg-gray-100 w-full border border-gray-100 py-1 px-2 rounded-2xl outline-none text-xs" />
-          </div>
-        </div>
-
-        <div class="flex items-center">
-          <button type="submit" class="bg-blue-500 border border-blue-500 py-1 px-2 rounded-2xl outline-none text-xs" >Rechercher </button>
-        </div>
-      </div>
-      
-      <div  class="relative my-4  sm:rounded-lg">
+      <div v-if="planDecaissementVisible" class="relative my-4  sm:rounded-lg">
         <ptab></ptab>
       </div>
     </div>
@@ -111,6 +63,7 @@ export default {
       planDecaissementUpdate:false,
       planDecaissementDelete:false,
       planDecaissementAdd:false,
+      exporterDecaissement:false,
     }      
   },
   computed: {
@@ -134,6 +87,9 @@ export default {
             if(element.slug ==='supprimer-un-plan-de-decaissement') {
               this.planDecaissementDelete = true
             }
+            if(element.slug ==='exporter-un-plan-decaissement') {
+              this.exporterDecaissement = true
+            }
            
           });
 
@@ -142,6 +98,9 @@ export default {
   
   mounted() {
       this.getPermission()
+       if(!this.planDecaissementVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     }
 }
 </script>

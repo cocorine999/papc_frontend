@@ -1,22 +1,7 @@
 <template>
   <dashboard>
-   <div v-if="composanteVisible" class="p-4">
-    <div class="select w-52">
-        
-        <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          
-          <option value="" selected>Version actuelle</option>
-  
-          <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab.id"> {{scopePtab.nom}}</option>
-        </select>
-    </div>
-    <div class="border my-4 rounded-lg border-gray-300 shadow-md">
-        <sous-composante-current :valeurProjet="null" :valueProfondeur="null" v-if="currentPage"></sous-composante-current>
-        <revisite v-else :version="version"></revisite>
-    </div>
-   </div>
-    <div v-if="currentRole ==='bailleur'" class="p-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
+   <!--  <div v-if="currentRole ==='bailleur'" class="p-4">
+      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
@@ -60,7 +45,23 @@
           ></card-composante>
         </div>
       </div>
+    </div> -->
+   <div class="p-4">
+    <div v-if="composanteReVisible" class="select w-52">
+        
+        <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          
+          <option value="" selected>Version actuelle</option>
+  
+          <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab.id"> {{scopePtab.nom}}</option>
+        </select>
     </div>
+    <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+        <sous-composante-current :valeurProjet="null" :valueProfondeur="null" v-if="currentPage"></sous-composante-current>
+        <revisite v-else :version="version"></revisite>
+    </div>
+   </div>
+   
   </dashboard>
 </template>
 
@@ -93,6 +94,7 @@ export default {
       currentPage:true,
       version:'current',
       composanteVisible:false,
+      composanteReVisible:false,
       version: "",
       scopes: [],
       currentRole:'',
@@ -129,6 +131,9 @@ export default {
       this.currentUser.role[0].permissions.forEach(element => {
         if(element.slug ==='voir-une-composante') {
             this.composanteVisible = true
+          }
+          if(element.slug ==='voir-une-composante-revise') {
+            this.composanteReVisible = true
           }
         });
     },
@@ -210,6 +215,9 @@ export default {
   },
   mounted() {
     this.getPermission()
+    if(!this.composanteVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
   }
 
 

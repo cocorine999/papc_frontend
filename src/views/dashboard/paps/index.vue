@@ -1,6 +1,6 @@
 <template>
 <dashboard>
-  <div v-if="papVisible" class="px-4">
+  <div class="px-4">
     <div v-if="showModal">
       <ModalTopRight :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
@@ -30,7 +30,7 @@
             </div>
           </form>
         </vmodal>
-      </div>
+    </div>
 
     <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
@@ -65,11 +65,11 @@
       <div class="flex space-x-4">
         <span  class="inline-block cursor-pointer  border-b-8 font-bold text-sm uppercase    border-primary py-2">Tableau recapitulatif </span> 
       </div>
-      <button  @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
-            <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
-            <span class="mx-2 text-xs  md:text-sm font-semibold">Importez les données</span>
+      <button  @click="showModal2 = true" v-if="papImporter" title="importez les données"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
+         <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
+        <span class="mx-2 text-sm font-semibold">Importez les données</span>
       </button>
-      <json-excel :data="json_data()" header="PAP" type="xlsx" :name="title_csv()"  >
+      <json-excel v-if="papExporter" :data="json_data()" header="PAP" type="xlsx" :name="title_csv()"  >
           <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
             <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
@@ -81,12 +81,11 @@
       </button>
     </div>
     
+     <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
      <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
      <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData"></vtable>
 
-     <pre>{{paps.sites}}</pre>
-     <pre>{{paps.total}}</pre>
-     
+    
   </div>
 
   </dashboard>
@@ -177,6 +176,8 @@ export default {
       papAdd:false,
       papDelete:false,
       papUpdate:false,
+      papImporter:false,
+      papExporter:false
     }
     
   },
@@ -237,6 +238,12 @@ export default {
             if(element.slug ==='supprimer-un-pap') {
               this.papDelete = true
             }
+            if(element.slug ==='importer-un-pap') {
+              this.papImporter = true
+            }
+            if(element.slug ==='exporter-un-pap') {
+              this.papExporter = true
+            }
            
           });
 
@@ -274,7 +281,7 @@ export default {
           );
         });
         return tab;
-      },
+    },
     
     showCloseModal(value = false) {
       this.showModal = value
@@ -388,6 +395,10 @@ export default {
   mounted() {
     console.log("Fetching paps ...")
     this.getPermission()
+    if(!this.papVisible) {
+      this.$router.push('/401-non-autorise')
+    }
+   
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
           console.log("Fetching list of sites...")

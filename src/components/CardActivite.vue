@@ -198,12 +198,10 @@ export default {
       ],
        optionD: [
         { name: "supprimer" },
-        { name: "prolonger" },
         { name: "continuer" },
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "prolonger" },
         { name: "continuer" },
       ],
       showValidate: false,

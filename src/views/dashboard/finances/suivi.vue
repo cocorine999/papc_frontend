@@ -1,8 +1,7 @@
 <template>
   <dashboard>
-    <div v-if="suiviFinancierVisible" class="px-4">
-      <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+    <div  class="px-4">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -73,13 +72,13 @@
        </div>
       <div class="flex items-center justify-between flex-wrap">
         <titre>Suivi financier </titre>
-        <div class="flex space-x-3 flex-wrap justify-end ">
-          <button  @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 mb-2 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
+        <div class="flex space-x-3">
+          <button v-if="importerSuiviFinance" @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
             <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
             <span class="mx-2 text-xs  md:text-sm font-semibold">Importez les données</span>
           </button>
-          <json-excel :data="json_data()" header="SUIVI FINANCIER" type="xlsx" :name="title_csv()"  >
-          <button  title="exporter en excel"   class="py-2  px-4 mb-2 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+          <json-excel v-if="exporterSuiviFinance" :data="json_data()" header="SUIVI FINANCIER" type="xlsx" :name="title_csv()"  >
+          <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
             <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
           </button>
@@ -95,8 +94,6 @@
       <vtable v-if="suiviFinancierDelete && suiviFinancierUpdate" :sendRequest="false" :headers="headers" :datas="filteredSuivis" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
       <vtable v-if="!suiviFinancierDelete && suiviFinancierUpdate" :sendRequest="false" :headers="headers" :datas="filteredSuivis" :actions="actions" @updateInputData="updateInputData"></vtable>
 
-      <pre>{{suiviFinanciers.projets}}</pre>
-      <pre>{{suiviFinanciers.total}}</pre>
     </div>
   </dashboard>
  
@@ -158,13 +155,14 @@ export default {
         ],
         search:'',
         actions:[
-         
           {name:'supprimer',iconne:''},
         ],
         suiviFinancierVisible:false,
         suiviFinancierUpdate:false,
         suiviFinancierDelete:false,
         suiviFinancierAdd:false,
+        importerSuiviFinance:false,
+        exporterSuiviFinance:false
       };
     },
 
@@ -224,6 +222,12 @@ export default {
             }
             if(element.slug ==='supprimer-un-suivi-financier') {
               this.suiviFinancierDelete = true
+            }
+            if(element.slug ==='importer-un-suivi-financier') {
+              this.importerSuiviFinance = true
+            }
+            if(element.slug ==='exporter-un-suivi-financier') {
+              this.exporterSuiviFinance = true
             }
            
           });
@@ -395,6 +399,9 @@ export default {
 
     mounted() {
       this.getPermission()
+      if(!this.suiviFinancierVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
       console.log("Fetching suivi financier ...")
         this.fetchSuiviFinanciers(this.currentUser?.programme?.id).then((value) => {
         setTimeout(() => {

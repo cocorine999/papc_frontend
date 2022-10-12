@@ -80,9 +80,9 @@
 
       <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
-          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-base uppercase font-bold    py-2"> Listes des entreprises </span>
-          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les formulaires </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Rapports mod </span>
+          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" v-if="formulaireVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
           <button @click="addActivite" v-if="seeActivite"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
@@ -134,7 +134,9 @@
       </div>
       <div v-if="seeActivite">
         <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
-        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"  @updateInputData="updateInputData"></vtable>    
+        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @supprimer="supprimerActivite"></vtable>    
+        <vtable v-if="!activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @updateInputData="updateInputData"></vtable>
+        <vtable v-if="!activiteEnvDelete && !activiteEnvUpdate && activiteEnvVisible" :headers="headers" :datas="filteredEActivite()"></vtable>        
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
@@ -145,8 +147,9 @@
               @supprimer="supprimer"
               @gotoDetails="gotoDetails(formulaire.id)"
               @onlink="getlink(formulaire.id)"
-              :isdelete="checklistDelete"
-              :isUpdate="checklistUpdate"
+              :isdelete="formulaireDelete"
+              :isUpdate="formulaireUpdate"
+              :isGotoLink="suiviEnvAdd"
               > 
             </card-checklist>
           </div>
@@ -207,7 +210,6 @@ export default {
       actions:[
         {name:'supprimer',iconne:''},
       ],
-      
       option:[
         {name:'supprimer'},
         {name:'modifier'},
@@ -217,17 +219,17 @@ export default {
       seeFormulaire:false,
       seeActivite:false,
       value:[],
-      entrepriseExecutanteVisible:false,
+       entrepriseExecutanteVisible:false,
       entrepriseExecutanteAdd:false,
       activiteEnvVisible:false,
       activiteEnvAdd:false,
       activiteEnvDelete:false,
       activiteEnvUpdate:false,
-      checklistVisible:false,
-      checklistAdd:false,
-      checklistSupprimer:false,
-      checklistUpdate:false,
-      
+      formulaireVisible:false,
+      formulaireAdd:false,
+      formulaireDelete:false,
+      formulaireUpdate:false,
+      suiviEnvAdd:false,
     }
   },
   computed: {
@@ -252,7 +254,9 @@ export default {
   },
   mounted() {
     this.getPermission()
-
+    if(!this.activiteEnvVisible || !this.entrepriseExecutanteVisible || !this.formulaireVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     console.log("Fetching entreprises executantes ...");
     this.fetchEntreprisesExecutante();
 
@@ -267,10 +271,9 @@ export default {
   },
   methods: {
 
-    //Charger les fonctions de communication avec le serveur
      getPermission() {
-      this.currentUser.role[0].permissions.forEach(element => {
-          if(element.slug ==='voir-une-entreprise-executante') {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-suivi-environnementale') {
           this.entrepriseExecutanteVisible = true
         }
         if(element.slug === 'creer-une-activite-environnementale') {
@@ -285,20 +288,20 @@ export default {
         if(element.slug === 'voir-une-activite-environnementale') {
           this.activiteEnvVisible = true
         }
-        if(element.slug === 'voir-une-checklist') {
-          this.checklistVisible = true
+        if(element.slug ==='voir-un-formulaire') {
+          this.formulaireVisible = true
         }
-        if(element.slug === 'creer-une-checklist') {
-          this.checklistAdd = true
+        if(element.slug ==='creer-un-formulaire') {
+          this.formulaireAdd = true
         }
-        if(element.slug === 'modifier-une-checklist') {
-          this.checklistUpdate = true
+        if(element.slug ==='modifier-un-formulaire') {
+          this.formulaireUpdate = true
         }
-        if(element.slug === 'supprimer-une-checklist') {
-          this.checklistDelete = true
+        if(element.slug ==='supprimer-un-formulaire') {
+          this.formulaireUpdate = true
         }
-        if(element.slug ==='supprimer-un-decaissement') {
-          this.decaissementDelete = true
+        if(element.slug === 'creer-un-suivi-environnementale' ) {
+          this.suiviEnvAdd = true
         }
            
       });
@@ -340,7 +343,6 @@ export default {
 
     filteredEActivite(){
         var self = this;
-
         return this.eActivites.filter(function (eActivtie){
           return eActivtie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  eActivtie.entreprise.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
@@ -365,8 +367,13 @@ export default {
       this.value.push(tag)
     },
     getlink(i){
-      this.formulaireId = i
-      this.showLink = true
+      /*if(this.suiviEnvAdd) {
+        this.formulaireId = i
+        this.showLink = true
+      }*/
+
+      this.$router.push({name:'form_gestion_generator',params:{id:i}})
+   
     },
     gotoDetails(id) {
       this.$router.push({name:'mod_checklist_details',params:{idE:id}})

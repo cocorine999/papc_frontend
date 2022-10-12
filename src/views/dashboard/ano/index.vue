@@ -1,6 +1,7 @@
 <template>
   <dashboard>
-    <div v-if="anoVisible" class="px-4">
+    <div  class="px-4">
+
       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
          <div v-if="anosReponses.length > 0"  style="height:800px" class="overflow-auto ">
             <div v-for="data in anosReponses" :key="data.id">
@@ -12,11 +13,13 @@
          </div>
         
        </modal-chat>
+
       <vmodal v-if="showDetail" @close="showDetail = false" >
         <div style="width:60vw">
           <preview template="ano" :datas="datas" @previewFile="previewFile" ></preview>
         </div>
       </vmodal>
+
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
@@ -25,6 +28,7 @@
           </div>
         </modal-top-right>
       </div>
+
       <div v-if="showReponse">
         <modal-chat :title="title" v-on:close="closeReponse">
           <form  @submit.prevent="sendReponse" class="px-4 overflow-y-auto">
@@ -96,7 +100,7 @@
            </div>
         </div>
       </nav>
-      <div v-if="anoAdd" class="flex items-center justify-between my-2" >
+      <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
             class="inline-block cursor-pointer  border-b-8 font-bold text-xs 
@@ -104,8 +108,8 @@
         </div>
         <div class="flex space-x-4">
           
-          <button @click="addAno" title="ajouter un tabelau"
-            class="py-1 px-2  md:py-2 md:px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
+          <button v-if="anoAdd" @click="addAno" title="ajouter un tabelau"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
               style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
@@ -114,12 +118,15 @@
           </button>
         </div>
       </div>
+     
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" @reponseAno="reponseAno" :isComment="true" @commenter="commenter" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
+        <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDelete"  @supprimer="supprimer" ></vtable>
+        <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true" :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()" :actions="actionsReponse" :isComment="true" @commenter="commenter"   @seeUpload="seeUpload" ></vtable>
+        <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" ></vtable>
+        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers"  :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
-  </dashboard>
+  </dashboard>  
 
 </template>
 
@@ -172,6 +179,12 @@ export default {
       anoAdd:false,
       anoDelete:false,
       anoUpdate:false,
+      bailleurVisible:false,
+      voirDetailAno:false,
+      commentaireVisible:false,
+      anoRelancer:false,
+      reponseAnoVisible:false,
+      reponseAnoAdd:false,
       readPDF:false,
       pdfFile:'',
       chargement:false,
@@ -206,19 +219,31 @@ export default {
       ],
       actions: [
         { name: 'supprimer', iconne: '' },
-        { name:'fichier'},
+        { name:'detail'},
         { name:'reponse'},
       ],
-       sendRequest: false,
+      actionsDetail: [
+        { name:'detail'},
+      ],
+      actionsDelete: [
+        { name: 'supprimer', iconne: '' }, 
+         { name:'detail'},
+      ],
+      actionsReponse: [
+        { name:'reponse'},
+         { name:'detail'},
+      ],
+      sendRequest: false,
+
       fichiers:[],
-       pdf:[
+      pdf:[
           {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
           {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
-        ],
-        showReponse:false,
-        anosId:'',
-        showComment:false,
-        anosReponses:[]
+      ],
+      showReponse:false,
+      anosId:'',
+      showComment:false,
+      anosReponses:[]
     }
   },
 
@@ -305,20 +330,30 @@ export default {
         this.$store.dispatch('disabled')
     },
     getPermission() {
-         this.currentUser.role[0].permissions.forEach(element => {
-            if(element.slug ==='voir-un-ano') {
-              this.anoVisible = true
-            }
-            if(element.slug === 'creer-un-ano') {
-              this.anoAdd = true
-            }
-            if(element.slug === 'modifier-un-ano') {
-              this.anoUpdate = true
-            }
-            if(element.slug ==='supprimer-un-ano') {
-              this.anoDelete = true
-            }
-          });
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-ano') {
+          this.anoVisible = true
+        }
+        if(element.slug === 'creer-un-ano') {
+          this.anoAdd = true
+        }
+        if(element.slug === 'modifier-un-ano') {
+          this.anoUpdate = true
+        }
+        if(element.slug ==='supprimer-un-ano') {
+          this.anoDelete = true
+        }
+        if(element.slug ==='voir-une-reponse-ano') {
+          this.reponseAnoVisible = true
+        }
+        if(element.slug ==='creer-une-reponse-ano') {
+          this.reponseAnoAdd = true
+        }
+       
+        if(element.slug ==='voir-un-bailleur') {
+          this.bailleurVisible = true
+        }
+      });
     },
     
     // call action
@@ -470,17 +505,20 @@ export default {
   },
 
   mounted() {
-    this.active()
-
-    this.fetchAnos()
-    //.then((value) => { console.log(value) });
-    console.log("Fetching type anos ...");
- 
-    //.then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
-    console.log("Fetching bailleurs ...");
-    this.fetchBailleurs()
+    
     this.getPermission()
-    this.disabled()
+    if(!this.anoVisible) {
+      this.$router.push('/401-non-autorise')
+    }
+    else {
+      this.fetchAnos()
+      if(this.bailleurVisible) {
+        this.fetchBailleurs()
+      } 
+    }
+   
+   
+
     //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },
 

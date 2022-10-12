@@ -250,8 +250,6 @@ export default {
           "type" : 0
         }
       
-
-      console.log(formulaire)
       
       this.saveFormulaire(formulaire).then(response => {
         if(response.status == 200 || response.status == 201){
@@ -266,7 +264,6 @@ export default {
   mounted() {
     console.log("Fetching e-activites ...")
     this.fetchEActivites(this.currentUser?.programme?.id)
-
     setTimeout(() => { 
         console.log("Fetching unuite de mesure")
         this.fetchUnite()

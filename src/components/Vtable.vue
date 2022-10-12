@@ -51,7 +51,7 @@
                     <div v-if="action.name === 'consulter'" title="consulter les suivis" @click="$emit('consulter', data.id)" class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
                     </div>
-                    <div v-if="action.name === 'fichier'" title="consulter les fichiers" @click="$emit('seeUpload', data)">
+                    <div v-if="action.name === 'detail'" title="consulter les fichiers" @click="$emit('seeUpload', data)">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 14 16" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM1 3h5v1H1V3zm6 9v-2c-.98-.02-1.84.22-2.55.7-.71.48-1.19 1.25-1.45 2.3.02-1.64.39-2.88 1.13-3.73C4.86 8.43 5.82 8 7.01 8V6l4 3-4 3H7z"></path></svg>
                     </div>
 

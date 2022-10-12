@@ -94,8 +94,7 @@ export default {
           {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: this.roles, cle: 'id', value: 'nom', required:true, errors : []}
         ],
         headers:[
-          {name:'Nom',  cle:'nom'},
-          {name:'Prenom',  cle:'prenom'},
+          {name:'Nom et Prénoms',  cle:'nom'},
           {name:'Email',  cle:'email', edit : false},
           {name:'Contact',  cle:'contact'},
           {name:'type utilisateur', cle:'type'},
@@ -103,8 +102,11 @@ export default {
         ],
         actions:[
           {name:'supprimer',iconne:''},
-        ]
-        
+        ],
+        utilisateurVisible:false,
+        utilisateurAdd:false,
+        utilisateurDelete:false,
+        utilisateurUpdate:false,
       });
       
     },
@@ -163,6 +165,24 @@ export default {
       fetchRoles: "FETCH_LIST_ROLE",
     }),
 
+    getPermission() {
+         this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-utilisateur') {
+              this.utilisateurVisible = true
+            }
+            if(element.slug === 'creer-un-utilisateur') {
+              this.utilisateurAdd = true
+            }
+            if(element.slug === 'modifier-un-utilisateur') {
+              this.utilisateurUpdate = true
+            }
+            if(element.slug ==='supprimer-un-utilisateur') {
+              this.utilisateurDelete = true
+            }
+            
+          });
+
+    },
     
     sendForm() {
       this.champs = this.champs.map((item) => {
@@ -172,6 +192,7 @@ export default {
 
       let utilisateur = extractFormData(this.champs,this.usersAttributes);
       utilisateur.roles = [utilisateur.roles.id]
+      //utilisateur.roles = utilisateur.roles.id
       utilisateur.programmeId = this.idProgramme
       if(this.sendRequest == false ) {
         this.sendRequest = true
@@ -243,6 +264,10 @@ export default {
   },
 
    mounted() {
+    this.getPermission()
+    if(!this.utilisateurVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     this.fetchUtilisateurs().then((value) => {
       setTimeout(() => {
         console.log("Fetching list of programmes...")

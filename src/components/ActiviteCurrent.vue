@@ -31,7 +31,7 @@
         </div>
       </vmodal>
 
-        <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
+      <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
         <div class="p-4 overflow-auto">
           <vform
             template="default"
@@ -45,7 +45,6 @@
         </div>
        
       </modal-top-right>
-
 
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <div class="p-4 overflow-auto">
@@ -125,19 +124,54 @@
           </span>
           
           <span
+          v-if="StatistiqueVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
             class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2"
             >Statistiques
           </span>
         </div>
-        <div class="flex justify-between w-full sm:w-1/5 " >
-          <div></div>
-          <button
-            v-if="seeActivite && activiteAdd"
-            @click="addActivite"
-            title="ajouter"
-            class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+        <div>
+        <button
+          v-if="seeActivite && activiteAdd"
+          @click="addActivite"
+          title="ajouter une activite"
+          class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+        >
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+            >
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+          ></span>
+          <span class="mx-2 text-xs font-semibold">ajouter une activité</span>
+        </button>
+        <button
+          v-if="seePlan "
+          @click="addPlan"
+          title="ajouter un plan d'ecaissement"
+          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
+        >
+          <span
+            ><svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              height="1.3em"
+              width="1.3em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path fill="none" d="M0 0h24v24H0V0z"></path>
+              <path
+                d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
+              ></path></svg
+          ></span>
+          <span class="mx-2 text-sm font-semibold"
+            >ajouter un plan de décaissement</span
           >
             <span>
               <svg
@@ -149,7 +183,7 @@
                 <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
             ></span>
             <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
-          </button>
+        </button>
           <button
             v-if="seePlan && planDeDecaissement"
             @click="addPlan"
@@ -170,11 +204,9 @@
             >
           </button>
         </div>
-
-       
       </div>
 
-      <div v-if="seeActivite && activiteVisible">
+      <div v-if ="seeActivite && activiteVisible">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
@@ -204,74 +236,7 @@
               </div>
            
               <div></div>
-              <button
-                v-if="!showFiltre"
-                title="filtre"
-                @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  height="1.5em"
-                  width="1.5em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-                  ></polygon>
-                </svg>
-                <span>progression des activités</span>
-              </button>
-              <div v-else class="px-6 w-full">
-                <div class="bg-gray-300 h-2 w-full rounded-full relative">
-                  <span
-                    class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
-                    :style="`left:${rangeValue}%`"
-                  ></span>
-                  <span
-                    class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"
-                    :style="`width:${rangeValue}%`"
-                  ></span>
-                </div>
-                <div class="flex justify-between mt-2 text-xs text-gray-600">
-                  <span
-                    @click="filtreRange(0)"
-                    class="w-8 cursor-pointer text-left"
-                    >0%</span
-                  >
-                  <span
-                    @click="filtreRange(25)"
-                    class="w-8 cursor-pointer text-center"
-                    >25%</span
-                  >
-                  <span
-                    @click="filtreRange(50)"
-                    class="w-8 cursor-pointer text-center"
-                    >50%</span
-                  >
-                  <span
-                    @click="filtreRange(75)"
-                    class="w-8 cursor-pointer text-center"
-                    >75%</span
-                  >
-                  <span
-                    @click="filtreRange(100)"
-                    class="w-8 cursor-pointer text-right"
-                    >100%</span
-                  >
-                  <button
-                    @click="showFiltre = false"
-                    class="text-white bg-blue-300 p-1"
-                  >
-                    revenir
-                  </button>
-                </div>
-              </div>
+              
             </div>
            
           </div>
@@ -305,8 +270,6 @@
       </div>
 
       <div v-if="seePlan &&  planDecaissementVisible ">
-
-
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
@@ -394,18 +357,7 @@
         
       </div>
 
-      <div v-if="seeSuivi">
-        <vtable
-          id="datatable"
-          :headers="headers"
-          :datas="dataTable"
-          :actions="actions"
-          @supprimer="supprimerT"
-        >
-        </vtable>
-      </div>
-
-      <div v-if="seeStatistique">
+      <div v-if="seeStatistique && StatistiqueVisible">
         <div class="">
           <select
             class="px-11 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -455,7 +407,9 @@
           </div>
         </div>
       </div>
-  </div>
+
+    </div>
+
 </template>
 
 <script>
@@ -834,6 +788,7 @@ export default {
       planDecaissementAdd:false,
       planDecaissementUpdate:false,
       planDecaissementDelete:false,
+      StatistiqueVisible:false,
       idProjet:'',
       idComposante:'',
       idSC:'',
@@ -945,11 +900,12 @@ export default {
         this.fetchActivites(this.idSC);
         this.isClick = false
         localStorage.removeItem('profondeurSC');
+        this.isShow = true
       }else {
         this.fetchActivites(Scomposante.id);
+        this.isShow = true
       }
 
-     
     },
      getSComposante(id) {
       ComposanteService.sousComposantes(id).then((data) => {
@@ -1085,6 +1041,9 @@ export default {
             }
              if(element.slug ==='supprimer-un-plan-de-decaissement') {
               this.planDecaissementDelete= true
+            }
+            if(element.slug ==='voir-une-statistique') {
+              this.StatistiqueVisible= true
             }
            
         });
@@ -1659,7 +1618,6 @@ export default {
       }
 
     } 
-    this.getSuivi()
     this.getPermission()
     this.programmeId = this.currentUser.programme.id
 

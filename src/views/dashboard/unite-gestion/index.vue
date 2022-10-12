@@ -1,8 +1,7 @@
 <template>
   <dashboard>
-    <div v-if="uniteDeGestionVisible" class="px-4">
-      <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+    <div  class="px-4">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -129,9 +128,7 @@ import extractFormData from '@/utils/extract-data'
       ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
 
       getPermission() {
-        PermissionsService.get().then((data) => {
-          this.permissions = data.data.data
-          this.currentUser.role[0].permissions.forEach(element => {
+        this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-programme') {
               this.uniteDeGestionVisible = true
             }
@@ -146,10 +143,6 @@ import extractFormData from '@/utils/extract-data'
             }
            
           });
-
-        }).catch((e) => {
-          console.log(e)
-        })
       },
     
       addUnite() {
@@ -223,14 +216,13 @@ import extractFormData from '@/utils/extract-data'
             }
 
           })
-
         }
         else
         {
           
           this.saveUniteeDeGestion(uniteeDeGestion).then(response => {
             if(response.status == 200 || response.status == 201){
-                this.close()
+              this.close()
             }
 
           })
@@ -257,6 +249,9 @@ import extractFormData from '@/utils/extract-data'
           console.log("Fetching list of programmes...")
           this.fetchProgrammes()
           this.getPermission()
+          if(!this.uniteDeGestionVisible) {
+            this.$router.push('/401-non-autorise')
+          } 
         }, 100);
       })
     }
