@@ -101,7 +101,7 @@
                       {{ input.name }}
                       <span
                         v-if="input.required"
-                        class="px-2 text-lg font-black text-red-700"
+                        class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700"
                         >*</span
                       >
                     </label>
@@ -120,7 +120,7 @@
                     {{ area.name }}
                     <span
                       v-if="area.required"
-                      class="px-2 text-lg font-black text-red-700"
+                      class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700"
                       >*</span
                     >
                   </label>

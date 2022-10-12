@@ -14,7 +14,7 @@
                 <div class="w-1/2">
                   <label class="block py-2 text-sm font-semibold" for="">
                     Date de collecte
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
 
                   <input
@@ -39,7 +39,7 @@
                 <div v-if="checklist.inputType == 'edit'">
                   <label class="block py-2 text-sm font-semibold" for="">
                     {{ checklist.nom }}
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -50,7 +50,7 @@
                 <div v-if="checklist.inputType == 'photos'">
                   <label class="block py-2 text-sm font-semibold" for="">
                     {{ checklist.nom }}
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
                   <input
                     type="file"

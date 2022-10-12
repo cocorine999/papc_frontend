@@ -5,7 +5,7 @@
         <div  v-for="input in Inputs" :key="input.id">
           <label   class=" block py-2 
 text-xs  md:text-sm font-semibold " for="">
-          {{input.name}} <span v-if="input.required" class="px-2 text-lg font-black text-red-700">*</span>
+          {{input.name}} <span v-if="input.required" class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
           </label>
           <input :required="input.required" v-model='input.data'  :placeholder="input.placeholdere" :type="input.type"    class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
         </div>
@@ -13,7 +13,7 @@ text-xs  md:text-sm font-semibold " for="">
         <div class="" v-for="select in Selects" :key="select.id">
           <label  class=" block py-2 
 text-xs  md:text-sm font-semibold " for="">
-          {{select.name}}  <span v-if="select.required" class="px-2 text-lg font-black text-red-700">*</span>
+          {{select.name}}  <span v-if="select.required" class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
           </label>
           <multiselect v-model="select.data" :required="select.required" :options="select.options" :custom-label="select.methode"  :placeholder="select.placeholdere" label="name" track-by="name" class="text-sm" ></multiselect>
         </div>
@@ -24,7 +24,7 @@ text-xs  md:text-sm font-semibold " for="">
         <div  v-for="input in Inputs" :key="input.id">
           <label   class=" block py-2 
 text-xs  md:text-sm font-semibold " for="">
-          {{input.name}} <span v-if="input.required" class="px-2 text-lg font-black text-red-700">*</span>
+          {{input.name}} <span v-if="input.required" class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
           </label>
           <input required v-model='input.data'  :placeholder="input.placeholdere" :type="input.type"    class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
 
@@ -43,7 +43,7 @@ text-xs  md:text-sm font-semibold " for="">
         <div class="my-2" v-for="select in Selects" :key="select.id">
           <label  class=" block py-2 
 text-xs  md:text-sm font-semibold " for="">
-            {{select.name}}  <span v-if="select.required" class="px-2 text-lg font-black text-red-700">*</span>
+            {{select.name}}  <span v-if="select.required" class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
           </label>
           <multiselect v-model="select.data" :required="select.required"  :options="select.options" :custom-label="select.methode"  :placeholder="select.placeholdere" label="name" track-by="name" class="text-sm" ></multiselect>
           
@@ -62,7 +62,7 @@ text-xs  md:text-sm font-semibold " for="">
     <div v-for="area in TextArea" :key="area.id">
         <label  class=" block py-2 
 text-xs  md:text-sm font-semibold " for="">
-          {{area.name}} <span v-if="area.required" class="px-2 text-lg font-black text-red-700">*</span>
+          {{area.name}} <span v-if="area.required" class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
         </label>
         <textarea v-model='area.data' class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" required rows="3"></textarea>
         

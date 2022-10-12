@@ -9,7 +9,7 @@
                 <div class="w-1/5">
                   <label class="block py-2 text-sm font-semibold" for="">
                     Entreprise
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
                   <select
                     id="pet-select"
@@ -25,7 +25,7 @@
                 <div class="w-1/5">
                   <label class="block py-2 text-sm font-semibold" for="">
                     Site
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
                   <select
                     id="pet-select"
@@ -41,7 +41,7 @@
                 <div class="w-1/5">
                   <label class="block py-2 text-sm font-semibold" for="">
                     Responsable Enquete
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
                   <select
                     id="pet-select"
@@ -57,7 +57,7 @@
                 <div class="w-1/5">
                   <label class="block py-2 text-sm font-semibold" for="">
                     Date de collecte
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
 
                   <input
@@ -118,7 +118,7 @@
                 <div v-if="form.inputType == 'edit'">
                   <label class="block py-2 text-sm font-semibold" for="">
                     {{ form.nom }}
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -129,7 +129,7 @@
                 <div v-if="form.inputType == 'photos'">
                   <label class="block py-2 text-sm font-semibold" for="">
                     {{ form.nom }}
-                    <span class="px-2 text-lg font-black text-red-700">*</span>
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
                   <input
                     type="file"

@@ -1,8 +1,8 @@
 <template>
   <dashboard>
     <div  class="px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
+        <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -20,7 +20,7 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
         <div  class="px-4">
-          <div v-if="title =='Ajouter une unité de gestion'">
+          <div v-if="title =='Ajouter'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
           <div v-if="title =='Modifier une unité de gestion'">
@@ -146,7 +146,7 @@ import extractFormData from '@/utils/extract-data'
       },
     
       addUnite() {
-        this.title='Ajouter une unité de gestion'
+        this.title='Ajouter'
 
         let formData = this.champs.map((value) => {
           if(value.key === 'programmeId'){ 

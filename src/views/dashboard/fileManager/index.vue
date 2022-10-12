@@ -5,7 +5,7 @@
     <vmodal  v-if="showModal" title="Uploader des fichiers"  v-on:close="showModal=false">
         <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
           <div class="m-4">
-            <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" @change="previewFiles">
+            <input class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm" aria-describedby="file_input_help" id="file_input" type="file" @change="previewFiles">
           </div>
 
           <div class="m-4">

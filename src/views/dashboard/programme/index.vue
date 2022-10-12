@@ -13,7 +13,7 @@
     
     <nav class="mb-2 mt-4 
  text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
-      <div>
+      <div  class="mb-2" >
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
             <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -36,7 +36,7 @@
           <span class="mx-2 text-sm font-semibold">Ajouter </span>
       </button>
     </div>
-    <div  class="grid grid-cols-3 gap-4">
+    <div  class="grid sm:grid-cols-2 gap-2  md:grid-cols-3 md:gap-4">
         <div v-for="programme in programmes" :key="programme.id">
           <card-programme
             :libelle="programme.nom"
@@ -90,16 +90,16 @@ export default {
       programmeAdd:false,
       programmeDelete:false,
       programmeUpdate:false,
-      title: 'Ajouter un nouveau programme',
+      title: 'Ajouter',
       submitText:"Enregistrer",
       programmeAttributs : ['nom', 'code', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational'],
       champs:[
         {name:'Nom du programme', key: 'nom', type:'text', placeholdere:"Nom du programme",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
         {name:'Code', type:'number', key: 'code', placeholdere:"Code de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-        {name:'Date debut', type:'date', key: 'debut', placeholdere:'Date de debut',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
+        {name:'Date début', type:'date', key: 'debut', placeholdere:'Date de debut',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
         {name:'Date fin', type:'date', key: 'fin', placeholdere:'Date de fin',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
         {name:'Description', type:'', key: 'description', placeholdere:'Description du programme', isSelect:false, isTextArea:true, data:'', required:true, errors : []},
-        {name:'Objectif globaux', type:'text', key: 'objectifGlobaux', placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
+        {name:'Objectifs globaux', type:'text', key: 'objectifGlobaux', placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
         {name:'Budget national', type:'number', key: 'budgetNational', placeholdere:'Definir un budget',isSelect:false,isTextArea:false,data:'', required:true, errors : []}
       ],
       cols:2,
@@ -175,7 +175,7 @@ export default {
     
     addProgramme() {
   
-      this.title='Ajouter un nouveau programme'
+      this.title='Ajouter'
 
       this.submitText= "Enregistrer"
 
