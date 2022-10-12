@@ -202,6 +202,8 @@ export default {
       this.value.forEach(element => {
         this.usersId.push(element.id)
       })
+      
+      this.date = this.date + ' ' + this.$moment().format('hh:mm:s');
       this.formulaire.forEach((element) => {
 
         if(this.usersId.length)
@@ -236,7 +238,7 @@ export default {
       
       });
 
-      this.$router.push('/dashboard/formulaire')
+      this.$router.go(-1)
     },
   },
   mounted() {
@@ -250,6 +252,7 @@ export default {
       });*/
     });
     this.fetchUtilisateurs();
+
   },
 };
 </script>

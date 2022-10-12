@@ -16,6 +16,16 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 import Vuelidate from 'vuelidate';
 Vue.component('apexchart', VueApexCharts)
 
+Vue.use(require('vue-moment'));
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+})
+
+//console.log(Vue.moment().format('hh:mm:s:ss')) //e
+
 Vue.use(Vuelidate);
 Vue.use(VueApexCharts)
 Vue.use(VueToast,{

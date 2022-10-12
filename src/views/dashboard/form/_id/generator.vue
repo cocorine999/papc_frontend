@@ -295,7 +295,7 @@ export default {
         });
       });
 
-      this.$router.push('/dashboard/unite-gestion')
+      this.$router.go(-1)
     },
   },
   mounted() {

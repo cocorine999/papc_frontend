@@ -136,11 +136,11 @@
         </button>
         
       </div>
+      
       <!--En tete de la checklist-->
       <div v-if="seeChecklist" >
         <div class="mt-4 mb-6 flex space-x-4 items-center">
           <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
-          
           <select id="pet-select" class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" v-model="valueFiltre">
             <option value="" disabled selected hidden>
                         Veuillez choisir une date
@@ -341,7 +341,7 @@
           var form = {
             "entrepriseId": this.$route.params.idE,
             "formulaireId": this.$route.params.idC,
-            "date": this.dates[0].date
+            "date": this.dates[0]?.date
           };
         }
   
@@ -388,7 +388,7 @@
       {
         var form = {
           "formulaireId": this.$route.params.idC,
-          "date": this.dates[0].date
+          "date": this.dates[0]?.date
         };
       }
 
@@ -475,7 +475,7 @@
         let form = {
         "entrepriseId": this.$route.params.idE,
         "formulaireId": this.$route.params.idC,
-        "date": this.dates[0].date
+        "date": this.dates[0]?.date
       };
   
       console.log("Getting suivi ...");
@@ -512,7 +512,7 @@
         });
         var form3 = {
           "formulaireId": this.$route.params.idC,
-          "date": this.dates[0].date
+          "date": this.dates[0]?.date
         };
 
       console.log("Getting graphes ...");

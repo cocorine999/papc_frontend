@@ -386,7 +386,7 @@ export default {
       {
         var form = {
           "formulaireId": this.$route.params.idC,
-          "date": this.dates[0].date
+          "date": this.dates[0]?.date
         };
       }
 
@@ -471,7 +471,7 @@ export default {
       let form = {
       "entrepriseId": this.$route.params.idE,
       "formulaireId": this.$route.params.idC,
-      "date": this.dates[0].date
+      "date": this.dates[0]?.date
     };
 
     console.log("Getting suivi ...");
@@ -509,7 +509,7 @@ export default {
 
     var form3 = {
           "formulaireId": this.$route.params.idC,
-          "date": this.dates[0].date
+          "date": this.dates[0]?.date
         };
 
       console.log("Getting graphes ...");
