@@ -117,7 +117,8 @@ export default {
           {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
         ],
         champsRecherche:[
-          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Date debut',key:'date debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Date fin ',key:'date fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
           {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
           {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
         ],
@@ -286,12 +287,11 @@ export default {
         decaissement.type = decaissement.type.id
         decaissement.projetId = decaissement.projetId.id
 
-        console.log(decaissement)
-        
-        
         this.saveDecaissement(decaissement).then(response => {
           if(response.status == 200 || response.status == 201){
-              this.close()
+            this.close()
+            this.showModal = false
+            this.fetchDecaissements()
           }
 
         })
@@ -326,27 +326,26 @@ export default {
       close2() {
           this.showModal2 = false
       },
-      addDecaissement() {
-          this.title ="Ajouter un decaissement"
+        addDecaissement() {
+            this.title ="Ajouter un decaissement"
+            let formData = this.champs.map((value) => {
+              if(value.key === 'projetId'){ 
+                value['options'] = this.projets
+              }
+              
+              else if(value.key === 'type'){
+                value['options'] = this.$store.state.sources;
+              }
 
-          let formData = this.champs.map((value) => {
-            if(value.key === 'projetId'){ 
-              value['options'] = this.projets
-            }
-            
-            else if(value.key === 'type'){
-              value['options'] = this.$store.state.sources;
-            }
+              return value
+            })
 
-            return value
-          })
+          this.champs = formData
 
-        this.champs = formData
+            this.showModal = true
+        },
 
-          this.showModal = true
-      },
-
-      showFiltreModal2() {
+        showFiltreModal2() {
           this.title ="Filtre"
 
           let formData = this.champsRecherche.map((value) => {

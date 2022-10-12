@@ -477,7 +477,6 @@
     methods: {
     getImage(data) {
       this.image = data
-     
     },
     saveImage() {
       if(this.sendRequest == false) {
@@ -552,7 +551,7 @@
         this.line = line
     },
 
-      addBailleur() {
+    addBailleur() {
         this.title = "Ajouter";
 
         this.submitText = "Enrégistrer";

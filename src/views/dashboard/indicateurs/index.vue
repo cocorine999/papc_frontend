@@ -163,7 +163,7 @@
       </div>
      
       
-      <vtable v-if="currentRole == 'bailleur' " :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"   @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
@@ -380,15 +380,17 @@ export default {
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
+
     getIndicateurBailleurs() {
       IndicateurService.getIndicateurBailleur().then((data) => {
         this.indicateurBailleurs = data.data.data
       }).catch((e) => {
-          console.log(e)
+        console.log(e)
       })
     },
+
     getPermission() {
-          this.currentUser.role[0].permissions.forEach(element => {
+      this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-indicateur') {
               this.indicateurVisible = true
             }
@@ -505,6 +507,7 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
+                this.fetchIndicateurs()
                 this.sendRequest = false
                 this.close();
               }
@@ -513,11 +516,12 @@ export default {
             this.$toast.error(e)
             this.sendRequest = false
           })
-          } else {
+        } else {
           this.saveIndicateur(indicateur).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
-              his.$toast.success('operation effectué avec success')
+              this.$toast.success('operation effectué avec success')
+              this.fetchIndicateurs()
               this.sendRequest = false
             }
           }).catch((e) => {

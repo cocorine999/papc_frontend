@@ -174,7 +174,7 @@ export default {
       projetId:'',
       title: '',
       search:"",
-      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'bailleurId'],
+      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId'],
       champs:[
         {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -186,7 +186,6 @@ export default {
         {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data:'', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors : []},
         {name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data:'', required: true, options: this.bailleurs, cle: 'id', value: 'sigle',  errors : []},
-        {name: 'Status', key: "statut", type: '', placeholdere: 'Selectionnez un status', isSelect: true, isTextArea: false, data:'', required: true, options:this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
         {name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea:true, data:'', required: false, errors : []},
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
@@ -200,7 +199,6 @@ export default {
         {name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data:'', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors : []},
         {name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data:'', required: true, options: this.bailleurs, cle: 'id', value: 'sigle',  errors : []},
-        {name: 'Status', key: "statut", type: '', placeholdere: 'Selectionnez un status', isSelect: true, isTextArea: false, data:'', required: true, options:this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
         {name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea:true, data:'', required: false, errors : []},
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
@@ -249,7 +247,7 @@ export default {
       bailleurs: "bailleurs/getBailleurs",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
-     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    
   },
 
   methods: {
@@ -282,7 +280,7 @@ export default {
             if(element.slug ==='supprimer-un-projet') {
               this.projetDelete = true
             }
-            if(element.slug ==='voir-un-dashboard') {
+            if(element.slug ==='voir-details-projet') {
               this.dashboardProjetVisible = true
             }
             if(element.slug ==='voir-un-bailleur') {
@@ -349,11 +347,10 @@ export default {
 
     filteredProjet(){
         var self = this;
-
         return this.projets.filter(function (projet){
           return projet.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+            projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+            projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
     },
 
@@ -461,10 +458,10 @@ export default {
 
         projet.bailleurId = projet.bailleurId.id
         projet.id = this.projetId
-        projet.statut = projet.statut.etat
-        console.log('details projet',projet)
+        
         if(projet?.id)
         {
+         projet.statut = -1
           this.updateProjet({projet: projet, id : projet?.id}).then(response => {
             
             if(response.status == 200 || response.status == 201){
@@ -479,12 +476,11 @@ export default {
             this.champs.map(value => value.errors = this.erreurs[value.key])
 
           })
-
         }
         else
         { 
           this.sendRequest = true;
-          console.log("creation de projet ",projet)
+          projet.statut = -2
           const demo = {
             "nom": projet.nom,
             "description": projet.description,

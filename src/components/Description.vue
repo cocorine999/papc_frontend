@@ -108,18 +108,7 @@
             DESCRIPTION DU PROJET
           </h1>
           <p class="text-xs italic text-justify">
-            En Afrique subsaharienne, les pays rencontrent d’énormes difficultés
-            pour assurer aux populations rurales et urbaines l’accès aux
-            services d’approvisionnement en eau potable et d’assainissement.
-            Cette situation est aggravée par l’appauvrissement constant des
-            ressources en eau accentué par la croissance rapide de la
-            population, l’expansion de l’urbanisation, la progression de la
-            pollution et les changements climatiques. L’évaluation de la
-            réalisation des Objectifs du Millénaire pour le Développement (OMD)
-            effectuée en 2006, a révélé que l’Afrique subsaharienne est la
-            région qui a le moins progressé avec 331 millions de personnes
-            n’ayant pas accès à une eau de boisson salubre et 544 millions qui
-            n’ont pas accès à l’assainissement de base…
+            {{projet.description}}
           </p>
         </div>
       </div>
