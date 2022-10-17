@@ -192,7 +192,7 @@
               </div>
               <div>
                 
-                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
                 <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
