@@ -1,6 +1,6 @@
 <template>
     <dashboard>
-      <div v-if="uniteDeGestionVisible" class="px-4">
+      <div v-if="gouvernementVisible" class="px-4">
         <nav class="mb-2 mt-4 
    text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
           <div>
@@ -33,14 +33,14 @@
         </div>
         <div class="flex items-center justify-between flex-wrap">
           <titre>Gouvernement </titre>
-            <button v-if="uniteDeGestionAdd" @click="addUnite" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <button v-if="gouvernementAdd" @click="addUnite" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
               <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter</span>
             </button>
         </div>
         <div  id="dataTable">
-          <vtable v-if="actions != undefined && uniteDeGestionDelete" :headers="headers" :datas="uniteeDeGestions" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
-          <vtable v-else :headers="headers" :datas="uniteeDeGestions"  @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+          <vtable v-if="actions != undefined && gouvernementDelete" :headers="headers" :datas="gouvernements" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+          <vtable v-else :headers="headers" :datas="gouvernements"  @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
         </div>
       </div>
     </dashboard>
@@ -70,15 +70,15 @@
       },
       data() {
           return {
-            uniteeDeGestionAttributs : ['nom', 'email', 'contact', 'programmeId'],
+            gouvernementAttributs : ['nom', 'email', 'contact', 'programmeId'],
             showModal:false,
             title:'',
-            uniteDeGestionVisible:false,
-            uniteDeGestionAdd:false,
-            uniteDeGestionDelete:false,
-            uniteDeGestionUpdate:false,
+            gouvernementVisible:false,
+            gouvernementAdd:false,
+            gouvernementDelete:false,
+            gouvernementUpdate:false,
             champs:[
-            {name:'Nom', key: 'nom', type:'text', placeholdere:"Nom de  l'unité de gestion", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
+            {name:'Nom', key: 'nom', type:'text', placeholdere:"Nom du gouvernement", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
             {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
             {name:'Contact', key: 'contact', type:'number', placeholdere:'Votre contact', isSelect:false, isTextArea:false, data:'', required:true, errors : []},
             {name:'Programme', key: 'programmeId', type:'', placeholdere:'Choisir un programme', isSelect:true, isTextArea:false, data:'', options: this.programmes, cle: 'id', value: 'nom', required:true, errors : []}
@@ -88,7 +88,6 @@
             {name:'Nom', props:'user', cle:'nom'},
             {name:'Email', props:'user', cle:'email', edit : false},
             {name:'Programme', props:'programme', cle:'nom', edit : false},
-            
             {name:'Date de creation', cle:'created_at', edit : false},
   
           ],
@@ -105,8 +104,8 @@
         ...mapGetters({
           hasErrors : "GET_ERREURS",
           isLoading : "IS_LOADING",
-          uniteeDeGestion: "uniteeDeGestions/getUniteeDeGestion",
-          uniteeDeGestions: "uniteeDeGestions/getUniteeDeGestions",
+          gouvernement: "gouvernements/getGouvernement",
+          gouvernements: "gouvernements/getGouvernements",
           programmes: "programmes/getProgrammes"
         }),
         ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
@@ -116,14 +115,14 @@
   
         ...mapMutations({
           setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-          setUniteeDeGestion: 'uniteeDeGestions/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+          setGouvernement: 'gouvernements/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
         }),
   
-        ...mapActions('uniteeDeGestions', {
-          fetchUniteeDeGestions: "FETCH_LIST_UNITEE_DE_GESTION",
-          saveUniteeDeGestion: "STORE_UNITEE_DE_GESTION",
-          updateUniteeDeGestion: "UPDATE_UNITEE_DE_GESTION",
-          deleteUniteeDeGestion: "DESTROY_UNITEE_DE_GESTION"
+        ...mapActions('gouvernements', {
+          fetchGouvernements: "FETCH_LIST_GOUVERNEMENT",
+          saveGouvernement: "STORE_GOUVERNEMENT",
+          updateGouvernement: "UPDATE_GOUVERNEMENT",
+          deleteGouvernement: "DESTROY_GOUVERNEMENT"
         }),
   
         ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
@@ -132,17 +131,17 @@
           PermissionsService.get().then((data) => {
             this.permissions = data.data.data
             this.currentUser.role[0].permissions.forEach(element => {
-              if(element.slug ==='voir-un-programme') {
-                this.uniteDeGestionVisible = true
+              if(element.slug ==='voir-un-gouvernement') {
+                this.gouvernementVisible = true
               }
-              if(element.slug === 'creer-un-programme') {
-                this.uniteDeGestionAdd = true
+              if(element.slug === 'creer-un-gouvernement') {
+                this.gouvernementAdd = true
               }
-              if(element.slug === 'modifier-un-programme') {
-                this.uniteDeGestionUpdate = true
+              if(element.slug === 'modifier-un-gouvernement') {
+                this.gouvernementUpdate = true
               }
-              if(element.slug ==='supprimer-un-programme') {
-                this.uniteDeGestionDelete = true
+              if(element.slug ==='supprimer-un-gouvernement') {
+                this.gouvernementDelete = true
               }
              
             });
@@ -153,7 +152,8 @@
         },
       
         addUnite() {
-          this.title='Ajouter une unité de gestion'
+
+          this.title='Ajouter un gouvernement'
   
           let formData = this.champs.map((value) => {
             if(value.key === 'programmeId'){ 
@@ -168,9 +168,9 @@
           this.showCloseModal(true)
         },
   
-        async supprimer(uniteeDeGestion) {
-          if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + uniteeDeGestion.nom))
-            await this.deleteUniteeDeGestion(uniteeDeGestion.id)
+        async supprimer(gouvernement) {
+          if(window.confirm("Voulez-vous supprimer cet gouvernement  " + gouvernement.nom))
+            await this.deleteGouvernement(gouvernement.id)
         },
       
         close() {
@@ -189,12 +189,12 @@
           
           window.document.getElementById('vform')?.reset()
   
-          this.setUniteeDeGestion({})
+          this.setGouvernement({})
         },
   
         async updateInputData(id, attribut, value) {
           
-            await this.updateUniteeDeGestion({uniteeDeGestion: {[attribut] : value}, id : id}).catch((value, status) => {
+            await this.updateGouvernement({gouvernement: {[attribut] : value}, id : id}).catch((value, status) => {
               if(this.hasErrors[attribut] !== undefined)
                 alert(this.hasErrors[attribut])            
             }).finally(() => {
@@ -207,15 +207,15 @@
   
           this.champs = this.champs.map(item => { item.errors = []; return item})
   
-          let uniteeDeGestion = extractFormData(this.champs, this.uniteeDeGestionAttributs)
+          let gouvernement = extractFormData(this.champs, this.gouvernementAttributs)
   
-          if(typeof uniteeDeGestion.programmeId === 'object')
-            uniteeDeGestion.programmeId = uniteeDeGestion.programmeId.id
+          if(typeof gouvernement.programmeId === 'object')
+            gouvernement.programmeId = gouvernement.programmeId.id
   
-          if(this.uniteeDeGestion?.id)
+          if(this.gouvernement?.id)
           {
   
-            this.updateProgramme({uniteeDeGestion: uniteeDeGestion, id : this.uniteeDeGestion?.id}).then(response => {
+            this.updateProgramme({gouvernement: gouvernement, id : this.gouvernement?.id}).then(response => {
               
               if(response.status == 200 || response.status == 201){
   
@@ -228,7 +228,7 @@
           else
           {
             
-            this.saveUniteeDeGestion(uniteeDeGestion).then(response => {
+            this.saveGouvernement(gouvernement).then(response => {
               if(response.status == 200 || response.status == 201){
                   this.close()
               }
@@ -251,8 +251,8 @@
       },
   
       mounted() {
-        console.log("Fetching unitees de gestion ...")
-        this.fetchUniteeDeGestions().then((value) => {
+        console.log("Fetching gouvernement ...")
+        this.fetchGouvernements().then((value) => {
           setTimeout(() => {
             console.log("Fetching list of programmes...")
             this.fetchProgrammes()

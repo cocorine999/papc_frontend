@@ -1046,7 +1046,7 @@ export default {
              if(element.slug ==='supprimer-un-plan-de-decaissement') {
               this.planDecaissementDelete= true
             }
-            if(element.slug ==='voir-une-statistique') {
+            if(element.slug ==='voir-une-statistique-activite') {
               this.StatistiqueVisible= true
             }
            
