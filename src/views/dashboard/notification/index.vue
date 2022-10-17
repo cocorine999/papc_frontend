@@ -1,7 +1,7 @@
 <template>
  <dashboard>
     <div class="p-4">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between flex-wrap">
         <p tabindex="0" class="focus:outline-none text-2xl font-semibold leading-6 text-gray-800 uppercase">Mes notifications</p>
       </div>
       <div  v-for="(data,index) in notifications" :key="index" class="w-full p-3 mt-4 bg-white rounded shadow flex flex-shrink-0">

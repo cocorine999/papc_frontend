@@ -5,11 +5,11 @@
         <form action="" @submit.prevent="createCollecteur" class="p-4" >
           <div class="form-group my-2">
              <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Collecteur  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Collecteur  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <input v-model="postData.nom" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
             </div>
             <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Bailleurs <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Bailleurs <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <select v-model="postData.bailleurId" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
                <option v-for="(bailleur,index) in bailleurs " :key="index" :value="bailleur.id" > {{bailleur.sigle}} </option>
               </select>
@@ -17,23 +17,23 @@
           </div>
           
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Attributaires <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Attributaires <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
              <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Selectionez un attribut" label="name" track-by="name"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
           </div>
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Estimation de l'accord financement <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Estimation de l'accord financement <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input v-model="postData.estimation" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Engagements (FCFA HT) <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Engagements (FCFA HT) <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input v-model="postData.engagement" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">References contrats <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">References contrats <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input v-model="postData.reference" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
           </div>
           <div class="my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Commentaires <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Commentaires <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <textarea v-model="postData.commentaire" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"  name="" id=""  rows="2"></textarea>
           </div>
           
@@ -72,24 +72,32 @@
       </nav>
       <div class="flex items-center justify-between mt-2 mb-8">
         <div class="flex space-x-4">
-          <span  class="inline-block cursor-pointer  text-lg uppercase  border-b-8 font-bold  border-primary py-2">Tableau recapitulatif </span>
+          <span  class="inline-block cursor-pointer  text-base uppercase  border-b-8 font-bold  border-primary py-2">Tableau recapitulatif </span>
         </div>
         
-        <button  @click="createTable" title="ajouter un tabelau"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
-          <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"></path></svg></span>
-          <span class="mx-2 text-sm font-semibold">Ajouter un tableau recapitulatif</span>
+        <button  @click="createTable" title="ajouter un tabelau"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+            >
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+          ></span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">Ajouter</span>
         </button>
         
       </div>
       <div class="my-3 flex items-center space-x-3" >
-        <button  title="exporter en excel"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <button  title="exporter en excel"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-          <span class="mx-2 text-sm font-semibold">Export Excel</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
         </button>
 
-        <button  title="exporter en excel"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
+        <button  title="exporter en excel"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-          <span class="mx-2 text-sm font-semibold">Export Excel</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
         </button>
       </div>
       <div class="align-middle inline-block w-full bg-white overflow-x-auto pt-3 rounded-bl-lg rounded-br-lg">
@@ -333,7 +341,7 @@ export default {
       })
     },
     createTable() {
-      this.title = 'Ajouter un element'
+      this.title = 'Ajouter'
       this.showModal = true
     },
     

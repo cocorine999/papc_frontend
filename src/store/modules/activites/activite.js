@@ -19,6 +19,7 @@ export default class Activite {
         this.user = is(Object, activite.user) ? (activite.user) : null,
         this.userId = is(String, activite.userId) ? activite.userId : activite.userId,
         this.tep = is(String, activite.tep) ? parseInt(activite.tep) : activite.tep,
+        this.tef = is(String, activite.tef) ? parseInt(activite.tef) : activite.tef,
         this.statut = is(String, activite.statut) ? parseInt(activite.statut) : activite.statut,
         this.debut = is(Object, activite.debut) ? (new Date(activite.debut._date)).toISOString() : activite.debut,
         this.fin = is(Object, activite.fin) ? (new Date(activite.fin._date)).toISOString() : activite.fin,

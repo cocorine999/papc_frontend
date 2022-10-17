@@ -1060,7 +1060,11 @@
 
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
+=======
   resolved "https://registry.npmmirror.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
+>>>>>>> origin/demo_merge
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
 "@node-ipc/js-queue@2.0.3":
@@ -2999,7 +3003,11 @@ dns-equal@^1.0.0:
 
 dns-packet@^5.2.2:
   version "5.4.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-5.4.0.tgz#1f88477cf9f27e78a213fb6d118ae38e759a879b"
+=======
   resolved "https://registry.npmmirror.com/dns-packet/-/dns-packet-5.4.0.tgz"
+>>>>>>> origin/demo_merge
   integrity sha512-EgqGeaBB8hLiHLZtp/IbaDQTL8pZ0+IvwzSHA6d7VyMDM+B9hgddEMa9xjK5oYnw0ci0JQ6g2XCD7/f6cafU6g==
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
@@ -5042,7 +5050,11 @@ multicast-dns@^7.2.5:
 
 mz@^2.4.0:
   version "2.7.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"
+=======
   resolved "https://registry.npmmirror.com/mz/-/mz-2.7.0.tgz"
+>>>>>>> origin/demo_merge
   integrity sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==
   dependencies:
     any-promise "^1.0.0"
@@ -6988,7 +7000,11 @@ thread-loader@^3.0.0:
 
 thunky@^1.0.2:
   version "1.1.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
+=======
   resolved "https://registry.npmmirror.com/thunky/-/thunky-1.1.0.tgz"
+>>>>>>> origin/demo_merge
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
 tiny-invariant@^1.0.2:

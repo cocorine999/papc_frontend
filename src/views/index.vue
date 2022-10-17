@@ -8,8 +8,8 @@
           <img width="180" height="180" src="../assets/images/login/logo-sirat.webp">
         </div>
   
-        <h1 class="xl:text-2xl text-lg text-center font-bold text-primary py-6 ">PROGRAMME  D’ASSAINISSEMMENT PLUVIAL DE COTONOU</h1>
-        <p class="text-base font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte. </p>
+        <h1 class="xl:text-2xl text-base text-center font-bold text-primary py-6 ">PROGRAMME  D’ASSAINISSEMMENT PLUVIAL DE COTONOU</h1>
+        <p class="text-sm font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte. </p>
         <form @submit.prevent="save" action="">
           <div class="form-group my-3 relative">
             <input v-model.trim='$v.login.$model' type="text" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email">
@@ -76,7 +76,7 @@
         </div>
 
         <div>
-          <p class="text-md font-semibold text-center text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC</p>
+          <p class="text-md font-semibold text-center text-base text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC</p>
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@
 
     <!-- fin de l'image de connexion -->
     <div class=" absolute right-2 top-4">
-      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center">Cliquez-ici pour activer le compte</button>
+      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici pour activer le compte</button>
     </div>
     <div class="drapeau fixed bottom-0 right-0 left-0 grid grid-cols-3">
       <div class="h-2 bg-green-700"></div>

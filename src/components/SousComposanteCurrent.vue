@@ -9,8 +9,8 @@
         </modal-top-right>
       </div>
       
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+        <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -31,24 +31,24 @@
       </nav> 
 
     
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
-        <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-lg uppercase    border-primary py-2">Sous composantes </span>
+        <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-xs sm:text-sm  md:text-base  uppercase    border-primary py-2">Sous composantes </span>
        
       </div>
       
       <button v-if="seeSousComposantes && composanteAdd" @click="addSousComposante" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter un sous composant</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
       </button>
      
     </div>
     
     <div>
       <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-        <div class="flex items-center justify-between ">
+        <div class="flex items-center justify-between flex-wrap ">
         <!--Filtre sur projet -->
-        <div class="w-2/5 flex items-center space-x-2">
+        <div class="w-full md:w-2/5 flex justify-between  items-center space-x-2 mb-2">
       
           <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" @input="changeProjet(projetFiltre)" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
 
@@ -56,20 +56,20 @@
           
         </div>
       <!--Filtre sur projet -->
-          <nav class="flex text-sm align-middle justify-evenly">
-          <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+          <nav class="flex flex-wrap text-xs  md:text-sm align-middle justify-between w-full md:w-3/5">
+          <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
             attentes 
-              <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined">
+              <span class="px-2 text-sm text-yellow-600 border border-yellow-600 rounded-full undefined tex-base">
               5
               </span>
             </span>
-            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
               validés 
-              <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
+              <span class="px-2 text-sm text-green-600 border border-green-600 rounded-full undefined">
               9
               </span>
             </span>
-            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer ">
+            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
               rejetés
               <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
               8
@@ -441,7 +441,7 @@ export default {
     },
     
     addSousComposante() {
-      this.title ="Ajouter un nouveau composant"
+      this.title ="Ajouter"
 
       this.submitText="Enregistrer",
 

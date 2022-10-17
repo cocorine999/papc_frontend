@@ -1,7 +1,7 @@
 <template>
   <div class="w-full px-4">
     <nav
-      class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
+      class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
       aria-label="Breadcrumb"
     >
       <div>
@@ -44,18 +44,18 @@
       </div>
     </nav>
 
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
         <span
           :class="{ 'border-primary border-b-8 font-bold': seeTache }"
           @click="gotoTache()"
-          class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
+          class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2"
           >Taches</span
         >
        <!--  <span
           :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
           @click="gotoSuivi()"
-          class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
+          class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2"
           >Suivi tache</span -->
         >
       </div>
@@ -147,7 +147,7 @@
             v-if="!showFiltre"
             title="filtre"
             @click="showFiltre = true"
-            class="bg-primary flex items-center space-x-3 text-white px-2 py-1"
+            class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
           >
             <svg
               stroke="currentColor"
@@ -224,7 +224,7 @@
             >
               attentes
               <span
-                class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+                class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
               >
                 5
               </span>

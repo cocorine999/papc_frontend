@@ -84,10 +84,10 @@
           <table class="min-w-full">
             <thead class="border-b bg-gray-300">
               <tr>
-                <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
-                <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
+                <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
+                <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
     
-                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
+                <th scope="col" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
               </tr>
             </thead>
             
@@ -125,7 +125,7 @@
       </vue-html2pdf>
       <button  title="exporter en excel" @click="generateReport()"    class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
               <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-              <span class="mx-2 text-sm font-semibold">Export Pdf</span>
+              <span class="mx-2 text-xs  md:text-sm font-semibold">Export Pdf</span>
       </button>
         <button v-if="seeChecklist" @click="goForm" title="Voir le formulaire" class="bg-blue-500 text-white px-3 py-1 text-center">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="1.3em" height="1.3em" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -189,10 +189,10 @@
           <table class="min-w-full">
             <thead class="border-b bg-gray-300">
               <tr>
-                <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
-                <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
+                <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
+                <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
     
-                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
+                <th scope="col" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
               </tr>
             </thead>
             

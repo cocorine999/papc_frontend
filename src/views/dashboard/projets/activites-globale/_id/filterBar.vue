@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between flex-wrap">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
           <multiselect
@@ -35,7 +35,7 @@
             v-if="!showFiltre"
             title="filtre"
             @click="showFiltre = true"
-            class="bg-primary flex items-center space-x-3 text-white px-2 py-1"
+            class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
           >
             <svg
               stroke="currentColor"
@@ -107,7 +107,7 @@
           >
             attentes
             <span
-              class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined"
+              class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
             >
               5
             </span>
