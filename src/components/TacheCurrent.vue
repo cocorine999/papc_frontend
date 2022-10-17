@@ -436,7 +436,7 @@ export default {
                   const idActivite = activites[0].id
                   let code = activites[0].codePta
                   let nom = activites[0].nom
-                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
                   this.fetchTaches(idActivite);
                   this.isShow = true
                 }
@@ -454,7 +454,7 @@ export default {
                   const idActivite = activites[0].id
                   let code = activites[0].codePta
                   let nom = activites[0].nom
-                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
                   this.fetchTaches(idActivite);
                   this.isShow = true
                   this.sousComposanteFiltre = null
@@ -764,6 +764,7 @@ export default {
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
         console.log('tache',tache)
+        console.log(this.valueFiltre)
         tache['activiteId'] = this.valueFiltre.id;
         
         if (this.tache?.id) {
