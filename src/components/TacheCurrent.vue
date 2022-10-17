@@ -764,6 +764,7 @@ export default {
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
         console.log('tache',tache)
+        console.log(this.valueFiltre)
         tache['activiteId'] = this.valueFiltre.id;
         
         if (this.tache?.id) {
