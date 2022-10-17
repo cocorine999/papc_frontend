@@ -436,7 +436,7 @@ export default {
                   const idActivite = activites[0].id
                   let code = activites[0].codePta
                   let nom = activites[0].nom
-                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
                   this.fetchTaches(idActivite);
                   this.isShow = true
                 }
@@ -454,7 +454,7 @@ export default {
                   const idActivite = activites[0].id
                   let code = activites[0].codePta
                   let nom = activites[0].nom
-                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
                   this.fetchTaches(idActivite);
                   this.isShow = true
                   this.sousComposanteFiltre = null
