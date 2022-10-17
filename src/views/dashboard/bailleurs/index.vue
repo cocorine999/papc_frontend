@@ -56,7 +56,7 @@
           class="mb-2 text-sm font-semibold flex justify-between items-center"
           aria-label="Breadcrumb"
         >
-          <div>
+          <div class="hidden sm:block">
             <ol class="inline-flex p-0 list-none">
               <li class="flex items-center text-blue-500">
                 <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -75,10 +75,11 @@
               </li>
             </ol>
           </div>
+          <div></div>
           <div>
-            <div class="flex justify-center w-full text-gray-600">
-            <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-            <button type="submit" class="relative  right-10 ">
+            <div class="w-full flex text-gray-600">
+            <input @input="$emit('search',$event.target.value)" class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+            <button type="submit" class="relative">
             <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
             viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -97,7 +98,7 @@
             v-if="bailleurAdd"
             @click="addBailleur"
             title="ajouter"
-            class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+            class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +108,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
             </svg>
-            <span class="mx-2 text-sm font-semibold">Ajouter </span>
+            <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
           </button>
         </div>
 
@@ -143,7 +144,7 @@
                 ></span>
                  ./dots -->
                 <p
-                  class="my-2 text-normal text-lg sm:text-2xl font-medium text-gray-600 mt-16 truncate"
+                  class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 mt-16 truncate"
                 >
                   {{ bailleur.user.nom }}
                 </p>
@@ -172,7 +173,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.pays }}
                   </div>
@@ -198,7 +199,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.user.contact }}
                   </div>
@@ -224,7 +225,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.user.email }}
                   </div>

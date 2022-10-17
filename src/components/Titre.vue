@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class=" inline-block font-bold text-lg uppercase  border-b-8  border-primary py-2">
+    <span class=" inline-block text-xs font-bold sm:text-base uppercase  border-b-8  border-primary py-2">
       <slot></slot>
     </span>
   </div>

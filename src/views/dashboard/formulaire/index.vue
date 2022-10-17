@@ -8,16 +8,35 @@
       </div>
     </vmodal>
     <div class="px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+      <nav
+        class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
+        aria-label="Breadcrumb"
+      >
         <div>
           <ol class="inline-flex p-0 list-none">
-            <li class="flex items-center ">
-              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
-              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+            <li class="flex items-center">
+              <router-link to="/dashboard" class="text-gray-600"
+                >dashboard</router-link
+              >
+              <svg
+                class="w-3 h-3 mx-3 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 320 512"
+              >
+                <path
+                  d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+                />
+              </svg>
             </li>
-
-            <li class="flex items-center text-blue-500 ">
-              <router-link to="" class="">formulaire</router-link>
+            <li class="flex items-center text-blue-500">
+              <router-link to="" class="text-gray-600"
+                >formulaire</router-link
+              >
+             
+                <path
+                  d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+                />
+              </svg>
             </li>
           </ol>
           <div class="flex justify-center w-full text-gray-600">
@@ -34,6 +53,9 @@
           </div>
         </div> 
       </nav>
+
+
+      
       <div class="flex items-center justify-between my-4">
         <div class="flex space-x-4">
           <span @click="goFormulaire" v-if="formulaireVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
@@ -45,6 +67,21 @@
             <span class="mx-2 text-xs font-semibold">Ajouter </span>
           </router-link> 
         </div>
+<<<<<<< HEAD
+        <router-link to="/dashboard/formulaire-create"  title="ajouter une checklist"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+           <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+            >
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+          ></span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span>
+        </router-link>
+=======
+>>>>>>> a4bae742ee18a9e6735dec3a37407a0aa427f4ad
       </div>
 
       <div v-if="seeFormulaire">

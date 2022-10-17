@@ -1,8 +1,9 @@
 <template>
   <dashboard>
     <div class="px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -14,7 +15,7 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
+          <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -36,25 +37,25 @@
           
                 <div class="my-4">
                  
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
 
                    <input v-model="suiviIndicateurs.annee"  @change="verifyValeurCible(suiviIndicateurs.annee)" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
                 </div>
 
               <div v-if="isValeurCibleUse" class="my-4">
                 
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurCible" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
 
               <div class="my-4">
                
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurRealise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
 
               <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Suivi par date ou par trimestre ? <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Suivi par date ou par trimestre ? <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <div class="flex justify-between my-3">
                   <div>
                     <input type="radio" :checked="choiceDateOption"  @click="choiceDateOption= true" id="date" name="choix" value="date" >
@@ -67,12 +68,12 @@
                 </div>
 
                 <div v-if="choiceDateOption" class="my-4">
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                   <input v-model="suiviIndicateurs.dateSuivie" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="" />
                 </div>
               
               <div v-else class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <div class="flex justify-between my-3">
                   <div>
                     <input v-model="suiviIndicateurs.trimestre" type="radio"  id="T1" name="trimestre" value="1" >
@@ -95,7 +96,7 @@
               </div>
           </div>
               <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <textarea v-model="suiviIndicateurs.commentaire" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
              </div>
             
@@ -144,7 +145,7 @@
         </vmodal>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="flex items-end justify-between">
         <titre>Les indicateurs </titre>
         <div class="flex items-center space-x-4">
           <button @click="showModal2 = true" title="filtre"    class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>

@@ -16,7 +16,7 @@
       <label v-if="labelposition" :class="{'block py-2':labelposition==='y','inline px-2':labelposition==='x'}" class=" text-sm font-semibold " for="">
       {{label}}
       </label>
-      <select required v-model='inputValue'  :placeholder="placeholdere"    @change="$emit('update', inputValue)" class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent">
+      <select required v-model='inputValue'  :placeholder="placeholdere"    @change="$emit('update', inputValue)" class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm">
         <option value=""> {{placeholdere}} </option>
         <option :value="data" v-for="(data,index) in datas" :key="index">
           {{data}}
