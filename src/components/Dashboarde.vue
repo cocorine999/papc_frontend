@@ -192,7 +192,7 @@ export default {
         {name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture',isImage:true, isSelect: false, isTextArea: false, data:'', required: false, errors : []},
       ],
       champsFile:[
-        {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
+        {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:true, isTextArea: false, data:'', required: false, errors : []},
       ],
       image:{},
       fichiers:[],
@@ -214,14 +214,9 @@ export default {
     }
   },
   methods:{
+    
     getFile(data) {
-     for (const property in data) {
-        this.fichiers.push(data[property])
-      }
-      this.fichiers.pop()
-      this.fichiers.pop() 
-     console.log('les fichiers dddd',this.fichiers)
-     
+      this.fichiers = data
     },
     getImage(data) {
       this.image = data
@@ -247,7 +242,7 @@ export default {
           }
       })
     },
-     updateFile() {
+    updateFile() {
       const id = this.projet.id
       const formData = new FormData();
       for( let i = 0; i < this.fichiers.length; i++ ){
@@ -269,6 +264,35 @@ export default {
             // Une erreur s'est produite lors de la configuration de la demande
           }
       })
+    },
+    save() {
+        console.log(this.value)
+        this.value.forEach(element => {
+          this.usersId.push(element.id)
+        })
+        console.log(this.usersId)
+        const formData = new FormData();
+        formData.append('fichier',this.datasFiles)
+        for( let i = 0; i < this.usersId.length; i++ ){
+          let file = this.usersId[i];
+          formData.append('sharedId[]', file);
+        }
+       
+        formData.append('autre','autre')
+        if(this.chargement == false) {
+          this.chargement = true
+          FichierService.create(formData).then((data) => {
+            this.chargement = false
+            this.$toast.success('televersement reuissi')
+            this.showModal = false
+            this.getFiles()
+
+          }).catch((e) => {
+            this.chargement = false  
+            this.$toast.error(e)
+          })
+        }
+
     },
   },
   mounted(){

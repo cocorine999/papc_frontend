@@ -205,8 +205,8 @@
           </button>
         </div>
       </div>
-
-      <div v-if ="seeActivite && activiteVisible">
+      
+      <div v-if="seeActivite && activiteVisible">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
@@ -222,7 +222,7 @@
               </div>
               <div>
                 
-                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
                 <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
@@ -450,11 +450,12 @@ export default {
   data() {
     return {
       suivis:[],
-      valueFiltre: this.valueProfondeur,
+      valueFiltre: null,
       activiteFiltre: null,
       composanteId: null,
-      projetFiltre: this.valeurProjet,
-      composanteFiltre: this.valueComposante,
+      sousComposanteId:null,
+      projetFiltre: null,
+      composanteFiltre: null,
       pending: false,
       success: true,
       rejected: false,
@@ -825,6 +826,7 @@ export default {
 
   methods: {
     changeProjet(projet) {
+    
       if(this.isClick) {
         this.projetFiltre = this.newProjet
         this.fetchComposantes(this.idProjet);
@@ -847,12 +849,9 @@ export default {
           let nom = composantes[0].nom
           this.composanteFiltre = {codePta:code,nom:nom}
           let indexComposante = composantes[0].id
-          this.fetchSousComposantes(indexComposante);
            ComposanteService.sousComposantes(indexComposante).then((data) => {
             const sous_composantes  = data.data.data
-           
             if(sous_composantes[0] != null ) { 
-      
               let code = sous_composantes[0].codePta
               let nom = sous_composantes[0].nom
               this.valueFiltre = {codePta:code,nom:nom}
@@ -861,12 +860,13 @@ export default {
               this.composanteId = indexSC
               this.fetchActivites(indexSC);
               this.isShow = true
-           }
-           else {
-              this.isShow = false
-             this.valueFiltre = null
-              this.composanteFiltre = null 
-           }
+            }
+            else {
+              this.composanteId = indexComposante
+              this.fetchActivites(indexComposante);
+              this.isShow = true
+              this.valueFiltre = null
+            }
         
           }).catch((e) => {
             console.log(e)
@@ -1279,7 +1279,6 @@ export default {
       return getStringValueOfStatutCode(status);
     },
 
-    
 
     savePlanDecaissement() {
       if (this.sendRequest === false) {
