@@ -93,7 +93,7 @@
             </svg>
           </button>
           <button @click="showUpdateImage=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">changer la couverture</button>
-          <button @click="showUpdateFile=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">ajouter piece jointe </button>
+          <button @click="showUpdateFile=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">Televerser un fichier </button>
         </div>
         <div class="border border-gray-300 p-2 bg-white shadow">
           <router-link class="text-sm font-semibold" to="/dashboard/projets/composantes-globale">Composantes /</router-link>
@@ -162,6 +162,7 @@ import Indicateurs from '@/components/Indicateurs.vue';
 import Environnement from '@/components/Environnement.vue';
 import OtherGraphe from '@/components/OtherGraphe.vue';
 import ProjetService from "@/services/modules/projet.service.js";
+import FichierService from "@/services/modules/fichier.service.js";
 import {API_BASE_URL} from "@/services/configs/environment.js";
 
 export default {
@@ -192,7 +193,7 @@ export default {
         {name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture',isImage:true, isSelect: false, isTextArea: false, data:'', required: false, errors : []},
       ],
       champsFile:[
-        {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:true, isTextArea: false, data:'', required: false, errors : []},
+        {name: 'Televerser un document', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
       ],
       image:{},
       fichiers:[],
@@ -216,7 +217,12 @@ export default {
   methods:{
     
     getFile(data) {
-      this.fichiers = data
+     for (const property in data) {
+        this.fichiers.push(data[property])
+      }
+      this.fichiers.pop()
+      this.fichiers.pop() 
+      this.fichiers = this.fichiers[0]
     },
     getImage(data) {
       this.image = data
@@ -245,11 +251,10 @@ export default {
     updateFile() {
       const id = this.projet.id
       const formData = new FormData();
-      for( let i = 0; i < this.fichiers.length; i++ ){
-        let file = this.fichiers[i];
-        formData.append('fichier'+ i , file);
-      }
-      ProjetService.update(id,formData).then(() => {
+      formData.append('fichier', this.fichiers);
+      formData.append('sharedId[]', null);
+      formData.append('projetId',id)
+      FichierService.create(formData).then(() => {
        this.$toast.success('televersement reuissi')
        this.showUpdateFile = false 
       }).catch((error) => {
