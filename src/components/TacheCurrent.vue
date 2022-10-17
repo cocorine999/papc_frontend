@@ -399,13 +399,12 @@ export default {
 
   methods: {
 
-     changeProjet(projet) {
+    changeProjet(projet) {
     
       if(this.isClick) {
         this.projetFiltre = this.newProjet
         this.composanteFiltre = this.newComponent
         this.fetchComposantes(this.idProjet);
-
         localStorage.removeItem('profondeurActivite');
       }else {
         this.fetchComposantes(projet.id);
@@ -419,22 +418,18 @@ export default {
         let composantes = this.projets[indexProjet].composantes
         
         if(composantes[0] != null ) {
-        
           let code = composantes[0].codePta
           let nom = composantes[0].nom
           this.composanteFiltre = {codePta:code,nom:nom}
           let indexComposante = composantes[0].id
-          this.fetchSousComposantes(indexComposante);
-           ComposanteService.sousComposantes(indexComposante).then((data) => {
+          ComposanteService.sousComposantes(indexComposante).then((data) => {
             const sous_composantes  = data.data.data
-          
-          if(sous_composantes[0] != null ) { 
-          
+            if(sous_composantes[0] != null ) { 
               let code = sous_composantes[0].codePta
               let nom = sous_composantes[0].nom
               this.sousComposanteFiltre = {codePta:code,nom:nom}
               let  indexSC = sous_composantes[0].id
-              this.fetchActivites(indexSC)
+              //this.fetchActivites(indexSC)
               ComposanteService.activites(indexSC).then((data) => {
                 const activites = data.data.data
                 if(activites[0] != null) {
@@ -449,23 +444,31 @@ export default {
                   this.isShow = false
                   this.valueFiltre = null
                 }
-               
-              
               })
             
-           }
-           else {
-              this.isShow = false
-              this.sousComposanteFiltre = null
-              this.composanteFiltre = null 
-              this.valueFiltre = null
-           }
+            }
+            else {
+              ComposanteService.activites(indexComposante).then((data) => {
+                const activites = data.data.data
+                if(activites[0] != null) {
+                  const idActivite = activites[0].id
+                  let code = activites[0].codePta
+                  let nom = activites[0].nom
+                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.fetchTaches(idActivite);
+                  this.isShow = true
+                  this.sousComposanteFiltre = null
+                  //this.composanteFiltre = null 
+                 
+                }
+              })
+             
+            }
         
-          }).catch((e) => {
+           }).catch((e) => {
             console.log(e)
        
            })
-
         }
         else {
           this.isShow = false
