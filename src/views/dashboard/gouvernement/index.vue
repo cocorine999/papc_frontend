@@ -128,9 +128,7 @@
         ...mapActions('programmes', { fetchProgrammes: 'FETCH_LIST_PROGRAMME' }),
   
         getPermission() {
-          PermissionsService.get().then((data) => {
-            this.permissions = data.data.data
-            this.currentUser.role[0].permissions.forEach(element => {
+          this.currentUser.role[0].permissions.forEach(element => {
               if(element.slug ==='voir-un-gouvernement') {
                 this.gouvernementVisible = true
               }
@@ -145,10 +143,6 @@
               }
              
             });
-  
-          }).catch((e) => {
-            console.log(e)
-          })
         },
       
         addGouv() {
@@ -261,7 +255,6 @@
           setTimeout(() => {
             console.log("Fetching list of programmes...")
             this.fetchProgrammes()
-            this.getPermission()
           }, 100);
         })
       }

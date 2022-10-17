@@ -252,7 +252,6 @@ export default {
       const id = this.projet.id
       const formData = new FormData();
       formData.append('fichier', this.fichiers);
-      formData.append('sharedId[]', null);
       formData.append('projetId',id)
       FichierService.create(formData).then(() => {
        this.$toast.success('televersement reuissi')
