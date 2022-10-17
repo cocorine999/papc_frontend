@@ -159,7 +159,7 @@ export default {
             }
             else if (response.data.utilisateur.type =='administrateur') {
               this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/programmes')
+              this.$router.push('/dashboard/programme')
             }
             else if(response.data.utilisateur.type =='mod') {
               this.$toast.success("Connexion réussie")

@@ -1,6 +1,6 @@
 <template>
     <dashboard>
-      <div v-if="gouvernementVisible" class="px-4">
+      <div class="px-4">
         <nav class="mb-2 mt-4 
    text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
           <div>
@@ -21,7 +21,7 @@
         <div v-if="showModal">
           <modal-top-right :title="title" v-on:close="close">
           <div  class="px-4">
-            <div v-if="title =='Ajouter une unité de gestion'">
+            <div v-if="title =='Ajouter un gouvernement'">
                 <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
             <div v-if="title =='Modifier une unité de gestion'">
@@ -33,7 +33,7 @@
         </div>
         <div class="flex items-center justify-between flex-wrap">
           <titre>Gouvernement </titre>
-            <button v-if="gouvernementAdd" @click="addUnite" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <button v-if="gouvernementAdd" @click="addGouv" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
               <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter</span>
             </button>
@@ -151,7 +151,7 @@
           })
         },
       
-        addUnite() {
+        addGouv() {
 
           this.title='Ajouter un gouvernement'
   
@@ -252,6 +252,11 @@
   
       mounted() {
         console.log("Fetching gouvernement ...")
+        this.fetchProgrammes()
+        this.getPermission()
+        if(!this.gouvernementVisible) {
+          this.$router.push('/401-non-autorise')
+        } 
         this.fetchGouvernements().then((value) => {
           setTimeout(() => {
             console.log("Fetching list of programmes...")

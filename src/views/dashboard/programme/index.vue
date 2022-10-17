@@ -66,7 +66,6 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
-import PermissionsService from "@/services/modules/permission.service.js";
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { formatDate, extractFormData } from '@/utils/index'
 
