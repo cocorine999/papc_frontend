@@ -72,7 +72,7 @@
         @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')"
         @gotoNext="$emit('gotoNext')"
-        :option="Doption"
+        :option="optionD"
       ></dropdown>
         <dropdown
         v-if="isUpdate && isDelete ==false"

@@ -161,7 +161,7 @@
           <div class="flex   justify-between flex-wrap items-center">
              <!--Filtre sur projet -->
              <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>
-            <nav class="flex text-sm align-middle justify-evenly w-full sm:w-2/5">
+            <nav class="flex text-sm align-middle justify-evenly ">
                 <span
                   @click="toggle2"
                   :class="{ 'border-yellow-600 text-yellow-600': pending }"
@@ -171,7 +171,19 @@
                   <span
                     class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
                   >
-                    5
+                    {{enAttente.length}}
+                  </span>
+                </span>
+                <span
+                  @click="toggle3"
+                  :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  en cours
+                  <span
+                    class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined"
+                  >
+                    {{enCours.length}}
                   </span>
                 </span>
                 <span
@@ -179,51 +191,104 @@
                   :class="{ 'border-green-600 text-green-600': success }"
                   class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  validés
+                  terminer
                   <span
                     class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
                   >
-                    9
+                    {{terminer.length}}
                   </span>
                 </span>
-                <span
-                  @click="toggle3"
-                  :class="{ 'border-red-600 text-red-600': rejected }"
-                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-                >
-                  rejetés
-                  <span
-                    class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
-                  >
-                    8
-                  </span>
-                </span>
+              
             </nav>
           </div>
         </div>
-        <div v-if="isShow" class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(tache, index) in taches" :key="index">
-            <card-tache
-              :id="tache.id"
-              :bailleur="tache.bailleur.sigle"
-              :statut="getStatus(tache.statut)"
-              :poids="tache.poids"
-              :poidsActuel="tache.poidsActuel"
-              :libelle="tache.nom"
-              :montantNE="tache.montantNE"
-              :montantEPM="tache.montantEPM"
-              @supprimer="supprimer(tache)"
-              @dupliquer="dupliquer(tache)"
-              @modifier="modifier(tache)"
-              @prolonger="prolonger(tache)"
-              @suivre="suivreMyTache(tache)"
-              @commentaire="showComment = true"
-              :isDelete="tacheDelete"
-              :isUpdate="tacheUpdate"
-              :isSuivi="tacheSuivi"
-            ></card-tache>
+     
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enCours" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
           </div>
         </div>
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enAttente" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <div v-if="success">
+          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in terminer" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div>
       <!-- <div v-if="seeSuivi">
           <vtable
@@ -256,6 +321,7 @@ import Activite from "@/store/modules/activites/activite";
 import ComposanteService from "@/services/modules/composante.service.js";
 import TacheService from "@/services/modules/tache.service.js";
 import ActiviteService from '@/services/modules/activite.service';
+import Empty from '@/components/Empty.vue'
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
 export default {
@@ -271,6 +337,7 @@ export default {
     Vform,
     ModalChat,
     Composante,
+    Empty,
     Commentaire
   },
   props:['valeurProjet','valueProfondeur','valueComposante','valueSC'],
@@ -308,7 +375,7 @@ export default {
       sousComposanteFiltre:null,
       pending:false,
       success:true,
-      rejected:false,
+      inProgress:false,
       rangeValue:0,
       programmeId: this.currentUser?.programme.id,
       cols: 1,
@@ -394,6 +461,39 @@ export default {
       tache: "taches/getTache",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+    terminer() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == -1 || element.statut == -2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
@@ -731,21 +831,21 @@ export default {
 
     toggle() {
       this.pending = false
-      this.rejected = false
+      this.inProgress = false
       this.success = true
 
     },
 
     toggle2() {
       this.success = false
-      this.rejected = false
+      this.inProgress = false
       this.pending = true
     },
 
     toggle3() {
       this.pending = false
       this.success = false
-      this.rejected = true
+      this.inProgress = true
     },
 
     getStatus(status) {
