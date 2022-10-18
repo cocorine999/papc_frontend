@@ -1,7 +1,7 @@
 <template>
   <dashboard espace="bailleur">
     <div class="px-4">
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -42,7 +42,7 @@
         </vmodal>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between flex-wrap">
         <titre>Les indicateurs </titre>
         <div class="flex items-center space-x-4">
           <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>

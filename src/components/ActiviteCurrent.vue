@@ -6,11 +6,11 @@
             
             <div  class="grid grid-cols-2 gap-2 my-2">
               <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.debut" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
               </div>
               <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
               </div>
             </div>
@@ -62,10 +62,10 @@
       </modal-top-right>
 
       <nav
-        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb"
       >
-        <div>
+        <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
               <router-link to="/dashboard" class="text-gray-600"
@@ -106,20 +106,20 @@
         </div>
       </nav>
 
-      <div class="flex items-center justify-between my-2">
-        <div class="flex space-x-4">
+      <div class="flex items-center justify-between my-2 flex-wrap sm:flex-nowrap" >
+        <div class="flex space-x-2  md:space-x-4 w-full sm:w-4/5  ">
           <span
             v-if="activiteVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeActivite }"
             @click="gotoActivite()"
-            class="inline-block cursor-pointer text-lg uppercase border-primary py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2 mb-2"
             >Activités</span
           >
           <span
             v-if="planDecaissementVisible"
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
-            class="inline-block cursor-pointer text-lg uppercase py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2"
             >Plan d'ecaissement
           </span>
           
@@ -127,11 +127,11 @@
           v-if="StatistiqueVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
-            class="inline-block cursor-pointer text-lg uppercase py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2"
             >Statistiques
           </span>
         </div>
-
+        <div>
         <button
           v-if="seeActivite && activiteAdd"
           @click="addActivite"
@@ -173,12 +173,42 @@
           <span class="mx-2 text-sm font-semibold"
             >ajouter un plan de décaissement</span
           >
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+              >
+                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+            ></span>
+            <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
+          <button
+            v-if="seePlan && planDeDecaissement"
+            @click="addPlan"
+            title="ajouter"
+            class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"
+          >
+          <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+              >
+                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+            ></span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold"
+              >ajouter</span
+            >
+          </button>
+        </div>
       </div>
       
       <div v-if="seeActivite && activiteVisible">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-full grid grid-cols-2 items-center gap-4">
               <div>
@@ -241,7 +271,7 @@
 
       <div v-if="seePlan &&  planDecaissementVisible ">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">
             
@@ -340,7 +370,7 @@
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 gap-8 my-6 items-center">
+        <div class="grid  grid-cols-1 gap-4  md:grid-cols-2 md:gap-8 my-6 items-center">
           <div>
             <apexchart
               width="80%"
@@ -377,7 +407,9 @@
           </div>
         </div>
       </div>
-  </div>
+
+    </div>
+
 </template>
 
 <script>
@@ -1014,7 +1046,7 @@ export default {
              if(element.slug ==='supprimer-un-plan-de-decaissement') {
               this.planDecaissementDelete= true
             }
-            if(element.slug ==='voir-une-statistique') {
+            if(element.slug ==='voir-une-statistique-activite') {
               this.StatistiqueVisible= true
             }
            
@@ -1094,7 +1126,7 @@ export default {
 
     addPlan() {
 
-      this.title ="Ajouter un un plan de decaissement"
+      this.title ="Ajouter"
 
       this.submitText="Enregistrer"
 
@@ -1153,7 +1185,7 @@ export default {
 
     addActivite() {
 
-      this.title ="Ajouter une activité"
+      this.title ="Ajouter"
 
       this.submitText="Enregistrer",
 

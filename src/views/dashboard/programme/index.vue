@@ -11,8 +11,9 @@
       </modal-top-right>
     </div>
     
-    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-      <div>
+    <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+      <div  class="mb-2" >
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
             <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -28,14 +29,14 @@
       </div>
     </nav> 
 
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <titre>Mes programmes </titre>
       <button v-if="programmeAdd" @click="addProgramme" title="ajouter un programme"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
           <span class="mx-2 text-sm font-semibold">Ajouter </span>
       </button>
     </div>
-    <div  class="grid grid-cols-3 gap-4">
+    <div  class="grid sm:grid-cols-2 gap-2  md:grid-cols-3 md:gap-4">
         <div v-for="programme in programmes" :key="programme.id">
           <card-programme
             :libelle="programme.nom"
@@ -65,7 +66,6 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
-import PermissionsService from "@/services/modules/permission.service.js";
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { formatDate, extractFormData } from '@/utils/index'
 
@@ -89,16 +89,16 @@ export default {
       programmeAdd:false,
       programmeDelete:false,
       programmeUpdate:false,
-      title: 'Ajouter un nouveau programme',
+      title: 'Ajouter',
       submitText:"Enregistrer",
       programmeAttributs : ['nom', 'code', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational'],
       champs:[
         {name:'Nom du programme', key: 'nom', type:'text', placeholdere:"Nom du programme",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
         {name:'Code', type:'number', key: 'code', placeholdere:"Code de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-        {name:'Date debut', type:'date', key: 'debut', placeholdere:'Date de debut',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
+        {name:'Date début', type:'date', key: 'debut', placeholdere:'Date de debut',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
         {name:'Date fin', type:'date', key: 'fin', placeholdere:'Date de fin',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
         {name:'Description', type:'', key: 'description', placeholdere:'Description du programme', isSelect:false, isTextArea:true, data:'', required:true, errors : []},
-        {name:'Objectif globaux', type:'text', key: 'objectifGlobaux', placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
+        {name:'Objectifs globaux', type:'text', key: 'objectifGlobaux', placeholdere:'Definir les objectifs',isSelect:false,isTextArea:false,data:'', required:true, errors : []},
         {name:'Budget national', type:'number', key: 'budgetNational', placeholdere:'Definir un budget',isSelect:false,isTextArea:false,data:'', required:true, errors : []}
       ],
       cols:2,
@@ -174,7 +174,7 @@ export default {
     
     addProgramme() {
   
-      this.title='Ajouter un nouveau programme'
+      this.title='Ajouter'
 
       this.submitText= "Enregistrer"
 

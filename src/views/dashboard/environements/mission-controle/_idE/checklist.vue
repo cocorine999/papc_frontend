@@ -26,7 +26,7 @@
             <router-link to="" class="">Rapport misson de controle</router-link>
           </li>
         </ol>
-        <select id="pet-select" class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" v-model="valueFiltre">
+        <select id="pet-select" class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" v-model="valueFiltre">
           <option value="" disabled selected hidden>
                       Veuillez choisir une mission de controle
                     </option>

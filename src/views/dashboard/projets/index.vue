@@ -5,7 +5,7 @@
         <div style="width:60vw" class="p-4">
           <form @submit.prevent="saveProlongerDate()" action="">
             <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
             </div>
             <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
@@ -32,8 +32,8 @@
             </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-2 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"  aria-label="Breadcrumb">
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -45,9 +45,11 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
+        </div>
+        <div>
+          <div class="w-full flex text-gray-600">
+              <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"   class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"    class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -60,14 +62,14 @@
         </div>
       </nav> 
       
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="">
-          <span  class="inline-block cursor-pointer  border-b-8 font-bold  text-sm uppercase    border-primary py-2">Les projets </span>
+          <span  class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-sm uppercase    border-primary py-2">Les projets </span>
         </div>
 
         <button v-if="projetAdd" @click="addProjet"  title="ajouter un projet"    class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
       </div>
     
@@ -162,6 +164,7 @@ export default {
     return {
       base_url:API_BASE_URL,
       showModal:false,
+      showSearch:false,
       line:false,
       dates: {fin:''},
       isUpdate:false,
@@ -355,7 +358,7 @@ export default {
     },
 
     addProjet() {
-      this.title='Ajouter un nouveau projet'
+      this.title='Ajouter'
       this.isUpdate = false
       let formData = this.champs.map((value) => {
           if(value.key === 'bailleurId'){ 

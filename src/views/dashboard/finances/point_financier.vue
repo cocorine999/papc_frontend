@@ -1,7 +1,8 @@
 <template>
   <dashboard>
     <div class="px-4">
-    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+    <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
@@ -14,7 +15,7 @@
         </ol>
       </div>
       <div>
-        <div class="flex justify-center w-full text-gray-600">
+        <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -28,13 +29,13 @@
            </div>      </div>
     </nav> 
     
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between flex-wrap">
         <titre>Point financier </titre>
-        <div class="flex space-x-3">
+        <div class="flex space-x-3 flex-wrap justify-end ">
           <json-excel :data="json_data()" header="POINT FINANCIER" type="xlsx" :name="title_csv()"  >
           <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Export Excel</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
           </button>
         </json-excel>
         </div>

@@ -47,7 +47,7 @@
         <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
       </div>
       <div class="my-2">
-        <label class="my-2 block">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
+        <label class="my-2 block">Description <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
         <textarea v-model="Relance.commentaire"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
       </div>
       <div class="py-2 my-4 flex justify-center space-x-8">

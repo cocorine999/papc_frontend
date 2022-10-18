@@ -133,7 +133,7 @@
           class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2"
         >
           <i class="bx bxs-pin bx-sm"></i>
-          <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">
+          <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
             S. Responsable :
             <span class="font-bold italic text-lg uppercase">
               {{ structureResponsable }}
@@ -145,7 +145,7 @@
           class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2"
         >
           <i class="bx bxs-wallet bx-sm"></i>
-          <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">
+          <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
             EMP :
             <span class="font-bold italic text-lg"> {{ montantEPM }} </span
             ><span class="ml-2 uppercase font-bold">fcfa</span>
@@ -155,7 +155,7 @@
           class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6"
         >
           <i class="bx bxs-wallet bx-sm"></i>
-          <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">
+          <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
             BN : <span class="font-bold italic text-lg">{{ montantNE }}</span
             ><span class="ml-2 uppercase font-bold">fcfa</span>
           </div>

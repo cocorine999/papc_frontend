@@ -48,7 +48,7 @@
         </ol>
     </div>
 
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
         <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
         <span @click="goPpm" v-if="ppmVisible" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
@@ -56,7 +56,7 @@
       <div>
         <div v-if="seePta && revisionAdd " class="flex space-x-4 items-center">
           <button @click="reviser = true" title="reviser pta"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
-            <span class="mx-2 text-sm font-semibold"> reviser ptab </span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptab </span>
           </button>
          
         

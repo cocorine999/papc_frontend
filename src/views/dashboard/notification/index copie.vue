@@ -1,7 +1,7 @@
 <template>
   <div
     class="">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between flex-wrap">
             <p
               tabindex="0"
               class="
@@ -452,7 +452,7 @@
               </svg>
             </div>
             <div class="pl-3 w-full">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between flex-wrap">
                 <p
                   tabindex="0"
                   class="focus:outline-none text-sm leading-none text-green-700"

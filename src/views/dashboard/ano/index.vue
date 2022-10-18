@@ -44,7 +44,7 @@
               <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
             </div>
             <div class="my-2">
-              <label class="my-2 block">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <label class="my-2 block">Commentaire <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <textarea v-model="Relance.commentaire"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
             </div>
             <div class="py-2 my-4 flex justify-center space-x-8">
@@ -67,8 +67,9 @@
         </modal-chat>
       </div>
    
-      <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex items-center justify-between flex-wrap " aria-label="Breadcrumb">
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -85,9 +86,9 @@
         </div>
 
         <div>
-            <div class="flex justify-center w-full text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
+            <div class="w-full flex text-gray-600">
+              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5  text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-7" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" class="relative">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -102,7 +103,8 @@
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
-            class="inline-block cursor-pointer  border-b-8 font-bold text-lg uppercase    border-primary py-2">Tableau recapitulatif </span>
+            class="inline-block cursor-pointer  border-b-8 font-bold text-xs 
+ md:text-base uppercase    border-primary py-2">Tableau recapitulatif </span>
         </div>
         <div class="flex space-x-4">
           
@@ -112,7 +114,7 @@
               style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
             </svg>
-            <span class="mx-2 text-sm font-semibold">Ajouter </span>
+            <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
           </button>
         </div>
       </div>

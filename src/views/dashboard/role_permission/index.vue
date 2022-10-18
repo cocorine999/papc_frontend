@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     <div  class="px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -14,7 +14,7 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
+          <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@
             <form @submit.prevent="createRole" v-if="title =='Créer' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le rôle  </label>
-                <input required type="text" v-model="roles.nom" placeholder="Taper le rôle"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
+                <input required type="text" v-model="roles.nom" placeholder="Taper le rôle"  class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" >
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
               
@@ -46,7 +46,7 @@
 
               <div class="my-4">
                
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Description du rôle  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Description du rôle  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               
                 <textarea v-model="roles.description"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
               </div>
@@ -71,7 +71,7 @@
             <form @submit.prevent="updateRole" v-if="title =='Modifier un rôle' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le rôle  </label>
-                <input required type="text" v-model="saveUpdate.nom" placeholder="Taper le role"  class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent" >
+                <input required type="text" v-model="saveUpdate.nom" placeholder="Taper le role"  class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" >
                 <!-- <div v-for="nom in errors.nom" :key="nom.id" class="text-red-500 text-sm   py-2 font-bold"> {{nom}} </div> -->
               </div>
               
@@ -83,7 +83,7 @@
 
               <div class="my-4">
                
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Description du role  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Description du role  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               
                 <textarea v-model="saveUpdate.description"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
               </div>
@@ -112,7 +112,7 @@
         <titre>Rôles et permissions </titre>
           <button v-if="roleAdd" @click="addRole" title="ajouter " class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">créer un rôle</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">créer un rôle</span>
           </button>
       </div>
    
@@ -125,13 +125,13 @@
                   <thead class="border-b bg-gray-50">
                     <tr>
                     
-                      <th scope="col" class="text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         rôles
                       </th>
-                      <th scope="col" class="text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         permissions
                       </th>
-                      <th scope="col" class="text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         actions
                       </th>
                     </tr>

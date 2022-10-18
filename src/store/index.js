@@ -74,6 +74,8 @@ import reponses from "./modules/reponses/index";
 
 import structures from "./modules/structures/index";
 
+import gouvernements from "./modules/gouvernements/index";
+
 import indicateurs_mod from "./modules/indicateurs_mod/index";
 
 
@@ -284,6 +286,7 @@ export default new Vuex.Store({
     passations,
     reponses,
     structures,
-    indicateurs_mod
+    indicateurs_mod,
+    gouvernements
   }
 });

@@ -29,7 +29,7 @@
           </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-4 text-sm font-semibold" aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
@@ -53,20 +53,20 @@
           </ol>
         </div>
       </nav>
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
           <span
             @click="goMod"
             v-if="modVisible"
             :class="{ 'border-primary border-b-8': seeMod }"
-            class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
+            class="inline-block cursor-pointer text-base uppercase font-bold py-2"
             >Listes MOD
           </span>
           <span
             v-if="passationVisible"
             @click="goPassation"
             :class="{ 'border-primary border-b-8': seePassation }"
-            class="inline-block cursor-pointer text-lg uppercase font-bold py-2"
+            class="inline-block cursor-pointer text-base uppercase font-bold py-2"
             >Passation de marché
           </span>
          
@@ -87,7 +87,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-sm font-semibold">Ajouter un MOD</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">Ajouter</span>
         </button>
         <button
           v-if="seePassation && passationAdd"
@@ -104,8 +104,8 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-sm font-semibold"
-            >Ajouter une passation de marché</span
+          <span class="mx-2 text-xs  md:text-sm font-semibold"
+            >Ajouter</span
           >
         </button>
       </div>
@@ -398,7 +398,7 @@ export default {
     },
 
     addMod() {
-      this.title = "Ajouter d'un nouveau MOD";
+      this.title = "Ajouter";
 
       this.submitText = "Enrégistrer";
 
@@ -481,7 +481,7 @@ export default {
     },
 
     addPassation() {
-      this.title2 = 'Ajouter une nouvelle passation'
+      this.title2 = 'Ajouter'
       
       this.showCloseModal2(true)
     },
