@@ -1056,7 +1056,7 @@ export default {
               this.isShow = true
             }
             else {
-              this.composanteId = composante
+              this.composanteId = composante.id
               this.fetchActivites(composante.id);
               this.isShow = true
               this.valueFiltre = null
