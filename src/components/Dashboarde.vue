@@ -41,6 +41,7 @@
         
           <div class="px-6" style="width: 60vw !important">
             <vform
+              :sendRequest="sendRequest"
               template="default"
               :champs="champsFile"
               @getFile="getFile"
@@ -185,6 +186,7 @@ export default {
     return {
       base_url:API_BASE_URL,
       showModal:false,
+      sendRequest:false,
       showUpdateImage:false,
       showUpdateFile:false,
       isChange:false,
@@ -249,25 +251,31 @@ export default {
       })
     },
     updateFile() {
-      const id = this.projet.id
-      const formData = new FormData();
-      formData.append('fichier', this.fichiers);
-      formData.append('projetId',id)
-      FichierService.create(formData).then(() => {
-       this.$toast.success('televersement reuissi')
-       this.showUpdateFile = false 
-      }).catch((error) => {
-         if (error.response) {
-          // Requête effectuée mais le serveur a répondu par une erreur.
-          const message = error.response.data.message
-            this.$toast.error(message)
-          } else if (error.request) {
-            // Demande effectuée mais aucune réponse n'est reçue du serveur.
-           //console.log(error.request);
-          } else {
-            // Une erreur s'est produite lors de la configuration de la demande
-          }
-      })
+      if( this.sendRequest === false ){
+        this.sendRequest = true
+        const id = this.projet.id
+        const formData = new FormData();
+        formData.append('fichier', this.fichiers);
+        formData.append('projetId',id)
+        FichierService.create(formData).then(() => {
+        this.$toast.success('televersement reuissi')
+        this.sendRequest = false
+        this.showUpdateFile = false 
+        }).catch((error) => {
+          this.sendRequest = false
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
+        })
+      }
+      
     },
     save() {
         console.log(this.value)
