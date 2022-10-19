@@ -1,6 +1,6 @@
 <template>
   <dashboard espace="bailleur">
-    <div class="w-full px-4">
+    <div class="w-full">
     <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
       <form action="" @submit.prevent="save" class="px-4"  >
         <div class="grid grid-cols-1 gap-5 mt-3 ">

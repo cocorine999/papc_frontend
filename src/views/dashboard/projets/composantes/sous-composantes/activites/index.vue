@@ -35,7 +35,7 @@
           <search-bar ></search-bar>
         </div>
       </nav>
-      <div class="my-10">
+      <div class="mb-0">
        
         <titre>Listes des activités</titre>
       </div>

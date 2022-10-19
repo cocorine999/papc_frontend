@@ -22,7 +22,7 @@
           <search-bar ></search-bar>
         </div>
       </nav>
-      <div class="my-10">
+      <div class="mb-0">
         <titre>Mes composantes</titre>
       </div>
        <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">

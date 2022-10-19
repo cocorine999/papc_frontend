@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="institutionVisible" class="w-full px-4">
+    <div v-if="institutionVisible" class="w-full">
       <div v-if="showModal">
         <ModalTopRight  :title="title"  v-on:close="close">
           <div class="px-4">

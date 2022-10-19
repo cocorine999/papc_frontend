@@ -2,7 +2,7 @@
   <dashboard>
    
     <div  class="p-4">
-      <div class="my-10">
+      <div class="mb-0">
        
         <titre>Listes des activités</titre>
       </div>

@@ -4,7 +4,7 @@
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
       <div class="px-4">
-          <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+          <nav class="mb-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
             <div class="mb-2">
               <ol class="inline-flex p-0 list-none">
                 <li class="flex items-center text-blue-500">
