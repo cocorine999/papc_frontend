@@ -1937,19 +1937,19 @@ export default {
       if(element.slug ==='exporter-un-suivi-pta-revise') {
         this.exporterSuiviRePta = true
       }
-      if(element.slug ==='voir-plan-decaissement-ptab') {
+      if(element.slug ==='voir-le-plan-de-decaissement-du-ptab') {
         this.planDecaissementPtaVisible= true
       }
       if(element.slug ==='exporter-un-suivi-financier') {
         this.exporterSuiviFinance = true
       }
-      if(element.slug ==='voir-un-ptab') {
+      if(element.slug ==='voir-ptab') {
         this.ptaVisible = true
       }
-      if(element.slug ==='voir-un-ppm') {
+      if(element.slug ==='voir-ppm') {
         this.ppmVisible = true
       }
-      if(element.slug ==='voir-une-revision') {
+      if(element.slug ==='voir-revision-ptab') {
         this.revisionVisible = true
       }
       if(element.slug ==='filtre-ptab') {
