@@ -149,41 +149,7 @@
           ></span>
           <span class="mx-2 text-xs font-semibold">ajouter </span>
         </button>
-        <button
-          v-if="seePlan "
-          @click="addPlan"
-          title="ajouter un plan d'ecaissement"
-          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
-        >
-          <span
-            ><svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 24 24"
-              height="1.3em"
-              width="1.3em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path fill="none" d="M0 0h24v24H0V0z"></path>
-              <path
-                d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
-              ></path></svg
-          ></span>
-          <span class="mx-2 text-sm font-semibold"
-            >ajouter </span
-          >
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
-              >
-                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
-            ></span>
-            <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
-        </button>
+        
           <button
             v-if="seePlan && planDeDecaissement"
             @click="addPlan"
@@ -214,12 +180,12 @@
             <div class="w-full grid grid-cols-2 items-center gap-4">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" @input="changeProjet(projetFiltre)" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre"  :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
               </div>
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-                <multiselect v-model="composanteFiltre" @input="changeComposante(composanteFiltre)" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="composanteFiltre"  :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
               <div>
                 
@@ -227,7 +193,6 @@
                 <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
-                @input="changeSC(valueFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -1666,7 +1631,7 @@ export default {
     },
 
 
-   /*  projets: function(projets){
+   projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -1736,8 +1701,7 @@ export default {
       }
 
     },
-  */  
-
+  
     activites: function (activites) {
       if(this.seePlan){
         if(activites.length > 0){

@@ -67,21 +67,7 @@
             <span class="mx-2 text-xs font-semibold">Ajouter </span>
           </router-link> 
         </div>
-<<<<<<< HEAD
-        <router-link to="/dashboard/formulaire-create"  title="ajouter une checklist"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-           <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
-            >
-              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
-          ></span>
-          <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span>
-        </router-link>
-=======
->>>>>>> a4bae742ee18a9e6735dec3a37407a0aa427f4ad
+
       </div>
 
       <div v-if="seeFormulaire">

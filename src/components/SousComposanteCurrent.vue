@@ -52,12 +52,12 @@
       
           <div>
             <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
-            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" @input="changeProjet(projetFiltre)" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
           </div>
 
           <div>
             <label class="block mb-2 uppercase " for="">Selectionnez un composant</label>
-            <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel" @input="changeComposante(valueFiltre)" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+            <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
           </div>
 
          
@@ -148,7 +148,7 @@
         <div v-if="success">
           <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(sousComposante, index) in terminer" :key="index">
                 <card-composante
                   :isComposante="false"
@@ -241,7 +241,7 @@ export default {
       sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
       champs:[
 
-        {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -657,7 +657,7 @@ export default {
 
         let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
 
-        sousComposante.composanteId = this.composanteId
+        sousComposante.composanteId = this.valueFiltre.id
                 
         if(this.sousComposante?.id)
         {
@@ -683,7 +683,7 @@ export default {
           
             .then(response => {
               if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.composanteId);
+                this.fetchSousComposantes(this.valueFiltre.id);
                 this.close()
               }
 
@@ -723,7 +723,7 @@ export default {
       //this.errors = errors
     },
 
-   /*  valueFiltre: function(valeur){
+   valueFiltre: function(valeur){
       if( valeur instanceof Composante || valeur instanceof Object )
       {
         if(this.isClick ==false) { 
@@ -763,7 +763,6 @@ export default {
     },
     
     composantes: function(composantes){
-      alert(this.isClick)
        if(this.isClick ==false) { 
          
           this.valueFiltre = composantes[0]
@@ -775,7 +774,7 @@ export default {
           
        }
     
-    } */
+    } 
      
    
   },

@@ -119,12 +119,12 @@
           <div class="w-full grid sm:grid-cols-2 sm:gap-4">
            <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect  v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-             <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+             <multiselect v-model="composanteFiltre"  :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
            </div>
           
             <div class="mb-3">
@@ -132,7 +132,6 @@
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
-                @input="changeSC(sousComposanteFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -146,7 +145,6 @@
               <multiselect
                 v-model="valueFiltre"
                 :options="activites"
-                @input="changeActivite(valueFiltre)"
                 :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
@@ -952,7 +950,7 @@ export default {
 
     },
     
-   /*  projets: function(projets){
+    projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -1045,7 +1043,7 @@ export default {
         this.fetchTaches(valeur);
       }
 
-    } */
+    } 
 
   },
 
