@@ -106,7 +106,7 @@
               <td
                 class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
               >
-                {{ entrepriseExecutante.user.email }}
+                {{ entrepriseExecutante.mod.user.nom }}
               </td>
 
               <td

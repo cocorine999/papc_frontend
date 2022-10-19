@@ -157,7 +157,7 @@ export default {
             if(element.slug ==='voir-une-composante') {
               this.composanteVisible = true
             }
-            if(element.slug ==='voir-une-composante-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.composanteReVisible = true
             }
           });

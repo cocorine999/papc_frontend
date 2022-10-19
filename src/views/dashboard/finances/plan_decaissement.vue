@@ -20,7 +20,7 @@
       </div>
 
       <div v-if="planDecaissementVisible" class="relative my-4  sm:rounded-lg">
-        <ptab></ptab>
+        <planDecaissement></planDecaissement>
       </div>
     </div>
   </dashboard>
@@ -31,6 +31,7 @@
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Ptab from '@/components/Ptab'
+import PlanDecaissement from '@/components/PlanDecaissement'
 import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
@@ -44,7 +45,8 @@ export default {
     Vform,
     Titre,
     SearchBar,
-    Ptab
+    Ptab,
+    PlanDecaissement
   },
   data() {
     return {

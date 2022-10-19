@@ -22,7 +22,7 @@
                 ></path>
               </svg>
             </span>
-            <span class="text-sm text-green-700 font-semibold">+ 1.58 </span>
+            <span class="text-sm text-green-700 font-semibold">{{ projet.tepByAnnee }}% </span>
           </div>
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
         </div>

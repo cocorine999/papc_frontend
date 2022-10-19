@@ -404,7 +404,7 @@ export default {
             if(element.slug ==='supprimer-une-tache') {
               this.tacheDelete = true
             }
-            if(element.slug ==='voir-un-suivi-tache-revise') {
+            if(element.slug ==='voir-revision-ptab') {
               this.tacheSuivi = true
             } 
       });

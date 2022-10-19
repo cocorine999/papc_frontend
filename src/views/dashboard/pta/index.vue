@@ -163,7 +163,7 @@ export default {
       if(element.slug ==='exporter-un-suivi-pta-revise') {
         this.exporterSuiviRePta = true
       }
-      if(element.slug ==='voir-le-plan-de-decaissement-du-ptab') {
+      if(element.slug ==='voir-revision-ptab') {
         this.planDecaissementPtaVisible= true
       }
       if(element.slug ==='exporter-un-suivi-financier') {
@@ -177,6 +177,9 @@ export default {
       }
       if(element.slug ==='voir-revision-ptab') {
         this.revisionVisible = true
+      }
+      if(element.slug ==='faire-revision-ptab') {
+        this.revisionAdd = true
       }
       if(element.slug ==='filtre-ptab') {
         this.filtrePta = true

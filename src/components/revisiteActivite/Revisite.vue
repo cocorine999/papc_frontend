@@ -444,33 +444,33 @@ export default {
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
        
-          if(element.slug === 'creer-une-activite-revise') {
+          if(element.slug === 'faire-revision-ptab') {
             this.activiteAdd = true
           }
-           if(element.slug === 'voir-une-activite-revise') {
+           if(element.slug === 'voir-revision-ptab') {
             this.activiteVisible = true
           }
-            if(element.slug === 'modifier-une-activite-revise') {
+            if(element.slug === 'faire-revision-ptab') {
               this.activiteUpdate = true
             }
-            if(element.slug ==='supprimer-une-activite-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.activiteDelete = true
             }
             //plan de decaissement
 
-            if(element.slug ==='voir-un-plan-de-decaissement-revise') {
+            if(element.slug ==='voir-revision-ptab') {
               this.planDecaissementVisible= true
             }
-            if(element.slug ==='creer-un-plan-de-decaissement-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.planDecaissementAdd= true
             }
-            if(element.slug ==='modifier-un-plan-de-decaissement-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.planDecaissementUpdate= true
             }
-            if(element.slug ==='supprimer-un-plan-de-decaissement-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.planDecaissementDelete= true
             }
-            if(element.slug ==='voir-une-statistique-revise') {
+            if(element.slug ==='voir-revision-ptab') {
               this.StatistiqueVisible= true
             }
            
