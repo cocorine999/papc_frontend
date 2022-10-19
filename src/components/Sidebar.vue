@@ -1153,7 +1153,7 @@ export default {
             if(element.slug ==='voir-une-revision') {
               this.revisionVisible = true
             }
-            if(element.slug ==='voir-un-point-financier') {
+            if(element.slug ==='voir-un-decaissement') {
               this.pointFinancierVisible = true
             }
             if(element.slug ==='voir-une-liste-entreprise-mod') {

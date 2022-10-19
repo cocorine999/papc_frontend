@@ -29,10 +29,10 @@
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux d'execution physique</h2>
+        <h2 class="text-indigo-700 font-semibold">Taux d'execution financier</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_financier.tef }}%</h4>
         <div class="mt-6 flex justify-between">
-          <div class="flex items-center space-x-3">
+          <div v-if="projet.taux_financier.percent <= 100"  class="flex items-center space-x-3">
             <span class="text-gray-700">
               <svg
                 stroke="currentColor"
@@ -49,17 +49,9 @@
                 ></path>
               </svg>
             </span>
-            <span class="text-sm text-green-700 font-semibold">+ {{ projet.taux_financier.percent }} </span>
+            <span class="text-sm text-green-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
           </div>
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
-        </div>
-      </div>
-
-      <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux de decaissement</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
-        <div class="mt-6 flex justify-between">
-          <div class="flex items-center space-x-3">
+          <div v-else  class="flex items-center space-x-3">
             <span class="text-gray-700">
               <svg
                 stroke="currentColor"
@@ -76,7 +68,54 @@
                 ></path>
               </svg>
             </span>
-            <span class="text-sm text-red-700 font-semibold">- {{ projet.taux_decaissement.percent }} </span>
+            <span  class="text-sm text-red-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
+          </div>
+
+          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
+        </div>
+      </div>
+
+      <div class="bg-white shadow p-3">
+        <h2 class="text-indigo-700 font-semibold">Taux de decaissement</h2>
+        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
+        <div class="mt-6 flex justify-between">
+          <div v-if="projet.taux_decaissement.percent <= 100" class="flex items-center space-x-3">
+            <span class="text-gray-700">
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                stroke-width="0"
+                version="1.1"
+                viewBox="0 0 16 16"
+                height="1.5em"
+                width="1.5em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.707 9.707l-5 5c-0.39 0.391-1.024 0.391-1.414 0l-5-5c-0.391-0.391-0.391-1.024 0-1.414s1.024-0.391 1.414 0l3.293 3.293v-9.586c0-0.552 0.448-1 1-1s1 0.448 1 1v9.586l3.293-3.293c0.195-0.195 0.451-0.293 0.707-0.293s0.512 0.098 0.707 0.293c0.391 0.391 0.391 1.024 0 1.414z"
+                ></path>
+              </svg>
+            </span>
+            <span  class="text-sm text-green-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
+          </div>
+          <div v-else class="flex items-center space-x-3">
+            <span class="text-gray-700">
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                stroke-width="0"
+                version="1.1"
+                viewBox="0 0 16 16"
+                height="1.5em"
+                width="1.5em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.707 9.707l-5 5c-0.39 0.391-1.024 0.391-1.414 0l-5-5c-0.391-0.391-0.391-1.024 0-1.414s1.024-0.391 1.414 0l3.293 3.293v-9.586c0-0.552 0.448-1 1-1s1 0.448 1 1v9.586l3.293-3.293c0.195-0.195 0.451-0.293 0.707-0.293s0.512 0.098 0.707 0.293c0.391 0.391 0.391 1.024 0 1.414z"
+                ></path>
+              </svg>
+            </span>
+            <span  class="text-sm text-red-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
           </div>
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
         </div>
