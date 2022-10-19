@@ -44,7 +44,7 @@
       </div>
       <div class="my-2">
         <label class="my-2 block" for="">Pieces jointes </label>
-        <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+        <input  class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
       </div>
       <div class="my-2">
         <label class="my-2 block">Description <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -77,7 +77,7 @@ import Vbutton from '@/components/Vbutton.vue'
 import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   components:{Vbutton},
-  props:['datas'],
+  props:['datas','anoId','statut'],
   data() {
     return {
       base_url:API_BASE_URL,
@@ -111,12 +111,13 @@ export default {
      
     },
     sendRelancer() {
+      console.log("dara",this.datas)
       if(this.chargement == false) {
         this.chargement = true
         const formData = new FormData();
-        formData.append('statut',this.Relance.statut)
+        formData.append('statut',this.statut)
         formData.append('commentaire',this.Relance.commentaire)
-        formData.append('anoId',this.datas.anoId)
+        formData.append('anoId',this.anoId)
         formData.append('reponseId',this.datas.idReponse)
         for( let i = 0; i < this.Relance.files.length; i++ ){
           let file = this.Relance.files[i];

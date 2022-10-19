@@ -1097,13 +1097,13 @@ export default {
             if(element.slug ==='voir-une-composante') {
               this.composanteVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-composante-revise') {
               this.composanteReVisible = true
             }
             if(element.slug ==='voir-une-activite') {
               this.activiteVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-activite-revise') {
               this.activiteReVisible = true
             }
             if(element.slug ==='voir-une-tache') {
@@ -1112,10 +1112,10 @@ export default {
             if(element.slug ==='voir-un-suivi-tache') {
               this.suiviTacheVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-tache-revise') {
               this.tacheReVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-un-suivi-tache-revise') {
               this.suiviTacheReVisible = true
             }
             if(element.slug ==='voir-un-indicateur') {
@@ -1144,7 +1144,7 @@ export default {
             if(element.slug ==='voir-une-statistique') {
               this.statistiqueActiviteVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-statistique-revise') {
               this.statistiqueActiviteReVisible = true
             }
             if(element.slug ==='voir-un-decaissement') {
