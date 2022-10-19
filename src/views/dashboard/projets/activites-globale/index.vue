@@ -87,7 +87,7 @@ export default {
           if(element.slug ==='voir-un-plan-de-decaissement') {
             this.planDecaissementVisible= true
           }
-          if(element.slug ==='voir-une-activite-revise') {
+          if(element.slug ==='voir-revision-ptab') {
             this.activiteReVisible = true
           }
         });
