@@ -1,7 +1,7 @@
 <template>
   <dashboard>
      
-    <!--  <div v-if="currentRole ==='bailleur'" class="p-4">
+    <!--  <div v-if="currentRole ==='bailleur'" class="p-0">
      
       <div class="flex bg-white p-2 shadow space-x-4">
        <div class="w-full">
@@ -35,7 +35,7 @@
           </div>
       </div>
     </div> -->
-    <div  class="p-4">
+    <div  class="p-0">
       <div v-if="tacheReVisible" class="select w-52">
         <select
           id="choice"
@@ -54,7 +54,7 @@
           </option>
         </select>
       </div>
-      <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+      <div class="">
         <tache-current v-if="currentPage"></tache-current>
         <revisite v-else :version="version"></revisite>
       </div>

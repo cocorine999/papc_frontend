@@ -52,7 +52,7 @@
        
         <div class="flex mt-12 space-x-4 ">
           <div class=" w-1/3 bg-white shadow p-2">
-            <div class="p-4">
+            <div class="p-0">
               <div>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Tache</span> : {{indicateur.nom}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Description</span> : {{indicateur.description}} </p>

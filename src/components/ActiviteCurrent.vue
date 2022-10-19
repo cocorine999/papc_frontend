@@ -1,7 +1,7 @@
 <template>
   <div class="w-full px-4">
       <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
-        <div style="width:60vw" class="p-4">
+        <div style="width:60vw" class="p-0">
           <form @submit.prevent="saveProlongerDate(activiteId,dates)" action="">
             
             <div  class="grid grid-cols-2 gap-2 my-2">

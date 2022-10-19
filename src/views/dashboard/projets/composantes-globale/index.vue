@@ -1,7 +1,7 @@
 <template>
   <dashboard>
-    <div  class="p-4">
-     <!--  <div v-if="currentRole ==='bailleur'" class="p-4">
+    <div  class="p-0">
+     <!--  <div v-if="currentRole ==='bailleur'" class="p-0">
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -52,7 +52,7 @@
             <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab.id"> {{scopePtab.nom}}</option>
           </select>
         </div>
-        <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+        <div class="">
           <composante-current :valueProfondeur="null" v-if="currentPage"></composante-current>
           <revisite v-else :version="version"></revisite>
         </div>

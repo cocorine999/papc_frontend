@@ -2,7 +2,7 @@
   <dashboard>
     <div class="px-4">
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="createCollecteur" class="p-4" >
+        <form action="" @submit.prevent="createCollecteur" class="p-0" >
           <div class="form-group my-2">
              <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Collecteur  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
