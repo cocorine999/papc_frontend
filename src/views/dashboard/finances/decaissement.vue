@@ -327,7 +327,7 @@ export default {
           this.showModal2 = false
       },
         addDecaissement() {
-            this.title ="Ajouter un decaissement"
+            this.title ="Ajouter"
             let formData = this.champs.map((value) => {
               if(value.key === 'projetId'){ 
                 value['options'] = this.projets
