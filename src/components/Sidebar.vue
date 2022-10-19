@@ -1045,10 +1045,10 @@ export default {
             if(element.slug ==='voir-une-institution') {
               this.institutionVisible = true
             }
-            if(element.slug ==='voir-un-ptab') {
+            if(element.slug ==='voir-ptab') {
               this.voirPtaVisible = true
             }
-            if(element.slug ==='voir-un-ppm') {
+            if(element.slug ==='voir-ppm') {
               this.voirPpmVisible = true
             }
            
@@ -1150,7 +1150,7 @@ export default {
             if(element.slug ==='voir-un-decaissement') {
               this.decaissementVisible = true
             }
-            if(element.slug ==='voir-une-revision') {
+            if(element.slug ==='voir-revision-ptab') {
               this.revisionVisible = true
             }
             if(element.slug ==='voir-un-decaissement') {
