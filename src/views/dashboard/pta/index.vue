@@ -157,10 +157,10 @@ export default {
        if(element.slug === 'exporter-un-suivi-ptab') {
         this.exporterSuiviPta = true
       }
-      if(element.slug === 'exporter-un-suivi-ppm-revise') {
+      if(element.slug === 'exporter-un-suivi-ppm') {
         this.exporterSuiviRePpm = true
       }
-      if(element.slug ==='exporter-un-suivi-pta-revise') {
+      if(element.slug ==='exporter-un-suivi-pta') {
         this.exporterSuiviRePta = true
       }
       if(element.slug ==='voir-revision-ptab') {
@@ -181,16 +181,16 @@ export default {
       if(element.slug ==='faire-revision-ptab') {
         this.revisionAdd = true
       }
-      if(element.slug ==='filtre-ptab') {
+      if(element.slug ==='voir-ptab') {
         this.filtrePta = true
       }
-      if(element.slug ==='filtre-ppm') {
+      if(element.slug ==='voir-ppm') {
         this.filtrePpm = true
       }
-      if(element.slug ==='filtre-ptab-revise') {
+      if(element.slug ==='voir-ptab') {
         this.filtreRePta = true
       }
-      if(element.slug ==='filtre-ppm-revise') {
+      if(element.slug ==='voir-ppm') {
         this.filtreRePpm = true
       }
 
