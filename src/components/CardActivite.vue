@@ -196,15 +196,15 @@ export default {
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
-        { name: "continuer" },
+      /*   { name: "continuer" }, */
       ],
        optionD: [
         { name: "supprimer" },
-        { name: "continuer" },
+      /*   { name: "continuer" }, */
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "continuer" },
+      /*   { name: "continuer" }, */
       ],
       showValidate: false,
       delay: 700,

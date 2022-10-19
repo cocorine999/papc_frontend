@@ -214,12 +214,12 @@
             <div class="w-full grid grid-cols-2 items-center gap-4">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" @input="changeProjet(projetFiltre)" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre"  :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
               </div>
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-                <multiselect v-model="composanteFiltre" @input="changeComposante(composanteFiltre)" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="composanteFiltre"  :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
               <div>
                 
@@ -227,7 +227,6 @@
                 <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
-                @input="changeSC(valueFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -1666,7 +1665,7 @@ export default {
     },
 
 
-   /*  projets: function(projets){
+   projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -1736,8 +1735,7 @@ export default {
       }
 
     },
-  */  
-
+  
     activites: function (activites) {
       if(this.seePlan){
         if(activites.length > 0){

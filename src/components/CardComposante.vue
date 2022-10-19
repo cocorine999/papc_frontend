@@ -51,15 +51,15 @@ export default {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       optionD: [
         { name: "supprimer" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       showValidate:false,
       showValidate:false,
