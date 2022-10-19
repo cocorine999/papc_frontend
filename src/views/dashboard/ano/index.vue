@@ -5,7 +5,8 @@
       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
          <div v-if="anosReponses.length > 0"  style="height:800px" class="overflow-auto ">
             <div v-for="data in anosReponses" :key="data.id">
-              <reponse-anos :datas="data"></reponse-anos>
+          
+              <reponse-anos :anoId="anosId" :statut="statut" :datas="data"></reponse-anos>
             </div>
          </div>
          <div v-else class="font-bold text-gray-600 py-5  text-center">
@@ -175,6 +176,7 @@ export default {
       showDetail:false,
       search:"",
       title: '',
+      statut:'',
       anoVisible:false,
       anoAdd:false,
       anoDelete:false,
@@ -291,7 +293,9 @@ export default {
       
     },
     commenter(data) {
+      console.log(data)
       this.anosId = data.id
+      this.statut = data.statut
       this.getAnosReponse(data.id)
       this.showComment = true
       this.title = "reponses"
@@ -399,7 +403,7 @@ export default {
         formData.append('statut',this.Relance.statut)
         formData.append('commentaire',this.Relance.commentaire)
         formData.append('anoId',this.anosId)
-        formData.append('reponseId',null)
+        /* formData.append('reponseId',null) */
         
         for( let i = 0; i < this.Relance.files.length; i++ ){
           let file = this.Relance.files[i];
