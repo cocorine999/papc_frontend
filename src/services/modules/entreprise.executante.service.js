@@ -34,6 +34,9 @@ const EntrepriseExecutanteService = {
 
     passations(slug) {
       return ApiService.get(`entreprise-executants/${slug}/passations`);
+    },
+    usersForEntreprise(slug) {
+      return ApiService.get(`programmes/entrepriseUsers/${slug}`);
     }
 
   };

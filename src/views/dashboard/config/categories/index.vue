@@ -44,6 +44,7 @@
     </nav>
     
     <div class="my-8 flex justify-between items-center ">
+     
       <titre>les categories</titre>
       <button v-if="categorieAdd" @click="addCategorie" title="ajouter une categorie"   class="py-2 px-4  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
@@ -150,6 +151,7 @@ export default {
       isLoading: "IS_LOADING",
       categorie: "categories/getCategorie",
       categories: "categories/getCategories",
+       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
   methods: {
@@ -193,10 +195,13 @@ export default {
       getPermission() {
         this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-une-categorie') {
+             
+             
               this.categorieVisible = true
             }
             if(element.slug === 'creer-une-categorie') {
               this.categorieAdd = true
+            
             }
             if(element.slug === 'modifier-une-categorie') {
               this.categorieUpdate = true

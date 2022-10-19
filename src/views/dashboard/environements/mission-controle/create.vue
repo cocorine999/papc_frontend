@@ -41,7 +41,10 @@
                     </div>
                     <input  type="text" v-model="form.nom" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
                   </div>
-
+                   <div class="my-3 w-4/5" v-if="form.inputType=='date'">
+                    <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Saisissez une date">
+                    <input  type="date" v-model="form.nom" class="px-2 py-2 w-full  text-sm border border-primary  outline-none block " placeholder="Saisissez votre libellé du text ">
+                  </div>
                   <div class="my-3 w-4/5" v-if="form.inputType=='photos'">
                     
                     <input type="text" v-model="form.nom" class="px-2 py-2  text-sm border border-primary w-full outline-none block " placeholder="Saisissez votre libellé de photos">
@@ -72,6 +75,7 @@
           <h3 class="p-4 bg-gray-400 text-sm uppercase font-bold shadow-sm ">Les options</h3>
           <div class="flex space-3 flew-wrap mt-6  gap-2">
             <button @click="btn_edit" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">text</button>
+             <button @click="btn_date" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">date</button>
             <button @click="btn_photo" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">photos</button>
             <button @click="btn_file" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold shadow-sm px-2 py-1">fichiers</button>
             <button @click="btn_boolean" :disabled="isActive" class="inline-block bg-gray-700 text-white uppercase rounded-sm  text-sm font-bold whitespace-nowrap shadow-sm px-2 py-1">Realiser ou non realiser</button>
@@ -97,6 +101,13 @@ text-xs  md:text-sm font-semibold " for="">
                       {{form.nom}} <span  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                     </label>
                     <input  type="text"   class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
+                </div>
+                 <div v-if="form.inputType=='date'">
+                    <label   class=" block py-2 
+text-xs  md:text-sm font-semibold " for="">
+                      {{form.nom}} <span  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+                    </label>
+                    <input  type="date"   class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
                 </div>
                 <div v-if="form.inputType=='photos'">
                   <label   class=" block py-2 
@@ -217,6 +228,9 @@ export default {
     },
     btn_boolean() {
       this.Forms[this.currentIndex].data.push({id:null,inputType:'boolean',nom:null,checked:null,uniteeId:''})
+    },
+    btn_date() {
+      this.Forms[this.currentIndex].data.push({id:null,inputType:'date',nom:null,content:null,uniteeId:''})
     },
     btn_file() {
       this.Forms[this.currentIndex].data.push({id:null,inputType:'file',nom:null,file:null,uniteeId:''})
