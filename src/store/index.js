@@ -151,6 +151,28 @@ export default new Vuex.Store({
         etat: 2
       }
     ],
+    statutsAno : [
+      {
+        nom : "Non validé",
+        etat: -2
+      },
+      {
+        nom: "Validé",
+        etat: -1
+      },
+      {
+        nom: "En cours",
+        etat: 0
+      },
+      {
+        nom: "En retard",
+        etat: 1
+      },
+      {
+        nom: "Terminé",
+        etat: 2
+      }
+    ],
     
     sources : [
       {

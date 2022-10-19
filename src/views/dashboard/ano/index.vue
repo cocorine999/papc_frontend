@@ -21,7 +21,7 @@
       </vmodal>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="showModal = false">
+        <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" @getFile="getFile"
               submitText="Créer un ano" @sendForm="sendForm"></vform>
@@ -276,6 +276,9 @@ export default {
     },
     closeReponse() {
       this.showReponse = false
+      this.Relance.statut = null
+      this.Relance.files = []
+      this.Relance.commentaires = ''
     },
     closeCommentaire() {
       this.showComment = false
@@ -502,6 +505,7 @@ export default {
 
     close() {
       this.showModal = false
+       this.resetForm()
     },
   },
 
