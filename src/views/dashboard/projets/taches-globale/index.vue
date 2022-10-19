@@ -126,7 +126,7 @@ export default {
         if(element.slug ==='voir-une-tache') {
           this.tacheVisible = true
         }
-        if(element.slug ==='voir-une-tache-revise') {
+        if(element.slug ==='voir-revision-ptab') {
           this.tacheReVisible = true
         }
       });

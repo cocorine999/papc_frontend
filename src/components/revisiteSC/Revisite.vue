@@ -322,13 +322,13 @@ export default {
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         
-          if(element.slug === 'creer-une-composante-revise') {
+          if(element.slug === 'faire-revision-ptab') {
             this.composanteAdd = true
           }
-            if(element.slug === 'modifier-une-composante-revise') {
+            if(element.slug === 'faire-revision-ptab') {
               this.composanteUpdate = true
             }
-            if(element.slug ==='supprimer-une-composante-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.composanteDelete = true
             }
         });
