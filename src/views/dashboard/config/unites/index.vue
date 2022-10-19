@@ -1,10 +1,10 @@
 <template>
   <dashboard>
-    <div class="p-0">
+    <div class="p-0 w-full">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
 
-          <div class="px-4">
+          <div class="p-0 w-full">
             <vform
               template="default"
               :champs="champs"
@@ -44,7 +44,7 @@
   </div>      </div>
     </nav>
     
-    <div class="my-8 flex justify-between items-center ">
+    <div class="my-2 flex justify-between items-center ">
       <titre>Les unités de mesure</titre>
       <button v-if="uniteAdd" @click="addUniteeDeMesure" title="ajouter une activite"   class="py-2 px-4  overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>

@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="px-4">
+    <div  class="p-0 w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -29,7 +29,7 @@
       </nav>  
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-        <div  class="px-4">
+        <div  class="p-0 w-full">
           <div v-if="title =='Ajouter un Suivi'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
@@ -65,7 +65,7 @@
       </div>
       <div v-if="showModal3">
       <vmodal  title="Filtre"  v-on:close="showModal3 = false">
-        <div class="px-4" style="width:500px" >
+        <div class="p-0 w-full" style="width:500px" >
           <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
         </div>
       </vmodal>

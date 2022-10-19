@@ -3,7 +3,7 @@
     <div  class="w-full">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-          <div class="px-4">
+          <div class="p-0 w-full">
             <vform
               v-if="!isUpdate"
               template="default"

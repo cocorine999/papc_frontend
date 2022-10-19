@@ -2,7 +2,7 @@
   <dashboard espace="bailleur">
     <div class="w-full">
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="save" class="p-0" >
+        <form action="" @submit.prevent="save" class="p-0 w-full" >
             <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light">Nom du activé <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />

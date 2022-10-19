@@ -4,7 +4,7 @@
       <modal-top-right :title="title"  v-on:close="showModal = false">
       
         <div  class="px-4 overflow-y-auto">
-          <form action="" @submit.prevent="sendForm" class="px-4"  >
+          <form action="" @submit.prevent="sendForm" class="p-0 w-full"  >
        
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>

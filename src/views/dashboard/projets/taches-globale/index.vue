@@ -1,7 +1,7 @@
 <template>
   <dashboard>
      
-    <!--  <div v-if="currentRole ==='bailleur'" class="p-0">
+    <!--  <div v-if="currentRole ==='bailleur'" class="p-0 w-full">
      
       <div class="flex bg-white p-2 shadow space-x-4">
        <div class="w-full">
@@ -35,7 +35,7 @@
           </div>
       </div>
     </div> -->
-    <div  class="p-0">
+    <div  class="p-0 w-full">
       <div v-if="tacheReVisible" class="select w-52">
         <select
           id="choice"

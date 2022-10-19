@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div class="p-0">
+    <div class="p-0 w-full">
       <div v-if="showModal">
         <modal-top-right  :title="title"  v-on:close="close">
-          <div class="px-4">
+          <div class="p-0 w-full">
               <vform
                 template="default"
                 :champs="champs"
@@ -33,7 +33,7 @@
         </div>
       </nav>
     
-      <div class="my-8 flex justify-between items-center ">
+      <div class="my-2 flex justify-between items-center ">
         <titre>alert systeme  </titre>
       </div>
     

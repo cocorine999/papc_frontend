@@ -2,7 +2,7 @@
   <dashboard espace="bailleur">
      <div class="w-full">
         <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-          <form action="" @submit.prevent="save" class="p-0">
+          <form action="" @submit.prevent="save" class="p-0 w-full">
             <div class="form-group my-2">
               <label
                 class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light"

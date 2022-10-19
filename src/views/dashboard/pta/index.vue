@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-  <div  class="px-4">
+  <div  class="p-0 w-full">
     <div v-if="reviser ">
       <vmodal title="confirmation !"  v-on:close="reviser = false">
         <div  style="width:60vw !important">

@@ -1,7 +1,7 @@
 <template>
   <dashboard>
-    <div  class="p-0">
-     <!--  <div v-if="currentRole ==='bailleur'" class="p-0">
+    <div  class="p-0 w-full">
+     <!--  <div v-if="currentRole ==='bailleur'" class="p-0 w-full">
       <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">

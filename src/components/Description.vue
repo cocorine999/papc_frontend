@@ -142,7 +142,7 @@
             {{ projet.objectifGlobaux }}
           </p>
         </div>
-        <div class="p-0">
+        <div class="p-0 w-full">
           <h1 class="text-center py-2 font-bold text-indigo-700">
             DESCRIPTION DU PROJET
           </h1>
