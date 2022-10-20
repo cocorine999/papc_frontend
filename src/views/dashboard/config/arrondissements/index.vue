@@ -1,5 +1,5 @@
 <template>
-  <div class="p-0 w-full">
+  <div class="p-4 w-full">
    
     <RouteName />
 
@@ -15,7 +15,7 @@
     </div>
 
      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-      <table class="w-full">
+      <table class="w-full p-4">
         <thead>
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">#</th>

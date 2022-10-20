@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full px-4">
+  <div class="w-full ">
       <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
-        <div style="width:60vw" class="p-0 w-full">
+        <div style="width:60vw" class="p-4 w-full">
           <form @submit.prevent="saveProlongerDate(tacheId,dates)" action="">
             <div  class="grid grid-cols-2 gap-2 my-2">
               <div class="form-group my-2">
@@ -35,7 +35,7 @@
        </modal-chat>
       
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-          <div class="p-0 w-full">
+          <div class="p-4 w-full">
             <vform
             template="default"
             :champs="champs"
@@ -49,7 +49,7 @@
       </modal-top-right>
 
       <nav
-        class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
+        class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb"
       >
         <div class="mb-2">

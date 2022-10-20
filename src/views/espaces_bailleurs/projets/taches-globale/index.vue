@@ -1,8 +1,8 @@
 <template>
   <dashboard espace="bailleur">
-     <div class="w-full">
+     <div class="w-full p-4">
         <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-          <form action="" @submit.prevent="save" class="p-0 w-full">
+          <form action="" @submit.prevent="save" class="p-4 w-full">
             <div class="form-group my-2">
               <label
                 class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light"
@@ -508,7 +508,7 @@
         <div
           class="align-middle inline-block w-full overflow-hidden pt-3 rounded-bl-lg rounded-br-lg"
         >
-          <table class="w-full">
+          <table class="w-full p-4">
             <thead>
               <th
                 class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"

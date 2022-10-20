@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="p-4 w-full">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
-         <div class="p-0 w-full">
+         <div class="p-4 w-full">
             <vform
               template="default"
               :champs="champs"
@@ -30,8 +30,8 @@
       </div>
       <div>
         <div class="w-full flex text-gray-600">
-            <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-            <button type="submit" class="relative  right-10 ">
+            <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+            <button type="submit" class="relative  p-2 rounded-lg">
             <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
             viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -55,7 +55,7 @@
 
     
      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-      <table class="w-full">
+      <table class="w-full p-4">
         <thead>
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">#</th>

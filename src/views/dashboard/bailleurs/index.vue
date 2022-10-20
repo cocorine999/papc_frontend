@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div  class="w-full">
+    <div  class="w-full p-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-          <div class="p-0 w-full">
+          <div class="p-4 w-full">
             <vform
               v-if="!isUpdate"
               template="default"
@@ -51,9 +51,9 @@
           </div>
         </vmodal>
       </div>
-      <div class="w-full p-4">
+      <div class="w-full">
           <nav
-          class="mb-2 text-sm font-semibold flex justify-between items-center"
+          class="text-sm font-semibold flex justify-between items-center"
           aria-label="Breadcrumb"
         >
           <div class="hidden sm:block">
@@ -78,7 +78,7 @@
           <div></div>
           <div>
             <div class="w-full flex text-gray-600">
-            <input @input="$emit('search',$event.target.value)" class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+            <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
             <button type="submit" class="relative">
             <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"

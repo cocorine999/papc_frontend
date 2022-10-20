@@ -1,5 +1,5 @@
 <template>
- <div class="p-0 w-full">
+ <div class="p-4 w-full">
   <div  class="my-4">
     <form action="">
       <div class="flex justify-center ">

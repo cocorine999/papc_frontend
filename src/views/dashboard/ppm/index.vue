@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="w-full p-4">
     
     <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
       <div>
@@ -29,7 +29,7 @@
      
       <div   class="line my-4">
         <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-          <table class="w-full">
+          <table class="w-full p-4">
             <thead>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Activité </th>
@@ -66,7 +66,7 @@
       
       <div  class="line my-4">
         <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-          <table class="w-full">
+          <table class="w-full p-4">
             <thead>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Année </th>
@@ -96,7 +96,7 @@
 
     <div v-if="seeSuivi">
         <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-          <table class="w-full">
+          <table class="w-full p-4">
             <thead>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Activité </th>

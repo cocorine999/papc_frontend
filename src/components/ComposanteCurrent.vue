@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full p-4">
+  <div class="w-full">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
             <div class="p-4 overflow-auto">
@@ -8,7 +8,7 @@
         </modal-top-right>
       </div>
       
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">

@@ -1,8 +1,7 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
-       <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+    <div class="p-4 w-full">
+       <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
@@ -18,7 +17,7 @@
         <search-bar ></search-bar>
       </div>
     </nav> 
-    <div class="my-6 flex justify-between">
+    <div class="my-2 flex justify-between">
       <titre> mes sauvegardes </titre>
        <button @click="getBackup" title="sauvegardez " class="px-4 py-2 space-x-3 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z"></path></svg></span>

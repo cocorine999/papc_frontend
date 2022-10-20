@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full p-4">
        <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
-        <div style="width:60vw" class="p-0 w-full">
+        <div style="width:60vw" class="p-4 w-full">
           <form @submit.prevent="saveProlongerDate()" action="">
             <div class="form-group my-2">
                 <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -32,7 +32,7 @@
             </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-2 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"  aria-label="Breadcrumb">
+      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"  aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -48,7 +48,7 @@
         </div>
         <div>
           <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"   class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"   class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"    class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"

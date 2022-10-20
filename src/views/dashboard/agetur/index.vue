@@ -1,8 +1,8 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="p-4 w-full">
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="createCollecteur" class="p-0 w-full" >
+        <form action="" @submit.prevent="createCollecteur" class="p-4 w-full" >
           <div class="form-group my-2">
              <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Collecteur  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -101,7 +101,7 @@
         </button>
       </div>
       <div class="align-middle inline-block w-full bg-white overflow-x-auto pt-3 rounded-bl-lg rounded-br-lg">
-        <table class="w-full">
+        <table class="w-full p-4">
           <thead>
             <tr>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Bailleurs</th>

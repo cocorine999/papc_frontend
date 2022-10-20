@@ -1,6 +1,6 @@
 <template>
   <dashboard espace="bailleur">
-    <div class="p-0 w-full">
+    <div class="p-4 w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -19,7 +19,7 @@
       </nav> 
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-        <div  class="p-0 w-full">
+        <div  class="p-4 w-full">
           <div v-if="title =='Ajouter un decaissement'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>

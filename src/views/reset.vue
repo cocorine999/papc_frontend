@@ -22,7 +22,7 @@
         >
           Réinitialisation du Mot de passe
         </h1>
-        <form @submit.prevent="save" class="w-full">
+        <form @submit.prevent="save" class="w-full p-4">
        
           <div class="relative my-4 w-3/5 mx-auto">
             <input

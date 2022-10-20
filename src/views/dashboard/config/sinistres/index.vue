@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="p-4 w-full">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
-         <div class="p-0 w-full">
+         <div class="p-4 w-full">
             <vform
               template="default"
               :champs="champs"

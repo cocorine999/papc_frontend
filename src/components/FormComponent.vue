@@ -1,5 +1,5 @@
 <template>
-  <form class="p-0 w-full" @submit.prevent="sender" id="vform">
+  <form class="p-4 w-full" @submit.prevent="sender" id="vform">
 
     <div class="form-group my-2" v-for="(item, i) in form" :key="i">
       <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">{{item.label}}<span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>

@@ -477,7 +477,7 @@
             </div>
           </div>
           <div class="flex items-center justiyf-between">
-            <hr class="w-full" />
+            <hr class="w-full p-4" />
             <p
               tabindex="0"
               class="
@@ -492,7 +492,7 @@
             >
               Thats it for now :)
             </p>
-            <hr class="w-full" />
+            <hr class="w-full p-4" />
           </div>
         </div>
 </template>

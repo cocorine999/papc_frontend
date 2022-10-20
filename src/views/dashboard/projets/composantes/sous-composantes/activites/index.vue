@@ -1,8 +1,8 @@
 <template>
   <dashboard>
-   <div v-if="activiteVisible || planDecaissementVisible" class="p-0 w-full">
+   <div v-if="activiteVisible || planDecaissementVisible" class="p-4 w-full">
     <div class="select w-52">
-      <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 ">
         
         <option value="" selected>Version actuelle</option>
 
@@ -14,7 +14,7 @@
         <revisite v-else :version="version"></revisite>
     </div>
    </div>
-    <div v-if="currentRole ==='bailleur'" class="p-0 w-full">
+    <div v-if="currentRole ==='bailleur'" class="p-4 w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -40,11 +40,11 @@
         <titre>Listes des activités</titre>
       </div>
       <div class="flex bg-white p-2 shadow space-x-4 w-3/4">
-       <div class="w-full">
+       <div class="w-full p-4">
           <label for="" class="my-2 block">Selectionnez une composante</label>
           <multiselect v-model="value" :options="composantes" @input="demoEcoute(value)" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composantes" label="nom" track-by="id"></multiselect>
        </div>
-       <div class="w-full">
+       <div class="w-full p-4">
           <label for="" class="my-2 block">Selectionnez une sous  composante</label>
           <multiselect v-model="valueSC" :options="sous_composantes" @input="demoEcouteSC(valueSC)" :custom-label="customLabelSC" :preselect-first="true" placeholder="selectionnez une composantes" label="nom" track-by="id"></multiselect>
        </div>

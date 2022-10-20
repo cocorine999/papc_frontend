@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="p-4 w-full">
       <div v-if="isNotGenere" class="container mx-auto">
         <div class="my-8 flex space-x-5 justify-between">
-          <div class="w-full">
+          <div class="w-full p-4">
             <h3 class="p-4 bg-gray-400 text-sm font-bold uppercase shadow-sm ">Configurer le formulaire</h3>
             <div class="my-3 w-full" >
               <label for="" class="block mb-4 text-primary text-sm uppercase font-semibold px-2 py-2">Nom du formulaire </label>

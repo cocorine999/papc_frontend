@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="tacheVisible" class="p-0 w-full">
+    <div v-if="tacheVisible" class="p-4 w-full">
       <div class="select w-52">
         <select
           id="choice"
@@ -26,7 +26,7 @@
         <revisite v-else :version="version"></revisite>
       </div>
     </div>
-     <div v-if="currentRole ==='bailleur'" class="p-0 w-full">
+     <div v-if="currentRole ==='bailleur'" class="p-4 w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -52,15 +52,15 @@
         <titre>Listes des taches</titre>
       </div>
       <div class="flex bg-white p-2 shadow space-x-4">
-       <div class="w-full">
+       <div class="w-full p-4">
           <label for="" class="my-2 block">Selectionnez une composante</label>
           <multiselect v-model="value" :options="composantes" @input="demoEcoute(value)" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composantes" label="nom" track-by="id"></multiselect>
        </div>
-       <div class="w-full">
+       <div class="w-full p-4">
           <label for="" class="my-2 block">Selectionnez une sous  composante</label>
           <multiselect v-model="valueSC" :options="sous_composantes" @input="demoEcouteSC(valueSC)" :custom-label="customLabelSC" :preselect-first="true" placeholder="selectionnez une composantes" label="nom" track-by="id"></multiselect>
        </div>
-        <div class="w-full">
+        <div class="w-full p-4">
           <label for="" class="my-2 block">Selectionnez une activité</label>
           <multiselect v-model="valueAC" :options="activites" @input="demoEcouteAC(valueAC)" :custom-label="customLabelSC" :preselect-first="true" placeholder="selectionnez une composantes" label="nom" track-by="id"></multiselect>
        </div>
