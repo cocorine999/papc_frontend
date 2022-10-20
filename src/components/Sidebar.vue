@@ -6,7 +6,9 @@
   >
    
     <div class="w-full h-20 flex px-4 items-center mb-8">
-      <p class="font-semibold text-lg uppercase text-white  whitespace-nowrap text-center ">{{currentRole}}</p>
+    
+      <p v-if="currentRole === 'unitee-de-gestion' " class="font-semibold text-lg uppercase text-white  whitespace-nowrap text-center ">unite de gestion</p>
+      <p v-else class="font-semibold text-lg uppercase text-white  whitespace-nowrap text-center ">{{currentRole}}</p>
     </div>
 
     <div v-if="currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">

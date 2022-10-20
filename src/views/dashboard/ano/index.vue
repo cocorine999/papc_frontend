@@ -9,7 +9,8 @@
               <reponse-anos :anoId="anosId" :statut="statut" :datas="data"></reponse-anos>
             </div>
          </div>
-         <div v-else class="font-bold text-gray-600 py-5  text-center">
+         
+         <div v-else class="font-bold  text-gray-600 py-5  text-center">
            pas de commentaire
          </div>
         
@@ -22,7 +23,7 @@
       </vmodal>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" @getFile="getFile"
               submitText="Créer un ano" @sendForm="sendForm"></vform>
@@ -34,11 +35,11 @@
         <modal-chat :title="title" v-on:close="closeReponse">
           <form  @submit.prevent="sendReponse" class="px-4 overflow-y-auto">
             <div class="my-2">
-                      <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
-                      <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="" selected>Selectionnez le statut</option>
-                        <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{statut.name}}</option>
-                    </select>
+                <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
+                <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" selected>Selectionnez le statut</option>
+                  <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{statut.name}}</option>
+                </select>
             </div>
             <div class="my-2">
               <label class="my-2 block" for="">Pieces jointes </label>
