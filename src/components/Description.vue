@@ -167,7 +167,7 @@
         
         :dragging-distance="70">
 
-         <vueper-slide v-for="i in slide" :key="i" :title="i.title" :content="i.content"  :image="i.image" :link = "i.link" />
+         <vueper-slide v-for="i in slide" :key="i" :title="i.title" :content="i.content"  :image="i.image" />
          </vueper-slides>
       </div>
 
@@ -206,25 +206,24 @@ export default {
      internalAutoPlaying: true,
     slide : [
       {
-        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
-        link :  'https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk'     
+        image: 'https://www.gouv.bj/upload/images/articles/0751086001657376878.jpeg', 
       },
       {
-        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
+        image: 'https://live.staticflickr.com/65535/52203050725_5541f81dc9_b.jpg',
       
-        link :  'https://www.google.com'     
+             
       },
       {
-        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
-        link :  'https://www.facebook.com'     
+        image: 'https://live.staticflickr.com/65535/52202575368_6fc5719f32_b.jpg',
+             
       },
       {
-        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
-        link :  'https://www.deepl.com'     
+        image: 'https://live.staticflickr.com/65535/52202555101_01232fe4d6_b.jpg',
+             
       },
       {
-        image: 'https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg',
-        link :  'https://www.youtube.com'     
+        image: 'https://live.staticflickr.com/65535/52201567167_260ab83654_b.jpg',
+             
       }
     ]
     };
