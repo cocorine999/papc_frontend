@@ -1,6 +1,6 @@
 <template>
     <div class="sticky top-0 z-40">
-      <div class="w-full h-20 px-6 bg-primary border-b flex items-center justify-between">
+      <div class="w-full h-16 px-6 bg-primary border-b flex items-center justify-between">
         <!-- left navbar -->
         <div class="flex">
          <!-- mobile hamburger -->
@@ -15,7 +15,7 @@
       
         <div class="absolute inset-y-0 right-0 flex space-x-3 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <router-link v-if="fichierVisible" class="text-white" to="/dashboard/fileManager"><svg stroke="currentColor" fill="currentColor" class="h-6 w-6" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M13 9h-2v3H8v2h3v3h2v-3h3v-2h-3z"></path><path d="M20 5h-8.586L9.707 3.293A.996.996 0 0 0 9 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z"></path></svg></router-link>
-          <button @click="viewNotification" class="bg-white w-12 h-12 flex justify-center items-center relative rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+          <button @click="viewNotification" class="bg-white w-10 h-10 flex justify-center items-center relative rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
            
           <!-- Heroicon name: outline/bell -->
           <img src="/img/bell.gif" class="h-6 w-6 object-contain" alt="">

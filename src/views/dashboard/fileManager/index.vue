@@ -1,6 +1,6 @@
 <template>
  <dashboard>
-  <div class="p-4">
+  <div class="p-0 w-full">
 
     <vmodal  v-if="showModal" title="Uploader des fichiers"  v-on:close="showModal=false">
         <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >

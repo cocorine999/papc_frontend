@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="tacheVisible" class="p-4">
+    <div v-if="tacheVisible" class="p-0 w-full">
       <div class="select w-52">
         <select
           id="choice"
@@ -21,12 +21,12 @@
       </div>
      
      
-      <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+      <div class="">
         <tache-current :valueComposante="{codePta:$route.params.codeC,nom:$route.params.nomC}" :valeurProjet="{codePta:$route.params.codeP,nom:$route.params.nomP}" :valueSC="{codePta:$route.params.codeSC,nom:$route.params.nomSC}" :valueProfondeur="{codePta:$route.params.code,nom:$route.params.nom}"  v-if="currentPage"></tache-current>
         <revisite v-else :version="version"></revisite>
       </div>
     </div>
-     <div v-if="currentRole ==='bailleur'" class="p-4">
+     <div v-if="currentRole ==='bailleur'" class="p-0 w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -47,7 +47,7 @@
           <search-bar ></search-bar>
         </div>
       </nav>
-      <div class="my-10">
+      <div class="mb-0">
        
         <titre>Listes des taches</titre>
       </div>

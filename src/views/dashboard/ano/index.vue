@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="px-4">
+    <div  class="p-0 w-full">
 
       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
          <div v-if="anosReponses.length > 0"  style="height:800px" class="overflow-auto ">

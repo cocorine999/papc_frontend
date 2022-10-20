@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full p-4">
        <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
-        <div style="width:60vw" class="p-4">
+        <div style="width:60vw" class="p-0 w-full">
           <form @submit.prevent="saveProlongerDate()" action="">
             <div class="form-group my-2">
                 <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
