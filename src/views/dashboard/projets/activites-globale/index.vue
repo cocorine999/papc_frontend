@@ -2,7 +2,7 @@
   <dashboard>
    
     <div  class="p-4">
-      <div class="my-10">
+      <div class="mb-0">
        
         <titre>Listes des activités</titre>
       </div>
@@ -14,7 +14,7 @@
           <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab.id"> {{scopePtab.nom}}</option>
         </select>
       </div>
-      <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+      <div class="">
           <activite-current :valueComposante="null" :valeurProjet="null" :valueProfondeur="null" v-if="currentPage"></activite-current>
           <revisite v-else :version="version"></revisite>
       </div>

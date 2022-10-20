@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div class="p-4">
+    <div class="p-0 w-full">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
-         <div class="px-4">
+         <div class="p-0 w-full">
             <vform
               template="default"
               :champs="champs"
@@ -43,7 +43,7 @@
   </div>      </div>
     </nav>
     
-    <div class="my-8 flex justify-between items-center ">
+    <div class="my-2 flex justify-between items-center ">
      
       <titre>les categories</titre>
       <button v-if="categorieAdd" @click="addCategorie" title="ajouter une categorie"   class="py-2 px-4  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
