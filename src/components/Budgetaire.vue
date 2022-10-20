@@ -140,7 +140,7 @@
               <h2 class="uppercase text-sm font-semibold hover:font-bold py-2">
                 terminer
               </h2>
-              <p class="hover:font-bold">30 / 100</p>
+              <p class="hover:font-bold">{{projet.statistiqueActivite.effectue}} / {{projet.statistiqueActivite.total}}</p>
             </div>
           </div>
 
@@ -166,7 +166,7 @@
               <h2 class="uppercase text-sm font-semibold hover:font-bold py-2">
                 en cours
               </h2>
-              <p class="hover:font-bold">30 / 100</p>
+              <p class="hover:font-bold">{{projet.statistiqueActivite.enCours}} / {{projet.statistiqueActivite.total}}</p>
             </div>
           </div>
 
@@ -192,7 +192,7 @@
               <h2 class="uppercase text-sm font-semibold hover:font-bold py-2">
                 en retard
               </h2>
-              <p class="hover:font-bold">30 / 100</p>
+              <p class="hover:font-bold">{{projet.statistiqueActivite.enRetard}} / {{projet.statistiqueActivite.total}}</p>
             </div>
           </div>
         </div>
