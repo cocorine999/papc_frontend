@@ -141,7 +141,7 @@
 
       <!--  partie env -->
       <div>
-        <environnement></environnement>
+        <!-- <environnement></environnement> -->
       </div>
       <!-- fin  partie  env -->
 
