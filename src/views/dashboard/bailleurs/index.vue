@@ -123,7 +123,7 @@
                 <dropdown @supprimer="supprimer(bailleur)" :option="optionD"></dropdown>
               </div>
 
-              <div v-if="bailleurUpdate && bailleurDelete " class="absolute right-1 top-4 z-10  cursor-pointer">
+              <div class="absolute right-1 top-4 z-10  cursor-pointer">
                 <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" @modifier="modifier(bailleur)"  :option="option"></dropdown>
               </div>
               
@@ -448,13 +448,12 @@
         cols: 1,
         optionLogo: [{name:'couverture'}],
         optionD: [{ name: "supprimer" }],
-        optionUp: [{ name: "modifier" },{name:'couverture'}],
+        optionUp: [{ name: "modifier" },{name:'changer logo'}],
         option: [{ name: "supprimer" }, { name: "modifier" },{name:'changer logo'}],
         bailleurVisible:false,
         bailleurAdd:false,
         bailleurDelete:false,
         bailleurUpdate:false,
-        
         isChange:false,
         logo:{},
         idBailleur:'',
@@ -478,7 +477,6 @@
     methods: {
     getImage(data) {
       this.image = data
-     
     },
     saveImage() {
       if(this.sendRequest == false) {
@@ -487,6 +485,12 @@
         formData.append('logo',this.image)
         formData.append('code',this.code)
         formData.append('programmeId',this.programmeId)
+        const info = {
+          code:this.code,
+          logo:this.image,
+          programme:this.programmeId
+        }
+        console.log('les infos',info)
         BailleurService.update(this.idBailleur,formData).then(() => {
         this.$toast.success('Le logo  à éte bien changer')
         this.showUpdateImage = false 
@@ -553,7 +557,7 @@
         this.line = line
     },
 
-      addBailleur() {
+    addBailleur() {
         this.title = "Ajouter";
 
         this.submitText = "Enrégistrer";

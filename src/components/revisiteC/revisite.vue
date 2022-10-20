@@ -35,55 +35,113 @@
      
     </div>
     
-    <div v-if="seeComposant">
+     <div v-if="seeComposant">
       <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
-        <div class="w-2/5 flex items-center space-x-2">
+        <div class="w-2/4  flex justify-between  items-center space-x-2 mb-2">
           <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
-          
+         
         </div>
       <!--Filtre sur projet -->
-          <nav class="flex text-sm align-middle justify-evenly">
+          <nav class="flex  text-xs  md:text-sm align-middle justify-between ">
           <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
             attentes 
               <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined ">
-              5
+              {{enAttente.length}}
+              </span>
+            </span>
+            <span  @click="toggle3" :class="{'border-indigo-600 text-indigo-600' : inProgress}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
+              En cours
+              <span class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined">
+              {{enCours.length}}
               </span>
             </span>
             <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              validés 
+              terminer 
               <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
-              9
+              {{terminer.length}}
               </span>
             </span>
-            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              rejetés
-              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
-              8
-              </span>
-            </span>
+           
           </nav>
         </div>
       </div>
-      <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(composante, index) in composantes" :key="index">
-          <card-composante
-            :libelle="composante.nom"
-            :code="composante.code"
-            :statut="getStatus(composante.statut)"
-            :montantEPM="composante.pret"
-            :position="composante.position"
-            :poids="composante.poids"
-            :bailleur="composante.sigle"
-            @modifier="modifier(composante)"
-            @supprimer="supprimer(composante)"
-            @validation="validation(composante)"
-            :isDelete = "composanteDelete"
-            :isUpdate="composanteUpdate"
-          ></card-composante>
+     
+      <div v-if="pending" >
+        <empty v-if="enAttente.length ==0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in enAttente" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.code"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
         </div>
-
+       
+      </div>
+      <div v-if="inProgress" >
+        <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in enCours" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.code"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
+        </div>
+      </div>
+      <div v-if="success" >
+        <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in terminer" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.code"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
+        </div>
+       
+       
       </div>
     </div>
     
@@ -103,6 +161,7 @@ import Dropdown from '@/components/Dropdown.vue'
 import CardComposante from '@/components/CardComposante.vue'
 import  { getStringValueOfStatutCode }  from '@/utils/index'
 import Suivi from "@/components/revisiteC/Suivi.vue";
+import Empty from '@/components/Empty.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import Projet from '@/store/modules/projets/projet'
 export default {
@@ -115,7 +174,8 @@ export default {
     ModalTopRight,
     Dropdown,
     CardComposante,
-    Suivi
+    Suivi,
+    Empty
 },
 props: ['version'],
   data() {
@@ -123,7 +183,7 @@ props: ['version'],
       valueFiltre: null,
       pending:false,
       success:true,
-      rejected:false,
+      inProgress:false,
       rangeValue:0,
       showFiltre:false,
       seeComposant:true,
@@ -172,7 +232,39 @@ props: ['version'],
       loading : state => state.loading,
       errors : state => state.errors
     }),
-
+    terminer() {
+      if(this.composantes != undefined) {
+        const datas = []
+        this.composantes.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.composantes != undefined) {
+        const datas = []
+        this.composantes.forEach(element => {
+          if(element.statut == -1 || element.statut == -2 ) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.composantes != undefined) {
+        const datas = []
+        this.composantes.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
     ...mapGetters({
       projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
@@ -194,13 +286,13 @@ props: ['version'],
      getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         
-          if(element.slug === 'creer-une-composante-revise') {
+          if(element.slug === 'faire-revision-ptab') {
             this.composanteAdd = true
           }
-            if(element.slug === 'modifier-une-composante-revise') {
+            if(element.slug === 'faire-revision-ptab') {
               this.composanteUpdate = true
             }
-            if(element.slug ==='supprimer-une-composante-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.composanteDelete = true
             }
            
@@ -259,21 +351,21 @@ props: ['version'],
 
     toggle() {
       this.pending = false
-      this.rejected = false
+      this.inProgress = false
       this.success = true
 
     },
 
     toggle2() {
       this.success = false
-      this.rejected = false
+      this.inProgress = false
       this.pending = true
     },
 
     toggle3() {
       this.pending = false
       this.success = false
-      this.rejected = true
+      this.inProgress = true
     },
 
     getStatus(status){

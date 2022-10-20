@@ -119,12 +119,12 @@
           <div class="w-full grid sm:grid-cols-2 sm:gap-4">
            <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect  v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-             <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+             <multiselect v-model="composanteFiltre"  :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
            </div>
           
             <div class="mb-3">
@@ -132,7 +132,6 @@
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
-                @input="changeSC(sousComposanteFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -146,7 +145,6 @@
               <multiselect
                 v-model="valueFiltre"
                 :options="activites"
-                @input="changeActivite(valueFiltre)"
                 :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
@@ -161,7 +159,7 @@
           <div class="flex   justify-between flex-wrap items-center">
              <!--Filtre sur projet -->
              <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>
-            <nav class="flex text-sm align-middle justify-evenly w-full sm:w-2/5">
+            <nav class="flex text-sm align-middle justify-evenly ">
                 <span
                   @click="toggle2"
                   :class="{ 'border-yellow-600 text-yellow-600': pending }"
@@ -171,7 +169,19 @@
                   <span
                     class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
                   >
-                    5
+                    {{enAttente.length}}
+                  </span>
+                </span>
+                <span
+                  @click="toggle3"
+                  :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  en cours
+                  <span
+                    class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined"
+                  >
+                    {{enCours.length}}
                   </span>
                 </span>
                 <span
@@ -179,52 +189,104 @@
                   :class="{ 'border-green-600 text-green-600': success }"
                   class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  validés
+                  terminer
                   <span
                     class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
                   >
-                    9
+                    {{terminer.length}}
                   </span>
                 </span>
-                <span
-                  @click="toggle3"
-                  :class="{ 'border-red-600 text-red-600': rejected }"
-                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-                >
-                  rejetés
-                  <span
-                    class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
-                  >
-                    8
-                  </span>
-                </span>
+              
             </nav>
           </div>
         </div>
-        <div v-if="isShow" class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(tache, index) in taches" :key="index">
-            <card-tache
-              :id="tache.id"
-              :bailleur="tache.bailleur.sigle"
-              :statut="getStatus(tache.statut)"
-              :poids="tache.poids"
-              :poidsActuel="tache.poidsActuel"
-              :libelle="tache.nom"
-              :montantNE="tache.montantNE"
-              :montantEPM="tache.montantEPM"
-              @supprimer="supprimer(tache)"
-              @dupliquer="dupliquer(tache)"
-              @modifier="modifier(tache)"
-              @validation="validation(tache)"
-              @prolonger="prolonger(tache)"
-              @suivre="suivreMyTache(tache)"
-              @commentaire="showComment = true"
-              :isDelete="tacheDelete"
-              :isUpdate="tacheUpdate"
-              :isSuivi="tacheSuivi"
-            ></card-tache>
+     
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enCours" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
           </div>
         </div>
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enAttente" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <div v-if="success">
+          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in terminer" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div>
       <!-- <div v-if="seeSuivi">
           <vtable
@@ -257,6 +319,7 @@ import Activite from "@/store/modules/activites/activite";
 import ComposanteService from "@/services/modules/composante.service.js";
 import TacheService from "@/services/modules/tache.service.js";
 import ActiviteService from '@/services/modules/activite.service';
+import Empty from '@/components/Empty.vue'
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
 export default {
@@ -272,6 +335,7 @@ export default {
     Vform,
     ModalChat,
     Composante,
+    Empty,
     Commentaire
   },
   props:['valeurProjet','valueProfondeur','valueComposante','valueSC'],
@@ -309,7 +373,7 @@ export default {
       sousComposanteFiltre:null,
       pending:false,
       success:true,
-      rejected:false,
+      inProgress:false,
       rangeValue:0,
       programmeId: this.currentUser?.programme.id,
       cols: 1,
@@ -395,18 +459,50 @@ export default {
       tache: "taches/getTache",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+    terminer() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == -1 || element.statut == -2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
 
-     changeProjet(projet) {
+    changeProjet(projet) {
     
       if(this.isClick) {
         this.projetFiltre = this.newProjet
         this.composanteFiltre = this.newComponent
         this.fetchComposantes(this.idProjet);
-
         localStorage.removeItem('profondeurActivite');
       }else {
         this.fetchComposantes(projet.id);
@@ -420,29 +516,25 @@ export default {
         let composantes = this.projets[indexProjet].composantes
         
         if(composantes[0] != null ) {
-        
           let code = composantes[0].codePta
           let nom = composantes[0].nom
           this.composanteFiltre = {codePta:code,nom:nom}
           let indexComposante = composantes[0].id
-          this.fetchSousComposantes(indexComposante);
-           ComposanteService.sousComposantes(indexComposante).then((data) => {
+          ComposanteService.sousComposantes(indexComposante).then((data) => {
             const sous_composantes  = data.data.data
-          
-          if(sous_composantes[0] != null ) { 
-          
+            if(sous_composantes[0] != null ) { 
               let code = sous_composantes[0].codePta
               let nom = sous_composantes[0].nom
               this.sousComposanteFiltre = {codePta:code,nom:nom}
               let  indexSC = sous_composantes[0].id
-              this.fetchActivites(indexSC)
+              //this.fetchActivites(indexSC)
               ComposanteService.activites(indexSC).then((data) => {
                 const activites = data.data.data
                 if(activites[0] != null) {
                   const idActivite = activites[0].id
                   let code = activites[0].codePta
                   let nom = activites[0].nom
-                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
                   this.fetchTaches(idActivite);
                   this.isShow = true
                 }
@@ -450,23 +542,31 @@ export default {
                   this.isShow = false
                   this.valueFiltre = null
                 }
-               
-              
               })
             
-           }
-           else {
-              this.isShow = false
-              this.sousComposanteFiltre = null
-              this.composanteFiltre = null 
-              this.valueFiltre = null
-           }
+            }
+            else {
+              ComposanteService.activites(indexComposante).then((data) => {
+                const activites = data.data.data
+                if(activites[0] != null) {
+                  const idActivite = activites[0].id
+                  let code = activites[0].codePta
+                  let nom = activites[0].nom
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
+                  this.fetchTaches(idActivite);
+                  this.isShow = true
+                  this.sousComposanteFiltre = null
+                  //this.composanteFiltre = null 
+                 
+                }
+              })
+             
+            }
         
-          }).catch((e) => {
+           }).catch((e) => {
             console.log(e)
        
            })
-
         }
         else {
           this.isShow = false
@@ -729,41 +829,27 @@ export default {
 
     toggle() {
       this.pending = false
-      this.rejected = false
+      this.inProgress = false
       this.success = true
 
     },
 
     toggle2() {
       this.success = false
-      this.rejected = false
+      this.inProgress = false
       this.pending = true
     },
 
     toggle3() {
       this.pending = false
       this.success = false
-      this.rejected = true
+      this.inProgress = true
     },
 
     getStatus(status) {
       return getStringValueOfStatutCode(status);
     },
 
-    validation(tache) {
-      if (this.sendRequest === false) {
-        this.sendRequest = true;
-        this.updateTache({
-          tache: { statut: -1, activiteId: this.valueFiltre.id },
-          id: tache.id,
-        }).then((value) => {
-            this.fetchTaches(this.valueFiltre.id);
-        })
-          .finally((error) => {      
-            this.sendRequest = false;        
-          })
-      }
-    },
 
     sendForm() {
       if (this.sendRequest === false) {
@@ -775,7 +861,8 @@ export default {
         }); */
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
-
+        console.log('tache',tache)
+        console.log(this.valueFiltre)
         tache['activiteId'] = this.valueFiltre.id;
         
         if (this.tache?.id) {
@@ -863,7 +950,7 @@ export default {
 
     },
     
-   /*  projets: function(projets){
+    projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -956,7 +1043,7 @@ export default {
         this.fetchTaches(valeur);
       }
 
-    } */
+    } 
 
   },
 

@@ -41,24 +41,25 @@
 </template>
 
 <script>
+import ComposanteService from "@/services/modules/composante.service.js";
 import Dropdown from '@/components/Dropdown.vue'
 export default {
   components: {Dropdown},
-  props: ['libelle', 'code', 'montantEPM', 'position', 'bailleur', 'poids', 'composanteName', 'statut','isDelete','isUpdate'],
+  props: ['libelle', 'code','data','isComposante', 'montantEPM', 'position', 'bailleur', 'poids', 'composanteName', 'statut','isDelete','isUpdate'],
    data() {
     return {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       optionD: [
         { name: "supprimer" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       showValidate:false,
       showValidate:false,
@@ -66,7 +67,7 @@ export default {
       clicks: 0,
       timer: null,
       showInput:false,
-      isValidate: this.statut.code > -2,
+      isValidate: null,
     }
   },
   methods:{
@@ -85,10 +86,41 @@ export default {
     validerSuivi(poids){
       this.showInput = false
     },
-    validation(){
-      this.isValidate=true
-      this.$emit('validation')
-    }
+     validation() {
+      let params = {}
+      console.log('datadddd',this.data)
+      if(this.isComposante) {
+        params ={
+          statut: -1,
+          projetId:this.data.projetId,
+        
+        }
+      }else {
+        params = {
+          statut: -1,
+          composanteId:this.data.composanteId
+        }
+      }
+      
+      ComposanteService.update(this.data.id,params).then((data) => {
+        this.isValidate = true
+      }).catch((e) => {
+        if (e.response) {
+         this.$toast.error('erreur de validation')
+         
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          console.log('dernier message', error.message);
+        }
+      })
+    },
+   
+  },
+  mounted() {
+    this.isValidate = this.statut.code > -2
   }
 }
 </script>

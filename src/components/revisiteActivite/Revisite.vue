@@ -123,16 +123,16 @@
             <div class="w-full grid grid-cols-2 items-center gap-4">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre"  :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
               </div>
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="composanteFiltre"  :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
               <div>
                 
-                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
                 <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
@@ -145,104 +145,153 @@
               </div>
            
               <div></div>
-              <button
-                v-if="!showFiltre"
-                title="filtre"
-                @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  height="1.5em"
-                  width="1.5em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-                  ></polygon>
-                </svg>
-                <span>progression des activités</span>
-              </button>
-              <div v-else class="px-6 w-full">
-                <div class="bg-gray-300 h-2 w-full rounded-full relative">
-                  <span
-                    class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
-                    :style="`left:${rangeValue}%`"
-                  ></span>
-                  <span
-                    class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"
-                    :style="`width:${rangeValue}%`"
-                  ></span>
-                </div>
-                <div class="flex justify-between mt-2 text-xs text-gray-600">
-                  <span
-                    @click="filtreRange(0)"
-                    class="w-8 cursor-pointer text-left"
-                    >0%</span
-                  >
-                  <span
-                    @click="filtreRange(25)"
-                    class="w-8 cursor-pointer text-center"
-                    >25%</span
-                  >
-                  <span
-                    @click="filtreRange(50)"
-                    class="w-8 cursor-pointer text-center"
-                    >50%</span
-                  >
-                  <span
-                    @click="filtreRange(75)"
-                    class="w-8 cursor-pointer text-center"
-                    >75%</span
-                  >
-                  <span
-                    @click="filtreRange(100)"
-                    class="w-8 cursor-pointer text-right"
-                    >100%</span
-                  >
-                  <button
-                    @click="showFiltre = false"
-                    class="text-white bg-blue-300 p-1"
-                  >
-                    revenir
-                  </button>
-                </div>
-              </div>
+              
             </div>
            
           </div>
 
         </div>
-        <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(activite, index) in activites" :key="index">
-            <card-activite
-              :bailleur="activite.bailleur.sigle"
-              :libelle="activite.nom"
-              :poids="activite.poids"
-              :montantEPM="activite.pret"
-              :montantNE="activite.budgetNational"
-              :debut="activite.debut"
-              :fin="activite.fin"
-              :statut="getStatus(activite.statut)"
-              :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-              @modifier="modifier(activite)"
-              @supprimer="supprimer(activite)"
-              @prolonger="prolonger(activite)"
-              @validation="validation(activite)"
-              @suivre="suivreMyActivite(activite)"
-              :isDelete="activiteDelete"
-              :isUpdate="activiteUpdate"
-            ></card-activite>
-            <!-- End cards Activités -->
+
+        <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+            <div class="flex  w-full justify-between  items-center">
+              <!--Filtre sur projet -->
+              <h2 class="uppercase font-bold  mb-2">Listes des activités </h2>
+              <nav class="flex text-sm space-x-4  ">
+                  <span
+                    @click="toggle2"
+                    :class="{ 'border-yellow-600 text-yellow-600': pending }"
+                    class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                  >
+                    attentes
+                    <span
+                      class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
+                    >
+                      {{enAttente.length}}
+                    </span>
+                  </span>
+                  <span
+                    @click="toggle3"
+                    :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
+                    class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                  >
+                    en cours
+                    <span
+                      class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined"
+                    >
+                      {{enCours.length}}
+                    </span>
+                  </span>
+                  <span
+                    @click="toggle"
+                    :class="{ 'border-green-600 text-green-600': success }"
+                    class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                  >
+                    terminer
+                    <span
+                      class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
+                    >
+                      {{terminer.length}}
+                    </span>
+                  </span>
+                 
+              </nav>
+            </div>
+        </div>
+
+        <div v-if="success">
+          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div  v-for="(activite, index) in terminer" :key="index">
+              <card-activite
+                :data="activite"
+                :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom"
+                :poids="activite.poids"
+                :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational"
+                :debut="activite.debut"
+                :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
+                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                @modifier="modifier(activite)"
+                @supprimer="supprimer(activite)"
+                @suivre="suivreMyActivite(activite)"
+                @gotoNext="gotoNext(activite)"
+                :isDelete="activiteDelete"
+                :isUpdate="activiteUpdate"
+              ></card-activite>
+              <!-- End cards Activités -->
+          </div>
+            </div>
           </div>
         </div>
+
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div  v-for="(activite, index) in enAttente" :key="index">
+              <card-activite
+                :data="activite"
+                :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom"
+                :poids="activite.poids"
+                :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational"
+                :debut="activite.debut"
+                :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
+                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                @modifier="modifier(activite)"
+                @supprimer="supprimer(activite)"
+                @suivre="suivreMyActivite(activite)"
+                @gotoNext="gotoNext(activite)"
+                :isDelete="activiteDelete"
+                :isUpdate="activiteUpdate"
+              ></card-activite>
+              <!-- End cards Activités -->
+          </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div  v-for="(activite, index) in enCours" :key="index">
+              <card-activite
+                :data="activite"
+                :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom"
+                :poids="activite.poids"
+                :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational"
+                :debut="activite.debut"
+                :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
+                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                @modifier="modifier(activite)"
+                @supprimer="supprimer(activite)"
+                @suivre="suivreMyActivite(activite)"
+                @gotoNext="gotoNext(activite)"
+                :isDelete="activiteDelete"
+                :isUpdate="activiteUpdate"
+              ></card-activite>
+              <!-- End cards Activités -->
+          </div>
+            </div>
+          </div>
+        </div>
+
+
+       
+
+        
       </div>
 
+    
       <div v-if="seePlan && planDecaissementVisible">
         <plan :results="results" :isDelete="planDecaissementDelete" :isUpdate="planDecaissementUpdate"></plan>
       </div>
@@ -266,6 +315,7 @@ import Vform from "@/components/Vform";
 import ModalTopRight from "@/components/ModalTopRight";
 import Plan from "@/components/revisiteActivite/Plan.vue";
 import Suivi from "@/components/revisiteActivite/Suivi.vue";
+import Empty from '@/components/Empty.vue'
 import Statistiques from "@/components/revisiteActivite/Statistiques.vue";
 import Dashboard from "@/layouts/Dashboard";
 import { mapGetters, mapActions, mapMutations } from "vuex";
@@ -287,6 +337,7 @@ export default {
     Vform,
     Plan,
     Suivi,
+    Empty,
     Statistiques,
   },
 
@@ -301,7 +352,7 @@ export default {
       composanteFiltre: null,
       pending: false,
       success: true,
-      rejected: false,
+      inProgress: false,
       activiteId:'',
       cols: 1,
       sendRequest: false,
@@ -347,6 +398,41 @@ export default {
       StatistiqueVisible:false
     };
   },
+  computed:{
+    terminer() {
+      if(this.activites != undefined) {
+        const datas = []
+        this.activites.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.activites != undefined) {
+        const datas = []
+        this.activites.forEach(element => {
+          if(element.statut == -1 || element.statut == -2 ) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.activites != undefined) {
+        const datas = []
+        this.activites.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+  },
 
   methods: {
     //Charger les fonctions de communication avec le serveur
@@ -358,33 +444,33 @@ export default {
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
        
-          if(element.slug === 'creer-une-activite-revise') {
+          if(element.slug === 'faire-revision-ptab') {
             this.activiteAdd = true
           }
-           if(element.slug === 'voir-une-activite-revise') {
+           if(element.slug === 'voir-revision-ptab') {
             this.activiteVisible = true
           }
-            if(element.slug === 'modifier-une-activite-revise') {
+            if(element.slug === 'faire-revision-ptab') {
               this.activiteUpdate = true
             }
-            if(element.slug ==='supprimer-une-activite-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.activiteDelete = true
             }
             //plan de decaissement
 
-            if(element.slug ==='voir-un-plan-de-decaissement-revise') {
+            if(element.slug ==='voir-revision-ptab') {
               this.planDecaissementVisible= true
             }
-            if(element.slug ==='creer-un-plan-de-decaissement-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.planDecaissementAdd= true
             }
-            if(element.slug ==='modifier-un-plan-de-decaissement-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.planDecaissementUpdate= true
             }
-            if(element.slug ==='supprimer-un-plan-de-decaissement-revise') {
+            if(element.slug ==='faire-revision-ptab') {
               this.planDecaissementDelete= true
             }
-            if(element.slug ==='voir-une-statistique-revise') {
+            if(element.slug ==='voir-revision-ptab') {
               this.StatistiqueVisible= true
             }
            
@@ -424,8 +510,6 @@ export default {
       this.seeStatistique = false;
     },
 
-   
-
     getNom(nom, prenom) {
 
       let name = ''
@@ -439,7 +523,34 @@ export default {
 
     getStatus(status) {
       return getStringValueOfStatutCode(status);
-    }
+    },
+    toggle() {
+      this.pending = false;
+      this.inProgress = false;
+      this.success = true;
+    },
+
+    toggle2() {
+      this.success = false;
+      this.inProgress = false;
+      this.pending = true;
+    },
+
+    toggle3() {
+      this.pending = false;
+      this.success = false;
+      this.inProgress = true;
+    },
+
+
+
+
+
+
+
+
+
+
   },
 
   watch: {

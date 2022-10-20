@@ -72,7 +72,7 @@
         @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')"
         @gotoNext="$emit('gotoNext')"
-        :option="Doption"
+        :option="optionD"
       ></dropdown>
         <dropdown
         v-if="isUpdate && isDelete ==false"
@@ -100,7 +100,7 @@
           <button
             title="Valider l\' activite"
             v-if="showValidate"
-            @click="validation"
+            @click="validation(id)"
             class="bg-green-500 rounded-lg text-sm px-3 py-1 font-semibold text-white"
           >
             Valider
@@ -173,6 +173,7 @@
 
 <script>
 import Dropdown from "@/components/Dropdown.vue";
+import ActiviteService from '@/services/modules/activite.service';
 export default {
   props: [
     "bailleur",
@@ -185,7 +186,8 @@ export default {
     "fin",
     "statut",
     "isDelete",
-    "isUpdate"
+    "isUpdate",
+    "data"
   ],
   components: { Dropdown },
   data() {
@@ -194,15 +196,15 @@ export default {
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
-        { name: "continuer" },
+      /*   { name: "continuer" }, */
       ],
        optionD: [
         { name: "supprimer" },
-        { name: "continuer" },
+      /*   { name: "continuer" }, */
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "continuer" },
+      /*   { name: "continuer" }, */
       ],
       showValidate: false,
       delay: 700,
@@ -214,7 +216,6 @@ export default {
   },
   methods: {
     suivreActivite() {
-     
       this.clicks++;
       if (this.clicks === 1) {
         this.timer = setTimeout( () => {
@@ -229,10 +230,27 @@ export default {
     validerSuivi(poids){
       this.showInput = false
     },
-    validation() {
-      this.isValidate = true;
-      this.$emit("validation");
+     validation(data) {
+      const params = {
+        statut: -1,
+        composanteId:this.data.composanteId
+      }
+      ActiviteService.update(this.data.id,params).then((data) => {
+        this.isValidate = true
+      }).catch((e) => {
+        if (e.response) {
+         this.$toast.error('erreur de validation')
+         
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          console.log('dernier message', error.message);
+        }
+      })
     },
+
     gotoDetail() {
       this.$router.push({name:'dashboard_projets_activites_globale_details',params:{id:1}})
     }

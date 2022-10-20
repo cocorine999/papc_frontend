@@ -290,8 +290,10 @@ export default {
       console.log(suivi)
     
         this.saveSuiviFinancier(suivi).then(response => {
-          if(response.status == 200 || response.status == 201){
+          if(response.status === 200 || response.status === 201){
               this.close()
+
+              this.fetchSuiviFinanciers(this.currentUser?.programme?.id)
           }
 
         })
@@ -337,11 +339,11 @@ export default {
       if(window.confirm("Voulez-vous supprimer ce suivi " ))
         await this.deleteSuiviFinancier(suivi.id)
     },
-      close() {
-        this.showModal = false
-      },
-      close2() {
-        this.showModal3 = false
+    close() {
+      this.showModal = false
+    },
+    close2() {
+      this.showModal3 = false
     },
       addSuivi() {
         this.title ="Ajouter un Suivi"

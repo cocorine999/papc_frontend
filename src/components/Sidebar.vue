@@ -6,7 +6,7 @@
   >
    
     <div class="w-full h-20 flex px-4 items-center mb-8">
-      <p class="font-semibold text-3xl text-blue-400 pl-4">PAPC </p>
+      <p class="font-semibold text-lg uppercase text-white  whitespace-nowrap text-center ">{{currentRole}}</p>
     </div>
 
     <div v-if="currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
@@ -1045,10 +1045,10 @@ export default {
             if(element.slug ==='voir-une-institution') {
               this.institutionVisible = true
             }
-            if(element.slug ==='voir-un-ptab') {
+            if(element.slug ==='voir-ptab') {
               this.voirPtaVisible = true
             }
-            if(element.slug ==='voir-un-ppm') {
+            if(element.slug ==='voir-ppm') {
               this.voirPpmVisible = true
             }
            
@@ -1062,7 +1062,7 @@ export default {
               this.programmeVisible = true
             }
             if(element.slug ==='voir le point financier des activites') {
-              this.programmeVisible = true
+              this.pointFinancierVisible = true
             }
             if(element.slug ==='voir-une-checklist') {
               this.checklistVisible = true
@@ -1150,11 +1150,11 @@ export default {
             if(element.slug ==='voir-un-decaissement') {
               this.decaissementVisible = true
             }
-            if(element.slug ==='voir-une-revision') {
+            if(element.slug ==='voir-revision-ptab') {
               this.revisionVisible = true
             }
-            if(element.slug ==='voir-un-point-financier') {
-              this.pointFinancierVisible = true
+            if(element.slug ==='voir-un-decaissement') {
+              this.decaissementVisible = true
             }
             if(element.slug ==='voir-une-liste-entreprise-mod') {
               this.listeEntrepriseModVisible = true

@@ -1,28 +1,6 @@
 <template>
   <dashboard>
-     <nav class="mb-2 p-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
-          <ol class="inline-flex p-0 list-none">
-            <li class="flex items-center ">
-              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
-              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-            </li>
-            <li class="flex items-center text-blue-500 ">
-              <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
-              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-            </li>
-            <li class="flex items-center text-blue-500 ">
-              <router-link to="/dashboard/projets/composantes-globale" class="">activité</router-link>
-            </li>
-          </ol>
-        </div>
-        <div>
-          <search-bar ></search-bar>
-        </div>
-      </nav>
-      <div class="p-4">
-        <titre>Listes des taches</titre>
-      </div>
+     
     <!--  <div v-if="currentRole ==='bailleur'" class="p-4">
      
       <div class="flex bg-white p-2 shadow space-x-4">
@@ -148,7 +126,7 @@ export default {
         if(element.slug ==='voir-une-tache') {
           this.tacheVisible = true
         }
-        if(element.slug ==='voir-une-tache-revise') {
+        if(element.slug ==='voir-revision-ptab') {
           this.tacheReVisible = true
         }
       });

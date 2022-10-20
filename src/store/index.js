@@ -74,6 +74,8 @@ import reponses from "./modules/reponses/index";
 
 import structures from "./modules/structures/index";
 
+import gouvernements from "./modules/gouvernements/index";
+
 import indicateurs_mod from "./modules/indicateurs_mod/index";
 
 
@@ -128,6 +130,28 @@ export default new Vuex.Store({
     ],
 
     statuts : [
+      {
+        nom : "Non validé",
+        etat: -2
+      },
+      {
+        nom: "Validé",
+        etat: -1
+      },
+      {
+        nom: "En cours",
+        etat: 0
+      },
+      {
+        nom: "En retard",
+        etat: 1
+      },
+      {
+        nom: "Terminé",
+        etat: 2
+      }
+    ],
+    statutsAno : [
       {
         nom : "Non validé",
         etat: -2
@@ -284,6 +308,7 @@ export default new Vuex.Store({
     passations,
     reponses,
     structures,
-    indicateurs_mod
+    indicateurs_mod,
+    gouvernements
   }
 });

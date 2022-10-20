@@ -55,7 +55,8 @@ export default {
         
         const { data, status } = await SuiviFinancierService.create(payload);
 
-        commit(ADD_SUIVIFINANCIER, data.data);
+        /*if(status === 200 || status === 201)
+            commit(ADD_SUIVIFINANCIER, data.data);*/
 
         return { data, status };
 

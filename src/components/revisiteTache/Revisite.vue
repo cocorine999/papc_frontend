@@ -62,47 +62,26 @@
     </div>
 
     <!-- le filtre -->
-    <div v-if="seeTache">
-      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-        <!--Filtre sur projet -->
-      <div class="w-full grid grid-cols-2 gap-4">
-          <div>
-            <label for="" class="block text-sm font-semibold uppercase my-2"
-              >Selectionnez un projet</label
-            >
-            <multiselect
-              v-model="projetFiltre"
-              :options="projets"
-              :custom-label="customLabel"
-              :preselect-first="true"
-              placeholder="selectionnez un projet"
-              label="nom"
-              track-by="id"
-            ></multiselect>
-          </div>
-      </div>
-
-
-      <!-- le filtre -->
-      <div v-if="seeTache && tacheVisible">
+    <div v-if="seeTache && tacheVisible ">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <!--Filtre sur projet -->
-          <div class="w-full grid grid-cols-2 gap-4">
-           <div>
+          <div class="w-full grid sm:grid-cols-2 sm:gap-4">
+           <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
-           <div>
+           <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-             <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+             <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
            </div>
           
-            <div>
+            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
+                @input="changeSC(sousComposanteFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -111,172 +90,154 @@
               </multiselect>
             </div>
 
-          <div>
-            <label for="" class="block text-sm font-semibold uppercase my-2"
-              >Selectionnez un sous composant</label
-            >
-            <multiselect
-              v-model="sousComposanteFiltre"
-              :options="sousComposantes"
-              :preselect-first="true"
-              :custom-label="customLabel"
-              placeholder="selectionnez une sous composante"
-              label="nom"
-              track-by="id"
-            >
-            </multiselect>
-          </div>
-
-          <div>
-            <label for="" class="block text-sm font-semibold uppercase my-2"
-              >Selectionnez une activité</label
-            >
-            <multiselect
-              v-model="valueFiltre"
-              :options="activites"
-              :preselect-first="true"
-              :custom-label="customLabel"
-              placeholder="selectionnez l'activite"
-              label="nom"
-              track-by="id"
-            >
-            </multiselect>
-          </div>
-
-          <button
-            v-if="!showFiltre"
-            title="filtre"
-            @click="showFiltre = true"
-            class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
-          >
-            <svg
-              stroke="currentColor"
-              fill="none"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              height="1.5em"
-              width="1.5em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polygon
-                points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-              ></polygon>
-            </svg>
-            <span>progression des taches </span>
-          </button>
-          <div v-else class="px-6 w-full">
-            <div class="bg-gray-300 h-2 w-full rounded-full relative">
-              <span
-                class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
-                :style="`left:${rangeValue}%`"
-              ></span>
-              <span
-                class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"
-                :style="`width:${rangeValue}%`"
-              ></span>
+            <div class="mb-3">
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
+              <multiselect
+                v-model="valueFiltre"
+                :options="activites"
+                @input="changeActivite(valueFiltre)"
+                :custom-label="customLabel" 
+                placeholder="selectionnez l'activite"
+                label="nom"
+                track-by="id">
+              </multiselect>
             </div>
-            <div class="flex justify-between mt-2 text-xs text-gray-600">
-              <span @click="filtreRange(0)" class="w-8 cursor-pointer text-left"
-                >0%</span
-              >
-              <span
-                @click="filtreRange(25)"
-                class="w-8 cursor-pointer text-center"
-                >25%</span
-              >
-              <span
-                @click="filtreRange(50)"
-                class="w-8 cursor-pointer text-center"
-                >50%</span
-              >
-              <span
-                @click="filtreRange(75)"
-                class="w-8 cursor-pointer text-center"
-                >75%</span
-              >
-              <span
-                @click="filtreRange(100)"
-                class="w-8 cursor-pointer text-right"
-                >100%</span
-              >
-              <button
-                @click="showFiltre = false"
-                class="text-white bg-blue-300 p-1"
-              >
-                revenir
-              </button>
+              
+          </div>
+        </div>
+
+        <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+          <div class="flex   justify-between flex-wrap items-center">
+             <!--Filtre sur projet -->
+             <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>
+            <nav class="flex text-sm align-middle justify-evenly ">
+                <span
+                  @click="toggle2"
+                  :class="{ 'border-yellow-600 text-yellow-600': pending }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  attentes
+                  <span
+                    class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
+                  >
+                    {{enAttente.length}}
+                  </span>
+                </span>
+                <span
+                  @click="toggle3"
+                  :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  en cours
+                  <span
+                    class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined"
+                  >
+                    {{enCours.length}}
+                  </span>
+                </span>
+                <span
+                  @click="toggle"
+                  :class="{ 'border-green-600 text-green-600': success }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  terminer
+                  <span
+                    class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
+                  >
+                    {{terminer.length}}
+                  </span>
+                </span>
+              
+            </nav>
+          </div>
+        </div>
+     
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enCours" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enAttente" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
-        <div class="flex justify-between">
-          <!--Filtre sur projet -->
-          <h2 class="uppercase font-bold">Listes des taches</h2>
-          <nav class="flex text-sm align-middle justify-evenly">
-            <span
-              @click="toggle2"
-              :class="{ 'border-yellow-600 text-yellow-600': pending }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-            >
-              attentes
-              <span
-                class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
-              >
-                5
-              </span>
-            </span>
-            <span
-              @click="toggle"
-              :class="{ 'border-green-600 text-green-600': success }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-            >
-              validés
-              <span
-                class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
-              >
-                9
-              </span>
-            </span>
-            <span
-              @click="toggle3"
-              :class="{ 'border-red-600 text-red-600': rejected }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-            >
-              rejetés
-              <span
-                class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
-              >
-                8
-              </span>
-            </span>
-          </nav>
+         <div v-if="success">
+          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in terminer" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(tache, index) in taches" :key="index">
-          <card-tache
-            :id="tache.id"
-            :bailleur="tache.bailleur.sigle"
-            :statut="getStatus(tache.statut)"
-            :poids="tache.poids"
-            :poidsActuel="tache.poidsActuel"
-            :libelle="tache.nom"
-            :montantNE="tache.montantNE"
-            :montantEPM="tache.montantEPM"
-            :isDelete="tacheDelete"
-            :isUpdate="tacheUpdate"
-          ></card-tache>
-        </div>
-      </div>
-    </div>
-    <!-- <div v-if="seeSuivi">
-      <suivi :suivis="results.suivis"></suivi>
-    </div> -->
-    </div>
+        
     </div>
   </div>
 </template>
@@ -294,6 +255,7 @@ import CardTache from "@/components/CardTache.vue";
 import { mapGetters, mapActions } from "vuex";
 import { getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
+import Empty from '@/components/Empty.vue'
 import Activite from "@/store/modules/activites/activite";
 import Suivi from "@/components/revisiteTache/Suivi.vue";
 export default {
@@ -307,6 +269,7 @@ export default {
     CardTache,
     Vtable,
     Suivi,
+    Empty,
     Vform,
   },
   props:['version'],
@@ -324,7 +287,7 @@ export default {
       sousComposanteFiltre: null,
       pending: false,
       success: true,
-      rejected: false,
+      inProgress: false,
       rangeValue: 0,
       programmeId: this.currentUser?.programme.id,
 
@@ -386,6 +349,39 @@ export default {
     ...mapGetters({
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+    terminer() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == -1 || element.statut == -2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
@@ -408,7 +404,7 @@ export default {
             if(element.slug ==='supprimer-une-tache') {
               this.tacheDelete = true
             }
-            if(element.slug ==='voir-un-suivi-tache-revise') {
+            if(element.slug ==='voir-revision-ptab') {
               this.tacheSuivi = true
             } 
       });
@@ -443,20 +439,20 @@ export default {
 
     toggle() {
       this.pending = false;
-      this.rejected = false;
+      this.inProgress = false;
       this.success = true;
     },
 
     toggle2() {
       this.success = false;
-      this.rejected = false;
+      this.inProgress = false;
       this.pending = true;
     },
 
     toggle3() {
       this.pending = false;
       this.success = false;
-      this.rejected = true;
+      this.inProgress = true;
     },
 
     getStatus(status) {

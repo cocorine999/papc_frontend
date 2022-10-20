@@ -206,7 +206,6 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           chargement:false,
           title:'',
           saveUpdate:{},
-  
           idRole:'',
           search:"",
           description:'',
@@ -226,10 +225,8 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
     },
   
     computed: {
-
       //importation des variables du module auths
       ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
-
        permissions() {
         return this.currentUser.role[0].permissions
        }
@@ -305,13 +302,14 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
       },
       updateRole() {
         let roles =[]
+          console.log("les sauvegarde",this.saveUpdate)
           this.saveUpdate.permissions.forEach(element => {
-          roles.role.push(element.id)
+          roles.push(element.id)
         })
         const data = {
           nom:this.saveUpdate.nom,
           description:this.saveUpdate.description,
-          permissions:this.roles
+          permissions:roles
         }
         RoleService.update(this.saveUpdate.id,data).then((data) => {
           const id =setInterval(() => { 
@@ -334,13 +332,12 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
       },
       modifier(data) {
         this.saveUpdate = data
-        this.title='Modifier un role'
+        this.title='Modifier un rôle'
         this.showCloseModal(true)
       },
 
       filteredRole(){
         var self = this;
-
         return this.mesRoles.filter(function (role){
           return role.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
@@ -353,7 +350,6 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
       close() {
         this.showCloseModal()
-        this.resetForm()
       }, 
       
       showCloseModal(value = false) {

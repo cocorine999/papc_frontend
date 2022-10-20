@@ -41,6 +41,7 @@
         
           <div class="px-6" style="width: 60vw !important">
             <vform
+              :sendRequest="sendRequest"
               template="default"
               :champs="champsFile"
               @getFile="getFile"
@@ -93,7 +94,7 @@
             </svg>
           </button>
           <button @click="showUpdateImage=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">changer la couverture</button>
-          <button @click="showUpdateFile=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">ajouter piece jointe </button>
+          <button @click="showUpdateFile=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">Televerser un fichier </button>
         </div>
         <div class="border border-gray-300 p-2 bg-white shadow">
           <router-link class="text-sm font-semibold" to="/dashboard/projets/composantes-globale">Composantes /</router-link>
@@ -162,6 +163,7 @@ import Indicateurs from '@/components/Indicateurs.vue';
 import Environnement from '@/components/Environnement.vue';
 import OtherGraphe from '@/components/OtherGraphe.vue';
 import ProjetService from "@/services/modules/projet.service.js";
+import FichierService from "@/services/modules/fichier.service.js";
 import {API_BASE_URL} from "@/services/configs/environment.js";
 
 export default {
@@ -184,6 +186,7 @@ export default {
     return {
       base_url:API_BASE_URL,
       showModal:false,
+      sendRequest:false,
       showUpdateImage:false,
       showUpdateFile:false,
       isChange:false,
@@ -192,7 +195,7 @@ export default {
         {name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture',isImage:true, isSelect: false, isTextArea: false, data:'', required: false, errors : []},
       ],
       champsFile:[
-        {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
+        {name: 'Televerser un document', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
       ],
       image:{},
       fichiers:[],
@@ -214,14 +217,14 @@ export default {
     }
   },
   methods:{
+    
     getFile(data) {
      for (const property in data) {
         this.fichiers.push(data[property])
       }
       this.fichiers.pop()
       this.fichiers.pop() 
-     console.log('les fichiers dddd',this.fichiers)
-     
+      this.fichiers = this.fichiers[0]
     },
     getImage(data) {
       this.image = data
@@ -247,28 +250,61 @@ export default {
           }
       })
     },
-     updateFile() {
-      const id = this.projet.id
-      const formData = new FormData();
-      for( let i = 0; i < this.fichiers.length; i++ ){
-        let file = this.fichiers[i];
-        formData.append('fichier'+ i , file);
+    updateFile() {
+      if( this.sendRequest === false ){
+        this.sendRequest = true
+        const id = this.projet.id
+        const formData = new FormData();
+        formData.append('fichier', this.fichiers);
+        formData.append('projetId',id)
+        FichierService.create(formData).then(() => {
+        this.$toast.success('televersement reuissi')
+        this.sendRequest = false
+        this.showUpdateFile = false 
+        }).catch((error) => {
+          this.sendRequest = false
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
+        })
       }
-      ProjetService.update(id,formData).then(() => {
-       this.$toast.success('televersement reuissi')
-       this.showUpdateFile = false 
-      }).catch((error) => {
-         if (error.response) {
-          // Requête effectuée mais le serveur a répondu par une erreur.
-          const message = error.response.data.message
-            this.$toast.error(message)
-          } else if (error.request) {
-            // Demande effectuée mais aucune réponse n'est reçue du serveur.
-           //console.log(error.request);
-          } else {
-            // Une erreur s'est produite lors de la configuration de la demande
-          }
-      })
+      
+    },
+    save() {
+        console.log(this.value)
+        this.value.forEach(element => {
+          this.usersId.push(element.id)
+        })
+        console.log(this.usersId)
+        const formData = new FormData();
+        formData.append('fichier',this.datasFiles)
+        for( let i = 0; i < this.usersId.length; i++ ){
+          let file = this.usersId[i];
+          formData.append('sharedId[]', file);
+        }
+       
+        formData.append('autre','autre')
+        if(this.chargement == false) {
+          this.chargement = true
+          FichierService.create(formData).then((data) => {
+            this.chargement = false
+            this.$toast.success('televersement reuissi')
+            this.showModal = false
+            this.getFiles()
+
+          }).catch((e) => {
+            this.chargement = false  
+            this.$toast.error(e)
+          })
+        }
+
     },
   },
   mounted(){

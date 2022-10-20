@@ -164,7 +164,7 @@
       </div>
      
       
-      <vtable v-if="currentRole == 'bailleur' " :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"   @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
@@ -226,8 +226,8 @@ export default {
         choiceDateOption:true,
         champs:[
           {name:'Nom',type:'text',key:'nom',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-          {name:'Année de base',key:'anneeDeBase',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-          {name:'Valeur de base',key:'valeurDeBase',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+          {name:'Année de base',key:'anneeDeBase',type:'number',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+          {name:'Valeur de base',key:'valeurDeBase',type:'text',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
           {name:'Unite de mesure',key:'uniteeMesureId',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:this.uniteDeMesure,required:true,cle: 'id', value:'nom',errors : []},
           {name:'Categories',key:'categorieId',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:this.categories,required:true, cle: 'id', value: 'nom', errors : []},
           {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:this.bailleurs, cle: 'id', value: 'sigle',errors : []},
@@ -381,15 +381,17 @@ export default {
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
+
     getIndicateurBailleurs() {
       IndicateurService.getIndicateurBailleur().then((data) => {
         this.indicateurBailleurs = data.data.data
       }).catch((e) => {
-          console.log(e)
+        console.log(e)
       })
     },
+
     getPermission() {
-          this.currentUser.role[0].permissions.forEach(element => {
+      this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-indicateur') {
               this.indicateurVisible = true
             }
@@ -506,6 +508,7 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
+                this.fetchIndicateurs()
                 this.sendRequest = false
                 this.close();
               }
@@ -514,11 +517,12 @@ export default {
             this.$toast.error(e)
             this.sendRequest = false
           })
-          } else {
+        } else {
           this.saveIndicateur(indicateur).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
-              his.$toast.success('operation effectué avec success')
+              this.$toast.success('operation effectué avec success')
+              this.fetchIndicateurs()
               this.sendRequest = false
             }
           }).catch((e) => {
