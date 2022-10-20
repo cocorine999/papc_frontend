@@ -252,7 +252,7 @@ const routes = [
     },
   },
   {
-    path: "/dashboard/collecteur",
+    path: "/dashboard/maitrise-ouvrage",
     name: "collecteur_mod",
     component: collecteur_mod,
     meta: {
