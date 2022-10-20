@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-4">
+    <div class="p-0 w-full">
       <nav class="mb-2 text-sm font-semibold" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">

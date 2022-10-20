@@ -9,7 +9,7 @@
         </modal-top-right>
       </div>
       
-      <nav class="mb-2 mt-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+      <nav class="mb-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
         <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">

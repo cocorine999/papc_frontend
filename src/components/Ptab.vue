@@ -4,7 +4,7 @@
     <div v-if="openFiltre && revisionVisible">
        <vmodal title="filtre"  v-on:close="openFiltre = false">
         <div  v-if="currentPage" style="width:60vw !important">
-          <form @submit.prevent="getPtaFiltre"  class="p-4">
+          <form @submit.prevent="getPtaFiltre"  class="p-0 w-full">
             <div class="form-group">
               <label for="bailleur"  class="block my-2 font-semibold">Selectionnez un bailleur</label>
               <multiselect v-model="bailleur"  :options="bailleurs" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un bailleur" label="nom" track-by="id"></multiselect>
@@ -34,7 +34,7 @@
           </form>
         </div>
         <div v-else style="width:60vw !important">
-          <form @submit.prevent=" getPtaReviseFiltre"  class="p-4">
+          <form @submit.prevent=" getPtaReviseFiltre"  class="p-0 w-full">
             
 
             <div class="form-group">
@@ -75,7 +75,7 @@
 
     </div>
     
-     <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+     <div class="">
       <!-- pta current -->
       <div v-if="currentPage && ptaVisible" class="current">
         <div class="my-3 px-3 py-1 justify-end flex space-x-4">

@@ -23,7 +23,7 @@
     <div class="w-full bg-gray-100 pl-0 lg:pl-64 min-h-screen " :class="sideBarOpen ? 'relative' : ''" id="main-content">
       <vue-element-loading :active="isActive" :is-full-screen="false"/>
       <navbar  ></navbar>
-      <div class="relative bg-gray-100 mb-20">
+      <div class="m-2  flex justify-between items-center ">
         
         <slot></slot>
         <!--  <div title="laissez un commentaire" @click="showCommentaire = true" class="fixed cursor-pointer  z-50 bottom-5 text-blue-500 animation  right-6 ">

@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-   <div v-if="composanteVisible" class="p-4">
+   <div v-if="composanteVisible" class="p-0 w-full">
     <div class="select w-52">
         
         <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -11,12 +11,12 @@
         </select>
     </div>
    
-    <div class="border my-4 rounded-lg border-gray-300 shadow-md">
+    <div class="">
         <sous-composante-current :valeurProjet="{codePta:$route.params.codeP,nom:$route.params.nomP}" :valueProfondeur="{codePta:$route.params.code,nom:$route.params.nom}" v-if="currentPage"></sous-composante-current>
         <revisite v-else :version="version"></revisite>
     </div>
    </div>
-    <div v-if="currentRole ==='bailleur'" class="p-4">
+    <div v-if="currentRole ==='bailleur'" class="p-0 w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -37,7 +37,7 @@
           <search-bar ></search-bar>
         </div>
       </nav>
-      <div class="my-10">
+      <div class="mb-0">
        
         <titre>Sous composantes</titre>
       </div>
