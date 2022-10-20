@@ -59,7 +59,7 @@
       <!--Fin Modal de filtre -->
 
        <!--La navigation  -->
-      <nav v-if="currentRole!='bailleur'" class="mb-2 text-sm font-semibold" aria-label="Breadcrumb">
+      <nav v-if="currentRole!='bailleur'" class="flex flex-row justify-between mb-2 text-sm font-semibold" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -79,6 +79,11 @@
             </li>
           </ol>
         </div>
+        <div class="border border-gray-300 p-2 bg-white shadow">
+          <router-link class="text-sm font-semibold" to="/dashboard/projets/composantes-globale">Composantes /</router-link>
+          <router-link class="text-sm font-semibold" to="/dashboard/projets/activites-globale">Activités /</router-link>
+          <router-link class="text-sm font-semibold" to="/dashboard/projets/taches-globale">Taches</router-link>
+        </div>
       </nav>
 
       <!--Fin navigation -->
@@ -86,29 +91,36 @@
       <!--filte et button de modification  -->
 
       <div class="flex my-5 items-center justify-between ">
-        <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
-         
-          <button title="filtre" @click="showModal = true" class="bg-primary text-white p-2">
-            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-            </svg>
+        <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none">cadre logique</button>
+
+        <div class="flex space-x-8">
+          <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
+          
+            <button title="filtre" @click="showModal = true" class="bg-primary text-white p-2 hover:bg-gray-800"><i class="bx bxs-filter-alt bx-sm p-0"></i></button>
+
+            <button @click="showUpdateImage=true" class="bg-blue-500 text-white outline-none p-2 hover:bg-gray-800"><i class="bx bx-image-add bx-sm p-0"></i></button>
+
+            <button @click="showUpdateFile=true" class="bg-blue-500 text-white p-2 uppercase outline-none hover:bg-gray-800"><i class="bx bx-archive-out bx-sm p-0"></i></button>
+          </div>
+
+          <button @click="showPreview = true" class="text-white flex space-x-2 items-center bg-blue-500 px-4 py-2 hover:bg-gray-800">
+            <i class="bx bx-folder bx-sm p-0"></i>
+            <span>Dossiers</span>
           </button>
-          <button @click="showUpdateImage=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">changer la couverture</button>
-          <button @click="showUpdateFile=true" class="bg-blue-500 text-white p-2 text-sm uppercase outline-none   ">Televerser un fichier </button>
         </div>
-        <div class="border border-gray-300 p-2 bg-white shadow">
+        <!-- <div class="border border-gray-300 p-2 bg-white shadow">
           <router-link class="text-sm font-semibold" to="/dashboard/projets/composantes-globale">Composantes /</router-link>
           <router-link class="text-sm font-semibold" to="/dashboard/projets/activites-globale">Activités /</router-link>
           <router-link class="text-sm font-semibold" to="/dashboard/projets/taches-globale">Taches</router-link>
-        </div>
+        </div> -->
       </div>
 
-      <div class="flex justify-end">
+      <!-- <div class="flex justify-end">
         <button @click="showPreview = true" class="text-white flex space-x-2 items-center bg-blue-500 px-4 py-2 rounded-md">
           <span class="h-5 w-5  "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M464 128H272l-64-64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48z"></path></svg></span>
           <span>Mes documents</span>
         </button>
-      </div>
+      </div> -->
 
       <!--fin filte et button de modification  -->
 
