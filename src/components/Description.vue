@@ -122,7 +122,7 @@
       </div>
     </div>
     <div class="bg-white my-3 shadow">
-      <div class="grid grid-cols-2 p-3">
+      <div class="p-3">
         <div>
           <p class="border border-gray-100 shadow rounded-md">
              <img v-if="image != null || image != undefined" 
@@ -135,20 +135,24 @@
           <p class="py-2 text-indigo-700 uppercase text-center font-bold">
             du {{ projet.debut }} au {{ projet.fin }} 
           </p>
-          <p class="py-2 font-bold uppercase text-center text-indigo-700">
+          <p class="py-2 font-bold underline uppercase text-center text-indigo-700">
             objectif globale
           </p>
           <p class="py-2 font-bold text-xs text-center">
             {{ projet.objectifGlobaux }}
           </p>
+          <div class="flex justify-center">
+            <button class="bg-blue-300 text-white px-4 py-2 uppercase outiline-none hover:bg-blue-500 transition-all duration-700 ">cadre logique</button>
+          </div>
         </div>
-        <div class="p-0 w-full">
-          <h1 class="text-center py-2 font-bold text-indigo-700">
+        <div class="p-4">
+          <h1 class="text-center py-2 underline font-bold text-indigo-700">
             DESCRIPTION DU PROJET
           </h1>
           <p class="text-xs italic text-justify">
             {{projet.description}}
           </p>
+         
         </div>
       </div>
 
