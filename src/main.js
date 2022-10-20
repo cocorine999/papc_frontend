@@ -12,6 +12,8 @@ import 'boxicons/css/boxicons.min.css';
 import VueApexCharts from 'vue-apexcharts'
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
+import numeral from 'numeral';
+import numFormat from 'vue-filter-number-format';
 
 import Vuelidate from 'vuelidate';
 Vue.component('apexchart', VueApexCharts)
@@ -22,9 +24,15 @@ Vue.filter('formatDate', function(value) {
   if (value) {
     return moment(String(value)).format('MM/DD/YYYY hh:mm')
   }
-})
+});
 
-//console.log(Vue.moment().format('hh:mm:s:ss')) //e
+Vue.filter('numFormat', numFormat(numeral));
+
+Vue.filter("formatNumber", function (value) {
+  return new Intl.NumberFormat().format(value)
+  //return numeral(value).format("0,0");  displaying other groupings/separators is possible, look at the docs
+});
+
 
 Vue.use(Vuelidate);
 Vue.use(VueApexCharts)
