@@ -28,8 +28,9 @@
           </button>
         </div>
         <div v-else>
+          
            <button
-           v-if="statut.code !=2 && isSuivi && !isDone"
+           v-if="(statut.code == 1 || statut.code ==0)  && !isSuivi && !isDone"
             title="suivre tache"
             @click="validerSuivi(id)"
             class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold "
@@ -38,7 +39,7 @@
           </button>
            <button
             title="suivre tache"
-            v-else
+            v-if="statut.code == 2"
             class="bg-gray-500 text-gray-300  rounded-lg text-sm px-3 py-1 font-semibold "
           >
             effectuée
@@ -155,8 +156,9 @@ export default {
       const data = {
         tacheId:id
       }
+      this.isDone = true
       TacheService.suiviTache(data).then((data) => {
-        this.isDone = true
+        window.location.reload()
       }).catch((e) => {
         if (e.response) {
           const errors ={}

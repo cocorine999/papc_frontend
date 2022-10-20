@@ -196,11 +196,24 @@
                     {{terminer.length}}
                   </span>
                 </span>
+
+                 <span
+                  @click="toggle4"
+                  :class="{ 'border-red-600 text-red-600': retard }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  retard
+                  <span
+                    class="px-2 text-base text-red-600 border border-red-600 rounded-full "
+                  >
+                    {{retardL.length}}
+                  </span>
+                </span>
               
             </nav>
           </div>
         </div>
-     
+       
         <div v-if="inProgress">
           <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
           <div v-else>
@@ -258,11 +271,40 @@
           </div>
         </div>
 
-         <div v-if="success">
+        <div v-if="success">
           <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
           <div v-else>
             <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in terminer" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="retard">
+          <empty v-if="retardL.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in retardL" :key="index">
                 <card-tache
                   :id="tache.id"
                   :bailleur="tache.bailleur.sigle"
@@ -373,6 +415,7 @@ export default {
       sousComposanteFiltre:null,
       pending:false,
       success:true,
+      retard:false,
       inProgress:false,
       rangeValue:0,
       programmeId: this.currentUser?.programme.id,
@@ -475,6 +518,17 @@ export default {
         const datas = []
         this.taches.forEach(element => {
           if(element.statut == -1 || element.statut == -2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    retardL() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 1 ) {
             datas.push(element)
           }
         })
@@ -831,19 +885,27 @@ export default {
       this.pending = false
       this.inProgress = false
       this.success = true
-
+      this.retard = false
     },
 
     toggle2() {
       this.success = false
       this.inProgress = false
       this.pending = true
+      this.retard = false
     },
 
     toggle3() {
       this.pending = false
       this.success = false
       this.inProgress = true
+      this.retard = false
+    },
+     toggle4() {
+      this.pending = false
+      this.success = false
+      this.inProgress = false
+      this.retard = true
     },
 
     getStatus(status) {
