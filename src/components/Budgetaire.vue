@@ -1,29 +1,12 @@
 <template>
   <div class="stat-fin h-full overflow-auto">
     <div
-      class="bg-primary border border-primary shadow grid grid-cols-2 gap-x-3 gap-y-5 p-3 text-white"
+      class="text-sm bg-primary border border-primary shadow grid grid-cols-2 gap-x-3 gap-y-5 p-3 text-white"
     >
       <div class="flex items-center space-x-2">
-        <div>
-          <span>
-            <svg
-              class="text-green-500"
-              stroke="#f42dffv"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 24 24"
-              height="2.5em"
-              width="2.5em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="none"
-                stroke="#000"
-                stroke-width="2"
-                d="M16 16c0-1.1046-3.134-2-7-2s-7 .8954-7 2 3.134 2 7 2 7-.8954 7-2zM2 16v4.9368C2 22.0763 5.134 23 9 23s7-.9237 7-2.0632V16M9 5c-4.4183 0-8 .8954-8 2s3.5817 2 8 2M1 7v5c0 1.0129 3.5817 2 8 2M23 4c0-1.1046-3.0996-2-6.923-2-3.8236 0-6.9232.8954-6.9232 2s3.0996 2 6.9231 2C19.9004 6 23 5.1046 23 4zm-7 12c3.8235 0 7-.9871 7-2V4M9.1538 4v10.166M9 9c0 1.0129 3.2534 2 7.077 2C19.9003 11 23 10.0129 23 9"
-              /></svg
-          ></span>
-        </div>
+        <!-- box icons -->
+        <div class="bg-blue-500 p-3 rounded-lg">
+        <i class="bx bx-coin-stack bx-sm"></i></div>
         <div>
           <h2 class="uppercase font-semibold hover:font-bold py-2">
             budget du bailleur
@@ -33,25 +16,9 @@
       </div>
 
       <div class="flex items-center space-x-2">
-        <div>
-          <span class="text-green-500"
-            ><svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 24 24"
-              height="2.5em"
-              width="2.5em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="none"
-                stroke="#000"
-                stroke-width="2"
-                d="M16 16c0-1.1046-3.134-2-7-2s-7 .8954-7 2 3.134 2 7 2 7-.8954 7-2zM2 16v4.9368C2 22.0763 5.134 23 9 23s7-.9237 7-2.0632V16M9 5c-4.4183 0-8 .8954-8 2s3.5817 2 8 2M1 7v5c0 1.0129 3.5817 2 8 2M23 4c0-1.1046-3.0996-2-6.923-2-3.8236 0-6.9232.8954-6.9232 2s3.0996 2 6.9231 2C19.9004 6 23 5.1046 23 4zm-7 12c3.8235 0 7-.9871 7-2V4M9.1538 4v10.166M9 9c0 1.0129 3.2534 2 7.077 2C19.9003 11 23 10.0129 23 9"
-              /></svg
-          ></span>
-        </div>
+        <!-- box icons -->
+        <div class="bg-purple-800 p-3 rounded-lg">
+        <i class="bx bx-coin-stack bx-sm"></i></div>
         <div>
           <h2 class="uppercase font-semibold hover:font-bold py-2">
             budget national
@@ -61,25 +28,9 @@
       </div>
 
       <div class="flex items-center space-x-2">
-        <div>
-          <span class="text-green-500"
-            ><svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 24 24"
-              height="2.5em"
-              width="2.5em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="none"
-                stroke="#000"
-                stroke-width="2"
-                d="M16 16c0-1.1046-3.134-2-7-2s-7 .8954-7 2 3.134 2 7 2 7-.8954 7-2zM2 16v4.9368C2 22.0763 5.134 23 9 23s7-.9237 7-2.0632V16M9 5c-4.4183 0-8 .8954-8 2s3.5817 2 8 2M1 7v5c0 1.0129 3.5817 2 8 2M23 4c0-1.1046-3.0996-2-6.923-2-3.8236 0-6.9232.8954-6.9232 2s3.0996 2 6.9231 2C19.9004 6 23 5.1046 23 4zm-7 12c3.8235 0 7-.9871 7-2V4M9.1538 4v10.166M9 9c0 1.0129 3.2534 2 7.077 2C19.9003 11 23 10.0129 23 9"
-              /></svg
-          ></span>
-        </div>
+        <!-- box icons -->
+        <div class="bg-yellow-600 p-3 rounded-lg">
+          <i class="bx bx-coin-stack bx-sm"></i></div>
         <div>
           <h2 class="uppercase hover:font-bold font-semibold py-2">
             Decaissement bailleur
@@ -88,25 +39,9 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <div>
-          <span class="text-green-500"
-            ><svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 24 24"
-              height="2.5em"
-              width="2.5em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="none"
-                stroke="#000"
-                stroke-width="2"
-                d="M16 16c0-1.1046-3.134-2-7-2s-7 .8954-7 2 3.134 2 7 2 7-.8954 7-2zM2 16v4.9368C2 22.0763 5.134 23 9 23s7-.9237 7-2.0632V16M9 5c-4.4183 0-8 .8954-8 2s3.5817 2 8 2M1 7v5c0 1.0129 3.5817 2 8 2M23 4c0-1.1046-3.0996-2-6.923-2-3.8236 0-6.9232.8954-6.9232 2s3.0996 2 6.9231 2C19.9004 6 23 5.1046 23 4zm-7 12c3.8235 0 7-.9871 7-2V4M9.1538 4v10.166M9 9c0 1.0129 3.2534 2 7.077 2C19.9003 11 23 10.0129 23 9"
-              /></svg
-          ></span>
-        </div>
+        <!-- box icons -->
+        <div class="bg-red-500 p-3 rounded-lg">
+        <i class="bx bx-coin-stack bx-sm"></i></div>
         <div>
           <h2 class="uppercase font-semibold hover:font-bold py-2">
             Realisation globale
