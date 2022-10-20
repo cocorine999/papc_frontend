@@ -45,7 +45,7 @@
       </modal-top-right>
     </div>
     <div v-if="showModal2">
-      <vmodal  title="Filtre indicateur"  v-on:close="showModal2 = false">
+      <vmodal  title="Filtre decaissement"  v-on:close="showModal2 = false">
         <div class="px-4" style="width:500px" >
           <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
         </div>
@@ -109,7 +109,7 @@ export default {
           showModal2:false,
           title:'',
           decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
-          decaissementAttributsRecherche : ['type', 'date', 'projetId'],
+          decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
           champs:[
           {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
@@ -117,32 +117,12 @@ export default {
           {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
         ],
         champsRecherche:[
-          {name:'Date debut',key:'date debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Date fin ',key:'date fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
           {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
           {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
         ],
-        cols:2,
-         showComment:false,
-          commentaires:[
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
-        ],
+        
         search:"",
         headers:[
           {name:'Projets',cle:'projet'},
@@ -346,7 +326,7 @@ export default {
         },
 
         showFiltreModal2() {
-          this.title ="Filtre"
+          this.title ="Filtre decaissement"
 
           let formData = this.champsRecherche.map((value) => {
             if(value.key === 'projetId'){ 

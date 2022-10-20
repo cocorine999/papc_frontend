@@ -1064,7 +1064,7 @@ export default {
               this.programmeVisible = true
             }
             if(element.slug ==='voir le point financier des activites') {
-              this.programmeVisible = true
+              this.pointFinancierVisible = true
             }
             if(element.slug ==='voir-une-checklist') {
               this.checklistVisible = true
@@ -1156,7 +1156,7 @@ export default {
               this.revisionVisible = true
             }
             if(element.slug ==='voir-un-decaissement') {
-              this.pointFinancierVisible = true
+              this.decaissementVisible = true
             }
             if(element.slug ==='voir-une-liste-entreprise-mod') {
               this.listeEntrepriseModVisible = true
