@@ -99,7 +99,9 @@
             <span  class="text-sm text-green-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
           </div>
           <div v-else class="flex items-center space-x-3">
-            <span class="text-gray-700">
+            <!-- boxicons -->
+            <i class="bx bx-chevron-up bx-sm"></i>
+            <!-- <span class="text-gray-700">
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -114,7 +116,7 @@
                   d="M13.707 9.707l-5 5c-0.39 0.391-1.024 0.391-1.414 0l-5-5c-0.391-0.391-0.391-1.024 0-1.414s1.024-0.391 1.414 0l3.293 3.293v-9.586c0-0.552 0.448-1 1-1s1 0.448 1 1v9.586l3.293-3.293c0.195-0.195 0.451-0.293 0.707-0.293s0.512 0.098 0.707 0.293c0.391 0.391 0.391 1.024 0 1.414z"
                 ></path>
               </svg>
-            </span>
+            </span> -->
             <span  class="text-sm text-red-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
           </div>
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
@@ -132,28 +134,36 @@
                 src="@/assets/images/login/logo-gouv.webp"
                 alt="">
           </p>
-          <p class="py-2 text-indigo-700 uppercase text-center font-bold">
-            du {{ projet.debut }} au {{ projet.fin }} 
-          </p>
-          <p class="py-2 font-bold underline uppercase text-center text-indigo-700">
-            objectif globale
-          </p>
-          <p class="py-2 font-bold text-xs text-center">
+          <!-- divide OBJECTIF -->
+          <div class="border-b-2 border-gray-700 mx-4 mb-8 relative p-4">
+            <span class="w-full -mx-4 font-bold absolute bg-gray-700 px-4 py-1 text-white border-2 border-gray-700">Durée du projet : <span class="">du {{ projet.debut }} au {{ projet.fin }} </span></span> 
+          </div>
+          <!-- divide OBJECTIF -->
+          <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
+            <span class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg">OBJECTIF GLOBALE</span>
+          </div>
+          <p class="p-4 font-bold text-sm text-justify">
             {{ projet.objectifGlobaux }}
           </p>
-          <div class="flex justify-center">
+          <!-- <div class="flex justify-center">
             <button class="bg-blue-500 text-white px-4 py-2 uppercase outiline-none hover:bg-blue-500 transition-all duration-700 ">cadre logique</button>
-          </div>
+          </div> -->
+        </div>
+        <!-- divide PROJET -->
+        <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
+          <span class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg">DESCRIPTION DU PROJET</span>
         </div>
         <div class="p-4">
-          <h1 class="text-center py-2 underline font-bold text-indigo-700">
-            DESCRIPTION DU PROJET
-          </h1>
           <p class="h-36 overflow-hidden text-sm italic text-justify">
             {{projet.description}}
           </p>
-         
+          <button class="font-semibold bg-gray-700 text-white px-4 py-2 mt-4 hover:bg-blue-500">Lire plus</button>
         </div>
+      </div>
+
+      <!-- divide company -->
+      <div class="border-b-2 mx-4 mb-8 relative p-4">
+        <span class="absolute bg-white px-4 py-1 text-gray-500 border-2 rounded-lg">Entreprises</span>
       </div>
 
       <div class="w-5/6 mx-auto p-1">
@@ -182,7 +192,7 @@
               alt=""
             /> -->
 
-      <div class="grid grid-cols-3">
+      <div class="grid grid-cols-3 mt-4">
         <div class="h-2 w-full bg-green-700"></div>
         <div class="h-2 w-full bg-yellow-500"></div>
         <div class="h-2 w-full bg-red-700"></div>
