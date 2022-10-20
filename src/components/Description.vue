@@ -142,14 +142,14 @@
             {{ projet.objectifGlobaux }}
           </p>
           <div class="flex justify-center">
-            <button class="bg-blue-300 text-white px-4 py-2 uppercase outiline-none hover:bg-blue-500 transition-all duration-700 ">cadre logique</button>
+            <button class="bg-blue-500 text-white px-4 py-2 uppercase outiline-none hover:bg-blue-500 transition-all duration-700 ">cadre logique</button>
           </div>
         </div>
         <div class="p-4">
           <h1 class="text-center py-2 underline font-bold text-indigo-700">
             DESCRIPTION DU PROJET
           </h1>
-          <p class="text-xs italic text-justify">
+          <p class="h-36 overflow-hidden text-sm italic text-justify">
             {{projet.description}}
           </p>
          

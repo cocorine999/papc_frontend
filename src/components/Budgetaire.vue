@@ -1,7 +1,7 @@
 <template>
   <div class="stat-fin h-full overflow-auto">
     <div
-      class="text-sm bg-primary border border-primary shadow grid grid-cols-2 gap-x-3 gap-y-5 p-3 text-white"
+      class="text-sm bg-primary border border-primary shadow grid grid-cols-2 gap-x-3 gap-y-5 px-4 py-6 text-white"
     >
       <div class="flex items-center space-x-2">
         <!-- box icons -->
