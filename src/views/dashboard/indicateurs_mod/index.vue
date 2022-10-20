@@ -154,7 +154,7 @@
             <span class="mx-2 text-sm font-semibold">Export Excel</span>
           </button>
           </json-excel>
-          <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <button @click="addIndicateur"   title="ajouter un indicateur"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             <span class="mx-2 text-sm font-semibold uppercase">ajouter un indicateur</span>
           </button>
@@ -164,11 +164,11 @@
      
       
       <vtable v-if="currentRole == 'bailleur' " :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"   @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
-      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
-      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData"  @supprimer="supprimer"></vtable>
+      <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur"   @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
+      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur"  @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
+      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur"  @updateInputData="updateInputData"  @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -308,7 +308,14 @@ export default {
      
       uniteDeMesure:"uniteesDeMesure/getUniteesDeMesure",
     }),
-    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
+    filteredIndicateur(){
+        var self = this;
+
+        return this.indicateurs.filter(function (indicateur){
+          return indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+    },
   },
   methods: {
     ...mapMutations({
@@ -394,7 +401,7 @@ export default {
       
     },
     title_csv() {
-        return "indicateur-" +"-" + new Date()
+      return "indicateur-" +"-" + new Date()
     },
 
     json_data(){
@@ -423,17 +430,7 @@ export default {
         console.log(e)
       })
     },
-    filteredIndicateur(){
-        var self = this;
-
-        return this.indicateurs.filter(function (indicateur){
-          return indicateur.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-          indicateur.bailleur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.categorie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.uniteDeMesure.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
-    },
+    
     sendForm() {
       this.champs = this.champs.map((item) => {
         item.errors = [];
@@ -584,11 +581,11 @@ export default {
             this.headers = [
               {name:'Indicateur',cle:'nom',},
               {name:'Description',cle:'description'},
-              {name:'Definition',cle:'definition'},
+             /* 
               {name:'Responsable',cle:'responsable'},
               {name:'Frequence',cle:'frequence'},
               {name:'Source',cle:'source'},
-              {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'},
+              {name:'Unité de mesure',cle:'nom',props:'uniteeDeMesure',select:true,options:this.uniteDeMesure,key:'nom',updateKey:'uniteeMesureId'}, */
               {name:'Valeur de base',cle:'valeurDeBase'},
               {name:'Année de base',cle:'anneeDeBase'},
               {name:'Date de création',cle:'created_at'},

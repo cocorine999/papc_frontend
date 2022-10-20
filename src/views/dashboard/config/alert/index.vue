@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
@@ -161,6 +162,9 @@ export default {
                 console.log(e)
             })
       }
+    },
+    computed: {
+      ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
    
   mounted() {

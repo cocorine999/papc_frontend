@@ -831,7 +831,7 @@
       </router-link>
     </div>
 
-    <div  class="px-6 mb-10 relative">
+    <div v-if=" currentRole ==='unitee-de-gestion' " class="px-6 mb-10 relative">
       <input
         class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0"
         type="checkbox"
@@ -1062,7 +1062,7 @@ export default {
               this.programmeVisible = true
             }
             if(element.slug ==='voir le point financier des activites') {
-              this.programmeVisible = true
+              this.pointFinancierVisible = true
             }
             if(element.slug ==='voir-une-checklist') {
               this.checklistVisible = true
@@ -1097,13 +1097,13 @@ export default {
             if(element.slug ==='voir-une-composante') {
               this.composanteVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-composante-revise') {
               this.composanteReVisible = true
             }
             if(element.slug ==='voir-une-activite') {
               this.activiteVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-activite-revise') {
               this.activiteReVisible = true
             }
             if(element.slug ==='voir-une-tache') {
@@ -1112,10 +1112,10 @@ export default {
             if(element.slug ==='voir-un-suivi-tache') {
               this.suiviTacheVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-tache-revise') {
               this.tacheReVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-un-suivi-tache-revise') {
               this.suiviTacheReVisible = true
             }
             if(element.slug ==='voir-un-indicateur') {
@@ -1144,7 +1144,7 @@ export default {
             if(element.slug ==='voir-une-statistique') {
               this.statistiqueActiviteVisible = true
             }
-            if(element.slug ==='voir-revision-ptab') {
+            if(element.slug ==='voir-une-statistique-revise') {
               this.statistiqueActiviteReVisible = true
             }
             if(element.slug ==='voir-un-decaissement') {
@@ -1154,7 +1154,7 @@ export default {
               this.revisionVisible = true
             }
             if(element.slug ==='voir-un-decaissement') {
-              this.pointFinancierVisible = true
+              this.decaissementVisible = true
             }
             if(element.slug ==='voir-une-liste-entreprise-mod') {
               this.listeEntrepriseModVisible = true
