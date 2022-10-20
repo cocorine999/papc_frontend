@@ -7,30 +7,30 @@
             <form action="" @submit.prevent="sendForm" class="px-4"  >
        
               <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input required v-model="nom" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom de l'activite" />
               </div>
 
 
               <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Bailleur <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Bailleur <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <select  v-model="bailleur" class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" placeholder="selectionnez une entreprise" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'">
                   <option v-for="(item, i) in bailleurs" :key="i" :value="item.id">{{item.sigle}}</option>
                 </select>
               </div>
             
               <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez les entreprises <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez les entreprises <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <multiselect v-model="value" tag-placeholder="selectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises"  :multiple="true" :taggable="true" @tag="addTag"></multiselect>
               </div>
 
             <div class="my-4">
-              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <input required v-model="longitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer la longitude" />
             </div>
 
             <div class="my-4">
-              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <input required v-model="latitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer la latitude" />
             </div>
           
@@ -49,7 +49,7 @@
         </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-4 text-sm font-semibold" aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
@@ -72,7 +72,7 @@
             </li>
           </ol>
         </div>
-        <div class="flex justify-center w-full text-gray-600">
+        <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +85,7 @@
              </button>
         </div>
       </nav>
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
           <span
             class="inline-block cursor-pointer border-b-8 font-bold text-base uppercase border-primary py-2"
@@ -94,6 +94,7 @@
         </div>
         <button
           @click="addSite"
+          v-if="siteAdd"
           title="ajouter un tabelau"
           class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline"
         >
@@ -105,11 +106,28 @@
           >
             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
           </svg>
-          <span class="mx-2 text-sm font-semibold">Ajouter </span>
+          <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
         </button>
       </div>
       <div id="dataTable">
         <vtable
+          v-if="siteDelete && !siteUpdate"
+          :headers="headers"
+          :datas="filteredSite"
+          :actions="actionsD"
+          @supprimer="supprimer"
+        >
+         </vtable>
+         <vtable
+          v-if="!siteDelete && siteUpdate"
+          :headers="headers"
+          :datas="filteredSite"
+          :actions="actionsD"
+          @updateInputData="updateInputData"
+        >
+         </vtable>
+         <vtable
+          v-if="siteDelete && siteUpdate"
           :headers="headers"
           :datas="filteredSite"
           :actions="actions"
@@ -166,6 +184,16 @@ export default {
         { name: 'modifier', iconne: '' },
         { name: 'supprimer', iconne: '' },
       ],
+      actionsD: [
+        { name: 'supprimer', iconne: '' },
+      ],
+      actionsUp: [
+        { name: 'modifier', iconne: '' },
+      ],
+      siteVisible:false,
+      siteAdd:false,
+      siteDelete:false,
+      siteUpdate:false,      
     };
   },
 
@@ -219,6 +247,25 @@ export default {
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setSite: "Sites/FILL", // map `this.CREATE_INSTANCE_ANO()` to `this.$store.commit('CREATE_INSTANCE_ANO')`
     }),
+
+     getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-site') {
+              this.siteVisible = true
+            }
+            if(element.slug === 'creer-un-site') {
+              this.siteAdd = true
+            }
+            if(element.slug === 'modifier-un-site') {
+              this.siteUpdate = true
+            }
+            if(element.slug ==='supprimer-un-site') {
+              this.siteDelete = true
+            }
+            
+          });
+
+      },
 
     async updateInputData(id, attribut, value) {
         console.log('update');
@@ -284,6 +331,10 @@ export default {
   },
 
   mounted() {
+    this.getPermission()
+    if(!this.siteVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     console.log("Fetching sites ...")
     this.fetchSites(this.currentUser?.programme?.id)
 

@@ -47,7 +47,6 @@ export default {
         const idProjet = usersInfo.id
         this.detailsProjet(idProjet).then((response) => {
         this.projet = response.data.data
-
         console.log(this.projet)
         })
     }

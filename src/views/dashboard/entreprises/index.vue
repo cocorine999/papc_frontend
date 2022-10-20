@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="entrepriseExecutanteVisible || currentRole==='bailleur'" class="px-4">
+    <div  class="px-4">
       <route-name title="entreprises" />
       <div v-if="showModal">
         <modal-top-right title="Ajouter" v-on:close="close">
@@ -8,7 +8,7 @@
         </modal-top-right>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between flex-wrap">
         <div class="flex space-x-4">
           <span
             class="inline-block cursor-pointer border-primary border-b-8 text-base uppercase font-bold py-2"
@@ -32,52 +32,52 @@
               >
                 <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
             ></span>
-            <span class="mx-2 text-sm font-semibold">ajouter</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter</span>
           </button>
         </div>
       </div>
 
       <div
-        v-if="entrepriseExecutanteVisible"
+      
         class="align-middle inline-block w-full overflow-hidden pt-3 rounded-bl-lg rounded-br-lg"
       >
         <table class="w-full">
-          <thead>
-            <tr>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                #
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Nom
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Contact
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Email
-              </th>
-              <th
-                class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
-              >
-                Mod
-              </th>
+            <thead>
+              <tr>
+                <th
+                  class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
+                >
+                  #
+                </th>
+                <th
+                  class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
+                >
+                  Nom
+                </th>
+                <th
+                  class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
+                >
+                  Contact
+                </th>
+                <th
+                  class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
+                >
+                  Email
+                </th>
+                <th
+                  class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"
+                >
+                  Mod
+                </th>
 
-              <th
-               v-if="entrepriseExecutanteDelete || entrepriseExecutanteUpdate"
-                class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider"
-              >
-                Actions
-              </th>
-            </tr>
-          </thead>
+                <th
+                v-if="entrepriseExecutanteDelete || entrepriseExecutanteUpdate"
+                  class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
           <tbody class="bg-white">
             <tr
               v-for="(entrepriseExecutante, indice) in entreprisesExecutante"
@@ -86,23 +86,27 @@
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                 {{ indice }}
               </td>
+
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                 {{ entrepriseExecutante.user.nom }}
               </td>
+
               <td
                 class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
               >
                 {{ entrepriseExecutante.user.contact }}
               </td>
+
               <td
                 class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
               >
                 {{ entrepriseExecutante.user.email }}
               </td>
+
               <td
                 class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5"
               >
-                {{ entrepriseExecutante.user.email }}
+                {{ entrepriseExecutante.mod.user.nom }}
               </td>
 
               <td
@@ -160,9 +164,7 @@
         </table>
       </div>
       <div>
-        <pre>
-          {{entrepriseExecutanteBailleur}}
-        </pre>
+       
       </div>
 
     
@@ -176,7 +178,6 @@ import RouteName from "@/components/RouteName";
 import ModalTopRight from "@/components/ModalTopRight";
 import FormComponent from "@/components/FormComponent";
 import Titre from "@/components/Titre";
-import EntrepriseExcutanteService from '@/services/modules/entreprise.executante.service';
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import EntrepriseExecutanteService from '@/services/modules/entreprise.executante.service';
 export default {
@@ -245,6 +246,7 @@ export default {
       entrepriseExecutanteAdd:false,
       entrepriseExecutanteDelete:false,
       entrepriseExecutanteUpdate:false,
+    
     };
   },
 
@@ -281,6 +283,7 @@ export default {
               if(element.slug ==='supprimer-une-entreprise-executante') {
                 this.entrepriseExecutanteDelete = true
               }
+              
             
             });
 
@@ -471,21 +474,26 @@ export default {
   mounted() {
     console.log("Fetching entreprises executantes ...");
    this.getPermission()
-    if(this.currentUser != undefined) {
-       this.currentRole = this.currentUser.type
-       if(this.currentUser.type ==='bailleur') {
-         this.getEntrepriseBailleur()
-       }
-       else {
-           this.fetchEntreprisesExecutante().then((value) => {
-              if (this.currentUser.role.some((role) => role.nom !== "mod")) {
-                setTimeout(() => {
-                  this.fetchMods();
-                }, 500);
-              }
-            });
-       }
-     }
+    if(!this.entrepriseExecutanteVisible) {
+      this.$router.push('/401-non-autorise')
+    }else {
+      if(this.currentUser != undefined) {
+        this.currentRole = this.currentUser.type
+        if(this.currentUser.type ==='bailleur') {
+          this.getEntrepriseBailleur()
+        }
+        else {
+            this.fetchEntreprisesExecutante().then((value) => {
+                if (this.currentUser.role.some((role) => role.nom !== "mod")) {
+                  setTimeout(() => {
+                    this.fetchMods();
+                  }, 500);
+                }
+              });
+        }
+      }
+    }
+   
   
   },
 };

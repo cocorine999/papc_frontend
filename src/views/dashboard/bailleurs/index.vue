@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div v-if="bailleurVisible" class="w-full px-4">
+    <div  class="w-full px-4">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4">
@@ -52,11 +52,11 @@
         </vmodal>
       </div>
       <div class="w-full p-4">
-        <nav
+          <nav
           class="mb-2 text-sm font-semibold flex justify-between items-center"
           aria-label="Breadcrumb"
         >
-          <div>
+          <div class="hidden sm:block">
             <ol class="inline-flex p-0 list-none">
               <li class="flex items-center text-blue-500">
                 <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -75,10 +75,11 @@
               </li>
             </ol>
           </div>
+          <div></div>
           <div>
-            <div class="flex justify-center w-full text-gray-600">
-            <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-            <button type="submit" class="relative  right-10 ">
+            <div class="w-full flex text-gray-600">
+            <input @input="$emit('search',$event.target.value)" class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+            <button type="submit" class="relative">
             <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
             viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -89,15 +90,15 @@
            </button>
   </div>
           </div>
-        </nav>
-
-      
+          </nav>
+        
         <div v-if="bailleurAdd" class="flex items-center justify-between my-2">
           <titre>Les bailleurs </titre>
           <button
+            v-if="bailleurAdd"
             @click="addBailleur"
             title="ajouter"
-            class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+            class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +108,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
             </svg>
-            <span class="mx-2 text-sm font-semibold">Ajouter </span>
+            <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
           </button>
         </div>
 
@@ -117,10 +118,12 @@
               <div v-if="bailleurUpdate" class="absolute right-1 top-4 z-10  cursor-pointer">
                 <dropdown  @modifier="modifier(bailleur)" @couverture="changeLogo(bailleur)" :option="optionUp"></dropdown>
               </div>
+              
               <div v-if="bailleurDelete" class="absolute right-1 top-4 z-10  cursor-pointer">
-                <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" :option="optionD"></dropdown>
+                <dropdown @supprimer="supprimer(bailleur)" :option="optionD"></dropdown>
               </div>
-              <div v-if="bailleurUpdate && bailleurDelete " class="absolute right-1 top-4 z-10  cursor-pointer">
+
+              <div class="absolute right-1 top-4 z-10  cursor-pointer">
                 <dropdown @supprimer="supprimer(bailleur)" @couverture="changeLogo(bailleur)" @modifier="modifier(bailleur)"  :option="option"></dropdown>
               </div>
               
@@ -170,7 +173,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.pays }}
                   </div>
@@ -196,7 +199,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.user.contact }}
                   </div>
@@ -222,7 +225,7 @@
                     />
                   </svg>
                   <div
-                    class="ml-4 text-md tracking-wide font-semibold w-full truncate"
+                    class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate"
                   >
                     {{ bailleur.user.email }}
                   </div>
@@ -443,8 +446,9 @@
 
         ],
         cols: 1,
-        optionD: [{ name: "supprimer" }, { name: "modifier" },{name:'couverture'}],
-        optionUp: [{ name: "supprimer" }, { name: "modifier" },{name:'couverture'}],
+        optionLogo: [{name:'couverture'}],
+        optionD: [{ name: "supprimer" }],
+        optionUp: [{ name: "modifier" },{name:'changer logo'}],
         option: [{ name: "supprimer" }, { name: "modifier" },{name:'changer logo'}],
         bailleurVisible:false,
         bailleurAdd:false,
@@ -473,7 +477,6 @@
     methods: {
     getImage(data) {
       this.image = data
-     
     },
     saveImage() {
       if(this.sendRequest == false) {
@@ -482,6 +485,12 @@
         formData.append('logo',this.image)
         formData.append('code',this.code)
         formData.append('programmeId',this.programmeId)
+        const info = {
+          code:this.code,
+          logo:this.image,
+          programme:this.programmeId
+        }
+        console.log('les infos',info)
         BailleurService.update(this.idBailleur,formData).then(() => {
         this.$toast.success('Le logo  à éte bien changer')
         this.showUpdateImage = false 
@@ -508,18 +517,18 @@
       console.log(data)
       this.showUpdateImage = true
     },
-      active() {
+    active() {
         this.$store.dispatch('active')
-      },
-      disabled() {
+    },
+    disabled() {
         this.$store.dispatch('disabled')
-      },
-      ...mapMutations({
+    },
+    ...mapMutations({
         setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
         setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       }),
      
-     getPermission() {
+    getPermission() {
          this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-bailleur') {
               this.bailleurVisible = true
@@ -533,31 +542,30 @@
             if(element.slug ==='supprimer-un-bailleur') {
               this.bailleurDelete = true
             }
-           
           });
-      },
+    },
 
-      ...mapActions("bailleurs", {
+    ...mapActions("bailleurs", {
         fetchBailleurs: "FETCH_LIST_BAILLEUR_OF_PROGRAMME",
         saveBailleur: "STORE_BAILLEUR",
         updateBailleur: "UPDATE_BAILLEUR",
         deleteBailleur: "DESTROY_BAILLEUR",
       }),
 
-      switchBetweenCode({mosaique, line}) {
+    switchBetweenCode({mosaique, line}) {
         this.mosaique = mosaique
         this.line = line
-      },
+    },
 
-      addBailleur() {
+    addBailleur() {
         this.title = "Ajouter";
 
         this.submitText = "Enrégistrer";
 
         this.showCloseModal(true);
-      },
+    },
 
-      modifier(bailleur) {
+    modifier(bailleur) {
         this.title = "Modifier le bailleur";
         this.isUpdate = true
         this.submitText = "Modifier";
@@ -575,32 +583,32 @@
         });
 
         this.showCloseModal(true);
-      },
+    },
 
-      supprimer(bailleur) {
+    supprimer(bailleur) {
         console.log(bailleur)
         if (
           window.confirm("Voulez-vous supprimer le bailleur " + bailleur.user.nom)
         )
           this.deleteBailleur(bailleur.id);
-      },
+    },
 
-      dupliquer() {
+    dupliquer() {
         this.title = "Dupliquer un bailleur";
         this.showCloseModal();
-      },
+    },
 
-      close() {
+    close() {
         this.showCloseModal();
 
         this.resetForm();
-      },
+    },
 
-      showCloseModal(value = false) {
+    showCloseModal(value = false) {
         this.showModal = value;
-      },
+    },
 
-      resetForm() {
+    resetForm() {
         this.champs = this.champs.map((item) => {
           item.data = "";
           return item;
@@ -609,18 +617,18 @@
         window.document.getElementById("vform")?.reset();
 
         this.setBailleur({});
-      },
+    },
 
-      async updateInputData(id, attribut, value) {
+    async updateInputData(id, attribut, value) {
         await this.updateBailleur({bailleur: {[attribut] : value}, id : id}).then((value) => {
           this.setBailleur({})
         }).catch((value, status) => {
           if(this.hasErrors[attribut] !== undefined)
             alert(this.hasErrors[attribut])        
         })
-      },
+    },
 
-      filteredBailleur(){
+    filteredBailleur(){
         var self = this;
 
         return this.bailleurs.filter(function (bailleur){
@@ -628,9 +636,9 @@
                  bailleur.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  bailleur.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
-      sendForm() {
+    sendForm() {
         
         this.champs = this.champs.map((item) => {
           item.errors = [];
@@ -708,7 +716,7 @@
             })
           }
         }
-      },
+    },
     },
 
     watch: {
@@ -736,6 +744,9 @@
 
     mounted(){
       this.getPermission()
+      if(!this.bailleurVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
      
     }
   };

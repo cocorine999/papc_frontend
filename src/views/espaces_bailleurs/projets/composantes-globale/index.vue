@@ -5,25 +5,25 @@
       <form action="" @submit.prevent="save" class="px-4"  >
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
           </div>
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Description <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer la description" />
           </div>
         </div>
 
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Position  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <select class="px-3 py-2 mt-1 border-2 border-gray-300 w-full  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
               <option v-for="i in 5" :key="i.id" value=""> {{i}} </option>
             </select>
           </div>
 
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un projet <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Selectionnez un projet <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
               <option v-for="i in 5" :key="i.id" value=""> projet {{i}} </option>
 
@@ -33,11 +33,11 @@
 
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Poids <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le poids" />
           </div>
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Status <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <select class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
               <option value="">En cours</option>
               <option value="">En attente</option>
@@ -48,11 +48,11 @@
 
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant BN <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le BN" />
           </div>
           <div class="grid grid-cols-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Montant EPM-PRET <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required   class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer le EPM pret " />
           </div>
         </div>
@@ -118,7 +118,7 @@
         <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
       </div>
     </div>
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
         <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-base uppercase    border-primary py-2">les composantes </span>
         <span :class="{'border-primary border-b-8 font-bold':seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-lg uppercase  py-2">Le suivi evaluation </span>
@@ -134,7 +134,7 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-        <span class="mx-2 text-sm font-semibold">AJOUTER</span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">AJOUTER</span>
       </button>
      
     </div>

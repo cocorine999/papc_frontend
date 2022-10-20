@@ -9,8 +9,8 @@
         </modal-top-right>
       </div>
       
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+        <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -31,98 +31,149 @@
       </nav> 
 
     
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
-        <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-base uppercase    border-primary py-2">Sous composantes </span>
+        <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-xs sm:text-sm  md:text-base  uppercase    border-primary py-2">Sous composantes </span>
        
       </div>
       
       <button v-if="seeSousComposantes && composanteAdd" @click="addSousComposante" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
       </button>
      
     </div>
     
-    <div v-if="seeSousComposantes">
+    <div>
       <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-        <div class="flex items-center justify-between ">
+        <div class="f ">
         <!--Filtre sur projet -->
-        <div class="w-2/5 flex items-center space-x-2">
+        <div  class="w-full grid grid-cols-2  gap-4 items-center  mb-2">
       
-          <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" @input="changeProjet(projetFiltre)" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
-
-          <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel" @input="changeComposante(valueFiltre)" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
-          
-          <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm">
-            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-            <span>filtre</span>
-          </button>
-          <div v-else  class="px-6 w-full">
-            <div class="bg-gray-300 h-2 w-full rounded-full relative">
-              <span class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer" :style="`left:${rangeValue}%`"></span>
-              <span class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"  :style="`width:${rangeValue}%`"></span>
-            </div>
-            <div class="flex justify-between mt-2 text-xs text-gray-600">
-              <span @click="filtreRange(0)" class="w-8 cursor-pointer text-left">0%</span>
-              <span @click="filtreRange(25)" class="w-8 cursor-pointer text-center">25%</span>
-              <span @click="filtreRange(50)" class="w-8 cursor-pointer text-center">50%</span>
-              <span @click="filtreRange(75)" class="w-8 cursor-pointer text-center">75%</span>
-              <span @click="filtreRange(100)" class="w-8 cursor-pointer text-right">100%</span>
-              <button @click="showFiltre = false" class="text-white bg-blue-300 p-1">revenir</button>
-            </div>
-          
+          <div>
+            <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
+            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
           </div>
+
+          <div>
+            <label class="block mb-2 uppercase " for="">Selectionnez un composant</label>
+            <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+          </div>
+
+         
+          
         </div>
       <!--Filtre sur projet -->
-          <nav class="flex text-sm align-middle justify-evenly">
-          <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
+          <nav  class="flex justify-end p-2 shadow  text-xs space-x-4  md:text-sm align-middle  ">
+            <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
             attentes 
               <span class="px-2 text-sm text-yellow-600 border border-yellow-600 rounded-full undefined tex-base">
-              5
+              {{enAttente.length}}
               </span>
             </span>
-            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              validés 
+            <span  @click="toggle3" :class="{'border-indigo-600 text-indigo-600' : inProgress}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
+              en cours
+              <span class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined">
+              {{enCours.length}}
+              </span>
+            </span>
+            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
+              terminer 
               <span class="px-2 text-sm text-green-600 border border-green-600 rounded-full undefined">
-              9
+              {{terminer.length}}
               </span>
             </span>
-            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              rejetés
-              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
-              8
-              </span>
-            </span>
+            
           </nav>
         </div>
       </div>
-      <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(sousComposante, index) in sousComposantes" :key="index">
-          <card-composante
-            :libelle="sousComposante.nom"
-            :code="sousComposante.code"
-            composanteName="Sous Composante"
-            :statut="getStatus(sousComposante.statut)"
-            :montantEPM="sousComposante.pret"
-            :position="sousComposante.position"
-            :poids="sousComposante.poids"
-            :bailleur="sousComposante.sigle"
-            @modifier="modifier(sousComposante)"
-            @dupliquer="dupliquer(sousComposante)"
-            @supprimer="supprimer(sousComposante)"
-            @validation="validation(sousComposante)"
-            @suivre="suivreMyComposant(sousComposante)"
-            @gotoNext="gotoNext(sousComposante)"
-            :isDelete = "composanteDelete"
-            :isUpdate="composanteUpdate"
-          ></card-composante>
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(sousComposante, index) in enAttente" :key="index">
+                <card-composante
+                  :isComposante="false"
+                  :data="sousComposante"
+                  :libelle="sousComposante.nom"
+                  :code="sousComposante.code"
+                  composanteName="Sous Composante"
+                  :statut="getStatus(sousComposante.statut)"
+                  :montantEPM="sousComposante.pret"
+                  :position="sousComposante.position"
+                  :poids="sousComposante.poids"
+                  :bailleur="sousComposante.sigle"
+                  @modifier="modifier(sousComposante)"
+                  @dupliquer="dupliquer(sousComposante)"
+                  @supprimer="supprimer(sousComposante)"
+                  @suivre="suivreMyComposant(sousComposante)"
+                  @gotoNext="gotoNext(sousComposante)"
+                  :isDelete = "composanteDelete"
+                  :isUpdate="composanteUpdate"
+                ></card-composante>
+              </div>
+            </div>
+          </div>
         </div>
 
-      </div>
-    </div>
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(sousComposante, index) in enCours" :key="index">
+                <card-composante
+                  :isComposante="false"
+                  :data="sousComposante"
+                  :libelle="sousComposante.nom"
+                  :code="sousComposante.code"
+                  composanteName="Sous Composante"
+                  :statut="getStatus(sousComposante.statut)"
+                  :montantEPM="sousComposante.pret"
+                  :position="sousComposante.position"
+                  :poids="sousComposante.poids"
+                  :bailleur="sousComposante.sigle"
+                  @modifier="modifier(sousComposante)"
+                  @dupliquer="dupliquer(sousComposante)"
+                  @supprimer="supprimer(sousComposante)"
+                  @suivre="suivreMyComposant(sousComposante)"
+                  @gotoNext="gotoNext(sousComposante)"
+                  :isDelete = "composanteDelete"
+                  :isUpdate="composanteUpdate"
+                ></card-composante>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  
+        <div v-if="success">
+          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(sousComposante, index) in terminer" :key="index">
+                <card-composante
+                  :isComposante="false"
+                  :data="sousComposante"
+                  :libelle="sousComposante.nom"
+                  :code="sousComposante.code"
+                  composanteName="Sous Composante"
+                  :statut="getStatus(sousComposante.statut)"
+                  :montantEPM="sousComposante.pret"
+                  :position="sousComposante.position"
+                  :poids="sousComposante.poids"
+                  :bailleur="sousComposante.sigle"
+                  @modifier="modifier(sousComposante)"
+                  @dupliquer="dupliquer(sousComposante)"
+                  @supprimer="supprimer(sousComposante)"
+                  @suivre="suivreMyComposant(sousComposante)"
+                  @gotoNext="gotoNext(sousComposante)"
+                  :isDelete = "composanteDelete"
+                  :isUpdate="composanteUpdate"
+                ></card-composante>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
     </div>
  
 </template>
@@ -137,6 +188,7 @@ import Vmodal from '@/components/Vmodal'
 import Vform from '@/components/Vform'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
+import Empty from '@/components/Empty.vue'
 import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
@@ -154,15 +206,18 @@ export default {
     ModalTopRight,
     Dropdown,
     CardComposante,
-    Vtable
+    Vtable,
+    Empty,
 },
   data() {
     return {
       valueFiltre:null,
       projetFiltre: null,
+      projetId:'',
+      composanteId:'',
       pending:false,
       success:true,
-      rejected:false,
+      inProgress:false,
       rangeValue:0,
       showFiltre:false,
       programmeId: this.currentUser?.programme?.id,
@@ -186,7 +241,7 @@ export default {
       sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
       champs:[
 
-        {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -242,15 +297,49 @@ export default {
       sousComposantes: "sousComposantes/getSousComposantes",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+    terminer() {
+      if(this.sousComposantes != undefined) {
+        const datas = []
+        this.sousComposantes.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.sousComposantes != undefined) {
+        const datas = []
+        this.sousComposantes.forEach(element => {
+          if(element.statut == -1 || element.statut == -2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.sousComposantes != undefined) {
+        const datas = []
+        this.sousComposantes.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
 
   },
 
   methods: {
+     
     changeProjet(projet) {
+      this.projetId = projet.id
       if(this.isClick) {
         this.projetFiltre = this.newProjet
-      
         this.fetchComposantes(this.idProjet);
         this.isClick = false
         localStorage.removeItem('profondeurComposante');
@@ -262,15 +351,15 @@ export default {
           if(projet.id == element.id) {
             indexProjet = index
           }
-          
         }
         let composantes = this.projets[indexProjet].composantes
         let indexComposante = ''
-        if(composantes[0] != null ) {
+        if(composantes[0] != null || composantes[0] != undefined ) {
           let code = composantes[0].codePta
           let nom = composantes[0].nom
           this.valueFiltre = {codePta:code,nom:nom}
           indexComposante = composantes[0].id
+          this.composanteId = indexComposante
           this.fetchSousComposantes(indexComposante);
           this.isShow = true
         }
@@ -287,10 +376,12 @@ export default {
     changeComposante(composante) {
       if(this.isClick) {
         this.valueFiltre = this.newComponent
+        this.composanteId = this.idComposante
         this.fetchSousComposantes(this.idComposante);
         this.isClick = false
         localStorage.removeItem('profondeurComposante');
       }else {
+        this.composanteId = composante.id
         this.fetchSousComposantes(composante.id);
       }
     },
@@ -434,30 +525,27 @@ export default {
       this.$router.push({name:'dashboard_projets_activites_globale'})
     },
 
-
-    
-
     editerSuivi(index) {
       this.showInput = false
     },
 
     toggle() {
       this.pending = false
-      this.rejected = false
+      this.inProgress = false
       this.success = true
 
     },
 
     toggle2() {
       this.success = false
-      this.rejected = false
+      this.inProgress = false
       this.pending = true
     },
 
     toggle3() {
       this.pending = false
       this.success = false
-      this.rejected = true
+      this.inProgress = true
     },
     
     addSousComposante() {
@@ -491,7 +579,6 @@ export default {
     },
 
     
-
     modifier(sousComposante) {
 
       this.title = 'Modifier un sous composant'
@@ -560,25 +647,6 @@ export default {
       this.setSousComposante({})
     },
     
-   
-
-    validation(sousComposante){
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-        this.updateSousComposante({sousComposante: { "statut": -1, "composanteId": this.valueFiltre.id }, id : sousComposante.id})
-        .then((value) => {
-            this.fetchSousComposantes(this.valueFiltre.id);
-        })
-          .finally((error) => {
-            this.sendRequest = false;
-          })
-
-      }
-    },
-    
     sendForm() {
 
       if( this.sendRequest === false ){
@@ -589,7 +657,7 @@ export default {
 
         let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
 
-        sousComposante.composanteId = this.valueFiltre.id;
+        sousComposante.composanteId = this.valueFiltre.id
                 
         if(this.sousComposante?.id)
         {
@@ -655,7 +723,7 @@ export default {
       //this.errors = errors
     },
 
-   /*  valueFiltre: function(valeur){
+   valueFiltre: function(valeur){
       if( valeur instanceof Composante || valeur instanceof Object )
       {
         if(this.isClick ==false) { 
@@ -695,7 +763,6 @@ export default {
     },
     
     composantes: function(composantes){
-      alert(this.isClick)
        if(this.isClick ==false) { 
          
           this.valueFiltre = composantes[0]
@@ -707,7 +774,7 @@ export default {
           
        }
     
-    } */
+    } 
      
    
   },

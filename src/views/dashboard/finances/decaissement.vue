@@ -3,8 +3,8 @@
      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="decaissement" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
-    <div v-if="decaissementVisible" class="px-4">
-    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+    <div class="px-4">
+    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
@@ -12,12 +12,12 @@
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center ">
-            <router-link to="" class="text-gray-600">Decaissement</router-link>
+            <router-link to="" class="text-gray-600">Décaissement</router-link>
           </li>
         </ol>
       </div>
       <div>
-        <div class="flex justify-center w-full text-gray-600">
+        <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,8 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>      </div>
+        </div>      
+    </div>
     </nav> 
     <div v-if="showModal">
       <modal-top-right :title="title" v-on:close="close">
@@ -44,7 +45,7 @@
       </modal-top-right>
     </div>
     <div v-if="showModal2">
-      <vmodal  title="Filtre indicateur"  v-on:close="showModal2 = false">
+      <vmodal  title="Filtre decaissement"  v-on:close="showModal2 = false">
         <div class="px-4" style="width:500px" >
           <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
         </div>
@@ -53,23 +54,24 @@
     <div class="flex items-center justify-between">
       <titre>Decaissement </titre>
       <div class="flex space-x-3">
-        <json-excel :data="json_data()" header="DECAISSEMENT" type="xlsx" :name="title_csv()"  >
+        <json-excel v-if="exporterDecaissement" :data="json_data()" header="DECAISSEMENT" type="xlsx" :name="title_csv()"  >
           <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Export Excel</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
           </button>
         </json-excel>
         <button @click="showFiltreModal2" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
         <button v-if="decaissementAdd" @click="addDecaissement" title="ajouter " class="px-4 py-2 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
       </div>
      
     </div>
-    <vtable v-if="decaissementDelete && decaissementUpdate " :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="!decaissementDelete && !decaissementUpdate"  :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
     <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
-  </div>
+    </div>
   </dashboard>
  
 </template>
@@ -107,48 +109,28 @@ export default {
           showModal2:false,
           title:'',
           decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
-          decaissementAttributsRecherche : ['type', 'date', 'projetId'],
+          decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
           champs:[
           {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
           {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:true,},
-          {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
+          {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
         ],
         champsRecherche:[
-          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+          {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
           {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
           {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
-          
         ],
-        cols:2,
-         showComment:false,
-          commentaires:[
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Gomez jacob',message:'lorem ipsum',date:'22 septembre 2022'},
-          {nom:'Yann olou',message:'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere asperiores, ipsa enim eos impedit facilis eveniet doloribus quo veniam perferendis nam nostrum eius tempore quae architecto alias nobis amet vel.',date:'20 septembre'}
-        ],
+        
         search:"",
         headers:[
           {name:'Projets',cle:'projet'},
           {name:'Bailleur',cle:'bailleur'},
-          {name:'Type de decaissement',cle:'type'},
+          {name:'Type de décaissement',cle:'type'},
           {name:'Montant',cle:'montant'},
-          {name:'Date de decaissement',cle:'date'},
-          {name:'Date de creation',cle:'created_at'},
+          {name:'Date de décaissement',cle:'date'},
+          {name:'Date de création',cle:'created_at'},
         ],
         dataTable:[
           
@@ -160,6 +142,7 @@ export default {
         decaissementAdd:false,
         decaissementDelete:false,
         decaissementUpdate:false,
+        exporterDecaissement:false,
         data:{},
         commentaires:[],
       };
@@ -190,7 +173,7 @@ export default {
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setDecaissement: 'decaissements/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
-      getPermission() {
+     getPermission() {
           this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-decaissement') {
               this.decaissementVisible = true
@@ -204,7 +187,9 @@ export default {
             if(element.slug ==='supprimer-un-decaissement') {
               this.decaissementDelete = true
             }
-           
+            if(element.slug ==='exporter-un-decaissement') {
+              this.exporterDecaissement = true
+            }
           });
 
      },
@@ -230,17 +215,17 @@ export default {
 
     ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET_OF_PROGRAMME' }),
 
-    async updateInputData(id, attribut, value) {
-        
-          await this.updateDecaissement({decaissement: {[attribut] : value}, id : id}).catch((value, status) => {
-            if(this.hasErrors[attribut] !== undefined)
-              alert(this.hasErrors[attribut])            
-          }).finally(() => {
-            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
-          })
-    },
+      async updateInputData(id, attribut, value) {
+          
+            await this.updateDecaissement({decaissement: {[attribut] : value}, id : id}).catch((value, status) => {
+              if(this.hasErrors[attribut] !== undefined)
+                alert(this.hasErrors[attribut])            
+            }).finally(() => {
+              $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+            })
+      },
 
-    filteredDecaissement(){
+      filteredDecaissement(){
         var self = this;
 
         return this.decaissements.filter(function (decaissement){
@@ -271,105 +256,106 @@ export default {
         return tab;
       },
 
-    sendForm() {
+      sendForm() {
 
-      console.log(this.champs)
+        console.log(this.champs)
 
-      this.champs = this.champs.map(item => { item.errors = []; return item})
+        this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let decaissement = extractFormData(this.champs, this.decaissementAttributs)
+        let decaissement = extractFormData(this.champs, this.decaissementAttributs)
 
-      decaissement.type = decaissement.type.id
-      decaissement.projetId = decaissement.projetId.id
+        decaissement.type = decaissement.type.id
+        decaissement.projetId = decaissement.projetId.id
 
-      console.log(decaissement)
-      
-      
-      this.saveDecaissement(decaissement).then(response => {
-        if(response.status == 200 || response.status == 201){
+        this.saveDecaissement(decaissement).then(response => {
+          if(response.status == 200 || response.status == 201){
             this.close()
-        }
-
-      })
-      
-
-    },  
-    filtre() {
-      this.champsRecherche = this.champsRecherche.map((item) => {
-        item.errors = [];
-        return item;
-      });
-
-      let decaissement = extractFormData(this.champsRecherche,this.decaissementAttributsRecherche);
-      decaissement.projetId = decaissement.projetId?.id
-      decaissement.type = decaissement.type?.id
-
-      console.log(decaissement)
-
-      this.filter(decaissement).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            this.close2();
+            this.showModal = false
+            this.fetchDecaissements()
           }
-      });
-    },
-    closeCommentaire() {
-      this.showComment = false
-      this.commentaires = []
-    },
-    close() {
+
+        })
+        
+      },  
+
+      filtre() {
+        this.champsRecherche = this.champsRecherche.map((item) => {
+          item.errors = [];
+          return item;
+        });
+
+        let decaissement = extractFormData(this.champsRecherche,this.decaissementAttributsRecherche);
+        decaissement.projetId = decaissement.projetId?.id
+        decaissement.type = decaissement.type?.id
+
+        console.log(decaissement)
+
+        this.filter(decaissement).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.close2();
+            }
+        });
+      },
+      closeCommentaire() {
+        this.showComment = false
+        this.commentaires = []
+      },
+      close() {
         this.showModal = false
-    },
-    close2() {
-        this.showModal2 = false
-    },
-    addDecaissement() {
-        this.title ="Ajouter"
-
-        let formData = this.champs.map((value) => {
-          if(value.key === 'projetId'){ 
-            value['options'] = this.projets
-          }
-          
-          else if(value.key === 'type'){
-            value['options'] = this.$store.state.sources;
-          }
-
-          return value
-        })
-
-      this.champs = formData
-
-        this.showModal = true
       },
-
-    showFiltreModal2() {
-        this.title ="Filtre"
-
-        let formData = this.champsRecherche.map((value) => {
-          if(value.key === 'projetId'){ 
-            value['options'] = this.projets
-          }
-          
-          else if(value.key === 'type'){
-            value['options'] = this.$store.state.sources;
-          }
-
-          return value
-        })
-
-      this.champsRecherche = formData
-
-        this.showModal2 = true
+      close2() {
+          this.showModal2 = false
       },
-    
-    async supprimer(decaissement) {
-      if(window.confirm("Voulez-vous supprimer ce decaissement " ))
-        await this.deleteDecaissement(decaissement.id)
-    },
+        addDecaissement() {
+            this.title ="Ajouter"
+            let formData = this.champs.map((value) => {
+              if(value.key === 'projetId'){ 
+                value['options'] = this.projets
+              }
+              
+              else if(value.key === 'type'){
+                value['options'] = this.$store.state.sources;
+              }
+
+              return value
+            })
+
+          this.champs = formData
+
+            this.showModal = true
+        },
+
+        showFiltreModal2() {
+          this.title ="Filtre decaissement"
+
+          let formData = this.champsRecherche.map((value) => {
+            if(value.key === 'projetId'){ 
+              value['options'] = this.projets
+            }
+            
+            else if(value.key === 'type'){
+              value['options'] = this.$store.state.sources;
+            }
+
+            return value
+          })
+
+        this.champsRecherche = formData
+
+          this.showModal2 = true
+        },
+      
+      async supprimer(decaissement) {
+        if(window.confirm("Voulez-vous supprimer ce decaissement " ))
+          await this.deleteDecaissement(decaissement.id)
+      },
     },
 
     mounted() {
       this.getPermission()
+      if(!this.decaissementVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
       console.log("Fetching decaissements ...")
         this.fetchDecaissements().then((value) => {
         setTimeout(() => {

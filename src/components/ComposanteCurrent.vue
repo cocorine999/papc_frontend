@@ -8,8 +8,8 @@
         </modal-top-right>
       </div>
       
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -30,15 +30,14 @@
       </nav> 
 
     
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
-        <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-base uppercase    border-primary py-2">les composantes </span>
-      
+        <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">les composantes </span>
       </div>
       
       <button  v-if="seeComposant && composanteAdd " @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+        <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
+        <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
       </button>
      
     </div>
@@ -47,75 +46,112 @@
       <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
-        <div class="w-2/5 flex items-center space-x-2">
+        <div class="w-2/4  flex justify-between  items-center space-x-2 mb-2">
           <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
-          <button v-if="!showFiltre" title="filtre" @click="showFiltre = true" class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm">
-            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-            <span>filtre</span>
-          </button>
-          <div v-else  class="px-6 w-full">
-            <div class="bg-gray-300 h-2 w-full rounded-full relative">
-              <span class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer" :style="`left:${rangeValue}%`"></span>
-              <span class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"  :style="`width:${rangeValue}%`"></span>
-            </div>
-            <div class="flex justify-between mt-2 text-xs text-gray-600">
-              <span @click="filtreRange(0)" class="w-8 cursor-pointer text-left">0%</span>
-              <span @click="filtreRange(25)" class="w-8 cursor-pointer text-center">25%</span>
-              <span @click="filtreRange(50)" class="w-8 cursor-pointer text-center">50%</span>
-              <span @click="filtreRange(75)" class="w-8 cursor-pointer text-center">75%</span>
-              <span @click="filtreRange(100)" class="w-8 cursor-pointer text-right">100%</span>
-              <button @click="showFiltre = false" class="text-white bg-blue-300 p-1">revenir</button>
-            </div>
-          
-          </div>
+         
         </div>
       <!--Filtre sur projet -->
-          <nav class="flex text-sm align-middle justify-evenly">
+          <nav class="flex  text-xs  md:text-sm align-middle justify-between ">
           <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
             attentes 
               <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined ">
-              5
+              {{enAttente.length}}
+              </span>
+            </span>
+            <span  @click="toggle3" :class="{'border-indigo-600 text-indigo-600' : inProgress}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
+              En cours
+              <span class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined">
+              {{enCours.length}}
               </span>
             </span>
             <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              validés 
+              terminer 
               <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
-              9
+              {{terminer.length}}
               </span>
             </span>
-            <span  @click="toggle3" :class="{'border-red-600 text-red-600' : rejected}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              rejetés
-              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
-              8
-              </span>
-            </span>
+           
           </nav>
         </div>
       </div>
-      <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(composante, index) in composantes" :key="index">
-          <card-composante
-            :libelle="composante.nom"
-            :code="composante.code"
-            :statut="getStatus(composante.statut)"
-            :montantEPM="composante.pret"
-            :position="composante.position"
-            :poids="composante.poids"
-            :bailleur="composante.sigle"
-            @modifier="modifier(composante)"
-            @supprimer="supprimer(composante)"
-            @validation="validation(composante)"
-            @suivre="suivreMyComposant(composante)"
-            @gotoNext="gotoNext(composante,index)"
-            :isDelete = "composanteDelete"
-            :isUpdate="composanteUpdate"
-          ></card-composante>
+     
+      <div v-if="pending" >
+        <empty v-if="enAttente.length ==0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in enAttente" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.code"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
         </div>
+       
+      </div>
+      <div v-if="inProgress" >
+        <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in enCours" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.code"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
+        </div>
+      </div>
+      <div v-if="success" >
+        <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in terminer" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.code"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
+        </div>
+       
        
       </div>
     </div>
   
-    
   </div>
  
 </template>
@@ -129,6 +165,7 @@ import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Vform from '@/components/Vform'
 import Dropdown from '@/components/Dropdown.vue'
+import Empty from '@/components/Empty.vue'
 import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import  { extractFormData, getStringValueOfStatutCode }  from '@/utils/index'
@@ -145,6 +182,7 @@ export default {
     ModalTopRight,
     Dropdown,
     CardComposante,
+    Empty,
     Vtable
 },
 props:['valueProfondeur'],
@@ -153,7 +191,7 @@ props:['valueProfondeur'],
       valueFiltre: this.valueProfondeur,
       pending:false,
       success:true,
-      rejected:false,
+      inProgress:false,
       rangeValue:0,
       showFiltre:false,
       programmeId: this.currentUser?.programme?.id,
@@ -168,26 +206,16 @@ props:['valueProfondeur'],
       seeSuivi:false,
       showInput:true,
       seeStatistique:false,
-      option:[
-        {name:"supprimer"},
-        {name:"modifier"},
-        {name:"dupliquer"},
-        {name:"continuer"},
-      ],
-      
       composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
       
       champs:[
-
         {name: 'Nom de la composante', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-        
       ],
-
        headers: [
         { name: "Composante", cle: "composante"},
         { name: "code pta", cle: "codePta"},
@@ -222,6 +250,40 @@ props:['valueProfondeur'],
       errors : state => state.errors
     }),
 
+    terminer() {
+      if(this.composantes != undefined) {
+        const datas = []
+        this.composantes.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.composantes != undefined) {
+        const datas = []
+        this.composantes.forEach(element => {
+          if(element.statut == -1 || element.statut == -2 ) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.composantes != undefined) {
+        const datas = []
+        this.composantes.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+
     ...mapGetters({
       projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
@@ -246,18 +308,16 @@ props:['valueProfondeur'],
     },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
-       
-          if(element.slug === 'creer-une-composante') {
-            this.composanteAdd = true
-          }
-            if(element.slug === 'modifier-une-composante') {
-              this.composanteUpdate = true
-            }
-            if(element.slug ==='supprimer-une-composante') {
-              this.composanteDelete = true
-            }
-           
-        });
+        if(element.slug === 'creer-une-composante') {
+          this.composanteAdd = true
+        }
+        if(element.slug === 'modifier-une-composante') {
+          this.composanteUpdate = true
+        }
+        if(element.slug ==='supprimer-une-composante') {
+          this.composanteDelete = true
+        }
+      });
     },
 
     getSuivi() {
@@ -318,7 +378,7 @@ props:['valueProfondeur'],
       this.dates.push({})
     },
 
-     gotoSuivi() {
+    gotoSuivi() {
       this.seeSuivi = true
       this.seeComposant = false
     },
@@ -364,21 +424,21 @@ props:['valueProfondeur'],
 
     toggle() {
       this.pending = false
-      this.rejected = false
+      this.inProgress = false
       this.success = true
 
     },
 
     toggle2() {
       this.success = false
-      this.rejected = false
+      this.inProgress = false
       this.pending = true
     },
 
     toggle3() {
       this.pending = false
       this.success = false
-      this.rejected = true
+      this.inProgress = true
     },
     
     addComponent() {
@@ -457,29 +517,12 @@ props:['valueProfondeur'],
       this.setComposante({})
     },
     
-   
 
     getStatus(status){
       return getStringValueOfStatutCode(status);
     },
 
-    validation(composante){
-
-      if( this.sendRequest === false ){
-
-        this.sendRequest = true;
-
-          this.updateComposante({composante: { "statut": -1, "projetId": this.valueFiltre.id }, id : composante.id})
-            .then((value) => {
-              this.fetchComposantes(this.valueFiltre.id);
-            })
-            .finally((error) => {              
-              this.sendRequest = false;
-              this.fetchComposantes(this.valueFiltre.id);
-            });
-
-      }
-    },
+   
     
     sendForm() {
 
@@ -555,7 +598,7 @@ props:['valueProfondeur'],
       })
     },
 
-   valueFiltre: function(valeur,old){
+    valueFiltre: function(valeur,old){
       if( valeur instanceof Projet || valeur instanceof Object )
       {
         let demo = valeur
@@ -606,9 +649,7 @@ props:['valueProfondeur'],
       }else {
        this.position = 0
       }
-
     } 
-    this.getSuivi()
     this.getPermission()
     if(this.programmeId){
       this.fetchProjets(this.programmeId)

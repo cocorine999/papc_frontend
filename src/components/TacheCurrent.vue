@@ -5,11 +5,11 @@
           <form @submit.prevent="saveProlongerDate(tacheId,dates)" action="">
             <div  class="grid grid-cols-2 gap-2 my-2">
               <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.debut" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
               </div>
               <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
               </div>
             </div>
@@ -49,10 +49,10 @@
       </modal-top-right>
 
       <nav
-        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb"
       >
-        <div>
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
               <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -92,13 +92,13 @@
         </div>
       </nav>
 
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
-          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-base uppercase border-primary py-2">Taches</span>
-         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-base uppercase border-primary py-2">Suivi tache</span> -->
+          <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">Taches</span>
+         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">Suivi tache</span> -->
         </div>
 
-        <button v-if="seeTache && tacheVisible "   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <button v-if="tacheAdd "   @click="addTache" title="ajouter une tache" class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@
               style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
             </span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
        
       </div>
@@ -116,23 +116,22 @@
       <div v-if="seeTache && tacheVisible ">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
           <!--Filtre sur projet -->
-          <div class="w-full grid grid-cols-2 gap-4">
-           <div>
+          <div class="w-full grid sm:grid-cols-2 sm:gap-4">
+           <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect  v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
-           <div>
+           <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-             <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+             <multiselect v-model="composanteFiltre"  :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
            </div>
           
-            <div>
+            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
               <multiselect
                 v-model="sousComposanteFiltre"
                 :options="sousComposantes"
-                @input="changeSC(sousComposanteFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -141,12 +140,11 @@
               </multiselect>
             </div>
 
-            <div>
+            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
               <multiselect
                 v-model="valueFiltre"
                 :options="activites"
-                @input="changeActivite(valueFiltre)"
                 :custom-label="customLabel" 
                 placeholder="selectionnez l'activite"
                 label="nom"
@@ -154,82 +152,14 @@
               </multiselect>
             </div>
               
-            <button
-                v-if="!showFiltre"
-                title="filtre"
-                @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  height="1.5em"
-                  width="1.5em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-                  ></polygon>
-                </svg>
-                <span>progression des taches </span>
-            </button>
-            <div v-else class="px-6 w-full">
-                <div class="bg-gray-300 h-2 w-full rounded-full relative">
-                  <span
-                    class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
-                    :style="`left:${rangeValue}%`"
-                  ></span>
-                  <span
-                    class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"
-                    :style="`width:${rangeValue}%`"
-                  ></span>
-                </div>
-                <div class="flex justify-between mt-2 text-xs text-gray-600">
-                  <span
-                    @click="filtreRange(0)"
-                    class="w-8 cursor-pointer text-left"
-                    >0%</span
-                  >
-                  <span
-                    @click="filtreRange(25)"
-                    class="w-8 cursor-pointer text-center"
-                    >25%</span
-                  >
-                  <span
-                    @click="filtreRange(50)"
-                    class="w-8 cursor-pointer text-center"
-                    >50%</span
-                  >
-                  <span
-                    @click="filtreRange(75)"
-                    class="w-8 cursor-pointer text-center"
-                    >75%</span
-                  >
-                  <span
-                    @click="filtreRange(100)"
-                    class="w-8 cursor-pointer text-right"
-                    >100%</span
-                  >
-                  <button
-                    @click="showFiltre = false"
-                    class="text-white bg-blue-300 p-1"
-                  >
-                    revenir
-                  </button>
-                </div>
-            </div>
           </div>
         </div>
 
         <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
-          <div class="flex   justify-between">
+          <div class="flex   justify-between flex-wrap items-center">
              <!--Filtre sur projet -->
-             <h2 class="uppercase font-bold">Listes des taches </h2>
-            <nav class="flex text-sm align-middle justify-evenly">
+             <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>
+            <nav class="flex text-sm align-middle justify-evenly ">
                 <span
                   @click="toggle2"
                   :class="{ 'border-yellow-600 text-yellow-600': pending }"
@@ -239,7 +169,19 @@
                   <span
                     class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
                   >
-                    5
+                    {{enAttente.length}}
+                  </span>
+                </span>
+                <span
+                  @click="toggle3"
+                  :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  en cours
+                  <span
+                    class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined"
+                  >
+                    {{enCours.length}}
                   </span>
                 </span>
                 <span
@@ -247,51 +189,104 @@
                   :class="{ 'border-green-600 text-green-600': success }"
                   class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  validés
+                  terminer
                   <span
                     class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
                   >
-                    9
+                    {{terminer.length}}
                   </span>
                 </span>
-                <span
-                  @click="toggle3"
-                  :class="{ 'border-red-600 text-red-600': rejected }"
-                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
-                >
-                  rejetés
-                  <span
-                    class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
-                  >
-                    8
-                  </span>
-                </span>
+              
             </nav>
           </div>
         </div>
-        <div v-if="isShow" class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(tache, index) in taches" :key="index">
-            <card-tache
-              :id="tache.id"
-              :bailleur="tache.bailleur.sigle"
-              :statut="getStatus(tache.statut)"
-              :poids="tache.poids"
-              :poidsActuel="tache.poidsActuel"
-              :libelle="tache.nom"
-              :montantNE="tache.montantNE"
-              :montantEPM="tache.montantEPM"
-              @supprimer="supprimer(tache)"
-              @dupliquer="dupliquer(tache)"
-              @modifier="modifier(tache)"
-              @validation="validation(tache)"
-              @prolonger="prolonger(tache)"
-              @suivre="suivreMyTache(tache)"
-              @commentaire="showComment = true"
-              :isDelete="tacheDelete"
-              :isUpdate="tacheUpdate"
-            ></card-tache>
+     
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enCours" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
           </div>
         </div>
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enAttente" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <div v-if="success">
+          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in terminer" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div>
       <!-- <div v-if="seeSuivi">
           <vtable
@@ -324,6 +319,7 @@ import Activite from "@/store/modules/activites/activite";
 import ComposanteService from "@/services/modules/composante.service.js";
 import TacheService from "@/services/modules/tache.service.js";
 import ActiviteService from '@/services/modules/activite.service';
+import Empty from '@/components/Empty.vue'
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
 export default {
@@ -339,6 +335,7 @@ export default {
     Vform,
     ModalChat,
     Composante,
+    Empty,
     Commentaire
   },
   props:['valeurProjet','valueProfondeur','valueComposante','valueSC'],
@@ -376,7 +373,7 @@ export default {
       sousComposanteFiltre:null,
       pending:false,
       success:true,
-      rejected:false,
+      inProgress:false,
       rangeValue:0,
       programmeId: this.currentUser?.programme.id,
       cols: 1,
@@ -401,14 +398,12 @@ export default {
       tacheAttributs : ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'poids'],
 
       champs:[
-
         {name: 'Nom de la tâche', key: "nom", type: 'text', placeholdere: "Nom de la tâche", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-        
+        {name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data:'', required: false, errors : []},  
       ],
       champsSuiviTache:[
         {name: 'Tache ', key: "statut", type: '', placeholdere: 'Selectionnez une tache ', isSelect: true, isTextArea: false, data:'', required: true, options: [{nom:'tache 1'},{nom:'tache 2'}], cle: 'etat', value: 'nom',  errors : []},
@@ -433,6 +428,7 @@ export default {
       tacheAdd:false,
       tacheDelete:false,
       tacheUpdate:false,
+      tacheSuivi:false,
       idProjet:'',
       idComposante:'',
       idSC:'',
@@ -443,7 +439,6 @@ export default {
       newActivite:null,
       isClick:false,
       isShow:true
-
     };
   },
 
@@ -464,18 +459,50 @@ export default {
       tache: "taches/getTache",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
+    terminer() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == -1 || element.statut == -2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
 
-     changeProjet(projet) {
+    changeProjet(projet) {
     
       if(this.isClick) {
         this.projetFiltre = this.newProjet
         this.composanteFiltre = this.newComponent
         this.fetchComposantes(this.idProjet);
-
         localStorage.removeItem('profondeurActivite');
       }else {
         this.fetchComposantes(projet.id);
@@ -489,29 +516,25 @@ export default {
         let composantes = this.projets[indexProjet].composantes
         
         if(composantes[0] != null ) {
-        
           let code = composantes[0].codePta
           let nom = composantes[0].nom
           this.composanteFiltre = {codePta:code,nom:nom}
           let indexComposante = composantes[0].id
-          this.fetchSousComposantes(indexComposante);
-           ComposanteService.sousComposantes(indexComposante).then((data) => {
+          ComposanteService.sousComposantes(indexComposante).then((data) => {
             const sous_composantes  = data.data.data
-          
-          if(sous_composantes[0] != null ) { 
-          
+            if(sous_composantes[0] != null ) { 
               let code = sous_composantes[0].codePta
               let nom = sous_composantes[0].nom
               this.sousComposanteFiltre = {codePta:code,nom:nom}
               let  indexSC = sous_composantes[0].id
-              this.fetchActivites(indexSC)
+              //this.fetchActivites(indexSC)
               ComposanteService.activites(indexSC).then((data) => {
                 const activites = data.data.data
                 if(activites[0] != null) {
                   const idActivite = activites[0].id
                   let code = activites[0].codePta
                   let nom = activites[0].nom
-                  this.valueFiltre = {codePta:code,nom:nom}
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
                   this.fetchTaches(idActivite);
                   this.isShow = true
                 }
@@ -519,23 +542,31 @@ export default {
                   this.isShow = false
                   this.valueFiltre = null
                 }
-               
-              
               })
             
-           }
-           else {
-              this.isShow = false
-              this.sousComposanteFiltre = null
-              this.composanteFiltre = null 
-              this.valueFiltre = null
-           }
+            }
+            else {
+              ComposanteService.activites(indexComposante).then((data) => {
+                const activites = data.data.data
+                if(activites[0] != null) {
+                  const idActivite = activites[0].id
+                  let code = activites[0].codePta
+                  let nom = activites[0].nom
+                  this.valueFiltre = {id:idActivite,codePta:code,nom:nom}
+                  this.fetchTaches(idActivite);
+                  this.isShow = true
+                  this.sousComposanteFiltre = null
+                  //this.composanteFiltre = null 
+                 
+                }
+              })
+             
+            }
         
-          }).catch((e) => {
+           }).catch((e) => {
             console.log(e)
        
            })
-
         }
         else {
           this.isShow = false
@@ -608,7 +639,7 @@ export default {
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
-     getPermission() {
+    getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
           if(element.slug ==='voir-une-tache') {
             this.tacheVisible = true
@@ -621,6 +652,9 @@ export default {
             }
             if(element.slug ==='supprimer-une-tache') {
               this.tacheDelete = true
+            } 
+            if(element.slug ==='voir-un-suivi-tache') {
+              this.tacheSuivi = true
             } 
         });
     },
@@ -673,6 +707,7 @@ export default {
       })
     },
     suivreMyTache(tache) {
+      if(this.tacheSuivi)
       this.$router.push({name:'dashboard_projets_taches_globale_suivis',params:{id:tache.id}})
     },
     close() {
@@ -791,41 +826,30 @@ export default {
         "/dashboard/projets/composantes/sous-composantes/activites/taches"
       );
     },
-     toggle() {
+
+    toggle() {
       this.pending = false
-      this.rejected = false
+      this.inProgress = false
       this.success = true
 
     },
+
     toggle2() {
       this.success = false
-      this.rejected = false
+      this.inProgress = false
       this.pending = true
     },
+
     toggle3() {
       this.pending = false
       this.success = false
-      this.rejected = true
+      this.inProgress = true
     },
 
     getStatus(status) {
       return getStringValueOfStatutCode(status);
     },
 
-    validation(tache) {
-      if (this.sendRequest === false) {
-        this.sendRequest = true;
-        this.updateTache({
-          tache: { statut: -1, activiteId: this.valueFiltre.id },
-          id: tache.id,
-        }).then((value) => {
-            this.fetchTaches(this.valueFiltre.id);
-        })
-          .finally((error) => {      
-            this.sendRequest = false;        
-          })
-      }
-    },
 
     sendForm() {
       if (this.sendRequest === false) {
@@ -837,7 +861,8 @@ export default {
         }); */
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
-
+        console.log('tache',tache)
+        console.log(this.valueFiltre)
         tache['activiteId'] = this.valueFiltre.id;
         
         if (this.tache?.id) {
@@ -887,10 +912,12 @@ export default {
     showCloseModal(value = false) {
       this.showModal = value;
     },
+
     gotoSuivi() {
       this.seeSuivi = true
       this.seeTache = false
     },
+
     gotoTache() {
       this.seeSuivi = false
       this.seeTache = true
@@ -923,7 +950,7 @@ export default {
 
     },
     
-   /*  projets: function(projets){
+    projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -1016,7 +1043,7 @@ export default {
         this.fetchTaches(valeur);
       }
 
-    } */
+    } 
 
   },
 
@@ -1039,7 +1066,10 @@ export default {
       }
 
     } 
-    this.getSuivi()
+    if(this.tacheSuivi) {
+      this.getSuivi()
+    }
+   
     this.getPermission()
     this.programmeId = this.currentUser.programme.id
 

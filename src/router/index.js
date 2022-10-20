@@ -52,6 +52,8 @@ import entreprise_checklist_details from "../views/dashboard/environements/entre
 import entreprise_checklist_create from "../views/dashboard/environements/entreprise/create.vue";
 import entreprise_checklist_entreprise from "../views/dashboard/environements/entreprise/index.vue";
 
+import general_checklist_details from "../views/dashboard/formulaire/_id/details.vue";
+
 //fin checklist environment entreprise
 
 import entreprises from "../views/dashboard/entreprises/index.vue";
@@ -69,9 +71,15 @@ import pta from "../views/dashboard/pta/index.vue";
 // import config from "../views/dashboard/config/index.vue";
 // import dashboard from "../views/dashboard/index.vue";
 import unite_gestion from "../views/dashboard/unite-gestion/index.vue";
+import gouvernement from "../views/dashboard/gouvernement/index.vue";
 import indicateurs from "../views/dashboard/indicateurs/index.vue";
 import indicateurs_suivi from "../views/dashboard/indicateurs/suivi.vue";
 import indicateurs_suivi_details from "../views/dashboard/indicateurs/_id/suivi.vue";
+/*mod indicateur */
+import indicateurs_mod from "../views/dashboard/indicateurs_mod/index.vue";
+import indicateurs_suivi_mod from "../views/dashboard/indicateurs_mod/suivi.vue";
+import indicateurs_suivi_mod_details from "../views/dashboard/indicateurs_mod/_id/suivi.vue";
+/* fin indicateur mod */
 import programme from "../views/dashboard/programme/index.vue";
 import finances_decaissement from "../views/dashboard/finances/decaissement.vue";
 import finances_suivi from "../views/dashboard/finances/suivi.vue";
@@ -138,13 +146,7 @@ import paps_bailleur from "../views/espaces_bailleurs/paps/index.vue";
 import ong_bailleur from "../views/espaces_bailleurs/ong/index.vue";
 import pta_bailleur from "../views/espaces_bailleurs/pta/index.vue";
 
-/* espace MOD */
 
-import indicateurs_mod from "../views/espaces_mod/indicateurs/index.vue";
-import suivi_indicateur_mod from "../views/espaces_mod/indicateurs/suivi/index.vue";
-import entreprises_mod from "../views/espaces_mod/entreprises/index.vue";
-import missioncontrole_mod from "../views/espaces_mod/mission-controle/index.vue";
-import ong_mod from "../views/espaces_mod/ong/index.vue";
 
 /* espace MOD */
 import entreprises_mo from "../views/espaces_mo/entreprises/index.vue";
@@ -426,6 +428,15 @@ const routes = [
   },
 
   {
+    path: "/dashboard/rapport/:id/details",
+    name: "general_checklist_details",
+    component: general_checklist_details,
+    meta: {
+      middleware: [auth],
+    },
+  },
+
+  {
     path: "/dashboard/entreprise/checklist/create",
     name: "entreprise_checklist_create",
     component: entreprise_checklist_create,
@@ -444,6 +455,7 @@ const routes = [
   },
   //fin checklist de entreprise
 
+  
   {
     path: "/dashboard/entreprises",
     name: "entreprises",
@@ -615,6 +627,14 @@ const routes = [
       middleware: [auth],
     },
   },
+  {
+    path: "/dashboard/gouvernement",
+    name: "gouvernement",
+    component: gouvernement,
+    meta: {
+      middleware: [auth],
+    },
+  },
 
   {
     path: "/dashboard/projets",
@@ -762,7 +782,23 @@ const routes = [
     },
     name: "indicateurs",
   },
+  {
+    path: "/dashboard/indicateurs-mod",
+    component: indicateurs_mod,
+    meta: {
+      middleware: [auth],
+    },
+    name: "indicateurs_mod",
+  },
 
+  {
+    path: "/dashboard/indicateurs/suivi-mod",
+    component: indicateurs_suivi_mod,
+    meta: {
+      middleware: [auth],
+    },
+    name: "indicateurs_suivi_mod",
+  },
   {
     path: "/dashboard/indicateurs/suivi",
     component: indicateurs_suivi,
@@ -771,14 +807,22 @@ const routes = [
     },
     name: "indicateurs_suivi",
   },
-
+  
   {
-    path: "/dashboard/indicateurs/:id/suivi",
+    path: "/dashboard/indicateurs/:id/suivi-mod",
     component: indicateurs_suivi_details,
     meta: {
       middleware: [auth],
     },
     name: "indicateurs_suivi_details",
+  },
+  {
+    path: "/dashboard/indicateurs-mod/:id/suivi-mod",
+    component: indicateurs_suivi_mod_details,
+    meta: {
+      middleware: [auth],
+    },
+    name: "indicateurs_suivi_mod_details",
   },
 
   {
@@ -1046,42 +1090,7 @@ const routes = [
       middleware: [auth, isBailleur],
     },
   },
-  // espace Mod
- 
 
-  {
-    path: "/mod/indicateurs",
-    component: indicateurs_mod,
-   
-    name: "indicateurs_mod",
-  },
-
-  {
-    path: "/mod/indicateurs/suivi",
-    component: suivi_indicateur_mod,
-    name: "suivi_indicateur_mod",
-  },
-
-  {
-    path: "/mod/mission-controle",
-    name: "missioncontrole_mod",
-    component: missioncontrole_mod,
-   
-  },
-
-  {
-    path: "/mod/entreprises",
-    name: "entreprises_mod",
-    component: entreprises_mod,
-   
-  },
-
-  {
-    path: "/mod/ong",
-    name: "ong_mod",
-    component: ong_mod,
-   
-  },
 
   // espace Mo
 

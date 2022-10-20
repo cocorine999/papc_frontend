@@ -5,7 +5,7 @@
     <vmodal  v-if="showModal" title="Uploader des fichiers"  v-on:close="showModal=false">
         <form action="" @submit.prevent="save" class="px-12" style="width:60vw !important" >
           <div class="m-4">
-            <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" @change="previewFiles">
+            <input class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm" aria-describedby="file_input_help" id="file_input" type="file" @change="previewFiles">
           </div>
 
           <div class="m-4">
@@ -56,12 +56,7 @@
       </div> 
     </nav>
 
-    <div class="flex justify-start mt-2">
-      <div class="flex  items-center ">
-       <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-2  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
-        <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
-      </div>
-    </div>
+    
     <!-- <div>
       <FileManager class="card-card rounded p-2" />
     </div> -->
@@ -69,9 +64,9 @@
     <div class="bg-white relative p-4 border hover:border-gray-300 shadow-inner my-6 ">
       <div class="flex justify-between items-center space-x-3 border-gray-300 border p-2">
         <div class="flex ">
-          <button @click="uploadFile" title="uploader un fichier"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+          <button v-if="fichierAdd" @click="uploadFile" title="uploader un fichier"   class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline">
             <span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M1 14.5a6.496 6.496 0 0 1 3.064-5.519 8.001 8.001 0 0 1 15.872 0 6.5 6.5 0 0 1-2.936 12L7 21c-3.356-.274-6-3.078-6-6.5zm15.848 4.487a4.5 4.5 0 0 0 2.03-8.309l-.807-.503-.12-.942a6.001 6.001 0 0 0-11.903 0l-.12.942-.805.503a4.5 4.5 0 0 0 2.029 8.309l.173.013h9.35l.173-.013zM13 13v4h-2v-4H8l4-5 4 5h-3z"></path></g></svg></span>
-            <span class="mx-2 text-sm font-semibold">uploader un fichier</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">uploader un fichier</span>
           </button>
         </div>
         <div class="flex items-center space-x-3">
@@ -678,12 +673,6 @@
           </div>
         </div>
       </div> -->
-      <div class="absolute bottom-2 right-2">
-        <div class="flex  items-center ">
-          <span title="vue en mosaique" @click="switch1" :class="{'border-2':mosaique}" class="p-1  cursor-pointer border-gray-500 text-gray-700 hover:text-gray-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 5v14a2 2 0 002 2h6V3H5a2 2 0 00-2 2zm16-2h-6v8h8V5c0-1.1-.9-2-2-2zm-6 18h6c1.1 0 2-.9 2-2v-6h-8v8z"></path></svg></span>
-          <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-1 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
-        </div>
-      </div>
     </div>
 
 
@@ -777,7 +766,9 @@ export default {
       preserveMain:true,
       main2:false,
       programmeId:'',
-      usersId:[]
+      usersId:[],
+      fichierVisible:false,
+      fichierAdd:false
     }
     
   },
@@ -796,7 +787,7 @@ export default {
       console.log(this.datasFiles)
      
     },
-     save() {
+    save() {
         console.log(this.value)
         this.value.forEach(element => {
           this.usersId.push(element.id)
@@ -824,7 +815,18 @@ export default {
           })
         }
 
-      },
+    },
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-fichier') {
+          this.fichierVisible = true
+        }
+        if(element.slug ==='creer-un-fichier') {
+          this.fichierAdd = true
+        }
+        
+      });
+    },
     getFiles() {
       FichierService.get().then((data) => {
         let datas = data.data.data
@@ -966,8 +968,12 @@ export default {
       ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
   mounted() {
+    this.getPermission()
+      if(!this.fichierVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     this.programmeId = this.currentUser.programme.id
-   this.getUser()
+    this.getUser()
     this.getFiles()
 
   }

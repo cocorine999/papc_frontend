@@ -48,15 +48,15 @@
         </ol>
     </div>
 
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
-        <span @click="goPta" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-base uppercase font-bold    py-2">Le pta </span>
-        <span @click="goPpm"  :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2">Le PPM </span>
+        <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
+        <span @click="goPpm" v-if="ppmVisible" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
       </div> 
       <div>
-        <div v-if="seePta" class="flex space-x-4 items-center">
+        <div v-if="seePta && revisionAdd " class="flex space-x-4 items-center">
           <button @click="reviser = true" title="reviser pta"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
-            <span class="mx-2 text-sm font-semibold"> reviser ptab </span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptab </span>
           </button>
          
         
@@ -67,10 +67,10 @@
     </div>
 
    
-    <div v-if="seePta"  class="relative my-4  sm:rounded-lg">
+    <div v-if="seePta && ptaVisible"  class="relative my-4  sm:rounded-lg">
       <ptab  ></ptab>
     </div>
-    <div v-if="seePpm "  class="relative my-4  sm:rounded-lg">
+    <div v-if="seePpm && ppmVisible "  class="relative my-4  sm:rounded-lg">
       <ppm ></ppm>
     </div>
   </div>
@@ -117,11 +117,23 @@ export default {
       ppmVisible:false,
       cols:2,
       currentRole:'',
-
+      revisionAdd:false,
+      revisionVisible:false,
+      ptaVisible:false,
+      filtrePta:false,
+      filtrePpm:false,
+      filtreRePta:false,
+      filtreRePpm:false,
+      planDecaissementPtaVisible:false,
+      ppmVisible:false,
+      exporterSuiviPpm:false,
+      exporterSuiviPta:false,
+      exporterSuiviRePpm:false,
+      exporterSuiviRePta:false,
     }      
   },
    computed: {
-     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -139,29 +151,68 @@ export default {
     },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
-      if(element.slug ==='voir ptab') {
+        if(element.slug ==='exporter-un-suivi-ppm') {
+          this.exporterSuiviPpm = true
+        }
+       if(element.slug === 'exporter-un-suivi-ptab') {
+        this.exporterSuiviPta = true
+      }
+      if(element.slug === 'exporter-un-suivi-ppm') {
+        this.exporterSuiviRePpm = true
+      }
+      if(element.slug ==='exporter-un-suivi-pta') {
+        this.exporterSuiviRePta = true
+      }
+      if(element.slug ==='voir-revision-ptab') {
+        this.planDecaissementPtaVisible= true
+      }
+      if(element.slug ==='exporter-un-suivi-financier') {
+        this.exporterSuiviFinance = true
+      }
+      if(element.slug ==='voir-ptab') {
         this.ptaVisible = true
       }
-      if(element.slug === 'voir ppm') {
+      if(element.slug ==='voir-ppm') {
         this.ppmVisible = true
       }
+      if(element.slug ==='voir-revision-ptab') {
+        this.revisionVisible = true
+      }
+      if(element.slug ==='faire-revision-ptab') {
+        this.revisionAdd = true
+      }
+      if(element.slug ==='voir-ptab') {
+        this.filtrePta = true
+      }
+      if(element.slug ==='voir-ppm') {
+        this.filtrePpm = true
+      }
+      if(element.slug ==='voir-ptab') {
+        this.filtreRePta = true
+      }
+      if(element.slug ==='voir-ppm') {
+        this.filtreRePpm = true
+      }
+
+           
     });
 
     },
+
     reviserPta() {
       this.isClick = false
      const  data={
         programmeId:this.currentUser.programme.id
       }
-        PtabService.reviser(data).then(() => {
+      PtabService.reviser(data).then(() => {
             this.$toast.success("Revision effectué avec success")
             this.reviser = false
             this.isClick = true
         }).catch((e) => {
-            this.$toast.error(e)
-            this.reviser = false
+        this.$toast.error(e)
+          this.reviser = false
            this.isClick = true
-        })
+      })
     },
    
      
@@ -169,6 +220,9 @@ export default {
   mounted() {
  
     this.getPermission()
+    if(!this.ptaVisible || !this.ppmVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
      if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
         console.log("role courant",this.currentUser)

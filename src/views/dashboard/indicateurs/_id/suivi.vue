@@ -14,7 +14,7 @@
             </ol>
           </div>
           <div>
-            <div class="flex justify-center w-full text-gray-600">
+            <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -39,10 +39,10 @@
         <div class="flex items-center justify-between my-4">
           <titre>Le suivi tache  </titre>
           <div class="flex items-center space-x-4">
-            <json-excel :data="json_data()" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
+            <json-excel :data="json_data" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
           <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Export Excel</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
           </button>
           </json-excel>
             <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
@@ -61,12 +61,11 @@
                 <p v-else class=" text-sm   py-2"><span class="font-bold uppercase px-1">Categorie</span> : Non definit </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Valeur de base </span>:{{indicateur.valeurDeBase}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Unité de mesure  </span>:{{indicateur.unitee_mesure.nom}} </p>
-     
               </div>
             </div>
           </div>
           <div class="datatable w-full bg-white shadow p-2 ">
-            <vtable :headers="headers" :datas="filteredSuivis()"  ></vtable>
+            <vtable :headers="headers" :datas="filteredSuivis"></vtable>
           </div>
         </div>    
     </div>
@@ -85,6 +84,7 @@ import Dashboard from '@/layouts/Dashboard'
 import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service.js";
 import IndicateurService from "@/services/modules/indicateur.service.js";
 import JsonExcel from "vue-json-excel";
+import forEach from 'ramda/src/forEach'
 
 export default {
   components: {
@@ -133,37 +133,12 @@ export default {
         console.log(e)
       })
     },
-    filteredSuivis(){
-        var self = this;
-
-        return this.dataTable.filter(function (suivi){
-          return suivi.created_at.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
-      },
+    
       title_csv() {
         return "suivi-indicateur-" + this.indicateur.nom + "-" + new Date()
       },
 
-      json_data(){
-        let tab = [];
-
-        this.filteredSuivis().forEach(element => {
-          tab.push(
-            {
-              nom: element.indicateur.nom,
-              description: element.indicateur.description,
-              bailleur: element.indicateur.bailleur.sigle,
-              categorie: element.indicateur.categorie?.nom,
-              unitee_de_mesure: element.indicateur.uniteeDeMesure.nom,
-              valeur_de_base: element.indicateur.valeurDeBase,
-              annee_de_base: element.indicateur.anneeDeBase,
-              valeur_cible: element.valeurCible,
-              valeur_realise: element.valeurRealise,
-            }
-          );
-        });
-        return tab;
-      },
+     
     currentTache() {
       IndicateurService.get(this.$route.params.id).then((data) => {
         this.indicateur= data.data.data
@@ -171,6 +146,28 @@ export default {
         console.log(e)
       })
     }
+  },
+  computed:{
+    json_data() {
+      const data = []
+      if(this.filteredSuivis != undefined || this.filteredSuivis != null) {
+        this.filteredSuivis.forEach(element => {
+          const valeurCible = element.valeurCible
+          const valeurRealise = element.valeurRealise
+          const created_at = element.created_at
+          const indicateur = this.indicateur.nom
+          data.push({indicateur,valeurCible,valeurRealise,created_at})
+        });
+        return data
+        
+      }
+    },
+    filteredSuivis(){
+        var self = this;
+        return this.dataTable.filter(function (suivi){
+          return suivi.created_at.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        });
+    },
   },
   mounted() {
     this.getSuivi()

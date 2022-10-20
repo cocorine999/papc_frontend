@@ -48,7 +48,7 @@
         <span title="vue en ligne" @click="switch2" :class="{'border-2':line}" class="p-2 text-gray-700 border-gray-500 cursor-pointer hover:text-gray-500 "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.8em" width="1.8em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 14h4v-4H3v4zm0 5h4v-4H3v4zM3 9h4V5H3v4zm5 5h13v-4H8v4zm0 5h13v-4H8v4zM8 5v4h13V5H8z"></path></svg></span>
       </div>
     </div>
-    <div class="flex items-center justify-between my-2">
+    <div class="flex items-center justify-between my-2" >
        <div class="flex space-x-4">
           <span @click="goOng" :class="{'border-primary border-b-8':seeOng}" class="inline-block cursor-pointer  text-lg uppercase font-bold  py-2">Les ONG/AGENCES DE COMMUNICATIONs </span>
           <span @click="goPassation" :class="{'border-primary border-b-8':seePassation}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2">Passation de marché </span>
@@ -57,16 +57,16 @@
       
         <button v-if="seeOng" @click="addBailleur" title="ajouter une instutitions"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-         <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
+         <span class="mx-2 text-xs  md:text-sm font-semibold">Ajouter un passation de marché</span>
         </button>
         <button  v-if="seePassation" @click="addPassation" title="Ajouter un MOD"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-          <span class="mx-2 text-sm font-semibold">Ajouter un passation de marché</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">Ajouter un passation de marché</span>
         </button>
 
         <router-link v-if="seechecklist" to="/dashboard/checklist/create"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-          <span class="mx-2 text-sm font-semibold">Ajouter </span>
+          <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
         </router-link>
 
         
@@ -87,21 +87,21 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">Dhaka, Street, State, Postal Code Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quod sunt tempore iste eligendi unde molestias ipsum omnis dolorum totam!</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">Dhaka, Street, State, Postal Code Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quod sunt tempore iste eligendi unde molestias ipsum omnis dolorum totam!</div>
               </div>
     
               <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">+880 1234567890</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">+880 1234567890</div>
               </div>
     
               <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">info@demo.com</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">info@demo.com</div>
               </div>
             </div>
       </div>

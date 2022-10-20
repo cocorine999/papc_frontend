@@ -5,7 +5,7 @@
         <div style="width:60vw" class="p-4">
           <form @submit.prevent="saveProlongerDate()" action="">
             <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date prolongation <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
             </div>
             <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
@@ -32,8 +32,8 @@
             </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-2 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"  aria-label="Breadcrumb">
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -45,9 +45,11 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
+        </div>
+        <div>
+          <div class="w-full flex text-gray-600">
+              <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"   class="h-10 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"    class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -60,14 +62,14 @@
         </div>
       </nav> 
       
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="">
-          <span  class="inline-block cursor-pointer  border-b-8 font-bold  text-sm uppercase    border-primary py-2">Les projets </span>
+          <span  class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-sm uppercase    border-primary py-2">Les projets </span>
         </div>
 
         <button v-if="projetAdd" @click="addProjet"  title="ajouter un projet"    class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
       </div>
     
@@ -79,12 +81,12 @@
             <div class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
               <p class="max-h-48 line-clamp-7 px-2"> {{ projet.description }} </p>
               <div  class="absolute bottom-5 ">
-                <div class="uppercase text-sm flex items-center rounded-2xl shadow space-x-3 bg-white text-primary px-4 py-3 font-bold">
+                <div v-if="dashboardProjetVisible" class="uppercase text-sm flex items-center rounded-2xl shadow space-x-3 bg-white text-primary px-4 py-3 font-bold">
                   details
                 </div>
               </div>
               <div v-if="projet.statut == -2 "  class="absolute top-2 left-2 ">
-                <button @click.stop="validerProjet(projet.id)" class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
+                <button v-if="validation" @click.stop="validerProjet(projet.id)" class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
               </div>
               <div v-else  class="absolute top-2 left-2 ">
                 <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
@@ -162,6 +164,7 @@ export default {
     return {
       base_url:API_BASE_URL,
       showModal:false,
+      showSearch:false,
       line:false,
       dates: {fin:''},
       isUpdate:false,
@@ -174,7 +177,7 @@ export default {
       projetId:'',
       title: '',
       search:"",
-      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'statut', 'bailleurId'],
+      projetAttributs : ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId'],
       champs:[
         {name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -186,7 +189,6 @@ export default {
         {name: 'Piece jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false,isImage:false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data:'', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors : []},
         {name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data:'', required: true, options: this.bailleurs, cle: 'id', value: 'sigle',  errors : []},
-        {name: 'Status', key: "statut", type: '', placeholdere: 'Selectionnez un status', isSelect: true, isTextArea: false, data:'', required: true, options:this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
         {name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea:true, data:'', required: false, errors : []},
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
@@ -200,32 +202,32 @@ export default {
         {name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data:'', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors : []},
         {name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data:'', required: true, options: this.bailleurs, cle: 'id', value: 'sigle',  errors : []},
-        {name: 'Status', key: "statut", type: '', placeholdere: 'Selectionnez un status', isSelect: true, isTextArea: false, data:'', required: true, options:this.$store.state.statuts, cle: 'etat', value: 'nom',  errors : []},
         {name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea:true, data:'', required: false, errors : []},
         {name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data:'', required: false, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
       ],
-     option: [
+      option: [
         { name: "supprimer" },
         { name: "modifier" },
         { name: "prolonger" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "prolonger" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
-       optionD: [
+      optionD: [
         { name: "supprimer" },
-        { name: "prolonger" },
-        { name: "continuer" },
+       /*  { name: "continuer" }, */
       ],
       projetId:'',
       projetVisible:false,
       projetAdd:false,
       projetDelete:false,
       projetUpdate:false,
+      dashboardProjetVisible:false,
+      bailleurVisible:false,
+      validation:false,
       sendRequest: false,
       fichiers:[],
       image:{}
@@ -248,7 +250,7 @@ export default {
       bailleurs: "bailleurs/getBailleurs",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
-     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    
   },
 
   methods: {
@@ -280,6 +282,15 @@ export default {
             }
             if(element.slug ==='supprimer-un-projet') {
               this.projetDelete = true
+            }
+            if(element.slug ==='voir-details-projet') {
+              this.dashboardProjetVisible = true
+            }
+            if(element.slug ==='voir-un-bailleur') {
+              this.bailleurVisible = true
+            }
+            if(element.slug === 'validation' ) {
+              this.validation = true
             }
            
         });
@@ -316,8 +327,10 @@ export default {
     ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR_OF_PROGRAMME' }),
 
     gotoDetails(projet) {
-      console.log(projet)
-      this.$router.push({name:'projets_id_details',params:{id:projet.id, projet: projet}})
+     if(this.dashboardProjetVisible) {
+        this.$router.push({name:'projets_id_details',params:{id:projet.id, projet: projet}})
+     }
+    
      
     },
 
@@ -337,11 +350,10 @@ export default {
 
     filteredProjet(){
         var self = this;
-
         return this.projets.filter(function (projet){
           return projet.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 || 
-                 projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+            projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+            projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
     },
 
@@ -449,10 +461,10 @@ export default {
 
         projet.bailleurId = projet.bailleurId.id
         projet.id = this.projetId
-        projet.statut = projet.statut.etat
-        console.log('details projet',projet)
+        
         if(projet?.id)
         {
+         projet.statut = -1
           this.updateProjet({projet: projet, id : projet?.id}).then(response => {
             
             if(response.status == 200 || response.status == 201){
@@ -467,12 +479,11 @@ export default {
             this.champs.map(value => value.errors = this.erreurs[value.key])
 
           })
-
         }
         else
         { 
           this.sendRequest = true;
-          console.log("creation de projet ",projet)
+          projet.statut = -2
           const demo = {
             "nom": projet.nom,
             "description": projet.description,
@@ -533,7 +544,6 @@ export default {
       },
 
     validerProjet(id) {
-
       let projet = {}
       projet.statut =-1
       this.updateProjet({projet: projet, id : id}).then(response => {
@@ -575,13 +585,18 @@ export default {
   created() {
     console.log("Fetching projets ...")
     this.getPermission()
+     if(!this.projetVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     this.programmeId = this.currentUser.programme.id
     if(this.programmeId){
       this.fetchProjets(this.programmeId).then((value) => {
-          setTimeout(() => {
-            console.log("Fetching list of bailleurs...")
+        setTimeout(() => {
+          console.log("Fetching list of bailleurs...")
+          if(this.bailleurVisible) {
             this.fetchBailleurs(this.programmeId)
-          });
+          }  
+        });
       })
     }
   }

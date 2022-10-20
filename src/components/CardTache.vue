@@ -21,7 +21,7 @@
           <button
             title="Valider la tâche"
             v-if="showValidate"
-            @click="validation"
+            @click="validation(id)"
             class="bg-green-500 rounded-lg text-sm px-3 py-1 font-semibold text-white"
           >
             Valider
@@ -29,7 +29,7 @@
         </div>
         <div v-else>
            <button
-           v-if="statut.code !=2"
+           v-if="statut.code !=2 && isSuivi && !isDone"
             title="suivre tache"
             @click="validerSuivi(id)"
             class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold "
@@ -102,7 +102,8 @@ export default {
     "statut",
     "id",
     "isDelete",
-    "isUpdate"
+    "isUpdate",
+    "isSuivi"
   ],
   components:{ Dropdown},
   data() {
@@ -110,21 +111,17 @@ export default {
       option: [
         { name: "supprimer" },
         { name: "modifier" },
-        { name: "dupliquer" },
         { name: "prolonger" },
         { name: "commenter" },
-        
       ],
       optionUpdate: [
         { name: "modifier" },
-        { name: "dupliquer" },
         { name: "prolonger" },
         { name: "commenter" },
     
       ],
       optionD: [
         { name: "modifier" },
-        { name: "dupliquer" },
         { name: "prolonger" },
         { name: "commenter" },
        /*  { name: "mes suivis" }, */
@@ -135,10 +132,11 @@ export default {
       timer: null,
       showInput:false,
       isDone:false,
-      isValidate: this.statut.code > -2,
+      isValidate:null ,
     }
   },
   methods:{
+    
     /* suivreTache(poids) {
       this.clicks++;
       if (this.clicks === 1) {
@@ -179,13 +177,32 @@ export default {
       })
      
     },
-    validation(){
-      this.isValidate=true
-      this.$emit('validation')
+    validation(id) {
+      const params = {
+        statut: -1
+      }
+      TacheService.update(id,params).then((data) => {
+        this.isValidate = true
+      }).catch((e) => {
+        if (e.response) {
+         this.$toast.error('erreur de validation')
+         
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          console.log('dernier message', error.message);
+        }
+      })
     },
+  
     gotoDetail() {
       this.$router.push({name:'/dashboard/projets/taches-globale/:id/details',params:{id:1}})
     }
+  },
+  mounted() {
+    this.isValidate = this.statut.code > -2
   }
 }
 </script>

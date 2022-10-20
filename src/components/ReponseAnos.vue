@@ -35,7 +35,7 @@
   
     <hr v-if="isReponse" class="my-2">
     <form v-if="isReponse" @submit.prevent="sendRelancer" class="px-4 overflow-y-auto">
-      <div class="my-2">
+      <div v-if="currentRole=='bailleur'" class="my-2">
         <label class="my-2 block" for="">Selectionnez l'etat de l'ano </label>
         <select id="choice" required v-model="Relance.statut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           <option value="" selected>Selectionnez le statut</option>
@@ -44,10 +44,10 @@
       </div>
       <div class="my-2">
         <label class="my-2 block" for="">Pieces jointes </label>
-        <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+        <input  class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
       </div>
       <div class="my-2">
-        <label class="my-2 block">Description <span class="px-2 text-lg font-black text-red-700">*</span></label>
+        <label class="my-2 block">Description <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
         <textarea v-model="Relance.commentaire"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
       </div>
       <div class="py-2 my-4 flex justify-center space-x-8">
@@ -74,13 +74,15 @@
 import {API_BASE_URL} from "@/services/configs/environment.js";
 import AnosService from "@/services/modules/ano.service.js";
 import Vbutton from '@/components/Vbutton.vue'
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   components:{Vbutton},
-  props:['datas'],
+  props:['datas','anoId','statut'],
   data() {
     return {
       base_url:API_BASE_URL,
       isReponse:false,
+      currentRole:'',
       Relance:{
         statut:null,
         files:[],
@@ -94,6 +96,10 @@ export default {
       chargement:false,
     }
   },
+   computed: {
+   
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+  },
   methods:{
     previewFiles(event) {
       const data = event.target.files
@@ -105,12 +111,13 @@ export default {
      
     },
     sendRelancer() {
+      console.log("dara",this.datas)
       if(this.chargement == false) {
         this.chargement = true
         const formData = new FormData();
-        formData.append('statut',this.Relance.statut)
+        formData.append('statut',this.statut)
         formData.append('commentaire',this.Relance.commentaire)
-        formData.append('anoId',this.datas.anoId)
+        formData.append('anoId',this.anoId)
         formData.append('reponseId',this.datas.idReponse)
         for( let i = 0; i < this.Relance.files.length; i++ ){
           let file = this.Relance.files[i];
@@ -127,6 +134,12 @@ export default {
       }
       
     },
+  },
+  mounted() {
+    if(this.currentUser != undefined) {
+      this.currentRole = this.currentUser.type
+      console.log("role courant",this.currentUser)
+    }
   }
 }
 </script>

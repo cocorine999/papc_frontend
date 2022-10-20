@@ -7,12 +7,12 @@
           <form action="" @submit.prevent="sendForm" class="px-4"  >
        
             <div class="my-4">
-              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <input required v-model="nom" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom de l'activite" />
             </div>
 
           <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <div class="flex justify-between my-3">
               <div>
                 <input  type="radio" @click="allEntreprise= false" id="all" name="entreprise" value="all" >
@@ -28,12 +28,12 @@
           </div>
 
           <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date debut <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date debut <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required v-model="debut" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
           </div>
 
           <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date fin <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required v-model="fin" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
           </div>
         
@@ -60,7 +60,8 @@
       </div>
     </vmodal>
     <div class="w-full px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -77,20 +78,20 @@
         </div>
       </nav> 
 
-      <div class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
-          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-base uppercase font-bold    py-2"> Listes des entreprises </span>
-          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" v-if="checklistVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-base uppercase font-bold   py-2"> Les formulaires </span>
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Rapports mission de controle </span>
+          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" v-if="formulaireVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
         </div> 
         <div>
           <button @click="addActivite" v-if="seeActivite && activiteEnvAdd"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Creer une activité </span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Creer une activité </span>
           </button>
-          <router-link v-if="seeFormulaire && checklistVisible"  :to="{name:'mission_controle_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <router-link v-if="seeFormulaire && formulaireAdd"  :to="{name:'mission_controle_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Creer un formulaire </span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Creer un formulaire </span>
           </router-link>
         </div>
       </div>
@@ -110,21 +111,21 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.adresse}}</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.adresse}}</div>
               </div>
         
               <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.contact}}</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.contact}}</div>
               </div>
         
               <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <div class="ml-4 text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.email}}</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.email}}</div>
               </div>
             </div>
           </div>
@@ -132,7 +133,9 @@
       </div>
       <div v-if="seeActivite">
         <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
-        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"  @updateInputData="updateInputData"></vtable>    
+        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @supprimer="supprimerActivite"></vtable>    
+        <vtable v-if="!activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @updateInputData="updateInputData"></vtable>
+        <vtable v-if="!activiteEnvDelete && !activiteEnvUpdate && activiteEnvVisible" :headers="headers" :datas="filteredEActivite()"></vtable>        
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
@@ -143,8 +146,9 @@
               @supprimer="supprimer"
               @gotoDetails="gotoDetails(formulaire.id)"
               @onlink="getlink(formulaire.id)"
-              :isdelete="checklistDelete"
-              :isUpdate="checklistUpdate"
+              :isdelete="formulaireDelete"
+              :isUpdate="formulaireUpdate"
+              :isGotoLink="suiviEnvAdd"
               > 
             </card-checklist>
           </div>
@@ -223,10 +227,11 @@ export default {
       activiteEnvAdd:false,
       activiteEnvDelete:false,
       activiteEnvUpdate:false,
-      checklistVisible:false,
-      checklistAdd:false,
-      checklistSupprimer:false,
-      checklistUpdate:false,
+      formulaireVisible:false,
+      formulaireAdd:false,
+      formulaireDelete:false,
+      formulaireUpdate:false,
+      suiviEnvAdd:false,
       
     }
   },
@@ -252,7 +257,9 @@ export default {
   },
   mounted() {
     this.getPermission()
-
+     if(!this.activiteEnvVisible || !this.entrepriseExecutanteVisible || !this.formulaireVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     console.log("Fetching entreprises executantes ...");
     this.fetchEntreprisesExecutante();
 
@@ -268,8 +275,8 @@ export default {
   methods: {
     
      getPermission() {
-      this.currentUser.role[0].permissions.forEach(element => {
-          if(element.slug ==='voir-une-entreprise-executante') {
+        this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-suivi-environnementale') {
           this.entrepriseExecutanteVisible = true
         }
         if(element.slug === 'creer-une-activite-environnementale') {
@@ -284,20 +291,20 @@ export default {
         if(element.slug === 'voir-une-activite-environnementale') {
           this.activiteEnvVisible = true
         }
-        if(element.slug === 'voir-une-checklist') {
-          this.checklistVisible = true
+        if(element.slug ==='voir-un-formulaire') {
+          this.formulaireVisible = true
         }
-        if(element.slug === 'creer-une-checklist') {
-          this.checklistAdd = true
+        if(element.slug ==='creer-un-formulaire') {
+          this.formulaireAdd = true
         }
-        if(element.slug === 'modifier-une-checklist') {
-          this.checklistUpdate = true
+        if(element.slug ==='modifier-un-formulaire') {
+          this.formulaireUpdate = true
         }
-        if(element.slug === 'supprimer-une-checklist') {
-          this.checklistDelete = true
+        if(element.slug ==='supprimer-un-formulaire') {
+          this.formulaireUpdate = true
         }
-        if(element.slug ==='supprimer-un-decaissement') {
-          this.decaissementDelete = true
+         if(element.slug === 'creer-un-suivi-environnementale' ) {
+          this.suiviEnvAdd = true
         }
            
       });
@@ -364,8 +371,13 @@ export default {
       this.value.push(tag)
     },
     getlink(i){
-      this.formulaireId = i
-      this.showLink = true
+      /*if(this.suiviEnvAdd) {
+        this.formulaireId = i
+        this.showLink = true
+      }*/
+
+      this.$router.push({name:'form_gestion_generator',params:{id:i}})
+   
     },
     gotoDetails(id) {
       this.$router.push({name:'mission_controle_checklist_details',params:{idE:id}})

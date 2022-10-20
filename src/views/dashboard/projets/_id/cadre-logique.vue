@@ -101,7 +101,7 @@
                       {{ input.name }}
                       <span
                         v-if="input.required"
-                        class="px-2 text-lg font-black text-red-700"
+                        class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700"
                         >*</span
                       >
                     </label>
@@ -110,7 +110,7 @@
                       v-model="input.data"
                       :placeholder="input.placeholdere"
                       :type="input.type"
-                      class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
+                      class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"
                     />
                   </div>
                 </div>
@@ -120,13 +120,13 @@
                     {{ area.name }}
                     <span
                       v-if="area.required"
-                      class="px-2 text-lg font-black text-red-700"
+                      class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700"
                       >*</span
                     >
                   </label>
                   <textarea
                     v-model="area.data"
-                    class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"
+                    class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"
                     required
                     rows="3"
                   ></textarea>
@@ -180,12 +180,12 @@
           </div>
         </modal-top-right>
       </div>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between flex-wrap">
         <titre>Cadre logique </titre>
         <button
           @click="addUnite"
           title="ajouter "
-          class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
+          class="px-2 py-1  md:px-4 md:py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +195,7 @@
           >
             <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
           </svg>
-          <span class="mx-2 text-sm font-semibold">ajouter</span>
+          <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter</span>
         </button>
       </div>
       <vtable

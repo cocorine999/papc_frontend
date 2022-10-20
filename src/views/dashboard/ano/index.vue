@@ -1,10 +1,12 @@
 <template>
   <dashboard>
-    <div v-if="anoVisible" class="px-4">
+    <div  class="px-4">
+
       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
          <div v-if="anosReponses.length > 0"  style="height:800px" class="overflow-auto ">
             <div v-for="data in anosReponses" :key="data.id">
-              <reponse-anos :datas="data"></reponse-anos>
+          
+              <reponse-anos :anoId="anosId" :statut="statut" :datas="data"></reponse-anos>
             </div>
          </div>
          <div v-else class="font-bold text-gray-600 py-5  text-center">
@@ -12,19 +14,22 @@
          </div>
         
        </modal-chat>
+
       <vmodal v-if="showDetail" @close="showDetail = false" >
         <div style="width:60vw">
           <preview template="ano" :datas="datas" @previewFile="previewFile" ></preview>
         </div>
       </vmodal>
+
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="showModal = false">
+        <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs" @getFile="getFile"
               submitText="Créer un ano" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
       </div>
+
       <div v-if="showReponse">
         <modal-chat :title="title" v-on:close="closeReponse">
           <form  @submit.prevent="sendReponse" class="px-4 overflow-y-auto">
@@ -40,7 +45,7 @@
               <input required class="block w-full text-sm text-gray-900 bg-gray-50 p-2.5 border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
             </div>
             <div class="my-2">
-              <label class="my-2 block">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
+              <label class="my-2 block">Commentaire <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <textarea v-model="Relance.commentaire"  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
             </div>
             <div class="py-2 my-4 flex justify-center space-x-8">
@@ -63,8 +68,9 @@
         </modal-chat>
       </div>
    
-      <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex items-center justify-between flex-wrap " aria-label="Breadcrumb">
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
               <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
@@ -81,9 +87,9 @@
         </div>
 
         <div>
-            <div class="flex justify-center w-full text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
+            <div class="w-full flex text-gray-600">
+              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5  text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-7" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" class="relative">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -95,29 +101,33 @@
            </div>
         </div>
       </nav>
-      <div v-if="anoAdd" class="flex items-center justify-between my-2">
+      <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span
-            class="inline-block cursor-pointer  border-b-8 font-bold text-base uppercase    border-primary py-2">Tableau recapitulatif </span>
+            class="inline-block cursor-pointer  border-b-8 font-bold text-xs 
+ md:text-base uppercase    border-primary py-2">Tableau recapitulatif </span>
         </div>
         <div class="flex space-x-4">
           
-          <button @click="addAno" title="ajouter un tabelau"
+          <button v-if="anoAdd" @click="addAno" title="ajouter un tabelau"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
               style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
             </svg>
-            <span class="mx-2 text-sm font-semibold">Ajouter </span>
+            <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
           </button>
         </div>
       </div>
+     
       <div id="dataTable">
-        <vtable v-if="actions != undefined && anoDelete" :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
-        <vtable v-else :headers="headers" @reponseAno="reponseAno" :isComment="true" @commenter="commenter" :statut="true" :datas="filteredAno()" :sendRequest="false" @supprimer="supprimer" @seeUpload="seeUpload" @modifier="modifier"></vtable>
+        <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actionsDelete"  @supprimer="supprimer" ></vtable>
+        <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true" :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()" :actions="actionsReponse" :isComment="true" @commenter="commenter"   @seeUpload="seeUpload" ></vtable>
+        <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"  :sendRequest="false" :headers="headers" :datas="filteredAno()" ></vtable>
+        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="true" @commenter="commenter" :sendRequest="false" :headers="headers"  :datas="filteredAno()" :actions="actions" @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
-  </dashboard>
+  </dashboard>  
 
 </template>
 
@@ -166,10 +176,17 @@ export default {
       showDetail:false,
       search:"",
       title: '',
+      statut:'',
       anoVisible:false,
       anoAdd:false,
       anoDelete:false,
       anoUpdate:false,
+      bailleurVisible:false,
+      voirDetailAno:false,
+      commentaireVisible:false,
+      anoRelancer:false,
+      reponseAnoVisible:false,
+      reponseAnoAdd:false,
       readPDF:false,
       pdfFile:'',
       chargement:false,
@@ -204,19 +221,31 @@ export default {
       ],
       actions: [
         { name: 'supprimer', iconne: '' },
-        { name:'fichier'},
+        { name:'detail'},
         { name:'reponse'},
       ],
-       sendRequest: false,
+      actionsDetail: [
+        { name:'detail'},
+      ],
+      actionsDelete: [
+        { name: 'supprimer', iconne: '' }, 
+         { name:'detail'},
+      ],
+      actionsReponse: [
+        { name:'reponse'},
+        { name:'detail'},
+      ],
+      sendRequest: false,
+
       fichiers:[],
-       pdf:[
-          {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
-          {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
-        ],
-        showReponse:false,
-        anosId:'',
-        showComment:false,
-        anosReponses:[]
+      pdf:[
+        {url:'/upload/ppm -2022.pdf',title:'ppm -2022.pdf'},
+        {url:'/upload/pta -2022.pdf',title:'pta -2022.pdf'},
+      ],
+      showReponse:false,
+      anosId:'',
+      showComment:false,
+      anosReponses:[]
     }
   },
 
@@ -249,6 +278,9 @@ export default {
     },
     closeReponse() {
       this.showReponse = false
+      this.Relance.statut = null
+      this.Relance.files = []
+      this.Relance.commentaires = ''
     },
     closeCommentaire() {
       this.showComment = false
@@ -261,7 +293,9 @@ export default {
       
     },
     commenter(data) {
+      console.log(data)
       this.anosId = data.id
+      this.statut = data.statut
       this.getAnosReponse(data.id)
       this.showComment = true
       this.title = "reponses"
@@ -303,20 +337,30 @@ export default {
         this.$store.dispatch('disabled')
     },
     getPermission() {
-         this.currentUser.role[0].permissions.forEach(element => {
-            if(element.slug ==='voir-un-ano') {
-              this.anoVisible = true
-            }
-            if(element.slug === 'creer-un-ano') {
-              this.anoAdd = true
-            }
-            if(element.slug === 'modifier-un-ano') {
-              this.anoUpdate = true
-            }
-            if(element.slug ==='supprimer-un-ano') {
-              this.anoDelete = true
-            }
-          });
+      this.currentUser.role[0].permissions.forEach(element => {
+        if(element.slug ==='voir-un-ano') {
+          this.anoVisible = true
+        }
+        if(element.slug === 'creer-un-ano') {
+          this.anoAdd = true
+        }
+        if(element.slug === 'modifier-un-ano') {
+          this.anoUpdate = true
+        }
+        if(element.slug ==='supprimer-un-ano') {
+          this.anoDelete = true
+        }
+        if(element.slug ==='voir-une-reponse-ano') {
+          this.reponseAnoVisible = true
+        }
+        if(element.slug ==='creer-une-reponse-ano') {
+          this.reponseAnoAdd = true
+        }
+       
+        if(element.slug ==='voir-un-bailleur') {
+          this.bailleurVisible = true
+        }
+      });
     },
     
     // call action
@@ -359,6 +403,7 @@ export default {
         formData.append('statut',this.Relance.statut)
         formData.append('commentaire',this.Relance.commentaire)
         formData.append('anoId',this.anosId)
+        /* formData.append('reponseId',null) */
         
         for( let i = 0; i < this.Relance.files.length; i++ ){
           let file = this.Relance.files[i];
@@ -464,21 +509,25 @@ export default {
 
     close() {
       this.showModal = false
+       this.resetForm()
     },
   },
 
   mounted() {
-    this.active()
-
-    this.fetchAnos()
-    //.then((value) => { console.log(value) });
-    console.log("Fetching type anos ...");
- 
-    //.then((value) => { console.log(value), console.log('content typeAno ' + this.typeAnos) });
-    console.log("Fetching bailleurs ...");
-    this.fetchBailleurs()
+    
     this.getPermission()
-    this.disabled()
+    if(!this.anoVisible) {
+      this.$router.push('/401-non-autorise')
+    }
+    else {
+      this.fetchAnos()
+      if(this.bailleurVisible) {
+        this.fetchBailleurs()
+      } 
+    }
+   
+   
+
     //.then((value) => { console.log(value), console.log('content bailleur ' + this.bailleurs) });
   },
 

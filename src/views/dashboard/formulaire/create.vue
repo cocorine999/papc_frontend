@@ -72,16 +72,18 @@
               <h1 class="text-lg font-semibold uppercase text-center py-2">Formulaire generer</h1>
               <div v-for="form in Forms" :key="form.id">
                 <div v-if="form.inputType=='edit'">
-                    <label   class=" block py-2 text-sm font-semibold " for="">
-                      {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
+                    <label   class=" block py-2 
+text-xs  md:text-sm font-semibold " for="">
+                      {{form.nom}} <span  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                     </label>
-                    <input  type="text"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"  />
+                    <input  type="text"   class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
                 </div>
                 <div v-if="form.inputType=='photos'">
-                  <label   class=" block py-2 text-sm font-semibold " for="">
-                    {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
+                  <label   class=" block py-2 
+text-xs  md:text-sm font-semibold " for="">
+                    {{form.nom}} <span  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
-                  <input  type="file" accept="png,jpg"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"  />
+                  <input  type="file" accept="png,jpg"   class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
                 </div>
                 <div v-if="form.inputType=='boolean'">
                   <label for="name" class="my-4 block text-xl font-medium text-gray-700">{{form.nom}}</label>
@@ -97,10 +99,11 @@
                   </div>
                 </div>
                 <div class="" v-if="form.inputType=='file'">
-                   <label   class=" block py-2 text-sm font-semibold " for="">
-                    {{form.nom}} <span  class="px-2 text-lg font-black text-red-700">*</span>
+                   <label   class=" block py-2 
+text-xs  md:text-sm font-semibold " for="">
+                    {{form.nom}} <span  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                   </label>
-                  <input  accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage"   class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm"  />
+                  <input  accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage"   class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
                 </div>
               </div>
             </div>

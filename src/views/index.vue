@@ -157,16 +157,19 @@ export default {
               this.$toast.success("Connexion réussie")
               this.$router.push('/dashboard/projets')
             }
-            else if (response.data.utilisateur.type =='') {
-
+            else if (response.data.utilisateur.type =='administrateur') {
+              this.$toast.success("Connexion réussie")
+              this.$router.push('/dashboard/programme')
+            }
+            else if(response.data.utilisateur.type =='mod') {
+              this.$toast.success("Connexion réussie")
+              this.$router.push('/dashboard/indicateurs-mod')
             }
             //this.$router.push('/dashboard/bailleurs')
             //this.$toast.success("Connexion réussie")
             //window.location.assign(window.location.origin+"/dashboard/bailleurs")
           }else{
             this.$toast.success(response.message)
-
-            
           }   
       })
       this.chargement(false)

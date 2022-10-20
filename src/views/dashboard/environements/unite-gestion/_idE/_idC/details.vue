@@ -11,14 +11,15 @@
           </li>
 
           <li class="flex items-center text-blue-500 ">
-            <router-link to="" class="">Checklist</router-link>
+            <router-link to="" class="">Rapport</router-link>
           </li>
         </ol>
       </div> 
     </nav>
     <div class="flex items-center justify-between my-4">
       <div class="flex space-x-4">
-        <span  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Checklist </span>
+        <span v-if="seeChecklist"  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Rapport </span>
+        <span v-else  class="inline-block cursor-pointer text-lg utext-lg uppercase font-bold  border-primary border-b-8 py-2">Graphes d'analyse </span>
       </div>
       <vue-html2pdf
         :show-layout="false"
@@ -83,10 +84,10 @@
         <table class="min-w-full">
           <thead class="border-b bg-gray-300">
             <tr>
-              <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
-              <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
+              <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
+              <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
   
-              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
+              <th scope="col" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
             </tr>
           </thead>
           
@@ -124,7 +125,7 @@
     </vue-html2pdf>
     <button  title="exporter en excel" @click="generateReport()"    class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
             <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-            <span class="mx-2 text-sm font-semibold">Export Pdf</span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Export Pdf</span>
     </button>
       <button v-if="seeChecklist" @click="goForm" title="Voir le formulaire" class="bg-blue-500 text-white px-3 py-1 text-center">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="1.3em" height="1.3em" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -140,7 +141,7 @@
       <div class="mt-4 mb-6 flex space-x-4 items-center">
         <div class="py-2 font-semibold">Date de collecte : <span class="font-bold px-2">{{entete.entete.date}}</span> </div>
         
-        <select id="pet-select" class="px-4 py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-sm" v-model="valueFiltre">
+        <select id="pet-select" class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" v-model="valueFiltre">
           <option value="" disabled selected hidden>
                       Veuillez choisir une date
                     </option>
@@ -188,10 +189,10 @@
         <table class="min-w-full">
           <thead class="border-b bg-gray-300">
             <tr>
-              <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
-              <th  scope="col" class="text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
+              <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Activité </th>
+              <th  scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> Status </th>
   
-              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
+              <th scope="col" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Justification</th>
             </tr>
           </thead>
           
@@ -226,7 +227,7 @@
       </div>
     </div>
     <div v-else class="my-4 grid grid-cols-3 gap-4 ">
-       <div v-for="graphe in graphes"  class="p-4 bg-white shadow" id="chart">
+       <div v-for="graphe in graphes" :key="graphe.id"  class="p-4 bg-white shadow" id="chart">
         <apexchart type="bar" height="350" :options="chartOptions(graphe)" :series="series(graphe)"></apexchart>
       </div>
     </div>
@@ -273,7 +274,8 @@ export default {
       actions:[
           {name:'modifier',iconne:''},
           {name:'supprimer',iconne:''},
-      ],  
+      ],
+      entrepriseExecutanteVisible:false
     }
   },
   computed: {
@@ -384,7 +386,7 @@ export default {
       {
         var form = {
           "formulaireId": this.$route.params.idC,
-          "date": this.dates[0].date
+          "date": this.dates[0]?.date
         };
       }
 
@@ -441,12 +443,23 @@ export default {
               }
             }
           }
-    }
-    
+    },
+    getPermission() {
+        this.currentUser.role[0].permissions.forEach(element => {
+          if(element.slug ==='voir-un-suivi-environnementale') {
+          this.entrepriseExecutanteVisible = true
+        }
+       
+           
+      });
+    },
   },
   mounted() {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    
+    this.getPermission()
+     if( !this.entrepriseExecutanteVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
     let form1 = {
       "type": 'unitee-de-gestion',
       "typeId": this.currentUser.profil.id,
@@ -458,7 +471,7 @@ export default {
       let form = {
       "entrepriseId": this.$route.params.idE,
       "formulaireId": this.$route.params.idC,
-      "date": this.dates[0].date
+      "date": this.dates[0]?.date
     };
 
     console.log("Getting suivi ...");
@@ -496,7 +509,7 @@ export default {
 
     var form3 = {
           "formulaireId": this.$route.params.idC,
-          "date": this.dates[0].date
+          "date": this.dates[0]?.date
         };
 
       console.log("Getting graphes ...");

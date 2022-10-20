@@ -1,7 +1,8 @@
 <template>
   <dashboard>
     <div class="px-4 py-2">
-    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+    <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -14,7 +15,7 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
+          <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -35,11 +36,11 @@
        </div>
       </modal-top-right>
     </div>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between flex-wrap">
       <titre>Les utilisateurs </titre>
         <button @click="showModal=true" title="ajouter un bailleur" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
     </div>
    
@@ -93,8 +94,7 @@ export default {
           {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: this.roles, cle: 'id', value: 'nom', required:true, errors : []}
         ],
         headers:[
-          {name:'Nom',  cle:'nom'},
-          {name:'Prenom',  cle:'prenom'},
+          {name:'Nom et Prénoms',  cle:'nom'},
           {name:'Email',  cle:'email', edit : false},
           {name:'Contact',  cle:'contact'},
           {name:'type utilisateur', cle:'type'},
@@ -102,8 +102,11 @@ export default {
         ],
         actions:[
           {name:'supprimer',iconne:''},
-        ]
-        
+        ],
+        utilisateurVisible:false,
+        utilisateurAdd:false,
+        utilisateurDelete:false,
+        utilisateurUpdate:false,
       });
       
     },
@@ -162,6 +165,24 @@ export default {
       fetchRoles: "FETCH_LIST_ROLE",
     }),
 
+    getPermission() {
+         this.currentUser.role[0].permissions.forEach(element => {
+            if(element.slug ==='voir-un-utilisateur') {
+              this.utilisateurVisible = true
+            }
+            if(element.slug === 'creer-un-utilisateur') {
+              this.utilisateurAdd = true
+            }
+            if(element.slug === 'modifier-un-utilisateur') {
+              this.utilisateurUpdate = true
+            }
+            if(element.slug ==='supprimer-un-utilisateur') {
+              this.utilisateurDelete = true
+            }
+            
+          });
+
+    },
     
     sendForm() {
       this.champs = this.champs.map((item) => {
@@ -171,6 +192,7 @@ export default {
 
       let utilisateur = extractFormData(this.champs,this.usersAttributes);
       utilisateur.roles = [utilisateur.roles.id]
+      //utilisateur.roles = utilisateur.roles.id
       utilisateur.programmeId = this.idProgramme
       if(this.sendRequest == false ) {
         this.sendRequest = true
@@ -242,6 +264,10 @@ export default {
   },
 
    mounted() {
+    this.getPermission()
+    if(!this.utilisateurVisible) {
+      this.$router.push('/401-non-autorise')
+    } 
     this.fetchUtilisateurs().then((value) => {
       setTimeout(() => {
         console.log("Fetching list of programmes...")

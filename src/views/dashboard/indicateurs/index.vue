@@ -1,8 +1,9 @@
 <template>
   <dashboard>
     <div class="px-4">
-      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-        <div>
+      <nav class="mb-2 mt-4 
+ text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+        <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="" class="text-gray-600">dashboard</router-link>
@@ -14,7 +15,7 @@
           </ol>
         </div>
         <div>
-          <div class="flex justify-center w-full text-gray-600">
+          <div class="w-full flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  right-10 ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -36,25 +37,25 @@
           
                 <div class="my-4">
                  
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
 
                    <input v-model="suiviIndicateurs.annee"  @change="verifyValeurCible(suiviIndicateurs.annee)" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
                 </div>
 
               <div v-if="isValeurCibleUse" class="my-4">
                 
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurCible" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
 
               <div class="my-4">
                
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurRealise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
 
               <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Suivi par date ou par trimestre ? <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Suivi par date ou par trimestre ? <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <div class="flex justify-between my-3">
                   <div>
                     <input type="radio" :checked="choiceDateOption"  @click="choiceDateOption= true" id="date" name="choix" value="date" >
@@ -67,12 +68,12 @@
                 </div>
 
                 <div v-if="choiceDateOption" class="my-4">
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                   <input v-model="suiviIndicateurs.dateSuivie" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="" />
                 </div>
               
               <div v-else class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez un trimestre <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <div class="flex justify-between my-3">
                   <div>
                     <input v-model="suiviIndicateurs.trimestre" type="radio"  id="T1" name="trimestre" value="1" >
@@ -95,7 +96,7 @@
               </div>
           </div>
               <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <textarea v-model="suiviIndicateurs.commentaire" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
              </div>
             
@@ -144,36 +145,31 @@
         </vmodal>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="flex items-end justify-between">
         <titre>Les indicateurs </titre>
-        <div class="flex items-center justify-end  space-x-4 flex-wrap">
-            <div class="flex my-1 mr-1" >
-
-                      <json-excel :data="json_data()" header="INDICATEUR" type="xlsx" :name="title_csv()"  >
-                    <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden mx-1  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
-                      <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-                      <span class="mx-2 text-sm font-semibold">Export Excel</span>
-                    </button>
-                    </json-excel>
-                    <button @click="showModal2 = true" title="filtre"    class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
-
-            </div>
-            <div class=" flex flex-wrap justify-end items-center" >
-              <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-1 sm:px-4 py-2 ml-0 my-1 mr-1 flex overflow-hidden justify-around items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-                <span class="   text-sm  font-semibold uppercase">ajouter un indicateur</span>
-              </button>
-              <router-link to="/dashboard/indicateurs/suivi"  title="voir suivi"   class="px-1 sm:px-4 py-2 mr-1 overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-                <span  class="mx-2 text-sm font-semibold uppercase ">Voir suivi indicateur</span>
-              </router-link>
-            </div>
+        <div class="flex items-center space-x-4">
+          <button @click="showModal2 = true" title="filtre"    class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
+          <json-excel v-if="exporterIndicateur" :data="json_data()" header="INDICATEUR" type="xlsx" :name="title_csv()"  >
+          <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+            <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+            <span class="mx-2 text-sm font-semibold">Export Excel</span>
+          </button>
+          </json-excel>
+          <button @click="addIndicateur" v-if="indicateurAdd"  title="ajouter un indicateur"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+            <span class="mx-2 text-sm font-semibold uppercase">ajouter un indicateur</span>
+          </button>
+         
         </div>
       </div>
      
       
-      <vtable v-if="currentRole == 'bailleur' " :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurUpdate && indicateurDelete " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers" :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"   @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
+      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
+      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @suivre="suivreIndicateur" @consulter="consulterSuivi" ></vtable>
+      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur()"  @updateInputData="updateInputData"  @supprimer="supprimer"></vtable>
     </div>
   </dashboard>
   
@@ -217,7 +213,6 @@ export default {
           valeurCible:0,
           valeurRealise:0,
           commentaire:'',
-
         },
         showModal:false,
         showModal2:false,
@@ -231,8 +226,8 @@ export default {
         choiceDateOption:true,
         champs:[
           {name:'Nom',type:'text',key:'nom',placeholdere:"Nom de l'indicateur",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-          {name:'Année de base',key:'anneeDeBase',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
-          {name:'Valeur de base',key:'valeurDeBase',type:'number',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+          {name:'Année de base',key:'anneeDeBase',type:'number',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
+          {name:'Valeur de base',key:'valeurDeBase',type:'text',placeholdere:"Valeur de base",isSelect:false,isTextArea:false,data:'',required:true, errors : []},
           {name:'Unite de mesure',key:'uniteeMesureId',type:'',placeholdere:"Selectionnez une unité de mesure",isSelect:true,isTextArea:false,data:'',options:this.uniteDeMesure,required:true,cle: 'id', value:'nom',errors : []},
           {name:'Categories',key:'categorieId',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:this.categories,required:true, cle: 'id', value: 'nom', errors : []},
           {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:true,options:this.bailleurs, cle: 'id', value: 'sigle',errors : []},
@@ -261,6 +256,9 @@ export default {
         indicateurAdd:false,
         indicateurDelete:false,
         indicateurUpdate:false,
+        suiviIndicateurAdd:false,
+        suiviIndicateurVisible:false,
+        exporterIndicateur:false,
     };
   },
   watch: {
@@ -383,15 +381,17 @@ export default {
      ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }),
+
     getIndicateurBailleurs() {
       IndicateurService.getIndicateurBailleur().then((data) => {
         this.indicateurBailleurs = data.data.data
       }).catch((e) => {
-          console.log(e)
+        console.log(e)
       })
     },
+
     getPermission() {
-          this.currentUser.role[0].permissions.forEach(element => {
+      this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-indicateur') {
               this.indicateurVisible = true
             }
@@ -403,6 +403,15 @@ export default {
             }
             if(element.slug ==='supprimer-un-indicateur') {
               this.indicateurDelete = true
+            }
+            if(element.slug ==='creer-un-suivi-indicateur') {
+              this.suiviIndicateurAdd =  true
+            }
+            if(element.slug == 'voir-un-suivi-indicateur' ) {
+              this.suiviIndicateurVisible = true
+            }
+            if(element.slug == 'exporter-un-indicateur' ) {
+              this.exporterIndicateur = true
             }
            
           });
@@ -499,6 +508,7 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
+                this.fetchIndicateurs()
                 this.sendRequest = false
                 this.close();
               }
@@ -507,11 +517,12 @@ export default {
             this.$toast.error(e)
             this.sendRequest = false
           })
-          } else {
+        } else {
           this.saveIndicateur(indicateur).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
-              his.$toast.success('operation effectué avec success')
+              this.$toast.success('operation effectué avec success')
+              this.fetchIndicateurs()
               this.sendRequest = false
             }
           }).catch((e) => {
@@ -588,11 +599,13 @@ export default {
         this.showModal = true
     }
       
-      
   },
 
    mounted() {
      this.getPermission()
+      if(!this.indicateurVisible) {
+        this.$router.push('/401-non-autorise')
+      } 
       if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
        if(this.currentUser.type ==='bailleur') {

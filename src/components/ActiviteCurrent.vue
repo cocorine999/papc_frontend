@@ -6,11 +6,11 @@
             
             <div  class="grid grid-cols-2 gap-2 my-2">
               <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.debut" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date" />
               </div>
               <div class="form-group my-2">
-                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-lg font-black text-red-700">*</span></label>
+                <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date fin <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="dates.fin" required class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent" type="date"  />
               </div>
             </div>
@@ -31,7 +31,7 @@
         </div>
       </vmodal>
 
-        <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
+      <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
         <div class="p-4 overflow-auto">
           <vform
             template="default"
@@ -45,7 +45,6 @@
         </div>
        
       </modal-top-right>
-
 
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <div class="p-4 overflow-auto">
@@ -63,10 +62,10 @@
       </modal-top-right>
 
       <nav
-        class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center"
+        class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb"
       >
-        <div>
+        <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
               <router-link to="/dashboard" class="text-gray-600"
@@ -107,35 +106,36 @@
         </div>
       </nav>
 
-      <div class="flex items-center justify-between my-2">
-        <div class="flex space-x-4">
+      <div class="flex items-center justify-between my-2 flex-wrap sm:flex-nowrap" >
+        <div class="flex space-x-2  md:space-x-4 w-full sm:w-4/5  ">
           <span
             v-if="activiteVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeActivite }"
             @click="gotoActivite()"
-            class="inline-block cursor-pointer text-base uppercase border-primary py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2 mb-2"
             >Activités</span
           >
           <span
             v-if="planDecaissementVisible"
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
-            class="inline-block cursor-pointer text-base uppercase py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2"
             >Plan d'ecaissement
           </span>
           
           <span
+          v-if="StatistiqueVisible"
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
-            class="inline-block cursor-pointer text-base uppercase py-2"
+            class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2"
             >Statistiques
           </span>
         </div>
-
+        <div>
         <button
           v-if="seeActivite && activiteAdd"
           @click="addActivite"
-          title="ajouter"
+          title="ajouter une activite"
           class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline"
         >
           <span>
@@ -147,50 +147,86 @@
             >
               <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
           ></span>
-          <span class="mx-2 text-xs font-semibold">ajouter</span>
+          <span class="mx-2 text-xs font-semibold">ajouter </span>
         </button>
         <button
-          v-if="seePlan && planDeDecaissement"
+          v-if="seePlan "
           @click="addPlan"
-          title="ajouter"
-          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"
+          title="ajouter un plan d'ecaissement"
+          class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase rounded bg-primary focus:outline-none focus:shadow-outline"
         >
-        <span>
-            <svg
+          <span
+            ><svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              height="1.3em"
+              width="1.3em"
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
             >
-              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+              <path fill="none" d="M0 0h24v24H0V0z"></path>
+              <path
+                d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM17 11h-4v4h-2v-4H7V9h4V5h2v4h4v2z"
+              ></path></svg
           ></span>
           <span class="mx-2 text-sm font-semibold"
-            >ajouter</span
+            >ajouter </span
           >
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+              >
+                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+            ></span>
+            <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
+          <button
+            v-if="seePlan && planDeDecaissement"
+            @click="addPlan"
+            title="ajouter"
+            class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline"
+          >
+          <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: "
+              >
+                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+            ></span>
+            <span class="mx-2 text-xs  md:text-sm font-semibold"
+              >ajouter</span
+            >
+          </button>
+        </div>
       </div>
+      
 
       <div v-if="seeActivite && activiteVisible">
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-full grid grid-cols-2 items-center gap-4">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" @input="changeProjet(projetFiltre)" :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre"  :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
               </div>
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-                <multiselect v-model="composanteFiltre" @input="changeComposante(composanteFiltre)" :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="composanteFiltre"  :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
               <div>
                 
-                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
                 <multiselect
                 v-model="valueFiltre"
                 :options="sousComposantes"
-                @input="changeSC(valueFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
                 placeholder="selectionnez une sous composante"
@@ -200,111 +236,158 @@
               </div>
            
               <div></div>
-              <button
-                v-if="!showFiltre"
-                title="filtre"
-                @click="showFiltre = true"
-                class="bg-primary flex items-center space-x-3 text-white px-2 py-1 text-sm"
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  height="1.5em"
-                  width="1.5em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <polygon
-                    points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-                  ></polygon>
-                </svg>
-                <span>progression des activités</span>
-              </button>
-              <div v-else class="px-6 w-full">
-                <div class="bg-gray-300 h-2 w-full rounded-full relative">
-                  <span
-                    class="bg-white h-4 w-4 absolute top-0 -ml-2 -mt-1 z-10 shadow rounded-full cursor-pointer"
-                    :style="`left:${rangeValue}%`"
-                  ></span>
-                  <span
-                    class="bg-green-500 h-2 absolute left-0 top-0 rounded-full"
-                    :style="`width:${rangeValue}%`"
-                  ></span>
-                </div>
-                <div class="flex justify-between mt-2 text-xs text-gray-600">
-                  <span
-                    @click="filtreRange(0)"
-                    class="w-8 cursor-pointer text-left"
-                    >0%</span
-                  >
-                  <span
-                    @click="filtreRange(25)"
-                    class="w-8 cursor-pointer text-center"
-                    >25%</span
-                  >
-                  <span
-                    @click="filtreRange(50)"
-                    class="w-8 cursor-pointer text-center"
-                    >50%</span
-                  >
-                  <span
-                    @click="filtreRange(75)"
-                    class="w-8 cursor-pointer text-center"
-                    >75%</span
-                  >
-                  <span
-                    @click="filtreRange(100)"
-                    class="w-8 cursor-pointer text-right"
-                    >100%</span
-                  >
-                  <button
-                    @click="showFiltre = false"
-                    class="text-white bg-blue-300 p-1"
-                  >
-                    revenir
-                  </button>
-                </div>
-              </div>
+              
             </div>
            
           </div>
 
         </div>
-        <div  v-if="isShow" class="my-4 grid lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div  v-for="(activite, index) in activites" :key="index">
-            <card-activite
-              :bailleur="activite.bailleur.sigle"
-              :libelle="activite.nom"
-              :poids="activite.poids"
-              :montantEPM="activite.pret"
-              :montantNE="activite.budgetNational"
-              :debut="activite.debut"
-              :fin="activite.fin"
-              :statut="getStatus(activite.statut)"
-              :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-              @modifier="modifier(activite)"
-              @supprimer="supprimer(activite)"
-              @prolonger="prolonger(activite)"
-              @validation="validation(activite)"
-              @suivre="suivreMyActivite(activite)"
-              @gotoNext="gotoNext(activite)"
-              :isDelete="activiteDelete"
-              :isUpdate="activiteUpdate"
-            ></card-activite>
-            <!-- End cards Activités -->
-          </div>
-         
+
+        <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+            <div class="flex  w-full justify-between  items-center">
+              <!--Filtre sur projet -->
+              <h2 class="uppercase font-bold  mb-2">Listes des activités </h2>
+              <nav class="flex text-sm space-x-4  ">
+                  <span
+                    @click="toggle2"
+                    :class="{ 'border-yellow-600 text-yellow-600': pending }"
+                    class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                  >
+                    attentes
+                    <span
+                      class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
+                    >
+                      {{enAttente.length}}
+                    </span>
+                  </span>
+                  <span
+                    @click="toggle3"
+                    :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
+                    class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                  >
+                    en cours
+                    <span
+                      class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined"
+                    >
+                      {{enCours.length}}
+                    </span>
+                  </span>
+                  <span
+                    @click="toggle"
+                    :class="{ 'border-green-600 text-green-600': success }"
+                    class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                  >
+                    terminer
+                    <span
+                      class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined"
+                    >
+                      {{terminer.length}}
+                    </span>
+                  </span>
+                 
+              </nav>
+            </div>
         </div>
+
+        <div v-if="success">
+          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div  v-for="(activite, index) in terminer" :key="index">
+              <card-activite
+                :data="activite"
+                :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom"
+                :poids="activite.poids"
+                :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational"
+                :debut="activite.debut"
+                :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
+                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                @modifier="modifier(activite)"
+                @supprimer="supprimer(activite)"
+                @prolonger="prolonger(activite)"
+                @suivre="suivreMyActivite(activite)"
+                @gotoNext="gotoNext(activite)"
+                :isDelete="activiteDelete"
+                :isUpdate="activiteUpdate"
+              ></card-activite>
+              <!-- End cards Activités -->
+          </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div  v-for="(activite, index) in enAttente" :key="index">
+              <card-activite
+                :data="activite"
+                :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom"
+                :poids="activite.poids"
+                :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational"
+                :debut="activite.debut"
+                :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
+                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                @modifier="modifier(activite)"
+                @supprimer="supprimer(activite)"
+                @prolonger="prolonger(activite)"
+                @suivre="suivreMyActivite(activite)"
+                @gotoNext="gotoNext(activite)"
+                :isDelete="activiteDelete"
+                :isUpdate="activiteUpdate"
+              ></card-activite>
+              <!-- End cards Activités -->
+          </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div  v-for="(activite, index) in enCours" :key="index">
+              <card-activite
+                :data="activite"
+                :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom"
+                :poids="activite.poids"
+                :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational"
+                :debut="activite.debut"
+                :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
+                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                @modifier="modifier(activite)"
+                @supprimer="supprimer(activite)"
+                @prolonger="prolonger(activite)"
+                @suivre="suivreMyActivite(activite)"
+                @gotoNext="gotoNext(activite)"
+                :isDelete="activiteDelete"
+                :isUpdate="activiteUpdate"
+              ></card-activite>
+              <!-- End cards Activités -->
+          </div>
+            </div>
+          </div>
+        </div>
+
+
+       
+
+        
       </div>
 
       <div v-if="seePlan &&  planDecaissementVisible ">
-
-
         <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">
             
@@ -390,18 +473,7 @@
         
       </div>
 
-      <div v-if="seeSuivi">
-        <vtable
-          id="datatable"
-          :headers="headers"
-          :datas="dataTable"
-          :actions="actions"
-          @supprimer="supprimerT"
-        >
-        </vtable>
-      </div>
-
-      <div v-if="seeStatistique">
+      <div v-if="seeStatistique && StatistiqueVisible">
         <div class="">
           <select
             class="px-11 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -414,7 +486,7 @@
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 gap-8 my-6 items-center">
+        <div class="grid  grid-cols-1 gap-4  md:grid-cols-2 md:gap-8 my-6 items-center">
           <div>
             <apexchart
               width="80%"
@@ -451,7 +523,9 @@
           </div>
         </div>
       </div>
-  </div>
+
+    </div>
+
 </template>
 
 <script>
@@ -469,6 +543,7 @@ import Dashboard from "@/layouts/Dashboard";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
+import Empty from '@/components/Empty.vue'
 import ComposanteService from "@/services/modules/composante.service.js";
 import Activite from '@/store/modules/activites/activite';
 import moment from 'moment'
@@ -486,20 +561,22 @@ export default {
     Dropdown,
     CardActivite,
     Vtable,
+    Empty,
     Vform
   },
   props:['valeurProjet','valueProfondeur','valueComposante'],
   data() {
     return {
       suivis:[],
-      valueFiltre: this.valueProfondeur,
+      valueFiltre: null,
       activiteFiltre: null,
       composanteId: null,
-      projetFiltre: this.valeurProjet,
-      composanteFiltre: this.valueComposante,
+      sousComposanteId:null,
+      projetFiltre: null,
+      composanteFiltre: null,
       pending: false,
       success: true,
-      rejected: false,
+      inProgress: false,
       activiteId:'',
       programmeId: this.currentUser?.programme.id,
       cols: 1,
@@ -830,6 +907,7 @@ export default {
       planDecaissementAdd:false,
       planDecaissementUpdate:false,
       planDecaissementDelete:false,
+      StatistiqueVisible:false,
       idProjet:'',
       idComposante:'',
       idSC:'',
@@ -849,7 +927,39 @@ export default {
       loading: (state) => state.loading,
       errors: (state) => state.errors,
     }),
-
+     terminer() {
+      if(this.activites != undefined) {
+        const datas = []
+        this.activites.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enAttente() {
+      if(this.activites != undefined) {
+        const datas = []
+        this.activites.forEach(element => {
+          if(element.statut == -1 || element.statut == -2 ) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    enCours() {
+      if(this.activites != undefined) {
+        const datas = []
+        this.activites.forEach(element => {
+          if(element.statut == 2) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
     ...mapGetters({
       structures: "structures/getStructures",
       projets: "projets/getProjets",
@@ -866,6 +976,7 @@ export default {
 
   methods: {
     changeProjet(projet) {
+    
       if(this.isClick) {
         this.projetFiltre = this.newProjet
         this.fetchComposantes(this.idProjet);
@@ -888,24 +999,25 @@ export default {
           let nom = composantes[0].nom
           this.composanteFiltre = {codePta:code,nom:nom}
           let indexComposante = composantes[0].id
-          this.fetchSousComposantes(indexComposante);
            ComposanteService.sousComposantes(indexComposante).then((data) => {
             const sous_composantes  = data.data.data
-           
             if(sous_composantes[0] != null ) { 
-          
               let code = sous_composantes[0].codePta
               let nom = sous_composantes[0].nom
               this.valueFiltre = {codePta:code,nom:nom}
-              let  indexSC = sous_composantes[0].id
+              /* id sous composante */
+              let indexSC = sous_composantes[0].id
+              this.composanteId = indexSC
               this.fetchActivites(indexSC);
               this.isShow = true
-           }
-           else {
-              this.isShow = false
-             this.valueFiltre = null
-              this.composanteFiltre = null 
-           }
+            }
+            else {
+             
+              this.composanteId = indexComposante
+              this.fetchActivites(indexComposante);
+              this.isShow = true
+              this.valueFiltre = null
+            }
         
           }).catch((e) => {
             console.log(e)
@@ -930,24 +1042,51 @@ export default {
         this.isClick = false
         localStorage.removeItem('profondeurSC');
       }else {
-        this.fetchSousComposantes(composante.id);
+        ComposanteService.sousComposantes(composante.id).then((data) => {
+            const sous_composantes  = data.data.data
+            if(sous_composantes[0] != null ) { 
+              let code = sous_composantes[0].codePta
+              let nom = sous_composantes[0].nom
+              this.valueFiltre = {codePta:code,nom:nom}
+              /* id sous composante */
+              let indexSC = sous_composantes[0].id
+              this.composanteId = indexSC
+              this.fetchActivites(indexSC);
+              this.isShow = true
+            }
+            else {
+              this.composanteId = composante.id
+              this.fetchActivites(composante.id);
+              this.isShow = true
+              this.valueFiltre = null
+            }
+        
+          }).catch((e) => {
+            console.log(e)
+       
+           })
       }
 
      
     },
-     changeSC(Scomposante) {
+
+    changeSC(Scomposante) {
+       console.log("id SC",Scomposante.id)
+       this.composanteId = Scomposante.id
       if(this.isClick) {
         this.valueFiltre = this.newSC
         this.fetchActivites(this.idSC);
         this.isClick = false
         localStorage.removeItem('profondeurSC');
+        this.isShow = true
       }else {
         this.fetchActivites(Scomposante.id);
+        this.isShow = true
       }
 
-     
     },
-     getSComposante(id) {
+
+    getSComposante(id) {
       ComposanteService.sousComposantes(id).then((data) => {
         const datas = data.data.data
         this.sous_composantes = datas
@@ -987,7 +1126,8 @@ export default {
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
       fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
-      gotoNext(activite,index) {
+     
+    gotoNext(activite,index) {
         let idProjet = ''
         let idComposante = ''
         let idSC = activite.composanteId
@@ -1053,7 +1193,7 @@ export default {
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
-     getPermission() {
+    getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
        
           if(element.slug === 'creer-une-activite') {
@@ -1082,10 +1222,12 @@ export default {
              if(element.slug ==='supprimer-un-plan-de-decaissement') {
               this.planDecaissementDelete= true
             }
+            if(element.slug ==='voir-une-statistique-activite') {
+              this.StatistiqueVisible= true
+            }
            
         });
     },
-
 
     getSuivi() {
       ActiviteService.getSuivi().then((data) => {
@@ -1292,39 +1434,26 @@ export default {
 
     toggle() {
       this.pending = false;
-      this.rejected = false;
+      this.inProgress = false;
       this.success = true;
     },
 
     toggle2() {
       this.success = false;
-      this.rejected = false;
+      this.inProgress = false;
       this.pending = true;
     },
 
     toggle3() {
       this.pending = false;
       this.success = false;
-      this.rejected = true;
+      this.inProgress = true;
     },
 
     getStatus(status) {
       return getStringValueOfStatutCode(status);
     },
 
-    validation(activite) {
-      if (this.sendRequest === false) {
-        this.sendRequest = true;
-
-        this.updateActivite({ activite: { statut: -1, composanteId: this.composanteId }, id: activite.id })
-          .then((value) => {              
-            this.fetchActivites(this.composanteId);
-          })
-          .finally((error) => {              
-            this.sendRequest = false;
-          });
-      }
-    },
 
     savePlanDecaissement() {
       if (this.sendRequest === false) {
@@ -1536,7 +1665,7 @@ export default {
     },
 
 
-   /*  projets: function(projets){
+   projets: function(projets){
       if(projets.length > 0){
         this.projetFiltre = projets[0]
       }
@@ -1606,8 +1735,7 @@ export default {
       }
 
     },
-  */  
-
+  
     activites: function (activites) {
       if(this.seePlan){
         if(activites.length > 0){
@@ -1655,7 +1783,6 @@ export default {
       }
 
     } 
-    this.getSuivi()
     this.getPermission()
     this.programmeId = this.currentUser.programme.id
 
