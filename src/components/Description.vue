@@ -164,7 +164,7 @@
           arrows-inside :pause-on-hover="pauseOnHover" @autoplay-pause="internalAutoPlaying = false"
           @autoplay-resume="internalAutoPlaying = true" :dragging-distance="70">
 
-          <vueper-slide v-for="i in slide" :key="i" :title="i.title" :content="i.content" :image="i.image" />
+          <vueper-slide v-for="i in slide" :key="i.id" :title="i.title" :content="i.content" :image="i.image" />
         </vueper-slides>
       </div>
 

@@ -22,7 +22,7 @@
             src="@/assets/images/login/logo-gouv.webp" alt="">
         </div>
         <div v-else class="px-6" style="width: 60vw !important">
-          <vform template="default" :champs="champs" @getImage="getImage" submitText="Changer" @sendForm="updateProjet">
+          <vform template="default" :champs="champs" @getImage="getImage" submitText="Changer" :sendRequest="sendRequest" @sendForm="updateProjet">
           </vform>
         </div>
       </vmodal>
@@ -246,24 +246,30 @@ export default {
       console.log('image', data)
     },
     updateProjet() {
-      const id = this.projet.id
-      const formData = new FormData();
-      formData.append('image', this.image)
-      ProjetService.update(id, formData).then(() => {
-        this.$toast.success('La couverture à éte bien changer')
-        this.showUpdateImage = false
-      }).catch((error) => {
-        if (error.response) {
-          // Requête effectuée mais le serveur a répondu par une erreur.
-          const message = error.response.data.message
-          this.$toast.error(message)
-        } else if (error.request) {
-          // Demande effectuée mais aucune réponse n'est reçue du serveur.
-          //console.log(error.request);
-        } else {
-          // Une erreur s'est produite lors de la configuration de la demande
-        }
-      })
+      if (this.sendRequest === false) {
+        this.sendRequest = true
+         const id = this.projet.id
+        const formData = new FormData();
+        formData.append('image', this.image)
+        ProjetService.update(id, formData).then(() => {
+          this.$toast.success('La couverture à éte bien changer')
+          this.sendRequest = false
+          this.showUpdateImage = false
+        }).catch((error) => {
+          if (error.response) {
+            this.sendRequest = false
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        })
+      }
+      
     },
     updateFile() {
       if (this.sendRequest === false) {
