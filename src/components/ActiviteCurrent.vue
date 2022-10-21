@@ -124,7 +124,7 @@
           </span>
           
           <span
-          v-if="StatistiqueVisible"
+         
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
             class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2"
@@ -250,6 +250,18 @@
                       {{terminer.length}}
                     </span>
                   </span>
+                   <span
+                    @click="toggle4"
+                    :class="{ 'border-red-600 text-red-600': retard }"
+                    class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                  >
+                    en retard
+                    <span
+                      class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
+                    >
+                      {{retardData.length}}
+                    </span>
+                  </span>
                  
               </nav>
             </div>
@@ -320,6 +332,36 @@
           <div v-else>
             <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div  v-for="(activite, index) in enCours" :key="index">
+              <card-activite
+                :data="activite"
+                :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom"
+                :poids="activite.poids"
+                :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational"
+                :debut="activite.debut"
+                :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
+                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                @modifier="modifier(activite)"
+                @supprimer="supprimer(activite)"
+                @prolonger="prolonger(activite)"
+                @suivre="suivreMyActivite(activite)"
+                @gotoNext="gotoNext(activite)"
+                :isDelete="activiteDelete"
+                :isUpdate="activiteUpdate"
+              ></card-activite>
+              <!-- End cards Activités -->
+          </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="retard">
+          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div  v-for="(activite, index) in retardData" :key="index">
               <card-activite
                 :data="activite"
                 :bailleur="activite.bailleur.sigle"
@@ -439,7 +481,38 @@
         
       </div>
 
-      <div v-if="seeStatistique && StatistiqueVisible">
+      <div v-if="seeStatistique  ">
+        <div class="flex items-center justify-between flex-wrap">
+            <!--Filtre sur projet -->
+            <div class="w-full grid grid-cols-2 items-center gap-4">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
+                <multiselect v-model="projetFiltre"  :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+              </div>
+
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+                <multiselect v-model="composanteFiltre"  :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+              </div>
+              <div>
+                
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+                <multiselect
+                v-model="valueFiltre"
+                :options="sousComposantes"
+                :preselect-first="true"
+                :custom-label="customLabel" 
+                placeholder="selectionnez une sous composante"
+                label="nom"
+                track-by="id"
+              ></multiselect>
+              </div>
+           
+              <div></div>
+              
+            </div>
+           
+          </div>
         <div class="">
           <select
             class="px-11 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -543,6 +616,7 @@ export default {
       pending: false,
       success: true,
       inProgress: false,
+      retard: false,
       activiteId:'',
       programmeId: this.currentUser?.programme.id,
       cols: 1,
@@ -919,7 +993,18 @@ export default {
       if(this.activites != undefined) {
         const datas = []
         this.activites.forEach(element => {
-          if(element.statut == 2) {
+          if(element.statut == 0) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    retardData() {
+      if(this.activites != undefined) {
+        const datas = []
+        this.activites.forEach(element => {
+          if(element.statut == 1) {
             datas.push(element)
           }
         })
@@ -1402,18 +1487,27 @@ export default {
       this.pending = false;
       this.inProgress = false;
       this.success = true;
+      this.retard = false
     },
 
     toggle2() {
       this.success = false;
       this.inProgress = false;
       this.pending = true;
+       this.retard = false
     },
 
     toggle3() {
       this.pending = false;
       this.success = false;
       this.inProgress = true;
+       this.retard = false
+    },
+    toggle4() {
+      this.pending = false;
+      this.success = false;
+      this.inProgress = false;
+       this.retard = true
     },
 
     getStatus(status) {

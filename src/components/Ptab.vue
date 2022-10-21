@@ -74,8 +74,8 @@
       </select>
 
     </div>
-    
-     <div class="">
+                   
+     <div class="border my-4 rounded-lg border-gray-300 shadow-md">
       <!-- pta current -->
       <div v-if="currentPage && ptaVisible" class="current">
         <div class="my-3 px-3 py-1 justify-end flex space-x-4">
@@ -593,21 +593,22 @@
 
                     </thead>
                     <tbody>
-                        <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <div>
+                         <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{pta.bailleur}}
                             </th>
                             <td class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.isProjet" class="font-bold text-lg"> {{pta.code}}</span>
                               <span v-if="pta.isComposante" class="text-blue-500 text-sm"> {{pta.code}}</span>
-                              <span v-if="pta.isSC" class=" text-yellow-600 text-sm"> {{pta.code}}</span>
+                              <span v-if="pta.isSC && pta.code !=0 " class=" text-yellow-600 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isActivite" class="text-green-600 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isTache" class="text-red-600 text-sm"> {{pta.code}}</span>
                             </td>
                             <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{pta.nom}}</span>
                               <span v-if="pta.isComposante" class="text-blue-500 text-sm">composante: {{pta.nom}}</span>
-                              <span v-if="pta.isSC" class=" text-yellow-600 text-sm">sous composante: {{pta.nom}}</span>
+                              <span v-if="pta.isSC" class=" text-yellow-600 text-sm"> <span v-if="pta.code !=0">sous composante:</span> {{pta.nom}}</span>
                               <span v-if="pta.isActivite" class="text-green-600 text-sm">activite: {{pta.nom}}</span>
                               <span v-if="pta.isTache" class="text-red-600 text-sm">tache: {{pta.nom}}</span>
                               
@@ -769,11 +770,15 @@
                             </td>
                             
                         </tr>
-                        
+                      </div>
+                       
                     </tbody>
                 </table>
         </div>
       </div>
+
+      
+
 
        <!-- pta revise -->
        <div v-else class="current">
@@ -956,6 +961,7 @@
                       </tr>
 
                     </thead>
+                   
                     <tbody>
                         <tr v-for="pta in dataNewR" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="text-small p-1 font-medium text-gray-900  dark:text-white">
@@ -964,7 +970,7 @@
                             <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.isProjet" class="font-bold "> {{pta.code}}</span>
                               <span v-if="pta.isComposante" class="text-blue-500 "> {{pta.code}}</span>
-                              <span v-if="pta.isSC" class=" text-yellow-600 "> {{pta.code}}</span>
+                              <span v-if="pta.isSC " class=" text-yellow-600 "> {{pta.code}}</span>
                               <span v-if="pta.isActivite" class="text-green-600 "> {{pta.code}}</span>
                               <span v-if="pta.isTache" class="text-red-600 "> {{pta.code}}</span>
                             </td>
@@ -1586,6 +1592,10 @@ export default {
               let tBn = 0
               let tPret = 0
               let total =0
+              let nom = "PAS DE SOUS COMPOSANTE "
+              if(sousComposante.nom !=0) {
+                nom = sousComposante.nom
+              }
               if( sousComposante.trimestre1 != undefined) {
                 t1Pret = sousComposante.trimestre1.pret
                 t1Bn = sousComposante.trimestre1.budgetNational
@@ -1605,7 +1615,7 @@ export default {
               tBn = t1Bn +  t2Bn + t3Bn + t4Bn
               tPret = t1Pret +  t2Pret + t3Pret + t4Pret
               total = tBn = tPret    
-              programme.push({bailleur,nom:sousComposante.nom,code:sousComposante.code,poids,isSC:true,bn,pret,bn,pret,t1Pret,t1Bn,t2Pret,t2Bn,t3Pret,t3Bn,t4Bn,t4Pret,tBn,tPret,total})
+              programme.push({bailleur,nom,code:sousComposante.code,poids,isSC:true,bn,pret,bn,pret,t1Pret,t1Bn,t2Pret,t2Bn,t3Pret,t3Bn,t4Bn,t4Pret,tBn,tPret,total})
               sousComposante.activites.forEach(activite => {
               const bn = activite.budgetNational
               const pret = activite.pret
@@ -1771,6 +1781,10 @@ export default {
               let tBn = 0
               let tPret = 0
               let total =0
+               let nom = "PAS DE SOUS COMPOSANTE "
+              if(sousComposante.nom !=0) {
+                nom = sousComposante.nom
+              }
               if( sousComposante.trimestre1 != undefined) {
                 t1Pret = sousComposante.trimestre1.pret
                 t1Bn = sousComposante.trimestre1.budgetNational
@@ -1790,7 +1804,7 @@ export default {
               tBn = t1Bn +  t2Bn + t3Bn + t4Bn
               tPret = t1Pret +  t2Pret + t3Pret + t4Pret
               total = tBn = tPret    
-              programme.push({bailleur,nom:sousComposante.nom,code:sousComposante.code,poids,isSC:true,bn,pret,bn,pret,t1Pret,t1Bn,t2Pret,t2Bn,t3Pret,t3Bn,t4Bn,t4Pret,tBn,tPret,total})
+              programme.push({bailleur,nom,code:sousComposante.code,poids,isSC:true,bn,pret,bn,pret,t1Pret,t1Bn,t2Pret,t2Bn,t3Pret,t3Bn,t4Bn,t4Pret,tBn,tPret,total})
               sousComposante.activites.forEach(activite => {
               const bn = activite.budgetNational
               const pret = activite.pret

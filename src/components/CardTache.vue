@@ -49,12 +49,9 @@
       </div>
       <!--  -->
       <div class="cursor-pointer">
-        <!-- <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} / {{ poids }} </span>
-        <div v-else  class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary   font-bold leading-3 px-8 py-3 "> 
-         <span class="text-white"> Poids:</span>
-        <input type="text" @keyup.enter="validerSuivi(id,poidsActuel)" v-model="poidsActuel" class="border border-primary p-2  outline-none">
-        </div> -->
-
+        <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} </span>
+       
+      
         <div v-if="statut.code >= -1 && statut.code <= 2">
           <span
             class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold"
@@ -90,7 +87,6 @@ import TacheService from "@/services/modules/tache.service.js";
 import Dropdown from '@/components/Dropdown.vue'
 export default {
   props:[
-
     "bailleur",
     "poids",
     "poidsActuel",
