@@ -1,6 +1,6 @@
 <template>
   <dashboard espace="bailleur">
-    <div class="px-4">
+    <div class="p-0 w-full">
       <div v-if="showModal">
       <vmodal  title="Filtre projet"  v-on:close="showModal = false">
         <div class="px-6" style="width:60vw !important">

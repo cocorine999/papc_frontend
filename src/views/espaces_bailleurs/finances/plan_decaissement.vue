@@ -1,6 +1,6 @@
 <template>
   <dashboard espace="bailleur">
-    <div class="px-4">
+    <div class="p-0 w-full">
       <div v-if="showModal">
         <vmodal  title="Exporter les données"  v-on:close="showModal = false">
           <div class="px-8" style="width:60vw !important">

@@ -7,7 +7,7 @@
         </router-link>
       </div>
     </vmodal>
-    <div class="px-4">
+    <div class="p-0 w-full">
       <nav
         class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb"

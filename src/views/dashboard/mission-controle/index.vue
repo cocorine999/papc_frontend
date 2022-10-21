@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-  <div   class="px-4">
+  <div   class="p-0 w-full">
 
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="close">
