@@ -62,11 +62,46 @@
               class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
               src="@/assets/images/login/logo-gouv.webp" alt="">
           </p>
-          <!-- divide OBJECTIF -->
+          <!-- divide DUREE -->
           <div class="border-b-2 border-gray-700 mx-4 mb-8 relative p-4">
             <span
               class="w-full -mx-4 font-bold absolute bg-gray-700 px-4 py-1 text-white border-2 border-gray-700">Durée du
               projet : <span class="">du {{ projet.debut }} au {{ projet.fin }} </span></span>
+          </div>
+          <!-- divide SITE -->
+          <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
+            <span
+              class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Zone d’intervention</span>
+          </div>
+          <div class="px-4">
+            <table class="w-full">
+              <tbody>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Pays :</td>
+                  <td>Bénin</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Département :</td>
+                  <td>Littoral</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Commune :</td>
+                  <td>Cotonou</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Arrondissement :</td>
+                  <td>3, 4, 5, 6</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Nom de site :</td>
+                  <td>
+                    <div class="p-2 text-white space-x-2">
+                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Pa3</span>
+                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Aac</span>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <!-- divide OBJECTIF -->
           <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
@@ -97,6 +132,27 @@
         <span
           class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Entreprises</span>
       </div>
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead
+          class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="p-6">ACTIVITE</th>
+            <th scope="col" class="p-6">POIDS</th>
+            <th scope="col" class="p-6">STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr v-for="(suivi, index) in projet.suivis" :key="index"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne>
+            <td class="py-4 px-6">{{ suivi.poidsActuel }}</td>
+            <td class="py-4 px-6">
+              <span class="text-green-500"> {{ getStatus(suivi.activite.statut).libelle }} </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <!-- divide company -->
       <div class="border-b-2 mx-4 mb-8 relative p-4">
@@ -126,12 +182,14 @@
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import { VueperSlides, VueperSlide } from 'vueperslides'
 import 'vueperslides/dist/vueperslides.css'
+import Vtable from '@/components/Vtable'
 export default {
   name: 'Description',
   props: ['projet', 'image'],
   components: {
     VueperSlides,
-    VueperSlide
+    VueperSlide,
+    Vtable,
   },
   data() {
     return {
@@ -145,22 +203,17 @@ export default {
         },
         {
           image: 'https://live.staticflickr.com/65535/52203050725_5541f81dc9_b.jpg',
-
-
         },
         {
           image: 'https://live.staticflickr.com/65535/52202575368_6fc5719f32_b.jpg',
-
         },
         {
           image: 'https://live.staticflickr.com/65535/52202555101_01232fe4d6_b.jpg',
-
         },
         {
           image: 'https://live.staticflickr.com/65535/52201567167_260ab83654_b.jpg',
-
         }
-      ]
+      ],
     };
   },
 
