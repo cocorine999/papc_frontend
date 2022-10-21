@@ -49,7 +49,7 @@
       </div>
       <!--  -->
       <div class="cursor-pointer">
-        <span  title="suivre une activité"   class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} </span>
+        <span  title="suivre une activité"   class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poids}} </span>
        
       
         <div v-if="statut.code >= -1 && statut.code <= 2">
@@ -76,6 +76,10 @@
             <span class="ml-2 uppercase font-bold">fcfa</span>
           </div>
         </div>
+        <p
+          class=" mt-1 text-gray-600 dark:text-gray-400 mb-6">
+          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> au
+          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ fin }} </span></p>
       </div>
     </div>    
   </div>
