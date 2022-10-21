@@ -73,9 +73,6 @@
           <p class="p-4 font-bold text-sm text-justify">
             {{ projet.objectifGlobaux }}
           </p>
-          <!-- <div class="flex justify-center">
-            <button class="bg-blue-500 text-white px-4 py-2 uppercase outiline-none hover:bg-blue-500 transition-all duration-700 ">cadre logique</button>
-          </div> -->
         </div>
         <!-- divide PROJET -->
         <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
@@ -112,14 +109,8 @@
          <vueper-slide v-for="i in slide" :key="i" :title="i.title" :content="i.content"  :image="i.image" />
          </vueper-slides>
       </div>
-
       
-      <!-- <img
-              src="https://www.swissinfo.ch/resource/image/45678668/landscape_ratio16x9/1920/1080/8914355889303749b83cba6d80068f11/EEE9C8149B01C4A1D2D2E7165FED96B2/image_20200409phf9002.jpg"
-              class="w-full h-52 object-cover py-2"
-              alt=""
-            /> -->
-
+      <!-- divide of benin color -->
       <div class="grid grid-cols-3 mt-4">
         <div class="h-2 w-full bg-green-700"></div>
         <div class="h-2 w-full bg-yellow-500"></div>
