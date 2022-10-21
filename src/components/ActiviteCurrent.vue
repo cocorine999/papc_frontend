@@ -124,7 +124,7 @@
           </span>
           
           <span
-          v-if="StatistiqueVisible"
+         
             :class="{ 'border-primary border-b-8 font-bold': seeStatistique }"
             @click="gotoStatistique()"
             class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2"
@@ -473,7 +473,38 @@
         
       </div>
 
-      <div v-if="seeStatistique && StatistiqueVisible">
+      <div v-if="seeStatistique  ">
+        <div class="flex items-center justify-between flex-wrap">
+            <!--Filtre sur projet -->
+            <div class="w-full grid grid-cols-2 items-center gap-4">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
+                <multiselect v-model="projetFiltre"  :options="projets" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+              </div>
+
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+                <multiselect v-model="composanteFiltre"  :options="composantes" :preselect-first="true" :custom-label="customLabel" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+              </div>
+              <div>
+                
+              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous  composant</label>
+                <multiselect
+                v-model="valueFiltre"
+                :options="sousComposantes"
+                :preselect-first="true"
+                :custom-label="customLabel" 
+                placeholder="selectionnez une sous composante"
+                label="nom"
+                track-by="id"
+              ></multiselect>
+              </div>
+           
+              <div></div>
+              
+            </div>
+           
+          </div>
         <div class="">
           <select
             class="px-11 py-2 mt-1 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:border-transparent"
