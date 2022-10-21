@@ -214,6 +214,7 @@
           </div>
         </div>
        
+
         <div v-if="inProgress">
           <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
           <div v-else>
@@ -539,7 +540,7 @@ export default {
       if(this.taches != undefined) {
         const datas = []
         this.taches.forEach(element => {
-          if(element.statut == 2) {
+          if(element.statut == 0) {
             datas.push(element)
           }
         })
