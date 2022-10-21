@@ -261,7 +261,7 @@
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
             class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2"
-            >Plan d'ecaissement
+            >Plan de décaissement
           </span>
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
