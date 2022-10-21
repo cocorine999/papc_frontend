@@ -49,7 +49,7 @@
       </div>
       <!--  -->
       <div class="cursor-pointer">
-        <span v-if="!showInput" title="suivre une activité"  @click="suivreTache" class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} </span>
+        <span  title="suivre une activité"   class="absolute bottom-0 left-0 w-full cursor-pointer bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids: {{poidsActuel}} </span>
        
       
         <div v-if="statut.code >= -1 && statut.code <= 2">

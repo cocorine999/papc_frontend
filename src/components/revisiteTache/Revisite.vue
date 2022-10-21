@@ -147,6 +147,18 @@
                     {{terminer.length}}
                   </span>
                 </span>
+                <span
+                  @click="toggle4"
+                  :class="{ 'border-red-600 text-red-600': retard }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  en retard
+                  <span
+                    class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
+                  >
+                    {{retardData.length}}
+                  </span>
+                </span>
               
             </nav>
           </div>
@@ -237,6 +249,34 @@
             </div>
           </div>
         </div>
+         <div v-if="retard">
+          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in retardData" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
         
     </div>
   </div>
@@ -288,9 +328,9 @@ export default {
       pending: false,
       success: true,
       inProgress: false,
+      retard: false,
       rangeValue: 0,
       programmeId: this.currentUser?.programme.id,
-
       sendRequest: false,
       submitText: "Enregistrer",
       showFiltre: false,
@@ -360,6 +400,7 @@ export default {
         return datas
       }
     },
+
     enAttente() {
       if(this.taches != undefined) {
         const datas = []
@@ -375,7 +416,18 @@ export default {
       if(this.taches != undefined) {
         const datas = []
         this.taches.forEach(element => {
-          if(element.statut == 2) {
+          if(element.statut == 0) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    retardData() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 1) {
             datas.push(element)
           }
         })
@@ -441,18 +493,27 @@ export default {
       this.pending = false;
       this.inProgress = false;
       this.success = true;
+      this.retard = false
     },
 
     toggle2() {
       this.success = false;
       this.inProgress = false;
       this.pending = true;
+      this.retard = false
     },
 
     toggle3() {
       this.pending = false;
       this.success = false;
       this.inProgress = true;
+      this.retard = false
+    },
+    toggle4() {
+      this.pending = false;
+      this.success = false;
+      this.inProgress = false;
+      this.retard = true
     },
 
     getStatus(status) {

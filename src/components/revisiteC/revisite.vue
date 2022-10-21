@@ -63,6 +63,12 @@
               {{terminer.length}}
               </span>
             </span>
+            <span  @click="toggle4" :class="{'border-red-600 text-red-600' : retard}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
+              en retard
+              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
+              {{retardData.length}}
+              </span>
+            </span>
            
           </nav>
         </div>
@@ -143,6 +149,32 @@
        
        
       </div>
+      <div v-if="retard" >
+        <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in retardData" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.code"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
+        </div>
+       
+       
+      </div>
     </div>
     
   </div>
@@ -184,6 +216,7 @@ props: ['version'],
       pending:false,
       success:true,
       inProgress:false,
+      retard:fale,
       rangeValue:0,
       showFiltre:false,
       seeComposant:true,
@@ -258,7 +291,18 @@ props: ['version'],
       if(this.composantes != undefined) {
         const datas = []
         this.composantes.forEach(element => {
-          if(element.statut == 2) {
+          if(element.statut == 0) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    retardData() {
+      if(this.composantes != undefined) {
+        const datas = []
+        this.composantes.forEach(element => {
+          if(element.statut == 1) {
             datas.push(element)
           }
         })
@@ -353,6 +397,7 @@ props: ['version'],
       this.pending = false
       this.inProgress = false
       this.success = true
+      this.retard = false
 
     },
 
@@ -360,12 +405,20 @@ props: ['version'],
       this.success = false
       this.inProgress = false
       this.pending = true
+      this.retard = false
     },
 
     toggle3() {
       this.pending = false
       this.success = false
       this.inProgress = true
+      this.retard = false
+    },
+    toggle4() {
+      this.pending = false
+      this.success = false
+      this.inProgress = false
+      this.retard = true
     },
 
     getStatus(status){
