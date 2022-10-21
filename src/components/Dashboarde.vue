@@ -44,10 +44,10 @@
     <!--Fin Modal de filtre -->
 
     <!--La navigation  -->
-    <nav v-if="currentRole!='bailleur'" class="flex flex-row justify-between mb-2 text-sm font-semibold"
+    <nav v-if="currentRole!='bailleur'" class="flex flex-row justify-between text-sm font-semibold"
       aria-label="Breadcrumb">
       <div>
-        <ol class="inline-flex p-0 list-none">
+        <ol class="inline-flex py-2 list-none">
           <li class="flex items-center text-blue-500">
             <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
@@ -67,11 +67,11 @@
           </li>
         </ol>
       </div>
-      <div class="border border-gray-300 p-2 bg-white shadow">
-        <router-link class="text-sm font-semibold" to="/dashboard/projets/composantes-globale">Composantes /
+      <div class="border border-gray-300 py-2 px-4 bg-white shadow text-xs">
+        <router-link class="font-semibold" to="/dashboard/projets/composantes-globale">Composantes /
         </router-link>
-        <router-link class="text-sm font-semibold" to="/dashboard/projets/activites-globale">Activités /</router-link>
-        <router-link class="text-sm font-semibold" to="/dashboard/projets/taches-globale">Taches</router-link>
+        <router-link class="font-semibold" to="/dashboard/projets/activites-globale">Activités /</router-link>
+        <router-link class="font-semibold" to="/dashboard/projets/taches-globale">Taches</router-link>
       </div>
     </nav>
 
@@ -79,8 +79,14 @@
 
     <!--filte et button de modification  -->
 
-    <div class="flex my-5 items-center justify-between ">
-      <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none">cadre logique</button>
+    <div class="flex mt-5 items-center justify-between ">
+      <div class="flex relative space-x-8">
+        <!-- divide company -->
+        <div :class="projet.couleur" :style="`background-color:${projet.couleur}`" class="font-bold px-4 text-white z-50 py-2">
+          Bailleur : <span class="uppercase">{{projet.bailleur.sigle}}</span></div>
+          <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none z-50">cadre logique</button>
+          <span :class="projet.couleur" :style="`border-color:${projet.couleur}`" class="w-full absolute top-5 border-b-2"></span>
+      </div>
 
       <div class="flex space-x-8">
         <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
