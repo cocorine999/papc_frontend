@@ -114,7 +114,7 @@
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
           <span
-            class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold"
+            class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-2 py-1 font-semibold"
             :class="statut.couleur"
           >
             {{ statut.libelle }} <i class="bx bx-time-five ml-1"></i
@@ -162,8 +162,8 @@
         </div>
         <p
           class=" mt-1 text-gray-600 dark:text-gray-400 mb-6">
-          <span><i class="bx bxs-calendar mr-2"></i> {{ debut }}</span> au
-          <span><i class="bx bxs-calendar mr-2"></i> {{ fin }} </span></p>
+          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> au
+          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ fin }} </span></p>
       </div>
     </div>
   </div>

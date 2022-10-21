@@ -27,13 +27,13 @@
       </div>
 
       <div v-if="statut.code >= -1 && statut.code <= 2 ">
-          <span class="absolute bottom-12 right-3 rounded-lg text-sm text-white px-3 py-1 font-semibold" :class="statut.couleur"> {{ statut.libelle }}<i class='bx bx-time-five ml-1'></i></span>
+          <span class="absolute bottom-12 right-1 rounded-lg text-sm text-white px-2 py-1 font-semibold" :class="statut.couleur"> {{ statut.libelle }}<i class='bx bx-time-five ml-1'></i></span>
       </div>
       
       <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2"><span class="font-bold italic"><span class="underline mr-2">{{ composanteName !== undefined ? composanteName : 'COMPOSANTE' }}</span> {{ position }} :</span> {{ libelle }} </p>
       <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
-        <i class='bx bxs-wallet bx-md' ></i>
-        <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{ montantEPM }}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
+        <i class='bx bxs-wallet bx-xs' ></i>
+        <div class="ml-2 text-xs tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{ montantEPM }}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>
       </div>
     </div>
     <!-- End cards composantes -->
