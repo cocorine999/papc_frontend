@@ -760,7 +760,7 @@ export default {
         if (element.slug === 'voir-un-programme') {
           this.programmeVisible = true
         }
-        if (element.slug === 'voir le point financier des activites') {
+        if (element.slug === 'voir-un-suivi-financier') {
           this.pointFinancierVisible = true
         }
         if (element.slug === 'voir-une-checklist') {
