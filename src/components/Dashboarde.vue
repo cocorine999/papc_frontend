@@ -22,7 +22,8 @@
             src="@/assets/images/login/logo-gouv.webp" alt="">
         </div>
         <div v-else class="px-6" style="width: 60vw !important">
-          <vform template="default" :champs="champs" @getImage="getImage" submitText="Changer" :sendRequest="sendRequest" @sendForm="updateProjet">
+          <vform template="default" :champs="champs" @getImage="getImage" submitText="Changer"
+            :sendRequest="sendRequest" @sendForm="updateProjet">
           </vform>
         </div>
       </vmodal>
@@ -82,10 +83,12 @@
     <div class="flex mt-5 items-center justify-between ">
       <div class="flex relative space-x-8">
         <!-- divide company -->
-        <div :class="projet.couleur" :style="`background-color:${projet.couleur}`" class="font-bold px-4 text-white py-2 z-10">
+        <div :class="projet.couleur" :style="`background-color:${projet.couleur}`"
+          class="font-bold px-4 text-white py-2 z-10">
           Bailleur : <span class="uppercase">{{projet.bailleur.sigle}}</span></div>
-          <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none z-10">cadre logique</button>
-          <span :class="projet.couleur" :style="`border-color:${projet.couleur}`" class="z-0 w-full absolute top-5 border-b-2"></span>
+        <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none z-10">cadre logique</button>
+        <span :class="projet.couleur" :style="`border-color:${projet.couleur}`"
+          class="z-0 w-full absolute top-5 border-b-2"></span>
       </div>
 
       <div class="flex space-x-8">
@@ -248,7 +251,7 @@ export default {
     updateProjet() {
       if (this.sendRequest === false) {
         this.sendRequest = true
-         const id = this.projet.id
+        const id = this.projet.id
         const formData = new FormData();
         formData.append('image', this.image)
         ProjetService.update(id, formData).then(() => {
@@ -269,7 +272,7 @@ export default {
           }
         })
       }
-      
+
     },
     updateFile() {
       if (this.sendRequest === false) {

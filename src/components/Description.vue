@@ -54,20 +54,42 @@
     <div class="bg-white my-3 shadow">
       <div class="p-3">
         <div>
-          <p class="border border-gray-100 shadow rounded-md">
+          <p class="border border-gray-100 shadow rounded-md relative">
             <img v-if="image != null || image != undefined"
               class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
               :src="`${base_url}${image.url}`">
             <img v-else
               class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
               src="@/assets/images/login/logo-gouv.webp" alt="">
+
+              <!-- nombre de jours restants -->
+              <span class="absolute bottom-2 right-2 z-10 text-xl bg-red-500 px-4 py-2 font-semibold text-white rounded-lg"><i class="bx bx-hourglass bx-ms"></i> -1075 jours</span>
           </p>
+
+         
+
           <!-- divide DUREE -->
           <div class="border-b-2 border-gray-700 mx-4 mb-8 relative p-4">
             <span
               class="w-full -mx-4 font-bold absolute bg-gray-700 px-4 py-1 text-white border-2 border-gray-700">Durée du
               projet : <span class="">du {{ projet.debut }} au {{ projet.fin }} </span></span>
           </div>
+
+          <div class="px-4">
+            <table class="w-full">
+              <tbody>
+                <tr class="p-2">
+                  <td class="font-semibold">Secteur d’activité :</td>
+                  <td>
+                    <div class="p-2 text-white space-x-2">
+                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
+                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <!-- divide SITE -->
           <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
             <span
@@ -103,6 +125,7 @@
               </tbody>
             </table>
           </div>
+
           <!-- divide OBJECTIF -->
           <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
             <span
@@ -113,6 +136,7 @@
             {{ projet.objectifGlobaux }}
           </p>
         </div>
+
         <!-- divide PROJET -->
         <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
           <span
@@ -132,29 +156,26 @@
         <span
           class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Entreprises</span>
       </div>
-      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-4">
         <thead
           class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th scope="col" class="p-6">ACTIVITE</th>
-            <th scope="col" class="p-6">POIDS</th>
-            <th scope="col" class="p-6">STATUS</th>
+            <th scope="col" class="py-2 px-6">Nom</th>
+            <th scope="col" class="p-2">Type</th>
+            <th scope="col" class="p-2">Contact</th>
           </tr>
         </thead>
         <tbody>
-
-          <tr v-for="(suivi, index) in projet.suivis" :key="index"
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne>
-            <td class="py-4 px-6">{{ suivi.poidsActuel }}</td>
-            <td class="py-4 px-6">
-              <span class="text-green-500"> {{ getStatus(suivi.activite.statut).libelle }} </span>
-            </td>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <!-- <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne> -->
+            <td class="py-2 px-6">Satom</td>
+            <td class="p-2 uppercase">mod</td>
+            <td class="p-2 uppercase">78563487</td>
           </tr>
         </tbody>
       </table>
 
-      <!-- divide company -->
+      <!-- divide Galerie -->
       <div class="border-b-2 mx-4 mb-8 relative p-4">
         <span class="absolute bg-white px-4 py-1 text-gray-500 border-2 rounded-lg">Galerie</span>
       </div>

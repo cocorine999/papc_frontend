@@ -60,18 +60,17 @@
           ></span>
         </div>
        
-        <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 ">
-          <span class="font-bold italic"><span class="underline mr-2">Tâche</span> :</span> {{ libelle }} 
+        <p class="my-2 uppercase text-sm font-medium text-gray-600 mt-16 line-clamp-2 ">{{ libelle }} 
         </p>
         <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
           <i class='bx bxs-wallet bx-sm'></i>
-          <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : 
+          <div class="ml-4 text-sm tracking-wide font-semibold w-4/6 truncate">EMP : 
             <span class="font-bold italic text-lg"> {{ montantEPM }} </span><span class="ml-2 uppercase font-bold">fcfa</span>
           </div>
         </div>
         <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
           <i class='bx bxs-wallet bx-sm'></i>
-          <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">BN : 
+          <div class="ml-4 text-sm tracking-wide font-semibold w-4/6 truncate">BN : 
             <span class="font-bold italic text-lg"> {{ montantNE }} </span>
             <span class="ml-2 uppercase font-bold">fcfa</span>
           </div>

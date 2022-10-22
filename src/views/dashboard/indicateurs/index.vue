@@ -49,7 +49,6 @@
               </div>
 
               <div class="my-4">
-               
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurRealise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
@@ -210,8 +209,8 @@ export default {
           annee:'',
           trimestre:'',
           dateSuivie:'',
-          valeurCible:0,
-          valeurRealise:0,
+          valeurCible:1,
+          valeurRealise:2,
           commentaire:'',
         },
         showModal:false,
@@ -244,7 +243,7 @@ export default {
         ],
         headers:[],
         idIndicateur:'',
-        isValeurCibleUse:false,
+        isValeurCibleUse:true,
         actions:[
           {name:'suivre'},
           {name:'supprimer',iconne:''},
@@ -429,7 +428,8 @@ export default {
           this.chargement = true
           const data = this.suiviIndicateurs
           data.valeurRealise = [data.valeurRealise]
-          data.valeurCible = [data.valeurCible]
+          //data.valeurCible = [90000]
+         data.valeurCible = [data.valeurCible]
           data.indicateurId = this.idIndicateur
           if(this.choiceDateOption == true){
             delete data.trimestre
