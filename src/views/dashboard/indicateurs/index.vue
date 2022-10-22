@@ -209,8 +209,8 @@ export default {
           annee:'',
           trimestre:'',
           dateSuivie:'',
-          valeurCible:1,
-          valeurRealise:2,
+          valeurCible:0,
+          valeurRealise:0,
           commentaire:'',
         },
         showModal:false,
@@ -243,7 +243,7 @@ export default {
         ],
         headers:[],
         idIndicateur:'',
-        isValeurCibleUse:true,
+        isValeurCibleUse:false,
         actions:[
           {name:'suivre'},
           {name:'supprimer',iconne:''},
@@ -475,9 +475,13 @@ export default {
     verifyValeurCible(date) {
       SuiviService.checksuivi(this.idIndicateur,date).then((data) => {
         //recuperation de la valeur de verfication pour la valeur cible
-        this.isValeurCibleUse.data.data.data
+        if(data.data.data ===true){
+          this.isValeurCibleUse = false;
+        }else {
+          this.isValeurCibleUse = true;
+        }
       }).catch((e) => {
-        console.log(e)
+        // console.log(e)
       })
     },
     filteredIndicateur(){

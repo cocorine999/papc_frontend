@@ -63,7 +63,7 @@
       </nav> 
       
       <div class="flex items-center justify-between my-2" >
-        <div class="">Les projets
+        <div class="">
           <span  class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-sm uppercase    border-primary py-2">Les projets </span>
         </div>
 
