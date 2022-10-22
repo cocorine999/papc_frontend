@@ -49,7 +49,6 @@
               </div>
 
               <div class="my-4">
-               
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurRealise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="" />
               </div>
@@ -429,7 +428,8 @@ export default {
           this.chargement = true
           const data = this.suiviIndicateurs
           data.valeurRealise = [data.valeurRealise]
-          data.valeurCible = [data.valeurCible]
+          //data.valeurCible = [90000]
+         data.valeurCible = [data.valeurCible]
           data.indicateurId = this.idIndicateur
           if(this.choiceDateOption == true){
             delete data.trimestre
@@ -475,9 +475,13 @@ export default {
     verifyValeurCible(date) {
       SuiviService.checksuivi(this.idIndicateur,date).then((data) => {
         //recuperation de la valeur de verfication pour la valeur cible
-        this.isValeurCibleUse.data.data.data
+        if(data.data.data ===true){
+          this.isValeurCibleUse = false;
+        }else {
+          this.isValeurCibleUse = true;
+        }
       }).catch((e) => {
-        console.log(e)
+        // console.log(e)
       })
     },
     filteredIndicateur(){
