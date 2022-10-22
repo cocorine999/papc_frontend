@@ -38,7 +38,7 @@
         </vmodal>
       </div>
       <div class="flex items-center justify-between flex-wrap">
-        <titre>Suivi financier </titre>
+        <titre>Suivi Budgétaire </titre>
         <div class="flex space-x-3 flex-wrap justify-end ">
           
           <button  @click="showModal2 = true" title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">

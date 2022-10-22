@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-3 gap-2">
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux d'execution physique</h2>
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution physique</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
         <div class="mt-6 flex justify-between">
           <div class="flex items-center space-x-3">
@@ -15,7 +15,7 @@
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux d'execution financier</h2>
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution financier</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_financier.tef }}%</h4>
         <div class="mt-6 flex justify-between">
           <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
@@ -34,7 +34,7 @@
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux de decaissement</h2>
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux de decaissement</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
         <div class="mt-6 flex justify-between">
           <div v-if="projet.taux_decaissement.percent <= 100" class="flex items-center space-x-3">
@@ -63,7 +63,12 @@
               src="@/assets/images/login/logo-gouv.webp" alt="">
 
               <!-- nombre de jours restants -->
-              <span class="absolute bottom-2 right-2 z-10 text-xl bg-red-500 px-4 py-2 font-semibold text-white rounded-lg"><i class="bx bx-hourglass bx-ms"></i> -1075 jours</span>
+              <span class="absolute bottom-2 right-2 z-10 text-xl bg-red-500 px-2 py-2 font-semibold text-white rounded-lg">
+                <table class="text-center">
+                  <tr class="text-xs">Nombre de jour restant</tr>
+                  <tr><i class="bx bx-hourglass bx-xs font-bold"></i> {{projet.nbrJourRestant}}</tr>
+                </table>
+                </span>
           </p>
 
          
@@ -76,7 +81,7 @@
           </div>
 
           <div class="px-4">
-            <table class="w-full">
+            <table class="w-full text-sm">
               <tbody>
                 <tr class="p-2">
                   <td class="font-semibold">Secteur d’activité :</td>
@@ -96,7 +101,7 @@
               class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Zone d’intervention</span>
           </div>
           <div class="px-4">
-            <table class="w-full">
+            <table class="w-full text-sm">
               <tbody>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Pays :</td>
