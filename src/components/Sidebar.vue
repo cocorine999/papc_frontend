@@ -582,7 +582,7 @@
       </router-link>
     </div>
 
-    <div v-if="maitriseOeuvreVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+    <div  class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link
         to="/dashboard/maitrise-ouvrage"
         style="width: 100%"
