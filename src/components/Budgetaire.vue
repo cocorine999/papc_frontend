@@ -128,11 +128,11 @@
 
               <tr v-for="(suivi, index) in projet.suivis" :key="index"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td class="py-4 px-6">{{suivi.activite.nom}}</td>
+                <td class="py-4 px-6">{{suivi.nom}}</td>
                 <!-- <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne> -->
                 <td class="py-4 px-6">{{ suivi.poidsActuel }}</td>
                 <td class="py-4 px-6">
-                  <span class="text-green-500"> {{ getStatus(suivi.activite.statut).libelle }} </span>
+                  <span class="text-green-500"> {{ getStatus(suivi.statut).libelle }} </span>
                 </td>
               </tr>
             </tbody>
