@@ -76,7 +76,7 @@
               <span class="ml-2 uppercase font-bold">fcfa</span>
             </div>
           </div>
-          <p class="mt-1 text-gray-600 text-gray-300 text-sm font-bold space-x-2">
+          <p class="mt-1 text-gray-600 text-gray-300 text-xs font-bold space-x-2">
             <span class="font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> <span>au</span> <span>{{ fin }}</span>
           </p>
         </div>
@@ -86,9 +86,13 @@
           :class="statut.couleur"><i class="bx bx-time-five"></i>
           {{ statut.libelle }} </span>
       </div>
+      <div class="flex text-xs">
+      <div title="suivre une activité"
+        class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
+        {{ codePta }} </div>
       <div title="suivre une activité"
         class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
-        {{poids}} </div>
+        {{ poids }} </div></div>
     </div>
   </div>
   <!-- End cards Tâches -->
@@ -108,6 +112,7 @@ export default {
     "structureResponsable",
     "debut",
     "fin",
+    "codePta",
     "statut",
     "id",
     "isDelete",
