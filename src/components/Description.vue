@@ -81,6 +81,18 @@
           </div>
 
           <div class="px-4">
+            <table class="w-full text-sm border-b mb-2 bg-gray-300 bg-opacity-25">
+              <tbody>
+                <tr class="p-4 font-semibold">
+                  <td class="pl-2">Dernière date d’audit :</td>
+                  <td>28/12/2021</td>
+                  <td>
+                    <div class="p-2 text-white space-x-2">
+                      <span class="bg-green-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Effectué</span>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
             <table class="w-full text-sm">
               <tbody>
                 <tr class="p-2">
