@@ -1,8 +1,8 @@
 <template>
   <dashboard espace="bailleur">
-    <div class="w-full">
+    <div class="w-full p-4">
     <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="save" class="p-0 w-full"  >
+      <form action="" @submit.prevent="save" class="w-full"  >
         <div class="grid grid-cols-1 gap-5 mt-3 ">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -212,7 +212,7 @@
     </div>
     <div v-if="line"  class="line my-4">
       <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-          <table class="w-full">
+          <table class="w-full p-4">
             <thead>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Composantes </th>
@@ -244,7 +244,7 @@
 
     <div v-if="seeSuivi">
       <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-            <table class="w-full">
+            <table class="w-full p-4">
               <thead>
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider"># </th>
                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Composantes </th>

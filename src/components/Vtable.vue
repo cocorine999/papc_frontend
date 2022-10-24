@@ -44,8 +44,8 @@
                 </td>
                 <td v-if="statut" class="text-sm text-gray-900 font-light py-2 px-4 ">
                    <span v-if="data.statut ==0" class="bg-purple-500 text-white px-2 py-1 rounded-md">  en cours </span>
-                   <span v-if="data.statut ==1" class="bg-green-500 text-white px-2 py-1 rounded-md">  valider </span>
-                   <span v-if="data.statut ==-1" class="bg-red-500 text-white px-2 py-1 rounded-md">  non valider </span>
+                   <span v-if="data.statut ==1" class="bg-green-500 text-white px-2 py-1 rounded-md">  validé </span>
+                   <span v-if="data.statut ==-1" class="bg-red-500 text-white px-2 py-1 rounded-md">  non validé </span>
                 </td>
                 <td   v-if="actions != undefined"  class="text-sm  space-x-3 text-gray-900 font-light py-2 px-4 flex items-center ">
                   <div v-for="(action,index) in actions" :key="index" class="flex item-center justify-center">

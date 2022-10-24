@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="w-full">
         <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
           <div>
             <ol class="inline-flex p-0 list-none">
@@ -20,7 +20,7 @@
         
         <div v-if="showModal2">
           <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
-            <div class="p-0 w-full">
+            <div class="w-full">
               <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
             </div>
           </modal-top-right>
@@ -36,7 +36,7 @@
        
         <div class="flex mt-12 space-x-4 ">
           <div class=" w-1/3 bg-white shadow p-2">
-            <div class="p-0 w-full">
+            <div class="w-full">
               <div>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Activité</span> : {{activite.nom}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Bailleur</span> : {{activite.bailleur.sigle}} </p>

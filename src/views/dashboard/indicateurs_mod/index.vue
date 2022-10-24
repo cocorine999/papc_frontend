@@ -36,10 +36,14 @@
       </nav>
 
       <div v-if="showSuiviModal">
-        <modal-top-right :title="title" v-on:close="showSuiviModal = false">
-          <div class="px-4 overflow-y-auto">
-            <form action="" @submit.prevent="saveSuivi" class="p-0 w-full">
-
+        <modal-top-right :title="title"  v-on:close="showSuiviModal = false">
+            <div  class="px-4 overflow-y-auto">
+              <form action="" @submit.prevent="saveSuivi" class="w-full"  >
+          
+                <div class="my-4">
+                 
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                </div>
               <div class="my-4">
 
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi

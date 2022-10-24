@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="w-full">
 
       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <div v-if="anosReponses.length > 0" style="height:800px" class="overflow-auto ">
@@ -77,9 +77,8 @@
           </form>
         </modal-chat>
       </div>
-
-      <nav class="mb-2 
- text-xs md:text-sm font-semibold flex items-center justify-between flex-wrap " aria-label="Breadcrumb">
+   
+      <nav class="text-xs md:text-sm font-semibold flex items-center justify-between flex-wrap " aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
@@ -97,11 +96,9 @@
         </div>
 
         <div>
-          <div class="w-full flex text-gray-600">
-            <input @input="$emit('search',$event.target.value)"
-              class="h-8  w-full px-5  text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-7"
-              v-model="search" type="text" name="search" placeholder="Rechercher">
-            <button type="submit" class="relative">
+            <div class="w-full flex text-gray-600">
+              <input @input="$emit('search',$event.target.value)" class="h-8  w-full px-5  text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-7" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" class="relative">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                 viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -116,7 +113,7 @@
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs 
- md:text-base uppercase    border-primary py-2">Tableau recapitulatif </span>
+ md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
         </div>
         <div class="flex space-x-4">
 
@@ -214,15 +211,15 @@ export default {
       },
       statuts: [
         { name: 'en cours', value: 0 },
-        { name: 'valider', value: 1 },
-        { name: 'non valider', value: -1 }
+        { name: 'validé', value: 1 },
+        { name: 'non validé', value: -1 }
       ],
       champs: [
         { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
         { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Piece jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],

@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="w-full">
       <div v-if="showModal">
         <modal-top-right  :title="title"  v-on:close="close">
-          <div class="p-0 w-full">
+          <div class="w-full">
               <vform
                 template="default"
                 :champs="champs"
@@ -15,7 +15,7 @@
           </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+      <nav class="text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
@@ -39,7 +39,7 @@
     
    
      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
-      <table class="w-full">
+      <table class="w-full p-4">
         <thead>
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Module</th>

@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="w-full">
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <form action="" @submit.prevent="createCollecteur" class="p-3 w-full" >
           <div class="form-group my-2">
@@ -101,7 +101,7 @@
         </button>
       </div>
       <div class="align-middle inline-block w-full bg-white overflow-x-auto pt-3 rounded-bl-lg rounded-br-lg">
-        <table class="w-full">
+        <table class="w-full p-4">
           <thead>
             <tr>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Bailleurs</th>

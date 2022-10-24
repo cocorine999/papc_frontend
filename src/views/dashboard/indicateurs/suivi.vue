@@ -3,8 +3,8 @@
      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
-      <div class="p-0 w-full">
-          <nav class="mb-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+      <div class="w-full">
+          <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
             <div class="mb-2">
               <ol class="inline-flex p-0 list-none">
                 <li class="flex items-center text-blue-500">
@@ -18,8 +18,8 @@
             </div>
             <div>
               <div class="w-full flex text-gray-600">
-                <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-                <button type="submit" class="relative  right-10 ">
+                <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+                <button type="submit" class="relative  p-2 rounded-lg">
                 <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                       viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -33,7 +33,7 @@
           
           <div v-if="showModal2">
             <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
-              <div class="p-0 w-full">
+              <div class="w-full">
                 <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
               </div>
             </modal-top-right>

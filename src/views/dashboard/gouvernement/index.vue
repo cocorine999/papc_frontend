@@ -1,6 +1,6 @@
 <template>
     <dashboard>
-      <div class="p-0 w-full">
+      <div class="w-full">
         <nav class="mb-2 mt-4 
    text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
           <div>
@@ -20,7 +20,7 @@
         </nav> 
         <div v-if="showModal">
           <modal-top-right :title="title" v-on:close="close">
-          <div  class="p-0 w-full">
+          <div  class="w-full">
             <div v-if="title =='Ajouter un gouvernement'">
                 <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" @closeModal="close"></vform>
             </div>

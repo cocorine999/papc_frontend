@@ -4,7 +4,7 @@
       <modal-top-right :title="title"  v-on:close="showModal = false">
       
         <div  class="px-4 overflow-y-auto">
-          <form action="" @submit.prevent="sendForm" class="p-0 w-full"  >
+          <form action="" @submit.prevent="sendForm" class="w-full"  >
        
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -60,8 +60,7 @@
       </div>
     </vmodal>
     <div class="w-full">
-      <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+      <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">

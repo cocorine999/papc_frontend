@@ -2,7 +2,7 @@
   <section>
     <div class="flex py-10">
       <div class="w-1/12 flex items-center ">
-        <div  class="w-full">
+        <div  class="w-full p-4">
           <button @click="prev" class="text-right bg-blue-500 p-2 text-white text-sm rounded-full ">prev</button>
         </div>
       </div>
@@ -44,7 +44,7 @@
         </ul>
       </div>
       <div class="w-1/12 flex items-center ">
-        <div class="w-full">
+        <div class="w-full p-4">
           <button @click="next" class="text-left bg-blue-500 p-2 text-sm text-white rounded-full ">next</button>
         </div>
       </div>
