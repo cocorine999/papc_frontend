@@ -322,7 +322,7 @@
       </div>
 
       <div v-if="seeActivite">
-        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">

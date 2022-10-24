@@ -2,17 +2,17 @@
   <div class="graphe w-full">
       <div class="histogramme bg-white  p-2 shadow-sm">
         <div class="flex justify-between px-2 my-4 py-2">
-          <h2 class="font-semibold text-gray-700 items-center  ">Tableau d'execution physique et financiere</h2>
-          <div>
+          <!-- <h2 class="font-semibold text-gray-700 items-center  ">Tableau d'execution physique et financiere</h2> -->
+          <!-- <div>
             <select name="" class="shadow  p-2 rounded-sm" id="">
               <option value="" disabled >Année</option>
               <option value="" v-for="i in 50" :key="i" > {{2000 + i}} </option>
             </select>
-          </div>
+          </div> -->
         </div>
-        <div >
+        <!-- <div >
           <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
-        </div>
+        </div> -->
       </div>
       <div class="grid grid-cols-2 items-center gap-4">
         <div class="bg-white h-full mt-3 p-2 shadow-sm" >

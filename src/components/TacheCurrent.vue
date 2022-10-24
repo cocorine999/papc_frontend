@@ -101,9 +101,9 @@
 
     <!-- le filtre -->
     <div v-if="seeTache && tacheVisible ">
-      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <!--Filtre sur projet -->
-        <div class="w-full grid sm:grid-cols-2 sm:gap-4">
+        <div class="w-full grid sm:grid-cols-2 sm:gap-2">
           <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
             <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true"
@@ -133,7 +133,7 @@
         </div>
       </div>
 
-      <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+      <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
         <div class="flex   justify-between flex-wrap items-center">
           <!--Filtre sur projet -->
           <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>

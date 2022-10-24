@@ -239,7 +239,7 @@
       </div>
      
       <div v-if="seeActivite">
-        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between ">
           <!--Filtre sur projet -->
           <div class="w-2/5 flex items-center space-x-2">
@@ -311,8 +311,7 @@
                   <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
                     cours<i class='bx bx-time-five ml-1'></i></span>
 
-                  <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span
-                      class="font-bold italic"><span class="underline mr-2">Activité</span>:</span> {{activite.libelle}} </p>
+                  <p class="my-2 uppercase text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">{{activite.libelle}} </p>
                   <!--  -->
                   <div class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
                     <i class='bx bxs-pin bx-sm'></i>

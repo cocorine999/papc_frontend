@@ -117,7 +117,7 @@
       </div>
 
       <div v-if="seeActivite && activiteVisible">
-        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-full grid grid-cols-2 items-center gap-4">
@@ -152,10 +152,10 @@
 
         </div>
 
-        <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+        <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
             <div class="flex  w-full justify-between  items-center">
               <!--Filtre sur projet -->
-              <h2 class="uppercase font-bold  mb-2">Listes des activités </h2>
+              <span class="uppercase font-bold  mb-2">Liste des activités </span>
               <nav class="flex text-sm space-x-4  ">
                   <span
                     @click="toggle2"

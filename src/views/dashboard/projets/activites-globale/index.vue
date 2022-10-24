@@ -1,9 +1,8 @@
 <template>
   <dashboard>
-    <div class="p-4">
+    <div class="p-0">
       <div class="mb-0">
-
-        <titre>Listes des activités</titre>
+        <titre>Liste des activités</titre>
       </div>
       <div v-if="activiteReVisible" class="select w-52">
         <select id="choice" v-model="version" @change="choiceVersion(version)"
