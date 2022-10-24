@@ -494,9 +494,9 @@ export default {
       if (this.chargement == false) {
         this.chargement = true
         const data = this.suiviIndicateurs
-        data.valeurRealise = [data.valeurRealise]
+        data.valeurRealise = [Number(data.valeurRealise)]
         //data.valeurCible = [90000]
-        data.valeurCible = [data.valeurCible]
+        data.valeurCible = [Number(data.valeurCible)]
         data.indicateurId = this.idIndicateur
         if (this.choiceDateOption == true) {
           delete data.trimestre
