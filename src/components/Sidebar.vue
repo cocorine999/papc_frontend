@@ -5,8 +5,8 @@
 
     <div class="w-full h-24 p-4 items-center border-b-2 text-xs text-center font-semibold uppercase text-white whitespace-nowrap">
       <div class="flex h-10 gap2 mb-2">
-        <div class="w-1/2"><img src="@/assets/images/login/logo-sirat.webp" alt="" class="w-full"></div>
         <div class="w-1/2"><img src="@/assets/images/login/logo-gouv.webp" alt="" class="w-full"></div>
+        <div class="w-1/2"><img src="@/assets/images/login/logo-sirat.webp" alt="" class="w-full"></div>
       </div>
 
       <span v-if="currentRole === 'unitee-de-gestion'">unite de gestion</span>
