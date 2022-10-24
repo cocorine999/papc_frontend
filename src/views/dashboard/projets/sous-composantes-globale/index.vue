@@ -1,7 +1,7 @@
 <template>
   <dashboard>
-   <!--  <div v-if="currentRole ==='bailleur'" class="p-0 w-full">
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
+   <!--  <div v-if="currentRole ==='bailleur'" class="w-full">
+      <nav class="text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
@@ -46,10 +46,11 @@
         </div>
       </div>
     </div> -->
-   <div class="p-0 w-full">
-    <div v-if="composanteReVisible" class="select w-52">
+   <div class="w-full">
+    <div v-if="composanteReVisible" class="select w-52 
+ mb-2" >
         
-        <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 ">
           
           <option value="" selected>Version actuelle</option>
   

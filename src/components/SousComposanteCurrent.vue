@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full p-4">
+    <div class="w-full">
 
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
@@ -9,7 +9,7 @@
         </modal-top-right>
       </div>
       
-      <nav class="mb-2 text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
         <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
@@ -78,7 +78,7 @@
               </span>
             </span>
             <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              terminer 
+              terminé 
               <span class="px-2 text-sm text-green-600 border border-green-600 rounded-full undefined">
               {{terminer.length}}
               </span>
@@ -280,9 +280,9 @@ export default {
 
         {name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Taux d\'exécution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
@@ -292,7 +292,7 @@ export default {
         { name: "code pta", cle: "codePta"},
         { name: "poids initial", cle:'poidsInitial'},
         { name: "poids actuel", cle:'poidsActuel'},
-        { name: "date de creation", cle:'created_at'},
+        { name: "date de création", cle:'created_at'},
       ],
       dataTable:[],
       actions: [

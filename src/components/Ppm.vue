@@ -4,7 +4,7 @@
      <div v-if="openFiltre">
        <vmodal title="filtre"  v-on:close="openFiltre = false">
         <div  style="width:60vw !important">
-          <form @submit.prevent="getPtaFiltre"  class="p-0 w-full">
+          <form @submit.prevent="getPtaFiltre"  class="w-full">
             <div class="form-group">
               <label for="bailleur"  class="block my-2 font-semibold">Selectionnez un bailleur</label>
               <multiselect v-model="bailleur"  :options="bailleurs" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un bailleur" label="nom" track-by="id"></multiselect>

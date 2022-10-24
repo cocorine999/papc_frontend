@@ -1,6 +1,6 @@
 <template>
  <dashboard>
-    <div class="p-0 w-full">
+    <div class="w-full">
       <div class="flex items-center justify-between flex-wrap">
         <p tabindex="0" class="focus:outline-none text-2xl font-semibold leading-6 text-gray-800 uppercase">Mes notifications</p>
       </div>

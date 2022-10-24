@@ -1,8 +1,7 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
-      <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+    <div class="w-full">
+      <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -176,7 +175,7 @@
         </vmodal>
       </div>
 
-      <div class="flex items-end justify-between">
+      <div class="flex items-end justify-between my-2">
         <titre>Les indicateurs </titre>
         <div class="flex items-center space-x-4">
           <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg

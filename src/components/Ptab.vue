@@ -4,7 +4,7 @@
     <div v-if="openFiltre && revisionVisible">
        <vmodal title="filtre"  v-on:close="openFiltre = false">
         <div  v-if="currentPage" style="width:60vw !important">
-          <form @submit.prevent="getPtaFiltre"  class="p-0 w-full">
+          <form @submit.prevent="getPtaFiltre"  class="w-full">
             <div class="form-group">
               <label for="bailleur"  class="block my-2 font-semibold">Selectionnez un bailleur</label>
               <multiselect v-model="bailleur"  :options="bailleurs" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un bailleur" label="nom" track-by="id"></multiselect>
@@ -34,7 +34,7 @@
           </form>
         </div>
         <div v-else style="width:60vw !important">
-          <form @submit.prevent=" getPtaReviseFiltre"  class="p-0 w-full">
+          <form @submit.prevent=" getPtaReviseFiltre"  class="w-full">
             
 
             <div class="form-group">
@@ -64,9 +64,10 @@
       </vmodal>
     </div>
 
-    <div class="select w-52">
+    <div class="select w-52 
+ mb-2" >
         
-      <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 ">
         
         <option value="" selected>Version actuelle</option>
 

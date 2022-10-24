@@ -1,5 +1,5 @@
 <template>
-  <div class="p-0 w-full">
+  <div class="w-full">
     <div class="my-4">
       <form @submit.prevent="sendForm">
         <div class="flex justify-center">

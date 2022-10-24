@@ -94,6 +94,7 @@ import config_alert from "../views/dashboard/config/alert/index.vue";
 import config_rappel from "../views/dashboard/config/rappel/index.vue";
 import config_backup from "../views/dashboard/config/backup/index.vue";
 
+import audit from "../views/dashboard/audit/index.vue";
 import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
 import projets from "../views/dashboard/projets/index.vue";
@@ -234,6 +235,15 @@ const routes = [
   //   name: "dashboard",
   //   component: dashboard,
   // },
+
+  {
+    path: "/dashboard/audit",
+    name: "audit",
+    component: audit,
+    meta: {
+      middleware: [auth],
+    },
+  },
 
   {
     path: "/dashboard/ano",

@@ -1,6 +1,6 @@
 <template>
 <dashboard>
-  <div class="p-0 w-full">
+  <div class="w-full">
     <div v-if="showModal">
       <ModalTopRight :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
@@ -32,7 +32,7 @@
         </vmodal>
     </div>
 
-    <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
 
@@ -45,10 +45,12 @@
             <router-link to="" class="">Pap</router-link>
           </li>
         </ol>
-      </div> 
-      <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
+      </div>
+      <div></div>
+      <div>
+        <div class="w-full flex text-gray-600">
+              <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -57,7 +59,9 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>
+      </div>
+      </div>
+      
     </nav>
 
     <div class="flex items-center justify-between my-2" >
@@ -172,6 +176,7 @@ export default {
       actions:[
         {name:'supprimer',iconne:''},
       ],
+      file:'',
       papVisible:false,
       papAdd:false,
       papDelete:false,
@@ -208,6 +213,12 @@ export default {
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setPap: 'paps/FILL' // map `this.CREATE_INSTANCE_PAP()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
+
+    previewFiles(event) {
+      const data = event.target.files[0]
+      this.file = data
+
+    },
 
     ...mapActions('paps', {
       fetchPaps: "FETCH_LIST_PAP",
@@ -248,6 +259,8 @@ export default {
           });
 
     },
+
+
     
     close() {
       this.showCloseModal()

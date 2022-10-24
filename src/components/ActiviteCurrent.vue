@@ -56,7 +56,7 @@
 
     </modal-top-right>
 
-    <nav class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
+    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
       aria-label="Breadcrumb">
       <div class="mb-2">
         <ol class="inline-flex p-0 list-none">
@@ -76,7 +76,7 @@
           </li>
 
           <li class="flex items-center text-blue-500">
-            <router-link to="" class="">activites</router-link>
+            <router-link to="" class="">activités</router-link>
           </li>
         </ol>
       </div>
@@ -92,7 +92,7 @@
           class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2 mb-2">Activités</span>
         <span v-if="planDecaissementVisible" :class="{ 'border-primary border-b-8 font-bold': seePlan }"
           @click="gotoPlan()"
-          class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2">Plan d'ecaissement
+          class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2 mb-2">Plan de décaissement
         </span>
 
         <span :class="{ 'border-primary border-b-8 font-bold': seeStatistique }" @click="gotoStatistique()"
@@ -177,7 +177,7 @@
             </span>
             <span @click="toggle" :class="{ 'border-green-600 text-green-600': success }"
               class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              terminer
+              terminé
               <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
                 {{terminer.length}}
               </span>
@@ -469,12 +469,12 @@ export default {
       dates: { debut: '', fin: '' },
       planDeDecaissementAttributs: ['annee', 'trimestre', 'pret', 'budgetNational'],
       champs: [
-        { name: 'Nom de l\'activite', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Nom de l\'activité', key: "nom", type: 'text', placeholdere: "Nom de l\'activité", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Type', key: "types", type: '', placeholdere: 'Selectionnez le type d\'activite', isSelect: true, isTextArea: false, data: '', required: true, options: this.$store.state.types, cle: 'type', value: 'nom', errors: [] },
         { name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Date de début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data: '', required: true, options: this.structures, cle: 'id', value: 'nom', errors: [] },
         { name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data: '', required: true, options: this.structures, cle: 'id', value: 'nom', errors: [] },
@@ -483,7 +483,7 @@ export default {
       champs2: [
         { name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Trimestre', key: "trimestre", type: '', placeholdere: 'Selectionnez le trimestre du plan', isSelect: true, isTextArea: false, data: '', required: true, options: this.$store.state.trimestres, cle: 'valeur', value: 'trimestre', errors: [] },
-        { name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
       ],
 
@@ -769,11 +769,11 @@ export default {
       },
 
       headers: [
-        { name: "Activite", cle: "activite" },
+        { name: "Activité", cle: "activite" },
         { name: "code pta", cle: "codePta" },
         { name: "poids initial", cle: 'poidsInitial' },
         { name: "poids actuel", cle: 'poidsActuel' },
-        { name: "date de creation", cle: 'created_at' },
+        { name: "date de création", cle: 'created_at' },
 
       ],
       dataTable: [],

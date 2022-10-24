@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full">
+  <div class="w-full p-4">
     <nav
-      class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
+      class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
       aria-label="Breadcrumb"
     >
       <div>

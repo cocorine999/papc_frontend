@@ -44,14 +44,14 @@
     </modal-chat>
 
     <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-      <div class="p-0 w-full">
+      <div class="p-4 w-full">
         <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
           @sendForm="sendForm" @closeModal="close">
         </vform>
       </div>
     </modal-top-right>
 
-    <nav class="mb-2 mt-4 text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
+    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
       aria-label="Breadcrumb">
       <div class="mb-2">
         <ol class="inline-flex p-0 list-none">
@@ -154,7 +154,7 @@
             </span>
             <span @click="toggle" :class="{ 'border-green-600 text-green-600': success }"
               class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              terminer
+              terminé
               <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
                 {{terminer.length}}
               </span>

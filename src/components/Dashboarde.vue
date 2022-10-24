@@ -1,6 +1,6 @@
 <template>
 
-  <div class="p-0 w-full">
+  <div class="w-full">
     <!--Modal de filtre -->
     <div v-if="showModal ">
       <vmodal title="Filtre projet" v-on:close="showModal = false">

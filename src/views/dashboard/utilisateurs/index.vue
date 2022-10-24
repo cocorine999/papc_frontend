@@ -1,8 +1,7 @@
 <template>
   <dashboard>
-    <div class="px-4 py-2">
-    <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+    <div class="w-full">
+    <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -16,8 +15,8 @@
         </div>
         <div>
           <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  right-10 ">
+              <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+              <button type="submit" class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -31,12 +30,12 @@
       </nav> 
     <div v-if="showModal">
       <modal-top-right title="Ajouter un utilisateur" v-on:close="close">
-       <div class="p-0 w-full">
+       <div class="w-full">
           <vform template="default" :sendRequest="sendRequest"  :champs="champs" :cols="cols" submitText="Ajouter un utilisateur" @sendForm="sendForm" @closeModal="close"></vform>
        </div>
       </modal-top-right>
     </div>
-    <div class="flex items-center justify-between flex-wrap">
+    <div class="flex items-center justify-between flex-wrap my-2">
       <titre>Les utilisateurs </titre>
         <button @click="showModal=true" title="ajouter un bailleur" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>

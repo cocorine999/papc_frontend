@@ -29,7 +29,10 @@
         </vmodal>
       </div>
       <div class="w-full">
-        <nav class="mb-2 text-sm font-semibold flex justify-between items-center" aria-label="Breadcrumb">
+          <nav
+          class="text-sm font-semibold flex justify-between items-center"
+          aria-label="Breadcrumb"
+        >
           <div class="hidden sm:block">
             <ol class="inline-flex p-0 list-none">
               <li class="flex items-center text-blue-500">

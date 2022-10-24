@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="p-0 w-full">
+    <div  class="w-full">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
@@ -29,7 +29,7 @@
           </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-4 text-sm font-semibold flex items-center " aria-label="Breadcrumb">
+      <nav class="text-sm font-semibold flex items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
