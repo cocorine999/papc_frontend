@@ -280,9 +280,9 @@ export default {
 
         {name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Pret', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
+        {name: 'Taux d\'exécution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
         
       ],
@@ -292,7 +292,7 @@ export default {
         { name: "code pta", cle: "codePta"},
         { name: "poids initial", cle:'poidsInitial'},
         { name: "poids actuel", cle:'poidsActuel'},
-        { name: "date de creation", cle:'created_at'},
+        { name: "date de création", cle:'created_at'},
       ],
       dataTable:[],
       actions: [

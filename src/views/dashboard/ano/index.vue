@@ -113,7 +113,7 @@
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs 
- md:text-base uppercase    border-primary py-2">Tableau recapitulatif </span>
+ md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
         </div>
         <div class="flex space-x-4">
 
@@ -219,7 +219,7 @@ export default {
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
         { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Piece jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
