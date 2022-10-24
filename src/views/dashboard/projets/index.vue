@@ -41,7 +41,8 @@
           </div>
         </modal-top-right>
       </div>
-      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"  aria-label="Breadcrumb">
+      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
+        aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -58,8 +59,11 @@
         </div>
         <div>
           <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"   class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"    class="relative  p-2 rounded-lg">
+            <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"
+              class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block"
+              v-model="search" type="text" name="search" placeholder="Rechercher">
+            <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"
+              class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                 viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"

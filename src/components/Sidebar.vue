@@ -3,11 +3,14 @@
     class="w-1/2 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter _scrollbar-w-2 _scrolling-touch o lg:block bg-primary z-30 no-scrollbar overflow-y-auto"
     :class="sideBarOpen ? '' : 'hidden'" id="main-nav">
 
-    <div class="w-full h-20 flex px-4 items-center border-b-2 ">
+    <div class="w-full h-24 p-4 items-center border-b-2 text-xs text-center font-semibold uppercase text-white whitespace-nowrap">
+      <div class="flex h-10 gap2 mb-2">
+        <div class="w-1/2"><img src="@/assets/images/login/logo-gouv.webp" alt="" class="w-full transparent"></div>
+        <div class="w-1/2"><img src="@/assets/images/login/logo-sirat.webp" alt="" class="w-full"></div>
+      </div>
 
-      <p v-if="currentRole === 'unitee-de-gestion' "
-        class="font-semibold text-lg uppercase text-white  whitespace-nowrap text-center ">unite de gestion</p>
-      <p v-else class="font-semibold text-lg uppercase text-white  whitespace-nowrap text-center ">{{currentRole}}</p>
+      <span v-if="currentRole === 'unitee-de-gestion'">unite de gestion</span>
+      <span v-else >{{currentRole}}</span>
     </div>
 
     <div v-if="currentRole ==='bailleur'" class="mb-1 px-4 flex items-center text-white cursor-pointer">
@@ -929,4 +932,8 @@ input:checked~.tab-content {
 .bx.bx-chevron-down {
   font-weight: 700;
 }
+/* img.transparent {
+  color: #222;
+  background: hsl(0,0%,90%) url("chrome://global/skin/media/imagedoc-lightnoise.png");
+} */
 </style>

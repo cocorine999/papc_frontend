@@ -74,10 +74,7 @@
               </div>
             </div>
 
-            <pre>
-              utilisateur par entreprise
-              {{usersListe}}
-            </pre>
+            
             <div
               v-for="(checklist, index) in formulaire"
               :key="index"
