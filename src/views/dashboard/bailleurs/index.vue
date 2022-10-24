@@ -3,7 +3,7 @@
     <div class="w-full">
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-          <div class="p-0 w-full">
+          <div class="p-4 w-full">
             <vform v-if="!isUpdate" template="default" @getImage="getImage" :champs="champs" :cols="cols"
               :submitText="submitText" @sendForm="sendForm" :sendRequest="sendRequest" @closeModal="close"></vform>
             <vform v-else template="default" @getImage="getImage" :champs="champsUpdate" :cols="cols"
