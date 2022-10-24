@@ -65,13 +65,13 @@
               </span>
             </span>
             <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              terminer 
+              Terminé 
               <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
               {{terminer.length}}
               </span>
             </span>
             <span  @click="toggle4" :class="{'border-red-600 text-red-600' : retard}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              en retard 
+              En retard 
               <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
               {{retardData.length}}
               </span>

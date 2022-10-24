@@ -177,7 +177,7 @@
             </span>
             <span @click="toggle" :class="{ 'border-green-600 text-green-600': success }"
               class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              terminer
+              terminé
               <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
                 {{terminer.length}}
               </span>

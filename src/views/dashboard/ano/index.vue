@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-0 w-full">
+    <div class="w-full">
 
       <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <div v-if="anosReponses.length > 0" style="height:800px" class="overflow-auto ">
@@ -211,8 +211,8 @@ export default {
       },
       statuts: [
         { name: 'en cours', value: 0 },
-        { name: 'valider', value: 1 },
-        { name: 'non valider', value: -1 }
+        { name: 'validé', value: 1 },
+        { name: 'non validé', value: -1 }
       ],
       champs: [
         { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },

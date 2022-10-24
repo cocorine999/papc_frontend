@@ -131,29 +131,15 @@
         <div v-for="(entreprise,index) in filteredEntreprise()" :key="index">
           <div @click="gotoNext(entreprise.id)" class="relative cursor-pointer">
 
-            <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
+            <div class="relative p-6 min-w-full bg-white sm:rounded-lg overflow-hidden _shadow-md">
+              
               <span
-                class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right">
-                <p> </p>
-              </span>
-              <span
-                class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i
+              class="relative text-lg sm:text-xl text-white tracking-tight font-bold bg-pink-500 px-4 py-2 rounded-lg uppercase flex no-wrap w-4/5 justify-start items-center"><i
                   class='bx bx-coin-stack bx-md'></i>{{entreprise.nom}}</span>
 
-              <p class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 mt-16 truncate">
+              <p class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 truncate">
                 {{entreprise.user.nom}}</p>
 
-              <div class="flex items-center mt-8 text-gray-600">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
-                  {{entreprise.user.adresse}}</div>
-              </div>
 
               <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"

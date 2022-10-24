@@ -173,7 +173,7 @@
         </vmodal>
       </div>
 
-      <div class="flex items-end justify-between">
+      <div class="flex items-end justify-between my-2">
         <titre>Les indicateurs </titre>
         <div class="flex items-center space-x-4">
           <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg

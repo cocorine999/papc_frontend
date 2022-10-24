@@ -138,7 +138,7 @@
                   class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i
                     class='bx bx-time-five ml-1'></i></div>
                 <div v-if="projet.statut == 2 "
-                  class=" text-sm flex items-center text-white bg-green-500 px-3 py-1 font-semibold">Terminer<i
+                  class=" text-sm flex items-center text-white bg-green-500 px-3 py-1 font-semibold">Terminé<i
                     class='bx bx-time-five ml-1'></i></div>
                 <div v-if="projet.statut == -1 "
                   class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En attente <i
