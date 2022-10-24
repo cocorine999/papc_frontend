@@ -326,21 +326,21 @@ export default {
        if(this.currentUser.type ==='bailleur') {
            this.getSuiviBailleur()
             const headers = [
-          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24",edit:false},
-          {name:'Trimestre',cle:'trimestre',width:"w-24",edit:false},
-          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28",edit:false},
-          {name:'valeur réalisée',cle:'valeurRealise',width:"w-28",edit:false},
-          {name:'Date de création',cle:'created_at',width:"w-24",edit:false},
+          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
+          {name:'Trimestre',cle:'trimestre',width:"w-24"},
+          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
+          {name:'valeur réalisée',cle:'valeurRealise',width:"w-28"},
+          {name:'Date de création',cle:'created_at',width:"w-24"},
         ]
         this.headers = headers
         }
         else {
           const headers = [
-          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24",edit:false},
-          {name:'Trimestre',cle:'trimestre',width:"w-24",edit:false},
-          {name:'Valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28",edit:false},
-          {name:'Valeur réalisée',cle:'valeurRealise',width:"w-28",edit:false},
-          {name:'Date de création',cle:'created_at',width:"w-24",edit:false},
+          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
+          {name:'Trimestre',cle:'trimestre',width:"w-24"},
+          {name:'Valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
+          {name:'Valeur réalisée',cle:'valeurRealise',width:"w-28"},
+          {name:'Date de création',cle:'created_at',width:"w-24"},
         ]
         this.headers = headers
         
