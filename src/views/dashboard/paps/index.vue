@@ -172,6 +172,7 @@ export default {
       actions:[
         {name:'supprimer',iconne:''},
       ],
+      file:'',
       papVisible:false,
       papAdd:false,
       papDelete:false,
@@ -208,6 +209,12 @@ export default {
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setPap: 'paps/FILL' // map `this.CREATE_INSTANCE_PAP()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
+
+    previewFiles(event) {
+      const data = event.target.files[0]
+      this.file = data
+
+    },
 
     ...mapActions('paps', {
       fetchPaps: "FETCH_LIST_PAP",
@@ -248,6 +255,8 @@ export default {
           });
 
     },
+
+
     
     close() {
       this.showCloseModal()
