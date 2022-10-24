@@ -1,60 +1,75 @@
 <template>
   <dashboard>
     <div v-if="showModal">
-      <modal-top-right :title="title"  v-on:close="showModal = false">
-      
-        <div  class="px-4 overflow-y-auto">
-          <form action="" @submit.prevent="sendForm" class="p-4 w-full"  >
-       
+      <modal-top-right :title="title" v-on:close="showModal = false">
+
+        <div class="px-4 overflow-y-auto">
+          <form action="" @submit.prevent="sendForm" class="p-0 w-full">
+
             <div class="my-4">
-              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de l'activité <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-              <input required v-model="nom" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom de l'activite" />
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Nom de
+                l'activité <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+              <input required v-model="nom"
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                type="text" placeholder="Entrer le nom de l'activite" />
             </div>
 
-          <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une entreprise <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <div class="flex justify-between my-3">
-              <div>
-                <input  type="radio" @click="allEntreprise= false" id="all" name="entreprise" value="all" >
-                <label class="px-2" for="all">Tout les entreprises</label>
+            <div class="my-4">
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez une
+                entreprise <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+              <div class="flex justify-between my-3">
+                <div>
+                  <input type="radio" @click="allEntreprise = false" id="all" name="entreprise" value="all">
+                  <label class="px-2" for="all">Tout les entreprises</label>
+                </div>
+                <div>
+                  <input type="radio" @click="allEntreprise = true" id="sauf" name="entreprise" value="sauf">
+                  <label class="px-2" for="sauf">Tout sauf</label>
+                </div>
               </div>
-              <div>
-                <input  type="radio" @click="allEntreprise= true" id="sauf" name="entreprise" value="sauf">
-                <label class="px-2" for="sauf">Tout sauf</label>
-              </div>
+
+              <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise"
+                placeholder="selectionnez une entreprise" label="nom" track-by="nom"
+                :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true"
+                :taggable="true" @tag="addTag"></multiselect>
             </div>
-          
-            <multiselect v-if="allEntreprise" v-model="value" tag-placeholder="seleectionnez une entreprise" placeholder="selectionnez une entreprise" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises"  :multiple="true" :taggable="true" @tag="addTag"></multiselect>
-          </div>
 
-          <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date debut <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input required v-model="debut" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
-          </div>
+            <div class="my-4">
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date debut <span
+                  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+              <input required v-model="debut"
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                type="date" placeholder="Entrer le nom du composante" />
+            </div>
 
-          <div class="my-4">
-            <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date fin <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input required v-model="fin" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" placeholder="Entrer le nom du composante" />
-          </div>
-        
+            <div class="my-4">
+              <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date fin <span
+                  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+              <input required v-model="fin"
+                class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                type="date" placeholder="Entrer le nom du composante" />
+            </div>
 
-        <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
-          <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
-            Enregistrer 
-          </button>
+            <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
+              <button type="submit"
+                class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'>
+                Enregistrer
+              </button>
 
-          <button type="" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
-            Annuler
-          </button>
+              <button type="" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'>
+                Annuler
+              </button>
 
-        </div>
+            </div>
           </form>
         </div>
       </modal-top-right>
     </div>
-    <vmodal v-if="showLink" @close="showLink=false">
+    <vmodal v-if="showLink" @close="showLink = false">
       <div class="m-2 p-2 bg-white shadow flex justify-center " style="width:60vw">
-        <router-link title="cliquez ici"  target="_blank" :to="{name:'form_gestion_generator',params:{id:formulaireId}}" class="p-2 bg-gray-300 border cursor-pointer text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
+        <router-link title="cliquez ici" target="_blank" :to="{ name: 'form_gestion_generator', params: { id: formulaireId } }"
+          class="p-2 bg-gray-300 border cursor-pointer text-gray-700 font-semibold text-sm border-gray-600 text-center rounded-md">
           cliquer ici
         </router-link>
       </div>
@@ -66,7 +81,10 @@
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
               <router-link to="" class="text-gray-600">dashboard</router-link>
-              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path
+                  d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+              </svg>
             </li>
             <li class="flex items-center ">
               <router-link to="" class="text-gray-600">entreprise</router-link>
@@ -78,95 +96,113 @@
               <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
-                    width="512px" height="512px">
-                 <path
-                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                width="512px" height="512px">
+                <path
+                  d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
-             </button>
-           </div>        
+            </button>
+          </div>
         </div>
-      </nav> 
+      </nav>
 
-      <div class="flex items-center justify-between my-2" >
+      <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible" :class="{'border-primary border-b-8':seeEntreprise}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2"> Rapports unitée de gestion </span>
-          <span @click="goActivite" v-if="activiteEnvVisible" :class="{'border-primary border-b-8':seeActivite}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
-          <span @click="goFormulaire" v-if="formulaireVisible" :class="{'border-primary border-b-8':seeFormulaire}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
-        </div> 
+          <span @click="goEntreprise" v-if="entrepriseExecutanteVisible"
+            :class="{ 'border-primary border-b-8': seeEntreprise }"
+            class="inline-block cursor-pointer  text-lg uppercase font-bold py-2"> Rapports unité de gestion </span>
+          <span @click="goActivite" v-if="activiteEnvVisible" :class="{ 'border-primary border-b-8': seeActivite }"
+            class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les activites </span>
+          <span @click="goFormulaire" v-if="formulaireVisible" :class="{ 'border-primary border-b-8': seeFormulaire }"
+            class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2"> Les formulaires </span>
+        </div>
         <div>
-          <button  @click="addActivite" v-if="seeActivite && activiteEnvAdd"   title="creer une activité"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+          <button @click="addActivite" v-if="seeActivite && activiteEnvAdd" title="creer une activité"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+            </svg>
             <span class="mx-2 text-xs  md:text-sm font-semibold">Créer</span>
           </button>
-          <router-link v-if="seeFormulaire && formulaireAdd" :to="{name:'unite_de_gestion_checklist_create',params:{id:$route.params.id}}"  title="ajouter une checklist"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+          <router-link v-if="seeFormulaire && formulaireAdd"
+            :to="{ name: 'unite_de_gestion_checklist_create', params: { id: $route.params.id } }" title="ajouter une checklist"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+            </svg>
             <span class="mx-2 text-xs  md:text-sm font-semibold">Créer</span>
-          </router-link> 
+          </router-link>
         </div>
-         
+
       </div>
 
       <div v-if="seeEntreprise" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(entreprise,index) in filteredEntreprise()" :key="index">
-          <div @click="gotoNext(entreprise.id)" class="relative cursor-pointer">
-             
+        <div v-for="(entreprise, index) in filteredEntreprise()" :key="index">
+          <div @click="gotoNext(entreprise.id)" class="relative cursor-pointer mb-2">
+
             <div class="relative p-6 max-w-80 bg-white sm:rounded-lg overflow-hidden _shadow-md">
-              <span  class="absolute bottom-0 left-0 w-full  h-8 text-white font-semibold leading-3 px-8 py-2 text-right"><p> </p></span>
-              <span  class="absolute text-4xl sm:text-5xl text-white tracking-tight font-bold  px-4 py-2 rounded-lg uppercase"><i class='bx bx-coin-stack bx-md'></i>{{entreprise.nom}}</span>
-              
-              <p class="my-2 text-normal text-sm sm:text-base font-medium text-gray-600 mt-16 truncate"> {{entreprise.user.nom}}</p>
-        
-              <div class="flex items-center mt-8 text-gray-600">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              <div
+                class="text-xl sm:text-xl text-white font-bold px-4 py-2 rounded-lg uppercase bg-blue-500 w-full truncate">{{ entreprise.nom }}</div>
+
+              <!-- <div class="flex items-center text-gray-600">
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.adresse}}</div>
+                <div class=" mt-8ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
+                  {{ entreprise.user.adresse }}</div>
+              </div> -->
+
+              <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400">
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
+                  {{ entreprise.user.contact }}</div>
               </div>
-        
-              <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+
+              <div class="flex items-center mb-2 text-gray-600 dark:text-gray-400">
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.contact}}</div>
-              </div>
-        
-              <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">{{entreprise.user.email}}</div>
+                <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
+                  {{ entreprise.user.email }}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div v-if="seeActivite">
-        <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>    
-        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @supprimer="supprimerActivite"></vtable>    
-        <vtable v-if="!activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()" :actions="actions"  @updateInputData="updateInputData"></vtable>
-        <vtable v-if="!activiteEnvDelete && !activiteEnvUpdate && activiteEnvVisible" :headers="headers" :datas="filteredEActivite()" :actions="actions"></vtable>        
+        <vtable v-if="activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"
+          :actions="actions" @supprimer="supprimerActivite" @updateInputData="updateInputData"></vtable>
+        <vtable v-if="activiteEnvDelete && !activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"
+          :actions="actions" @supprimer="supprimerActivite"></vtable>
+        <vtable v-if="!activiteEnvDelete && activiteEnvUpdate" :headers="headers" :datas="filteredEActivite()"
+          :actions="actions" @updateInputData="updateInputData"></vtable>
+        <vtable v-if="!activiteEnvDelete && !activiteEnvUpdate && activiteEnvVisible" :headers="headers"
+          :datas="filteredEActivite()" :actions="actions"></vtable>
       </div>
       <div v-if="seeFormulaire">
         <div class="grid grid-cols-3 gap-4">
           <div v-for="formulaire in filteredFormulaire()" :key="formulaire.id">
-            <card-checklist
-              :libelle=formulaire.nom
-              :activite=formulaire.auteur
-              @supprimer="supprimer"
-              @gotoDetails="gotoDetails(formulaire.id)"
-              @onlink="getlink(formulaire.id)"
-              :isdelete="formulaireDelete"
-              :isUpdate="formulaireUpdate"
-              :isGotoLink="suiviEnvAdd"
-              > 
+            <card-checklist :libelle=formulaire.nom :activite=formulaire.auteur @supprimer="supprimer"
+              @gotoDetails="gotoDetails(formulaire.id)" @onlink="getlink(formulaire.id)" :isdelete="formulaireDelete"
+              :isUpdate="formulaireUpdate" :isGotoLink="suiviEnvAdd">
             </card-checklist>
           </div>
         </div>
-      </div>      
-  </div>
+      </div>
+    </div>
   </dashboard>
 </template>
 
@@ -185,7 +221,7 @@ import Multiselect from 'vue-multiselect'
 import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 
 export default {
- 
+
   components: {
     Vtable,
     Dashboard,
@@ -202,56 +238,56 @@ export default {
   },
   data() {
     return {
-      title:'',
-      showModal:false,
-      allEntreprise:false,
-      champs:[],
-      showLink:false,
-      headers:[
-          {name:'Libellé activité',cle:'nom'},
-          {name:'Code',cle:'code'},
-          {name:'Entreprise',cle:'entreprise'},
-          {name:'Date début',cle:'debut'},
-          {name:'Date fin',cle:'fin'},
-          {name:'Date de création',cle:'created_at'},
+      title: '',
+      showModal: false,
+      allEntreprise: false,
+      champs: [],
+      showLink: false,
+      headers: [
+        { name: 'Libellé activité', cle: 'nom' },
+        { name: 'Code', cle: 'code' },
+        { name: 'Entreprise', cle: 'entreprise' },
+        { name: 'Date début', cle: 'debut' },
+        { name: 'Date fin', cle: 'fin' },
+        { name: 'Date de création', cle: 'created_at' },
       ],
-      search:'',
+      search: '',
 
-      actions:[
-        {name:'supprimer',iconne:''},
+      actions: [
+        { name: 'supprimer', iconne: '' },
       ],
-      
-      option:[
-        {name:'supprimer'},
-        {name:'modifier'},
-        {name:'continuer',iconne:''},
+
+      option: [
+        { name: 'supprimer' },
+        { name: 'modifier' },
+        { name: 'continuer', iconne: '' },
       ],
-      seeEntreprise:true,
-      seeFormulaire:false,
-      seeActivite:false,
-      value:[],
-      entrepriseExecutanteVisible:false,
-      entrepriseExecutanteAdd:false,
-      activiteEnvVisible:false,
-      activiteEnvAdd:false,
-      activiteEnvDelete:false,
-      activiteEnvUpdate:false,
-      formulaireVisible:false,
-      formulaireAdd:false,
-      formulaireDelete:false,
-      formulaireUpdate:false,
-      suiviEnvAdd:false,
-      
+      seeEntreprise: true,
+      seeFormulaire: false,
+      seeActivite: false,
+      value: [],
+      entrepriseExecutanteVisible: false,
+      entrepriseExecutanteAdd: false,
+      activiteEnvVisible: false,
+      activiteEnvAdd: false,
+      activiteEnvDelete: false,
+      activiteEnvUpdate: false,
+      formulaireVisible: false,
+      formulaireAdd: false,
+      formulaireDelete: false,
+      formulaireUpdate: false,
+      suiviEnvAdd: false,
+
     }
   },
   computed: {
-      ...mapState({
+    ...mapState({
       identifiant: state => state.auths.identifiant,
       eActivite: state => state.eActivites.eActivite,
       formulaire: state => state.formulaires.formulaire,
-      loading : state => state.loading,
-      errors : state => state.errors,
-      statuts : state => state.statuts
+      loading: state => state.loading,
+      errors: state => state.errors,
+      statuts: state => state.statuts
     }),
 
     ...mapGetters({
@@ -262,14 +298,14 @@ export default {
       formulaires: "formulaires/getFormulaires",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
-    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
   },
 
   mounted() {
     this.getPermission()
-     if(!this.activiteEnvVisible || !this.entrepriseExecutanteVisible || !this.formulaireVisible) {
-        this.$router.push('/401-non-autorise')
-      } 
+    if (!this.activiteEnvVisible || !this.entrepriseExecutanteVisible || !this.formulaireVisible) {
+      this.$router.push('/401-non-autorise')
+    }
     console.log("Fetching entreprises executantes ...");
     this.fetchEntreprisesExecutante();
 
@@ -280,47 +316,47 @@ export default {
     this.fetchFormulaires()
 
 
-    const en = [{name:'papc'},{name:'pool'},{name:'demo'}]
-    
+    const en = [{ name: 'papc' }, { name: 'pool' }, { name: 'demo' }]
+
   },
   methods: {
 
     //Charger les fonctions de communication avec le serveur
-     getPermission() {
-        this.currentUser.role[0].permissions.forEach(element => {
-        if(element.slug ==='voir-un-suivi-environnementale') {
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if (element.slug === 'voir-un-suivi-environnementale') {
           this.entrepriseExecutanteVisible = true
         }
-        if(element.slug === 'creer-une-activite-environnementale') {
+        if (element.slug === 'creer-une-activite-environnementale') {
           this.activiteEnvAdd = true
         }
-        if(element.slug === 'modifier-une-activite-environnementale') {
+        if (element.slug === 'modifier-une-activite-environnementale') {
           this.activiteEnvUpdate = true
         }
-        if(element.slug === 'supprimer-une-activite-environnementale') {
+        if (element.slug === 'supprimer-une-activite-environnementale') {
           this.activiteEnvDelete = true
         }
-        if(element.slug === 'voir-une-activite-environnementale') {
+        if (element.slug === 'voir-une-activite-environnementale') {
           this.activiteEnvVisible = true
         }
-        if(element.slug ==='voir-un-formulaire') {
+        if (element.slug === 'voir-un-formulaire') {
           this.formulaireVisible = true
         }
-        if(element.slug ==='creer-un-formulaire') {
+        if (element.slug === 'creer-un-formulaire') {
           this.formulaireAdd = true
         }
-        if(element.slug ==='modifier-un-formulaire') {
+        if (element.slug === 'modifier-un-formulaire') {
           this.formulaireUpdate = true
         }
-        if(element.slug ==='supprimer-un-formulaire') {
+        if (element.slug === 'supprimer-un-formulaire') {
           this.formulaireUpdate = true
         }
-        if(element.slug === 'creer-un-suivi-environnementale' ) {
+        if (element.slug === 'creer-un-suivi-environnementale') {
           this.suiviEnvAdd = true
         }
-           
+
       });
-     },
+    },
 
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -342,79 +378,79 @@ export default {
       deleteFormulaire: "DESTROY_FORMULAIRE"
     }),
 
-    
+
     ...mapActions("entreprisesExecutante", {
       fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
     }),
 
-    filteredEntreprise(){
-        var self = this;
+    filteredEntreprise() {
+      var self = this;
 
-        return this.entreprises.filter(function (entreprise){
-          return entreprise.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-            entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
+      return this.entreprises.filter(function (entreprise) {
+        return entreprise.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          entreprise.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
     },
 
-    filteredEActivite(){
-        var self = this;
+    filteredEActivite() {
+      var self = this;
 
-        return this.eActivites.filter(function (eActivtie){
-          return eActivtie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 eActivtie.entreprise.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 eActivtie.code.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
+      return this.eActivites.filter(function (eActivtie) {
+        return eActivtie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          eActivtie.entreprise.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          eActivtie.code.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
     },
 
-    filteredFormulaire(){
-        var self = this;
+    filteredFormulaire() {
+      var self = this;
 
-        return this.formulaires.filter(function (formulaire){
-          return formulaire.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-            formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
+      return this.formulaires.filter(function (formulaire) {
+        return formulaire.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          formulaire.auteur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
     },
 
-    addTag (newTag) {
+    addTag(newTag) {
       const tag = {
         nom: newTag,
       }
       this.options.push(tag)
       this.value.push(tag)
     },
-    getlink(i){
+    getlink(i) {
       /*if(this.suiviEnvAdd) {
         this.formulaireId = i
         this.showLink = true
       }*/
 
-      this.$router.push({name:'form_gestion_generator',params:{id:i}})
-   
+      this.$router.push({ name: 'form_gestion_generator', params: { id: i } })
+
     },
     gotoDetails(id) {
-      this.$router.push({name:'unite_de_gestion_checklist_details',params:{id:id}})
+      this.$router.push({ name: 'unite_de_gestion_checklist_details', params: { id: id } })
     },
-    selectData ({ name}) {
+    selectData({ name }) {
       return `${name}`
     },
     close() {
-        this.showCloseModal();
+      this.showCloseModal();
 
-        this.resetForm();
+      this.resetForm();
     },
     addActivite() {
       this.title = 'Creer une activité'
       this.showModal = true
     },
-    
+
     async updateInputData(id, attribut, value) {
-        
-          await this.updateEActivite({eActivite: {[attribut] : value}, id : id}).catch((value, status) => {
-            if(this.hasErrors[attribut] !== undefined)
-              alert(this.hasErrors[attribut])            
-          }).finally(() => {
-            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
-          })
+
+      await this.updateEActivite({ eActivite: { [attribut]: value }, id: id }).catch((value, status) => {
+        if (this.hasErrors[attribut] !== undefined)
+          alert(this.hasErrors[attribut])
+      }).finally(() => {
+        $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+      })
 
     },
 
@@ -423,51 +459,47 @@ export default {
       var isIn = false
       var entrepriseExecutantId = []
 
-      if(this.allEntreprise)
-      {
+      if (this.allEntreprise) {
         this.entreprises.forEach(entreprise => {
           this.value.forEach(element => {
-            if(entreprise === element)
-            {
+            if (entreprise === element) {
               isIn = true
             }
           });
 
-          if(isIn == false)
-          {
+          if (isIn == false) {
             entrepriseExecutantId.push(entreprise.id)
           }
         });
       }
 
-      else
-      {
+      else {
         this.entreprises.forEach(element => {
           entrepriseExecutantId.push(element.id)
         });
       }
 
       let eActivite = {
-        "nom" : this.nom,
-        "debut" : this.debut,
-        "fin" : this.fin,
-        "code" : this.code,
-        "statut" : this.statut,
-        "entrepriseExecutantId" : entrepriseExecutantId
+        "nom": this.nom,
+        "debut": this.debut,
+        "fin": this.fin,
+        "code": this.code,
+        "statut": this.statut,
+        "entrepriseExecutantId": entrepriseExecutantId
       }
 
       console.log(eActivite)
-      
+
       this.saveEActivite(eActivite).then(response => {
-        if(response.status == 200 || response.status == 201){
-            this.close()
+        if (response.status == 200 || response.status == 201) {
+          this.close()
         }
       })
-      
+
     },
 
     async supprimerActivite(activite) {
-      if(window.confirm("Voulez-vous supprimer cette activité " + activite.nom ))
+      if (window.confirm("Voulez-vous supprimer cette activité " + activite.nom))
         await this.deleteEActivite(activite.id)
     },
 
@@ -486,9 +518,9 @@ export default {
       this.seeFormulaire = false
       this.seeActivite = true
     },
-    
+
     gotoNext(id) {
-       this.$router.push({name:'unite_de_gestion_checklist',params:{idE:id}})
+      this.$router.push({ name: 'unite_de_gestion_checklist', params: { idE: id } })
     },
 
   },
@@ -508,7 +540,7 @@ export default {
       this.entreprises.map((item) => {
         item.nom = item.user.nom
         return item;
-        
+
       });
     }
   }

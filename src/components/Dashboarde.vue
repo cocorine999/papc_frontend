@@ -1,6 +1,6 @@
 <template>
 
-  <div class="p-4 w-full">
+  <div class="w-full">
     <!--Modal de filtre -->
     <div v-if="showModal ">
       <vmodal title="Filtre projet" v-on:close="showModal = false">
@@ -22,7 +22,8 @@
             src="@/assets/images/login/logo-gouv.webp" alt="">
         </div>
         <div v-else class="px-6" style="width: 60vw !important">
-          <vform template="default" :champs="champs" @getImage="getImage" submitText="Changer" @sendForm="updateProjet">
+          <vform template="default" :champs="champs" @getImage="getImage" submitText="Changer"
+            :sendRequest="sendRequest" @sendForm="updateProjet">
           </vform>
         </div>
       </vmodal>
@@ -44,10 +45,10 @@
     <!--Fin Modal de filtre -->
 
     <!--La navigation  -->
-    <nav v-if="currentRole!='bailleur'" class="flex flex-row justify-between mb-2 text-sm font-semibold"
+    <nav v-if="currentRole!='bailleur'" class="flex flex-row justify-between text-sm font-semibold"
       aria-label="Breadcrumb">
       <div>
-        <ol class="inline-flex p-0 list-none">
+        <ol class="inline-flex py-2 list-none">
           <li class="flex items-center text-blue-500">
             <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
@@ -67,11 +68,11 @@
           </li>
         </ol>
       </div>
-      <div class="border border-gray-300 p-2 bg-white shadow">
-        <router-link class="text-sm font-semibold" to="/dashboard/projets/composantes-globale">Composantes /
+      <div class="border border-gray-300 py-2 px-4 bg-white shadow text-xs">
+        <router-link class="font-semibold" to="/dashboard/projets/composantes-globale">Composantes /
         </router-link>
-        <router-link class="text-sm font-semibold" to="/dashboard/projets/activites-globale">Activités /</router-link>
-        <router-link class="text-sm font-semibold" to="/dashboard/projets/taches-globale">Taches</router-link>
+        <router-link class="font-semibold" to="/dashboard/projets/activites-globale">Activités /</router-link>
+        <router-link class="font-semibold" to="/dashboard/projets/taches-globale">Taches</router-link>
       </div>
     </nav>
 
@@ -79,8 +80,16 @@
 
     <!--filte et button de modification  -->
 
-    <div class="flex my-5 items-center justify-between ">
-      <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none">cadre logique</button>
+    <div class="flex mt-5 items-center justify-between ">
+      <div class="flex relative space-x-8">
+        <!-- divide company -->
+        <div :class="projet.couleur" :style="`background-color:${projet.couleur}`"
+          class="font-bold px-4 text-white py-2 z-10">
+          Bailleur : <span class="uppercase">{{projet.bailleur.sigle}}</span></div>
+        <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none z-10">cadre logique</button>
+        <span :class="projet.couleur" :style="`border-color:${projet.couleur}`"
+          class="z-0 w-full absolute top-5 border-b-2"></span>
+      </div>
 
       <div class="flex space-x-8">
         <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
@@ -240,24 +249,30 @@ export default {
       console.log('image', data)
     },
     updateProjet() {
-      const id = this.projet.id
-      const formData = new FormData();
-      formData.append('image', this.image)
-      ProjetService.update(id, formData).then(() => {
-        this.$toast.success('La couverture à éte bien changer')
-        this.showUpdateImage = false
-      }).catch((error) => {
-        if (error.response) {
-          // Requête effectuée mais le serveur a répondu par une erreur.
-          const message = error.response.data.message
-          this.$toast.error(message)
-        } else if (error.request) {
-          // Demande effectuée mais aucune réponse n'est reçue du serveur.
-          //console.log(error.request);
-        } else {
-          // Une erreur s'est produite lors de la configuration de la demande
-        }
-      })
+      if (this.sendRequest === false) {
+        this.sendRequest = true
+        const id = this.projet.id
+        const formData = new FormData();
+        formData.append('image', this.image)
+        ProjetService.update(id, formData).then(() => {
+          this.$toast.success('La couverture à éte bien changer')
+          this.sendRequest = false
+          this.showUpdateImage = false
+        }).catch((error) => {
+          if (error.response) {
+            this.sendRequest = false
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        })
+      }
+
     },
     updateFile() {
       if (this.sendRequest === false) {

@@ -3,7 +3,7 @@
   <div class="w-full p-4">
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="closeModal">
-        <div  class="p-4 w-full">
+        <div  class="w-full">
           <div v-if="title =='Modifier une ONG/AGENCES DE COMMUNICATION'">
             <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
           </div>

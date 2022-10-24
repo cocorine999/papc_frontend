@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="p-4 w-full">
+    <div  class="w-full">
       <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">

@@ -1,7 +1,7 @@
 <template>
   <div>
     
-    <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+    <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
       <div class="flex items-center justify-between flex-wrap">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="my-4 grid grid-cols-4 gap-4">
+    <div class="my-4 grid grid-cols-4 gap-2">
       <div v-for="(planDeDecaissement, index) in planDeDecaissements" :key="index">
         <card>
           <div class="p-2">

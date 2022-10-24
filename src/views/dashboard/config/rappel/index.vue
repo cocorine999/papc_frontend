@@ -1,9 +1,9 @@
 <template>
   <dashboard>
-    <div class="p-4 w-full">
+    <div class="w-full">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
-         <div class="p-4 w-full">
+         <div class="w-full">
             <vform
               template="default"
               :champs="champs"
@@ -116,7 +116,7 @@ export default {
       
         champs:[
             {name: 'libelle', key: "libelle", type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-            {name: 'Frequence', key: "frequence", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
+            {name: 'Frequence (jours)', key: "frequence", type: 'number', placeholdere: "cette valeur est en nombre de jour", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
             {name: 'Date avant rappel', key: "dateAvant", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
             {name: 'Date du rappel', key: "dateDuRappel", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
             {name: 'Description', key: "description", type: '', placeholdere: "", isSelect: false, isTextArea: true, data:'', required: true, errors : []}, 

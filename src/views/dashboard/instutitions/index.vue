@@ -3,7 +3,7 @@
     <div v-if="institutionVisible" class="w-full p-4">
       <div v-if="showModal">
         <ModalTopRight  :title="title"  v-on:close="close">
-          <div class="p-4 w-full">
+          <div class="w-full">
             <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
         </ModalTopRight>

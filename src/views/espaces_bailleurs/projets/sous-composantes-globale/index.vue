@@ -3,7 +3,7 @@
     <div class="w-full p-4">
     <!-- Modal de sous composants -->
     <modal-top-right v-if="showModal" :title="title"  v-on:close="close">
-      <form action="" @submit.prevent="save" class="p-4 w-full"  >
+      <form action="" @submit.prevent="save" class="w-full"  >
         <div class="grid grid-cols-1 gap-5 mt-3">
           <div class="grid grid-cols-1">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Nom du composante <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -92,7 +92,7 @@
 
      <!-- Modal de activité -->
      <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
-       <form action="" @submit.prevent="save" class="p-4 w-full" >
+       <form action="" @submit.prevent="save" class="w-full" >
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light">Nom du activé <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
@@ -263,7 +263,7 @@
     </div>
     
     <div v-if="seeSousComposantes">
-      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
@@ -324,7 +324,7 @@
             <!-- dots -->
             <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
             <!-- ./dots -->
-            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
+            <p class="my-2 uppercase text-sm font-medium text-gray-600 mt-16 line-clamp-2 normal-case"> {{composante.libelle}} </p>
             <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
               <i class='bx bxs-wallet bx-md' ></i>
               <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>

@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="p-4 w-full">
+    <div  class="w-full">
       <nav class="text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -30,7 +30,7 @@
       </nav> 
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-          <div  class="p-4 w-full">
+          <div  class="w-full">
             <form @submit.prevent="createRole" v-if="title =='Créer' ">
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Entrez le rôle  </label>

@@ -261,7 +261,7 @@
             :class="{ 'border-primary border-b-8 font-bold': seePlan }"
             @click="gotoPlan()"
             class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase py-2"
-            >Plan d'ecaissement
+            >Plan de décaissement
           </span>
           <span
             :class="{ 'border-primary border-b-8 font-bold': seeSuivi }"
@@ -322,7 +322,7 @@
       </div>
 
       <div v-if="seeActivite">
-        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-2/5 flex items-center space-x-2">

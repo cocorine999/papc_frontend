@@ -1,6 +1,6 @@
 <template>
   <dashboard espace="mo">
-  <div class="p-4 w-full">
+  <div class="w-full">
     <div v-if="showModal">
       <modal-top-right :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">

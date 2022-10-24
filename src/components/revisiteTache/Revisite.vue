@@ -63,9 +63,9 @@
 
     <!-- le filtre -->
     <div v-if="seeTache && tacheVisible ">
-        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="2">
           <!--Filtre sur projet -->
-          <div class="w-full grid sm:grid-cols-2 sm:gap-4">
+          <div class="w-full grid sm:grid-cols-2 sm:gap-2">
            <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
             <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
@@ -106,7 +106,7 @@
           </div>
         </div>
 
-        <div class="p-4 mt-12 rounded-sm shadow-md relative bg-white">
+        <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
           <div class="flex   justify-between flex-wrap items-center">
              <!--Filtre sur projet -->
              <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>
@@ -147,6 +147,18 @@
                     {{terminer.length}}
                   </span>
                 </span>
+                <span
+                  @click="toggle4"
+                  :class="{ 'border-red-600 text-red-600': retard }"
+                  class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
+                >
+                  en retard
+                  <span
+                    class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined"
+                  >
+                    {{retardData.length}}
+                  </span>
+                </span>
               
             </nav>
           </div>
@@ -168,6 +180,8 @@
                   :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)"
                   @dupliquer="dupliquer(tache)"
+                  :debut="tache.debut"
+                  :fin="tache.fin"
                   @modifier="modifier(tache)"
                   @prolonger="prolonger(tache)"
                   @suivre="suivreMyTache(tache)"
@@ -194,6 +208,8 @@
                   :libelle="tache.nom"
                   :montantNE="tache.montantNE"
                   :montantEPM="tache.montantEPM"
+                  :debut="tache.debut"
+                  :fin="tache.fin"
                   @supprimer="supprimer(tache)"
                   @dupliquer="dupliquer(tache)"
                   @modifier="modifier(tache)"
@@ -222,7 +238,39 @@
                   :poidsActuel="tache.poidsActuel"
                   :libelle="tache.nom"
                   :montantNE="tache.montantNE"
+                  :debut="tache.debut"
+                  :fin="tache.fin"
                   :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+         <div v-if="retard">
+          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in retardData" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  :debut="tache.debut"
+                  :fin="tache.fin"
                   @supprimer="supprimer(tache)"
                   @dupliquer="dupliquer(tache)"
                   @modifier="modifier(tache)"
@@ -288,9 +336,9 @@ export default {
       pending: false,
       success: true,
       inProgress: false,
+      retard: false,
       rangeValue: 0,
       programmeId: this.currentUser?.programme.id,
-
       sendRequest: false,
       submitText: "Enregistrer",
       showFiltre: false,
@@ -360,6 +408,7 @@ export default {
         return datas
       }
     },
+
     enAttente() {
       if(this.taches != undefined) {
         const datas = []
@@ -375,7 +424,18 @@ export default {
       if(this.taches != undefined) {
         const datas = []
         this.taches.forEach(element => {
-          if(element.statut == 2) {
+          if(element.statut == 0) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    retardData() {
+      if(this.taches != undefined) {
+        const datas = []
+        this.taches.forEach(element => {
+          if(element.statut == 1) {
             datas.push(element)
           }
         })
@@ -441,18 +501,27 @@ export default {
       this.pending = false;
       this.inProgress = false;
       this.success = true;
+      this.retard = false
     },
 
     toggle2() {
       this.success = false;
       this.inProgress = false;
       this.pending = true;
+      this.retard = false
     },
 
     toggle3() {
       this.pending = false;
       this.success = false;
       this.inProgress = true;
+      this.retard = false
+    },
+    toggle4() {
+      this.pending = false;
+      this.success = false;
+      this.inProgress = false;
+      this.retard = true
     },
 
     getStatus(status) {

@@ -1,6 +1,6 @@
 <template>
   <dashboard espace="bailleur">
-    <div class="p-4 w-full">
+    <div class="w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -19,7 +19,7 @@
       </nav> 
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-        <div  class="p-4 w-full">
+        <div  class="w-full">
           <div v-if="title =='Ajouter un decaissement'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
@@ -38,7 +38,7 @@
         </vmodal>
       </div>
       <div class="flex items-center justify-between flex-wrap">
-        <titre>Suivi financier </titre>
+        <titre>Suivi Budgétaire </titre>
         <div class="flex space-x-3 flex-wrap justify-end ">
           
           <button  @click="showModal2 = true" title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">

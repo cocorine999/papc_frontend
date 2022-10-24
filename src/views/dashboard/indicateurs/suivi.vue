@@ -3,7 +3,7 @@
      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
-      <div class="p-4 w-full">
+      <div class="w-full">
           <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
             <div class="mb-2">
               <ol class="inline-flex p-0 list-none">
@@ -33,7 +33,7 @@
           
           <div v-if="showModal2">
             <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
-              <div class="p-4 w-full">
+              <div class="w-full">
                 <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
               </div>
             </modal-top-right>

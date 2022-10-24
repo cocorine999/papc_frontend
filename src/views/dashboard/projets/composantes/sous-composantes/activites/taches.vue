@@ -1,7 +1,8 @@
 <template>
   <dashboard>
-    <div v-if="tacheVisible" class="p-4 w-full">
-      <div class="select w-52">
+    <div v-if="tacheVisible" class="w-full">
+      <div class="select w-52 
+ mb-2" >
         <select
           id="choice"
           v-model="version"
@@ -26,7 +27,7 @@
         <revisite v-else :version="version"></revisite>
       </div>
     </div>
-     <div v-if="currentRole ==='bailleur'" class="p-4 w-full">
+     <div v-if="currentRole ==='bailleur'" class="w-full">
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">

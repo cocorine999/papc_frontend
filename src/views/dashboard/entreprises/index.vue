@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="p-4 w-full">
+    <div  class="w-full">
       <route-name title="entreprises" />
       <div v-if="showModal">
         <modal-top-right title="Ajouter" v-on:close="close">

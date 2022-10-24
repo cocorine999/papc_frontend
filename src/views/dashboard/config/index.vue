@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 w-full">
+  <div class="w-full">
    
     <RouteName />
 

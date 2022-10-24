@@ -6,27 +6,27 @@
           <table class="min-w-full">
             <thead class="border-b bg-gray-300">
               <tr>
-                <th  scope="col" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                <th  scope="col" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline" @click="selectAllCheckbox($event);">
                   </label>
                 </th>
                 
-                <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 px-6 py-4 text-left"> {{head.name}} </th>
-                 <th scope="col" v-if="statut" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Statut</th>
-                <th scope="col" v-if="actions != undefined" class=" text-xs md:text-sm font-medium text-gray-900 px-6 py-4 text-left">Actions</th>
+                <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left"> {{head.name}} </th>
+                 <th scope="col" v-if="statut" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Statut</th>
+                <th scope="col" v-if="actions != undefined" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Actions</th>
                
               </tr>
             </thead>
           
             <tbody>
               <tr  class="border-b border-gray-300" v-for="(data, index) in listes" :key="index">
-                <td  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                <td  class="text-sm text-gray-900 font-light py-2 px-4 whitespace-nowrap">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="getRowDetail($event, index,index)">
                   </label> 
                 </td>
-                <td  v-for="(head, indice) in headers" :key="indice" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                <td  v-for="(head, indice) in headers" :key="indice" class="text-sm text-gray-900 font-light py-2 px-4 whitespace-nowrap">
                   <div class="text-xs w-full" v-if="head.props !== undefined">
                     <tr-table v-if="data[head.props] != null" :data="data[head.props][head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[head.props][extra] }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table>
                     <tr-table v-else data="Non definit" :objet="{ id: data.id, attribut: head.cle, extra: '' }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table>
@@ -35,12 +35,12 @@
                     <tr-table :status="head.status" :data="data[head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[extra] }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"> </tr-table>
                   </div>
                 </td>
-                <td v-if="statut" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                <td v-if="statut" class="text-sm text-gray-900 font-light py-2 px-4 whitespace-nowrap">
                    <span v-if="data.statut ==0" class="bg-purple-500 text-white px-2 py-1 rounded-md">  en cours </span>
                    <span v-if="data.statut ==1" class="bg-green-500 text-white px-2 py-1 rounded-md">  valider </span>
                    <span v-if="data.statut ==-1" class="bg-red-500 text-white px-2 py-1 rounded-md">  non valider </span>
                 </td>
-                <td   v-if="actions != undefined"  class="text-sm  space-x-3 text-gray-900 font-light px-6 py-4 flex items-center whitespace-nowrap">
+                <td   v-if="actions != undefined"  class="text-sm  space-x-3 text-gray-900 font-light py-2 px-4 flex items-center whitespace-nowrap">
                   <div v-for="(action,index) in actions" :key="index" class="flex item-center justify-center">
                     <div v-if="action.name === 'suivre'" title="suivre" @click="$emit('suivre', data.id)" class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>

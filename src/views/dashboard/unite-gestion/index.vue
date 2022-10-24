@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="p-4 w-full">
+    <div  class="w-full">
       <nav class="text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
         <div class="mb-2" >
           <ol class="inline-flex p-0 list-none">
@@ -19,7 +19,7 @@
       </nav> 
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-        <div  class="p-4 w-full">
+        <div  class="w-full">
           <div v-if="title =='Ajouter'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
@@ -87,7 +87,6 @@ import extractFormData from '@/utils/extract-data'
           {name:'Nom', props:'user', cle:'nom'},
           {name:'Email', props:'user', cle:'email', edit : false},
           {name:'Programme', props:'programme', cle:'nom', edit : false},
-          
           {name:'Date de creation', cle:'created_at', edit : false},
 
         ],

@@ -120,7 +120,7 @@
               class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" class="p-6">ACTIVITE</th>
-                <th scope="col" class="p-6">POIDS</th>
+                <th scope="col" class="p-6">TEP ACTUEL</th>
                 <th scope="col" class="p-6">STATUS</th>
               </tr>
             </thead>
@@ -128,10 +128,11 @@
 
               <tr v-for="(suivi, index) in projet.suivis" :key="index"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne>
-                <td class="py-4 px-6">{{ suivi.poidsActuel }}</td>
+                <td class="py-4 px-6">{{suivi.nom}}</td>
+                <!-- <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne> -->
+                <td class="py-4 px-6">{{ suivi.poidsActuel.toFixed(2) }}</td>
                 <td class="py-4 px-6">
-                  <span class="text-green-500"> {{ getStatus(suivi.activite.statut).libelle }} </span>
+                  <span class="text-green-500"> {{ getStatus(suivi.statut).libelle }} </span>
                 </td>
               </tr>
             </tbody>

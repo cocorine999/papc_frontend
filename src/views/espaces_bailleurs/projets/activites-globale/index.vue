@@ -2,7 +2,7 @@
   <dashboard espace="bailleur">
     <div class="w-full p-4">
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="save" class="p-4 w-full" >
+        <form action="" @submit.prevent="save" class="w-full" >
             <div class="form-group my-2">
               <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm block text-light">Nom du activé <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
               <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom du composante" />
@@ -239,7 +239,7 @@
       </div>
      
       <div v-if="seeActivite">
-        <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+        <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between ">
           <!--Filtre sur projet -->
           <div class="w-2/5 flex items-center space-x-2">
@@ -311,8 +311,7 @@
                   <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-3 py-1 font-semibold">En
                     cours<i class='bx bx-time-five ml-1'></i></span>
 
-                  <p class="my-2 uppercase text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span
-                      class="font-bold italic"><span class="underline mr-2">Activité</span>:</span> {{activite.libelle}} </p>
+                  <p class="my-2 uppercase text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">{{activite.libelle}} </p>
                   <!--  -->
                   <div class="flex items-center mt-8 pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
                     <i class='bx bxs-pin bx-sm'></i>

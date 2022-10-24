@@ -31,7 +31,7 @@
       </nav> 
     <div v-if="showModal">
       <modal-top-right title="Ajouter un utilisateur" v-on:close="close">
-       <div class="p-4 w-full">
+       <div class="w-full">
           <vform template="default" :sendRequest="sendRequest"  :champs="champs" :cols="cols" submitText="Ajouter un utilisateur" @sendForm="sendForm" @closeModal="close"></vform>
        </div>
       </modal-top-right>

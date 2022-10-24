@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div  class="p-4 w-full">
+    <div  class="w-full">
       <nav class="text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -29,7 +29,7 @@
       </nav>  
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-        <div  class="p-4 w-full">
+        <div  class="w-full">
           <div v-if="title =='Ajouter un Suivi'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
@@ -65,13 +65,13 @@
       </div>
       <div v-if="showModal3">
       <vmodal  title="Filtre"  v-on:close="showModal3 = false">
-        <div class="p-4 w-full" style="width:500px" >
+        <div class="w-full" style="width:500px" >
           <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
         </div>
       </vmodal>
        </div>
-      <div class="flex items-center justify-between flex-wrap my-2">
-        <titre>Suivi financier </titre>
+      <div class="flex items-center justify-between flex-wrap">
+        <titre>Suivi Budgétaire </titre>
         <div class="flex space-x-3">
           <button v-if="importerSuiviFinance" @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
             <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>

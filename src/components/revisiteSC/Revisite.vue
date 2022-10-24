@@ -30,10 +30,10 @@
      
     </div>
     <div v-if="seeSousComposantes">
-      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="f ">
         <!--Filtre sur projet -->
-        <div  class="w-full grid grid-cols-2  gap-4 items-center  mb-2">
+        <div  class="w-full grid grid-cols-2  gap-2 items-center  mb-2">
       
           <div>
             <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
@@ -66,6 +66,12 @@
               terminer 
               <span class="px-2 text-sm text-green-600 border border-green-600 rounded-full undefined">
               {{terminer.length}}
+              </span>
+            </span>
+            <span  @click="toggle4" :class="{'border-red-600 text-red-600' : retard}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
+              en retard 
+              <span class="px-2 text-sm text-red-600 border border-red-600 rounded-full undefined">
+              {{retardData.length}}
               </span>
             </span>
             
@@ -158,6 +164,35 @@
             </div>
           </div>
         </div>
+
+        <div v-if="retard">
+          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(sousComposante, index) in retardData" :key="index">
+                <card-composante
+                  :isComposante="false"
+                  :data="sousComposante"
+                  :libelle="sousComposante.nom"
+                  :code="sousComposante.code"
+                  composanteName="Sous Composante"
+                  :statut="getStatus(sousComposante.statut)"
+                  :montantEPM="sousComposante.pret"
+                  :position="sousComposante.position"
+                  :poids="sousComposante.poids"
+                  :bailleur="sousComposante.sigle"
+                  @modifier="modifier(sousComposante)"
+                  @dupliquer="dupliquer(sousComposante)"
+                  @supprimer="supprimer(sousComposante)"
+                  @suivre="suivreMyComposant(sousComposante)"
+                  @gotoNext="gotoNext(sousComposante)"
+                  :isDelete = "composanteDelete"
+                  :isUpdate="composanteUpdate"
+                ></card-composante>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
  
@@ -203,6 +238,7 @@ export default {
       pending:false,
       success:true,
       inProgress:false,
+      retard:false,
       rangeValue:0,
       showFiltre:false,
       isStateChange:false,
@@ -291,7 +327,18 @@ export default {
       if(this.sousComposantes != undefined) {
         const datas = []
         this.sousComposantes.forEach(element => {
-          if(element.statut == 2) {
+          if(element.statut == 0) {
+            datas.push(element)
+          }
+        })
+        return datas
+      }
+    },
+    retardData() {
+      if(this.sousComposantes != undefined) {
+        const datas = []
+        this.sousComposantes.forEach(element => {
+          if(element.statut == 1) {
             datas.push(element)
           }
         })
@@ -388,6 +435,7 @@ export default {
       this.pending = false
       this.inProgress = false
       this.success = true
+      this.retard = false
 
     },
 
@@ -395,12 +443,23 @@ export default {
       this.success = false
       this.inProgress = false
       this.pending = true
+      this.retard = false
+
     },
 
     toggle3() {
       this.pending = false
       this.success = false
       this.inProgress = true
+      this.retard = false
+
+    },
+    toggle4() {
+      this.pending = false
+      this.success = false
+      this.inProgress = false
+      this.retard = true
+
     },
 
 

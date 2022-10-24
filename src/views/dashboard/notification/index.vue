@@ -1,6 +1,6 @@
 <template>
  <dashboard>
-    <div class="p-4 w-full">
+    <div class="w-full">
       <div class="flex items-center justify-between flex-wrap">
         <p tabindex="0" class="focus:outline-none text-2xl font-semibold leading-6 text-gray-800 uppercase">Mes notifications</p>
       </div>
@@ -28,7 +28,7 @@
               <div class="flex items-center justify-between w-full">
                 <p tabindex="0" class="focus:outline-none text-sm leading-6">
                   <span class="text-indigo-700 uppercase font-semibold">{{data.module}} :</span> {{data.texte}} par 
-                  <span class="text-indigo-700 font-bold">Gomez jacob </span>
+                  <span class="text-indigo-700 font-bold">{{data.auteur}}</span>
                 </p>
                 <div
                 @click="viewNotification(data.id,index)"

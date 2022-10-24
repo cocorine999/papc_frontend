@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-4 w-full">
+    <div class="w-full">
         <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
           <div>
             <ol class="inline-flex p-0 list-none">
@@ -9,7 +9,7 @@
                 <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
               </li>
               <li class="flex items-center ">
-                <router-link to="" class="text-gray-600">Suivi tache </router-link>
+                <router-link to="" class="text-gray-600">Suivi indicateur </router-link>
               </li>
             </ol>
           </div>
@@ -30,14 +30,14 @@
         
         <div v-if="showModal2">
           <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
-            <div class="p-4 w-full">
+            <div class="w-full">
               <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
             </div>
           </modal-top-right>
         </div>
 
         <div class="flex items-center justify-between my-4">
-          <titre>Le suivi tache  </titre>
+          <titre>Suivi des indicateurs  </titre>
           <div class="flex items-center space-x-4">
             <json-excel :data="json_data" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
           <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
@@ -52,9 +52,9 @@
        
         <div class="flex mt-12 space-x-4 ">
           <div class=" w-1/3 bg-white shadow p-2">
-            <div class="p-4 w-full">
+            <div class="w-full">
               <div>
-                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Tache</span> : {{indicateur.nom}} </p>
+                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Indicateur</span> : {{indicateur.nom}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Description</span> : {{indicateur.description}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Bailleur</span> : {{indicateur.bailleur.nom}} </p>
                 <p v-if="indicateur.categorie != null" class=" text-sm   py-2"><span class="font-bold uppercase px-1">Categorie</span> : {{indicateur.categorie.nom}} </p>
@@ -64,7 +64,7 @@
               </div>
             </div>
           </div>
-          <div class="datatable w-full bg-white shadow p-2 ">
+          <div class="datatable w-2/3 bg-white shadow p-2 ">
             <vtable :headers="headers" :datas="filteredSuivis"></vtable>
           </div>
         </div>    
@@ -109,6 +109,10 @@ export default {
         headers: [
           { name: "Valeur realisé", cle: "valeurRealise"},
           { name: "Valeur cible", cle:'valeurCible'},
+          { name: "Ecart", cle:'valeurEcart'},
+          { name: "Valeur cumulée", cle:'valeurCumul'},
+          { name: "Trimestre", cle:'trimestre'},
+          { name: "Année suivi", cle:'anneeSuivi'},
           { name: "date de creation", cle:'created_at'},
         ],
         indicateur:[],
@@ -125,8 +129,12 @@ export default {
          datas.forEach(element => {
           const valeurRealise = element.valeurRealise[0]
           const valeurCible = element.valeurCible.valeurCible[0]
+          const valeurCumul = element.valeurCible.valeurCible[0]
+          const trimestre = element.trimestre
+          const anneeSuivi = element.valeurCible.annee
+          const valeurEcart =valeurRealise - valeurCible
           const created_at = element.created_at
-          this.dataTable.push({valeurRealise:valeurRealise,valeurCible:valeurCible,created_at:created_at})
+          this.dataTable.push({valeurRealise:valeurRealise,valeurCible:valeurCible,valeurEcart:valeurEcart,valeurCumul:valeurCumul,trimestre:trimestre,anneeSuivi:anneeSuivi, created_at:created_at})
         }) 
         console.log("les suiivs",this.dataTable)
       }).catch((e) => {

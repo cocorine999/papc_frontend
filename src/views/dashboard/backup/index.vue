@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-4 w-full">
+    <div class="w-full">
        <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">

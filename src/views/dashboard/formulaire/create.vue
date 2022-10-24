@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="p-4 w-full">
+    <div class="w-full">
       <div v-if="isNotGenere" class="container mx-auto">
         <div class="my-8 flex space-x-5 justify-between">
           <div class="w-full p-4">

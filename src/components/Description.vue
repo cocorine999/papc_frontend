@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-3 gap-2">
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux d'execution physique</h2>
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution physique</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
         <div class="mt-6 flex justify-between">
           <div class="flex items-center space-x-3">
@@ -15,18 +15,18 @@
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux d'execution financier</h2>
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution financier</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_financier.tef }}%</h4>
         <div class="mt-6 flex justify-between">
-          <div v-if="projet.taux_financier.percent <= 100"  class="flex items-center space-x-3">
+          <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
             <!-- if arrow UP -->
             <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
             <span class="text-sm text-green-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
           </div>
-          <div v-else  class="flex items-center space-x-3">
+          <div v-else class="flex items-center space-x-3">
             <!-- if arrow DOWN -->
             <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
-            <span  class="text-sm text-red-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
+            <span class="text-sm text-red-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
           </div>
 
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
@@ -34,18 +34,18 @@
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold">Taux de decaissement</h2>
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux de decaissement</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
         <div class="mt-6 flex justify-between">
           <div v-if="projet.taux_decaissement.percent <= 100" class="flex items-center space-x-3">
             <!-- if arrow DOWN -->
             <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
-            <span  class="text-sm text-green-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
+            <span class="text-sm text-green-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
           </div>
           <div v-else class="flex items-center space-x-3">
             <!-- if arrow UP -->
             <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span  class="text-sm text-red-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
+            <span class="text-sm text-red-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
           </div>
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
         </div>
@@ -54,29 +54,99 @@
     <div class="bg-white my-3 shadow">
       <div class="p-3">
         <div>
-          <p class="border border-gray-100 shadow rounded-md">
-             <img v-if="image != null || image != undefined" 
-                class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
-                :src="`${base_url}${image.url}`">
-              <img v-else class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
-                src="@/assets/images/login/logo-gouv.webp"
-                alt="">
+          <p class="border border-gray-100 shadow rounded-md relative">
+            <img v-if="image != null || image != undefined"
+              class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+              :src="`${base_url}${image.url}`">
+            <img v-else
+              class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+              src="@/assets/images/login/logo-gouv.webp" alt="">
+
+              <!-- nombre de jours restants -->
+              <span class="absolute bottom-2 right-2 z-10 text-xl bg-red-500 px-2 py-2 font-semibold text-white rounded-lg">
+                <table class="text-center">
+                  <tr class="text-xs">Nombre de jour restant</tr>
+                  <tr><i class="bx bx-hourglass bx-xs font-bold"></i> {{projet.nbrJourRestant}}</tr>
+                </table>
+                </span>
           </p>
-          <!-- divide OBJECTIF -->
+
+         
+
+          <!-- divide DUREE -->
           <div class="border-b-2 border-gray-700 mx-4 mb-8 relative p-4">
-            <span class="w-full -mx-4 font-bold absolute bg-gray-700 px-4 py-1 text-white border-2 border-gray-700">Durée du projet : <span class="">du {{ projet.debut }} au {{ projet.fin }} </span></span> 
+            <span
+              class="w-full -mx-4 font-bold absolute bg-gray-700 px-4 py-1 text-white border-2 border-gray-700">Durée du
+              projet : <span class="">du {{ projet.debut }} au {{ projet.fin }} </span></span>
           </div>
+
+          <div class="px-4">
+            <table class="w-full text-sm">
+              <tbody>
+                <tr class="p-2">
+                  <td class="font-semibold">Secteur d’activité :</td>
+                  <td>
+                    <div class="p-2 text-white space-x-2">
+                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
+                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- divide SITE -->
+          <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
+            <span
+              class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Zone d’intervention</span>
+          </div>
+          <div class="px-4">
+            <table class="w-full text-sm">
+              <tbody>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Pays :</td>
+                  <td>Bénin</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Département :</td>
+                  <td>Littoral</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Commune :</td>
+                  <td>Cotonou</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Arrondissement :</td>
+                  <td>3, 4, 5, 6</td>
+                </tr>
+                <tr class="p-2 border-b-2 border-gray-200">
+                  <td class="font-semibold">Nom de site :</td>
+                  <td>
+                    <div class="p-2 text-white space-x-2">
+                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Pa3</span>
+                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Aac</span>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <!-- divide OBJECTIF -->
           <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
-            <span class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg">OBJECTIF GLOBALE</span>
+            <span
+              class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg">OBJECTIF
+              GLOBALE</span>
           </div>
           <p class="p-4 font-bold text-sm text-justify">
             {{ projet.objectifGlobaux }}
           </p>
         </div>
+
         <!-- divide PROJET -->
         <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
-          <span class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg">DESCRIPTION DU PROJET</span>
+          <span
+            class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg">DESCRIPTION
+            DU PROJET</span>
         </div>
         <div class="p-4">
           <p class="h-36 overflow-hidden text-sm italic text-justify">
@@ -87,29 +157,43 @@
       </div>
 
       <!-- divide company -->
+      <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
+        <span
+          class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Entreprises</span>
+      </div>
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-4">
+        <thead
+          class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="py-2 px-6">Nom</th>
+            <th scope="col" class="p-2">Type</th>
+            <th scope="col" class="p-2">Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <!-- <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne> -->
+            <td class="py-2 px-6 uppercase">Agetur</td>
+            <td class="p-2 uppercase">mod</td>
+            <td class="p-2 uppercase">21 30 51 10</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- divide Galerie -->
       <div class="border-b-2 mx-4 mb-8 relative p-4">
-        <span class="absolute bg-white px-4 py-1 text-gray-500 border-2 rounded-lg">Entreprises</span>
+        <span class="absolute bg-white px-4 py-1 text-gray-500 border-2 rounded-lg">Galerie</span>
       </div>
 
       <div class="w-5/6 mx-auto p-1">
-        <vueper-slides 
-          class="no-shadow "
-          :bullets="false"
-          :visible-slides="3"
-          :slide-ratio="1 / 4"
-          :gap="3"
-          autoplay
-          arrows-inside
-        :pause-on-hover="pauseOnHover"
-        @autoplay-pause="internalAutoPlaying = false"
-        @autoplay-resume="internalAutoPlaying = true"
-        
-        :dragging-distance="70">
+        <vueper-slides class="no-shadow " :bullets="false" :visible-slides="3" :slide-ratio="1 / 4" :gap="3" autoplay
+          arrows-inside :pause-on-hover="pauseOnHover" @autoplay-pause="internalAutoPlaying = false"
+          @autoplay-resume="internalAutoPlaying = true" :dragging-distance="70">
 
-         <vueper-slide v-for="i in slide" :key="i" :title="i.title" :content="i.content"  :image="i.image" />
-         </vueper-slides>
+          <vueper-slide v-for="i in slide" :key="i.id" :title="i.title" :content="i.content" :image="i.image" />
+        </vueper-slides>
       </div>
-      
+
       <!-- divide of benin color -->
       <div class="grid grid-cols-3 mt-4">
         <div class="h-2 w-full bg-green-700"></div>
@@ -121,44 +205,41 @@
 </template>
 
 <script>
-import {API_BASE_URL} from "@/services/configs/environment.js";
+import { API_BASE_URL } from "@/services/configs/environment.js";
 import { VueperSlides, VueperSlide } from 'vueperslides'
 import 'vueperslides/dist/vueperslides.css'
+import Vtable from '@/components/Vtable'
 export default {
   name: 'Description',
-  props:['projet','image'],
+  props: ['projet', 'image'],
   components: {
-    VueperSlides, 
-    VueperSlide
+    VueperSlides,
+    VueperSlide,
+    Vtable,
   },
   data() {
     return {
-      base_url:API_BASE_URL,
+      base_url: API_BASE_URL,
       pauseOnHover: true,
       autoPlaying: true,
-     internalAutoPlaying: true,
-    slide : [
-      {
-        image: 'https://www.gouv.bj/upload/images/articles/0751086001657376878.jpeg', 
-      },
-      {
-        image: 'https://live.staticflickr.com/65535/52203050725_5541f81dc9_b.jpg',
-      
-             
-      },
-      {
-        image: 'https://live.staticflickr.com/65535/52202575368_6fc5719f32_b.jpg',
-             
-      },
-      {
-        image: 'https://live.staticflickr.com/65535/52202555101_01232fe4d6_b.jpg',
-             
-      },
-      {
-        image: 'https://live.staticflickr.com/65535/52201567167_260ab83654_b.jpg',
-             
-      }
-    ]
+      internalAutoPlaying: true,
+      slide: [
+        {
+          image: 'https://www.gouv.bj/upload/images/articles/0751086001657376878.jpeg',
+        },
+        {
+          image: 'https://live.staticflickr.com/65535/52203050725_5541f81dc9_b.jpg',
+        },
+        {
+          image: 'https://live.staticflickr.com/65535/52202575368_6fc5719f32_b.jpg',
+        },
+        {
+          image: 'https://live.staticflickr.com/65535/52202555101_01232fe4d6_b.jpg',
+        },
+        {
+          image: 'https://live.staticflickr.com/65535/52201567167_260ab83654_b.jpg',
+        }
+      ],
     };
   },
 
@@ -168,7 +249,7 @@ export default {
   },
 
   created() {
-    
+
   }
 
 };
@@ -177,17 +258,19 @@ export default {
 <style >
 /*le carousel*/
 .vueperslide--active {
- 
+
   opacity: 1;
   border: 3px solid black;
   border-radius: 12px;
-  border-color: #000 ;
+  border-color: #000;
 }
+
 .vueperslides__arrow svg {
   color: rgb(0, 26, 255);
   font-size: 16px;
   stroke-width: 2;
   width: 14px;
 }
+
 /* fin de la partie carousel*/
 </style>
