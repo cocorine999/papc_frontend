@@ -28,9 +28,9 @@
 
       <dropdown v-if="isDelete && isUpdate" @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')" @gotoNext="$emit('gotoNext')" :option="option"></dropdown>
-      <dropdown v-if="isDelete && isUpdate==false" @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"
+      <dropdown v-if="isDelete && isUpdate == false" @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')" @gotoNext="$emit('gotoNext')" :option="optionD"></dropdown>
-      <dropdown v-if="isUpdate && isDelete ==false" @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"
+      <dropdown v-if="isUpdate && isDelete == false" @supprimer="$emit('supprimer')" @modifier="$emit('modifier')"
         @prolonger="$emit('prolonger')" @gotoNext="$emit('gotoNext')" :option="option"></dropdown>
     </div>
 
@@ -64,7 +64,6 @@
             {{ statut.libelle }} <i class="bx bx-time-five ml-1"></i></span>
         </div>
         <p class="my-2 text-normal text-lg font-medium text-gray-600 mt-16 line-clamp-2 normal-case">
-          <span class="font-bold italic"><span class="underline mr-2">Activité</span>:</span>
           {{ libelle }}
         </p>
 
@@ -192,4 +191,5 @@ export default {
 </script>
 
 <style>
+
 </style>

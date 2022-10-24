@@ -6,5 +6,16 @@
 </template>
 
 <style>
-
+  .multiselect__single {
+    font-size: 14px !important;
+  }
+  .multiselect--above .multiselect__content-wrapper{
+    font-size: 14px !important;
+  }
+  span,div,p {
+    font-size: 14px;
+  }
+  span.inline-block {
+    font-size: 12px;
+  }
 </style>

@@ -263,7 +263,7 @@
     </div>
     
     <div v-if="seeSousComposantes">
-      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/5 flex items-center space-x-2">
@@ -324,7 +324,7 @@
             <!-- dots -->
             <span class="absolute right-0 cursor-pointer"><i class='bx bx-dots-vertical-rounded bx-md pr-2'></i></span>
             <!-- ./dots -->
-            <p class="my-2 uppercase text-normal text-md font-medium text-gray-600 mt-16 line-clamp-2 normal-case"><span class="font-bold italic"><span class="underline mr-2">COMPOSANTE</span>3 :</span> {{composante.libelle}} </p>
+            <p class="my-2 uppercase text-sm font-medium text-gray-600 mt-16 line-clamp-2 normal-case"> {{composante.libelle}} </p>
             <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
               <i class='bx bxs-wallet bx-md' ></i>
               <div class="ml-4 text-md tracking-wide font-semibold w-4/6 truncate">EMP : <span class="font-bold italic text-lg">{{composante.montantEPM}}</span><span class="ml-2 uppercase font-bold">fcfa</span></div>

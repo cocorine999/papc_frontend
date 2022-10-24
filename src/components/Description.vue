@@ -173,9 +173,9 @@
         <tbody>
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <!-- <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne> -->
-            <td class="py-2 px-6">Satom</td>
+            <td class="py-2 px-6 uppercase">Agetur</td>
             <td class="p-2 uppercase">mod</td>
-            <td class="p-2 uppercase">78563487</td>
+            <td class="p-2 uppercase">21 30 51 10</td>
           </tr>
         </tbody>
       </table>

@@ -4,7 +4,7 @@
       <div class="">
         
         <div @click.stop="updateData" v-if="isVisible" :class="{'whitespace-nowrap':depliment}"  class="text-xs cursor-pointer">
-          <p v-if="!depliment" class="cursor-pointer font-semibold"> {{attribut? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut ? attribut.length > 30 : 0" :title="attribut" >...</span></p>
+          <p v-if="!depliment" class="cursor-pointer _font-semibold"> {{attribut? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut ? attribut.length > 30 : 0" :title="attribut" >...</span></p>
           <p v-else class="cursor-pointer font-semibold flex space-x-2"> 
             <span> {{ attribut }}</span>
             <span @click="depliment=false" >

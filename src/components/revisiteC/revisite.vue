@@ -36,7 +36,7 @@
     </div>
     
      <div v-if="seeComposant">
-      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/4  flex justify-between  items-center space-x-2 mb-2">

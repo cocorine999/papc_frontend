@@ -37,7 +37,7 @@
       </nav>
       <div class="mb-0">
        
-        <titre>Listes des activités</titre>
+        <titre>Liste des activités</titre>
       </div>
       <div class="flex bg-white p-2 shadow space-x-4 w-3/4">
        <div class="w-full">

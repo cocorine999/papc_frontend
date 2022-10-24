@@ -30,10 +30,10 @@
      
     </div>
     <div v-if="seeSousComposantes">
-      <div class="p-4 my-4 rounded-sm shadow-md bg-gray-50">
+      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="f ">
         <!--Filtre sur projet -->
-        <div  class="w-full grid grid-cols-2  gap-4 items-center  mb-2">
+        <div  class="w-full grid grid-cols-2  gap-2 items-center  mb-2">
       
           <div>
             <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
