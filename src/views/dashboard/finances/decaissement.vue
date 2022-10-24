@@ -33,7 +33,7 @@
     </nav> 
     <div v-if="showModal">
       <modal-top-right :title="title" v-on:close="close">
-       <div class="w-full">
+       <div class="w-full p-4">
          <div v-if="title =='Ajouter'">
             <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
          </div>
@@ -51,7 +51,7 @@
         </div>
       </vmodal>
     </div>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between my-2">
       <titre>Decaissement </titre>
       <div class="flex space-x-3">
         <json-excel v-if="exporterDecaissement" :data="json_data()" header="DECAISSEMENT" type="xlsx" :name="title_csv()"  >

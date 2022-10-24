@@ -36,7 +36,7 @@
       </vmodal>
     </div>
    
-    <div class="mt-4">
+    <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
             <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>

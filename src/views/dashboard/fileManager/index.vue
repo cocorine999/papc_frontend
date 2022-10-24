@@ -103,7 +103,7 @@
         </div>
 
         <div v-if="seeDocument" class="content-main">
-          <nav v-if="!main && preserveMain" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+          <nav v-if="!main && preserveMain" class="text-sm font-semibold  " aria-label="Breadcrumb">
             <div>
               <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                 <li class="flex space-x-2 mx-2 items-center">
@@ -139,7 +139,7 @@
           </div>
 
           <div v-if="seeAnosFolder">
-            <nav v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -188,7 +188,7 @@
           </div>
 
           <div v-if="seeReponseAnosFolder">
-            <nav  v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav  v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -237,7 +237,7 @@
           </div>
 
           <div v-if="seeProjetFolder">
-            <nav  v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav  v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -284,7 +284,7 @@
           </div>
 
           <div  v-if="seeOtherFolder">
-            <nav v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -331,7 +331,7 @@
         </div>
 
         <div v-if="seeShare" class="content-main">
-         <nav v-if="!main && preserveMain" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+         <nav v-if="!main && preserveMain" class="text-sm font-semibold  " aria-label="Breadcrumb">
             <div>
               <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                 <li class="flex space-x-2 mx-2 items-center">
@@ -367,7 +367,7 @@
           </div>
           
           <div v-if="seeAnosFolder">
-            <nav v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -416,7 +416,7 @@
           </div>
 
           <div v-if="seeReponseAnosFolder">
-            <nav  v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav  v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -464,7 +464,7 @@
           </div>
 
           <div v-if="seeProjetFolder">
-            <nav  v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav  v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -512,7 +512,7 @@
           </div>
 
           <div  v-if="seeOtherFolder">
-            <nav v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+            <nav v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">
@@ -576,7 +576,7 @@
         </div>
 
         <div v-if="seeProjetFolder">
-          <nav  v-if="!main2" class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+          <nav  v-if="!main2" class="text-sm font-semibold  " aria-label="Breadcrumb">
               <div>
                 <ol class="inline-flex items-center p-0 bg-white py-2 shadow w-full list-none">
                   <li class="flex space-x-2 mx-2 items-center">

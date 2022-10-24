@@ -44,7 +44,7 @@
     </modal-chat>
 
     <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-      <div class="p-0 w-full">
+      <div class="p-4 w-full">
         <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
           @sendForm="sendForm" @closeModal="close">
         </vform>

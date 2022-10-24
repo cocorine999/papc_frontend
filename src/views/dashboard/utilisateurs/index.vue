@@ -1,8 +1,7 @@
 <template>
   <dashboard>
-    <div class="px-4 py-2 w-full">
-    <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+    <div class="w-full">
+    <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -36,7 +35,7 @@
        </div>
       </modal-top-right>
     </div>
-    <div class="flex items-center justify-between flex-wrap">
+    <div class="flex items-center justify-between flex-wrap my-2">
       <titre>Les utilisateurs </titre>
         <button @click="showModal=true" title="ajouter un bailleur" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>

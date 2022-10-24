@@ -15,7 +15,7 @@
       </modal-top-right>
     </div>
   <div class="w-full">
-    <nav class="mb-2 mt-4 text-sm font-semibold  " aria-label="Breadcrumb">
+    <nav class="text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">

@@ -29,7 +29,7 @@
       </nav>  
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-        <div  class="w-full">
+        <div  class="w-full p-4">
           <div v-if="title =='Ajouter un Suivi'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
@@ -70,7 +70,7 @@
         </div>
       </vmodal>
        </div>
-      <div class="flex items-center justify-between flex-wrap">
+      <div class="flex items-center justify-between flex-wrap my-2">
         <titre>Suivi Budgétaire </titre>
         <div class="flex space-x-3">
           <button v-if="importerSuiviFinance" @click="showModal2 = true" title="exporter en excel"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">

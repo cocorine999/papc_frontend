@@ -1,6 +1,6 @@
 <template>
   <dashboard>
-    <div class="time-line p-4">
+    <div class="time-line">
       <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">

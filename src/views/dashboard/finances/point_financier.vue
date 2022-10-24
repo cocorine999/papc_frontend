@@ -1,8 +1,7 @@
 <template>
   <dashboard>
     <div class="w-full">
-    <nav class="mb-2 mt-4 
- text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
+    <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
@@ -29,7 +28,7 @@
            </div>      </div>
     </nav> 
     
-    <div class="flex items-center justify-between flex-wrap">
+    <div class="flex items-center justify-between flex-wrap my-2">
         <titre>Point financier </titre>
         <div class="flex space-x-3 flex-wrap justify-end ">
           <json-excel :data="json_data()" header="POINT FINANCIER" type="xlsx" :name="title_csv()"  >

@@ -35,7 +35,7 @@
           </div>
       </div>
     </div> -->
-    <div class="p-0 w-full">
+    <div class="w-full">
       <div v-if="tacheReVisible" class="select w-52 
  mb-2" >
         <select id="choice" v-model="version" @change="choiceVersion(version)"
