@@ -12,7 +12,14 @@
                   </label>
                 </th>
                 
-                <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left"> {{head.name}} </th>
+                <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left"> 
+                 
+                  <span v-if="head.monaie != undifined"> {{head.name}}   XOF </span>
+                  <span v-else> {{head.name}}   </span>
+
+                
+                  
+                  </th>
                  <th scope="col" v-if="statut" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Statut</th>
                 <th scope="col" v-if="actions != undefined" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Actions</th>
                
@@ -68,7 +75,6 @@
             </tbody>
           </table>
         </div>
-       
       </div>
     </div>
      <div class=" absolute -bottom-12 right-2 " v-if="totalPages >15">

@@ -809,7 +809,7 @@ const routes = [
   },
   
   {
-    path: "/dashboard/indicateurs/:id/suivi-mod",
+    path: "/dashboard/indicateurs/:id/suivi",
     component: indicateurs_suivi_details,
     meta: {
       middleware: [auth],

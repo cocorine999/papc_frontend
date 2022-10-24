@@ -4,7 +4,7 @@
       <div class="">
         <div @click.stop="updateData" v-if="isVisible" :class="{'whitespace-nowrap':depliment}"  class="text-xs cursor-pointer">
           <p v-if="!depliment" class="cursor-pointer _font-semibold">
-            <span v-if="money"> {{attribut | formatNumber }} XOF </span> 
+            <span v-if="money"> {{attribut | formatNumber }}  </span> 
             <span v-else> {{attribut}}</span> 
 <!--             <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut ? attribut.length > 30 : 0" :title="attribut" >...</span>
  -->          </p>
@@ -50,11 +50,10 @@ export default {
       },
       
       update() {
-        
         this.isVisible = true
         if(this.data !== this.attribut){
-            this.$emit('update', this.objet?.id, this.objet?.extra, this.objet?.attribut, this.attribut)
-            //this.data = this.attribut
+          this.$emit('update', this.objet?.id, this.objet?.extra, this.objet?.attribut, this.attribut)
+              //this.data = this.attribut
         }
       },
 
@@ -81,6 +80,7 @@ export default {
       updateData(event) {
         
         if(this.isEditable && this.isSelect){ 
+          
           this.clicks++;
           if (this.clicks === 1) {
             this.timer = setTimeout( () => {
@@ -89,9 +89,20 @@ export default {
           } else {
             clearTimeout(this.timer);  
             this.select = true
-           
             this.clicks = 0;
           }         
+        }
+        else if(this.isEditable == false) {
+          this.clicks++;
+          if (this.clicks === 1) {
+            this.timer = setTimeout( () => {
+              this.clicks = 0
+            }, this.delay);
+          } else {
+            clearTimeout(this.timer);  
+            this.isVisible = true
+            this.clicks = 0;
+          }  
         }
         else {
           this.clicks++;
