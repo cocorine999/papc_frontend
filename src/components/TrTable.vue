@@ -2,9 +2,12 @@
   <div>
     <div>
       <div class="">
-        
         <div @click.stop="updateData" v-if="isVisible" :class="{'whitespace-nowrap':depliment}"  class="text-xs cursor-pointer">
-          <p v-if="!depliment" class="cursor-pointer _font-semibold"> {{attribut? attribut.substring(0,30) : ''}} <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut ? attribut.length > 30 : 0" :title="attribut" >...</span></p>
+          <p v-if="!depliment" class="cursor-pointer _font-semibold">
+            <span v-if="money"> {{attribut | formatNumber }} XOF </span> 
+            <span v-else> {{attribut}}</span> 
+<!--             <span @click="deplier" class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="attribut ? attribut.length > 30 : 0" :title="attribut" >...</span>
+ -->          </p>
           <p v-else class="cursor-pointer font-semibold flex space-x-2"> 
             <span> {{ attribut }}</span>
             <span @click="depliment=false" >
@@ -17,7 +20,6 @@
       <input  type="text" v-if="!isVisible" v-model="attribut" @keyup.enter="update" class="border w-full  border-primary py-1 px-2 text-xs "/>
       <select name="" v-model="attribut" class="border w-full block my-1 border-primary py-1 px-2 text-xs "  @change="hideSelect(attribut)" v-if="select" id="">
         <option v-for="option in options" :key="option.id" :value="option[optionsKey]"> {{option[optionsKey]}}  </option>
-        
       </select>
     </div>
   </div>
@@ -25,7 +27,7 @@
 
 <script>
 export default {
-  props:['data', 'objet', 'isEditable','isSelect','options','optionsKey','updateKey'],
+  props:['data', 'objet', 'isEditable','isSelect','options','optionsKey','updateKey','money'],
   data() {
     return {
       isVisible:true,
