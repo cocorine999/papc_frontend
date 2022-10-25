@@ -1,9 +1,90 @@
 <template>
   <dashboard>
-     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
+     <div class="relative">
+        <vue-html2pdf
+            :show-layout="false"
+            :float-layout="true"
+            :enable-download="true"
+            :preview-modal="true"
+            :paginate-elements-by-height="1400"
+            :filename="title_pdf"
+            :pdf-quality="2"
+            :manual-pagination="false"
+            pdf-format="a3"
+            pdf-orientation="landscape"
+            pdf-content-width="100vw"
+            @progress="onProgress($event)"
+            @hasStartedGeneration="hasStartedGeneration()"
+            @hasGenerated="hasGenerated($event)"
+            ref="html2Pdf"
+        >
+            <section slot="pdf-content">
+              <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis"  ></vtable> 
+            </section>
+        </vue-html2pdf>
+      </div>
+    <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
-      </modal-chat>
-      <div class="w-full">
+    </modal-chat>
+    <div v-if="showModal2">
+      <vmodal title="Filtre de suivi"  v-on:close="showModal2 = false">
+        <div style="width:40vw" class="p-4">
+            <div class="my-4">
+                <div  class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="filtre.date" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="date" placeholder="" />
+                </div>
+
+                <div class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez
+                    un trimestre <span
+                      class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between my-3">
+                    <div>
+                      <input v-model="filtre.trimestre" type="radio" id="T1" name="trimestre" value="1">
+                      <label class="px-2" for="T1">T1</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="filtre.trimestre" id="T2" name="trimestre" value="2">
+                      <label class="px-2" for="T2">T2</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="filtre.trimestre" id="T3" name="trimestre" value="3">
+                      <label class="px-2" for="T3">T3</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="filtre.trimestre" id="T4" name="trimestre" value="4">
+                      <label class="px-2" for="T4">T4</label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+        </div>
+      </vmodal>
+    </div>
+    <div v-if="showModal3">
+      <vmodal title="Exportez les données "  v-on:close="showModal3 = false">
+        <div style="width:40vw" class="p-4 flex items-center space-x-4 ">
+          <div class="excel">
+            <json-excel :data="SuivisIndicateurs" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
+              <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+                <span class="mx-2 text-xs  md:text-sm font-semibold">Exportez en excel </span>
+              </button>
+            </json-excel>
+          </div>
+         
+          <div>
+            <button @click="generateReport" class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">exportez en pdf</button>
+          </div>
+        </div>
+      </vmodal>
+    </div>
+
+    <div class="w-full">
           <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
             <div class="mb-2">
               <ol class="inline-flex p-0 list-none">
@@ -31,32 +112,24 @@
             </div>          </div>
           </nav> 
           
-          <div v-if="showModal2">
-            <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
-              <div class="w-full">
-                <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
-              </div>
-            </modal-top-right>
-          </div>
+          
 
           <div class="flex items-center justify-between my-4">
             <titre>Le suivi d'evaluation </titre>
             <div v-if="exporterSuivi" class="flex items-center space-x-4">
-              <json-excel :data="json_data()" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
-            <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
-              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-              <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
-            </button>
-            </json-excel>
+              <button @click="showModal3 = true" title="exporter "   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+                <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+                <span class="mx-2 text-xs  md:text-sm font-semibold">Exportez</span>
+              </button>
               <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
             </div>
           </div>
-        
+         
          <!--  <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>     -->
-          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
-          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
+          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
+          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
         
-      </div>
+    </div>
   </dashboard>
 
 </template>
@@ -69,9 +142,11 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import VueHtml2pdf from 'vue-html2pdf'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
 import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service";
+
 import JsonExcel from "vue-json-excel";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
@@ -87,6 +162,7 @@ export default {
     ModalTopRight,
     JsonExcel,
     ModalChat,
+    VueHtml2pdf,
     Commentaire
   },
   data() {
@@ -94,17 +170,14 @@ export default {
         suiviAttributes : ['annee', 'trimestre','valeurCible','valeurRealise','indicateurId','commentaire'],
         suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','nom','bailleurId','categorieId'],
         showModal2:false,
-       suiviBailleurs:[],
-       currentRole:'',
-       actions:[{name:''}],
-        champsRecherche:[
-          {name:'Indicateurs',key:'nom',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:false,options:['indicateur1','indicateur2','indicateurs3']},
-          {name:'Année de base',key:'date_debut',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Année',key:'date_fin',type:'year',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Trimestre',key:'trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:false,options:[1,2,3,4]},
-          {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:false,options:['BM','BOA']},
-          {name:'Categories',key:'categorieId',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:false,}, 
-        ],
+        showModal3:false,
+        suiviBailleurs:[],
+        filtre:{
+          date:'',
+          trimestre:''
+        },
+        currentRole:'',
+        actions:[{name:''}],
         cols:2,
         title:'',
         search:'',
@@ -114,7 +187,9 @@ export default {
         data:'',
         suiviIndicateurVisible:false,
         exporterSuivi:false,
-        commenterSuivi:false
+        commenterSuivi:false,
+        choiceDateOption: true,
+        SuivisIndicateurs:[]
         
       });
   },
@@ -152,10 +227,27 @@ export default {
       suivi: "suiviIndicateurs/getSuivi",
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
+    title_pdf() {
+      const year = new Date().getFullYear() 
+      return "suivi indicateur -" + year
+    },
     years () {
       const year = new Date().getFullYear()+20
       return Array.from({length: year - 1900}, (value, index) => year + index)
-    }
+    },
+    filteredSuivis(){
+    
+        if(this.SuivisIndicateurs != undefined && this.SuivisIndicateurs != null) {
+
+           var self = this;
+            return this.SuivisIndicateurs.filter(function (suivi) {
+                return suivi.indicateur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+               /*  || suivi.eyes.toLowerCase().indexOf(self.search.toLowerCase()) >= 0; */
+            });
+
+        }
+       
+    },
     
   },
   
@@ -186,51 +278,30 @@ export default {
       this.data = data
       this.showComment = true
     },
+    generateReport () {
+      this.$refs.html2Pdf.generatePdf()
+    },
     suivreIndicateur(data){
       this.showModal = true
       this.title = `Suivre l'indicateur ${data}`
     },
-    filteredSuivis(){
-        var self = this;
-        return this.suivis.filter(function (suivi){
-          return suivi.indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
-    },
+    
     title_csv() {
         return "suivi-indicateur-" +"-" + new Date()
     },
 
-    json_data(){
-        let tab = [];
-        this.filteredSuivis().forEach(element => {
-          tab.push(
-            {
-              nom: element.indicateur.nom,
-              description: element.indicateur.description,
-              //bailleur: element.indicateur.bailleur.sigle,
-              categorie: element.indicateur.categorie?.nom,
-              //unitee_de_mesure: element.indicateur.uniteeDeMesure.nom,
-              valeur_de_base: element.indicateur.valeurDeBase,
-              annee_de_base: element.indicateur.anneeDeBase,
-              trimestre: element.trimestre,
-              valeur_cible: element.valeurCible,
-              valeur_realise: element.valeurRealise,
-            }
-          );
-        });
-        return tab;
-    },
+   
     filtre() {
       this.champsRecherche = this.champsRecherche.map((item) => {
         item.errors = [];
         return item;
       });
 
-      let suivi = extractFormData(this.champsRecherche,this.suiviAttributesRecherche);
+      /* let suivi = extractFormData(this.champsRecherche,this.suiviAttributesRecherche);
       suivi.bailleurId = suivi.bailleurId?.id
       suivi.categorieId = suivi.categorieId?.id
       suivi.uniteeMesureId = suivi.uniteeMesureId?.id
-      console.log("les suivi",suivi)
+      console.log("les suivi",suivi) */
 
       
         this.filter(suivi).then((response) => {
@@ -249,7 +320,19 @@ export default {
     },
     getSuiviBailleur() {
       IndicateurSuiviService.getBailleurSuivi().then((data) => {
-        this.suiviBailleurs = data.data.data
+        const datas = data.data.data
+          datas.forEach(element => {
+          const bailleur = element.indicateur.bailleur.nom
+          const indicateur = element.indicateur.nom
+          const unitee_de_mesure = element.indicateur.unitee_mesure.nom
+          const annee_de_base = element.indicateur.anneeDeBase
+          const valeur_de_base = element.indicateur.valeurDeBase
+          const valeur_cible = element.valeurCible[0]
+          const valeur_realise = element.valeurRealise[0]
+          const ecart = valeur_realise - valeur_cible
+          const date_de_creation = element.created_at
+          this.suiviBailleurs.push(bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,ecart,date_de_creation)
+        }) 
       }).catch((e) => {
           console.log(e)
       })
@@ -315,6 +398,28 @@ export default {
            
       });
     },
+    getSuivi() {
+      IndicateurSuiviService.get().then((data) => {
+       
+        const datas = data.data.data
+         datas.forEach(element => {
+          
+          const bailleur = element.indicateur.bailleur.nom
+          const indicateur = element.indicateur.nom
+          const unitee_de_mesure = element.indicateur.unitee_mesure.nom
+          const annee_de_base = element.indicateur.anneeDeBase
+          const valeur_de_base = element.indicateur.valeurDeBase
+          const valeur_cible = element.valeurCible.valeurCible[0]
+          const valeur_realise = element.valeurRealise[0]
+          const ecart = Number(valeur_realise) - valeur_cible
+          const date_de_creation = element.created_at
+          this.SuivisIndicateurs.push({bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
+        }) 
+        console.log(this.SuivisIndicateurs)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
   },
   mounted() {
     this.getPermission()
@@ -322,34 +427,43 @@ export default {
         this.$router.push('/401-non-autorise')
       } 
     if(this.currentUser != undefined) {
+      
        this.currentRole = this.currentUser.type
        if(this.currentUser.type ==='bailleur') {
-           this.getSuiviBailleur()
-            const headers = [
-          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
-          {name:'Trimestre',cle:'trimestre',width:"w-24"},
-          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
-          {name:'valeur réalisée',cle:'valeurRealise',width:"w-28"},
-          {name:'Date de création',cle:'created_at',width:"w-24"},
-        ]
+          this.getSuiviBailleur()
+          const headers = [
+          {name:'Bailleur',cle:'bailleur',edit:false},
+          {name:'Indicateur',cle:'indicateur',edit:false},
+          {name:'unite de mesure',cle:'unite_de_mesure',edit:false},
+          {name:'Annee de base',cle:'annee_de_base',edit:false},
+          {name:'valeur de base',cle:'valeur_de_base',edit:false},
+          {name:'valeur cible',cle:'valeur_cible',edit:false},
+          {name:'Valeur réalisée',cle:'valeur_realise',edit:false},
+          {name:'Ecart',cle:'ecart',edit:false},
+          {name:'Date de création',cle:'date_de_creation',width:"w-24",edit:false},
+          ]
         this.headers = headers
         }
         else {
+          this.getSuivi()
           const headers = [
-          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
-          {name:'Trimestre',cle:'trimestre',width:"w-24"},
-          {name:'Valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
-          {name:'Valeur réalisée',cle:'valeurRealise',width:"w-28"},
-          {name:'Date de création',cle:'created_at',width:"w-24"},
+          {name:'Bailleur',cle:'bailleur',edit:false},
+          {name:'Indicateur',cle:'indicateur',edit:false},
+          {name:'unite de mesure',cle:'unitee_de_mesure',edit:false},
+          {name:'Annee de base',cle:'annee_de_base',edit:false},
+          {name:'valeur de base',cle:'valeur_de_base',edit:false},
+          {name:'valeur cible',cle:'valeur_cible',edit:false},
+          {name:'Valeur réalisée',cle:'valeur_realise',edit:false},
+          {name:'Ecart',cle:'ecart',edit:false},
+          {name:'Date de création',cle:'date_de_creation',width:"w-24",edit:false},
         ]
         this.headers = headers
-        
-           this.fetchSuivi().then((value) => {
+          /*  this.fetchSuivi().then((value) => {
             setTimeout(() => {
               console.log("Fetching list of suivi...")
               this.fetchIndicateurs()
             }, 100);
-          })
+          }) */
         }
       }
    

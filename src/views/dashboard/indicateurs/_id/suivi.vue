@@ -156,15 +156,22 @@ export default {
     }
   },
   computed:{
-    json_data() {
+    json_data() { 
       const data = []
-      if(this.filteredSuivis != undefined || this.filteredSuivis != null) {
+      if(this.dataTable != undefined || this.dataTable != null) {
         this.filteredSuivis.forEach(element => {
-          const valeurCible = element.valeurCible
           const valeurRealise = element.valeurRealise
-          const created_at = element.created_at
+          const valeurCible = element.valeurCible
+          const valeurCumul = ''
+          const trimestre = element.trimestre
+          const annee_de_Suivi = element.anneeSuivi
+          const ecart =element.valeurEcart
+          const date_de_creation = element.created_at
           const indicateur = this.indicateur.nom
-          data.push({indicateur,valeurCible,valeurRealise,created_at})
+          const bailleurs = this.indicateur.bailleur.nom
+          const unitee_de_mesure = this.indicateur.unitee_mesure.nom
+          const commentaire = ""
+          data.push({bailleurs,indicateur,unitee_de_mesure,valeurCible,valeurRealise,ecart,commentaire,created_at})
         });
         return data
         
