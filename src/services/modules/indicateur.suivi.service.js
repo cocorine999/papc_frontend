@@ -30,6 +30,10 @@ const IndicateurSuiviService = {
       return ApiService.post("suivi-indicateurs/filter", params);
     },
 
+    filtreDate(params) {
+      return ApiService.post("suivi-indicateurs/dateSuivie", params);
+    },
+
     update(slug, params) {
       return ApiService.update("suivi-indicateurs", slug, params);
     },

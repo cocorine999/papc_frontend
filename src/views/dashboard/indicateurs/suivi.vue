@@ -27,15 +27,15 @@
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
     </modal-chat>
     <div v-if="showModal2">
-      <vmodal title="Filtre de suivi"  v-on:close="showModal2 = false">
+      <vmodal title="Filtre de suivi"  v-on:close="closeFiltre">
         <div style="width:40vw" class="p-4">
-            <div class="my-4">
+            <form v-if="showDate" @submit.prevent="getDate" class="my-4">
                 <div  class="my-4">
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Année de suivi
                     <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                  <input v-model="filtre.date" required
+                  <input v-model="filtre.annee" required
                     class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                    type="date" placeholder="" />
+                    type="number" placeholder="" />
                 </div>
 
                 <div class="my-4">
@@ -62,7 +62,52 @@
                   </div>
 
                 </div>
+
+              <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit"
+                  class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
               </div>
+            </form>
+            <form v-else @submit.prevent="filtreDate">
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Listes des dates <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <select v-model="dateSuivie" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+                  <option v-for="date in dates" :key="date.id" :value="date"> {{date}} </option>
+                </select>
+              </div>
+              <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit"
+                  class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </form>
         </div>
       </vmodal>
     </div>
@@ -109,7 +154,8 @@
                       d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                 </svg>
               </button>
-            </div>          </div>
+            </div>          
+            </div>
           </nav> 
           
           
@@ -124,7 +170,7 @@
               <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
             </div>
           </div>
-         
+      
          <!--  <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>     -->
           <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
           <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
@@ -171,9 +217,10 @@ export default {
         suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','nom','bailleurId','categorieId'],
         showModal2:false,
         showModal3:false,
+        showDate:true,
         suiviBailleurs:[],
         filtre:{
-          date:'',
+          annee:'',
           trimestre:''
         },
         currentRole:'',
@@ -185,11 +232,14 @@ export default {
         showComment:false,
         commentaires:[],
         data:'',
+        chargement: false,
         suiviIndicateurVisible:false,
         exporterSuivi:false,
         commenterSuivi:false,
         choiceDateOption: true,
-        SuivisIndicateurs:[]
+        SuivisIndicateurs:[],
+        dateSuivie:false,
+        dates:[]
         
       });
   },
@@ -259,11 +309,15 @@ export default {
      ...mapActions("indicateurs", {
       fetchIndicateurs: "FETCH_LIST_INDICATEUR",
     }),
+    closeFiltre() {
+      this.showModal2 = false
+      this.showDate = true
+    },
     ...mapActions("suiviIndicateurs", {
       fetchSuivi: "FETCH_LIST_SUIVI",
       filter: "FILTRE_SUIVI",
       saveSuivi: "STORE_SUIVI",
-      updateSuivi: "UPDATE_SUIVI",
+      updateSuivie: "UPDATE_SUIVI",
       deleteSuivi: "DESTROY_SUIVI",
     }),
     commenter(data) {
@@ -290,25 +344,39 @@ export default {
         return "suivi-indicateur-" +"-" + new Date()
     },
 
-   
-    filtre() {
-      this.champsRecherche = this.champsRecherche.map((item) => {
-        item.errors = [];
-        return item;
-      });
-
-      /* let suivi = extractFormData(this.champsRecherche,this.suiviAttributesRecherche);
-      suivi.bailleurId = suivi.bailleurId?.id
-      suivi.categorieId = suivi.categorieId?.id
-      suivi.uniteeMesureId = suivi.uniteeMesureId?.id
-      console.log("les suivi",suivi) */
-
-      
-        this.filter(suivi).then((response) => {
+    filtreDate() {
+      if (this.chargement == false) {
+        this.chargement = true
+        const data = {
+          dateSuivie:this.dateSuivie
+        }
+        this.filter(data).then((response) => {
+          this.SuivisIndicateurs = []
           if (response.status == 200 || response.status == 201) {
-            this.close2();
+
+             const datas = response.data.data
+          
+            datas.forEach(element => {
+              const bailleur = element.indicateur.bailleur.nom
+              const indicateur = element.indicateur.nom
+              const unitee_de_mesure = element.indicateur.unitee_mesure.nom
+              const annee_de_base = element.indicateur.anneeDeBase
+              const valeur_de_base = element.indicateur.valeurDeBase
+              const valeur_cible = element.valeurCible.valeurCible[0]
+              const valeur_realise = element.valeurRealise[0]
+              const ecart = Number(valeur_realise) - valeur_cible
+              const date_de_creation = element.created_at
+              this.SuivisIndicateurs.push({bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
+            }) 
+            this
+             this.chargement = false
+            this.closeFiltre()
+           
           }
+        }).catch((e) => {
+          this.chargement = false
         });
+      }
     },
     resetForm(){
 
@@ -337,12 +405,30 @@ export default {
           console.log(e)
       })
     },
+    getDate() {
+      if (this.chargement == false) {
+        this.chargement = true
+        this.filtre.annee = Number(this.filtre.annee)
+        this.filtre.trimestre = Number(this.filtre.trimestre)
+        IndicateurSuiviService.filtreDate(this.filtre).then((data) => {
+        const datas = data.data.data
+        this.dates = datas
+        this.showDate = false
+        this.chargement = false
+      }).catch((e) => {
+        this.chargement = false
+        console.log(e)
+      })
+
+      }
+      
+    },
     closeCommentaire() {
       this.showComment = false
       this.commentaires = []
     },
     async updateInputData(id, attribut, value) {
-        await this.updateSuivi({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
+        await this.updateSuivie({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
           if(this.hasErrors[attribut] !== undefined)
             alert(this.hasErrors[attribut])            
         }).finally(() => {
@@ -403,7 +489,6 @@ export default {
        
         const datas = data.data.data
          datas.forEach(element => {
-          
           const bailleur = element.indicateur.bailleur.nom
           const indicateur = element.indicateur.nom
           const unitee_de_mesure = element.indicateur.unitee_mesure.nom
