@@ -1,42 +1,39 @@
 <template>
   <dashboard>
     <div class="p-0 w-full">
-      <modal-top-right v-if="false" :title="title" v-on:close="close">
+      <modal-top-right v-if="showModal" :title="title" v-on:close="close">
         <form action="" @submit.prevent="createCollecteur" class="p-3 w-full" >
           <div class="form-group my-2">
-             <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Collecteur  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-              <input v-model="postData.nom" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
-            </div>
-            <div class="form-group my-2">
-              <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Bailleurs <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-              <select v-model="postData.bailleurId" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-               <option v-for="(bailleur,index) in bailleurs " :key="index" :value="bailleur.id" > {{bailleur.sigle}} </option>
-              </select>
-            </div>
-          </div>
-          
-          <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Attributaires <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-             <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Selectionez un attribut" label="name" track-by="name"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Entreprise <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <select  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option> Agetur </option>
+            </select>
           </div>
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Estimation de l'accord financement <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input v-model="postData.estimation" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Année Audit <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
+         
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Engagements (FCFA HT) <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input v-model="postData.engagement" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Date de transmission <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" />
           </div>
+
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">References contrats <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input v-model="postData.reference" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Etat avancement <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <select  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option> En cours </option>
+              <option> En attente </option>
+              <option> En retard </option>
+              <option> En terminer </option>
+            </select>
           </div>
-          <div class="my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Commentaires <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <textarea v-model="postData.commentaire" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"  name="" id=""  rows="2"></textarea>
+
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Rapport <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="file" />
           </div>
-          
+        
         
           <div class="py-2 my-4 flex justify-center space-x-8">
             <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
