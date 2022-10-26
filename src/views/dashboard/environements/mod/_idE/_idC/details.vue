@@ -112,7 +112,7 @@
                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                      vide
+                      {{data.justification}}
                     </td>
                   </tr>
                 </td>                 
@@ -217,7 +217,7 @@
                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   <tr class="" v-for="(data ,indexe) in activites.data" :key="indexe">
                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                      vide
+                      {{data.justification}}
                     </td>
                   </tr>
                 </td>                 

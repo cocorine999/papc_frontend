@@ -200,6 +200,7 @@ export default {
             "activiteId": element.activite.id,
             "checkListId": data.id,
             "valeur": data.content,
+            "justification": data.justification,
             "activiteStatut": element.activite.statut,
             "entrepriseExecutantId": this.entrepriseId,
             "userId": this.userId,
