@@ -175,6 +175,7 @@ export default {
     const programme = [{name:'papc'},{name:'pool'},{name:'demo'}]
     
     console.log("Fetching list formulaires ...")
+    console.log(this.currentUser)
     let form = {
       "type": 'unitee-de-gestion',
       "typeId": this.currentUser.profil.id,
