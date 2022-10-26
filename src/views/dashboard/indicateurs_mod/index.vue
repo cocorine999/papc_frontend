@@ -35,15 +35,11 @@
         </div>
       </nav>
 
-      <div v-if="showSuiviModal">
-        <modal-top-right :title="title"  v-on:close="showSuiviModal = false">
-            <div  class="px-4 overflow-y-auto">
-              <form action="" @submit.prevent="saveSuivi" class="w-full"  >
-          
-                <div class="my-4">
-                 
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                </div>
+       <div v-if="showSuiviModal">
+        <modal-top-right :title="title" v-on:close="showSuiviModal = false">
+          <div class="px-4 overflow-y-auto">
+            <form action="" @submit.prevent="saveSuivi" class="p-0 w-full">
+
               <div class="my-4">
 
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi
@@ -54,7 +50,7 @@
                   type="number" placeholder="" />
               </div>
 
-              <div v-if="isValeurCibleUse" class="my-4">
+              <div v-if="isValeurCibleUse" class="my-true">
 
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible
                   <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -64,7 +60,6 @@
               </div>
 
               <div class="my-4">
-
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé
                   <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurRealise" required
@@ -152,7 +147,6 @@
           </div>
         </modal-top-right>
       </div>
-
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
@@ -209,22 +203,20 @@
         </div>
       </div>
 
-
-      <vtable v-if="currentRole == 'bailleur' " :sendRequest="sendRequest" :headers="headers"
-        :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
-      </vtable>
+  
+     
       <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" :actions="actions" @updateInputData="updateInputData"
         @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi"
         @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'consulter'},{name:'suivre'},]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @updateInputData="updateInputData" @suivre="suivreIndicateur"
         @consulter="consulterSuivi"></vtable>
-      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :actions="[{name:'consulter'},{name:'suivre'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi"></vtable>
-      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd "  @consulter="consulterSuivi" :actions="[{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @updateInputData="updateInputData" @supprimer="supprimer">
       </vtable>
     </div>
@@ -244,8 +236,8 @@ import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
-import SuiviService from "@/services/modules/indicateur.suivi.service.js";
-import IndicateurService from "@/services/modules/indicateur.service";
+import SuiviService from "@/services/modules/indicateur.suivi.mod.service";
+import IndicateurService from "@/services/modules/indicateur.mod.service";
 import JsonExcel from "vue-json-excel";
 export default {
   components: {
@@ -369,7 +361,6 @@ export default {
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
     filteredIndicateur() {
       var self = this;
-
       return this.indicateurs.filter(function (indicateur) {
         return indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
       });
@@ -430,7 +421,7 @@ export default {
       this.title = `Suivre l'indicateur`
     },
     consulterSuivi(id) {
-      this.$router.push({ name: 'indicateurs_suivi_details', params: { id: id } })
+      this.$router.push({ name: 'indicateurs_suivi_mod_details', params: { id: id } })
     },
     saveSuivi() {
       if (this.chargement == false) {
@@ -438,7 +429,7 @@ export default {
         const data = this.suiviIndicateurs
         data.valeurRealise = [data.valeurRealise]
         data.valeurCible = [data.valeurCible]
-        data.indicateurId = this.idIndicateur
+        data.indicateurModId = this.idIndicateur
         if (this.choiceDateOption == true) {
           delete data.trimestre
         }
@@ -483,7 +474,7 @@ export default {
     verifyValeurCible(date) {
       SuiviService.checksuivi(this.idIndicateur, date).then((data) => {
         //recuperation de la valeur de verfication pour la valeur cible
-        this.isValeurCibleUse.data.data.data
+        this.isValeurCibleUse = data.data.data
       }).catch((e) => {
         console.log(e)
       })
@@ -508,6 +499,7 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
+                this.fetchIndicateurs()
                 this.sendRequest = false
                 this.close();
               }
@@ -520,7 +512,8 @@ export default {
           this.saveIndicateur(indicateur).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
-              his.$toast.success('operation effectué avec success')
+              this.$toast.success('operation effectué avec success')
+              this.fetchIndicateurs()
               this.sendRequest = false
             }
           }).catch((e) => {
@@ -543,7 +536,6 @@ export default {
       indicateur.categorieId = indicateur.categorieId?.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId?.id
       console.log("les indicateurs", indicateur)
-
 
       this.filtre(indicateur).then((response) => {
         if (response.status == 200 || response.status == 201) {

@@ -347,8 +347,9 @@
         <span class="font-semibold text-xs uppercase">PTBA</span>
       </router-link>
     </div>
-
-    <div v-if="maitriseOeuvreVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
+<!-- 
+    <div v-if="maitriseOeuvreVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer"> -->
+    <div  class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link to="/dashboard/maitrise-ouvrage" style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5v14c0 2.201 1.794 3 3 3h15v-2H6.012C5.55 19.988 5 19.806 5 19s.55-.988 1.012-1H21V4c0-1.103-.897-2-2-2H6c-1.206 0-3 .799-3 3z"></path></svg>

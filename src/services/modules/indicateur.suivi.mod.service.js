@@ -17,10 +17,10 @@ const IndicateurSuiviService = {
     },
     
     checksuivi(slug, params) {
-      return ApiService.get(`indicateurs/${slug}/checkSuivi/${params}`);
+      return ApiService.get(`indicateurMods/${slug}/checkSuivi/${params}`);
     },
     mySuivis(slug) {
-      return ApiService.get(`indicateurs/${slug}/suivis`);
+      return ApiService.get(`indicateurMods/${slug}/suivis`);
     },
     create(params) {
       return ApiService.post("suivi-indicateurs-mods", params);
@@ -28,6 +28,9 @@ const IndicateurSuiviService = {
 
     filtre(params) {
       return ApiService.post("suivi-indicateurs-mods/filter", params);
+    },
+    filtreDate(params) {
+      return ApiService.post("suivi-indicateurs-mods/dateSuivie", params);
     },
 
     update(slug, params) {

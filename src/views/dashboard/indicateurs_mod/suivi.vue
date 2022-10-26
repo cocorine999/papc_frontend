@@ -1,23 +1,149 @@
 <template>
   <dashboard>
-     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
+     <div class="relative">
+        <vue-html2pdf
+            :show-layout="false"
+            :float-layout="true"
+            :enable-download="true"
+            :preview-modal="true"
+            :paginate-elements-by-height="1400"
+            :filename="title_pdf"
+            :pdf-quality="2"
+            :manual-pagination="false"
+            pdf-format="a3"
+            pdf-orientation="landscape"
+            pdf-content-width="100vw"
+            @progress="onProgress($event)"
+            @hasStartedGeneration="hasStartedGeneration()"
+            @hasGenerated="hasGenerated($event)"
+            ref="html2Pdf"
+        >
+            <section slot="pdf-content">
+              <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis"  ></vtable> 
+            </section>
+        </vue-html2pdf>
+      </div>
+    <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
-      </modal-chat>
-      <div class="w-full">
-          <nav class="text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
-            <div>
+    </modal-chat>
+    <div v-if="showModal2">
+      <vmodal title="Filtre de suivi"  v-on:close="closeFiltre">
+        <div style="width:40vw" class="p-4">
+            <form v-if="showDate" @submit.prevent="getDate" class="my-4">
+                <div  class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Année de suivi
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="filtre.annee" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="number" placeholder="" />
+                </div>
+
+                <div class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez
+                    un trimestre <span
+                      class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between my-3">
+                    <div>
+                      <input v-model="filtre.trimestre" type="radio" id="T1" name="trimestre" value="1">
+                      <label class="px-2" for="T1">T1</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="filtre.trimestre" id="T2" name="trimestre" value="2">
+                      <label class="px-2" for="T2">T2</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="filtre.trimestre" id="T3" name="trimestre" value="3">
+                      <label class="px-2" for="T3">T3</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="filtre.trimestre" id="T4" name="trimestre" value="4">
+                      <label class="px-2" for="T4">T4</label>
+                    </div>
+                  </div>
+
+                </div>
+
+              <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit"
+                  class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </form>
+            <form v-else @submit.prevent="filtreDate">
+              <div class="form-group my-2">
+                <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Listes des dates <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <select v-model="dateSuivie" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+                  <option v-for="date in dates" :key="date.id" :value="date"> {{date}} </option>
+                </select>
+              </div>
+              <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit"
+                  class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </form>
+        </div>
+      </vmodal>
+    </div>
+    <div v-if="showModal3">
+      <vmodal title="Exportez les données "  v-on:close="showModal3 = false">
+        <div style="width:40vw" class="p-4 flex items-center space-x-4 ">
+          <div class="excel">
+            <json-excel :data="SuivisIndicateurs" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
+              <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+                <span class="mx-2 text-xs  md:text-sm font-semibold">Exportez en excel </span>
+              </button>
+            </json-excel>
+          </div>
+         
+          <div>
+            <button @click="generateReport" class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">exportez en pdf</button>
+          </div>
+        </div>
+      </vmodal>
+    </div>
+
+    <div class="w-full">
+          <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+            <div class="mb-2">
               <ol class="inline-flex p-0 list-none">
                 <li class="flex items-center text-blue-500">
                   <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
                   <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
                 </li>
                 <li class="flex items-center ">
-                  <router-link to="" class="text-gray-600">Suivi evaluation</router-link>
+                  <router-link to="" class="text-gray-600">Suivi indicateur</router-link>
                 </li>
               </ol>
             </div>
             <div>
-              <div class="flex justify-center w-full text-gray-600">
+              <div class="w-full flex text-gray-600">
                 <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
                 <button type="submit" class="relative  p-2 rounded-lg">
                 <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -28,35 +154,28 @@
                       d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                 </svg>
               </button>
-            </div>          </div>
+            </div>          
+            </div>
           </nav> 
           
-          <div v-if="showModal2">
-            <modal-top-right  title="Filtre de suivi"  v-on:close="showModal2 = false">
-              <div class="w-full">
-                <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
-              </div>
-            </modal-top-right>
-          </div>
+          
 
-          <div class="flex items-center justify-between my-2">
+          <div class="flex items-center justify-between my-4">
             <titre>Le suivi d'evaluation </titre>
             <div v-if="exporterSuivi" class="flex items-center space-x-4">
-              <json-excel :data="json_data()" header="INDICATEUR SUIVI" type="xlsx" :name="title_csv()"  >
-            <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
-              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-              <span class="mx-2 text-sm font-semibold">Export Excel</span>
-            </button>
-            </json-excel>
+              <button @click="showModal3 = true" title="exporter "   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+                <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+                <span class="mx-2 text-xs  md:text-sm font-semibold">Exportez</span>
+              </button>
               <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
             </div>
           </div>
+         
+         <!--  <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>     -->
+          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
+          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
         
-          <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>    
-          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
-          <vtable v-if="!commenterSuivi" :headers="headers"   :sendRequest="false" :datas="filteredSuivis()"  ></vtable>    
-        
-      </div>
+    </div>
   </dashboard>
 
 </template>
@@ -69,9 +188,11 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
+import VueHtml2pdf from 'vue-html2pdf'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
-import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service";
+import IndicateurSuiviService from "@/services/modules/indicateur.suivi.mod.service";
+
 import JsonExcel from "vue-json-excel";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
@@ -87,6 +208,7 @@ export default {
     ModalTopRight,
     JsonExcel,
     ModalChat,
+    VueHtml2pdf,
     Commentaire
   },
   data() {
@@ -94,17 +216,15 @@ export default {
         suiviAttributes : ['annee', 'trimestre','valeurCible','valeurRealise','indicateurId','commentaire'],
         suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','nom','bailleurId','categorieId'],
         showModal2:false,
-       suiviBailleurs:[],
-       currentRole:'',
-       actions:[{name:''}],
-        champsRecherche:[
-          {name:'Indicateurs',key:'nom',type:'text',placeholdere:"Selectionnez un indicateur",isSelect:true,isTextArea:false,data:'',required:false,options:['indicateur1','indicateur2','indicateurs3']},
-          {name:'Année de base',key:'date_debut',type:'year',placeholdere:"l'année de base",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Année',key:'date_fin',type:'year',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Trimestre',key:'trimestre',type:'',placeholdere:"Selectionnez le trimestre",isSelect:true,isTextArea:false,data:'',required:false,options:[1,2,3,4]},
-          {name:'Bailleurs',key:'bailleurId',type:'',placeholdere:"Selectionnez le bailleur",isSelect:true,isTextArea:false,data:'',required:false,options:['BM','BOA']},
-          {name:'Categories',key:'categorieId',type:'',placeholdere:"Selectionnez une categorie",isSelect:true,isTextArea:false,data:'',options:['categ1','categ2','categ3'],required:false,}, 
-        ],
+        showModal3:false,
+        showDate:true,
+        suiviBailleurs:[],
+        filtre:{
+          annee:'',
+          trimestre:''
+        },
+        currentRole:'',
+        actions:[{name:''}],
         cols:2,
         title:'',
         search:'',
@@ -112,9 +232,14 @@ export default {
         showComment:false,
         commentaires:[],
         data:'',
+        chargement: false,
         suiviIndicateurVisible:false,
         exporterSuivi:false,
-        commenterSuivi:false
+        commenterSuivi:false,
+        choiceDateOption: true,
+        SuivisIndicateurs:[],
+        dateSuivie:false,
+        dates:[]
         
       });
   },
@@ -148,14 +273,31 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       indicateurs: "indicateurs/getIndicateurs",
-      suivis: "suiviIndicateurs/getSuivis",
-      suivi: "suiviIndicateurs/getSuivi",
+      suivis: "suiviIndicateurs_mod/getSuivis",
+      suivi: "suiviIndicateurs_mod/getSuivi",
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
+    title_pdf() {
+      const year = new Date().getFullYear() 
+      return "suivi indicateur -" + year
+    },
     years () {
       const year = new Date().getFullYear()+20
       return Array.from({length: year - 1900}, (value, index) => year + index)
-    }
+    },
+    filteredSuivis(){
+    
+        if(this.SuivisIndicateurs != undefined && this.SuivisIndicateurs != null) {
+
+           var self = this;
+            return this.SuivisIndicateurs.filter(function (suivi) {
+                return suivi.indicateur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+               /*  || suivi.eyes.toLowerCase().indexOf(self.search.toLowerCase()) >= 0; */
+            });
+
+        }
+       
+    },
     
   },
   
@@ -164,14 +306,18 @@ export default {
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setSuivis: "suiviIndicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
     }),
-     ...mapActions("indicateurs", {
+     ...mapActions("indicateurs_mod", {
       fetchIndicateurs: "FETCH_LIST_INDICATEUR",
     }),
-    ...mapActions("suiviIndicateurs", {
+    closeFiltre() {
+      this.showModal2 = false
+      this.showDate = true
+    },
+    ...mapActions("suiviIndicateurs_mod", {
       fetchSuivi: "FETCH_LIST_SUIVI",
       filter: "FILTRE_SUIVI",
       saveSuivi: "STORE_SUIVI",
-      updateSuivi: "UPDATE_SUIVI",
+      updateSuivie: "UPDATE_SUIVI",
       deleteSuivi: "DESTROY_SUIVI",
     }),
     commenter(data) {
@@ -186,58 +332,51 @@ export default {
       this.data = data
       this.showComment = true
     },
+    generateReport () {
+      this.$refs.html2Pdf.generatePdf()
+    },
     suivreIndicateur(data){
       this.showModal = true
       this.title = `Suivre l'indicateur ${data}`
     },
-    filteredSuivis(){
-        var self = this;
-        return this.suivis.filter(function (suivi){
-          return suivi.indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
-    },
+    
     title_csv() {
         return "suivi-indicateur-" +"-" + new Date()
     },
 
-    json_data(){
-        let tab = [];
-        this.filteredSuivis().forEach(element => {
-          tab.push(
-            {
-              nom: element.indicateur.nom,
-              description: element.indicateur.description,
-              //bailleur: element.indicateur.bailleur.sigle,
-              categorie: element.indicateur.categorie?.nom,
-              //unitee_de_mesure: element.indicateur.uniteeDeMesure.nom,
-              valeur_de_base: element.indicateur.valeurDeBase,
-              annee_de_base: element.indicateur.anneeDeBase,
-              trimestre: element.trimestre,
-              valeur_cible: element.valeurCible,
-              valeur_realise: element.valeurRealise,
-            }
-          );
-        });
-        return tab;
-    },
-    filtre() {
-      this.champsRecherche = this.champsRecherche.map((item) => {
-        item.errors = [];
-        return item;
-      });
-
-      let suivi = extractFormData(this.champsRecherche,this.suiviAttributesRecherche);
-      suivi.bailleurId = suivi.bailleurId?.id
-      suivi.categorieId = suivi.categorieId?.id
-      suivi.uniteeMesureId = suivi.uniteeMesureId?.id
-      console.log("les suivi",suivi)
-
-      
-        this.filter(suivi).then((response) => {
+    filtreDate() {
+      if (this.chargement == false) {
+        this.chargement = true
+        const data = {
+          dateSuivie:this.dateSuivie
+        }
+        IndicateurSuiviService.filtre(data).then((response) => {
+          this.SuivisIndicateurs = []
           if (response.status == 200 || response.status == 201) {
-            this.close2();
+
+             const datas = response.data.data
+          
+            datas.forEach(element => {
+              const mod = element.indicateur.mod.nom
+              const indicateur = element.indicateur.nom
+              const unitee_de_mesure = element.indicateur.unitee_mesure.nom
+              const annee_de_base = element.indicateur.anneeDeBase
+              const valeur_de_base = element.indicateur.valeurDeBase
+              const valeur_cible = element.valeurCible.valeurCible[0]
+              const valeur_realise = element.valeurRealise[0]
+              const ecart = Number(valeur_realise) - valeur_cible
+              const date_de_creation = element.created_at
+              this.SuivisIndicateurs.push({mod,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
+            }) 
+            this
+             this.chargement = false
+            this.closeFiltre()
+           
           }
+        }).catch((e) => {
+          this.chargement = false
         });
+      }
     },
     resetForm(){
 
@@ -249,17 +388,47 @@ export default {
     },
     getSuiviBailleur() {
       IndicateurSuiviService.getBailleurSuivi().then((data) => {
-        this.suiviBailleurs = data.data.data
+        const datas = data.data.data
+          datas.forEach(element => {
+           const mod = element.indicateur.mod.nom
+          const indicateur = element.indicateur.nom
+          const unitee_de_mesure = element.indicateur.unitee_mesure.nom
+          const annee_de_base = element.indicateur.anneeDeBase
+          const valeur_de_base = element.indicateur.valeurDeBase
+          const valeur_cible = element.valeurCible[0]
+          const valeur_realise = element.valeurRealise[0]
+          const ecart = valeur_realise - valeur_cible
+          const date_de_creation = element.created_at
+          this.suiviBailleurs.push(mod,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,ecart,date_de_creation)
+        }) 
       }).catch((e) => {
           console.log(e)
       })
+    },
+    getDate() {
+      if (this.chargement == false) {
+        this.chargement = true
+        this.filtre.annee = Number(this.filtre.annee)
+        this.filtre.trimestre = Number(this.filtre.trimestre)
+        IndicateurSuiviService.filtreDate(this.filtre).then((data) => {
+        const datas = data.data.data
+        this.dates = datas
+        this.showDate = false
+        this.chargement = false
+      }).catch((e) => {
+        this.chargement = false
+        console.log(e)
+      })
+
+      }
+      
     },
     closeCommentaire() {
       this.showComment = false
       this.commentaires = []
     },
     async updateInputData(id, attribut, value) {
-        await this.updateSuivi({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
+        await this.updateSuivie({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
           if(this.hasErrors[attribut] !== undefined)
             alert(this.hasErrors[attribut])            
         }).finally(() => {
@@ -303,7 +472,7 @@ export default {
     },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
-        if(element.slug ==='voir-un-suivi-indicateur') {
+        if(element.slug ==='voir-un-suivi-indicateur-mod') {
           this.suiviIndicateurVisible = true
         }
         if(element.slug ==='exporter-un-suivi-indicateur') {
@@ -315,6 +484,26 @@ export default {
            
       });
     },
+    getSuivi() {
+      IndicateurSuiviService.get().then((data) => {
+        const datas = data.data.data
+         datas.forEach(element => {
+          const mod = element.indicateur.mod.nom
+          const indicateur = element.indicateur.nom
+          const unitee_de_mesure = element.indicateur.unitee_mesure.nom
+          const annee_de_base = element.indicateur.anneeDeBase
+          const valeur_de_base = element.indicateur.valeurDeBase
+          const valeur_cible = element.valeurCible.valeurCible[0]
+          const valeur_realise = element.valeurRealise[0]
+          const ecart = Number(valeur_realise) - valeur_cible
+          const date_de_creation = element.created_at
+          this.SuivisIndicateurs.push({mod,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
+        }) 
+        console.log(this.SuivisIndicateurs)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
   },
   mounted() {
     this.getPermission()
@@ -322,34 +511,43 @@ export default {
         this.$router.push('/401-non-autorise')
       } 
     if(this.currentUser != undefined) {
+      
        this.currentRole = this.currentUser.type
        if(this.currentUser.type ==='bailleur') {
-           this.getSuiviBailleur()
-            const headers = [
-          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
-          {name:'Trimestre',cle:'trimestre',width:"w-24"},
-          {name:'valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
-          {name:'valeur realisé',cle:'valeurRealise',width:"w-28"},
-          {name:'Date de creation',cle:'created_at',width:"w-24"},
-        ]
+          this.getSuiviBailleur()
+          const headers = [
+          {name:'Bailleur',cle:'bailleur',edit:false},
+          {name:'Indicateur',cle:'indicateur',edit:false},
+          {name:'unite de mesure',cle:'unite_de_mesure',edit:false},
+          {name:'Annee de base',cle:'annee_de_base',edit:false},
+          {name:'valeur de base',cle:'valeur_de_base',edit:false},
+          {name:'valeur cible',cle:'valeur_cible',edit:false},
+          {name:'Valeur réalisée',cle:'valeur_realise',edit:false},
+          {name:'Ecart',cle:'ecart',edit:false},
+          {name:'Date de création',cle:'date_de_creation',width:"w-24",edit:false},
+          ]
         this.headers = headers
         }
         else {
+          this.getSuivi()
           const headers = [
-          {name:'Indicateur',cle:'nom',props:'indicateur',width:"w-24"},
-          {name:'Trimestre',cle:'trimestre',width:"w-24"},
-          {name:'Valeur cible',cle:'valeurCible',props:'valeurCible',width:"w-28"},
-          {name:'Valeur realisé',cle:'valeurRealise',width:"w-28"},
-          {name:'Date de création',cle:'created_at',width:"w-24"},
+          {name:'Mod',cle:'mod',edit:false},
+          {name:'Indicateur',cle:'indicateur',edit:false},
+          {name:'unite de mesure',cle:'unitee_de_mesure',edit:false},
+          {name:'Annee de base',cle:'annee_de_base',edit:false},
+          {name:'valeur de base',cle:'valeur_de_base',edit:false},
+          {name:'valeur cible',cle:'valeur_cible',edit:false},
+          {name:'Valeur réalisée',cle:'valeur_realise',edit:false},
+          {name:'Ecart',cle:'ecart',edit:false},
+          {name:'Date de création',cle:'date_de_creation',width:"w-24",edit:false},
         ]
         this.headers = headers
-        
-           this.fetchSuivi().then((value) => {
+          /*  this.fetchSuivi().then((value) => {
             setTimeout(() => {
               console.log("Fetching list of suivi...")
               this.fetchIndicateurs()
             }, 100);
-          })
+          }) */
         }
       }
    

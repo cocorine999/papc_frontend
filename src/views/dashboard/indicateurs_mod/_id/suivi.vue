@@ -56,7 +56,6 @@
               <div>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Tache</span> : {{indicateur.nom}} </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Description</span> : {{indicateur.description}} </p>
-                <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Bailleur</span> : {{indicateur.bailleur.nom}} </p>
                 <p v-if="indicateur.categorie != null" class=" text-sm   py-2"><span class="font-bold uppercase px-1">Categorie</span> : {{indicateur.categorie.nom}} </p>
                 <p v-else class=" text-sm   py-2"><span class="font-bold uppercase px-1">Categorie</span> : Non definit </p>
                 <p class=" text-sm   py-2"><span class="font-bold uppercase px-1">Valeur de base </span>:{{indicateur.valeurDeBase}} </p>
@@ -82,8 +81,8 @@ import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
-import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service.js";
-import IndicateurService from "@/services/modules/indicateur.service.js";
+import IndicateurSuiviService from "@/services/modules/indicateur.suivi.mod.service";
+import IndicateurService from "@/services/modules/indicateur.mod.service";
 import JsonExcel from "vue-json-excel";
 
 export default {

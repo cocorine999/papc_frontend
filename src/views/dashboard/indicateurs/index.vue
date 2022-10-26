@@ -215,16 +215,16 @@
       <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData"
         @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur()" @suivre="suivreIndicateur" @consulter="consulterSuivi"
         @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur()" @updateInputData="updateInputData" @suivre="suivreIndicateur"
         @consulter="consulterSuivi"></vtable>
-      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur()" @suivre="suivreIndicateur" @consulter="consulterSuivi">
       </vtable>
-      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :sendRequest="sendRequest"
+      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd "  @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur()" @updateInputData="updateInputData" @supprimer="supprimer">
       </vtable>
     </div>
