@@ -76,7 +76,33 @@
         </div>
       </dl>
     </div>
-   </div>
+    </div>
+    <div v-if="template=='audit' " class="overflow-hidden bg-white shadow sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900">Rapport</h3>
+    </div>
+    <div class="border-t border-gray-200">
+      <dl>
+        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Mes documents</dt>
+         
+          <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+            <ul role="list" class="divide-y divide-gray-200 rounded-md border border-gray-200">
+              <li  class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
+                <div class="flex w-0 flex-1 items-center">
+                  <svg stroke="currentColor" class="h-5 w-5" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                  <span class="ml-2 w-0 flex-1 truncate">{{datas.nom}}</span>
+                </div>
+                <div class="ml-4 flex-shrink-0">
+                  <a :href="`${base_url}${datas.url}`" target="_blank" :download="datas.nom" class="font-medium text-indigo-600 hover:text-indigo-500">telecharger</a>
+                </div>
+              </li>
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </div>
+    </div>
   </div>
 </template>
 

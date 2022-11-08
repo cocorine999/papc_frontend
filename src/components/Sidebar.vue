@@ -426,6 +426,47 @@
       </div>
     </div>
 
+    <div  class="mb-1 px-6 relative">
+      <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck4" />
+      <header class="flex justify-between mb-3 items-center cursor-pointer select-none tab-label" for="chck4">
+        <div class="flex space-x-3">
+          <span class="text-white">
+            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em"
+              width="1.3em" xmlns="http://www.w3.org/2000/svg">
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path
+                d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10zm-2-6H6v-2h12v2zm-4 4H6v-2h8v2z">
+              </path>
+            </svg>
+          </span>
+          <p class="text-white text-xs font-semibold uppercase">Configuration cadre logique </p>
+        </div>
+        <i class="bx bx-chevron-down bx-sm text-white"></i>
+      </header>
+      <div class="tab-content mb-3 bg-white">
+        <div  class="mb-1 flex items-center text-gray-700 cursor-pointer">
+          <router-link to="/dashboard/config/objectif-specifique" style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+            <span class="font-semibold text-xs">objectif specifique </span>
+          </router-link>
+        </div>
+
+        <div  class="mb-1 flex items-center text-gray-700 cursor-pointer">
+          <router-link to="/dashboard/config/indicateur-cadre-logique" style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+            <span class="font-semibold text-xs">Indicateur</span>
+          </router-link>
+        </div>
+
+        <div  class="mb-1 flex items-center text-gray-700 cursor-pointer">
+          <router-link to="/dashboard/config/resultat-cadre-logique" style="width: 100%"
+            class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+            <span class="font-semibold text-xs">resultatCadre</span>
+          </router-link>
+        </div>
+      </div>
+    </div>
+
     <div v-if="institutionVisible" class="mb-1 px-4 flex items-center text-white cursor-pointer">
       <router-link to="/dashboard/instutitions" style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">

@@ -1,53 +1,68 @@
 <template>
   <dashboard>
     <div class="p-0 w-full">
+      <vmodal v-if="showRapport" @close="showRapport = false">
+        <div style="width:60vw">
+          <preview template="audit" :datas="sendRapportFile" @previewFile="previewFile"></preview>
+        </div>
+      </vmodal>
+     
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="createCollecteur" class="p-3 w-full" >
+        <form action="" @submit.prevent="createAudit" class="p-3 w-full" >
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Entreprise <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <select  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option> Agetur </option>
-            </select>
+            <input  v-model="audit.entreprise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+          </div>
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Contact <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input v-model="audit.entrepriseContact" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Année Audit <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
+            <input v-model="audit.annee"  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
          
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Date de transmission <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" />
+            <input v-model="audit.dateDeTransmission" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" />
           </div>
 
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Etat avancement <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <select  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-              <option> En cours </option>
-              <option> En attente </option>
-              <option> En retard </option>
-              <option> En terminer </option>
+            <input v-model="audit.etat" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Rapport <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="getFile">
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF,WORD(MAX. 20 MO)</p>
+          </div>
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Statut <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <select v-model="audit.statut" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option value="1"> Terminer </option>
+              <option value="0"> En cours </option>
+              <option value="-1"> En attente </option>
+              
             </select>
           </div>
-
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Rapport <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="file" />
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Projets <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <multiselect v-model="audit.projetId" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
           </div>
-        
-        
+
           <div class="py-2 my-4 flex justify-center space-x-8">
             <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+              <span class="text-sm font-semibold uppercase" v-if="!chargement">
                     enregistrer
-                  </span>
-                  <span v-else class="flex items-center space-x-2">
+              </span>
+              <span v-else class="flex items-center space-x-2">
                     <span class="text-xs px-4 font-semibold ">
                       envoi ...
                     </span>
                     <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                  </span>
+              </span>
             </button>
             <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
           </div>
@@ -62,11 +77,12 @@
             </li>
 
             <li class="flex items-center text-blue-500 ">
-              <router-link to="" class="">collecteur</router-link>
+              <router-link to="" class="">audit</router-link>
             </li>
           </ol>
         </div> 
       </nav>
+      
       <div class="flex items-center justify-between mt-2 mb-8">
         <div class="flex space-x-4">
           <span  class="inline-block cursor-pointer  text-base uppercase  border-b-8 font-bold  border-primary py-2">Tableau recapitulatif </span>
@@ -86,17 +102,19 @@
         </button>
         
       </div>
-    
+     
       <div class="align-middle inline-block w-full bg-white overflow-x-auto pt-3 rounded-bl-lg rounded-br-lg">
         <table class="w-full">
           <thead>
             <tr>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Projet</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Entreprise</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Contact</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">année audit</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Date de transmission</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Etat avancement</th>
-              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Status de l'audit</th>
-              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Rapport de l'audit</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Statut de l'audit</th>
+             <!--  <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Rapport de l'audit</th> -->
               <th class="p-3 border border-gray-500 text-center  whitespace-nowrap leading-4 text-primary tracking-wider">Actions</th>
             </tr>
           </thead>
@@ -104,38 +122,34 @@
           <tbody class="bg-white">
              <!--Specifier le nombre de ligne +1 de la table -->
            
-            <tr v-for="i in 5" :key="i.id">
-              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">Agetur </td>
-              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">2022</td>
-              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">24 octobre 2022</td>
-              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">------</td>
-              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">en cours</td>
+            <tr v-for="(audit,index) in audits" :key="index">
+              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">{{audit.projet.nom}} </td>
+              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">{{audit.entreprise}} </td>
+              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">{{audit.entrepriseContact}} </td>
+              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">{{audit.annee}}</td>
+              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">{{audit.dateDeTransmission}}</td>
+              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">{{audit.etat}}</td>
               <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">
+                <span v-if="audit.statut == 1">Terminer</span>
+                <span v-if="audit.statut == 0">En cours</span>
+                <span v-if="audit.statut == -1">En attente</span>
+                
+              </td>
+              <!-- <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">
                 <div class="flex space-x-1">
                   <span><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></span>
                   <span><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></span>
                   <span><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></span>
                   <span><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></span>
                 </div>
-              </td>
+              </td> -->
               
               <td class="p-3 whitespace-no-wrap text-center border border-gray-500 text-xs  leading-5">
                 <div class="flex item-center justify-center">
-                  <!-- <div title="details"  class="cursor-pointer w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
+                  <div title="details" @click="previewRapport(audit.rapport[0])" class="cursor-pointer w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </div> -->
-                  <button @click="showInput=true" v-if="!showInput" class="text-xs px-3 py-1 bg-green-500 text-white">Enregistrer</button>
-                  <div v-if="showInput" class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="editer">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
-                  </div>
-                  <div v-if="showInput"  class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
                   </div>
                 </div>      
@@ -145,6 +159,7 @@
                       
           </tbody>
         </table>
+        
       </div>
     
     </div>
@@ -152,11 +167,14 @@
 </template>
 
 <script>
+import Vmodal from '@/components/Vmodal'
+import Vform from "@/components/Vform";
 import Multiselect from 'vue-multiselect'
 import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
-import CollecteurService from "@/services/modules/maitrise.oeuvres.service.js";
-import BailleurService from "@/services/modules/bailleur.service.js";
+import Preview from '@/components/Preview.vue'
+import AuditService from "@/services/modules/audit.service.js";
+import ProjetService from "@/services/modules/projet.service.js";
 import EntrepriseService from "@/services/modules/entreprise.executante.service.js";
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
@@ -167,38 +185,29 @@ export default {
     SearchBar,
     ModalTopRight,
     Vbutton,
-    Multiselect
+    Multiselect,
+    Vmodal,
+    Preview,
+    Vform
   },
   data() {
     return {
       showModal:false,
-      value:[],
-      seeAgetur:true,
-      seeFileManager:false,
-      showInput:true,
-      uploadFile:false,
+      audit:{
+        annee:'',
+        entreprise:'',
+        entrepriseContact:'',
+        dateDeTransmission:'',
+        etat:'',
+        statut:'',
+        projetId:''
+      },
+      projets:[],
       chargement:false,
-      title:'',
-      dataTable:[
-        {baileur:'BM'},
-        {baileur:'AFD'},
-        {baileur:'BAD'},
-        {baileur:'BOAD'},
-        {baileur:'BEI'},
-      ],
-      collecteurs:[],
-      programmeId:'',
-      bailleurs:[],
-      entreprises:[],
-      postData:{
-        nom:'',
-        estimation:'',
-        reference:'',
-        engagement:'',
-        commentaire:'',
-        attributaire:[],
-        bailleurId:''
-      }
+      audits:[],
+      showRapport:false,
+      fichiers:[],
+      sendRapportFile:null
     }
     
   },
@@ -207,41 +216,60 @@ export default {
       ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
   methods: {
-     addTag (newTag) {
-      const tag = {
-        name: newTag,
-      }
-      this.options.push(tag)
-      this.value.push(tag)
+    previewRapport(data) {
+      this.showRapport = true
+      this.sendRapportFile = data
     },
-    createCollecteur() {
-        this.value.forEach(element => {
-          this.postData.attributaire.push(element.id)
-        })
+    getFile(event) {
+      this.fichiers = event.target.files[0];
+    },
+    selectProjet ({ nom}) {
+      return `${nom}`
+    },
+    createAudit() {
         if(this.chargement == false) {
           this.chargement = true
-          CollecteurService.create(this.postData).then((data) => {
+          const data = this.audit
+          data.projetId = data.projetId.id
+          const formData = new FormData();
+          formData.append('annee', data.annee)
+          formData.append('entreprise', data.entreprise)
+          formData.append('entrepriseContact', data.entrepriseContact)
+          formData.append('dateDeTransmission', data.dateDeTransmission)
+          formData.append('etat', data.etat)
+          formData.append('statut', data.statut)
+          formData.append('projetId', data.projetId)
+          formData.append('rapport', this.fichiers)
+          
+          AuditService.create(formData).then((data) => {
             this.chargement = false
             this.$toast.success('nouveau element')
             this.showModal = false
-            this.getCollection()
+            this.getAudit()
+            this.audit.annee = ''
+            this.audit.entreprise =''
+            this.audit.entrepriseContact = ''
+            this.audit.dateDeTransmission = ''
+            this.audit.etat = ''
+            this.audit.statut = ''
+            this.audit.projetId = null
+            this.fichiers = ''
           }).catch((e) => {
             this.chargement = false  
             this.$toast.error(e)
           })
         }
-
     },
-    getCollection() {
-      CollecteurService.getDatas(this.programmeId).then((data) => {
-        this.collecteurs = data.data.data
+    getAudit() {
+      AuditService.get().then((data) => {
+        this.audits = data.data.data
       }).catch((e) => {
         console.log(e)
       })
     },
-    getBailleur() {
-      BailleurService.bailleursOfProgramme(this.programmeId).then((data) => {
-        this.bailleurs = data.data.data
+    getProjet() {
+      ProjetService.get().then((data) => {
+        this.projets = data.data.data
       }).catch((e) => {
         console.log(e)
       })
@@ -263,28 +291,15 @@ export default {
       this.showModal = true
     },
     
-    gotoTable() {
-      this.seeFileManager = false
-      this.seeAgetur = true
-    },
-    gotoFileManager() {
-      this.seeFileManager = true
-      this.seeAgetur = false
-    },
-    editer() {
-      this.showInput = false
-    },
+    
     close() {
       this.showModal = false
     },
     
   },
   mounted() {
-    this.programmeId = this.currentUser.programme.id
-    console.log(this.programmeId)
-    this.getCollection()
-    this.getBailleur()
-    this.getEntreprise()
+    this.getProjet()
+    this.getAudit()
   }
 }
 </script>

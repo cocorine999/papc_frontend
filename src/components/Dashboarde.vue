@@ -86,7 +86,7 @@
         <div :class="projet.couleur" :style="`background-color:${projet.couleur}`"
           class="font-bold px-4 text-white py-2 z-10">
           Bailleur : <span class="uppercase">{{projet.bailleur.sigle}}</span></div>
-        <button class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none z-10">cadre logique</button>
+        <button  class="bg-nohot-orange-dark uppercase px-4 py-2 outiline-none z-10" @click="gotoCadreLogique">cadre logique</button>
         <span :class="projet.couleur" :style="`border-color:${projet.couleur}`"
           class="z-0 w-full absolute top-5 border-b-2"></span>
       </div>
@@ -235,7 +235,9 @@ export default {
     }
   },
   methods: {
-
+    gotoCadreLogique() {
+      this.$router.push({name:'projets_id_cadreLogique',params:{id:this.$route.params.id}})
+    },
     getFile(data) {
       for (const property in data) {
         this.fichiers.push(data[property])

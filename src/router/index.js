@@ -54,6 +54,12 @@ import entreprise_checklist_entreprise from "../views/dashboard/environements/en
 
 import general_checklist_details from "../views/dashboard/formulaire/_id/details.vue";
 
+//cadre logique données configurations 
+
+import objectifSpecifique from "../views/dashboard/cadre_logique/objectif_speficique.vue";
+import indicateurCadreLogique from "../views/dashboard/cadre_logique/indicateur_cadre_logique.vue";
+import resultatCadre from "../views/dashboard/cadre_logique/resultat.vue";
+
 //fin checklist environment entreprise
 
 import entreprises from "../views/dashboard/entreprises/index.vue";
@@ -199,6 +205,24 @@ const routes = [
     name: "activation",
     component: activation,
   },
+  // cadre logique config
+  {
+    path: "/dashboard/config/objectif-specifique",
+    name: "objectifSpecifique",
+    component: objectifSpecifique,
+  },
+  {
+    path: "/dashboard/config/indicateur-cadre-logique",
+    name: "indicateurCadreLogique",
+    component: indicateurCadreLogique,
+  },
+  {
+    path: "/dashboard/config/resultat-cadre-logique",
+    name: "resultatCadre",
+    component: resultatCadre,
+  },
+
+  //fin cadre logique 
   {
     path: "/resend-link/:identifiant",
     name: "resendLink",
