@@ -55,8 +55,8 @@
       </div> 
       <div>
         <div v-if="seePta && revisionAdd " class="flex space-x-4 items-center">
-          <button @click="reviser = true" title="reviser pta"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
-            <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptab </span>
+          <button @click="reviser = true" title="reviser ptba"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
+            <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptba </span>
           </button>
          
         
