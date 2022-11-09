@@ -8,7 +8,7 @@
             <div class="flex items-center">
               <svg aria-hidden="true" class="w-5 h-5 mr-2 text-red-900 dark:text-red-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
               <span class="sr-only">Info</span>
-              <h3 class="text-lg font-medium text-red-900 dark:text-red-800">Voulez vous revisez le PTAB  ?</h3>
+              <h3 class="text-lg font-medium text-red-900 dark:text-red-800">Voulez vous revisez le PTBA  ?</h3>
             </div>
             <div class="mt-2 mb-4 text-sm text-red-900 dark:text-red-800">
              Cette action est irreversible , et les changements affecterront les données de votres applications 
@@ -50,7 +50,7 @@
 
     <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
-        <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
+        <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le ptba </span>
         <span @click="goPpm" v-if="ppmVisible" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
       </div> 
       <div>

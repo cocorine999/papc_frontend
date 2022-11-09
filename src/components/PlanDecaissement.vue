@@ -118,7 +118,7 @@
                             Bailleurs
                         </th>
                         <th scope="col" rowspan="2" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 ">
-                          Code PTA
+                          Code PTBA
                         </th>
                         <th scope="col" rowspan="3" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 ">
                           programme
@@ -337,7 +337,7 @@
                             Bailleurs
                         </th>
                         <th scope="col" rowspan="2" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                          Code PTA
+                          Code PTBA
                         </th>
                         <th scope="col" rowspan="3" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                           Composantes / Sous-composantes / activiés / Taches
@@ -431,17 +431,17 @@
                     </thead>
                     <tbody>
                         <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{pta.bailleur}}
                             </th>
-                            <td class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.isProjet" class="font-bold text-lg"> {{pta.code}}</span>
                               <span v-if="pta.isComposante" class="text-blue-500 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isSC" class=" text-yellow-600 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isActivite" class="text-green-600 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isTache" class="text-red-600 text-sm"> {{pta.code}}</span>
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{pta.nom}}</span>
                               <span v-if="pta.isComposante" class="text-blue-500 text-sm">composante: {{pta.nom}}</span>
                               <span v-if="pta.isSC" class=" text-yellow-600 text-sm">sous composante: {{pta.nom}}</span>
@@ -449,15 +449,15 @@
                               <span v-if="pta.isTache" class="text-red-600 text-sm">tache: {{pta.nom}}</span>
                               
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.bn != undefined" class="font-bold" >  {{pta.bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.pret != undefined" class="font-bold" > {{pta.pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.pret != undefined && pta.bn != undefined" class="font-bold" > {{pta.pret + pta.bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
@@ -466,72 +466,72 @@
                             
                           
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.tBn != undefined" class="font-bold" >  {{pta.tBn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.tPret != undefined" class="font-bold" > {{pta.tPret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.total != undefined" class="font-bold" > {{pta.total}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
 
                             <!--  planing -->
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t1Bn != undefined" class="font-bold" >  {{pta.t1Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
 
                             <!--  planing -->
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t1Pret != undefined" class="font-bold" > {{pta.t1Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t1Pret != undefined && pta.t1Bn != undefined" class="font-bold" > {{pta.t1Pret + pta.t1Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
                           
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t2Bn != undefined" class="font-bold" >  {{pta.t2Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t2Pret != undefined" class="font-bold" > {{pta.t2Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t2Pret != undefined && pta.t2Bn != undefined" class="font-bold" > {{pta.t2Pret + pta.t2Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
                             
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t3Bn != undefined" class="font-bold" >  {{pta.t3Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t3Pret != undefined" class="font-bold" > {{pta.t3Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                              <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                              <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t3Pret != undefined && pta.t3Bn != undefined" class="font-bold" > {{pta.t3Pret + pta.t3Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t4Bn != undefined" class="font-bold" >  {{pta.t4Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t4Pret != undefined" class="font-bold" > {{pta.t4Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold" > {{pta.t4Pret + pta.t4Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
@@ -584,7 +584,7 @@
                             Bailleurs
                         </th>
                         <th scope="col" rowspan="2" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 ">
-                          Code PTA
+                          Code PTBA
                         </th>
                         <th scope="col" rowspan="3" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 ">
                           programme
@@ -802,7 +802,7 @@
                             Bailleurs
                         </th>
                         <th scope="col" rowspan="2" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                          Code PTA
+                          Code PTBA
                         </th>
                         <th scope="col" rowspan="3" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                           Composantes / Sous-composantes / activiés / Taches
@@ -900,17 +900,17 @@
                     <tbody>
                      
                         <tr v-for="pta in dataNewR" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{pta.bailleur}}
                             </th>
-                            <td class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.isProjet" class="font-bold text-lg"> {{pta.code}}</span>
                               <span v-if="pta.isComposante" class="text-blue-500 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isSC" class=" text-yellow-600 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isActivite" class="text-green-600 text-sm"> {{pta.code}}</span>
                               <span v-if="pta.isTache" class="text-red-600 text-sm"> {{pta.code}}</span>
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{pta.nom}}</span>
                               <span v-if="pta.isComposante" class="text-blue-500 text-sm">composante: {{pta.nom}}</span>
                               <span v-if="pta.isSC" class=" text-yellow-600 text-sm">sous composante: {{pta.nom}}</span>
@@ -918,15 +918,15 @@
                               <span v-if="pta.isTache" class="text-red-600 text-sm">tache: {{pta.nom}}</span>
                               
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.bn != undefined" class="font-bold" >  {{pta.bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.pret != undefined" class="font-bold" > {{pta.pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.pret != undefined && pta.bn != undefined" class="font-bold" > {{pta.pret + pta.bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
@@ -935,72 +935,72 @@
                             
                           
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.tBn != undefined" class="font-bold" >  {{pta.tBn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.tPret != undefined" class="font-bold" > {{pta.tPret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.total != undefined" class="font-bold" > {{pta.total}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
 
                             <!--  planing -->
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t1Bn != undefined" class="font-bold" >  {{pta.t1Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
 
                             <!--  planing -->
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t1Pret != undefined" class="font-bold" > {{pta.t1Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t1Pret != undefined && pta.t1Bn != undefined" class="font-bold" > {{pta.t1Pret + pta.t1Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
                           
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t2Bn != undefined" class="font-bold" >  {{pta.t2Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t2Pret != undefined" class="font-bold" > {{pta.t2Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
 
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t2Pret != undefined && pta.t2Bn != undefined" class="font-bold" > {{pta.t2Pret + pta.t2Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
                             
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t3Bn != undefined" class="font-bold" >  {{pta.t3Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t3Pret != undefined" class="font-bold" > {{pta.t3Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                              <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                              <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t3Pret != undefined && pta.t3Bn != undefined" class="font-bold" > {{pta.t3Pret + pta.t3Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                             <span v-if="pta.t4Bn != undefined" class="font-bold" >  {{pta.t4Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t4Pret != undefined" class="font-bold" > {{pta.t4Pret}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
-                            <td  class="py-4 px-6 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                            <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                               <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold" > {{pta.t4Pret + pta.t4Bn}}  </span>
                             <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                             </td>
