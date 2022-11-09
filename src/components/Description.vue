@@ -1,38 +1,7 @@
 <template>
   <div class="">
     <div class="grid grid-cols-3 gap-2">
-      <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution physique</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
-        <div class="mt-6 flex justify-between">
-          <div class="flex items-center space-x-3">
-            <!-- if arrow UP -->
-            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold">{{ projet.tepByAnnee }}% </span>
-          </div>
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
-        </div>
-      </div>
-
-      <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution financier</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_financier.tef }}%</h4>
-        <div class="mt-6 flex justify-between">
-          <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
-            <!-- if arrow UP -->
-            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
-          </div>
-          <div v-else class="flex items-center space-x-3">
-            <!-- if arrow DOWN -->
-            <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-red-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
-          </div>
-
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
-        </div>
-      </div>
-
+    
       <div class="bg-white shadow p-3">
         <h2 class="text-indigo-700 font-semibold text-sm">Taux de decaissement</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
@@ -50,6 +19,39 @@
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
         </div>
       </div>
+
+      <div class="bg-white shadow p-3">
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'engagement</h2>
+        <h4 class="text-2xl text-black font-bold mt-3">20%</h4>
+        <div class="mt-6 flex justify-between">
+          <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
+            <!-- if arrow UP -->
+            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
+            <span class="text-sm text-green-700 font-semibold"> 20 </span>
+          </div>
+          <div v-else class="flex items-center space-x-3">
+            <!-- if arrow DOWN -->
+            <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
+            <span class="text-sm text-red-700 font-semibold"> 95 </span>
+          </div>
+
+          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
+        </div>
+      </div>
+
+      <div class="bg-white shadow p-3">
+        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution physique</h2>
+        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
+        <div class="mt-6 flex justify-between">
+          <div class="flex items-center space-x-3">
+            <!-- if arrow UP -->
+            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
+            <span class="text-sm text-green-700 font-semibold">{{ projet.tepByAnnee }}% </span>
+          </div>
+          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
+        </div>
+      </div>
+
     </div>
     <div class="bg-white my-3 shadow">
       <div class="p-3">

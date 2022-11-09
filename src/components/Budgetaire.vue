@@ -8,7 +8,7 @@
         </div>
         <div>
           <h2 class="uppercase font-semibold hover:font-bold py-2">
-            budget du bailleur
+            Montant du projet
           </h2>
           <p class="hover:font-bold">{{ projet.pret | formatNumber}} XOF</p>
         </div>
