@@ -162,7 +162,7 @@
                     :class="{ 'border-yellow-600 text-yellow-600': pending }"
                     class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                   >
-                    attentes
+                    Non demarrer
                     <span
                       class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
                     >

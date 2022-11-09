@@ -51,7 +51,7 @@
       <!--Filtre sur projet -->
           <nav  class="flex justify-end p-2 shadow  text-xs space-x-4  md:text-sm align-middle  ">
             <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-            attentes 
+              Non demarrer
               <span class="px-2 text-sm text-yellow-600 border border-yellow-600 rounded-full undefined tex-base">
               {{enAttente.length}}
               </span>
