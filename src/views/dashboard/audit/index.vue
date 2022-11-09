@@ -88,7 +88,7 @@
           <span  class="inline-block cursor-pointer  text-base uppercase  border-b-8 font-bold  border-primary py-2">Tableau recapitulatif </span>
         </div>
         
-        <button  @click="createTable" title="ajouter un tabelau"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <button  @click="createAudit" title="ajouter un tabelau"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -286,7 +286,7 @@ export default {
         console.log(e)
       })
     },
-    createTable() {
+    createAudit() {
       this.title = 'Ajouter'
       this.showModal = true
     },

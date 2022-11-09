@@ -278,7 +278,7 @@ export default {
       search: "",
       title: '',
       chargement: false,
-      indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
+      indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId','sourceDeVerification','hypothese'],
       indicateurAttributsRecherche: ['nom', 'anneeDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       choiceDateOption: true,
       champs: [
@@ -288,6 +288,8 @@ export default {
         { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: true, cle: 'id', value: 'nom', errors: [] },
         { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: true, cle: 'id', value: 'nom', errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
       ],
       cols: 2,

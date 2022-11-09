@@ -1,20 +1,43 @@
 <template>
   <dashboard>
     <div class="w-full">
-      <div v-if="showModal">
-        <modal-top-right  :title="title"  v-on:close="close">
-          <div class="w-full">
-              <vform
-                template="default"
-                :champs="champs"
-                cols="1"
-                :submitText="submitText"
-                @sendForm="sendForm"
-                @closeModal="close" 
-              ></vform>
+ 
+      <modal-top-right v-if="showModal" :title="title" v-on:close="close">
+        <form action="" @submit.prevent="createObjectif" class="p-3 w-full" >
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Nom <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input  v-model="objectif.nom" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
           </div>
-        </modal-top-right>
-      </div>
+          
+          
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Projets <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <multiselect v-model="objectif.projetId" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Description <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <textarea name="" v-model="objectif.description" id="" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
+          </div>
+
+          <div class="py-2 my-4 flex justify-center space-x-8">
+            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+              <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    enregistrer
+              </span>
+              <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+              </span>
+            </button>
+            <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+          </div>
+        </form>
+      </modal-top-right>
       <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -47,7 +70,7 @@
       <div class="my-2 flex justify-between items-center ">
       
         <titre>Objectif specifique</titre>
-        <button v-if="categorieAdd" @click="addCategorie" title="ajouter une categorie"   class="py-2 px-4  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <button  @click="addObjectif" title="ajouter un objectif"   class="py-2 px-4  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-2 text-xs  md:text-sm font-semibold">ajouter un objectif </span>
         </button>
@@ -61,39 +84,19 @@
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Nom</th>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description</th>
               <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Projet</th>
-              <th class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider">Actions</th>
+              <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Date creation</th>
+             
             </tr>
           </thead>
           <tbody class="bg-white">
-            <tr v-for="(categorie, i) in filteredCategorie()" :key="i">
+            <tr v-for="(objectif, i) in objectifSpecifique" :key="i">
               
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{i+1}} </td>
-              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{categorie.nom}}</td>
-              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{categorie.nom}}</td>
-              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{categorie.nom}}</td>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{objectif.nom}}</td>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{objectif.description}}</td>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{objectif.projet.nom}}</td>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{objectif.created_at}}</td>
 
-              
-              <td class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5">
-                <div class="flex item-center justify-center">
-                  <!-- <div title="details"  class="cursor-pointer w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </div> -->
-                  
-                  <div v-if="categorieUpdate" class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="modifierCategorie(categorie)">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
-                  </div>
-                  <div v-if="categorieDelete"  class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="supprimerCategorie(categorie)">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </div>
-                </div>      
-              </td>
             </tr>              
           </tbody>
         </table>
@@ -109,10 +112,11 @@ import Titre from '@/components/Titre'
 import Vmodal from '@/components/Vmodal'
 import Vform from '@/components/Vform'
 import Dashboard from '@/layouts/Dashboard'
-
+import Multiselect from 'vue-multiselect'
 import { mapGetters, mapMutations, mapActions } from "vuex"
-
-import extractFormData from "@/utils/extract-data"
+import Vbutton from '@/components/Vbutton'
+import objectifSpecifiqueService from "@/services/modules/objectif.specifique.service.js";
+import ProjetService from "@/services/modules/projet.service.js";
 export default {
   components: {
     Dashboard,
@@ -121,193 +125,85 @@ export default {
     SearchBar,
     ModalTopRight,
     Vform,
+    Multiselect,
+    Vbutton
   },
   data() {
       return ({
         showModal:false,
-        categorieAttributes: ["nom"],
-        submitText: 'Enrégistrer',
-        search:'',
-        champs: [
-        {
-          name: "Nom",
-          type: "text",
-          key: "nom",
-          placeholdere: "Nom de la categorie",
-          isSelect: false,
-          isTextArea: false,
-          data: "",
-          required: true,
-          errors: [],
-        }
-      ],
-      categorieVisible:false,
-      categorieAdd:false,
-      categorieDelete:false,
-      categorieUpdate:false,      
-        
+        objectif:{
+        nom:'',
+        description:'',
+        projetId:''
+      },
+      projets:[],
+      chargement:false,
+      objectifSpecifique:[],
       });
     },
     computed: {
     ...mapGetters({
-      hasErrors: "GET_ERREURS",
-      isLoading: "IS_LOADING",
-      categorie: "categories/getCategorie",
-      categories: "categories/getCategories",
-       currentUser: "auths/GET_AUTHENTICATE_USER",
+      currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
   },
   methods: {
-      ...mapMutations({
-        setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-        setCategorie: "categories/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
-      }),
-
-      ...mapActions("categories", {
-        fetchCategories: "FETCH_LIST_CATEGORIE",
-        saveCategorie: "STORE_CATEGORIE",
-        updateCategorie: "UPDATE_CATEGORIE",
-        deleteCategorie: "DESTROY_CATEGORIE",
-      }),
-
-      addCategorie() {
-        this.title = "Ajouter une nouvelle categorie";
-
-        this.submitText = "Enrégistrer";
-
-        this.showCloseModal(true);
-      },
-
-      modifierCategorie (categorie) {
-        this.title = "Modification de la categorie " + categorie.nom;
-
-        this.submitText = "Modifier";
-
-        this.setCategorie(categorie);
-
-        this.categorieAttributes.forEach((item) => {
-          this.champs.find((value, index) => {
-            if (value.key === item) {
-              this.champs[index]["data"] = this.categorie[item];
-            }
-          });
-        });
-
-        this.showCloseModal(true);
-      },
-      getPermission() {
-        this.currentUser.role[0].permissions.forEach(element => {
-            if(element.slug ==='voir-une-categorie') {
-             
-             
-              this.categorieVisible = true
-            }
-            if(element.slug === 'creer-une-categorie') {
-              this.categorieAdd = true
-            
-            }
-            if(element.slug === 'modifier-une-categorie') {
-              this.categorieUpdate = true
-            }
-            if(element.slug ==='supprimer-une-categorie') {
-              this.categorieDelete = true
-            }
-            
-          });
-
-      },
-
-      supprimerCategorie(categorie) {
-        if ( window.confirm("Voulez-vous supprimer une categorie " + categorie.nom) )
-        {
-          this.deleteCategorie(categorie.id);
+    addObjectif() {
+      this.title = 'Ajouter'
+      this.showModal = true
+    },
+    createObjectif() {
+        if(this.chargement == false) {
+          this.chargement = true
+          const data = this.objectif
+          data.projetId = data.projetId.id
+          const formData = new FormData();
+          formData.append('nom', data.nom)
+          formData.append('description', data.description)
+          formData.append('projetId', data.projetId)
+         
+          
+          objectifSpecifiqueService.create(formData).then((data) => {
+            this.chargement = false
+            this.$toast.success('nouveau element')
+            this.showModal = false
+            this.getObjectif()
+            this.objectif.nom = ''
+            this.objectif.description =''
+          
+            this.audit.projetId = null
+           
+          }).catch((e) => {
+            this.chargement = false  
+            this.$toast.error(e)
+          })
         }
-      },
-       close() {
-        this.showCloseModal();
+    },
+    getProjet() {
+      ProjetService.get().then((data) => {
+        this.projets = data.data.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    getObjectif() {
+      objectifSpecifiqueService.get().then((data) => {
+        this.objectifSpecifique = data.data.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
 
-        this.resetForm();
-      },
-
-      showCloseModal(value = false) {
-        this.showModal = value;
-      },
-
-      resetForm() {
-        this.champs = this.champs.map((item) => {
-          item.data = "";
-          return item;
-        });
-
-        window.document.getElementById("vform")?.reset();
-
-        this.setCategorie({});
-      },
-
-      filteredCategorie(){
-        var self = this;
-
-        return this.categories.filter(function (categorie){
-          return categorie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-        });
-      },
-
-      async updateInputData(id, attribut, value) {
-        await this.updateCategorie({categorie: {[attribut] : value}, id : id}).then((value) => {
-          this.setCategorie({})
-        }).catch((value, status) => {
-          if(this.hasErrors[attribut] !== undefined)
-            alert(this.hasErrors[attribut])        
-        })
-      },
-
-      sendForm() {
-        this.champs = this.champs.map((item) => {
-          item.errors = [];
-          return item;
-        });
-
-        let categorie = extractFormData(this.champs, this.categorieAttributes);
-
-        if (this.categorie?.id) {
-          this.updateCategorie({ categorie: categorie, id: this.categorie?.id }).then(
-            (response) => {
-              if (response.status == 200 || response.status == 201) {
-                this.close();
-              }
-            }
-          );
-        } else {
-          this.saveCategorie(categorie).then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.close();
-            }
-          });
-        }
-      }
+    close() {
+      this.showModal = false
+    },
 
   },
 
-  watch: {
-    isLoading: function (value) {
-      //this.loading = value
-    },
-
-    hasErrors: function (errors) {
-      this.champs.forEach((value) => {
-        value.errors = errors[value.key];
-      });
-      //this.errors = errors
-    },
-  },
-
+ 
   mounted() {
-    this.getPermission()
-    if(!this.categorieVisible) {
-      this.$router.push('/401-non-autorise')
-    } 
-    console.log("Fetching unitees de mesure ...");
-    this.fetchCategories()
+   this.getObjectif()
+   this.getProjet()
+   
   },
 
 }
