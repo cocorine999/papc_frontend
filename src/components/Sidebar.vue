@@ -249,7 +249,7 @@
               </path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Finances</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Gestions Financières</p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
           <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
