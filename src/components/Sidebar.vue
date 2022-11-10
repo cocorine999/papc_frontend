@@ -306,7 +306,7 @@
             </svg>
           </span>
           <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">
-            Activités Environnementales et sociales
+            Gestions Environnementales et sociales
           </p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
@@ -570,7 +570,7 @@
             </path>
           </svg>
         </span>
-        <span class="font-semibold text-xs uppercase">Utilisateur</span>
+        <span class="font-semibold text-xs uppercase">Utilisateurs</span>
       </router-link>
     </div>
 
@@ -587,7 +587,7 @@
               </path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Config</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Configurations</p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
           <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
