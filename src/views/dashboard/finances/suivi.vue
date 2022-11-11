@@ -43,8 +43,8 @@
       <div v-if="showModal2">
         <vmodal  title="Importez les données "  v-on:close="showModal2 = false">
           <form @submit.prevent="importData" style="width:500px" class="">
-            <input class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm" aria-describedby="file_input_help" id="file_input" @change="previewFiles"   accept=".csv"  type="file">
-            <p class="my-4 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">FORMAT CSV SEULEMENT AUTORISE </p>
+            <input class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm" aria-describedby="file_input_help" id="file_input" @change="previewFiles"   accept=".xlsx"  type="file">
+            <p class="my-4 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">FORMAT XLSX SEULEMENT AUTORISE </p>
             <div class="flex justify-end">
               <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
                   <span class="text-sm font-semibold uppercase" v-if="!chargement">

@@ -67,11 +67,9 @@ export default {
         headers:[
           {name:'Bailleur', cle:'sigle'},
           {name:'Montants financier', cle:'montantFinancement'},
-          {name:'Taux de decaissement', cle:'tauxDecaissement'},
-          {name:'PTAB', cle:'ptab'},
           {name:'Decaissement', cle:'decaissement'},
-          {name:'Realisation PTAB ', cle:'realisationPta'},
-          {name:'TEF', cle:'tef'},
+          {name:'Taux de decaissement', cle:'tauxDecaissement'},
+          {name:'Execution Financier ', cle:'realisationPta'},
           {name:'TEF GLOBALE', cle:'tefGlobale'},
         ],
         search:'',
@@ -118,10 +116,8 @@ export default {
               bailleur: element.sigle,
               montant_financier: element.montantFinancement,
               taux_de_decaissement: element.tauxDecaissement,
-              ptab: element.ptab,
               decaissement: element.decaissement,
-              realisation_ptab: element.realisationPta,
-              tef: element.tef,
+              execution_financier: element.realisationPta,
               tef_global: element.tefGlobale
             }
           );

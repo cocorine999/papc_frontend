@@ -465,7 +465,7 @@ export default {
       showFiltre: false,
       showProlonger: false,
       chargement: false,
-      activiteAttributs: ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'tepPrevu', 'poids'],
+      activiteAttributs: ['nom', 'description', 'debut', 'fin', 'budgetNational', 'structureResponsableId', 'structureAssocieId', 'types', 'pret', 'poids'],
       dates: { debut: '', fin: '' },
       planDeDecaissementAttributs: ['annee', 'trimestre', 'pret', 'budgetNational'],
       champs: [
