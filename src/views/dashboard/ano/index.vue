@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full">
 
-      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
+     <!--  <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <div v-if="anosReponses.length > 0" style="height:800px" class="overflow-auto ">
           <div v-for="data in anosReponses" :key="data.id">
 
@@ -14,7 +14,7 @@
           pas de commentaire
         </div>
 
-      </modal-chat>
+      </modal-chat> -->
 
       <vmodal v-if="showDetail" @close="showDetail = false">
         <div style="width:60vw">
@@ -112,8 +112,7 @@
       </nav>
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs 
- md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
+          <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
         </div>
         <div class="flex space-x-4">
 
@@ -127,17 +126,17 @@
           </button>
         </div>
       </div>
-
+       <!-- j'ai desactiver les commentaires iscomment false -->
       <div id="dataTable">
         <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false"
           :headers="headers" :datas="filteredAno()" :actions="actionsDelete" @supprimer="supprimer"></vtable>
         <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true"
           :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()"
-          :actions="actionsReponse" :isComment="true" @commenter="commenter" @seeUpload="seeUpload"></vtable>
+          :actions="actionsReponse" :isComment="false"  @seeUpload="seeUpload"></vtable>
         <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"
           :sendRequest="false" :headers="headers" :datas="filteredAno()"></vtable>
-        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="true"
-          @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions"
+        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="false"
+           :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions"
           @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>

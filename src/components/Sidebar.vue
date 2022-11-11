@@ -105,7 +105,7 @@
 
     <div
       v-if="projetVisible || composanteVisible || composanteReVisible || activiteVisible || activiteReVisible || planDecaissementVisible || tacheVisible || tacheReVisible"
-      class="mb-1 px-6 relative">
+      class="mb-1 px-6 animation relative">
       <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck1" />
       <header class="flex justify-between items-center mb-3 cursor-pointer select-none tab-label" for="chck1">
         <div class="flex space-x-3 text-white">

@@ -44,7 +44,6 @@
     </nav>
     
     <div class="my-2 flex justify-between items-center ">
-     
       <titre>les categories</titre>
       <button v-if="categorieAdd" @click="addCategorie" title="ajouter une categorie"   class="py-2 px-4  overflow-hidden flex items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
@@ -53,7 +52,6 @@
     </div>
 
 
-    
      <div class="align-middle inline-block w-full  overflow-hidden  pt-3 rounded-bl-lg rounded-br-lg">
       <table class="w-full p-4">
         <thead>

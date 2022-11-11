@@ -88,6 +88,11 @@
       <!-- pta current -->
       <div v-if="currentPage && ptaVisible" class="current">
         <div class="my-3 px-3 py-1 justify-end flex space-x-4">
+          <button @click="statutActuel = ! statutActuel" 
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le statut actuel </span>
+            <span v-else class="mx-2 text-sm font-semibold">masquer le statut actuel </span>
+          </button>
           <button v-if="filtrePta" @click="openFiltre = !openFiltre" title="filtrer les données"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em"
@@ -108,8 +113,8 @@
 
         <div class="relative">
           <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="true" :preview-modal="true"
-            :paginate-elements-by-height="1400" :filename="title_pdf" :pdf-quality="2" :manual-pagination="false"
-            pdf-format="a3" pdf-orientation="landscape" pdf-content-width="100vw" @progress="onProgress($event)"
+            :paginate-elements-by-height="200000000000" :filename="title_pdf" :pdf-quality="2" :manual-pagination="false"
+            pdf-format="a2" pdf-orientation="landscape" pdf-content-width="100vw" @progress="onProgress($event)"
             @hasStartedGeneration="hasStartedGeneration()" @hasGenerated="hasGenerated($event)" ref="html2Pdf">
             <section slot="pdf-content">
               <div class=" relative shadow-md sm:rounded-lg">
@@ -138,6 +143,10 @@
                       <th scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
                         Poids
+                      </th>
+                      <th v-if="statutActuel" scope="col" rowspan="2"
+                        class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
+                        Statut actuel
                       </th>
                       <th scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
@@ -272,6 +281,8 @@
                     </tr>
 
                   </thead>
+
+
                   <tbody>
                     <tr v-for="pta in dataNew" :key="pta.id"
                       class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -327,6 +338,10 @@
 
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
+                        <!--  <span v-else class="font-bold" >0 FCFA</span> -->
+                      </td>
+                      <td v-if="statutActuel" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
+                        <span v-if="pta.poidsActuel != undefined" class="font-bold"> {{ pta.poidsActuel }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                       </td>
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
@@ -523,6 +538,10 @@
                 <th scope="col" rowspan="2"
                   class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                   Poids
+                </th>
+                <th v-if="statutActuel" scope="col" rowspan="2"
+                  class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                  Statut actuel
                 </th>
                 <th scope="col" rowspan="2"
                   class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
@@ -743,6 +762,10 @@
                   <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
+                <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <span v-if="pta.poidsActuel != undefined" class="font-bold"> {{ pta.poidsActuel }} </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA</span> -->
+                </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                   <span v-if="pta.structureAssocie != undefined" class="font-bold"> {{ pta.structureAssocie }} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -911,6 +934,11 @@
       <!-- pta revise -->
       <div v-else class="current">
         <div class="my-3 px-3 py-1 flex justify-end space-x-4">
+          <button @click="statutActuel = ! statutActuel" 
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le statut actuel </span>
+            <span v-else class="mx-2 text-sm font-semibold">masquer le statut actuel </span>
+          </button>
           <button v-if="filtreRePta" @click="openFiltre = !openFiltre" title="filtrer les données"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em"
@@ -1750,6 +1778,7 @@ export default {
       ptab: [],
       ptabR: [],
       openFiltre: false,
+      statutActuel:false,
       annee: null,
       bailleur: '',
       bailleurs: [],
@@ -1793,6 +1822,7 @@ export default {
             const bn = composante.budgetNational
             const pret = composante.pret
             let poids = composante.poids
+            let poidsActuel = composante.poidsActuel
             let t1Bn = 0
             let t1Pret = 0
             let t2Bn = 0
@@ -1824,11 +1854,12 @@ export default {
             tPret = t1Pret + t2Pret + t3Pret + t4Pret
             total = tBn = tPret
 
-            programme.push({ bailleur, nom: composante.nom, code: composante.code, poids, isComposante: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+            programme.push({ bailleur, nom: composante.nom, code: composante.code, poids,poidsActuel, isComposante: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
             composante.sousComposantes.forEach(sousComposante => {
               const bn = sousComposante.budgetNational
               const pret = sousComposante.pret
               let poids = sousComposante.poids
+              let poidsActuel = sousComposante.poidsActuel
               let t1Bn = 0
               let t1Pret = 0
               let t2Bn = 0
@@ -1863,11 +1894,12 @@ export default {
               tBn = t1Bn + t2Bn + t3Bn + t4Bn
               tPret = t1Pret + t2Pret + t3Pret + t4Pret
               total = tBn = tPret
-              programme.push({ bailleur, nom, code: sousComposante.code, poids, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+              programme.push({ bailleur, nom, code: sousComposante.code, poids,poidsActuel, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
               sousComposante.activites.forEach(activite => {
                 const bn = activite.budgetNational
                 const pret = activite.pret
                 let poids = activite.poids
+                let poidsActuel = activite.poidsActuel
                 let structureResponsable = activite.structureResponsable
                 let structureAssocie = activite.structureAssocie
                 let t1Bn = 0
@@ -1956,10 +1988,11 @@ export default {
                   }
                 }
 
-                programme.push({ bailleur, nom: activite.nom, code: activite.code, poids, isActivite: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total, structureResponsable, structureAssocie, planing })
+                programme.push({ bailleur, nom: activite.nom, code: activite.code, poids,poidsActuel, isActivite: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total, structureResponsable, structureAssocie, planing })
                 activite.taches.forEach(tache => {
                   let poids = tache.poids
-                  programme.push({ bailleur, nom: activite.nom, code: activite.code, poids, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
+                  let poidsActuel = tache.poidsActuel
+                  programme.push({ bailleur, nom: activite.nom, code: activite.code, poids,poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
                 })
               })
             })
@@ -1982,6 +2015,7 @@ export default {
             const bn = composante.budgetNational
             const pret = composante.pret
             let poids = composante.poids
+            let poidsActuel = composante.poidsActuel
             let t1Bn = 0
             let t1Pret = 0
             let t2Bn = 0
@@ -2013,11 +2047,12 @@ export default {
             tPret = t1Pret + t2Pret + t3Pret + t4Pret
             total = tBn = tPret
 
-            programme.push({ bailleur, nom: composante.nom, code: composante.code, poids, isComposante: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+            programme.push({ bailleur, nom: composante.nom, code: composante.code, poids,poidsActuel, isComposante: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
             composante.sousComposantes.forEach(sousComposante => {
               const bn = sousComposante.budgetNational
               const pret = sousComposante.pret
               let poids = sousComposante.poids
+              let poidsActuel = sousComposante.poidsActuel
               let t1Bn = 0
               let t1Pret = 0
               let t2Bn = 0
@@ -2052,11 +2087,12 @@ export default {
               tBn = t1Bn + t2Bn + t3Bn + t4Bn
               tPret = t1Pret + t2Pret + t3Pret + t4Pret
               total = tBn = tPret
-              programme.push({ bailleur, nom, code: sousComposante.code, poids, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+              programme.push({ bailleur, nom, code: sousComposante.code, poids,poidsActuel, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
               sousComposante.activites.forEach(activite => {
                 const bn = activite.budgetNational
                 const pret = activite.pret
                 let poids = activite.poids
+                let poidsActuel = activite.poidsActuel
                 let structureResponsable = activite.structureResponsable
                 let structureAssocie = activite.structureAssocie
                 let t1Bn = 0
@@ -2145,10 +2181,11 @@ export default {
                   }
                 }
 
-                programme.push({ bailleur, nom: activite.nom, code: activite.code, poids, isActivite: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total, structureResponsable, structureAssocie, planing })
+                programme.push({ bailleur, nom: activite.nom, code: activite.code, poids,poidsActuel, isActivite: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total, structureResponsable, structureAssocie, planing })
                 activite.taches.forEach(tache => {
                   let poids = tache.poids
-                  programme.push({ bailleur, nom: activite.nom, code: activite.code, poids, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
+                  let poidsActuel = tache.poidsActuel
+                  programme.push({ bailleur, nom: activite.nom, code: activite.code, poids,poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
                 })
               })
             })
