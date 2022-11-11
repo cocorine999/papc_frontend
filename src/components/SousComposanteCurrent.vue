@@ -131,7 +131,7 @@
                   :isComposante="false"
                   :data="sousComposante"
                   :libelle="sousComposante.nom"
-                  :code="sousComposante.code"
+                  :code="sousComposante.codePta"
                   composanteName="Sous Composante"
                   :statut="getStatus(sousComposante.statut)"
                   :montantEPM="sousComposante.pret"
@@ -161,7 +161,7 @@
                   :isComposante="false"
                   :data="sousComposante"
                   :libelle="sousComposante.nom"
-                  :code="sousComposante.code"
+                  :code="sousComposante.codePta"
                   composanteName="Sous Composante"
                   :statut="getStatus(sousComposante.statut)"
                   :montantEPM="sousComposante.pret"
@@ -190,7 +190,7 @@
                   :isComposante="false"
                   :data="sousComposante"
                   :libelle="sousComposante.nom"
-                  :code="sousComposante.code"
+                  :code="soussousComposante.codePta"
                   composanteName="Sous Composante"
                   :statut="getStatus(sousComposante.statut)"
                   :montantEPM="sousComposante.pret"
@@ -540,7 +540,7 @@ export default {
       let nomP =''
       let codeC=''
       let nomC=''
-      let codeSC=sousComposante.codePta
+      let codeSC=soussousComposante.codePta
       let nomSC=sousComposante.nom
       for (let index = 0; index < this.projets.length; index++) {
         const element = this.projets[index];

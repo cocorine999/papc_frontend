@@ -510,9 +510,24 @@ export default {
           this.$toast.success('suivi éffectué')
           this.showSuiviModal = false
           this.chargement = false
-        }).catch((e) => {
-          this.$toast.error(e)
+          this.suiviIndicateurs.annee =''
+          this.suiviIndicateurs.trimestre = ''
+          this.suiviIndicateurs.dateSuivie= ''
+          this.suiviIndicateurs.valeurCible =0
+          this.suiviIndicateurs.valeurRealise = 0
+          this.suiviIndicateurs.commentaire =''
+        }).catch((error) => {
           this.chargement = false
+          if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+          } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
         })
       }
 

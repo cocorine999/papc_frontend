@@ -35,10 +35,10 @@
       <modal-top-right :title="title" v-on:close="close">
        <div class="w-full p-4">
          <div v-if="title =='Ajouter'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+            <vform template="default" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Enregistrer" @sendForm="sendForm" ></vform>
          </div>
          <div v-if="title =='Modifier un decaissement'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
+            <vform template="default" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Modifier" @sendForm="sendForm" ></vform>
          </div>
         
        </div>
@@ -47,7 +47,7 @@
     <div v-if="showModal2">
       <vmodal  title="Filtre decaissement"  v-on:close="showModal2 = false">
         <div class="px-4" style="width:500px" >
-          <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+          <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :sendRequest="sendRequest" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
         </div>
       </vmodal>
     </div>
@@ -107,6 +107,7 @@ export default {
         return {
           showModal:false,
           showModal2:false,
+          sendRequest:false,
           title:'',
           decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
           decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
@@ -258,23 +259,41 @@ export default {
 
       sendForm() {
 
-        console.log(this.champs)
+        if( this.sendRequest === false ){
 
-        this.champs = this.champs.map(item => { item.errors = []; return item})
+          this.sendRequest = true;
 
-        let decaissement = extractFormData(this.champs, this.decaissementAttributs)
+          this.champs = this.champs.map(item => { item.errors = []; return item})
 
-        decaissement.type = decaissement.type.id
-        decaissement.projetId = decaissement.projetId.id
+          let decaissement = extractFormData(this.champs, this.decaissementAttributs)
 
-        this.saveDecaissement(decaissement).then(response => {
-          if(response.status == 200 || response.status == 201){
-            this.close()
-            this.showModal = false
-            this.fetchDecaissements()
-          }
+          decaissement.type = decaissement.type.id
+          decaissement.projetId = decaissement.projetId.id
 
-        })
+          this.saveDecaissement(decaissement).then(response => {
+            if(response.status == 200 || response.status == 201){
+              this.close()
+              this.showModal = false
+              this.fetchDecaissements()
+              this.sendRequest = false
+            }
+
+          }).finally((error) => {
+            this.sendRequest = false
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
+          })
+        
+
+        }
         
       },  
 

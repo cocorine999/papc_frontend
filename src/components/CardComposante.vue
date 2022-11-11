@@ -69,10 +69,12 @@
       <div class="flex text-xs">
         <div title="suivre une activité"
           class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
-          {{ codePta }} </div>
+          {{ code }} </div>
         <div title="suivre une activité"
           class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
           {{ poids }} </div>
+
+          
       </div>
       <!-- <span title="suivre une activité"
         class="cursor-pointer bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids

@@ -209,7 +209,7 @@ export default {
         commentaire: '',
       },
       statuts: [
-        { name: 'en cours', value: 0 },
+      
         { name: 'validé', value: 1 },
         { name: 'non validé', value: -1 }
       ],
@@ -220,7 +220,7 @@ export default {
         { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
+        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statutsAno, cle: 'id', value: 'nom', required: true, errors: [] },
       ],
 
       datas: [],
@@ -331,8 +331,17 @@ export default {
           const idReponse = element.id
           this.anosReponses.push({ anoid, commentaire, bailleur, date, documents, idReponse, date, auteur })
         });
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
       })
     },
 
@@ -426,8 +435,17 @@ export default {
           this.$toast.success('operation effectué avec success !!!')
           this.showReponse = false
           this.chargement = false
-        }).catch((e) => {
-          this.$toast.error(e)
+        }).catch((error) => {
+          if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
           this.chargement = false
         })
       }
@@ -453,7 +471,17 @@ export default {
                 this.sendRequest = false
               }
             }
-          ).catch((e) => {
+          ).catch((error) => {
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
             this.sendRequest = false
           });
         } else {
@@ -465,7 +493,6 @@ export default {
             "destinataire": ano.destinataire,
             "bailleurId": ano.bailleurId,
           }
-
           const formData = new FormData();
           formData.append('dossier', demo.dossier)
           formData.append('statut', demo.statut)
@@ -481,8 +508,20 @@ export default {
             if (response.status == 200 || response.status == 201) {
               this.close();
               this.sendRequest = false
+              this.fetchAnos()
             }
-          }).catch((e) => {
+          }).catch((error) => {
+            this.getFile()
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
             this.sendRequest = false
           })
         }

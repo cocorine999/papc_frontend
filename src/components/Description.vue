@@ -87,7 +87,8 @@
               <tbody>
                 <tr class="p-4 font-semibold">
                   <td class="pl-2">Dernière date d’audit :</td>
-                  <td>28/12/2021</td>
+                  <td v-if="projet.audit!=null">{{projet.audit.dateDeTransmission}}</td>
+                  <td v-else>Audit non disponible</td>
                   <td>
                     <div class="p-2 text-white space-x-2">
                       <span class="bg-green-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Effectué</span>
@@ -101,8 +102,8 @@
                   <td class="font-semibold">Secteur d’activité :</td>
                   <td>
                     <div class="p-2 text-white space-x-2">
-                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
-                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
+                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">{{projet.secteurActivite}}</span>
+                      
                   </div></td>
                 </tr>
               </tbody>
@@ -180,16 +181,16 @@
           class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="py-2 px-6">Nom</th>
-            <th scope="col" class="p-2">Type</th>
+           
             <th scope="col" class="p-2">Contact</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr v-for="(entreprise,index) in projet.entreprises" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <!-- <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne> -->
-            <td class="py-2 px-6 uppercase">Agetur</td>
-            <td class="p-2 uppercase">mod</td>
-            <td class="p-2 uppercase">21 30 51 10</td>
+            <td class="py-2 px-6 uppercase">{{entreprise.user.nom}}</td>
+           
+            <td class="p-2 uppercase">{{entreprise.user.contact}}</td>
           </tr>
         </tbody>
       </table>

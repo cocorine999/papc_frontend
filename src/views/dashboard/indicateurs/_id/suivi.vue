@@ -45,7 +45,7 @@
             <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
           </button>
           </json-excel>
-            <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
+         <!--  <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button> -->
            
           </div>
         </div>
@@ -160,18 +160,23 @@ export default {
       const data = []
       if(this.dataTable != undefined || this.dataTable != null) {
         this.filteredSuivis.forEach(element => {
-          const valeurRealise = element.valeurRealise
-          const valeurCible = element.valeurCible
-          const valeurCumul = ''
-          const trimestre = element.trimestre
-          const annee_de_Suivi = element.anneeSuivi
-          const ecart =element.valeurEcart
-          const date_de_creation = element.created_at
-          const indicateur = this.indicateur.nom
-          const bailleurs = this.indicateur.bailleur.nom
-          const unitee_de_mesure = this.indicateur.unitee_mesure.nom
-          const commentaire = ""
-          data.push({bailleurs,indicateur,unitee_de_mesure,valeurCible,valeurRealise,ecart,commentaire,created_at})
+          if(this.indicateur != undefined || this.indicateur != null) {
+            console.log(this.indicateur)
+            const indicateurs = this.indicateur
+            const valeurRealise = element.valeurRealise
+            const valeurCible = element.valeurCible
+            const valeurCumul = ''
+            const trimestre = element.trimestre
+            const annee_de_Suivi = element.anneeSuivi
+            const ecart =element.valeurEcart
+            const date_de_creation = element.created_at
+            const indicateur = indicateurs.nom
+            const bailleurs = indicateurs.bailleur.nom
+            const unitee_de_mesure = indicateurs.unitee_mesure.nom
+            const commentaire = ""
+            data.push({bailleurs,indicateur,unitee_de_mesure,valeurCible,valeurRealise,ecart,commentaire,date_de_creation})
+          }
+          
         });
         return data
         
@@ -185,8 +190,9 @@ export default {
     },
   },
   mounted() {
-    this.getSuivi()
     this.currentTache()
+    this.getSuivi()
+    
   },
 }
 </script>

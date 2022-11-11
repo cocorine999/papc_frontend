@@ -20,7 +20,7 @@
             </li>
             <li class="flex items-center text-blue-500">
               <router-link to="/dashboard" class="text-gray-600"
-                >projet{{ $route.params.id }}</router-link
+                >projet</router-link
               >
               <svg
                 class="w-3 h-3 mx-3 fill-current"
