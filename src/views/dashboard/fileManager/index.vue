@@ -60,6 +60,11 @@
     <!-- <div>
       <FileManager class="card-card rounded p-2" />
     </div> -->
+
+  
+
+
+   
     
     <div class="bg-white relative p-4 border hover:border-gray-300 shadow-inner my-6 ">
       <div class="flex justify-between items-center space-x-3 border-gray-300 border p-2">
@@ -830,6 +835,7 @@ export default {
     getFiles() {
       FichierService.get().then((data) => {
         let datas = data.data.data
+        this.fichiers = datas 
         let datasF = datas.fichiers
         let datasS =datas.shared
        
