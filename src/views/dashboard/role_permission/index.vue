@@ -132,19 +132,25 @@
                         permissions
                       </th>
                       <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                        Description
+                      </th>
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         actions
                       </th>
                     </tr>
                   </thead >
                   <tbody>
                    <tr v-for="(data,index) in filteredRole()" :key="index" class="bg-white border-b">
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td class="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
                        {{data.nom}}
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
                         <div class="flex space-x-4  flex-wrap ">
                           <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold my-2 text-white border-green-500 rounded-xl"> {{permission.nom}} </span>
                         </div>
+                      </td>
+                      <td class="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
+                       {{data.description}}
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
                         <div class="flex item-center justify-center">
@@ -257,6 +263,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
         });
       },
       createRole() {
+      
         this.value.forEach(element => {
           this.roles.role.push(element.id)
         })
@@ -295,32 +302,36 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
          if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + data.nom)) {
             RoleService.destroy(data.id).then((data) => {
             alert('suppression reuissie')
+            this.getRole()
           }).catch((e) => {
            alert(e)
           })
          }
       },
       updateRole() {
-        let roles =[]
-          console.log("les sauvegarde",this.saveUpdate)
-          this.saveUpdate.permissions.forEach(element => {
-          roles.push(element.id)
-        })
-        const data = {
-          nom:this.saveUpdate.nom,
-          description:this.saveUpdate.description,
-          permissions:roles
+        if (this.chargement == false) {
+          this.chargement = true
+          let roles =[]
+            console.log("les sauvegarde",this.saveUpdate)
+            this.saveUpdate.permissions.forEach(element => {
+            roles.push(element.id)
+          })
+          const data = {
+            nom:this.saveUpdate.nom,
+            description:this.saveUpdate.description,
+            permissions:roles
+          }
+          RoleService.update(this.saveUpdate.id,data).then((data) => {
+            this.$toast.success('Mise à jours effectué')
+            this.showModal = false
+            this.chargement = false
+          }).catch((e) => {
+            this.chargement = false
+            this.$toast.error(e)
+          })
+
         }
-        RoleService.update(this.saveUpdate.id,data).then((data) => {
-          const id =setInterval(() => { 
-            this.chargement = true
-          },3000);
-          clearInterval(id)
-          this.chargement = false
-        }).catch((e) => {
-          this.chargement = false  
-          console.log(e)
-        })
+        
       },
    
       addTag (newTag) {

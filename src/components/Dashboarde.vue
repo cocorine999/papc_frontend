@@ -44,6 +44,8 @@
     </vmodal>
     <!--Fin Modal de filtre -->
 
+    
+
     <!--La navigation  -->
     <nav v-if="currentRole!='bailleur'" class="flex flex-row justify-between text-sm font-semibold"
       aria-label="Breadcrumb">
@@ -118,6 +120,8 @@
         </div> -->
     </div>
 
+   
+
     <!-- <div class="flex justify-end">
         <button @click="showPreview = true" class="text-white flex space-x-2 items-center bg-blue-500 px-4 py-2 rounded-md">
           <span class="h-5 w-5  "><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M464 128H272l-64-64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48z"></path></svg></span>
@@ -128,6 +132,7 @@
     <!--fin filte et button de modification  -->
 
     <!-- partie description et budgetaire  -->
+    
     <div class="stat gap-2 mb-6 mt-8">
       <description :image="images" :projet="projet"></description>
       <budgetaire :projet="projet"></budgetaire>
@@ -172,7 +177,6 @@ import Titre from "@/components/Titre";
 import Vtable from "@/components/Vtable";
 import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
-import { mapGetters, mapMutations, mapActions } from "vuex";
 import Budgetaire from '@/components/Budgetaire.vue';
 import Description from '@/components/Description.vue';
 import Preview from '@/components/Preview.vue';
@@ -183,7 +187,7 @@ import OtherGraphe from '@/components/OtherGraphe.vue';
 import ProjetService from "@/services/modules/projet.service.js";
 import FichierService from "@/services/modules/fichier.service.js";
 import { API_BASE_URL } from "@/services/configs/environment.js";
-
+import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 export default {
   props: ['projet'],
   components: {
@@ -235,6 +239,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('projets', {
+      detailsProjet: "GET_DETAILS_PROJET"
+    }),
     gotoCadreLogique() {
       this.$router.push({name:'projets_id_cadreLogique',params:{id:this.$route.params.id}})
     },
@@ -259,6 +266,10 @@ export default {
         ProjetService.update(id, formData).then(() => {
           this.$toast.success('La couverture à éte bien changer')
           this.sendRequest = false
+          this.detailsProjet(this.projet.id).then((response) => {
+            this.projet = response.data.data
+            console.log("le projet statistique",response.data.data)
+          })
           this.showUpdateImage = false
         }).catch((error) => {
           if (error.response) {
@@ -286,6 +297,7 @@ export default {
         FichierService.create(formData).then(() => {
           this.$toast.success('televersement reuissi')
           this.sendRequest = false
+         
           this.showUpdateFile = false
         }).catch((error) => {
           this.sendRequest = false
@@ -338,6 +350,8 @@ export default {
       this.currentRole = this.currentUser.type
       console.log("role courant", this.currentUser)
     }
+
+   
   }
 };
 

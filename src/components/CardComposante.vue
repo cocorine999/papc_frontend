@@ -111,7 +111,7 @@ export default {
       clicks: 0,
       timer: null,
       showInput: false,
-      isValidate: null,
+      isValidate: false,
     }
   },
   methods: {

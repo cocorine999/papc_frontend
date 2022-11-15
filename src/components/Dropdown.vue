@@ -1,12 +1,15 @@
 <template>
-  <div class="dropdown">
-    <button class="text-xs md:text-sm font-bold text-center text-gray-900  rounded-md ">
-      <i class="bx bx-dots-vertical-rounded bx-sm pr-2"></i>
-    </button>
-    <div class="dropdown-content">
-    <span class="option cursor-pointer" @click.stop="actions(link.name)" v-for="(link, indice) in option" :key="indice">{{link.name}}</span>
+  <div>
+    <div class="dropdown">
+      <button class="text-xs md:text-sm font-bold text-center text-gray-900  rounded-md ">
+        <i class="bx bx-dots-vertical-rounded bx-sm pr-2"></i>
+      </button>
+      <div class="dropdown-content">
+        <span class="option cursor-pointer" @click.stop="actions(link.name)" v-for="(link, indice) in option" :key="indice">{{link.name}}</span>
+      </div>
+    </div>
   </div>
-</div>
+  
 </template>
 
 <script>
@@ -14,7 +17,7 @@ export default {
   props:['option'],
   data() {
     return {
-
+      demo:false
     }
   },
   methods: {
@@ -59,7 +62,7 @@ export default {
 .dropdown-content {
   display: none;
   position: absolute;
-  right: 20px;
+  top: 20px;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);

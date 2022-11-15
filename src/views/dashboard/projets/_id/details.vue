@@ -8,7 +8,6 @@
 
 import Dashboard from "@/layouts/Dashboard";
 
-
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
 import Dashboarde from '@/components/Dashboarde.vue';
@@ -16,7 +15,6 @@ import Dashboarde from '@/components/Dashboarde.vue';
 
 export default {
   components: {
-
     Dashboard,
     Dashboarde,
   },
@@ -33,7 +31,6 @@ export default {
   },
 
   methods: {
-    
     ...mapActions('projets', {
       detailsProjet: "GET_DETAILS_PROJET"
     }),
@@ -42,7 +39,7 @@ export default {
         if(element.slug ==='voir-details-projet') {
           this.detailsProjetVisible = true
         }  
-        });
+      });
     },
   },
 

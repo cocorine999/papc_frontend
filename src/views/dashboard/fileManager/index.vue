@@ -61,7 +61,9 @@
       <FileManager class="card-card rounded p-2" />
     </div> -->
 
-  
+    <pre>
+      {{allFiles}}
+    </pre>
 
 
    
@@ -86,7 +88,7 @@
           </div> -->
         
           <div> 
-            <search-bar ></search-bar>
+            <search-bar @search="getSearchValue" ></search-bar>
           </div>
         </div>
         
@@ -709,6 +711,7 @@ export default {
       showModal2:false,
       showModal3:false,
       chargement:false,
+      search:'',
       title:'',
       line:false,
       mosaique:true,
@@ -772,6 +775,7 @@ export default {
       main2:false,
       programmeId:'',
       usersId:[],
+      allFiles:[],
       fichierVisible:false,
       fichierAdd:false
     }
@@ -832,13 +836,14 @@ export default {
         
       });
     },
+    getSearchValue(data) {
+      alert(data)
+    },
     getFiles() {
       FichierService.get().then((data) => {
         let datas = data.data.data
-        this.fichiers = datas 
         let datasF = datas.fichiers
         let datasS =datas.shared
-       
         this.fichiers = datasF
         this.fichiersAno = datasF.ano
         this.fichiersReponse = datasF.reponseAno
@@ -849,6 +854,8 @@ export default {
         this.sharedReponse = datasS.reponseAno
         this.sharedProjet = datasS.projet
         this.sharedAutre = datasS.autre
+        this.allFiles = [].concat(datasF.ano,datasF.reponseAno,datasF.projet,datasF.autre,datasS.ano,datasS.reponseAno,datasS.projet,datasS.autre)
+        console.log('tous mes fichiers',this.allFiles)
       
       }).catch((e) => {
         console.log(e)

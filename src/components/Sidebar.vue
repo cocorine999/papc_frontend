@@ -624,12 +624,7 @@
           </router-link>
         </div>
 
-        <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
-          <router-link to="/dashboard/config/main_oeuvre" style="width: 100%"
-            class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
-            <span class="font-semibold text-xs">Main d'oeuvre</span>
-          </router-link>
-        </div>
+        
 
 
         <div v-if="siteVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
@@ -638,12 +633,7 @@
             <span class="font-semibold text-xs">Sites</span>
           </router-link>
         </div>
-        <div class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
-          <router-link to="/dashboard/config/backup" style="width: 100%"
-            class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
-            <span class="font-semibold text-xs">Frequence de sauvegarde</span>
-          </router-link>
-        </div>
+       
         <div v-if="alertVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link to="/dashboard/config/alert" style="width: 100%"
             class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer">

@@ -8,7 +8,7 @@
       </vmodal>
      
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="createAudit" class="p-3 w-full" >
+        <form action="" @submit.prevent="saveAudit" class="p-3 w-full" >
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Prestataire <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input  v-model="audit.entreprise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
@@ -47,7 +47,7 @@
           </div>
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Projets <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <multiselect v-model="audit.projetId" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect v-model="audit.projetId" :options="projets"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
           </div>
 
           <div class="py-2 my-4 flex justify-center space-x-8">
@@ -114,6 +114,7 @@
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Date de transmission</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Etat avancement</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Statut de l'audit</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Date de creation</th>
              
              <!--  <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Rapport de l'audit</th> -->
               <th class="p-3 border border-gray-500 text-center  whitespace-nowrap leading-4 text-primary tracking-wider">Actions</th>
@@ -145,6 +146,8 @@
                 </div>
               </td> -->
               
+              <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs">{{audit.created_at}}</td>
+              
               <td class="p-3 whitespace-no-wrap text-center border border-gray-500 text-xs  leading-5">
                 <div class="flex item-center justify-center">
                   <div title="details" @click="previewRapport(audit.rapport[0])" class="cursor-pointer w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
@@ -160,6 +163,7 @@
                 </div>
                 </div>      
               </td>
+             
             </tr> 
             <!--Specifier le nombre de ligne +1 de la table -->
                       
@@ -242,7 +246,7 @@ export default {
     selectProjet ({ nom}) {
       return `${nom}`
     },
-    createAudit() {
+    saveAudit() {
         if(this.chargement == false) {
           this.chargement = true
           const data = this.audit
