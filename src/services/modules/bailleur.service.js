@@ -18,7 +18,7 @@ const BailleursService = {
     },
 
     update(slug, params) {
-      return ApiService.update("bailleurs", slug, params);
+      return ApiService.post(`bailleur/${slug}/update`,params);
     },
 
     destroy(slug) {

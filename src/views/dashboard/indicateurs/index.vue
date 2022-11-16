@@ -47,7 +47,7 @@
                 <input v-model="suiviIndicateurs.annee" @change="verifyValeurCible(suiviIndicateurs.annee)" required
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   type="number" placeholder="" />
-              </div>
+                </div>
 
               <div v-if="isValeurCibleUse" class="my-true">
 
@@ -115,12 +115,14 @@
 
                 </div>
               </div>
+
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire
                   <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <textarea v-model="suiviIndicateurs.commentaire"
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                  rows="3"></textarea>
+                  rows="3">
+                </textarea>
               </div>
 
               <div class="py-2 my-4 flex justify-center space-x-8">
@@ -286,7 +288,7 @@ export default {
         { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: true, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: true, cle: 'id', value: 'nom', errors: [] },
+        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
         { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -295,7 +297,7 @@ export default {
       cols: 2,
       champsRecherche: [
         { name: 'Indicateur', key: 'nom', type: 'text', placeholdere: "Donnez un nom d'indicateur", isSelect: false, isTextArea: false, data: '', required: false },
-        { name: 'Année de base', key: 'anneeDeBase', type: 'year', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: false, },
+        { name: 'Année de base', key: 'anneeDeBase', type: 'numer', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: false, },
         { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: true, cle: 'id', value: 'nom', required: false, },
         { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: false, cle: 'id', value: 'nom', errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'sigle' },
@@ -658,6 +660,7 @@ export default {
         $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
       })
     },
+    
     async supprimer(indicateur) {
       if (window.confirm("Voulez-vous supprimer cette unitee de gestion  " + indicateur.nom))
         await this.deleteIndicateur(indicateur.id)

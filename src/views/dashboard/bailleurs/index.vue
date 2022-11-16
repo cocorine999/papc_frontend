@@ -184,7 +184,7 @@ import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
 import Dropdown from '@/components/Dropdown.vue'
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import extractFormData from "@/utils/extract-data";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import BailleurService from "@/services/modules/bailleur.service.js";
@@ -387,6 +387,12 @@ export default {
   },
 
   computed: {
+    ...mapState({
+     
+      loading: state => state.loading,
+      errors: state => state.errors
+    }),
+
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
@@ -586,16 +592,9 @@ export default {
               }
             }
           ).catch((error) => {
-            this.sendRequest = false
-            if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-            } else if (error.request) {
-
-            } else {
-
-            }
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+            this.champs.map(value => value.errors = this.erreurs[value.key])          
           })
 
 
@@ -625,18 +624,11 @@ export default {
               this.sendRequest = false
             }
           }).catch((error) => {
-            this.sendRequest = false
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+            this.champs.map(value => value.errors = this.erreurs[value.key])          
             this.getImage()
-            if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-            } else if (error.request) {
-              // Demande effectuée mais aucune réponse n'est reçue du serveur.
-              //console.log(error.request);
-            } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-            }
+           
           })
         }
       }

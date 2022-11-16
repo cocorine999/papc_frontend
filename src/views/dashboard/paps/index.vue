@@ -4,7 +4,7 @@
     <div v-if="showModal">
       <ModalTopRight :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" submitText="Creer un pap" @sendForm="sendForm" ></vform>
+          <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" ></vform>
         </div>
       </ModalTopRight>
     </div>
@@ -32,6 +32,7 @@
         </vmodal>
     </div>
 
+    
     <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
@@ -64,25 +65,29 @@
       
     </nav>
 
-    <div class="flex items-center justify-between my-2" >
+    <div class="flex justify-between items-center my-2" >
       
       <div class="flex space-x-4">
         <span  class="inline-block cursor-pointer  border-b-8 font-bold text-sm uppercase    border-primary py-2">Tableau recapitulatif </span> 
       </div>
-      <button  @click="showModal2 = true" v-if="papImporter" title="importez les données"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
+
+      <div class="flex space-x-3">
+        <button  @click="showModal2 = true" v-if="papImporter" title="importez les données"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
          <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
-        <span class="mx-2 text-sm font-semibold">Importez les données</span>
-      </button>
-      <json-excel v-if="papExporter" :data="json_data()" header="PAP" type="xlsx" :name="title_csv()"  >
-          <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
-            <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
-            <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
-          </button>
-      </json-excel>
-      <button v-if="papAdd" @click="addPap" title="ajouter un tabelau"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-        <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span> 
-      </button>
+          <span class="mx-2 text-sm font-semibold">Importez les données</span>
+       </button>
+        <json-excel v-if="papExporter" :data="json_data()" header="PAP" type="xlsx" :name="title_csv()"  >
+            <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+              <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
+            </button>
+        </json-excel>
+
+        <button v-if="papAdd" @click="addPap" title="ajouter un tabelau"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+          <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span> 
+        </button>
+      </div>
     </div>
     
      <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
@@ -106,7 +111,7 @@ import Vmodal from '@/components/Vmodal'
 
 import Dashboard from '@/layouts/Dashboard'
 import JsonExcel from "vue-json-excel"
-
+import PapService from "@/services/modules/paps.service";
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData } from '@/utils/index'
 
@@ -125,6 +130,7 @@ export default {
   },
   data() {
     return {
+      sendRequest: false,
       showModal:false,
       showModal2:false,
       showInput:true,
@@ -148,7 +154,7 @@ export default {
         {name:'Site', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
         {name:' Nom et prenoms', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Sexe', key:'sexe',type:'',placeholdere:"Selectionnez le sexe",isSelect:true,isTextArea:false,data:'',options:this.sexe, cle: 'sigle', value: 'nom',required:true,errors : []},
-        {name:' Contact ', key:'contact',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' Contact ', key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Référence Pièces identité', key:'referencePieceIdentite',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Statut', key:'statut',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Mode de paiement', key:'modeDePaiement',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
@@ -259,17 +265,13 @@ export default {
           });
 
     },
-
-
-    
     close() {
       this.showCloseModal()
-
       this.resetForm
     },
     title_csv() {
-        return "paps-" +"-" + new Date()
-      },
+      return "paps-" +"-" + new Date()
+    },
     
     json_data(){
         let tab = [];
@@ -321,7 +323,6 @@ export default {
     },
 
     importData() {
-  
       const formData = new FormData();
       formData.append('fichier', this.file);
       this.importSinistre(formData).then((data) => {
@@ -341,7 +342,7 @@ export default {
                  pap.sexe.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  pap.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
 
     async supprimer(pap) {
       if(window.confirm("Voulez-vous supprimer ce pap " + pap.nom + ' '+ pap.prenoms))
@@ -349,27 +350,24 @@ export default {
     },
 
     resetForm(){
-
       this.champs = this.champs.map(item => { item.data = ''; return item})
-      
       window.document.getElementById('vform').reset()
 
       this.pap = {}
     },
     
     async updateInputData(id, attribut, value) {
-        console.log('mise a jour');
-          await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
-            if(this.hasErrors[attribut] !== undefined)
-              alert(this.hasErrors[attribut])            
-          }).finally(() => {
-            $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
-          })
+      console.log('mise a jour');
+      await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
+        if(this.hasErrors[attribut] !== undefined)
+        alert(this.hasErrors[attribut])            
+      }).finally(() => {
+        $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+      })
 
     },
 
     sendForm() {
-
       this.champs = this.champs.map(item => { item.errors = []; return item})
 
       let pap = extractFormData(this.champs, this.papAttributs)
@@ -379,18 +377,15 @@ export default {
       pap.siteId = pap.siteId.id
 
       pap.sexe = pap.sexe.sigle
+      PapService.create(pap).then((data) => {
+        this.$toast.success("enregistrement éffectué avec success")
+        this.showModal = false
+      }).catch((e) => {
+        this.$toast.error(e)
+      })
+    },
 
-      console.log(pap)
-      
-      this.savePap(pap).then(response => {
-          if(response.status == 200 || response.status == 201){
-              this.close()
-          }
-
-        })
-
-    }
-    
+   
   },
 
   watch: {

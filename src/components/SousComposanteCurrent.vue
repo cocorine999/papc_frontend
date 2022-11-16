@@ -713,41 +713,50 @@ export default {
         this.champs = this.champs.map(item => { item.errors = []; return item})
 
         let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
-
-        sousComposante.composanteId = this.valueFiltre.id
-                
-        if(this.sousComposante?.id)
-        {
-
-          this.updateSousComposante({sousComposante: sousComposante, id : this.sousComposante?.id})
-            .then(response => {
-              
-              if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.valueFiltre.id);
-                this.close()
-              }
-
-            })
-            .finally((error) => {
-              this.sendRequest = false;
-            })
-
+        if(this.valueFiltre == undefined || this.valueFiltre == null) {
+          this.$toast.error('Composante indefinit ')
+          this.sendRequest = false;
+          this.close()
         }
-        else
-        {
-          
-          this.saveSousComposante(sousComposante)
-          
-            .then(response => {
-              if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.valueFiltre.id);
-                this.close()
-              }
+        else {
+          sousComposante.composanteId = this.valueFiltre.id
+                
+          if(this.sousComposante?.id)
+          {
+            this.updateSousComposante({sousComposante: sousComposante, id : this.sousComposante?.id})
+              .then(response => {
+                
+                if(response.status === 200 || response.status === 201){
+                  this.fetchSousComposantes(this.valueFiltre.id);
+                  this.close()
+                }
 
-            })
-            .finally((error) => {          
-              this.sendRequest = false;    
-            })
+              })
+              .finally((error) => {
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs.map(value => value.errors = this.erreurs[value.key])
+              })
+
+          }
+          else
+          {
+            
+            this.saveSousComposante(sousComposante)
+            
+              .then(response => {
+                if(response.status === 200 || response.status === 201){
+                  this.fetchSousComposantes(this.valueFiltre.id);
+                  this.close()
+                }
+
+              })
+              .finally((error) => {          
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs.map(value => value.errors = this.erreurs[value.key])   
+              })
+          }
         }
       }
     },

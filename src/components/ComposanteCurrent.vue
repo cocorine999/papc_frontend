@@ -600,7 +600,9 @@ props:['valueProfondeur'],
               }
 
             })
-            .finally((error) => {              
+            .finally((error) => {
+              this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+              this.champs.map(value => value.errors = this.erreurs[value.key])              
               this.sendRequest = false;
             });
 
@@ -617,9 +619,11 @@ props:['valueProfondeur'],
 
             })
             .finally((error) => {              
+              this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
               this.sendRequest = false;
+              this.champs.map(value => value.errors = this.erreurs[value.key])
             });
-        }
+          }
       }
     },
 

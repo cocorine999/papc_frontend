@@ -1380,7 +1380,9 @@ export default {
               }
             })
             .finally((error) => {
+              this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
               this.sendRequest = false;
+              this.champs2.map(value => value.errors = this.erreurs[value.key])   
             });
         } else {
           this.savePlanDeDecaissement(planDeDecaissement)
@@ -1391,7 +1393,9 @@ export default {
               }
             })
             .finally((error) => {
-              this.sendRequest = false;
+              this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs2.map(value => value.errors = this.erreurs[value.key])   
             });
         }
       }
@@ -1408,7 +1412,7 @@ export default {
 
         let activite = extractFormData(this.champs, this.activiteAttributs);
 
-        activite.composanteId = this.composanteId;
+       
 
         activite.structureResponsableId = activite.structureResponsableId.id;
 
@@ -1417,8 +1421,13 @@ export default {
         activite.userId = activite.structureAssocieId;
 
         activite["type"] = activite.types.type;
-
-        if (this.activite?.id) {
+        if(activite.composanteId == undefined || activite.composanteId == null) {
+          this.$toast.error('Composante indefinit ')
+          this.sendRequest = false;
+          this.close()
+        } else {
+          activite.composanteId = this.composanteId;
+          if (this.activite?.id) {
           this.updateActivite({ activite: activite, id: this.activite?.id })
             .then((response) => {
               if (response.status === 200 || response.status === 201) {
@@ -1427,7 +1436,9 @@ export default {
               }
             })
             .finally((error) => {
+              this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
               this.sendRequest = false;
+              this.champs.map(value => value.errors = this.erreurs[value.key])   
             });
         } else {
           this.saveActivite(activite)
@@ -1438,8 +1449,11 @@ export default {
               }
             })
             .finally((error) => {
-              this.sendRequest = false;
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs.map(value => value.errors = this.erreurs[value.key])   
             });
+        }
         }
       }
     },

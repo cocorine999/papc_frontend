@@ -459,7 +459,6 @@ export default {
   methods: {
 
     changeProjet(projet) {
-
       if (this.isClick) {
         this.projetFiltre = this.newProjet
         this.composanteFiltre = this.newComponent
@@ -830,33 +829,43 @@ export default {
         }); */
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
-        console.log('tache', tache)
-        console.log(this.valueFiltre)
-        tache['activiteId'] = this.valueFiltre.id;
+       
 
-        if (this.tache?.id) {
-          this.updateTache({ tache: tache, id: this.tache?.id })
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchTaches(this.valueFiltre.id);
-                this.close();
-              }
-            })
-            .finally((error) => {
-              this.sendRequest = false;
-            });
-        } else {
-          this.saveTache(tache)
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchTaches(this.valueFiltre.id);
-                this.close();
-              }
-            })
-            .finally((error) => {
-              this.sendRequest = false;
-            });
-        }
+          if(this.valueFiltre == undefined || this.valueFiltre == null) {
+            this.$toast.error('Activité non definit  ')
+            this.sendRequest = false;
+            this.close()
+          }else {
+            tache['activiteId'] = this.valueFiltre.id;
+            if (this.tache?.id) {
+            this.updateTache({ tache: tache, id: this.tache?.id })
+              .then((response) => {
+                if (response.status === 200 || response.status === 201) {
+                  this.fetchTaches(this.valueFiltre.id);
+                  this.close();
+                }
+              })
+              .finally((error) => {
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs2.map(value => value.errors = this.erreurs[value.key])   
+
+              });
+            } else {
+              this.saveTache(tache)
+                .then((response) => {
+                  if (response.status === 200 || response.status === 201) {
+                    this.fetchTaches(this.valueFiltre.id);
+                    this.close();
+                  }
+                })
+                .finally((error) => {
+                  this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                  this.sendRequest = false;
+                  this.champs2.map(value => value.errors = this.erreurs[value.key])   
+                });
+            }
+          }
 
       }
     },
