@@ -2,6 +2,7 @@
   <div class="relative flex flex-col">
     <div class="overflow-x-auto">
       <div class="py-2  inline-block min-w-full">
+       
         <div class=" overflow-x-auto">
           <table class="min-w-full">
             <thead class="border-b bg-gray-300">
@@ -17,8 +18,7 @@
                   <span v-if="head.monaie != undifined"> {{head.name}}   XOF </span>
                   <span v-else> {{head.name}}   </span>
 
-                
-                  
+              
                   </th>
                  <th scope="col" v-if="statut" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Statut</th>
                 <th scope="col" v-if="actions != undefined" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Actions</th>
@@ -116,13 +116,14 @@ export default {
           for (let index = this.perPage * this.currentPage - this.perPage; index < this.perPage * this.currentPage; index++) {
             if(index <= this.totalPages-1) {
               const element = this.datas[index];
+              //console.log(index)
               datas.push(element)
             }
           }
           return datas
         }
-      
     },
+   
   },
   methods: {
 

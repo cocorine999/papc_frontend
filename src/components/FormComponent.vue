@@ -19,11 +19,12 @@
 
     <div class="w-full mt-10 flex justify-center">
       <button type="submit" class="p-2 mr-2 overflow-hidden text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        <span class="mx-2 text-xs  md:text-sm font-semibold">Enrégistrer & Fermer</span>
+        <span class="mx-2 text-xs  md:text-sm font-semibold">Enrégistrer</span>
       </button> 
-      <button class="p-2 ml-2 overflow-hidden text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-        <span class="mx-2 text-xs  md:text-sm font-semibold">Enrégistrer & Ajouter</span>
+      <button type="reset" class="p-2 mr-2 overflow-hidden text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
+        <span class="mx-2 text-xs  md:text-sm font-semibold">Annuler</span>
       </button> 
+     
     </div>
     
   </form>

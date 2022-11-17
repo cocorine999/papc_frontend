@@ -281,8 +281,6 @@ export default {
           {name:'travaux',cle:'travaux',width:"w-24"},
           {name:'Responsable sociologue',cle:'responsableSociologue',width:"w-24"},
           {name:'Date de creation',cle:'dateDeCreation',width:"w-28"},
-         
-         
         ],
       actions: [
         { name: "modifier", iconne: "" },
@@ -407,11 +405,8 @@ export default {
 
     modifierMod(mod) {
       this.title = "Modification du MOD " + mod.user.nom;
-
       this.submitText = "Modifier";
-
       this.setMod(mod);
-
       this.modAttributs.forEach((item) => {
         this.champs.find((value, index) => {
           if (value.key === item) {
@@ -457,7 +452,6 @@ export default {
 
     close() {
       this.showCloseModal();
-
       this.resetForm();
     },
 

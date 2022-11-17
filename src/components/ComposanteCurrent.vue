@@ -25,7 +25,7 @@
           </ol>
         </div>
         <div>
-          <search-bar ></search-bar>
+          <search-bar @search="getSearchValue" ></search-bar>
         </div>
       </nav> 
 
@@ -35,14 +35,14 @@
         <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">les composantes </span>
       </div>
       
-      <button  v-if="seeComposant && composanteAdd " @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+      <button  v-if=" composanteAdd " @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
         <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
         <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
       </button>
      
     </div>
     
-    <div v-if="seeComposant">
+    <div v-if="!isSearch">
       <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
@@ -81,6 +81,8 @@
         </div>
       </div>
      
+     
+
       <div v-if="pending" >
         <empty v-if="enAttente.length ==0">Ce composant est vide !!!</empty>
         <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
@@ -183,6 +185,34 @@
        
       </div>
     </div>
+    <div v-else>
+      <h1 class="py-2 text-xl text-bold ">Resultat de la  Recherche ...</h1>
+      <div v-if="pending" >
+        <empty v-if="filtere.length ==0">Ce composant est vide !!!</empty>
+        <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in filtere" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.codePta"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
+        </div>
+       
+      </div>
+    </div>
   
   </div>
  
@@ -237,6 +267,8 @@ props:['valueProfondeur'],
       isStateChange:false,
       seeComposant:true,
       seeSuivi:false,
+      search:'',
+      isSearch:false,
       showInput:true,
       seeStatistique:false,
       composanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
@@ -281,6 +313,17 @@ props:['valueProfondeur'],
       loading : state => state.loading,
       errors : state => state.errors
     }),
+    allData() {
+      if(this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return  [].concat(this.terminer,this.enAttente,this.enCours,this.retardData)
+      }
+    },
+    filtere: function () {
+        var self = this;
+          return this.allData.filter(function (data) {
+          return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
 
     terminer() {
       if(this.composantes != undefined) {
@@ -348,6 +391,17 @@ props:['valueProfondeur'],
 
     suivreMyComposant(composante) {
       this.$router.push({name:'dashboard_projets_composantes_globale_suivis',params:{id:composante.id}})
+    },
+    getSearchValue(data) {
+      if(data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
+      
     },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {

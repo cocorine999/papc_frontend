@@ -4,7 +4,9 @@
       <route-name title="entreprises" />
       <div v-if="showModal">
         <modal-top-right title="Ajouter" v-on:close="close">
-          <form-component :form="form" @send="sendForm" />
+          <div class="px-4">
+            <form-component :form="form" @send="sendForm" />
+          </div>
         </modal-top-right>
       </div>
 
