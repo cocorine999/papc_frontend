@@ -258,6 +258,7 @@ export default {
       showReponse: false,
       anosId: '',
       showComment: false,
+      anos:[],
       anosReponses: []
     }
   },
@@ -272,7 +273,6 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       ano: "anos/getAno",
-      anos: "anos/getAnos",
       typeAnos: 'typeAnos/getTypeAnos',
       bailleurs: 'bailleurs/getBailleurs',
       currentUser: "auths/GET_AUTHENTICATE_USER",
@@ -280,6 +280,32 @@ export default {
   },
 
   methods: {
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchAnos() {
+      this.active()
+      AnosService.get().then((data) => {
+        const datas = data.data.data
+        this.anos = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
     previewFiles(event) {
       const data = event.target.files
       for (const property in data) {
@@ -391,7 +417,6 @@ export default {
 
     // call action
     ...mapActions("anos", {
-      fetchAnos: "FETCH_LIST_ANO",
       saveAno: "STORE_ANO",
       updateAno: "UPDATE_ANO",
       deleteAno: "DESTROY_ANO",
@@ -404,7 +429,7 @@ export default {
     }),
 
     ...mapActions('typeAnos', { fetchTypeAnos: 'FETCH_LIST_TYPE_ANO' }),
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+  
 
     resetForm() { //delete data in form after submit
       this.champs = this.champs.map(item => { item.data = ''; return item })

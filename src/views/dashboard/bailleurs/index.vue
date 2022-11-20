@@ -381,7 +381,8 @@ export default {
       logo: {},
       idBailleur: '',
       sendRequest: false,
-      code: ''
+      code: '',
+      bailleurs:[]
 
     };
   },
@@ -397,7 +398,7 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       bailleur: "bailleurs/getBailleur",
-      bailleurs: "bailleurs/getBailleurs",
+
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
@@ -452,6 +453,26 @@ export default {
     disabled() {
       this.$store.dispatch('disabled')
     },
+     fetchBailleurs(programme) {
+      this.active()
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+        const datas = data.data.data
+        this.bailleurs = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
@@ -475,7 +496,7 @@ export default {
     },
 
     ...mapActions("bailleurs", {
-      fetchBailleurs: "FETCH_LIST_BAILLEUR_OF_PROGRAMME",
+     
       saveBailleur: "STORE_BAILLEUR",
       updateBailleur: "UPDATE_BAILLEUR",
       deleteBailleur: "DESTROY_BAILLEUR",

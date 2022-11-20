@@ -40,7 +40,7 @@
         </ol>
       </div>
       <div>
-        <search-bar></search-bar>
+        <search-bar  @search="getSearchValue"></search-bar>
       </div>
     </nav>
 
@@ -61,9 +61,7 @@
       </div>
     </div>
 
-    <!-- le filtre -->
-    <div v-if="seeTache && tacheVisible ">
-        <div class="2">
+    <div class="2">
           <!--Filtre sur projet -->
           <div class="w-full grid sm:grid-cols-2 sm:gap-2">
            <div class="mb-3">
@@ -104,8 +102,11 @@
             </div>
               
           </div>
-        </div>
+    </div>
 
+    <!-- le filtre -->
+    <div v-if="seeTache && tacheVisible ">
+      <div  v-if="!isSearch" >
         <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
           <div class="flex   justify-between flex-wrap items-center">
              <!--Filtre sur projet -->
@@ -165,9 +166,9 @@
         </div>
      
         <div v-if="inProgress">
-          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="enCours.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in enCours" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -194,10 +195,11 @@
             </div>
           </div>
         </div>
+
         <div v-if="pending">
-          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="enAttente.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in enAttente" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -226,9 +228,9 @@
         </div>
 
          <div v-if="success">
-          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="terminer.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in terminer" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -256,9 +258,9 @@
           </div>
         </div>
          <div v-if="retard">
-          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="retardData.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in retardData" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -285,7 +287,38 @@
             </div>
           </div>
         </div>
-        
+      </div>
+      <div v-else>
+        <empty v-if="filtere.length === 0">Tache vide !!!</empty>
+        <div v-else>
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in filtere" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  :debut="tache.debut"
+                  :fin="tache.fin"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -390,6 +423,8 @@ export default {
       taches: [],
       suivis: [],
       results: [],
+      search:'',
+      isSearch:false,
     };
   },
 
@@ -397,6 +432,17 @@ export default {
     ...mapGetters({
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+    allData() {
+      if(this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return  [].concat(this.terminer,this.enAttente,this.enCours,this.retardData)
+      }
+    },
+    filtere: function () {
+        var self = this;
+          return this.allData.filter(function (data) {
+          return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
     terminer() {
       if(this.taches != undefined) {
         const datas = []
@@ -449,7 +495,17 @@ export default {
     ...mapActions({
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER",
     }),
-
+    getSearchValue(data) {
+      if(data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
+      
+    },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
           if(element.slug ==='voir-une-tache') {

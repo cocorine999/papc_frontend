@@ -71,8 +71,7 @@
       </vmodal>
     </div>
 
-    <div class="select w-52 
- mb-2">
+    <div class="select w-52 mb-2">
 
       <select id="choice" v-model="version" @change="choiceVersion(version)"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 ">
@@ -1769,9 +1768,6 @@
         </div>
       </div>
     </div>
-
-
-
   </div>
 </template>
 
@@ -1813,8 +1809,6 @@ export default {
       exporterSuiviPta: false,
       exporterSuiviRePpm: false,
       exporterSuiviRePta: false,
-
-
     }
   },
   computed: {
@@ -2252,6 +2246,12 @@ export default {
     chargement(bool) {
       this.$store.dispatch('SET_LOADER', bool)
     },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         if (element.slug === 'exporter-un-suivi-ppm') {
@@ -2330,12 +2330,13 @@ export default {
           annee: Number(annee)
         }
       }
-
+      this.active()
       PtabService.getPta(data).then((data) => {
         this.ptab = data.data.data
+        this.disabled()
       }).catch((e) => {
         this.$toast.error(e)
-
+        this.disabled()
       })
     },
     getPtaRevise() {
@@ -2354,12 +2355,13 @@ export default {
           annee: Number(annee)
         }
       }
-
+      this.active()
       PtabService.getReviser(data).then((data) => {
         this.ptabR = data.data.data
+        this.disabled()
       }).catch((e) => {
         this.$toast.error(e)
-
+        this.disabled()
       })
     },
     getPtaReviseFiltre() {
@@ -2378,12 +2380,13 @@ export default {
           annee: Number(this.annee)
         }
       }
-
+      this.active()
       PtabService.getReviser(data).then((data) => {
         this.ptabR = data.data.data
+        this.disabled()
       }).catch((e) => {
         this.$toast.error(e)
-
+        this.disabled()
       })
     },
     getPtaFiltre() {
@@ -2404,14 +2407,16 @@ export default {
           ppm: this.ppm
         }
       }
-
+      this.active()
       PtabService.getFiltre(data).then((data) => {
         this.ptab = data.data.data
         this.openFiltre = false
         this.chargement(false)
+        this.disabled()
       }).catch((e) => {
         this.chargement(false)
         this.$toast.error(e)
+        this.disabled()
 
       })
     },

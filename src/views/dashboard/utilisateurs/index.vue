@@ -61,7 +61,7 @@ import Vmodal from '@/components/Vmodal'
 import ModalTopRight from '@/components/ModalTopRight'
 import Vtable from '@/components/Vtable'
 import Dashboard from '@/layouts/Dashboard'
-
+import UtilisateurService from "@/services/modules/utilisateur.service.js";
 import { mapActions, mapMutations, mapGetters} from "vuex";
 import extractFormData from '@/utils/extract-data'
 export default {
@@ -106,6 +106,7 @@ export default {
         utilisateurAdd:false,
         utilisateurDelete:false,
         utilisateurUpdate:false,
+        utilisateurs:[]
       });
       
     },
@@ -139,8 +140,7 @@ export default {
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
-      utilisateur: "utilisateurs/getUtilisateur",
-      utilisateurs: "utilisateurs/getUtilisateurs",
+     
       roles: "roles/getRoles",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
@@ -155,7 +155,6 @@ export default {
     }),
 
     ...mapActions("utilisateurs", {
-      fetchUtilisateurs: "FETCH_LIST_UTILISATEUR",
       saveUtilisateurs: "STORE_UTILISATEUR",
       updateUtilisateur: "UPDATE_UTILISATEUR",
       deleteUtilisateur: "DESTROY_UTILISATEUR",
@@ -163,6 +162,34 @@ export default {
     ...mapActions("roles", {
       fetchRoles: "FETCH_LIST_ROLE",
     }),
+
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchUtilisateurs() {
+      this.active()
+      UtilisateurService.get().then((data) => {
+        const datas = data.data.data
+        this.utilisateurs = datas
+        this.fetchRoles()
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
     getPermission() {
          this.currentUser.role[0].permissions.forEach(element => {
@@ -267,12 +294,8 @@ export default {
     if(!this.utilisateurVisible) {
       this.$router.push('/401-non-autorise')
     } 
-    this.fetchUtilisateurs().then((value) => {
-      setTimeout(() => {
-        console.log("Fetching list of programmes...")
-        this.fetchRoles()
-      }, 100);
-    })
+    this.fetchUtilisateurs()
+  
   },
    
 }

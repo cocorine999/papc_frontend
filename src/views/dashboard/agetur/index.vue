@@ -18,7 +18,7 @@
           
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Attributaires <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-             <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Selectionez un attribut" label="name" track-by="name"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+            <multiselect v-model="value" tag-placeholder="Ajouter un type utilisateur" placeholder="Selectionez un attribut" label="name" track-by="name"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="entreprises" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
           </div>
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Estimation de l'accord financement <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>

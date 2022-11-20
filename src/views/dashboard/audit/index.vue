@@ -226,6 +226,12 @@ export default {
       ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
     },
   methods: {
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
     supprimerAudit(data) {
         if ( window.confirm("Voulez-vous supprimer cette ligne ,operation est irreversible ") )
         {
@@ -281,10 +287,13 @@ export default {
         }
     },
     getAudit() {
+      this.active()
       AuditService.get().then((data) => {
         this.audits = data.data.data
+        this.disabled()
       }).catch((e) => {
         console.log(e)
+        this.disabled()
       })
     },
     getProjet() {

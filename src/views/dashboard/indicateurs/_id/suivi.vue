@@ -123,7 +123,14 @@ export default {
   },
 
   methods: {
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
     getSuivi() {
+      this.active()
       IndicateurSuiviService.mySuivis(this.$route.params.id).then((data) => {
         const datas = data.data.data
          datas.forEach(element => {
@@ -136,17 +143,18 @@ export default {
           const created_at = element.created_at
           this.dataTable.push({valeurRealise:valeurRealise,valeurCible:valeurCible,valeurEcart:valeurEcart,valeurCumul:valeurCumul,trimestre:trimestre,anneeSuivi:anneeSuivi, created_at:created_at})
         }) 
-        console.log("les suiivs",this.dataTable)
+       
+        this.disabled()
       }).catch((e) => {
         console.log(e)
+        this.disabled()
       })
     },
     
       title_csv() {
         return "suivi-indicateur-" + this.indicateur.nom + "-" + new Date()
       },
-
-     
+ 
     currentTache() {
       IndicateurService.get(this.$route.params.id).then((data) => {
         this.indicateur= data.data.data

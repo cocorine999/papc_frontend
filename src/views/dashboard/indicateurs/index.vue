@@ -320,6 +320,7 @@ export default {
       suiviIndicateurAdd: false,
       suiviIndicateurVisible: false,
       exporterIndicateur: false,
+      indicateurs:[]
     };
   },
   watch: {
@@ -412,7 +413,7 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       indicateur: "indiateurs/getIndicateur",
-      indicateurs: "indicateurs/getIndicateurs",
+     
       categories: "categories/getCategorie",
       bailleurs: "bailleurs/getBailleurs",
       categories: "categories/getCategories",
@@ -432,9 +433,51 @@ export default {
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
     }),
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchIndicateurs() {
+      this.active()
+      IndicateurService.get().then((data) => {
+        const datas = data.data.data
+        this.indicateurs= datas
+        setTimeout(() => {
+          console.log("Fetching list indicateurs...")
+            this.fetchBailleurs()
+            this.fetchCategories()
+            this.fetchUnite()
+            this.headers = [
+              { name: 'Indicateur', cle: 'nom', },
+              { name: 'Description', cle: 'description' },
+              { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
+              { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
+              { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesure, key: 'nom', updateKey: 'uniteeMesureId' },
+              { name: 'Valeur de base', cle: 'valeurDeBase' },
+              { name: 'Année de base', cle: 'anneeDeBase' },
+              { name: 'Date de création', cle: 'created_at' },
+            ]
+
+        }, 100);
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
     ...mapActions("indicateurs", {
-      fetchIndicateurs: "FETCH_LIST_INDICATEUR",
       saveIndicateur: "STORE_INDICATEUR",
       filtre: "FILTRE_INDICATEUR",
       updateIndicateur: "UPDATE_INDICATEUR",
@@ -713,25 +756,9 @@ export default {
         ]
       }
       else {
-        this.fetchIndicateurs().then((value) => {
-          setTimeout(() => {
-            console.log("Fetching list indicateurs...")
-            this.fetchBailleurs()
-            this.fetchCategories()
-            this.fetchUnite()
-            this.headers = [
-              { name: 'Indicateur', cle: 'nom', },
-              { name: 'Description', cle: 'description' },
-              { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
-              { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
-              { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesure, key: 'nom', updateKey: 'uniteeMesureId' },
-              { name: 'Valeur de base', cle: 'valeurDeBase' },
-              { name: 'Année de base', cle: 'anneeDeBase' },
-              { name: 'Date de création', cle: 'created_at' },
-            ]
-
-          }, 100);
-        })
+        this.fetchIndicateurs()
+         
+       
       }
     }
 

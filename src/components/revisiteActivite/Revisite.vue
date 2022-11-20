@@ -42,7 +42,7 @@
           </ol>
         </div>
         <div>
-          <search-bar></search-bar>
+          <search-bar @search="getSearchValue"></search-bar>
         </div>
       </nav>
 
@@ -116,8 +116,7 @@
         </button>
       </div>
 
-      <div v-if="seeActivite && activiteVisible">
-        <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
+      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
           <div class="flex items-center justify-between flex-wrap">
             <!--Filtre sur projet -->
             <div class="w-full grid grid-cols-2 items-center gap-4">
@@ -150,9 +149,12 @@
            
           </div>
 
-        </div>
+      </div>
 
-        <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
+      <div v-if="seeActivite && activiteVisible">
+      
+        <div v-if="!isSearch" class="version sans recherche">
+          <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
             <div class="flex  w-full justify-between  items-center">
               <!--Filtre sur projet -->
               <span class="uppercase font-bold  mb-2">Liste des activités </span>
@@ -209,123 +211,154 @@
                  
               </nav>
             </div>
-        </div>
-
-        <div v-if="success">
-          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
-          <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div  v-for="(activite, index) in terminer" :key="index">
-              <card-activite
-                :data="activite"
-                :bailleur="activite.bailleur.sigle"
-                :libelle="activite.nom"
-                :poids="activite.poids"
-                :montantEPM="activite.pret"
-                :montantNE="activite.budgetNational"
-                :debut="activite.debut"
-                :fin="activite.fin"
-                :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)"
-                @supprimer="supprimer(activite)"
-                @suivre="suivreMyActivite(activite)"
-                @gotoNext="gotoNext(activite)"
-                :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"
-              ></card-activite>
-              <!-- End cards Activités -->
           </div>
+
+          <div v-if="success">
+            <empty v-if="terminer.length === 0">activité vide !!!</empty>
+            <div v-else>
+              <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+                <div  v-for="(activite, index) in terminer" :key="index">
+                <card-activite
+                  :data="activite"
+                  :bailleur="activite.bailleur.sigle"
+                  :libelle="activite.nom"
+                  :poids="activite.poids"
+                  :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational"
+                  :debut="activite.debut"
+                  :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)"
+                  @supprimer="supprimer(activite)"
+                  @suivre="suivreMyActivite(activite)"
+                  @gotoNext="gotoNext(activite)"
+                  :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"
+                ></card-activite>
+                <!-- End cards Activités -->
+            </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="retard">
+            <empty v-if="retardData.length === 0">activité vide !!!</empty>
+            <div v-else>
+              <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+                <div  v-for="(activite, index) in retardData" :key="index">
+                <card-activite
+                  :data="activite"
+                  :bailleur="activite.bailleur.sigle"
+                  :libelle="activite.nom"
+                  :poids="activite.poids"
+                  :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational"
+                  :debut="activite.debut"
+                  :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)"
+                  @supprimer="supprimer(activite)"
+                  @suivre="suivreMyActivite(activite)"
+                  @gotoNext="gotoNext(activite)"
+                  :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"
+                ></card-activite>
+                <!-- End cards Activités -->
+            </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="pending">
+            <empty v-if="enAttente.length === 0">activité vide !!!</empty>
+            <div v-else>
+              <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+                <div  v-for="(activite, index) in enAttente" :key="index">
+                <card-activite
+                  :data="activite"
+                  :bailleur="activite.bailleur.sigle"
+                  :libelle="activite.nom"
+                  :poids="activite.poids"
+                  :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational"
+                  :debut="activite.debut"
+                  :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)"
+                  @supprimer="supprimer(activite)"
+                  @suivre="suivreMyActivite(activite)"
+                  @gotoNext="gotoNext(activite)"
+                  :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"
+                ></card-activite>
+                <!-- End cards Activités -->
+            </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="inProgress">
+            <empty v-if="enCours.length === 0">activité vide !!!</empty>
+            <div v-else>
+              <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+                <div  v-for="(activite, index) in enCours" :key="index">
+                <card-activite
+                  :data="activite"
+                  :bailleur="activite.bailleur.sigle"
+                  :libelle="activite.nom"
+                  :poids="activite.poids"
+                  :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational"
+                  :debut="activite.debut"
+                  :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)"
+                  @supprimer="supprimer(activite)"
+                  @suivre="suivreMyActivite(activite)"
+                  @gotoNext="gotoNext(activite)"
+                  :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"
+                ></card-activite>
+                <!-- End cards Activités -->
+            </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div v-if="retard">
-          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+        <div v-else>
+          <empty v-if="allData.length === 0">activité vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div  v-for="(activite, index) in retardData" :key="index">
-              <card-activite
-                :data="activite"
-                :bailleur="activite.bailleur.sigle"
-                :libelle="activite.nom"
-                :poids="activite.poids"
-                :montantEPM="activite.pret"
-                :montantNE="activite.budgetNational"
-                :debut="activite.debut"
-                :fin="activite.fin"
-                :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)"
-                @supprimer="supprimer(activite)"
-                @suivre="suivreMyActivite(activite)"
-                @gotoNext="gotoNext(activite)"
-                :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"
-              ></card-activite>
-              <!-- End cards Activités -->
-          </div>
+              <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+                <div  v-for="(activite, index) in allData" :key="index">
+                <card-activite
+                  :data="activite"
+                  :bailleur="activite.bailleur.sigle"
+                  :libelle="activite.nom"
+                  :poids="activite.poids"
+                  :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational"
+                  :debut="activite.debut"
+                  :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)"
+                  @supprimer="supprimer(activite)"
+                  @suivre="suivreMyActivite(activite)"
+                  @gotoNext="gotoNext(activite)"
+                  :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"
+                ></card-activite>
+                <!-- End cards Activités -->
             </div>
+              </div>
           </div>
         </div>
 
-        <div v-if="pending">
-          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
-          <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div  v-for="(activite, index) in enAttente" :key="index">
-              <card-activite
-                :data="activite"
-                :bailleur="activite.bailleur.sigle"
-                :libelle="activite.nom"
-                :poids="activite.poids"
-                :montantEPM="activite.pret"
-                :montantNE="activite.budgetNational"
-                :debut="activite.debut"
-                :fin="activite.fin"
-                :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)"
-                @supprimer="supprimer(activite)"
-                @suivre="suivreMyActivite(activite)"
-                @gotoNext="gotoNext(activite)"
-                :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"
-              ></card-activite>
-              <!-- End cards Activités -->
-          </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="inProgress">
-          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
-          <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div  v-for="(activite, index) in enCours" :key="index">
-              <card-activite
-                :data="activite"
-                :bailleur="activite.bailleur.sigle"
-                :libelle="activite.nom"
-                :poids="activite.poids"
-                :montantEPM="activite.pret"
-                :montantNE="activite.budgetNational"
-                :debut="activite.debut"
-                :fin="activite.fin"
-                :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)"
-                @supprimer="supprimer(activite)"
-                @suivre="suivreMyActivite(activite)"
-                @gotoNext="gotoNext(activite)"
-                :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"
-              ></card-activite>
-              <!-- End cards Activités -->
-          </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
 
       <div v-if="seePlan && planDecaissementVisible">
@@ -432,10 +465,23 @@ export default {
       planDecaissementAdd:false,
       planDecaissementUpdate:false,
       planDecaissementDelete:false,
-      StatistiqueVisible:false
+      StatistiqueVisible:false,
+      search:'',
+      isSearch:false,
     };
   },
   computed:{
+    allData() {
+      if(this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return  [].concat(this.terminer,this.enAttente,this.enCours,this.retardData)
+      }
+    },
+    filtere: function () {
+        var self = this;
+          return this.allData.filter(function (data) {
+          return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
     terminer() {
       if(this.activites != undefined) {
         const datas = []
@@ -488,7 +534,7 @@ export default {
     ...mapActions({
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER"
     }),
-
+    
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
        
@@ -523,6 +569,17 @@ export default {
             }
            
         });
+    },
+    getSearchValue(data) {
+      if(data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
+      
     },
 
 

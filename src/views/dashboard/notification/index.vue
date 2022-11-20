@@ -85,15 +85,23 @@ export default {
     }
   },
   methods: {
-    getNotification() {
-          NotificationService.get().then((data) => {
-            const datas = data.data.data
-           
-            this.notifications = datas
-          }).catch((e) => {
-            console.log(e)
-          })
-    },
+    active() {
+        this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
+      getNotification() {
+          this.active()
+            NotificationService.get().then((data) => {
+              const datas = data.data.data
+              this.notifications = datas
+              this.disabled()
+            }).catch((e) => {
+              console.log(e)
+              this.disabled()
+            })
+      },
      viewNotification(id,index) {
       const data = {
         id:id

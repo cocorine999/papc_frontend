@@ -238,7 +238,7 @@
                 </div>
               </div>
             </div>
-          </div>
+        </div>
 
       </div>
   </div>
@@ -308,7 +308,6 @@ export default {
       ],
       sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
       champs:[
-
         {name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
         {name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
@@ -359,8 +358,6 @@ export default {
       loading : state => state.loading,
       errors : state => state.errors
     }),
-
-
 
     ...mapGetters({
       projets: "projets/getProjets",

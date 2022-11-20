@@ -993,6 +993,13 @@ export default {
     customLabel ({  sigle }) {
       return ` ${sigle}`
     },
+
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
     
      getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
@@ -1051,15 +1058,16 @@ export default {
           annee:Number(this.annee),
           ppm: 2
         }
-     
+        this.active()
         PtabService.getFiltre(data).then((data) => {
          this.ptab =  data.data.data
          this.openFiltre = false
           this.chargement(false)
+          this.disabled()
         }).catch((e) => {
           this.chargement(false)
+          this.disabled()
           this.$toast.error(e)
-         
         })
     },
     getPpm() {
@@ -1068,11 +1076,13 @@ export default {
           annee:new Date().getFullYear() ,
           ppm: 2
         }
-     
+        this.active()
         PtabService.getFiltre(data).then((data) => {
          this.ptab =  data.data.data
+         this.disabled()
         }).catch((e) => {
           this.$toast.error(e)
+          this.disabled()
          
         })
     },

@@ -187,7 +187,7 @@
     </div>
     <div v-else>
       <h1 class="py-2 text-xl text-bold ">Resultat de la  Recherche ...</h1>
-      <div v-if="pending" >
+      <div>
         <empty v-if="filtere.length ==0">Ce composant est vide !!!</empty>
         <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
           <div v-for="(composante, index) in filtere" :key="index">

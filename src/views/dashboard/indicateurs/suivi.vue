@@ -239,7 +239,8 @@ export default {
         choiceDateOption: true,
         SuivisIndicateurs:[],
         dateSuivie:false,
-        dates:[]
+        dates:[],
+        suivis:[]
         
       });
   },
@@ -273,7 +274,7 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       indicateurs: "indicateurs/getIndicateurs",
-      suivis: "suiviIndicateurs/getSuivis",
+      
       suivi: "suiviIndicateurs/getSuivi",
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
@@ -314,12 +315,19 @@ export default {
       this.showDate = true
     },
     ...mapActions("suiviIndicateurs", {
-      fetchSuivi: "FETCH_LIST_SUIVI",
+     
       filter: "FILTRE_SUIVI",
       saveSuivi: "STORE_SUIVI",
       updateSuivie: "UPDATE_SUIVI",
       deleteSuivi: "DESTROY_SUIVI",
     }),
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+   
     commenter(data) {
       const commentaires = data.commentaires
       commentaires.forEach(element => {
@@ -485,6 +493,7 @@ export default {
       });
     },
     getSuivi() {
+      this.active()
       IndicateurSuiviService.get().then((data) => {
        
         const datas = data.data.data
@@ -500,9 +509,10 @@ export default {
           const date_de_creation = element.created_at
           this.SuivisIndicateurs.push({bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
         }) 
-        console.log(this.SuivisIndicateurs)
+       this.disabled()
       }).catch((e) => {
         console.log(e)
+        this.disabled()
       })
     },
   },

@@ -18,7 +18,7 @@
           </ol>
         </div>
         <div>
-          <search-bar ></search-bar>
+          <search-bar @search="getSearchValue" ></search-bar>
         </div>
       </nav> 
 
@@ -29,7 +29,7 @@
       </div>
      
     </div>
-    <div v-if="seeSousComposantes">
+    <div v-if="!isSearch">
       <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="f ">
         <!--Filtre sur projet -->
@@ -79,9 +79,9 @@
         </div>
       </div>
         <div v-if="pending">
-          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="enAttente.length === 0">sous composante vide  !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(sousComposante, index) in enAttente" :key="index">
                 <card-composante
                   :isComposante="false"
@@ -108,9 +108,9 @@
         </div>
 
         <div v-if="inProgress">
-          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="enCours.length === 0">sous composante vide  !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(sousComposante, index) in enCours" :key="index">
                 <card-composante
                   :isComposante="false"
@@ -137,9 +137,9 @@
         </div>
 
         <div v-if="success">
-          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="terminer.length === 0">sous composante vide  !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(sousComposante, index) in terminer" :key="index">
                 <card-composante
                   :isComposante="false"
@@ -166,9 +166,9 @@
         </div>
 
         <div v-if="retard">
-          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="retardData.length === 0">sous composante vide  !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(sousComposante, index) in retardData" :key="index">
                 <card-composante
                   :isComposante="false"
@@ -194,6 +194,35 @@
           </div>
         </div>
     </div>
+    <div v-else>
+      <empty v-if="filtere.length === 0">sous composante vide  !!!</empty>
+      <div v-else>
+        <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(sousComposante, index) in filtere" :key="index">
+                <card-composante
+                  :isComposante="false"
+                  :data="sousComposante"
+                  :libelle="sousComposante.nom"
+                  :code="sousComposante.codePta"
+                  composanteName="Sous Composante"
+                  :statut="getStatus(sousComposante.statut)"
+                  :montantEPM="sousComposante.pret"
+                  :position="sousComposante.position"
+                  :poids="sousComposante.poids"
+                  :bailleur="sousComposante.sigle"
+                  @modifier="modifier(sousComposante)"
+                  @dupliquer="dupliquer(sousComposante)"
+                  @supprimer="supprimer(sousComposante)"
+                  @suivre="suivreMyComposant(sousComposante)"
+                  @gotoNext="gotoNext(sousComposante)"
+                  :isDelete = "composanteDelete"
+                  :isUpdate="composanteUpdate"
+                ></card-composante>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
  
 </template>
@@ -288,8 +317,9 @@ export default {
       projets: [],
       composantes: [],
       sousComposantes: [],
-      suivis:[]
-     
+      suivis:[],
+      search:'',
+      isSearch:false,
     }
     
   },
@@ -301,6 +331,17 @@ export default {
       loading : state => state.loading,
       errors : state => state.errors
     }),
+    allData() {
+      if(this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return  [].concat(this.terminer,this.enAttente,this.enCours,this.retardData)
+      }
+    },
+    filtere: function () {
+        var self = this;
+          return this.allData.filter(function (data) {
+          return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
     terminer() {
       if(this.sousComposantes != undefined) {
         const datas = []
@@ -366,6 +407,17 @@ export default {
       this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
     },
 
+    getSearchValue(data) {
+      if(data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
+    },
+    
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         

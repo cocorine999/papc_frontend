@@ -122,12 +122,7 @@
       </div>
     </div>
 
-   
-
-    
-    <div v-if="seeActivite && activiteVisible">
-      <div v-if="!isSearch" class="version sans recherche">
-        <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
+    <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between flex-wrap">
           <!--Filtre sur projet -->
           <div class="w-full grid grid-cols-2 items-center gap-4">
@@ -159,6 +154,12 @@
 
       </div>
 
+   
+
+    
+    <div v-if="seeActivite && activiteVisible">
+      <div v-if="!isSearch" class="version sans recherche">
+        
       <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
         <div class="flex  w-full justify-between  items-center">
           <!--Filtre sur projet -->

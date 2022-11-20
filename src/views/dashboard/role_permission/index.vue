@@ -295,6 +295,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           console.log('mes  permissions',this.mesRoles)
           this.disabled()
         }).catch((e) => {
+          this.disabled()
           console.log(e)
         })
       },

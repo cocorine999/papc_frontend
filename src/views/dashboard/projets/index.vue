@@ -188,6 +188,7 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
+import ProgrammeService from "@/services/modules/programme.service.js";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import { extractFormData } from '@/utils/index'
@@ -273,7 +274,9 @@ export default {
       validation: false,
       sendRequest: false,
       fichiers: [],
-      image: {}
+      image: {},
+      projets:[]
+
     }
 
   },
@@ -289,7 +292,7 @@ export default {
     }),
 
     ...mapGetters({
-      projets: "projets/getProjets", projet: "getProjet",
+       projet: "getProjet",
       bailleurs: "bailleurs/getBailleurs",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
@@ -353,6 +356,33 @@ export default {
       this.$router.push({ name: 'dashboard_projets_composantes_globale' })
     },
 
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -360,7 +390,7 @@ export default {
     }),
 
     ...mapActions('projets', {
-      fetchProjets: "FETCH_LIST_PROJET_OF_PROGRAMME",
+     
       saveProjet: "STORE_PROJET",
       prolongerDateProjet: "PROLONGER_DATE_PROJET",
       updateProjet: "UPDATE_PROJET",
