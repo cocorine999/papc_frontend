@@ -334,6 +334,11 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
         }
         
       },
+     modifier(data) {
+        this.saveUpdate = data
+        this.title='Modifier un rôle'
+        this.showCloseModal(true)
+      },
    
       addTag (newTag) {
         const tag = {
@@ -342,11 +347,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
         this.options.push(tag)
         this.value.push(tag)
       },
-      modifier(data) {
-        this.saveUpdate = data
-        this.title='Modifier un rôle'
-        this.showCloseModal(true)
-      },
+     
 
       filteredRole(){
         var self = this;

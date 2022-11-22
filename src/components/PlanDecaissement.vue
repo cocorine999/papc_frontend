@@ -64,8 +64,7 @@
       </vmodal>
     </div>
 
-    <div class="select w-52 
- mb-2" >
+    <div class="select w-52 mb-2" >
         
       <select id="choice" v-model="version" @change="choiceVersion(version)" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 ">
         
@@ -1012,9 +1011,6 @@
         </div>
        </div>
      </div>
-    
-     
-   
   </div>
 </template>
 
@@ -1507,6 +1503,13 @@ export default {
 
     },
 
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+
     customLabel ({  sigle }) {
       return ` ${sigle}`
     },
@@ -1523,6 +1526,7 @@ export default {
         }
     },
     getPta() {
+      this.active()
       let data = {}
       if(this.annee ==null) {
         const year = new Date().getFullYear() 
@@ -1541,12 +1545,14 @@ export default {
      
         PtabService.getPta(data).then((data) => {
          this.ptab =  data.data.data
+         this.disabled()
         }).catch((e) => {
           this.$toast.error(e)
-         
+          this.disabled()
         })
     },
     getPtaRevise() {
+      this.active()
       let data = {}
       if(this.annee ==null) {
         const year = new Date().getFullYear() 
@@ -1565,12 +1571,14 @@ export default {
      
         PtabService.getReviser(data).then((data) => {
          this.ptabR =  data.data.data
+         this.disabled()
         }).catch((e) => {
           this.$toast.error(e)
-         
+          this.disabled()
         })
     },
     getPtaReviseFiltre() {
+      this.active()
       let data = {}
       if(this.annee ==null) {
         const year = new Date().getFullYear() 
@@ -1589,16 +1597,17 @@ export default {
      
         PtabService.getReviser(data).then((data) => {
          this.ptabR =  data.data.data
+         this.disabled()
         }).catch((e) => {
           this.$toast.error(e)
-         
+          this.disabled()
         })
     },
     getPtaFiltre() {
       let data = {}
       this.chargement(true)
       if(this.ppm ==null) {
-        
+  
         data={
           bailleurId:this.bailleur.id,
           programmeId:this.currentUser.programme.id,

@@ -8,7 +8,7 @@
       </vmodal>
      
       <modal-top-right v-if="showModal" :title="title" v-on:close="close">
-        <form action="" @submit.prevent="saveAudit" class="p-3 w-full" >
+        <form action="" @submit.prevent="saveAudit" v-if="title=='Ajouter'" class="p-3 w-full" >
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Prestataire <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <input  v-model="audit.entreprise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
@@ -67,6 +67,71 @@
             <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
           </div>
         </form>
+        <form v-else action="" @submit.prevent="updateAudit"  class="p-3 w-full" >
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Prestataire <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input  v-model="saveUpdate.entreprise" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+          </div>
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Contact <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input v-model="saveUpdate.entrepriseContact" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
+          </div>
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Année Audit <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input v-model="saveUpdate.annee"  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
+          </div>
+         
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Date de transmission <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input v-model="saveUpdate.dateDeTransmission" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="date" />
+          </div>
+
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Etat avancement <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input v-model="saveUpdate.etat" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Rapport <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="getFile">
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF,WORD(MAX. 20 MO)</p>
+          </div>
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Statut <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <div v-if="!showStatut">
+              <input v-if="saveUpdate.statut==1" value="Terminer" @click="showStatut = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+              <input v-if="saveUpdate.statut==-1" value="En attente" @click="showStatut = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+              <input v-if="saveUpdate.statut==0" value="En cours" @click="showStatut = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+            </div>
+           
+            <select v-model="audit.statut" v-else class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+              <option value="1"> Terminer </option>
+              <option value="0"> En cours </option>
+              <option value="-1"> En attente </option>
+            </select>
+          </div>
+          <div class="form-group my-2">
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Projets <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+           
+            <multiselect v-model="audit.projetId"  :options="projets"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+          </div>
+
+          <div class="py-2 my-4 flex justify-center space-x-8">
+            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+              <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                modifier
+              </span>
+              <span v-else class="flex items-center space-x-2">
+                <span class="text-xs px-4 font-semibold ">
+                  envoi ...
+                </span>
+                <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </span>
+            </button>
+            <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+          </div>
+        </form>
       </modal-top-right>
       <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
         <div>
@@ -88,7 +153,7 @@
           <span  class="inline-block cursor-pointer  text-base uppercase  border-b-8 font-bold  border-primary py-2">Tableau recapitulatif </span>
         </div>
         
-        <button  @click="createAudit" title="ajouter un tabelau"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <button  @click="createAudit" title="ajouter un audit"  class="p-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -102,6 +167,9 @@
         </button>
         
       </div>
+
+    
+     
      
       <div class="align-middle inline-block w-full bg-white overflow-x-auto pt-3 rounded-bl-lg rounded-br-lg">
         <table class="w-full">
@@ -156,11 +224,14 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                   </div>
-                  <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="supprimerAudit(audit)">
+                  <div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110"  @click="supprimerAudit(audit)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
-                </div>
+                  </div>
+                  <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110"  @click="modifierAudit(audit)">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                  </div>
                 </div>      
               </td>
              
@@ -203,6 +274,7 @@ export default {
   data() {
     return {
       showModal:false,
+      title:'',
       audit:{
         annee:'',
         entreprise:'',
@@ -217,7 +289,10 @@ export default {
       audits:[],
       showRapport:false,
       fichiers:[],
-      sendRapportFile:null
+      sendRapportFile:null,
+      showSelect:false,
+      showStatut:false,
+      saveUpdate:{}
     }
     
   },
@@ -233,14 +308,55 @@ export default {
       this.$store.dispatch('disabled')
     },
     supprimerAudit(data) {
-        if ( window.confirm("Voulez-vous supprimer cette ligne ,operation est irreversible ") )
-        {
+      if ( window.confirm("Voulez-vous supprimer cette ligne ,operation est irreversible ") ){
           AuditService.destroy(data.id).then(() => {
             this.getAudit()
           }).catch((e) => {
             console.log(e)
           })
         }
+    },
+    updateAudit() {
+      if(this.chargement == false) {
+          this.chargement = true
+          const data = this.saveUpdate
+          const audit = this.audit
+          audit.projetId = audit.projetId.id
+          const formData = new FormData();
+          formData.append('annee', data.annee)
+          formData.append('entreprise', data.entreprise)
+          formData.append('entrepriseContact', data.entrepriseContact)
+          formData.append('dateDeTransmission', data.dateDeTransmission)
+          formData.append('etat', data.etat)
+          formData.append('statut', audit.statut)
+          formData.append('projetId', audit.projetId)
+          formData.append('rapport', this.fichiers)
+          
+          AuditService.update(data.id,formData).then((data) => {
+            this.chargement = false
+            this.$toast.success('operation effectuer ave success')
+            this.showModal = false
+            this.getAudit()
+            data.annee = ''
+            data.entreprise =''
+            data.entrepriseContact = ''
+            data.dateDeTransmission = ''
+            data.etat = ''
+            audit.statut = ''
+            audit.projetId = null
+            this.fichiers = ''
+          }).catch((e) => {
+            this.chargement = false  
+            this.$toast.error(e)
+          })
+      }
+    },
+    modifierAudit(data) {
+      this.saveUpdate = data
+      this.audit.projetId = data.projet
+      this.audit.statut = data.statut
+      this.title='Modifier un audit'
+      this.showModal = true
     },
     previewRapport(data) {
       this.showRapport = true
@@ -253,7 +369,7 @@ export default {
       return `${nom}`
     },
     saveAudit() {
-        if(this.chargement == false) {
+      if(this.chargement == false) {
           this.chargement = true
           const data = this.audit
           data.projetId = data.projetId.id
@@ -284,7 +400,7 @@ export default {
             this.chargement = false  
             this.$toast.error(e)
           })
-        }
+      }
     },
     getAudit() {
       this.active()

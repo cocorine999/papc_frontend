@@ -184,7 +184,6 @@ export default {
       commentaires: [],
       data: {},
       showModal: false,
-      loading: false,
       showInput: true,
       showDetail: false,
       search: "",
@@ -429,6 +428,7 @@ export default {
     }),
 
     ...mapActions('typeAnos', { fetchTypeAnos: 'FETCH_LIST_TYPE_ANO' }),
+    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
   
 
     resetForm() { //delete data in form after submit
@@ -504,7 +504,6 @@ export default {
             
             this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false
-            alert(this.sendRequest)
             this.champs.map(value => value.errors = this.erreurs[value.key])      
           });
         } else {

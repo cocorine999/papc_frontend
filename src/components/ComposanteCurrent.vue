@@ -649,7 +649,10 @@ props:['valueProfondeur'],
             .then(response => {
               
               if(response.status === 200 || response.status === 201){
-                this.fetchComposantes(this.valueFiltre.id);
+                //this.fetchComposantes(this.valueFiltre.id);
+                ComposanteService.composantes(this.valueFiltre.id).then((data) => {
+                  this.composantes = data.data.data
+                })
                 this.close()
               }
 

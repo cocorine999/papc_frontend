@@ -453,7 +453,7 @@ export default {
     disabled() {
       this.$store.dispatch('disabled')
     },
-     fetchBailleurs(programme) {
+    fetchBailleurs(programme) {
       this.active()
       BailleurService.bailleursOfProgramme(programme).then((data) => {
         const datas = data.data.data

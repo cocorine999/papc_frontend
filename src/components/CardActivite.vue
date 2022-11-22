@@ -143,7 +143,7 @@ export default {
       clicks: 0,
       timer: null,
       showInput: false,
-      isValidate: this.statut.code > -2,
+      isValidate: this.statut.code >= -1,
     };
   },
   methods: {

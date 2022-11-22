@@ -152,18 +152,15 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
-            <div v-if="title =='Modifier un indicateur'">
-              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
+            <div v-if="isUpdate">
+              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
                 :cols="cols" submitText="Modifier" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
-            <div v-if="title =='Ajouter'">
+            <div v-if="!isUpdate">
               <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
                 :cols="cols" submitText="Ajouter" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
-            <div v-if="title =='Dupliquer un indicateur'">
-              <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols"
-                submitText="Creer à partir de " @closeModal="close" @sendForm="sendForm"></vform>
-            </div>
+            
           </div>
         </modal-top-right>
       </div>
@@ -210,24 +207,27 @@
         </div>
       </div>
 
+      <pre>
+        {{champsUpdate}}
+      </pre>
 
       <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers"
         :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
       </vtable>
       <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" :actions="actions" @updateInputData="updateInputData"
+        :headers="headers" :datas="filteredIndicateur()" :actions="actions" @modifier="modifier"  @updateInputData="updateInputData"
         @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur()" @suivre="suivreIndicateur" @consulter="consulterSuivi"
         @supprimer="supprimer"></vtable>
       <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" @updateInputData="updateInputData" @suivre="suivreIndicateur"
+        :headers="headers" :datas="filteredIndicateur()" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
         @consulter="consulterSuivi"></vtable>
       <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur()" @suivre="suivreIndicateur" @consulter="consulterSuivi">
       </vtable>
       <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd "  @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" @updateInputData="updateInputData" @supprimer="supprimer">
+        :headers="headers" :datas="filteredIndicateur()" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer">
       </vtable>
     </div>
   </dashboard>
@@ -280,10 +280,22 @@ export default {
       search: "",
       title: '',
       chargement: false,
+      indicateurId:'',
       indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId','sourceDeVerification','hypothese'],
       indicateurAttributsRecherche: ['nom', 'anneeDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       choiceDateOption: true,
       champs: [
+        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: true, cle: 'id', value: 'nom', errors: [] },
+        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
+        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+      ],
+      champsUpdate: [
         { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -309,6 +321,7 @@ export default {
       actions: [
         { name: 'suivre' },
         { name: 'supprimer', iconne: '' },
+        { name: 'modifier', iconne: '' },
         { name: 'consulter', iconne: '' },
       ],
       indicateurBailleurs: '',
@@ -320,7 +333,9 @@ export default {
       suiviIndicateurAdd: false,
       suiviIndicateurVisible: false,
       exporterIndicateur: false,
-      indicateurs:[]
+      indicateurs:[],
+      isUpdate:false,
+
     };
   },
   watch: {
@@ -422,6 +437,7 @@ export default {
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
   },
   methods: {
+
     modalclose(){
      // this.suiviIndicateurs.annee='',
      // this.suiviIndicateurs.trimestre='',
@@ -727,10 +743,33 @@ export default {
       this.title = 'Ajouter'
       this.showModal = true
     },
-    modifier() {
+   
+    modifier(indicateur) {
+      this.isUpdate = true
       this.title = 'Modifier un indicateur'
       this.showModal = true
-    }
+      
+      this.submitText = "Modifier"
+
+      this.indicateurId = indicateur.id
+
+      this.indicateurAttributs.forEach((item) => {
+        
+        this.champsUpdate.find((value, index) => {
+         
+        if (value.key !== 'bailleurId' && value.key !== 'categorieId' && value.key !== 'uniteeMesureId') {
+          if (value.key === item) {
+            console.log(value.key +' ' + indicateur[item])
+            this.champsUpdate[index]['data'] = indicateur[item]
+           
+          }
+        }
+
+        })
+
+      })
+
+    },
 
   },
 

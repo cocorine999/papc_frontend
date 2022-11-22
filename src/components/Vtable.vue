@@ -35,11 +35,18 @@
                 </td>
                 <td  v-for="(head, indice) in headers" :key="indice" class="text-sm text-gray-900 font-light py-2 px-4 ">
                   <div class="text-xs w-full" v-if="head.props !== undefined">
-                    <tr-table v-if="data[head.props] != null" :data="data[head.props][head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[head.props][extra] }" :updateKey="head.updateKey" :money="head.monaie != undefined ? head.monaie: null" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table>
-                    <tr-table v-else data="Non definit" :objet="{ id: data.id, attribut: head.cle, extra: '' }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :money="head.monaie != undefined ? head.monaie: null" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table>
+                    <span v-if="data[head.props] != null">
+                      {{data[head.props][head.cle]}}
+                    </span>
+                    <span v-else>
+                      Donnée non definit
+                    </span>
+                    <!-- <tr-table v-if="data[head.props] != null" :data="data[head.props][head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[head.props][extra] }" :updateKey="head.updateKey" :money="head.monaie != undefined ? head.monaie: null" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table>
+                    <tr-table v-else data="Non definit" :objet="{ id: data.id, attribut: head.cle, extra: '' }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :isSelect="head.select != undefined ? head.select : false" :money="head.monaie != undefined ? head.monaie: null" :isEditable="head.edit != undefined ? head.edit : true" @update="update"></tr-table> -->
                   </div>
                   <div class="text-xs w-full" v-if="head.props === undefined "> 
-                    <tr-table :status="head.status" :data="data[head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[extra] }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :money="head.monaie != undefined ? head.monaie: null" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"> </tr-table>
+                   <!--  <tr-table :status="head.status" :data="data[head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[extra] }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :money="head.monaie != undefined ? head.monaie: null" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"> </tr-table> -->
+                    {{data[head.cle]}}
                   </div>
                 </td>
                 <td v-if="statut" class="text-sm text-gray-900 font-light py-2 px-4 ">
@@ -49,9 +56,16 @@
                 </td>
                 <td   v-if="actions != undefined"  class="text-sm  space-x-3 text-gray-900 font-light py-2 px-4 flex items-center ">
                   <div v-for="(action,index) in actions" :key="index" class="flex item-center justify-center">
-                    <div v-if="action.name === 'suivre'" title="suivre" @click="$emit('suivre', data.id)" class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110">
+                    <div v-if="action.name === 'suivre'" title="suivre" @click="$emit('suivre', data.id)" class=" mr-2  cursor-pointer transform hover:text-blue-500 hover:scale-110">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
                     </div>
+
+                   
+
+                    <div v-if="action.name === 'modifier'" @click="$emit('modifier', data)" class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110">
+                      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>                   
+                     </div>
+
                     <div v-if="action.name === 'supprimer'" @click="$emit('supprimer', data)" class=" mr-2 cursor-pointer transform hover:text-red-500 hover:scale-110">
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path></svg>
                     </div>

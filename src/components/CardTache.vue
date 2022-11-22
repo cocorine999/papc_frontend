@@ -217,7 +217,7 @@ export default {
     }
   },
   mounted() {
-    this.isValidate = this.statut.code > -2
+    this.isValidate = this.statut.code >= -1
   }
 }
 </script>
