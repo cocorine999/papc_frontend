@@ -261,6 +261,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
 import Composante from '@/store/modules/composantes/composante'
 import ComposanteService from "@/services/modules/composante.service.js";
+import ProgrammeService from "@/services/modules/programme.service.js";
 export default {
   props:['valeurProjet','valueProfondeur'],
   components: {
@@ -288,7 +289,7 @@ export default {
       retard:false,
       rangeValue:0,
       showFiltre:false,
-      programmeId: this.currentUser?.programme?.id,
+      programmeId: '',
       cols:1,
       sendRequest: false,
       submitText:"Enregistrer",
@@ -345,7 +346,7 @@ export default {
       isShow:true,
       search:'',
       isSearch:false,
-     
+      projets:[]
     }
     
   },
@@ -360,7 +361,6 @@ export default {
     }),
 
     ...mapGetters({
-      projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposante: "sousComposantes/getSousComposante",
       sousComposantes: "sousComposantes/getSousComposantes",
@@ -503,14 +503,13 @@ export default {
 
     ...mapActions({
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
     suivreMyComposant(sousComposante) {
       this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
     },
 
-     getPermission() {
+    getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
        
           if(element.slug === 'creer-une-composante') {
@@ -826,6 +825,32 @@ export default {
     showCloseModal(value = false) {
       this.showModal = value
     },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
   },
   watch: {
@@ -901,7 +926,7 @@ export default {
 
   created(){
     this.fetchComposantes()
-   
+    this.programmeId = this.currentUser.programme.id
     const profondeurComposante = JSON.parse(localStorage.getItem('profondeurComposante'))
     console.log("profondeur",profondeurComposante)
     if(profondeurComposante != undefined || profondeurComposante != null) {

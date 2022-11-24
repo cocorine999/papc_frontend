@@ -242,6 +242,7 @@ import CardComposante from '@/components/CardComposante.vue'
  import { mapGetters, mapMutations, mapActions,mapState } from "vuex";
 import { getStringValueOfStatutCode } from '@/utils/index'
 import Composante from '@/store/modules/composantes/composante'
+import ProgrammeService from "@/services/modules/programme.service.js";
 import Suivi from "@/components/revisiteSC/Suivi.vue";
 export default {
   components: {
@@ -319,6 +320,7 @@ export default {
       sousComposantes: [],
       suivis:[],
       search:'',
+      programmeId:'',
       isSearch:false,
     }
     
@@ -387,7 +389,7 @@ export default {
       }
     },
     ...mapGetters({
-      projets: "projets/getProjets",
+
       composantes: "composantes/getComposantes",
       sousComposante: "sousComposantes/getSousComposante",
       sousComposantes: "sousComposantes/getSousComposantes",
@@ -513,6 +515,32 @@ export default {
       this.retard = true
 
     },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
 
   },
@@ -586,10 +614,13 @@ export default {
       "composantes": null,
       "sous-composantes": null,
     };
-
+    this.programmeId = this.currentUser.programme.id
     this.getPtabReviser(params).then((value) => {
       this.results = value.data.data
       console.log("results : ", this.results)
+      if(this.programmeId){
+        this.fetchProjets(this.programmeId)
+      } 
     })
   }
   

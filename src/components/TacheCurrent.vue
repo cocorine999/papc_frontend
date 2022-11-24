@@ -284,6 +284,7 @@ import Activite from "@/store/modules/activites/activite";
 import ComposanteService from "@/services/modules/composante.service.js";
 import TacheService from "@/services/modules/tache.service.js";
 import ActiviteService from '@/services/modules/activite.service';
+import ProgrammeService from "@/services/modules/programme.service.js";
 import Empty from '@/components/Empty.vue'
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
@@ -407,6 +408,7 @@ export default {
       isShow: true,
       search:'',
       isSearch:false,
+      projets:[]
     };
   },
 
@@ -431,7 +433,6 @@ export default {
     },
 
     ...mapGetters({
-      projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposantes: "sousComposantes/getSousComposantes",
       activites: "activites/getActivites",
@@ -638,7 +639,6 @@ export default {
       fetchActivites: "activites/FETCH_LIST_ACTIVITE_OF_COMPOSANTE",
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
     getPermission() {
@@ -941,7 +941,34 @@ export default {
     gotoTache() {
       this.seeSuivi = false
       this.seeTache = true
-    }
+    },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
   },
 
   watch: {

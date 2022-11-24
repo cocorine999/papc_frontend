@@ -34,11 +34,11 @@
     <div v-if="showModal">
       <modal-top-right :title="title" v-on:close="close">
        <div class="w-full p-4">
-         <div v-if="title =='Ajouter'">
-            <vform template="default" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+         <div v-if="!isUpdate">
+            <vform template="default" :champs="champs"  :sendRequest="sendRequest" submitText="Enregistrer" @sendForm="sendForm" ></vform>
          </div>
-         <div v-if="title =='Modifier un decaissement'">
-            <vform template="default" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Modifier" @sendForm="sendForm" ></vform>
+         <div v-else>
+            <vform template="default" :champs="champsUpdate"  :sendRequest="sendRequest" submitText="Modifier" @sendForm="sendForm" ></vform>
          </div>
         
        </div>
@@ -68,9 +68,10 @@
       </div>
      
     </div>
-    <vtable v-if="!decaissementDelete && !decaissementUpdate"  :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-    <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-    <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
+    <vtable v-if="!decaissementDelete && !decaissementUpdate"   :headers="headers" :datas="filteredDecaissement()"  @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementDelete && !decaissementUpdate"   :headers="headers" :datas="filteredDecaissement()" :actions="actionsDelete"  @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false"  @modifier="modifier"  :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false"  :actions="actionsUpdate"  @modifier="modifier" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
     </div>
   </dashboard>
  
@@ -86,6 +87,7 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex"
 import { extractFormData } from '@/utils/index'
+import ProgrammeService from "@/services/modules/programme.service.js";
 import JsonExcel from "vue-json-excel"
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
@@ -109,20 +111,18 @@ export default {
           showModal2:false,
           sendRequest:false,
           title:'',
+          isUpdate:false,
           decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
           decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
-          champs:[
-          {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:true,},
-          {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
-        ],
+          champs:[],
+          champsUpdate:[],
         champsRecherche:[
           {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
           {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
           {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
           {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
         ],
+        decaissementId:'',
         
         search:"",
         headers:[
@@ -138,6 +138,13 @@ export default {
         ],
         actions:[
           {name:'supprimer',iconne:''},
+          { name: 'modifier', iconne: '' },
+        ],
+        actionsDelete:[
+          {name:'supprimer',iconne:''},
+        ],
+        actionUpdate:[
+          { name: 'modifier', iconne: '' },
         ],
         decaissementVisible:false,
         decaissementAdd:false,
@@ -146,6 +153,8 @@ export default {
         exporterDecaissement:false,
         data:{},
         commentaires:[],
+        projets:[],
+        showComment:false
       };
     },
     computed:{
@@ -160,7 +169,6 @@ export default {
 
     ...mapGetters({
       decaissements: "decaissements/getDecaissements", decaissement: "getDecaissement",
-      projets: "projets/getProjets",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
@@ -214,8 +222,6 @@ export default {
       deleteDecaissement: "DESTROY_DECAISSEMENT"
     }),
 
-    ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET_OF_PROGRAMME' }),
-
       async updateInputData(id, attribut, value) {
           
             await this.updateDecaissement({decaissement: {[attribut] : value}, id : id}).catch((value, status) => {
@@ -263,16 +269,44 @@ export default {
 
           this.sendRequest = true;
 
-          this.champs = this.champs.map(item => { item.errors = []; return item})
 
-          let decaissement = extractFormData(this.champs, this.decaissementAttributs)
+          this.champs = this.champs.map(item => { item.errors = []; return item })
+        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+        let decaissement = {}
+        if (this.isUpdate) {
+          decaissement = extractFormData(this.champsUpdate, this.decaissementAttributs)
+          decaissement.id = this.decaissementId
+        } else {
+          decaissement = extractFormData(this.champs, this.decaissementAttributs)
+        }
+
+
 
           decaissement.type = decaissement.type.id
           decaissement.projetId = decaissement.projetId.id
 
+          if (decaissement?.id) {
+        
+          this.updateDecaissement({ decaissement: decaissement, id: decaissement?.id }).then(response => {
+
+            if (response.status == 200 || response.status == 201) {
+              this.$toast.success("operation effectué avec success")
+              this.showModal = false
+              this.fetchDecaissements()
+              this.sendRequest = false
+            }
+
+          }).catch((error) => {
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+            this.champs.map(value => value.errors = this.erreurs[value.key])
+          })
+        }
+        else {
           this.saveDecaissement(decaissement).then(response => {
             if(response.status == 200 || response.status == 201){
               this.close()
+              this.$toast.success("nouveau enregistrement")
               this.showModal = false
               this.fetchDecaissements()
               this.sendRequest = false
@@ -291,6 +325,9 @@ export default {
               // Une erreur s'est produite lors de la configuration de la demande
             }
           })
+        }
+
+          
         
 
         }
@@ -325,8 +362,9 @@ export default {
       close2() {
           this.showModal2 = false
       },
-        addDecaissement() {
+      addDecaissement() {
             this.title ="Ajouter"
+            this.isUpdate = false
             let formData = this.champs.map((value) => {
               if(value.key === 'projetId'){ 
                 value['options'] = this.projets
@@ -341,10 +379,10 @@ export default {
 
           this.champs = formData
 
-            this.showModal = true
-        },
+         this.showModal = true
+      },
 
-        showFiltreModal2() {
+      showFiltreModal2() {
           this.title ="Filtre decaissement"
 
           let formData = this.champsRecherche.map((value) => {
@@ -362,12 +400,77 @@ export default {
         this.champsRecherche = formData
 
           this.showModal2 = true
-        },
+      },
       
       async supprimer(decaissement) {
         if(window.confirm("Voulez-vous supprimer ce decaissement " ))
           await this.deleteDecaissement(decaissement.id)
       },
+      modifier(decaissement) {
+      this.isUpdate = true
+      this.title = 'Modifier un decaissement'
+      this.showModal = true
+      
+    
+
+      this.decaissementId = decaissement.id
+
+      this.decaissementAttributs.forEach((item) => {
+        
+        this.champsUpdate.find((value, index) => {
+          if (value.key !== 'projetId') {
+            if (value.key === item) {
+              console.log(value.key +' ' + decaissement[item])
+              this.champsUpdate[index]['data'] = decaissement[item]
+            }
+          }
+       
+
+        })
+
+      })
+
+      },
+      active() {
+      this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
+      fetchProjets(programme) {
+        this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.champs = [
+          {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
+          {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
+        ]
+        this.champsUpdate = [
+          {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
+          {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
+        ]
+
+        this.disabled()
+        
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
     },
 
     mounted() {
@@ -375,13 +478,17 @@ export default {
       if(!this.decaissementVisible) {
         this.$router.push('/401-non-autorise')
       } 
-      console.log("Fetching decaissements ...")
+      else {
         this.fetchDecaissements().then((value) => {
         setTimeout(() => {
           console.log("Fetching list of projets")
           this.fetchProjets(this.currentUser?.programme?.id)
-        }, 500);
-    })
+        }, 500); 
+      })
+      }
+     
+       
+   
   }
 }
 </script>

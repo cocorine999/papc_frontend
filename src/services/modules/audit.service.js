@@ -18,7 +18,7 @@ const auditService = {
     },
     // update services
     update(slug, params) {
-      return ApiService.update("audits", slug, params);
+      return ApiService.post(`audits/${slug}`, params);
     },
     // destroy services
     destroy(slug) {

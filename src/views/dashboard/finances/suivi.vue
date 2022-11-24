@@ -25,7 +25,8 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>        </div>
+           </div>        
+      </div>
       </nav>
 
       <div v-if="showModal">
@@ -297,68 +298,68 @@ export default {
 
     
 
-    sendForm() {
+      sendForm() {
 
-      console.log(this.champs)
+        console.log(this.champs)
 
-      this.champs = this.champs.map(item => { item.errors = []; return item})
+        this.champs = this.champs.map(item => { item.errors = []; return item})
 
-      let suivi = extractFormData(this.champs, this.suiviAttributs)
+        let suivi = extractFormData(this.champs, this.suiviAttributs)
 
-      suivi.type = suivi.type.id
-      suivi.trimestre = suivi.trimestre.valeur
-      suivi.activiteId = suivi.activiteId.id
+        suivi.type = suivi.type.id
+        suivi.trimestre = suivi.trimestre.valeur
+        suivi.activiteId = suivi.activiteId.id
 
-      console.log(suivi)
+        console.log(suivi)
+      
+          this.saveSuiviFinancier(suivi).then(response => {
+            if(response.status === 200 || response.status === 201){
+                this.close()
+
+                this.getSuivi()
+            }
+
+          })
+        
+
+      },
+      filtre() {
+        this.champsRecherche = this.champsRecherche.map((item) => {
+          item.errors = [];
+          return item;
+        });
+
+        let suivi = extractFormData(this.champsRecherche,this.suiviAttributsRecherche);
+
+        suivi.trimestre = suivi.trimestre?.valeur
+        suivi.activiteId = suivi.activiteId?.id
+        suivi.bailleurId = suivi.bailleurId?.id
+
+      
+
+        this.filter(suivi).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+            
+              this.suiviFinancier = response.data.data.suiviFinanciers
+              this.close2();
+            }
+        });
+      },
+      previewFiles(event) {
+        this.file = event.target.files[0]
+      },
+      importData() {
     
-        this.saveSuiviFinancier(suivi).then(response => {
-          if(response.status === 200 || response.status === 201){
-              this.close()
-
-              this.getSuivi()
-          }
-
+        const formData = new FormData();
+        formData.append('fichier', this.file);
+        SuiviFinancier.importCSV(formData).then((data) => {
+        
+          this.$toast.success("importation reussie")
+        }).catch((e) => {
+          this.$toast.error(e)
         })
       
-
-    },
-    filtre() {
-      this.champsRecherche = this.champsRecherche.map((item) => {
-        item.errors = [];
-        return item;
-      });
-
-      let suivi = extractFormData(this.champsRecherche,this.suiviAttributsRecherche);
-
-      suivi.trimestre = suivi.trimestre?.valeur
-      suivi.activiteId = suivi.activiteId?.id
-      suivi.bailleurId = suivi.bailleurId?.id
-
-    
-
-      this.filter(suivi).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-           
-            this.suiviFinancier = response.data.data.suiviFinanciers
-            this.close2();
-          }
-      });
-    },
-    previewFiles(event) {
-      this.file = event.target.files[0]
-    },
-    importData() {
-  
-      const formData = new FormData();
-      formData.append('fichier', this.file);
-      SuiviFinancier.importCSV(formData).then((data) => {
-      
-        this.$toast.success("importation reussie")
-      }).catch((e) => {
-        this.$toast.error(e)
-      })
-     
-    },
+      },
 
       async supprimer(suivi) {
         if(window.confirm("Voulez-vous supprimer ce suivi " ))

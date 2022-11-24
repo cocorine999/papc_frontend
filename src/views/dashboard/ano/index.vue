@@ -23,10 +23,16 @@
       </vmodal>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
               @getFile="getFile" submitText="Créer un ano" @sendForm="sendForm"></vform>
+          </div>
+        </modal-top-right>
+        <modal-top-right v-else :title="title" v-on:close="close">
+          <div class="px-4 overflow-y-auto">
+            <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
+              @getFile="getFile" submitText="Modifier" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -110,6 +116,7 @@
           </div>
         </div>
       </nav>
+
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
           <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
@@ -155,12 +162,11 @@ import Preview from '@/components/Preview.vue'
 import Vbutton from '@/components/Vbutton.vue'
 import PermissionsService from "@/services/modules/permission.service.js";
 import AnosService from "@/services/modules/ano.service.js";
+import BailleurService from "@/services/modules/bailleur.service";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
-
 import ReponseAnos from '@/components/ReponseAnos.vue'
-
 import extractFormData from '@/utils/extract-data'
 
 export default {
@@ -181,6 +187,7 @@ export default {
   data() {
     return {
       anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
+      anoAttributsUpdate: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId'],
       commentaires: [],
       data: {},
       showModal: false,
@@ -212,16 +219,8 @@ export default {
         { name: 'validé', value: 1 },
         { name: 'non validé', value: -1 }
       ],
-      champs: [
-        { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statutsAno, cle: 'id', value: 'nom', required: true, errors: [] },
-      ],
-
+      champs: [],
+      champsUpdate: [],
       datas: [],
       cols: 1,
       headers: [
@@ -234,6 +233,7 @@ export default {
       actions: [
         { name: 'supprimer', iconne: '' },
         { name: 'detail' },
+        { name: 'modifier', iconne: '' },
         { name: 'reponse' },
       ],
       actionsDetail: [
@@ -258,7 +258,11 @@ export default {
       anosId: '',
       showComment: false,
       anos:[],
-      anosReponses: []
+      anoId:'',
+      anosReponses: [],
+      isUpdate:false,
+      bailleurs:[],
+      programmeId:[]
     }
   },
 
@@ -273,7 +277,6 @@ export default {
       isLoading: "IS_LOADING",
       ano: "anos/getAno",
       typeAnos: 'typeAnos/getTypeAnos',
-      bailleurs: 'bailleurs/getBailleurs',
       currentUser: "auths/GET_AUTHENTICATE_USER",
     })
   },
@@ -428,7 +431,6 @@ export default {
     }),
 
     ...mapActions('typeAnos', { fetchTypeAnos: 'FETCH_LIST_TYPE_ANO' }),
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
   
 
     resetForm() { //delete data in form after submit
@@ -481,11 +483,19 @@ export default {
 
     },
     sendForm() {
-      this.champs = this.champs.map((item) => {
-        item.errors = [];
-        return item;
-      });
-      let ano = extractFormData(this.champs, this.anoAttributs);
+
+      this.champs = this.champs.map(item => { item.errors = []; return item })
+        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+        let ano = {}
+        if (this.isUpdate) {
+          ano = extractFormData(this.champsUpdate, this.anoAttributsUpdate)
+          ano.id = this.anoId
+        } else {
+          ano = extractFormData(this.champs, this.anoAttributs)
+        }
+
+
+
       ano.bailleurId = ano.bailleurId.id
       ano.statut = ano.statut.etat
       console.log(ano);
@@ -536,7 +546,7 @@ export default {
             this.getFile()
             this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false;
-            alert(this.sendRequest)
+          
             this.champs.map(value => value.errors = this.erreurs[value.key])      
             
           })
@@ -547,26 +557,33 @@ export default {
     addAno() {
       this.title = 'Ajouter'
       this.showModal = true
+      this.isUpdate = false
     },
 
     modifier(ano) {
-      this.title = 'Modifier ano {{ ano.nom }}'
+      this.isUpdate = true
+      this.title = 'Modifier '
+      this.showModal = true
+      
       this.submitText = "Modifier"
-      this.setAno(ano)
-      this.anoAttributs.forEach((item) => {
 
-        this.champs.find((value, index) => {
+      this.anoId = ano.id
+
+      this.anoAttributsUpdate.forEach((item) => {
+        
+        this.champsUpdate.find((value, index) => {
+         
+        if (value.key !== 'statut') {
           if (value.key === item) {
-            if (value.key === 'debut' || value.key === 'fin') {
-              this.champs[index]['data'] = this.ano[item] + "-01"
-            } else {
-              this.champs[index]['data'] = this.ano[item]
-            }
+            console.log(value.key +' ' + ano[item])
+            this.champsUpdate[index]['data'] = ano[item]
           }
+        }
+
         })
 
       })
-      this.showCloseModal(true)
+
     },
 
 
@@ -574,6 +591,32 @@ export default {
       if (window.confirm("Voulez-vous supprimer ce ano ?" + ano.nom))
         await this.deleteAno(ano.id)
     },
+    fetchBailleurs(programme) {
+    
+    BailleurService.bailleursOfProgramme(programme).then((data) => {
+      const datas = data.data.data
+      this.bailleurs = datas
+      this.champs =[
+        { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
+        { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statutsAno, cle: 'id', value: 'nom', required: true, errors: [] },
+      ]
+    this.champsUpdate = [
+      { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+      { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
+      { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+      { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+      { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statutsAno, cle: 'id', value: 'nom', required: true, errors: [] },
+    ]
+  
+    }).catch((error) => {
+     
+    })
+  },
 
     close() {
       this.showModal = false
@@ -588,10 +631,12 @@ export default {
       this.$router.push('/401-non-autorise')
     }
     else {
-      this.fetchAnos()
       if (this.bailleurVisible) {
-        this.fetchBailleurs()
+        this.programmeId = this.currentUser.programme.id
+        this.fetchBailleurs(this.programmeId)
       }
+      this.fetchAnos()
+     
     }
 
 
@@ -611,19 +656,7 @@ export default {
 
 
 
-    bailleurs: function (bailleurs) {
-      this.champs.map((item) => {
-        if (item.key === "bailleurId") {
-          item.options = bailleurs.map((bailleur) => {
-            return {
-              id: bailleur.id,
-              nom: bailleur.sigle,
-            };
-          });
-        }
-        return item;
-      });
-    },
+   
     // map du statut dans Store
     statuts: function (statuts) {
       this.champs.map((item) => {

@@ -449,6 +449,7 @@ import Empty from '@/components/Empty.vue'
 import ComposanteService from "@/services/modules/composante.service.js";
 import Activite from '@/store/modules/activites/activite';
 import moment from 'moment'
+import ProgrammeService from "@/services/modules/programme.service.js";
 import ActiviteService from "@/services/modules/activite.service.js";
 
 export default {
@@ -480,7 +481,7 @@ export default {
       inProgress: false,
       retard: false,
       activiteId: '',
-      programmeId: this.currentUser?.programme.id,
+      programmeId: '',
       cols: 1,
       sendRequest: false,
       submitText: "Enregistrer",
@@ -820,6 +821,7 @@ export default {
       sous_composantes: [],
       search:'',
       isSearch:false,
+      projets:[]
     };
   },
 
@@ -887,7 +889,7 @@ export default {
     },
     ...mapGetters({
       structures: "structures/getStructures",
-      projets: "projets/getProjets",
+     
       composantes: "composantes/getComposantes",
       sousComposantes: "sousComposantes/getSousComposantes",
       activites: "activites/getActivites",
@@ -1539,6 +1541,32 @@ export default {
 
       this.setActivite({})
     },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
     showCloseModal(value = false) {
       this.showModal = value;
@@ -1737,7 +1765,6 @@ export default {
         this.newSC = profondeurSC.sousComposante
 
       }
-
     }
     this.getPermission()
     this.programmeId = this.currentUser.programme.id

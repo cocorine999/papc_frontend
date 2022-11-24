@@ -390,6 +390,7 @@ import Dashboard from "@/layouts/Dashboard";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
+import ProgrammeService from "@/services/modules/programme.service.js";
 import Activite from '@/store/modules/activites/activite';
 
 export default {
@@ -467,6 +468,7 @@ export default {
       planDecaissementDelete:false,
       StatistiqueVisible:false,
       search:'',
+      programmeId:'',
       isSearch:false,
     };
   },
@@ -526,6 +528,7 @@ export default {
         return datas
       }
     },
+    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
 
   methods: {
@@ -656,13 +659,32 @@ export default {
       this.retard = true
     },
 
-
-
-
-
-
-
-
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
 
   },
@@ -828,9 +850,12 @@ export default {
       "sous-composantes": null,
       "activites": null
     };
-
+    this.programmeId = this.currentUser.programme.id
     this.getPtabReviser(params).then((value) => {
       this.results = value.data.data
+      if(this.programmeId){
+        this.fetchProjets(this.programmeId)
+      } 
     })
   }
 

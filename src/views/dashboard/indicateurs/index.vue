@@ -207,10 +207,9 @@
         </div>
       </div>
 
-      <pre>
-        {{champsUpdate}}
-      </pre>
 
+
+     
       <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers"
         :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
       </vtable>
@@ -248,6 +247,9 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
 import SuiviService from "@/services/modules/indicateur.suivi.service.js";
 import IndicateurService from "@/services/modules/indicateur.service";
+import BailleurService from "@/services/modules/bailleur.service";
+import CategorieService from "@/services/modules/categorie.service";
+import UniteDeMesureService from "@/services/modules/unitee.mesure.service";
 import JsonExcel from "vue-json-excel";
 export default {
   components: {
@@ -282,30 +284,11 @@ export default {
       chargement: false,
       indicateurId:'',
       indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId','sourceDeVerification','hypothese'],
+      indicateurAttributsUpdate: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       indicateurAttributsRecherche: ['nom', 'anneeDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       choiceDateOption: true,
-      champs: [
-        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: true, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
-      ],
-      champsUpdate: [
-        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: true, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
-      ],
+      champs: null,
+      champsUpdate: [],
       cols: 2,
       champsRecherche: [
         { name: 'Indicateur', key: 'nom', type: 'text', placeholdere: "Donnez un nom d'indicateur", isSelect: false, isTextArea: false, data: '', required: false },
@@ -334,6 +317,10 @@ export default {
       suiviIndicateurVisible: false,
       exporterIndicateur: false,
       indicateurs:[],
+      bailleurs:[],
+      categories:[],
+      uniteDeMesures:[],
+      programmeId:[],
       isUpdate:false,
 
     };
@@ -428,11 +415,11 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       indicateur: "indiateurs/getIndicateur",
-     
-      categories: "categories/getCategorie",
+
+      /* categories: "categories/getCategorie",
       bailleurs: "bailleurs/getBailleurs",
       categories: "categories/getCategories",
-      uniteDeMesure: "uniteesDeMesure/getUniteesDeMesure",
+      uniteDeMesure: "uniteesDeMesure/getUniteesDeMesure", */
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
   },
@@ -460,23 +447,27 @@ export default {
       IndicateurService.get().then((data) => {
         const datas = data.data.data
         this.indicateurs= datas
-        setTimeout(() => {
-          console.log("Fetching list indicateurs...")
-            this.fetchBailleurs()
-            this.fetchCategories()
-            this.fetchUnite()
-            this.headers = [
-              { name: 'Indicateur', cle: 'nom', },
-              { name: 'Description', cle: 'description' },
-              { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
-              { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
-              { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesure, key: 'nom', updateKey: 'uniteeMesureId' },
-              { name: 'Valeur de base', cle: 'valeurDeBase' },
-              { name: 'Année de base', cle: 'anneeDeBase' },
-              { name: 'Date de création', cle: 'created_at' },
-            ]
-
-        }, 100);
+        this.headers = [
+          {name: 'Indicateur', cle: 'nom', },
+          {name: 'Description', cle: 'description' },
+          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
+          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
+          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId' },
+          {name: 'Valeur de base', cle: 'valeurDeBase' },
+          {name: 'Année de base', cle: 'anneeDeBase' },
+          {name: 'Date de création', cle: 'created_at' },
+        ]
+        this.champs = [
+        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
+        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
+        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+      ]
         this.disabled()
       }).catch((error) => {
         this.disabled()
@@ -499,7 +490,7 @@ export default {
       updateIndicateur: "UPDATE_INDICATEUR",
       deleteIndicateur: "DESTROY_INDICATEUR",
     }),
-    ...mapActions("bailleurs", {
+    /* ...mapActions("bailleurs", {
       fetchBailleurs: "FETCH_LIST_BAILLEUR",
     }),
     ...mapActions("categories", {
@@ -507,7 +498,7 @@ export default {
     }),
     ...mapActions("uniteesDeMesure", {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
-    }),
+    }), */
 
     getIndicateurBailleurs() {
       IndicateurService.getIndicateurBailleur().then((data) => {
@@ -552,6 +543,7 @@ export default {
     consulterSuivi(id) {
       this.$router.push({ name: 'indicateurs_suivi_details', params: { id: id } })
     },
+
     saveSuivi() {
       if (this.chargement == false) {
         this.chargement = true
@@ -594,6 +586,7 @@ export default {
 
 
     },
+
     title_csv() {
       return "indicateur-" + "-" + new Date()
     },
@@ -616,6 +609,7 @@ export default {
       });
       return tab;
     },
+
     verifyValeurCible(date) {
       SuiviService.checksuivi(this.idIndicateur, date).then((data) => {
         //recuperation de la valeur de verfication pour la valeur cible
@@ -628,6 +622,7 @@ export default {
         // console.log(e)
       })
     },
+
     filteredIndicateur() {
       var self = this;
 
@@ -639,20 +634,26 @@ export default {
           indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
       });
     },
-    sendForm() {
-      this.champs = this.champs.map((item) => {
-        item.errors = [];
-        return item;
-      });
 
-      let indicateur = extractFormData(this.champs, this.indicateurAttributs);
+    sendForm() {
+      this.champs = this.champs.map(item => { item.errors = []; return item })
+      this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+      let indicateur = {}
+      if (this.isUpdate) {
+        indicateur = extractFormData(this.champsUpdate, this.indicateurAttributsUpdate)
+      } else {
+        indicateur = extractFormData(this.champs, this.indicateurAttributs)
+      }
+
       indicateur.bailleurId = indicateur.bailleurId.id
       indicateur.categorieId = indicateur.categorieId.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId.id
+      console.log('id indicateur',this.indicateur)
       if (this.sendRequest == false) {
         this.sendRequest = true
-        if (this.indicateur?.id) {
-          this.updateIndicateur({ indicateur: indicateur, id: this.indicateur?.id }).then(
+        if (this.indicateurId != '') {
+
+          this.updateIndicateur({ indicateur: indicateur, id: this.indicateurId }).then(
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
@@ -702,6 +703,7 @@ export default {
         }
       });
     },
+
     resetForm() {
 
       this.champs = this.champs.map(item => { item.data = ''; return item })
@@ -724,10 +726,12 @@ export default {
       if (window.confirm("Voulez-vous supprimer cette unitee de gestion  " + indicateur.nom))
         await this.deleteIndicateur(indicateur.id)
     },
+
     close() {
       this.showCloseModal();
       this.resetForm();
     },
+
     close2() {
       this.showCloseModal2();
       this.resetForm();
@@ -736,12 +740,15 @@ export default {
     showCloseModal(value = false) {
       this.showModal = value;
     },
+
     showCloseModal2(value = false) {
       this.showModal2 = value;
     },
+
     addIndicateur() {
       this.title = 'Ajouter'
       this.showModal = true
+      this.isUpdate = false
     },
    
     modifier(indicateur) {
@@ -753,13 +760,13 @@ export default {
 
       this.indicateurId = indicateur.id
 
-      this.indicateurAttributs.forEach((item) => {
+      this.indicateurAttributsUpdate.forEach((item) => {
         
         this.champsUpdate.find((value, index) => {
          
         if (value.key !== 'bailleurId' && value.key !== 'categorieId' && value.key !== 'uniteeMesureId') {
           if (value.key === item) {
-            console.log(value.key +' ' + indicateur[item])
+           
             this.champsUpdate[index]['data'] = indicateur[item]
            
           }
@@ -771,6 +778,41 @@ export default {
 
     },
 
+    getBailleur(programme) {
+      this.active()
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+        const datas = data.data.data
+        this.bailleurs = datas
+        this.champsUpdate.push({ name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: datas, cle: 'id', value: 'sigle', errors: [] },)
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+      })
+    },
+    getUniteDeMesure() {
+      this.active()
+      UniteDeMesureService.get().then((data) => {
+        const datas = data.data.data
+        this.uniteDeMesures = datas
+        this.champsUpdate.push({ name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: datas, required: true, cle: 'id', value: 'nom', errors: [] },)
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+      })
+    },
+    getCategorie() {
+      this.active()
+      CategorieService.get().then((data) => {
+        const datas = data.data.data
+        this.categories = datas
+        this.champsUpdate.push({ name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: datas, required: false, cle: 'id', value: 'nom', errors: [] },)
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+      })
+    },
+
+
   },
 
   mounted() {
@@ -780,9 +822,10 @@ export default {
     }
     if (this.currentUser != undefined) {
       this.currentRole = this.currentUser.type
+      this.programmeId = this.currentUser.programme.id
+
       if (this.currentUser.type === 'bailleur') {
         this.getIndicateurBailleurs()
-
         this.headers = [
           { name: 'Indicateur', cle: 'nom', },
           { name: 'description', cle: 'description' },
@@ -796,8 +839,18 @@ export default {
       }
       else {
         this.fetchIndicateurs()
-         
-       
+        this.getBailleur(this.programmeId)
+        this.getUniteDeMesure()
+        this.getCategorie()
+        this.champsUpdate = [
+          { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          /* { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] }, */
+          { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+        ]
+        console.log('listes des bailleurs',this.bailleurs)
       }
     }
 

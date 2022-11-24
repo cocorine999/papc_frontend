@@ -1,8 +1,5 @@
 <template>
   <div>
-
-   
-
     <div class="border my-4 rounded-lg border-gray-300 shadow-md">
       <!-- suivi budgetaire  current -->
       <div  class="current">

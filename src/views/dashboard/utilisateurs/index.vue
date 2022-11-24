@@ -30,21 +30,26 @@
       </nav> 
     <div v-if="showModal">
       <modal-top-right title="Ajouter un utilisateur" v-on:close="close">
-       <div class="w-full px-4">
-          <vform template="default" :sendRequest="sendRequest"  :champs="champs" :cols="cols" submitText="Ajouter un utilisateur" @sendForm="sendForm" @closeModal="close"></vform>
+       <div v-if="!isUpdate" class="w-full px-4">
+          <vform template="default" :sendRequest="sendRequest"  :champs="champs" submitText="Ajouter " @sendForm="sendForm" @closeModal="close"></vform>
+       </div>
+       <div v-else class="w-full px-4">
+          <vform template="default" :sendRequest="sendRequest"  :champs="champsUpdate" submitText="modifier" @sendForm="sendForm" @closeModal="close"></vform>
        </div>
       </modal-top-right>
     </div>
     <div class="flex items-center justify-between flex-wrap my-2">
       <titre>Les utilisateurs </titre>
-        <button @click="showModal=true" title="ajouter un bailleur" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+        <button @click="addUsers" title="ajouter utilisateur" class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
           <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
         </button>
     </div>
    
     <div  id="dataTable">
-      <vtable :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actions" @updateInputData="updateInputData" @supprimer="supprimer"></vtable>
+      <vtable v-if="utilisateurUpdate && utilisateurDelete" :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actions" @modifier="modifier" @supprimer="supprimer"></vtable>
+      <vtable v-if="!utilisateurUpdate && utilisateurDelete" :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actionsDelete" @supprimer="supprimer"></vtable>
+      <vtable v-if="utilisateurUpdate && !utilisateurDelete" :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actionsUpdate" @modifier="modifier"></vtable>
     </div>
 
   </div>
@@ -62,6 +67,7 @@ import ModalTopRight from '@/components/ModalTopRight'
 import Vtable from '@/components/Vtable'
 import Dashboard from '@/layouts/Dashboard'
 import UtilisateurService from "@/services/modules/utilisateur.service.js";
+import RoleService from "@/services/modules/role.service.js";
 import { mapActions, mapMutations, mapGetters} from "vuex";
 import extractFormData from '@/utils/extract-data'
 export default {
@@ -82,16 +88,12 @@ export default {
         showModal:false,
         isComment:false,
         sendRequest: false,
+        isUpdate:false,
         title:'',
         cols:1,
         search:'',
-        champs:[
-          {name:'Nom', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
-          {name:'Prenom', key: 'prenom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
-          {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
-          {name:'Contact', key: 'contact', type:'number', placeholdere:'Votre contact', isSelect:false, isTextArea:false, data:'', required:true, errors : []},
-          {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: this.roles, cle: 'id', value: 'nom', required:true, errors : []}
-        ],
+        champs:[],
+        champsUpdate:[],
         headers:[
           {name:'Nom et Prénoms',  cle:'nom'},
           {name:'Email',  cle:'email', edit : false},
@@ -101,12 +103,24 @@ export default {
         ],
         actions:[
           {name:'supprimer',iconne:''},
+          {name:'modifier',iconne:''},
         ],
+        actionsDelete:[
+          {name:'supprimer',iconne:''},
+         
+        ],
+        actionsUpdate:[
+         
+          {name:'modifier',iconne:''},
+        ],
+        
         utilisateurVisible:false,
         utilisateurAdd:false,
         utilisateurDelete:false,
         utilisateurUpdate:false,
-        utilisateurs:[]
+        utilisateurs:[],
+        roles:[],
+        utilisateurId:''
       });
       
     },
@@ -162,6 +176,36 @@ export default {
     ...mapActions("roles", {
       fetchRoles: "FETCH_LIST_ROLE",
     }),
+    addUsers() {
+      this.showModal = true
+      this.isUpdate = false
+    },
+    getRole() {
+
+      RoleService.get().then((data) => {
+        const datas = data.data.data
+        this.roles = datas
+        this.champs = [
+          {name:'Nom', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
+          {name:'Prenom', key: 'prenom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
+          {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
+          {name:'Contact', key: 'contact', type:'number', placeholdere:'Votre contact', isSelect:false, isTextArea:false, data:'', required:true, errors : []},
+          {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: datas, cle: 'id', value: 'nom', required:true, errors : []}
+        ]
+        this.champsUpdate = [
+          {name:'Nom', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
+          {name:'Prenom', key: 'prenom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
+          {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
+          {name:'Contact', key: 'contact', type:'number', placeholdere:'Votre contact', isSelect:false, isTextArea:false, data:'', required:true, errors : []},
+          {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: datas, cle: 'id', value: 'nom', required:true, errors : []}
+        ]
+        
+    
+      }).catch((e) => {
+      
+        console.log(e)
+      })
+    },
 
     active() {
       this.$store.dispatch('active')
@@ -169,12 +213,37 @@ export default {
     disabled() {
       this.$store.dispatch('disabled')
     },
+    modifier(utilisateur) {
+      this.isUpdate = true
+      this.title = 'Modifier un projet'
+
+      this.submitText = "Modifier"
+
+      this.utilisateurId = utilisateur.id
+
+      this.usersAttributes.forEach((item) => {
+
+        this.champsUpdate.find((value, index) => {
+
+          if (value.key !== 'roleId') {
+            if (value.key === item) {
+              this.champsUpdate[index]['data'] = utilisateur[item]
+            }
+          }
+
+        })
+
+      })
+
+      this.showCloseModal(true)
+
+    },
     fetchUtilisateurs() {
       this.active()
       UtilisateurService.get().then((data) => {
         const datas = data.data.data
         this.utilisateurs = datas
-        this.fetchRoles()
+        this.getRole()
         this.disabled()
       }).catch((error) => {
         this.disabled()
@@ -216,18 +285,28 @@ export default {
         return item;
       });
 
-      let utilisateur = extractFormData(this.champs,this.usersAttributes);
+      this.champs = this.champs.map(item => { item.errors = []; return item })
+        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+        let utilisateur = {}
+        if (this.isUpdate) {
+          utilisateur = extractFormData(this.champsUpdate, this. usersAttributes)
+          utilisateur.id = this.utilisateurId
+        } else {
+          utilisateur = extractFormData(this.champs, this. usersAttributes)
+        }
+
       utilisateur.roles = [utilisateur.roles.id]
       //utilisateur.roles = utilisateur.roles.id
       utilisateur.programmeId = this.idProgramme
       if(this.sendRequest == false ) {
         this.sendRequest = true
-        if (this.utilisateur?.id) {
-          this.updateUtilisateur({ utilisateur: utilisateur, id: this.utilisateur?.id }).then(
+        if (utilisateur?.id) {
+          this.updateUtilisateur({ utilisateur: utilisateur, id:utilisateur?.id }).then(
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectuer avec sucess')
                 this.sendRequest = false
+                this.fetchUtilisateurs()
                 this.close();
               }
             }
@@ -240,6 +319,7 @@ export default {
             if (response.status == 200 || response.status == 201) {
               this.$toast.success('nouveau utilisateur creer')
               this.close();
+              this.fetchUtilisateurs()
               this.sendRequest = false
             }
           }).catch((e) => {

@@ -233,7 +233,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import  { extractFormData, getStringValueOfStatutCode }  from '@/utils/index'
 import Projet from '@/store/modules/projets/projet'
 import ComposanteService from "@/services/modules/composante.service.js";
-
+import ProgrammeService from "@/services/modules/programme.service.js";
 export default {
   components: {
     Vmodal,
@@ -257,7 +257,7 @@ props:['valueProfondeur'],
       retard:false,
       rangeValue:0,
       showFiltre:false,
-      programmeId: this.currentUser?.programme?.id,
+      programmeId: '',
       cols:1,
       sendRequest: false,
       submitText:"Enregistrer",
@@ -300,7 +300,9 @@ props:['valueProfondeur'],
       composanteUpdate:false,
       position:0,
       isClick:false,
-      idProjet:''
+      idProjet:'',
+      projets:[],
+      
     }
     
   },
@@ -371,7 +373,7 @@ props:['valueProfondeur'],
     },
 
     ...mapGetters({
-      projets: "projets/getProjets",
+     
       composantes: "composantes/getComposantes",
       composante: "composantes/getComposante",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
@@ -442,9 +444,7 @@ props:['valueProfondeur'],
       deleteComposante: "DESTROY_COMPOSANTE"
     }),
 
-    ...mapActions({
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
-    }),
+   
 
     customLabel ({ codePta, nom }) {
       return `${codePta} – ${nom}`
@@ -695,6 +695,33 @@ props:['valueProfondeur'],
     showCloseModal(value = false) {
       this.showModal = value
     },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
 
   },
   watch: {
@@ -763,6 +790,7 @@ props:['valueProfondeur'],
       }
     } 
     this.getPermission()
+    this.programmeId = this.currentUser.programme.id
     if(this.programmeId){
       this.fetchProjets(this.programmeId)
     } 

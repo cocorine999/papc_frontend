@@ -220,6 +220,7 @@ import  { getStringValueOfStatutCode }  from '@/utils/index'
 import Suivi from "@/components/revisiteC/Suivi.vue";
 import Empty from '@/components/Empty.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import ProgrammeService from "@/services/modules/programme.service.js";
 import Projet from '@/store/modules/projets/projet'
 export default {
   components: {
@@ -273,6 +274,7 @@ props: ['version'],
       dates:[
         {}
       ],
+      programmeId:'',
       results: [],
       projets: [],
       composantes: [],
@@ -348,7 +350,7 @@ props: ['version'],
       }
     },
     ...mapGetters({
-      projets: "projets/getProjets",
+     
       composantes: "composantes/getComposantes",
       composante: "composantes/getComposante",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
@@ -474,10 +476,35 @@ props: ['version'],
     getStatus(status){
       return getStringValueOfStatutCode(status);
     },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
   },
   watch: {
-
     version: function (version) {
 
       const params = {
@@ -529,9 +556,13 @@ props: ['version'],
       "version": this.version,
       "composantes": null
     };
+    this.programmeId = this.currentUser.programme.id
 
     this.getPtabReviser(params).then((value) => {
       this.results = value.data.data
+      if(this.programmeId){
+        this.fetchProjets(this.programmeId)
+      } 
     })
   }
   
