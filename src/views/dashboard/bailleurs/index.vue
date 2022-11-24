@@ -609,6 +609,7 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.close();
+                this.fetchBailleurs(this.programmeId)
                 this.sendRequest = false
               }
             }
@@ -642,6 +643,7 @@ export default {
           this.saveBailleur(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.fetchBailleurs(this.programmeId)
               this.sendRequest = false
             }
           }).catch((error) => {
