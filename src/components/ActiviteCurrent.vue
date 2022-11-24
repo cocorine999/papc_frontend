@@ -1470,7 +1470,7 @@ export default {
         activite.userId = activite.structureAssocieId;
 
         activite["type"] = activite.types.type;
-        if(activite.composanteId == undefined || activite.composanteId == null) {
+        if(this.composanteId == undefined || this.composanteId == null) {
           this.$toast.error('Composante indefinit ')
           this.sendRequest = false;
           this.close()

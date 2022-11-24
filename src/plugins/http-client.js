@@ -85,7 +85,6 @@ httpClient.interceptors.response.use(
   
   response => {
 
-    console.log(response.data.data)
 
     store.commit(SET_LOADER, false)
     
@@ -123,7 +122,7 @@ httpClient.interceptors.response.use(
         break;
 
       case 404:
-        Vue.$toast.error(error.response?.data?.message)
+        //Vue.$toast.error(error.response?.data?.message)
         chargement(false)
 
       

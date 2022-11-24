@@ -22,17 +22,17 @@
 
       <div class="bg-white shadow p-3">
         <h2 class="text-indigo-700 font-semibold text-sm">Taux d'engagement</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">20%</h4>
+        <h4 class="text-2xl text-black font-bold mt-3">{{projet.tauxEngagement}}</h4>
         <div class="mt-6 flex justify-between">
           <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
             <!-- if arrow UP -->
             <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold"> 20 </span>
+            <span class="text-sm text-green-700 font-semibold"> Taux d'engagement </span>
           </div>
           <div v-else class="flex items-center space-x-3">
             <!-- if arrow DOWN -->
             <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-red-700 font-semibold"> 95 </span>
+            <span class="text-sm text-red-700 font-semibold"> Taux d'engagement </span>
           </div>
 
           <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>

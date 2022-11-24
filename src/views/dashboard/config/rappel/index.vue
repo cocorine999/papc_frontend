@@ -3,7 +3,7 @@
     <div class="w-full">
     <div v-if="showModal">
       <modal-top-right  :title="title"  v-on:close="close">
-         <div class="w-full">
+         <div class="w-full px-4">
             <vform
               template="default"
               :champs="champs"

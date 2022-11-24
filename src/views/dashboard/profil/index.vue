@@ -197,10 +197,14 @@ export default {
           const data = {
             nom:this.fullName,
             email:this.email,
-            
             contact:this.contact
           }
           UtilisateurService.update(this.currentUser.id,data).then((data) => {
+
+            const userInfos = JSON.parse(localStorage.getItem("authenticateUser"));
+            userInfos.contact = this.contact
+            userInfos.nom = this.fullName
+            localStorage.setItem('authenticateUser',JSON.stringify(userInfos))
             this.$toast.success('Mise à jours effectué')
             this.chargement = false
             window.location.reload(true)
