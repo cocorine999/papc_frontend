@@ -494,7 +494,7 @@
     </div> -->
 
 
-    <div class="mb-1 px-4 flex animation items-center text-white cursor-pointer">
+    <div v-if="auditVisible" class="mb-1 px-4 flex animation items-center text-white cursor-pointer">
       <router-link to="/dashboard/audit" style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
         <span class=" ">
@@ -728,6 +728,7 @@ export default {
       historiqueVisible: false,
       backupVisible: false,
       maitriseOeuvreVisible: false,
+      auditVisible: false,
     }
   },
   methods: {
@@ -735,6 +736,9 @@ export default {
       this.currentUser.role[0].permissions.forEach(element => {
         if (element.slug === 'voir-un-utilisateur') {
           this.utilisateurVisible = true
+        }
+        if (element.slug === 'voir-un-audit') {
+          this.auditVisible = true
         }
         if (element.slug === 'voir-une-institution') {
           this.institutionVisible = true
