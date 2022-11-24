@@ -38,8 +38,7 @@
   import Dashboard from '@/layouts/Dashboard'
   import Titre from '@/components/Titre'
   import moment from 'moment'
-  moment.locale('fr');
-  console.log(moment.locale());
+
   import HistoriqueService from "@/services/modules/historique.service.js";
   export default {
     layout:'dashboard',

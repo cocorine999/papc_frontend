@@ -88,9 +88,9 @@
     </div>
 
     <!-- fin de l'image de connexion -->
-    <div class=" absolute right-2 top-4">
+   <!--  <div class=" absolute right-2 top-4">
       <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici pour activer le compte</button>
-    </div>
+    </div> -->
     <div class="drapeau fixed bottom-0 right-0 left-0 grid grid-cols-3">
       <div class="h-2 bg-green-700"></div>
       <div class="h-2 bg-yellow-500"></div>
