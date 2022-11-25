@@ -76,8 +76,7 @@
       <select id="choice" v-model="version" @change="choiceVersion(version)"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 ">
 
-        <option value="" selected>Version actuelle</option>
-
+        <option value="actuelle" selected>Version actuelle</option>
         <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab"> {{ scopePtab.nom }}</option>
       </select>
 
@@ -1999,7 +1998,7 @@ export default {
                 activite.taches.forEach(tache => {
                   let poids = tache.poids
                   let poidsActuel = tache.poidsActuel
-                  programme.push({ bailleur, nom: activite.nom, code: activite.code, poids,poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
+                  programme.push({ bailleur, nom: tache.nom, code: tache.code, poids,poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
                 })
               })
             })
@@ -2192,7 +2191,7 @@ export default {
                 activite.taches.forEach(tache => {
                   let poids = tache.poids
                   let poidsActuel = tache.poidsActuel
-                  programme.push({ bailleur, nom: activite.nom, code: activite.code, poids,poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
+                  programme.push({ bailleur, nom: tache.nom, code: tache.code, poids,poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret })
                 })
               })
             })
@@ -2304,7 +2303,7 @@ export default {
     },
     choiceVersion(version) {
       if (this.scopes.length > 0) {
-        if ("" === version.id) {
+        if ("actuelle" === version) {
           this.currentPage = true;
         } else {
           this.currentPage = false;
