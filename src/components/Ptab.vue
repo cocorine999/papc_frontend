@@ -1882,7 +1882,7 @@ export default {
               let tBn = 0
               let tPret = 0
               let total = 0
-              let nom = "PAS DE SOUS COMPOSANTE "
+              let nom = "PAS DE SOUS COMPOSANTE"
               if (sousComposante.nom != 0) {
                 nom = sousComposante.nom
               }
@@ -1907,7 +1907,9 @@ export default {
               tBn = t1Bn + t2Bn + t3Bn + t4Bn
               tPret = t1Pret + t2Pret + t3Pret + t4Pret
               total = tBn + tPret
-              programme.push({ bailleur, nom, code: sousComposante.code, poids,poidsActuel, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+              if(nom !== 'PAS DE SOUS COMPOSANTE') {
+                programme.push({ bailleur, nom, code: sousComposante.code, poids,poidsActuel, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+              }
               sousComposante.activites.forEach(activite => {
                 const bn = activite.budgetNational
                 const pret = activite.pret
@@ -2077,7 +2079,7 @@ export default {
               let tBn = 0
               let tPret = 0
               let total = 0
-              let nom = "PAS DE SOUS COMPOSANTE "
+              let nom = "PAS DE SOUS COMPOSANTE"
               if (sousComposante.nom != 0) {
                 nom = sousComposante.nom
               }
@@ -2102,7 +2104,10 @@ export default {
               tBn = t1Bn + t2Bn + t3Bn + t4Bn
               tPret = t1Pret + t2Pret + t3Pret + t4Pret
               total = tBn + tPret
-              programme.push({ bailleur, nom, code: sousComposante.code, poids,poidsActuel, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+              if(nom !== 'PAS DE SOUS COMPOSANTE') {
+                programme.push({ bailleur, nom, code: sousComposante.code, poids,poidsActuel, isSC: true, bn, pret, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total })
+              }
+              
               sousComposante.activites.forEach(activite => {
                 const bn = activite.budgetNational
                 const pret = activite.pret

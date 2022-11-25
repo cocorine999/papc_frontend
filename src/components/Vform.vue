@@ -3,11 +3,10 @@
     <div v-for="champ in champs" :key="champ.id">
       <div :class="`grid grid-cols-1 gap-4`">
          <div v-if="champ.isSelect ===false && champ.isTextArea ===false" >
-          <label   class=" block py-2 
-text-xs  md:text-sm font-semibold " for="">
+          <label   class=" block py-2 text-xs  md:text-sm font-semibold " for="">
           {{champ.name}} <span v-if="champ.required" class="px-2 w-full text-lg font-black text-red-700">*</span>
           </label>
-          <input v-if="champ.type !='file'" :required="champ.required" v-model='champ.data' :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"    class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
+          <input v-if="champ.type !='file'" :required="champ.required" v-model='champ.data' :step="champ.type === 'number' ? '0.01' : ''" :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"    class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
           
            <div v-else class="">
               <div v-if="champ.isImage">
@@ -29,8 +28,7 @@ text-xs  md:text-sm font-semibold " for="">
         </div>
 
         <div v-else-if="champ.isSelect ===true && champ.isTextArea ===false">
-          <label  class=" block py-2 
-text-xs  md:text-sm font-semibold " for="">
+          <label  class=" block py-2 text-xs  md:text-sm font-semibold " for="">
           {{champ.name}}  <span v-if="champ.required" class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
           </label>
           <multiselect v-model="champ.data" :required="champ.required" :preselect-first="true" :options="champ.options" :custom-label="champ.methode" :placeholder="champ.placeholdere" :label="champ.value" :track-by="champ.cle"></multiselect>
