@@ -26,12 +26,12 @@
 
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-              <input required v-model="longitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer la longitude" />
+              <input required v-model="longitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" step="0.01" placeholder="Entrer la longitude" />
             </div>
 
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-              <input required v-model="latitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer la latitude" />
+              <input required v-model="latitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" step="0.01" placeholder="Entrer la latitude" />
             </div>
           
 
