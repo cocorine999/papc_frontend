@@ -512,7 +512,7 @@ export default {
         projet.bailleurId = projet.bailleurId.id
       
         if (projet?.id) {
-          projet.statut = -1
+          projet.statut = projet.statut
           this.updateProjet({ projet: projet, id: projet?.id }).then(response => {
 
             if (response.status == 200 || response.status == 201) {
