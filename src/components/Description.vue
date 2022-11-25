@@ -120,26 +120,26 @@
               <tbody>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Pays :</td>
-                  <td>Bénin</td>
+                  <td>{{projet.pays}}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Département :</td>
-                  <td>Littoral</td>
+                  <td>{{projet.departement}}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Commune :</td>
-                  <td>Cotonou</td>
+                  <td>{{projet.commune}}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Arrondissement :</td>
-                  <td>3, 4, 5, 6</td>
+                  <td>{{projet.arrondissement}}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Nom de site :</td>
                   <td>
                     <div class="p-2 text-white space-x-2">
-                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Pa3</span>
-                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Aac</span>
+                      <span v-for="(item, i) in projet.sites" :key="i" :value="item.id" class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">{{item.nom}}</span>
+                      
                   </div></td>
                 </tr>
               </tbody>
