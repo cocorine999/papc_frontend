@@ -161,14 +161,17 @@ export default {
               this.$toast.success("Connexion réussie")
               this.$router.push('/dashboard/programme')
             }
+            else {
+              this.$toast.success("Connexion réussie")
+              this.$router.push('/dashboard/profil')
+            }
+
            
             //this.$router.push('/dashboard/bailleurs')
             //this.$toast.success("Connexion réussie")
             //window.location.assign(window.location.origin+"/dashboard/bailleurs")
           }else{
-            this.$toast.success(response.message)
-            this.$router.push('/dashboard/profil')
-           
+            this.$toast.error(response.message)
           }   
       })
       this.chargement(false)

@@ -1571,17 +1571,17 @@
 
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.nom !=='PAS DE SOUS COMPOSANTE'" class="font-bold"> {{ pta.bn }} </span>
-                  <span v-else class="font-bold" >0 FCFA</span> 
+                  <span v-if="pta.bn != undefined" class="font-bold"> {{ pta.bn }} </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.nom !=='PAS DE SOUS COMPOSANTE'" class="font-bold"> {{ pta.pret }} </span>
-                <span v-else class="font-bold" >0 FCFA </span> 
+                  <span v-if="pta.pret != undefined" class="font-bold"> {{ pta.pret }} </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.nom !=='PAS DE SOUS COMPOSANTE'" class="font-bold"> {{ pta.pret + pta.bn }}
+                  <span v-if="pta.pret != undefined && pta.bn != undefined" class="font-bold"> {{ pta.pret + pta.bn }}
                   </span>
-                 <span v-else class="font-bold" >0 FCFA </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
 
                 <!-- total budgetaire-->
@@ -1589,16 +1589,16 @@
 
 
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.nom !=='PAS DE SOUS COMPOSANTE'" class="font-bold"> {{ pta.tBn }} </span>
-                  <span v-else class="font-bold" >0 FCFA</span> 
+                  <span v-if="pta.tBn != undefined" class="font-bold"> {{ pta.tBn }} </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.nom !=='PAS DE SOUS COMPOSANTE'" class="font-bold"> {{ pta.tPret }} </span>
-                  <span v-else class="font-bold" >0 FCFA </span> 
+                  <span v-if="pta.tPret != undefined" class="font-bold"> {{ pta.tPret }} </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.nom !=='PAS DE SOUS COMPOSANTE'" class="font-bold"> {{ pta.total }} </span>
-                  <span v-else class="font-bold" >0 FCFA </span>
+                  <span v-if="pta.total != undefined" class="font-bold"> {{ pta.total }} </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
 
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
@@ -1765,6 +1765,11 @@
             </tbody>
           </table>
         </div>
+
+       
+
+
+        
       </div>
     </div>
   </div>
@@ -1881,22 +1886,24 @@ export default {
               if (sousComposante.nom != 0) {
                 nom = sousComposante.nom
               }
-              if (sousComposante.trimestre1 != undefined) {
+              if (sousComposante.trimestre1 != undefined && sousComposante.trimestre1 != 0) {
                 t1Pret = sousComposante.trimestre1.pret * 1
                 t1Bn = sousComposante.trimestre1.budgetNational *1
+               
               }
-              if (sousComposante.trimestre2 != undefined) {
+              if (sousComposante.trimestre2 != undefined && sousComposante.trimestre2 != 0 ) {
                 t2Pret = sousComposante.trimestre2.pret * 1
                 t2Bn = sousComposante.trimestre2.budgetNational * 1
               }
-              if (sousComposante.trimestre3 != undefined) {
+              if (sousComposante.trimestre3 != undefined && sousComposante.trimestre3 != 0) {
                 t3Pret = sousComposante.trimestre3.pret * 1
                 t3Bn = sousComposante.trimestre3.budgetNational *1
               }
-              if (sousComposante.trimestre4 != undefined) {
+              if (sousComposante.trimestre4 != undefined && sousComposante.trimestre4 != 0) {
                 t4Pret = sousComposante.trimestre4.pret *1
                 t4Bn = sousComposante.trimestre4.budgetNational *1
               }
+
               tBn = t1Bn + t2Bn + t3Bn + t4Bn
               tPret = t1Pret + t2Pret + t3Pret + t4Pret
               total = tBn + tPret
@@ -2074,22 +2081,24 @@ export default {
               if (sousComposante.nom != 0) {
                 nom = sousComposante.nom
               }
-              if (sousComposante.trimestre1 != undefined) {
-                t1Pret = sousComposante.trimestre1.pret *1
+              if (sousComposante.trimestre1 != undefined && sousComposante.trimestre1 != 0) {
+                t1Pret = sousComposante.trimestre1.pret * 1
                 t1Bn = sousComposante.trimestre1.budgetNational *1
+               
               }
-              if (sousComposante.trimestre2 != undefined) {
-                t2Pret = sousComposante.trimestre2.pret *1
-                t2Bn = sousComposante.trimestre2.budgetNational *1
+              if (sousComposante.trimestre2 != undefined && sousComposante.trimestre2 != 0 ) {
+                t2Pret = sousComposante.trimestre2.pret * 1
+                t2Bn = sousComposante.trimestre2.budgetNational * 1
               }
-              if (sousComposante.trimestre3 != undefined) {
-                t3Pret = sousComposante.trimestre3.pret *1
+              if (sousComposante.trimestre3 != undefined && sousComposante.trimestre3 != 0) {
+                t3Pret = sousComposante.trimestre3.pret * 1
                 t3Bn = sousComposante.trimestre3.budgetNational *1
               }
-              if (sousComposante.trimestre4 != undefined) {
+              if (sousComposante.trimestre4 != undefined && sousComposante.trimestre4 != 0) {
                 t4Pret = sousComposante.trimestre4.pret *1
                 t4Bn = sousComposante.trimestre4.budgetNational *1
               }
+
               tBn = t1Bn + t2Bn + t3Bn + t4Bn
               tPret = t1Pret + t2Pret + t3Pret + t4Pret
               total = tBn + tPret

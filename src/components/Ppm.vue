@@ -857,22 +857,23 @@ export default {
               let tBn = 0
               let tPret = 0
               let total =0
-              if( sousComposante.trimestre1 != undefined) {
-                t1Pret = sousComposante.trimestre1.pret
-                t1Bn = sousComposante.trimestre1.budgetNational
+              if (sousComposante.trimestre1 != undefined && sousComposante.trimestre1 != 0) {
+                t1Pret = sousComposante.trimestre1.pret * 1
+                t1Bn = sousComposante.trimestre1.budgetNational *1
               }
-              if( sousComposante.trimestre2 != undefined) {
-                t2Pret = sousComposante.trimestre2.pret
-                t2Bn = sousComposante.trimestre2.budgetNational
+              if (sousComposante.trimestre2 != undefined && sousComposante.trimestre2 != 0 ) {
+                t2Pret = sousComposante.trimestre2.pret * 1
+                t2Bn = sousComposante.trimestre2.budgetNational * 1
               }
-              if( sousComposante.trimestre3 != undefined) {
-                t3Pret = sousComposante.trimestre3.pret
-                t3Bn = sousComposante.trimestre3.budgetNational
+              if (sousComposante.trimestre3 != undefined && sousComposante.trimestre3 != 0) {
+                t3Pret = sousComposante.trimestre3.pret * 1
+                t3Bn = sousComposante.trimestre3.budgetNational *1
               }
-              if( sousComposante.trimestre4 != undefined) {
-                t4Pret = sousComposante.trimestre4.pret
-                t4Bn = sousComposante.trimestre4.budgetNational
+              if (sousComposante.trimestre4 != undefined && sousComposante.trimestre4 != 0) {
+                t4Pret = sousComposante.trimestre4.pret *1
+                t4Bn = sousComposante.trimestre4.budgetNational *1
               }
+
               tBn = t1Bn +  t2Bn + t3Bn + t4Bn
               tPret = t1Pret +  t2Pret + t3Pret + t4Pret
               total = tBn = tPret    
@@ -972,7 +973,7 @@ export default {
                programme.push({bailleur,nom:activite.nom,code:activite.code,poids,isActivite:true,bn,pret,t1Pret,t1Bn,t2Pret,t2Bn,t3Pret,t3Bn,t4Bn,t4Pret,tBn,tPret,total,structureResponsable,structureAssocie,planing})
                 activite.taches.forEach(tache => {
                   let poids = tache.poids
-                  programme.push({bailleur,nom:tache.nom,code:tache.code,poids,isTache:true,bn,pret,t1Pret,t1Bn,t2Pret,t2Bn,t3Pret,t3Bn,t4Bn,t4Pret})
+                  programme.push({bailleur,nom:activite.nom,code:activite.code,poids,isTache:true,bn,pret,t1Pret,t1Bn,t2Pret,t2Bn,t3Pret,t3Bn,t4Bn,t4Pret})
                 })
               })
             })
