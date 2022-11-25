@@ -177,7 +177,7 @@
               <path d="M20 15H4v-2h16v2zm0 2H4v2h16v-2zm-5-6l5-3.55V5l-5 3.55L10 5 4 8.66V11l5.92-3.61L15 11z"></path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Indicateurs</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Cadre de résultats</p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
           <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
