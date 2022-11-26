@@ -88,8 +88,8 @@
         <div class="my-3 px-3 py-1 justify-end flex space-x-4">
           <button @click="statutActuel = ! statutActuel" 
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le statut actuel </span>
-            <span v-else class="mx-2 text-sm font-semibold">masquer le statut actuel </span>
+            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le poids actuel </span>
+            <span v-else class="mx-2 text-sm font-semibold">masquer le poids actuel </span>
           </button>
           <button v-if="filtrePta" @click="openFiltre = !openFiltre" title="filtrer les données"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
@@ -150,7 +150,7 @@
                       </th>
                       <th v-if="statutActuel" scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
-                        Statut actuel
+                        poids actuel
                       </th>
                       <th scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
@@ -305,7 +305,7 @@
                         <span v-if="pta.isComposante" class="text-blue-500">composante: {{ pta.nom }}</span>
                         <span v-if="pta.isSC" class=" text-yellow-600 ">sous composante: {{ pta.nom }}</span>
                         <span v-if="pta.isActivite" class="text-green-600 ">activite: {{ pta.nom }}</span>
-                        <span v-if="pta.isTache" class="text-red-600 ">tache: {{ pta.nom }}</span>
+                        <span v-if="pta.isTache" class="text-red-600 "> {{ pta.nom }}</span>
 
                       </td>
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
@@ -513,7 +513,7 @@
           </vue-html2pdf>
         </div>
 
-        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <div style="height:80vh" class="overflow-x-auto relative shadow-md sm:rounded-lg">
           <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -545,7 +545,7 @@
                 </th>
                 <th v-if="statutActuel" scope="col" rowspan="2"
                   class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                  Statut actuel
+                  poids actuel
                 </th>
                 <th scope="col" rowspan="2"
                   class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
@@ -728,7 +728,7 @@
                   <span v-if="pta.isSC" class=" text-yellow-600 text-sm"> <span v-if="pta.code != 0">sous
                       composante:</span> {{ pta.nom }}</span>
                   <span v-if="pta.isActivite" class="text-green-600 text-sm">activite: {{ pta.nom }}</span>
-                  <span v-if="pta.isTache" class="text-red-600 text-sm">tache: {{ pta.nom }}</span>
+                  <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.nom }}</span>
 
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
@@ -940,8 +940,8 @@
         <div class="my-3 px-3 py-1 flex justify-end space-x-4">
           <button @click="statutActuel = ! statutActuel" 
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le statut actuel </span>
-            <span v-else class="mx-2 text-sm font-semibold">masquer le statut actuel </span>
+            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le poids actuel </span>
+            <span v-else class="mx-2 text-sm font-semibold">masquer le poids actuel </span>
           </button>
           <button v-if="filtreRePta" @click="openFiltre = !openFiltre" title="filtrer les données"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
@@ -1152,7 +1152,7 @@
                         <span v-if="pta.isComposante" class="text-blue-500">composante: {{ pta.nom }}</span>
                         <span v-if="pta.isSC" class=" text-yellow-600 ">sous composante: {{ pta.nom }}</span>
                         <span v-if="pta.isActivite" class="text-green-600 ">activite: {{ pta.nom }}</span>
-                        <span v-if="pta.isTache" class="text-red-600 ">tache: {{ pta.nom }}</span>
+                        <span v-if="pta.isTache" class="text-red-600 "> {{ pta.nom }}</span>
 
                       </td>
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
@@ -1567,7 +1567,7 @@
                   <span v-if="pta.isComposante" class="text-blue-500 text-sm">composante: {{ pta.nom }}</span>
                   <span v-if="pta.isSC" class=" text-yellow-600 text-sm">sous composante: {{ pta.nom }}</span>
                   <span v-if="pta.isActivite" class="text-green-600 text-sm">activite: {{ pta.nom }}</span>
-                  <span v-if="pta.isTache" class="text-red-600 text-sm">tache: {{ pta.nom }}</span>
+                  <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.nom }}</span>
 
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">

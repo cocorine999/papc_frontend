@@ -191,6 +191,11 @@ const routes = [
     component: authPage,
   },
   {
+    path :'*',
+    name: "authPage",
+    component: authPage,
+  },
+  {
     path: "/dashboard/backup",
     name: "backup",
     component: backup,
@@ -674,9 +679,7 @@ const routes = [
     path: "/dashboard/projets",
     name: "projets",
     component: projets,
-    meta: {
-      middleware: [auth],
-    },
+    
   },
 
   {

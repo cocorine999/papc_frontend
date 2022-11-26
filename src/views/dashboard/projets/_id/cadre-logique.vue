@@ -5,7 +5,7 @@
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
-              <router-link to="/dashboard" class="text-gray-600"
+              <router-link to="#" class="text-gray-600"
                 >dashboard</router-link
               >
               <svg
@@ -19,7 +19,7 @@
               </svg>
             </li>
             <li class="flex items-center text-blue-500">
-              <router-link to="/dashboard" class="text-gray-600"
+              <router-link to="#" class="text-gray-600"
                 >projet</router-link
               >
               <svg

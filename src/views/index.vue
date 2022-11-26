@@ -145,31 +145,8 @@ export default {
       this.chargement(true)
       await this.authentification(this.identifiant).then((response, status) =>{
           if (response.statut === "success" || response.status === 200) {
-            if(response.data.utilisateur.type =='bailleur') {
-              const datas = response.data.utilisateur
-              const bailleurInfo = datas.profil.projet
-              localStorage.setItem('bailleurInfo',JSON.stringify(bailleurInfo));
-
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard')
-            }
-            else if(response.data.utilisateur.type =='unitee-de-gestion') {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/projets')
-            }
-            else if (response.data.utilisateur.type =='administrateur') {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/programme')
-            }
-            else {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/profil')
-            }
-
-           
-            //this.$router.push('/dashboard/bailleurs')
-            //this.$toast.success("Connexion réussie")
-            //window.location.assign(window.location.origin+"/dashboard/bailleurs")
+            this.$toast.success("Connexion réussie")
+            this.$router.push('/dashboard/projets')
           }else{
             this.$toast.error(response.message)
           }   

@@ -239,7 +239,7 @@
                           <span v-if="pta.isComposante" class="text-blue-500">composante: {{pta.nom}}</span>
                           <span v-if="pta.isSC" class=" text-yellow-600 ">sous composante: {{pta.nom}}</span>
                           <span v-if="pta.isActivite" class="text-green-600 ">activite: {{pta.nom}}</span>
-                          <span v-if="pta.isTache" class="text-red-600 ">tache: {{pta.nom}}</span>
+                          <span v-if="pta.isTache" class="text-red-600 "> {{pta.nom}}</span>
                           
                         </td>
                         <td  class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
@@ -407,7 +407,7 @@
     </vue-html2pdf>
     </div>
 
-    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+    <div style="height:80vh" class="overflow-x-auto relative shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -574,7 +574,7 @@
                       <span v-if="pta.isComposante" class="text-blue-500 text-sm">composante: {{pta.nom}}</span>
                       <span v-if="pta.isSC" class=" text-yellow-600 text-sm">sous composante: {{pta.nom}}</span>
                       <span v-if="pta.isActivite" class="text-green-600 text-sm">activite: {{pta.nom}}</span>
-                      <span v-if="pta.isTache" class="text-red-600 text-sm">tache: {{pta.nom}}</span>
+                      <span v-if="pta.isTache" class="text-red-600 text-sm"> {{pta.nom}}</span>
                        
                     </td>
                     <td  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">

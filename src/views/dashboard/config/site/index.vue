@@ -53,7 +53,7 @@
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
-              <router-link to="/dashboard" class="text-gray-600"
+              <router-link to="#" class="text-gray-600"
                 >dashboard</router-link
               >
               <svg

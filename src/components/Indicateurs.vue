@@ -39,8 +39,11 @@
             <tbody>
               <tr v-for="(suivis_indicateur, index) in suivis_indicateurs" :key="index"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <hover-ligne :code="suivis_indicateur.indicateur" :libelle="suivis_indicateur.commentaire">
-                </hover-ligne>
+                <!-- <hover-ligne :code="suivis_indicateur.indicateur" :libelle="suivis_indicateur.commentaire">
+                </hover-ligne> -->
+                <td class="py-4 px-6">
+                  {{ suivis_indicateur.indicateur }}
+                </td>
                 <td class="py-4 px-6">
                   {{ suivis_indicateur.valeurCible }}
                 </td>

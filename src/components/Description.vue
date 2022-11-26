@@ -3,7 +3,7 @@
     <div class="grid grid-cols-3 gap-2">
     
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux de decaissement</h2>
+        <h2 class="text-indigo-700 font-semibold text-xs">Taux de decaissement</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
         <div class="mt-6 flex justify-between">
           <div v-if="projet.taux_decaissement.percent <= 100" class="flex items-center space-x-3">
@@ -16,39 +16,39 @@
             <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
             <span class="text-sm text-red-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
           </div>
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
+          <p class="text-gray-700 text-small font-semibold">Depuis le 1 janvier</p>
         </div>
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'engagement</h2>
+        <h2 class="text-indigo-700 font-semibold text-xs">Taux d'engagement</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{projet.tauxEngagement}}</h4>
         <div class="mt-6 flex justify-between">
           <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
             <!-- if arrow UP -->
             <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold"> Taux d'engagement </span>
+            <span class="text-xs text-green-700 font-semibold"> {{projet.tauxEngagement}} </span>
           </div>
           <div v-else class="flex items-center space-x-3">
             <!-- if arrow DOWN -->
             <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-red-700 font-semibold"> Taux d'engagement </span>
+            <span class="text-xs text-red-700 font-semibold"> {{projet.tauxEngagement}} </span>
           </div>
 
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
+          <p class="text-gray-700 text-small font-semibold">Depuis le 1 janvier</p>
         </div>
       </div>
 
       <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution physique</h2>
+        <h2 class="text-indigo-700 font-semibold text-xs">Taux d'execution physique</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
         <div class="mt-6 flex justify-between">
           <div class="flex items-center space-x-3">
             <!-- if arrow UP -->
             <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold">{{ projet.tepByAnnee }}% </span>
+            <span class="text-xs text-green-700 font-semibold">{{ projet.tepByAnnee }}% </span>
           </div>
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
+          <p class="text-gray-700 text-small font-semibold">Depuis le 1 janvier</p>
         </div>
       </div>
 
@@ -91,7 +91,9 @@
                   <td v-else>Audit non disponible</td>
                   <td>
                     <div class="p-2 text-white space-x-2">
-                      <span class="bg-green-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Effectué</span>
+                      <span v-if="projet.audit.statut == 1" class="bg-green-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Terminer</span>
+                      <span v-if="projet.audit.statut == 0" class="bg-purple-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">En cours</span>
+                      <span v-if="projet.audit.statut == -1" class="bg-yellow-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">En attente</span>
                   </div></td>
                 </tr>
               </tbody>
@@ -165,9 +167,12 @@
         </div>
         <div class="p-4">
           <p class="h-36 overflow-hidden text-sm italic text-justify">
-            {{projet.description}}
+
+           <span v-if="isShow"> {{projet.description.substring(0,200)}} </span>
+           <span v-else> {{projet.description}} </span>
+          
           </p>
-          <button class="font-semibold bg-gray-700 text-white px-4 py-2 mt-4 hover:bg-blue-500">Lire plus</button>
+          <button v-if="projet.description.length > 200" @click="isShow =false" class="font-semibold bg-gray-700 text-white px-4 py-2 mt-4 hover:bg-blue-500">Lire plus</button>
         </div>
       </div>
 
@@ -237,6 +242,7 @@ export default {
       base_url: API_BASE_URL,
       pauseOnHover: true,
       autoPlaying: true,
+      isShow:true,
       internalAutoPlaying: true,
       slide: [
         {

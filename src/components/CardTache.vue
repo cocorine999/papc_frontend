@@ -62,7 +62,7 @@
         <div class="cursor-pointer text-sm">
           <p class="my-2 uppercase text-sm font-medium text-gray-600 mt-8 line-clamp-2 ">{{ libelle }}
           </p>
-          <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
+          <!-- <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
             <i class='bx bxs-wallet bx-sm'></i>
             <div class="ml-4 text-sm tracking-wide font-semibold w-4/6 truncate">EMP :
               <span class="font-bold italic text-lg"> {{ montantEPM }} </span><span
@@ -75,7 +75,7 @@
               <span class="font-bold italic text-lg"> {{ montantNE }} </span>
               <span class="ml-2 uppercase font-bold">fcfa</span>
             </div>
-          </div>
+          </div> -->
           <p class="mt-1 text-gray-600 text-gray-300 text-xs font-bold space-x-2">
             <span class="font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> <span>au</span> <span>{{ fin }}</span>
           </p>
