@@ -81,14 +81,14 @@
           <i class="bx bxs-wallet bx-sm"></i>
           <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
             EMP :
-            <span class="font-bold italic text-lg"> {{ montantEPM }} </span><span
+            <span class="font-bold italic text-sm"> {{ montantEPM | formatNumber }} </span><span
               class="ml-2 uppercase font-bold">fcfa</span>
           </div>
         </div>
         <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
           <i class="bx bxs-wallet bx-sm"></i>
           <div class="ml-4 text-xs  md:text-md tracking-wide font-semibold w-full truncate">
-            BN : <span class="font-bold italic text-lg">{{ montantNE }}</span><span
+            BN : <span class="font-bold italic text-sm">{{ montantNE | formatNumber }}</span><span
               class="ml-2 uppercase font-bold">fcfa</span>
           </div>
         </div>

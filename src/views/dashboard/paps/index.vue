@@ -176,7 +176,7 @@ export default {
         {name:'Statut',cle:'statut'},
         {name:'Mode de paiement',cle:'modeDePaiement'},
         {name:'Indeminisation',cle:'montant'},
-        {name:'Transféré',cle:'payer'},
+        {name:'Transféré',cle:'payer',monaie:true},
         {name:'Date de paiement',cle:'dateDePaiement'},
       ],
       actions:[

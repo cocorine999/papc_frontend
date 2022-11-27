@@ -62,7 +62,7 @@
         <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
           <i class='bx bxs-wallet bx-xs'></i>
           <div class="ml-2 text-xs tracking-wide font-semibold w-4/6 truncate">EMP : <span
-              class="font-bold italic text-lg">{{ montantEPM }}</span><span class="ml-2 uppercase font-bold">fcfa</span>
+              class="font-bold italic text-sm">{{ montantEPM | formatNumber }}</span><span class="ml-2 uppercase font-bold">fcfa</span>
           </div>
         </div>
       </div>

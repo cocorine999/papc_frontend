@@ -67,7 +67,7 @@ export default {
         return {
         headers:[
           {name:'Bailleur', cle:'sigle'},
-          {name:'Montants financier', cle:'montantFinancement'},
+          {name:'Montants financier', cle:'montantFinancement',monaie:true},
           {name:'Decaissement', cle:'decaissement'},
           {name:'Taux de decaissement', cle:'tauxDecaissement'},
           {name:'Execution Financier ', cle:'realisationPta'},

@@ -159,7 +159,7 @@ export default {
           {name:'Code PTAB',cle:'codePta'},
           {name:'Activité',cle:'nom'},
           {name:'Trimestre',cle:'trimestre'},
-          {name:'Consommer',cle:'consommer'},
+          {name:'Consommer',cle:'consommer',monaie:true},
           {name:'Année',cle:'annee'},
           {name:'Date de création',cle:'created_at'},
         ],

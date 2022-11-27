@@ -36,7 +36,8 @@
                 <td  v-for="(head, indice) in headers" :key="indice" class="text-sm text-gray-900 font-light py-2 px-4 ">
                   <div class="text-xs w-full" v-if="head.props !== undefined">
                     <span v-if="data[head.props] != null">
-                      {{data[head.props][head.cle]}}
+                      <span v-if="head.monaie"> {{data[head.props][head.cle] | formatNumber }}</span>
+                      <span v-else> {{data[head.props][head.cle]}}</span>
                     </span>
                     <span v-else>
                       Donnée non definit
@@ -46,7 +47,8 @@
                   </div>
                   <div class="text-xs w-full" v-if="head.props === undefined "> 
                    <!--  <tr-table :status="head.status" :data="data[head.cle]" :objet="{ id: data.id, attribut: head.cle, extra: data[extra] }" :updateKey="head.updateKey" :options="head.options" :optionsKey="head.key" :money="head.monaie != undefined ? head.monaie: null" :isSelect="head.select != undefined ? head.select : false" :isEditable="head.edit != undefined ? head.edit : true" @update="update"> </tr-table> -->
-                    {{data[head.cle]}}
+                    <span v-if="head.monaie"> {{data[head.cle]  | formatNumber }} </span>
+                    <span v-else> {{data[head.cle]}}</span>
                   </div>
                 </td>
                 <td v-if="statut" class="text-sm text-gray-900 font-light py-2 px-4 ">
