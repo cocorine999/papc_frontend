@@ -108,16 +108,16 @@
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.periode.budjet}} </span>
+                  <span  class="font-bold"> {{suivi.periode.budjet | formatNumber}} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.periode.consommer}}
+                  <span  class="font-bold"> {{suivi.periode.consommer | formatNumber}}
                   </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.periode.disponible}}
+                  <span  class="font-bold"> {{suivi.periode.disponible | formatNumber}}
                   </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
@@ -132,16 +132,16 @@
 
 
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.exercice.budjet}} </span>
+                  <span  class="font-bold"> {{suivi.exercice.budjet | formatNumber}} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.exercice.consommer}}
+                  <span  class="font-bold"> {{suivi.exercice.consommer | formatNumber}}
                   </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.exercice.disponible}}
+                  <span  class="font-bold"> {{suivi.exercice.disponible | formatNumber}}
                   </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
@@ -153,16 +153,16 @@
                 <!-- exercice-->
 
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.cumul.budjet}} </span>
+                  <span  class="font-bold"> {{suivi.cumul.budjet | formatNumber}} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.cumul.consommer}}
+                  <span  class="font-bold"> {{suivi.cumul.consommer | formatNumber}}
                   </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.cumul.disponible}}
+                  <span  class="font-bold"> {{suivi.cumul.disponible | formatNumber}}
                   </span>
                   <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                 </td>

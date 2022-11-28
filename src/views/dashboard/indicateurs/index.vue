@@ -1,6 +1,16 @@
 <template>
   <dashboard>
     <div class="w-full">
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet indicateur?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteIndicateur(deleteData)">Supprimer</button>
+      </div>
+      </delete-alert>
       <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
@@ -214,19 +224,19 @@
         :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
       </vtable>
       <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" :actions="actions" @modifier="modifier"  @updateInputData="updateInputData"
+        :headers="headers" :datas="filteredIndicateur" :actions="actions" @modifier="modifier"  @updateInputData="updateInputData"
         @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
       <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" @suivre="suivreIndicateur" @consulter="consulterSuivi"
+        :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi"
         @supprimer="supprimer"></vtable>
       <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
+        :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
         @consulter="consulterSuivi"></vtable>
       <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" @suivre="suivreIndicateur" @consulter="consulterSuivi">
+        :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi">
       </vtable>
       <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd "  @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur()" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer">
+        :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer">
       </vtable>
     </div>
   </dashboard>
@@ -250,6 +260,7 @@ import IndicateurService from "@/services/modules/indicateur.service";
 import BailleurService from "@/services/modules/bailleur.service";
 import CategorieService from "@/services/modules/categorie.service";
 import UniteDeMesureService from "@/services/modules/unitee.mesure.service";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import JsonExcel from "vue-json-excel";
 export default {
   components: {
@@ -261,6 +272,7 @@ export default {
     Titre,
     SearchBar,
     CardProgramme,
+    DeleteAlert,
     ModalTopRight,
     JsonExcel
   },
@@ -322,6 +334,8 @@ export default {
       uniteDeMesures:[],
       programmeId:[],
       isUpdate:false,
+      deleteData:{},
+      deleteModal:false,
 
     };
   },
@@ -421,7 +435,18 @@ export default {
       categories: "categories/getCategories",
       uniteDeMesure: "uniteesDeMesure/getUniteesDeMesure", */
     }),
-    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
+    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
+    filteredIndicateur() {
+      var self = this;
+
+      return this.indicateurs.filter(function (indicateur) {
+        return indicateur.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          indicateur.bailleur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          indicateur.categorie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          indicateur.uniteDeMesure.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
+    },
   },
   methods: {
 
@@ -471,6 +496,47 @@ export default {
         this.disabled()
       }).catch((error) => {
         this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+    fetchIndicateur() {
+     
+      IndicateurService.get().then((data) => {
+        const datas = data.data.data
+        this.indicateurs= datas
+        this.headers = [
+          {name: 'Indicateur', cle: 'nom', },
+          {name: 'Description', cle: 'description' },
+          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
+          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
+          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId' },
+          {name: 'Valeur de base', cle: 'valeurDeBase' },
+          {name: 'Année de base', cle: 'anneeDeBase' },
+          {name: 'Date de création', cle: 'created_at' },
+        ]
+        this.champs = [
+        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
+        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
+        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+      ]
+       
+      }).catch((error) => {
+       
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
@@ -623,17 +689,7 @@ export default {
       })
     },
 
-    filteredIndicateur() {
-      var self = this;
-
-      return this.indicateurs.filter(function (indicateur) {
-        return indicateur.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.bailleur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.categorie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.uniteDeMesure.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-      });
-    },
+    
 
     sendForm() {
       this.champs = this.champs.map(item => { item.errors = []; return item })
@@ -657,7 +713,7 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
-                this.fetchIndicateurs()
+                this.fetchIndicateur()
                 this.sendRequest = false
                 this.close();
               }
@@ -671,7 +727,7 @@ export default {
             if (response.status == 200 || response.status == 201) {
               this.close();
               this.$toast.success('operation effectué avec success')
-              this.fetchIndicateurs()
+              this.fetchIndicateur()
               this.sendRequest = false
             }
           }).catch((e) => {
@@ -721,11 +777,36 @@ export default {
         $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
       })
     },
-    
-    async supprimer(indicateur) {
-      if (window.confirm("Voulez-vous supprimer cette unitee de gestion  " + indicateur.nom))
-        await this.deleteIndicateur(indicateur.id)
+
+    supprimer(indicateur,index) {
+      this.deleteModal= true
+      this.deleteData.data = indicateur
+      this.deleteData.index = index
     },
+
+    deleteIndicateur(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal= false
+      IndicateurService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchIndicateur()
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+    
+    
 
     close() {
       this.showCloseModal();

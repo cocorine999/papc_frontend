@@ -22,6 +22,18 @@
         </div>
       </vmodal>
 
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+        voulez vous supprimer cet ano?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteAnos(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
+
       <div v-if="showModal">
         <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
@@ -136,14 +148,14 @@
        <!-- j'ai desactiver les commentaires iscomment false -->
       <div id="dataTable">
         <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false"
-          :headers="headers" :datas="filteredAno()" :actions="actionsDelete" @supprimer="supprimer"></vtable>
+          :headers="headers" :datas="filteredAno" :actions="actionsDelete" @supprimer="supprimer"></vtable>
         <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true"
-          :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()"
+          :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno"
           :actions="actionsReponse" :isComment="false"  @seeUpload="seeUpload"></vtable>
         <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"
-          :sendRequest="false" :headers="headers" :datas="filteredAno()"></vtable>
+          :sendRequest="false" :headers="headers" :datas="filteredAno"></vtable>
         <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="false"
-           :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions"
+           :sendRequest="false" :headers="headers" :datas="filteredAno" :actions="actions"
           @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
@@ -163,6 +175,7 @@ import Vbutton from '@/components/Vbutton.vue'
 import PermissionsService from "@/services/modules/permission.service.js";
 import AnosService from "@/services/modules/ano.service.js";
 import BailleurService from "@/services/modules/bailleur.service";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
@@ -181,6 +194,7 @@ export default {
     Vbutton,
     ModalChat,
     Commentaire,
+    DeleteAlert,
     ReponseAnos
   },
 
@@ -217,6 +231,16 @@ export default {
       statuts: [
         { name: 'validé', value: 1 },
         { name: 'non validé', value: -1 }
+      ],
+      statutsAno:[
+        {
+          nom : "Non validé",
+          etat: -1
+        },
+        {
+          nom: "Validé", 
+          etat: 1
+        },
       ],
       champs: [],
       champsUpdate: [],
@@ -261,7 +285,9 @@ export default {
       anosReponses: [],
       isUpdate:false,
       bailleurs:[],
-      programmeId:[]
+      programmeId:[],
+      deleteData:{},
+      deleteModal:false,
     }
   },
 
@@ -277,7 +303,17 @@ export default {
       ano: "anos/getAno",
       typeAnos: 'typeAnos/getTypeAnos',
       currentUser: "auths/GET_AUTHENTICATE_USER",
-    })
+    }),
+    filteredAno() {
+      var self = this;
+      return this.anos.filter(function (ano) {
+        return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.destinataire.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
+    },
   },
 
   methods: {
@@ -438,16 +474,7 @@ export default {
       this.setAno({})
     },
 
-    filteredAno() {
-      var self = this;
-      return this.anos.filter(function (ano) {
-        return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.destinataire.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-      });
-    },
+   
     sendReponse() {
       if (this.chargement == false) {
         this.chargement = true
@@ -585,11 +612,33 @@ export default {
 
     },
 
-
-    async supprimer(ano) {
-      if (window.confirm("Voulez-vous supprimer ce ano ?" + ano.nom))
-        await this.deleteAno(ano.id)
+    supprimer(ano,index) {
+      this.deleteModal= true
+      this.deleteData.data = ano
+      this.deleteData.index = index
     },
+    deleteAnos(data) {
+      this.filteredAno.splice(data.index,1)
+      this.deleteModal= false
+      AnosService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+   
     fetchBailleurs(programme) {
     
     BailleurService.bailleursOfProgramme(programme).then((data) => {
@@ -602,14 +651,14 @@ export default {
         { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
         { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statuts, cle: 'value', value: 'name', required: true, errors: [] },
+        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
       ]
     this.champsUpdate = [
       { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
       { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
       { name: 'Date de soumission', key: 'dateDeSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
       { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-      { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statuts, cle: 'value', value: 'name', required: true, errors: [] },
+      { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
     ]
   
     }).catch((error) => {

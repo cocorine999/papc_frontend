@@ -41,6 +41,18 @@
           </div>
         </modal-top-right>
       </div>
+
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+        voulez vous supprimer cette projet?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteProjets(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
       <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb">
         <div class="mb-2">
@@ -95,7 +107,7 @@
       </div>
 
       <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(projet, index) in filteredProjet()" :key="index">
+        <div v-for="(projet, index) in filteredProjet" :key="index">
 
           <div @click.stop="gotoDetails(projet)"
             class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
@@ -190,6 +202,8 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import ProgrammeService from "@/services/modules/programme.service.js";
+import ProjetService from "@/services/modules/projet.service.js";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import BailleurService from "@/services/modules/bailleur.service";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { API_BASE_URL } from "@/services/configs/environment.js";
@@ -204,6 +218,7 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    DeleteAlert,
     Dropdown
   },
   data() {
@@ -253,7 +268,9 @@ export default {
       fichiers: [],
       image: {},
       projets:[],
-      bailleurs:[]
+      bailleurs:[],
+      deleteData:{},
+      deleteModal:false,
 
     }
 
@@ -274,6 +291,14 @@ export default {
       //bailleurs: "bailleurs/getBailleurs",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
+    filteredProjet() {
+      var self = this;
+      return this.projets.filter(function (projet) {
+        return projet.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
+    },
 
   },
 
@@ -397,14 +422,7 @@ export default {
       this.showModal = value
     },
 
-    filteredProjet() {
-      var self = this;
-      return this.projets.filter(function (projet) {
-        return projet.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-      });
-    },
+    
 
     addProjet() {
       this.title = 'Ajouter'
@@ -454,8 +472,31 @@ export default {
 
     },
 
-    async supprimerProjet(projet) {
-      if (window.confirm("Voulez-vous supprimer ce projet " + projet.nom)) await this.deleteProjet(projet.id)
+    
+    async supprimerProjet(projet,index) {
+      this.deleteModal= true
+      this.deleteData.data = projet
+      this.deleteData.index = index
+    },
+    deleteProjets(data) {
+      this.filteredProjet.splice(data.index,1)
+      this.deleteModal= false
+      ProjetService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
     },
 
     saveProlongerDate() {
@@ -519,6 +560,7 @@ export default {
 
             if (response.status == 200 || response.status == 201) {
               this.sendRequest = false;
+              this.fetchProjets(this.programmeId)
               this.close()
             }
 
@@ -574,6 +616,7 @@ export default {
           this.saveProjet(formData).then(response => {
             if (response.status == 200 || response.status == 201) {
               this.close()
+              this.fetchProjets(this.programmeId)
               this.sendRequest = false;
             }
           }).catch((error) => {
@@ -597,6 +640,7 @@ export default {
 
         if (response.status == 200 || response.status == 201) {
           this.$toast.success("projet valider")
+          this.fetchProjets(this.programmeId)
         }
 
       }).catch((error) => {
