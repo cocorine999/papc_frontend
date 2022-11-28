@@ -224,6 +224,7 @@ export default {
       title: '',
       search: "",
       projetAttributs: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId','tauxEngagement'],
+      projetAttributsUpdate: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville','tauxEngagement'],
       champs: [],
       champsUpdate:[],
       option: [
@@ -435,7 +436,7 @@ export default {
 
       this.projetId = projet.id
 
-      this.projetAttributs.forEach((item) => {
+      this.projetAttributsUpdate.forEach((item) => {
 
         this.champsUpdate.find((value, index) => {
 
@@ -501,15 +502,16 @@ export default {
         this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
         let projet = {}
         if (this.isUpdate) {
-          projet = extractFormData(this.champsUpdate, this.projetAttributs)
+          projet = extractFormData(this.champsUpdate, this.projetAttributsUpdate)
           projet.id = this.projetId
         } else {
           projet = extractFormData(this.champs, this.projetAttributs)
+          projet.bailleurId = projet.bailleurId.id
         }
 
         projet.programmeId = this.programmeId
 
-        projet.bailleurId = projet.bailleurId.id
+       
       
         if (projet?.id) {
           projet.statut = projet.statut

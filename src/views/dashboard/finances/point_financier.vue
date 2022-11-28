@@ -68,9 +68,9 @@ export default {
         headers:[
           {name:'Bailleur', cle:'sigle'},
           {name:'Montants financier', cle:'montantFinancement',monaie:true},
-          {name:'Decaissement', cle:'decaissement'},
+          {name:'Decaissement', cle:'decaissement',monaie:true},
           {name:'Taux de decaissement', cle:'tauxDecaissement'},
-          {name:'Execution Financier ', cle:'realisationPta'},
+          {name:'Execution Financier ', cle:'realisationPta',monaie:true},
           {name:'TEF GLOBALE', cle:'tefGlobale'},
         ],
         search:'',
