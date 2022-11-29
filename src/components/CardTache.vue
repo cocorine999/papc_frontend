@@ -90,9 +90,11 @@
       <div title="suivre une activité"
         class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
         {{ codePta }} </div>
-      <div title="suivre une activité"
-        class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
-        {{ poids }} </div></div>
+        <div title="suivre une activité"
+          class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
+          {{ poids }} 
+        </div>
+      </div>
     </div>
   </div>
   <!-- End cards Tâches -->
@@ -171,7 +173,7 @@ export default {
       }
       this.isDone = true
       TacheService.suiviTache(data).then((data) => {
-        window.location.reload()
+       
       }).catch((e) => {
         if (e.response) {
           const errors = {}

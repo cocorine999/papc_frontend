@@ -3,6 +3,17 @@
      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="decaissement" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
+
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet decaissement?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteDecaissements(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
     <div class="w-full">
     <nav class="text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
       <div>
@@ -90,7 +101,9 @@ import { extractFormData } from '@/utils/index'
 import ProgrammeService from "@/services/modules/programme.service.js";
 import JsonExcel from "vue-json-excel"
 import ModalChat from '@/components/ModalChat'
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import Commentaire from '@/components/Commentaire.vue'
+import DecaissementService from "@/services/modules/decaissement.service";
 
 export default {
   components: {
@@ -101,6 +114,7 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    DeleteAlert,
     JsonExcel,
     ModalChat,
     Commentaire
@@ -112,16 +126,16 @@ export default {
           sendRequest:false,
           title:'',
           isUpdate:false,
-          decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
+          decaissementAttributs : ['montant', 'methodeDePaiement', 'date', 'projetId'],
           decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
           champs:[],
           champsUpdate:[],
-        champsRecherche:[
-          {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
-          {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
-        ],
+          champsRecherche:[
+            {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+            {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+            {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
+            {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
+          ],
         decaissementId:'',
         
         search:"",
@@ -154,7 +168,9 @@ export default {
         data:{},
         commentaires:[],
         projets:[],
-        showComment:false
+        showComment:false,
+        deleteData:{},
+        deleteModal:false,
       };
     },
     computed:{
@@ -264,14 +280,10 @@ export default {
       },
 
       sendForm() {
-
         if( this.sendRequest === false ){
-
           this.sendRequest = true;
-
-
           this.champs = this.champs.map(item => { item.errors = []; return item })
-        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+          this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
         let decaissement = {}
         if (this.isUpdate) {
           decaissement = extractFormData(this.champsUpdate, this.decaissementAttributs)
@@ -279,10 +291,11 @@ export default {
         } else {
           decaissement = extractFormData(this.champs, this.decaissementAttributs)
         }
-
-
-
-          decaissement.type = decaissement.type.id
+        
+ 
+          decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
+          console.log('decaissement',decaissement.methodeDePaiement)
+          decaissement.type = 0
           decaissement.projetId = decaissement.projetId.id
 
           if (decaissement?.id) {
@@ -291,9 +304,10 @@ export default {
 
             if (response.status == 200 || response.status == 201) {
               this.$toast.success("operation effectué avec success")
-              this.showModal = false
+              
               this.fetchDecaissements()
               this.sendRequest = false
+              this.close()
             }
 
           }).catch((error) => {
@@ -305,11 +319,12 @@ export default {
         else {
           this.saveDecaissement(decaissement).then(response => {
             if(response.status == 200 || response.status == 201){
-              this.close()
+             
               this.$toast.success("nouveau enregistrement")
               this.showModal = false
               this.fetchDecaissements()
               this.sendRequest = false
+              this.close()
             }
 
           }).finally((error) => {
@@ -356,7 +371,16 @@ export default {
         this.showComment = false
         this.commentaires = []
       },
+      resetForm() {
+
+        this.champs = this.champs.map(item => { item.data = ''; return item })
+
+        window.document.getElementById('vform')?.reset()
+
+
+      },
       close() {
+        this.resetForm()
         this.showModal = false
       },
       close2() {
@@ -401,11 +425,36 @@ export default {
 
           this.showModal2 = true
       },
-      
-      async supprimer(decaissement) {
-        if(window.confirm("Voulez-vous supprimer ce decaissement " ))
-          await this.deleteDecaissement(decaissement.id)
+
+      supprimer(decaissement,index) {
+        this.deleteModal= true
+        this.deleteData.data = decaissement
+        this.deleteData.index = index
       },
+
+      deleteDecaissements(data) {
+        //this.filteredIndicateur.splice(data.index,1)
+        this.deleteModal= false
+        DecaissementService.destroy(data.data.id).then((data) => {
+          this.$toast.success("Operation effectué avec success !")
+          this.fetchDecaissements()
+        
+        }).catch((error) => {
+          
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        }) 
+      },
+    
+      
       modifier(decaissement) {
       this.isUpdate = true
       this.title = 'Modifier un decaissement'
@@ -439,28 +488,28 @@ export default {
       },
       fetchProjets(programme) {
         this.active()
-      ProgrammeService.projets(programme).then((data) => {
-        const datas = data.data.data
-        this.projets = datas
-        this.champs = [
-          {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
-          {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
-        ]
-        this.champsUpdate = [
-          {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
-          {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
-        ]
+        ProgrammeService.projets(programme).then((data) => {
+          const datas = data.data.data
+          this.projets = datas
+          this.champs = [
+            {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
+            {name:'Methode de paiement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
+          ]
+          this.champsUpdate = [
+            {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
+            {name:'Source de décaissement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
+          ]
 
-        this.disabled()
-        
-      }).catch((error) => {
-        this.disabled()
-        if (error.response) {
-          // Requête effectuée mais le serveur a répondu par une erreur.
+          this.disabled()
+          
+        }).catch((error) => {
+          this.disabled()
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {

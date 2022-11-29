@@ -8,6 +8,17 @@
             </div>
         </modal-top-right>
       </div>
+
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+        voulez vous supprimer cet sous composant?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteComposante(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
       
       <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
         <div class="mb-2" >
@@ -52,7 +63,7 @@
         
             <div>
               <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
-              <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+              <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
             </div>
 
             <div>
@@ -259,6 +270,7 @@ import Empty from '@/components/Empty.vue'
 import CardComposante from '@/components/CardComposante.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import Composante from '@/store/modules/composantes/composante'
 import ComposanteService from "@/services/modules/composante.service.js";
 import ProgrammeService from "@/services/modules/programme.service.js";
@@ -274,6 +286,7 @@ export default {
     ModalTopRight,
     Dropdown,
     CardComposante,
+    DeleteAlert,
     Vtable,
     Empty,
 },
@@ -346,7 +359,9 @@ export default {
       isShow:true,
       search:'',
       isSearch:false,
-      projets:[]
+      projets:[],
+      deleteData:{},
+      deleteModal:false,
     }
     
   },
@@ -544,7 +559,10 @@ export default {
     },
 
 
-    customLabel ({ codePta, nom }) {
+    customLabelP ({ bailleur, nom }) {
+      return `${bailleur.sigle} – ${nom}`
+    },
+    customLabel({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
 
@@ -712,20 +730,35 @@ export default {
       this.showCloseModal(true)
     },
 
-    supprimer(sousComposante) {
-      if(window.confirm("Voulez-vous supprimer la sous composante " + sousComposante.nom)){
-        if(this.sendRequest === false){
-
-          this.sendRequest = true;
-
-          this.deleteSousComposante(sousComposante.id).finally((response) => {
-                this.sendRequest = false;
-                this.fetchSousComposantes(this.valueFiltre.id);
-          });
+    supprimer(sousComposante,index) {
+      this.deleteModal= true
+      this.deleteData.data = sousComposante
+      this.deleteData.index = index
+    },
+    deleteComposante(data) {
+      //this.filteredBailleur.splice(data.index,1)
+      this.deleteModal= false
+      ComposanteService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchSousComposantes(this.valueFiltre.id);
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
         }
-      }
+      }) 
     },
 
+
+    
     dupliquer(sousComposante) {
 
       this.title = "Ajouter un nouveau  composant";

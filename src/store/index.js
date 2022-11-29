@@ -164,6 +164,25 @@ export default new Vuex.Store({
      
      
     ],
+    modePaiement : [
+      {
+        id : 0, 
+        nom : "Paiement direct"
+      },
+      {
+        id : 1, 
+        nom : "Avance au compte designé"
+      },
+      {
+        id : 2, 
+        nom : "Remboursement"
+      },
+      {
+        id : 3, 
+        nom : "Engagement special"
+      },
+      
+    ],
     
     sources : [
       {

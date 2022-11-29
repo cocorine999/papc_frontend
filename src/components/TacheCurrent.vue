@@ -39,6 +39,17 @@
       </div>
     </vmodal>
 
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cette activité?
+      </p>
+
+      <div class="text-right mt-4">
+        <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+        <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteTaches(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
+
     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
       <commentaire module="tache" :datas="commentaires"></commentaire>
     </modal-chat>
@@ -103,7 +114,7 @@
         <div class="w-full grid sm:grid-cols-2 sm:gap-2">
           <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true"
+            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP" :preselect-first="true"
               placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
           </div>
 
@@ -287,6 +298,7 @@ import ActiviteService from '@/services/modules/activite.service';
 import ProgrammeService from "@/services/modules/programme.service.js";
 import Empty from '@/components/Empty.vue'
 import ModalChat from '@/components/ModalChat'
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import Commentaire from '@/components/Commentaire.vue'
 export default {
   components: {
@@ -300,6 +312,7 @@ export default {
     Vtable,
     Vform,
     ModalChat,
+    DeleteAlert,
     Composante,
     Empty,
     Commentaire
@@ -408,7 +421,9 @@ export default {
       isShow: true,
       search:'',
       isSearch:false,
-      projets:[]
+      projets:[],
+      deleteData:{},
+      deleteModal:false,
     };
   },
 
@@ -440,6 +455,7 @@ export default {
       tache: "taches/getTache",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
+
     terminer() {
       if (this.taches != undefined) {
         const datas = []
@@ -451,6 +467,7 @@ export default {
         return datas
       }
     },
+
     enAttente() {
       if (this.taches != undefined) {
         const datas = []
@@ -462,6 +479,7 @@ export default {
         return datas
       }
     },
+
     retardData() {
       if (this.taches != undefined) {
         const datas = []
@@ -473,6 +491,7 @@ export default {
         return datas
       }
     },
+
     enCours() {
       if (this.taches != undefined) {
         const datas = []
@@ -500,7 +519,6 @@ export default {
       }
       
     },
-
     changeProjet(projet) {
       if (this.isClick) {
         this.projetFiltre = this.newProjet
@@ -663,6 +681,10 @@ export default {
     customLabel({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
+    customLabelP({ bailleur, nom }) {
+      return `${bailleur.sigle} – ${nom}`
+    },
+
 
     filtreRange(value) {
       this.rangeValue = value
@@ -760,19 +782,35 @@ export default {
       return name;
     },
 
-    supprimer(tache) {
-      if (window.confirm("Voulez-vous supprimer la tache " + tache.nom)) {
-        if (this.sendRequest === false) {
-          this.sendRequest = true;
-          this.deleteTache(tache.id).then((value) => {
-            this.fetchTaches(this.valueFiltre.id);
-          })
-            .finally((error) => {
-              this.sendRequest = false;
-            });
-        }
-      }
+    supprimer(tache,index) {
+      this.deleteModal= true
+      this.deleteData.data = tache
+      this.deleteData.index = index
     },
+
+    deleteTaches(data) {
+      //this.filteredBailleur.splice(data.index,1)
+      this.deleteModal= false
+      TacheService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchTaches(this.valueFiltre.id);
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+   
 
     dupliquer(tache) {
 
@@ -871,8 +909,6 @@ export default {
         }); */
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
-       
-
           if(this.valueFiltre == undefined || this.valueFiltre == null) {
             this.$toast.error('Activité non definit  ')
             this.sendRequest = false;

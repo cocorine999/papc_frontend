@@ -32,6 +32,17 @@
         </vmodal>
     </div>
 
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet element?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deletePaps(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
+
     
     <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
       <div>
@@ -108,10 +119,11 @@ import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
-
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import Dashboard from '@/layouts/Dashboard'
 import JsonExcel from "vue-json-excel"
 import PapService from "@/services/modules/paps.service";
+
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 import { extractFormData } from '@/utils/index'
 
@@ -122,6 +134,7 @@ export default {
     Vmodal,
     Vform,
     CardBailleur,
+    DeleteAlert,
     Titre,
     SearchBar,
     ModalTopRight,
@@ -188,7 +201,9 @@ export default {
       papDelete:false,
       papUpdate:false,
       papImporter:false,
-      papExporter:false
+      papExporter:false,
+      deleteData:{},
+      deleteModal:false,
     }
     
   },
@@ -344,10 +359,7 @@ export default {
         });
     },
 
-    async supprimer(pap) {
-      if(window.confirm("Voulez-vous supprimer ce pap " + pap.nom + ' '+ pap.prenoms))
-        await this.deletePap(pap.id)
-    },
+    
 
     resetForm(){
       this.champs = this.champs.map(item => { item.data = ''; return item})
@@ -384,6 +396,34 @@ export default {
         this.$toast.error(e)
       })
     },
+    supprimer(pap,index) {
+      this.deleteModal= true
+      this.deleteData.data = pap
+      this.deleteData.index = index
+    },
+
+    deletePaps(data) {
+        //this.filteredIndicateur.splice(data.index,1)
+        this.deleteModal= false
+        PapService.destroy(data.data.id).then((data) => {
+          this.$toast.success("Operation effectué avec success !")
+          this.fetchPaps({id : this.currentUser?.programme?.id})
+        
+        }).catch((error) => {
+          
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        }) 
+    },
+    
 
    
   },

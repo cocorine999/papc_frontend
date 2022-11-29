@@ -15,9 +15,9 @@
             <p tabindex="0" class="focus:outline-none mt-4 text-2xl font-semibold leading-6 ">
               Notifications
             </p>
-            <div class="mt-4">
+            <!-- <div class="mt-4">
               <button class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500  ">Effacer tout</button>
-            </div>
+            </div> -->
           </div>
           <div class="my-2  h-1 bg-gray-200 "></div>
 

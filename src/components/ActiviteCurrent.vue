@@ -48,6 +48,17 @@
 
     </modal-top-right>
 
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cette activité?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteActivites(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
+
     <modal-top-right v-if="showModal" :title="title" v-on:close="close">
       <div class="p-4 overflow-auto">
         <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
@@ -128,7 +139,7 @@
           <div class="w-full grid grid-cols-2 items-center gap-4">
             <div>
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-              <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabel"
+              <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabelP"
                 placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
             </div>
 
@@ -204,7 +215,7 @@
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
             <div v-for="(activite, index) in terminer" :key="index">
               <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
+                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
                 :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -222,7 +233,7 @@
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
             <div v-for="(activite, index) in enAttente" :key="index">
               <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
+                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
                 :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -240,7 +251,7 @@
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
             <div v-for="(activite, index) in enCours" :key="index">
               <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
+                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
                 :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -258,7 +269,7 @@
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
             <div v-for="(activite, index) in retardData" :key="index">
               <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
+                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
                 :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -276,8 +287,10 @@
         <div v-else>
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
             <div v-for="(activite, index) in filtere" :key="index">
-              <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
+              <card-activite 
+              :code="activite.codePta"
+              :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
+                :poids="activite.poids"  :montantEPM="activite.pret" :montantNE="activite.budgetNational"
                 :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -448,6 +461,7 @@ import Composante from "@/store/modules/composantes/composante";
 import Empty from '@/components/Empty.vue'
 import ComposanteService from "@/services/modules/composante.service.js";
 import Activite from '@/store/modules/activites/activite';
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import moment from 'moment'
 import ProgrammeService from "@/services/modules/programme.service.js";
 import ActiviteService from "@/services/modules/activite.service.js";
@@ -463,6 +477,7 @@ export default {
     Multiselect,
     Dropdown,
     CardActivite,
+    DeleteAlert,
     Vtable,
     Empty,
     Vform
@@ -821,7 +836,9 @@ export default {
       sous_composantes: [],
       search:'',
       isSearch:false,
-      projets:[]
+      projets:[],
+      deleteData:{},
+      deleteModal:false,
     };
   },
 
@@ -972,7 +989,6 @@ export default {
         //this.fetchActivites(Scomposante.id);
       }
     },
-
     changeComposante(composante) {
       if (this.isClick) {
         this.composanteFiltre = this.newComponent
@@ -1128,9 +1144,13 @@ export default {
       fetchStructure: "FETCH_LIST_STRUCTURE_OF_PROGRAMME",
     }),
 
+    customLabelP ({ bailleur, nom }) {
+      return `${bailleur.sigle} – ${nom}`
+    },
     customLabel({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
+
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
 
@@ -1322,21 +1342,35 @@ export default {
       this.showProlonger = true
     },
 
-    supprimer(activite) {
-      if (window.confirm("Voulez-vous supprimer l'activite " + activite.nom)) {
-        if (this.sendRequest === false) {
-          this.sendRequest = true;
-
-          this.deleteActivite(activite.id)
-            .then((value) => {
-              this.fetchActivites(this.composanteId);
-            })
-            .finally((value) => {
-              this.sendRequest = false;
-            });
-        }
-      }
+    supprimer(activite,index) {
+      this.deleteModal= true
+      this.deleteData.data = activite
+      this.deleteData.index = index
     },
+
+    deleteActivites(data) {
+      //this.filteredBailleur.splice(data.index,1)
+      this.deleteModal= false
+      ActiviteService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchActivites(this.composanteId);
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+   
 
     modifier(activite) {
 

@@ -1,6 +1,17 @@
 <template>
   <dashboard>
     <div class="w-full">
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+        voulez vous supprimer cet bailleur?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteBailleurs(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="p-4 w-full">
@@ -79,7 +90,7 @@
         </div>
 
         <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(bailleur, index) in filteredBailleur()" :key="index">
+          <div v-for="(bailleur, index) in filteredBailleur" :key="index">
             <div class="relative">
               <div v-if="bailleurUpdate" class="absolute right-1 top-4 z-10  cursor-pointer">
                 <dropdown @modifier="modifier(bailleur)" @couverture="changeLogo(bailleur)" :option="optionUp">
@@ -185,6 +196,7 @@ import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
 import Dropdown from '@/components/Dropdown.vue'
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import extractFormData from "@/utils/extract-data";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import BailleurService from "@/services/modules/bailleur.service.js";
@@ -199,6 +211,7 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    DeleteAlert,
     Dropdown
   },
 
@@ -382,7 +395,9 @@ export default {
       idBailleur: '',
       sendRequest: false,
       code: '',
-      bailleurs:[]
+      bailleurs:[],
+      deleteData:{},
+      deleteModal:false,
 
     };
   },
@@ -401,7 +416,17 @@ export default {
 
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
-    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
+    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
+    filteredBailleur() {
+      var self = this;
+
+      return this.bailleurs.filter(function (bailleur) {
+        return bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          bailleur.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          bailleur.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
+    },
+
   },
 
   methods: {
@@ -534,14 +559,34 @@ export default {
 
       this.showCloseModal(true);
     },
-
-    supprimer(bailleur) {
-      console.log(bailleur)
-      if (
-        window.confirm("Voulez-vous supprimer le bailleur " + bailleur.user.nom)
-      )
-        this.deleteBailleur(bailleur.id);
+    supprimer(bailleur,index) {
+      this.deleteModal= true
+      this.deleteData.data = bailleur
+      this.deleteData.index = index
     },
+    deleteBailleurs(data) {
+      this.filteredBailleur.splice(data.index,1)
+      this.deleteModal= false
+      BailleurService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+
+   
 
     dupliquer() {
       this.title = "Dupliquer un bailleur";
@@ -578,16 +623,7 @@ export default {
       })
     },
 
-    filteredBailleur() {
-      var self = this;
-
-      return this.bailleurs.filter(function (bailleur) {
-        return bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          bailleur.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          bailleur.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-      });
-    },
-
+   
     sendForm() {
 
       this.champs = this.champs.map((item) => {

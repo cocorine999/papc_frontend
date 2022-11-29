@@ -15,6 +15,7 @@
           </div>
         </modal-top-right>
       </div>
+
       <div v-if="showModal2">
         <modal-top-right :title="title2" v-on:close="showModal2 = false">
           <div class="px-4 overflow-y-auto">
@@ -29,6 +30,18 @@
           </div>
         </modal-top-right>
       </div>
+
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
+
+        <div class="text-right mt-4">
+            <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+            <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="supprimerMods(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
       <nav class="text-sm font-semibold flex items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -53,6 +66,7 @@
           </ol>
         </div>
       </nav>
+
       <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
           <span
@@ -109,6 +123,7 @@
           >
         </button>
       </div>
+
       <div v-if="seeMod" class="grid grid-cols-3 gap-4 my-6">
         <div v-for="mod in mods" :key="mod.id">
           <card-mod
@@ -143,9 +158,10 @@ import CardMod from "@/components/CardMod";
 import Vtable from "@/components/Vtable";
 import Vmodal from "@/components/Vmodal";
 import Vform from "@/components/Vform";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
-
+import ModService from "@/services/modules/mod.service"
 import ModalTopRight from "@/components/ModalTopRight";
 import CardChecklist from "@/components/CardChecklist";
 export default {
@@ -155,6 +171,7 @@ export default {
     Vtable,
     Vform,
     Vmodal,
+    DeleteAlert,
     ModalTopRight,
     CardChecklist,
   },
@@ -296,6 +313,8 @@ export default {
       passationUpdate:false,
       siteVisible:false,
       entreprisesExecutanteVisible:false,
+      deleteData:{},
+      deleteModal:false,
 
     };
   },
@@ -418,9 +437,32 @@ export default {
       this.showCloseModal(true);
     },
 
-    supprimerMod(mod) {
-      if (window.confirm("Voulez-vous supprimer le mod " + mod.user.nom))
-        this.deleteMod(mod.id);
+    supprimerMod(mod,index) {
+      this.deleteModal= true
+      this.deleteData.data = mod
+      this.deleteData.index = index
+    },
+
+    supprimerMods(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal= false
+      ModService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchMods();
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
     },
 
     supprimerPassation(passation) {

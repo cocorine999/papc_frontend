@@ -1,7 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const ProjetsService = {
+  const ProjetsService = {
     query(type, params) {
       return ApiService.query("projets", {
         params: params
