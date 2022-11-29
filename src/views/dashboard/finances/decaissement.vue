@@ -3,7 +3,8 @@
      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="decaissement" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
-      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
       <p class="text-gray-800">
         voulez vous supprimer cet decaissement?
       </p>
@@ -12,7 +13,7 @@
           <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
           <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteDecaissements(deleteData)">Supprimer</button>
       </div>
-      </delete-alert>
+    </delete-alert>
     <div class="w-full">
     <nav class="text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
       <div>
@@ -428,33 +429,33 @@ export default {
           this.showModal2 = true
       },
 
-    supprimer(decaissement,index) {
-      this.deleteModal= true
-      this.deleteData.data = decaissement
-      this.deleteData.index = index
-    },
+      supprimer(decaissement,index) {
+        this.deleteModal= true
+        this.deleteData.data = decaissement
+        this.deleteData.index = index
+      },
 
-    deleteDecaissements(data) {
-      //this.filteredIndicateur.splice(data.index,1)
-      this.deleteModal= false
-      DecaissementService.destroy(data.data.id).then((data) => {
-        this.$toast.success("Operation effectué avec success !")
-        this.fetchDecaissements()
-       
-      }).catch((error) => {
+      deleteDecaissements(data) {
+        //this.filteredIndicateur.splice(data.index,1)
+        this.deleteModal= false
+        DecaissementService.destroy(data.data.id).then((data) => {
+          this.$toast.success("Operation effectué avec success !")
+          this.fetchDecaissements()
         
-        if (error.response) {
-          // Requête effectuée mais le serveur a répondu par une erreur.
-          const message = error.response.data.message
-          this.$toast.error(message)
-        } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
-        } else {
-          // Une erreur s'est produite lors de la configuration de la demande
-        }
-      }) 
-    },
+        }).catch((error) => {
+          
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        }) 
+      },
     
       
       modifier(decaissement) {

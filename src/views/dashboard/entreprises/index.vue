@@ -10,6 +10,17 @@
         </modal-top-right>
       </div>
 
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteEntreprise(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
       <div class="flex items-center justify-between flex-wrap">
         <div class="flex space-x-4">
           <span
@@ -179,6 +190,8 @@ import Dashboard from "@/layouts/Dashboard";
 import RouteName from "@/components/RouteName";
 import ModalTopRight from "@/components/ModalTopRight";
 import FormComponent from "@/components/FormComponent";
+import DeleteAlert from "@/components/DeleteAlert.vue";
+import EntrepriseService from "@/services/modules/entreprise.executante.service"
 import Titre from "@/components/Titre";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import EntrepriseExecutanteService from '@/services/modules/entreprise.executante.service';
@@ -188,6 +201,7 @@ export default {
     Dashboard,
     RouteName,
     FormComponent,
+    DeleteAlert,
     Titre,
   
   },
@@ -248,6 +262,8 @@ export default {
       entrepriseExecutanteAdd:false,
       entrepriseExecutanteDelete:false,
       entrepriseExecutanteUpdate:false,
+      deleteData:{},
+      deleteModal:false,
     
     };
   },
@@ -290,7 +306,7 @@ export default {
             });
 
       },
-       getEntrepriseBailleur() {
+      getEntrepriseBailleur() {
        this.active()
           EntrepriseExecutanteService.getByBailleur().then((data) => {
           const datas = data.data.data
@@ -362,6 +378,34 @@ export default {
       )
         this.deleteEntrepriseExecutante(entrepriseExecutante.id);
     },
+
+    supprimerEntrepriseExecutante(entrepriseExecutante,index) {
+      this.deleteModal= true
+      this.deleteData.data = entrepriseExecutante
+      this.deleteData.index = index
+    },
+
+    deleteEntreprise(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal= false
+      EntrepriseService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchMissionDeControles()
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
 
     dupliquerEntrepriseExecutante() {
       this.title = "Dupliquer l'entreprise executante";

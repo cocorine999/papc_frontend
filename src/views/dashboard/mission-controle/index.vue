@@ -18,6 +18,17 @@
       </modal-top-right>
     </div>
 
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet element?
+      </p>
+
+      <div class="text-right mt-4">
+        <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+        <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteMos(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
+
     <nav class="text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
@@ -85,12 +96,13 @@
 
   import ModalTopRight from '@/components/ModalTopRight'
   import CardChecklist from '@/components/CardChecklist'
+  import DeleteAlert from "@/components/DeleteAlert.vue";
   import Dashboard from '@/layouts/Dashboard'
   import CardMod from '@/components/CardMod'
   import Vtable from '@/components/Vtable'
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
-
+  import MoService from "@/services/modules/mission.controle.service"
   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
 export default {
@@ -100,6 +112,7 @@ export default {
     Vtable,
     Vform,
     Vmodal,
+    DeleteAlert,
     ModalTopRight,
     CardChecklist
   },
@@ -173,6 +186,8 @@ export default {
         passationUpdate:false,
         entreprisesExecutanteVisible:false,
         siteVisible:false,
+        deleteData:{},
+        deleteModal:false,
     }
     
   },
@@ -307,10 +322,33 @@ export default {
       this.showCloseModal(true)
     },
 
-    supprimerMissionDeControle(missionDeControle) {
-      if(window.confirm("Voulez-vous supprimer la mission de controle " + missionDeControle.user.nom))
-        this.deleteMissionDeControle(missionDeControle.id)
+    supprimerMissionDeControle(missionDeControle,index) {
+      this.deleteModal= true
+      this.deleteData.data = missionDeControle
+      this.deleteData.index = index
     },
+
+    deleteMos(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal= false
+      MoService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchMissionDeControles()
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
 
     supprimerPassation(passation) {
       if(window.confirm("Voulez-vous supprimer la passation "))
@@ -377,6 +415,7 @@ export default {
 
       this.setPassation({})
     },
+
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
@@ -385,6 +424,7 @@ export default {
 
      this.setMissionDeControle({})
     },
+
     addPassation() {
       this.title2 = 'Ajouter'
       
