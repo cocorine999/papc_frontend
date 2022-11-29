@@ -291,8 +291,10 @@ export default {
         } else {
           decaissement = extractFormData(this.champs, this.decaissementAttributs)
         }
+        
  
           decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
+          console.log('decaissement',decaissement.methodeDePaiement)
           decaissement.type = 0
           decaissement.projetId = decaissement.projetId.id
 
