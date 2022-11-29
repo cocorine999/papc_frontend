@@ -141,7 +141,7 @@ export default {
         headers:[
           {name:'Projets',cle:'projet'},
           {name:'Bailleur',cle:'bailleur'},
-          {name:'Type de décaissement',cle:'type'},
+          {name:'Methode de paiement',cle:'methodeDePaiement'},
           {name:'Montant',cle:'montant',monaie:true},
           {name:'Date de décaissement',cle:'date'},
           {name:'Date de création',cle:'created_at'},

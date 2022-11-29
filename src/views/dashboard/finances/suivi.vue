@@ -98,7 +98,8 @@
       
       </div>
 
-    
+      <pre>Annee : {{annee}}</pre>
+      <pre>Bailleur : {{bailleur}}</pre>
      
       <div class="my-4">
         
@@ -168,6 +169,8 @@ export default {
           {name:'supprimer',iconne:''},
         ],
         suiviFinancier: [],
+        annee: "",
+        bailleur: "",
         bailleurs: [],
         suiviFinancierVisible:false,
         suiviFinancierUpdate:false,
@@ -251,6 +254,7 @@ export default {
     getSuivi() {
       SuiviFinancierService.byProgramme(this.currentUser.programme.id).then((data) => {
         this.suiviFinancier = data.data.data.suiviFinanciers
+        this.annee = data.data.data.annee
       }).catch((e) => {
         this.$toast.error(e)
       })
@@ -341,6 +345,8 @@ export default {
             if (response.status == 200 || response.status == 201) {
             
               this.suiviFinancier = response.data.data.suiviFinanciers
+              this.annee = response.data.data.annee
+              this.bailleur = response.data.data.bailleur
               this.close2();
             }
         });

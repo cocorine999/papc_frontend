@@ -100,7 +100,7 @@
                 </th>
                 
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span  class="font-bold"> {{suivi.activite.nom}} </span>
+                  <span  class="font-bold">{{suivi.activite.codePta}}-{{suivi.activite.nom}} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
