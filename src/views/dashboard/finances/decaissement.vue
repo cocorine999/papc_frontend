@@ -126,16 +126,16 @@ export default {
           sendRequest:false,
           title:'',
           isUpdate:false,
-          decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
+          decaissementAttributs : ['montant', 'methodeDePaiement', 'date', 'projetId'],
           decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
           champs:[],
           champsUpdate:[],
-        champsRecherche:[
-          {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
-          {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
-        ],
+          champsRecherche:[
+            {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+            {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+            {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
+            {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
+          ],
         decaissementId:'',
         
         search:"",
@@ -280,14 +280,10 @@ export default {
       },
 
       sendForm() {
-
         if( this.sendRequest === false ){
-
           this.sendRequest = true;
-
-
           this.champs = this.champs.map(item => { item.errors = []; return item })
-        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+          this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
         let decaissement = {}
         if (this.isUpdate) {
           decaissement = extractFormData(this.champsUpdate, this.decaissementAttributs)
@@ -295,10 +291,9 @@ export default {
         } else {
           decaissement = extractFormData(this.champs, this.decaissementAttributs)
         }
-
-
-
-          decaissement.type = decaissement.type.id
+ 
+          decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
+          decaissement.type = 0
           decaissement.projetId = decaissement.projetId.id
 
           if (decaissement?.id) {
@@ -380,7 +375,7 @@ export default {
 
         window.document.getElementById('vform')?.reset()
 
-        this.setIndicateur({})
+
       },
       close() {
         this.resetForm()
@@ -498,13 +493,13 @@ export default {
             {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
             {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
             {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
-            {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
+            {name:'Methode de paiement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
           ]
           this.champsUpdate = [
             {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
             {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
             {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
-            {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
+            {name:'Source de décaissement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
           ]
 
           this.disabled()

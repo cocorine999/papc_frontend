@@ -173,7 +173,7 @@ export default {
       }
       this.isDone = true
       TacheService.suiviTache(data).then((data) => {
-        window.location.reload()
+       
       }).catch((e) => {
         if (e.response) {
           const errors = {}
