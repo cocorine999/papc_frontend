@@ -253,8 +253,8 @@ export default {
 
         return this.decaissements.filter(function (decaissement){
           return decaissement.projet.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 decaissement.date.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 decaissement.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+          decaissement.date.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          decaissement.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },
 
@@ -291,8 +291,6 @@ export default {
         } else {
           decaissement = extractFormData(this.champs, this.decaissementAttributs)
         }
-        
- 
           decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
           console.log('decaissement',decaissement.methodeDePaiement)
           decaissement.type = 0
