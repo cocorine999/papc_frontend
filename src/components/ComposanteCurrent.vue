@@ -55,40 +55,61 @@
     
     <div v-if="!isSearch">
       <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
-        <div class="flex items-center justify-between ">
-        <!--Filtre sur projet -->
-        <div class="w-2/4  flex justify-between  items-center space-x-2 mb-2">
-          <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
-         
-        </div>
-      <!--Filtre sur projet -->
-          <nav class="flex  text-xs  md:text-sm align-middle justify-between ">
-          <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-            Non demarrer
-              <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined ">
-              {{enAttente.length}}
-              </span>
-            </span>
-            <span  @click="toggle3" :class="{'border-indigo-600 text-indigo-600' : inProgress}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              En cours
-              <span class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined">
-              {{enCours.length}}
-              </span>
-            </span>
-            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              Terminé 
-              <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
-              {{terminer.length}}
-              </span>
-            </span>
-            <span  @click="toggle4" :class="{'border-red-600 text-red-600' : retard}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              en retard 
-              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
-              {{retardData.length}}
-              </span>
-            </span>
-           
-          </nav>
+        <div class=" mx-auto">
+            <div class="_border-b _border-gray-200 _dark:border-gray-700 mb-4">
+                <ul class="flex flex-wrap -mb-px items-end  space-y-4" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                    <li class="mr-2" role="presentation">
+                      <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
+                    </li>
+                    
+                    <li class="mr-2" role="presentation">
+                        <button @click="toggle2" :class="{ 'active' : pending}"
+                            class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "
+                            id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
+                            aria-selected="true">Non démarré
+
+                            <span class="px-2 py-1 text-sm font-medium leading-normal  text-white bg-yellow-600 rounded-full undefined ">
+                          {{enAttente.length}}
+                          </span>
+                          
+                          </button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button @click="toggle3" :class="{'active' : inProgress}"
+                            class="inline-block text-blue-500 hover:text-blue-600 hover:border-blue-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-blue-400 dark:hover:text-blue-300 _active"
+                            id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
+                            aria-controls="dashboard" aria-selected="false">En cours
+
+                            <span class="px-2 py-1 text-sm text-center align-middle font-medium leading-normal  text-white bg-indigo-600 rounded-full undefined">
+                          {{enCours.length}}
+                          </span>
+                        </button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button @click="toggle" :class="{'active' : success}"
+                            class="inline-block text-green-500 hover:text-green-600 hover:border-green-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-green-400 dark:hover:text-green-300"
+                            id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
+                            aria-selected="false">Terminé
+
+                            <span class="px-2 py-1 text-sm font-medium leading-normal  text-white   bg-green-600 rounded-full undefined">
+                          {{terminer.length}}
+                          </span>
+                        </button>
+                    </li>
+                    <li role="presentation">
+                        <button  @click="toggle4" :class="{'active' : retard}"
+                            class="inline-block text-red-500 hover:text-red-600 hover:border-red-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-red-400 dark:hover:text-red-300"
+                            id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
+                            aria-selected="false">En retard
+
+                            <span class="px-2 py-1 text-sm font-medium leading-normal  text-white bg-red-600 rounded-full undefined">
+                          {{retardData.length}}
+                          </span>
+                          
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
       </div>
      
@@ -832,5 +853,25 @@ props:['valueProfondeur'],
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
+             .dark [role=tab].active,
+        .dark [role=tab].active:hover,
+        [role=tab].active,
+        [role=tab].active:hover {
+            border-color: #4b4b4b;
+            color: #4b4b4b;
+            border-bottom: solid .3rem;
+        } 
 
+/* .multiselect__tags {
+    min-height: 40px;
+    display: block;
+    padding: 8px 40px 0 8px;
+    border-radius: 5px;
+    border: 1px solid #e8e8e8;
+    background: #fff;
+    font-size: 14px;
+}
+.multiselect * {
+    box-sizing: border-box;
+} */
 </style>

@@ -2,7 +2,7 @@
   <div class="w-full">
     <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
       <div style="width:60vw" class="p-0 w-full">
-        <form @submit.prevent="saveProlongerDate(activiteId,dates)" action="">
+        <form @submit.prevent="saveProlongerDate(activiteId, dates)" action="">
 
           <div class="grid grid-cols-2 gap-2 my-2">
             <div class="form-group my-2">
@@ -54,8 +54,10 @@
       </p>
 
       <div class="text-right mt-4">
-          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
-          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteActivites(deleteData)">Supprimer</button>
+        <button @click="deleteModal = false"
+          class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+        <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+          @click="deleteActivites(deleteData)">Supprimer</button>
       </div>
     </delete-alert>
 
@@ -67,8 +69,7 @@
 
     </modal-top-right>
 
-    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
-      aria-label="Breadcrumb">
+    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
       <div class="mb-2">
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center">
@@ -134,152 +135,181 @@
     </div>
 
     <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
-        <div class="flex items-center justify-between flex-wrap">
-          <!--Filtre sur projet -->
-          <div class="w-full grid grid-cols-2 items-center gap-4">
-            <div>
-              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-              <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabelP"
-                placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
-            </div>
+      <div class=" mx-auto">
+        <div class="mb-4">
+          <ul class="flex flex-wrap -mb-px items-end  space-y-4" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 
-            <div>
-              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-              <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true"
-                :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une composante" label="nom" track-by="id">
-              </multiselect>
-            </div>
-            <div>
+            <li class="mr-2" role="presentation">
 
-              <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
-              <multiselect v-model="valueFiltre" :options="sousComposantes" :preselect-first="true"
-                :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une sous composante" label="nom" track-by="id">
-              </multiselect>
-            </div>
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
+                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true"
+                  :custom-label="customLabelP" placeholder="selectionnez un projet"
+                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
+                  track-by="id"></multiselect>
+              </div>
 
-           
+            </li>
+            <li class="mr-2" role="presentation">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true"
+                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                  placeholder="selectionnez une composante" label="nom" track-by="id">
+                </multiselect>
+              </div>
 
-          </div>
+            </li>
+            <li class="mr-2" role="presentation">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
+                <multiselect v-model="valueFiltre" :options="sousComposantes" :preselect-first="true"
+                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                  placeholder="selectionnez une sous composante" label="nom" track-by="id">
+                </multiselect>
+              </div>
 
+            </li>
+            <li class="mr-2" role="presentation">
+              <button @click="toggle2" :class="{ 'active': pending }"
+                class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "
+                id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
+                aria-selected="true">Non démarré
+
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal text-center align-middle  text-white bg-yellow-600 rounded-full undefined ">
+                  {{enAttente.length}}
+                </span>
+
+              </button>
+            </li>
+            <li class="mr-2" role="presentation">
+              <button @click="toggle3" :class="{ 'active': inProgress }"
+                class="inline-block text-blue-500 hover:text-blue-600 hover:border-blue-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-blue-400 dark:hover:text-blue-300 "
+                id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
+                aria-selected="false">En cours
+
+                <span
+                  class="px-2 py-1 text-sm text-center align-middle font-medium leading-normal  text-white bg-indigo-600 rounded-full undefined">
+                  {{enCours.length}}
+                </span>
+              </button>
+            </li>
+            <li class="mr-2" role="presentation">
+              <button @click="toggle" :class="{ 'active': success }"
+                class="inline-block text-green-500 hover:text-green-600 hover:border-green-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-green-400 dark:hover:text-green-300"
+                id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
+                aria-selected="false">Terminé
+
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal  text-white  text-center align-middle  bg-green-600 rounded-full undefined">
+                  {{terminer.length}}
+                </span>
+              </button>
+            </li>
+            <li role="presentation">
+              <button @click="toggle4" :class="{ 'active': retard }"
+                class="inline-block text-red-500 hover:text-red-600 hover:border-red-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-red-400 dark:hover:text-red-300"
+                id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
+                aria-selected="false">En retard
+
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal  text-white bg-red-600 text-center align-middle  rounded-full undefined">
+                  {{ retardData.length }}
+                </span>
+
+              </button>
+            </li>
+          </ul>
         </div>
-
       </div>
 
-   
+    </div>
 
-    
+
+
+
     <div v-if="seeActivite && activiteVisible">
       <div v-if="!isSearch" class="version sans recherche">
-        
-      <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
-        <div class="flex  w-full justify-between  items-center">
-          <!--Filtre sur projet -->
-          <h2 class="uppercase font-bold  mb-2">Liste des activités </h2>
-          <nav class="flex text-sm space-x-4  ">
-            <span @click="toggle2" :class="{ 'border-yellow-600 text-yellow-600': pending }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              Non demarrer
-              <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined ">
-                {{enAttente.length}}
-              </span>
-            </span>
-            <span @click="toggle3" :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              en cours
-              <span class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined">
-                {{enCours.length}}
-              </span>
-            </span>
-            <span @click="toggle" :class="{ 'border-green-600 text-green-600': success }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              terminé
-              <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
-                {{terminer.length}}
-              </span>
-            </span>
-            <span @click="toggle4" :class="{ 'border-red-600 text-red-600': retard }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              en retard
-              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full undefined">
-                {{retardData.length}}
-              </span>
-            </span>
 
-          </nav>
-        </div>
-      </div>
-
-      <div v-if="success">
-        <empty v-if="terminer.length === 0">activité vide !!!</empty>
-        <div v-else>
-          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(activite, index) in terminer" :key="index">
-              <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
-                :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"></card-activite>
-              <!-- End cards Activités -->
+        <div v-if="success">
+          <empty v-if="terminer.length === 0">activité vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(activite, index) in terminer" :key="index">
+                <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
+                  :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
+                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"></card-activite>
+                <!-- End cards Activités -->
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-if="pending">
-        <empty v-if="enAttente.length === 0">activité vide !!!</empty>
-        <div v-else>
-          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(activite, index) in enAttente" :key="index">
-              <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
-                :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"></card-activite>
-              <!-- End cards Activités -->
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">activité vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(activite, index) in enAttente" :key="index">
+                <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
+                  :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
+                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"></card-activite>
+                <!-- End cards Activités -->
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-if="inProgress">
-        <empty v-if="enCours.length === 0">activité vide !!!</empty>
-        <div v-else>
-          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(activite, index) in enCours" :key="index">
-              <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
-                :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"></card-activite>
-              <!-- End cards Activités -->
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">activité vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(activite, index) in enCours" :key="index">
+                <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
+                  :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
+                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"></card-activite>
+                <!-- End cards Activités -->
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-if="retard">
-        <empty v-if="retardData.length === 0">activité vide !!!</empty>
-        <div v-else>
-          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(activite, index) in retardData" :key="index">
-              <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret" :montantNE="activite.budgetNational"
-                :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
-                :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
-                @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
-                :isUpdate="activiteUpdate"></card-activite>
-              <!-- End cards Activités -->
+        <div v-if="retard">
+          <empty v-if="retardData.length === 0">activité vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(activite, index) in retardData" :key="index">
+                <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
+                  :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :statut="getStatus(activite.statut)"
+                  :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
+                  @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
+                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  :isUpdate="activiteUpdate"></card-activite>
+                <!-- End cards Activités -->
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
       </div>
       <div v-else>
@@ -287,11 +317,10 @@
         <div v-else>
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
             <div v-for="(activite, index) in filtere" :key="index">
-              <card-activite 
-              :code="activite.codePta"
-              :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
-                :poids="activite.poids"  :montantEPM="activite.pret" :montantNE="activite.budgetNational"
-                :debut="activite.debut" :fin="activite.fin" :statut="getStatus(activite.statut)"
+              <card-activite :code="activite.codePta" :data="activite" :bailleur="activite.bailleur.sigle"
+                :libelle="activite.nom" :poids="activite.poids" :montantEPM="activite.pret"
+                :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
                 @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
@@ -302,14 +331,14 @@
         </div>
       </div>
 
-     
+
 
 
 
 
     </div>
 
-    <div v-if="seePlan &&  planDecaissementVisible ">
+    <div v-if="seePlan && planDecaissementVisible">
       <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between flex-wrap">
           <!--Filtre sur projet -->
@@ -335,7 +364,7 @@
                   <dropdown v-if="planDeDecaissementUpdate && planDecaissementDelete"
                     @modifier="modifierPlan(planDeDecaissement)" @supprimer="supprimerPlan(planDeDecaissement)"
                     :option="optionActivite"></dropdown>
-                  <dropdown v-if="planDeDecaissementUpdate && planDecaissementDelete==false"
+                  <dropdown v-if="planDeDecaissementUpdate && planDecaissementDelete == false"
                     @modifier="modifierPlan(planDeDecaissement)" @supprimer="supprimerPlan(planDeDecaissement)"
                     :option="optionActiviteUpdate"></dropdown>
                   <dropdown v-if="!planDeDecaissementUpdate && planDecaissementDelete"
@@ -382,7 +411,7 @@
 
     </div>
 
-    <div v-if="seeStatistique  ">
+    <div v-if="seeStatistique">
       <div class="flex items-center justify-between flex-wrap">
         <!--Filtre sur projet -->
         <div class="w-full grid grid-cols-2 items-center gap-4">
@@ -834,11 +863,11 @@ export default {
       isClick: false,
       isShow: true,
       sous_composantes: [],
-      search:'',
-      isSearch:false,
-      projets:[],
-      deleteData:{},
-      deleteModal:false,
+      search: '',
+      isSearch: false,
+      projets: [],
+      deleteData: {},
+      deleteModal: false,
     };
   },
 
@@ -850,14 +879,14 @@ export default {
       errors: (state) => state.errors,
     }),
     allData() {
-      if(this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
-        return  [].concat(this.terminer,this.enAttente,this.enCours,this.retardData)
+      if (this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return [].concat(this.terminer, this.enAttente, this.enCours, this.retardData)
       }
     },
     filtere: function () {
-        var self = this;
-          return this.allData.filter(function (data) {
-          return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      var self = this;
+      return this.allData.filter(function (data) {
+        return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
       });
     },
     terminer() {
@@ -906,7 +935,7 @@ export default {
     },
     ...mapGetters({
       structures: "structures/getStructures",
-     
+
       composantes: "composantes/getComposantes",
       sousComposantes: "sousComposantes/getSousComposantes",
       activites: "activites/getActivites",
@@ -920,7 +949,7 @@ export default {
 
   methods: {
     getSearchValue(data) {
-      if(data != '') {
+      if (data != '') {
         this.isSearch = true
         this.search = data
       }
@@ -928,7 +957,7 @@ export default {
         this.isSearch = false
         this.search = data
       }
-      
+
     },
     changeProjet(projet) {
 
@@ -1144,7 +1173,7 @@ export default {
       fetchStructure: "FETCH_LIST_STRUCTURE_OF_PROGRAMME",
     }),
 
-    customLabelP ({ bailleur, nom }) {
+    customLabelP({ bailleur, nom }) {
       return `${bailleur.sigle} – ${nom}`
     },
     customLabel({ codePta, nom }) {
@@ -1342,35 +1371,35 @@ export default {
       this.showProlonger = true
     },
 
-    supprimer(activite,index) {
-      this.deleteModal= true
+    supprimer(activite, index) {
+      this.deleteModal = true
       this.deleteData.data = activite
       this.deleteData.index = index
     },
 
     deleteActivites(data) {
       //this.filteredBailleur.splice(data.index,1)
-      this.deleteModal= false
+      this.deleteModal = false
       ActiviteService.destroy(data.data.id).then((data) => {
         this.$toast.success("Operation effectué avec success !")
         this.fetchActivites(this.composanteId);
-       
+
       }).catch((error) => {
-        
+
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
-      }) 
+      })
     },
 
-   
+
 
     modifier(activite) {
 
@@ -1465,7 +1494,7 @@ export default {
             .finally((error) => {
               this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
               this.sendRequest = false;
-              this.champs2.map(value => value.errors = this.erreurs[value.key])   
+              this.champs2.map(value => value.errors = this.erreurs[value.key])
             });
         } else {
           this.savePlanDeDecaissement(planDeDecaissement)
@@ -1477,8 +1506,8 @@ export default {
             })
             .finally((error) => {
               this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
-                this.sendRequest = false;
-                this.champs2.map(value => value.errors = this.erreurs[value.key])   
+              this.sendRequest = false;
+              this.champs2.map(value => value.errors = this.erreurs[value.key])
             });
         }
       }
@@ -1495,7 +1524,7 @@ export default {
 
         let activite = extractFormData(this.champs, this.activiteAttributs);
 
-       
+
 
         activite.structureResponsableId = activite.structureResponsableId.id;
 
@@ -1504,39 +1533,39 @@ export default {
         activite.userId = activite.structureAssocieId;
 
         activite["type"] = activite.types.type;
-        if(this.composanteId == undefined || this.composanteId == null) {
+        if (this.composanteId == undefined || this.composanteId == null) {
           this.$toast.error('Composante indefinit ')
           this.sendRequest = false;
           this.close()
         } else {
           activite.composanteId = this.composanteId;
           if (this.activite?.id) {
-          this.updateActivite({ activite: activite, id: this.activite?.id })
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchActivites(this.composanteId);
-                this.close();
-              }
-            })
-            .finally((error) => {
-              this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
-              this.sendRequest = false;
-              this.champs.map(value => value.errors = this.erreurs[value.key])   
-            });
-        } else {
-          this.saveActivite(activite)
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchActivites(this.composanteId);
-                this.close();
-              }
-            })
-            .finally((error) => {
+            this.updateActivite({ activite: activite, id: this.activite?.id })
+              .then((response) => {
+                if (response.status === 200 || response.status === 201) {
+                  this.fetchActivites(this.composanteId);
+                  this.close();
+                }
+              })
+              .finally((error) => {
                 this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
                 this.sendRequest = false;
-                this.champs.map(value => value.errors = this.erreurs[value.key])   
-            });
-        }
+                this.champs.map(value => value.errors = this.erreurs[value.key])
+              });
+          } else {
+            this.saveActivite(activite)
+              .then((response) => {
+                if (response.status === 200 || response.status === 201) {
+                  this.fetchActivites(this.composanteId);
+                  this.close();
+                }
+              })
+              .finally((error) => {
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs.map(value => value.errors = this.erreurs[value.key])
+              });
+          }
         }
       }
     },
@@ -1594,8 +1623,8 @@ export default {
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
