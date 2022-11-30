@@ -1,5 +1,5 @@
 <template>
-  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative">
+  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative mb-4  sm:mb-0">
     <div class="absolute flex space-x-3 right-1 top-2 z-10  cursor-pointer">
       <span v-if="!isValidate"
         :title="composanteName != undefined ? composanteName.concat(' non valider') : 'Composante non valider'"
@@ -50,7 +50,7 @@
         </div>
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
-          <span class="absolute bottom-12 right-1 rounded-lg text-sm text-white px-2 py-1 font-semibold"
+          <span class="absolute bottom-6 right-0  text-sm text-white px-2 py-1 font-semibold"
             :class="statut.couleur"> {{ statut.libelle }}<i class='bx bx-time-five ml-1'></i></span>
         </div>
 
@@ -59,7 +59,7 @@
           <span class="underline mr-2">{{ composanteName !== undefined ? composanteName : 'COMPOSANTE' }}</span> {{ position }} :</span>-->
           {{ libelle }}
         </p>
-        <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
+        <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
           <i class='bx bxs-wallet bx-xs'></i>
           <div class="ml-2 text-xs tracking-wide font-semibold w-4/6 truncate">EMP : <span
               class="font-bold italic text-sm">{{ montantEPM | formatNumber }}</span><span class="ml-2 uppercase font-bold">fcfa</span>

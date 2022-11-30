@@ -1,6 +1,6 @@
 <template>
   <!-- cards Tâches -->
-  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" style="height:250px" class="relative ">
+  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" style="height:250px" class="relative mb-4 lg:mb-0 ">
     <!-- dots -->
 
     <div class="absolute right-1 flex space-x-3 top-2 z-10 cursor-pointer">
@@ -53,38 +53,44 @@
       </div>
       <div class="cursor-pointer">
 
-        <span class="absolute cursor-pointer bottom-0  left-0 w-full bg-primary text-white font-bold px-8 py-3 text-left">Code PTA:{{ poids }}</span>
-        <span class="absolute cursor-pointer bottom-0 left-0 w-full bg-primary text-white font-bold px-8 py-3 text-right">Poids:{{ poids }}</span>
-
+       
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
-          <span class="absolute bottom-10 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-2 py-1 font-semibold"
+          <span class="absolute bottom-7 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-2 py-1 font-semibold"
             :class="statut.couleur">
             {{ statut.libelle }} <i class="bx bx-time-five ml-1"></i></span>
         </div>
-        <p class="my-2 text-normal text-sm font-medium text-gray-600 mt-8 line-clamp-2 normal-case">
+        <p class=" text-normal text-sm font-medium text-gray-600 mt-16 mb-2 line-clamp-2 normal-case">
           {{ libelle }}
         </p>
 
         <div class="flex items-center  pt-2 text-gray-600 dark:text-gray-400 mb-1 border-t-2">
           <i class="bx bxs-pin bx-sm"></i>
-          <div class="ml-4 text-lg  md:text-md tracking-wide font-semibold w-full truncate">
+          <div class="ml-4 text-sm  md:text-base tracking-wide font-semibold w-full truncate">
             S. Responsable :
             <span class="font-bold italic text-sm uppercase">
               {{ structureResponsable }}
             </span>
           </div>
-        </div>
+
+        <div class="flex text-xs absolute cursor-pointer bottom-0  left-0 w-full bg-primary text-white font-bold px-8 py-1">
+            <div title="suivre une activité"
+              class="w-full cursor-pointer bg-primary text-white font-bold -ml-4  py-1 text-left">Code:
+              {{code}}
+            </div>
+            <div title="suivre une activité"
+              class="w-full cursor-pointer bg-primary text-white font-bold -mr-4 py-1 text-right">Poids:
+              {{ poids }} 
+            </div>
+       </div>
+      </div>
 
      
         <p class=" mt-1 text-gray-600 dark:text-gray-400 mb-6">
           <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> au
           <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ fin }} </span>
         </p>
-        <p class=" mt-1 text-gray-600 dark:text-gray-400 mb-6">
-          <span>Code PTA :</span>
-          <span> {{code}}  </span>
-        </p>
+       
       </div>
     </div>
   </div>

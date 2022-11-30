@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="dropdown">
-      <button class="text-xs md:text-sm font-bold text-center text-gray-900  rounded-md ">
-        <i class="bx bx-dots-vertical-rounded bx-sm pr-2"></i>
+      <button class="text-xs md:text-sm font-bold text-center text-gray-900 rounded-md">
+        <i class="bx bx-dots-vertical-rounded bx-sm pr-2 bg-white rounded-sm"></i>
       </button>
       <div class="dropdown-content">
         <span class="option cursor-pointer" @click.stop="actions(link.name)" v-for="(link, indice) in option" :key="indice">{{link.name}}</span>
