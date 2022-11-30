@@ -63,12 +63,12 @@
         
             <div>
               <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
-              <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+              <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
             </div>
 
             <div>
               <label class="block mb-2 uppercase " for="">Selectionnez un composant</label>
-              <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+              <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez une composante" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
             </div>
 
           

@@ -58,7 +58,7 @@
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/4  flex justify-between  items-center space-x-2 mb-2">
-          <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+          <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
          
         </div>
       <!--Filtre sur projet -->
