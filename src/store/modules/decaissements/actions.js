@@ -68,9 +68,9 @@ export default {
 
   },
 
-  async UPDATE_DECAISSEMENT ({ commit }, {decaissment, id}) {
+  async UPDATE_DECAISSEMENT ({ commit }, {decaissement, id}) {
       
-      const { data, status } = await DecaissementService.update(id, decaissment);
+      const { data, status } = await DecaissementService.update(id, decaissement);
 
       if(status === 200 || status === 201)
           commit(MODIFY_DECAISSEMENT, data.data);

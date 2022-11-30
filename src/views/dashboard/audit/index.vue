@@ -102,20 +102,26 @@
           </div>
           <div>
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Rapport <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="getFile">
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF,WORD(MAX. 20 MO)</p>
+            <div v-if="!showFile" @click="showFile = true" class="flex space-x-3 cursoir-pointer"  v-for="rapport in saveUpdate.rapport" :key="rapport.id">
+              <span class="text-sm px-2"> {{rapport.nom}} </span>
+            </div>
+            <div v-else>
+              <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="getFile">
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF,WORD(MAX. 20 MO)</p>
+            </div>
           </div>
+          
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Categorie <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
             <div v-if="!showCategorie">
-              <input v-if="saveUpdate.categorie==='Audit comptable et financier'" value="Audit comptable et financier" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
-              <input v-if="saveUpdate.categorie==='Audit de conformité environnementale et social'" value="Audit de conformité environnementale et social" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
-              <input v-if="saveUpdate.categorie==='Audit des acquisitions'" value="Audit des acquisitions" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
-              <input v-if="saveUpdate.categorie==='Audit techniques'" value="Audit techniques" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
-              <input v-if="saveUpdate.categorie===''" value="Audit comptable et financier" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+              <input v-if="saveUpdate.categorie===0" value="Audit comptable et financier" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+              <input v-if="saveUpdate.categorie===1" value="Audit de conformité environnementale et social" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+              <input v-if="saveUpdate.categorie===2" value="Audit des acquisitions" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+              <input v-if="saveUpdate.categorie===3" value="Audit techniques" @click="showCategorie = true" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+             
             </div>
 
-            <select v-model="audit.categorie" v-else class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
+            <select v-model="saveUpdate.categorie" v-else class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
               <option value="0"> Audit comptable et financier </option>
               <option value="1"> Audit de conformité environnementale et social </option>
               <option value="2"> Audit des acquisitions </option>
@@ -175,6 +181,7 @@
           </ol>
         </div> 
       </nav>
+      
       
       <div class="flex items-center justify-between mt-2 mb-8">
         <div class="flex space-x-4">
@@ -323,6 +330,7 @@ export default {
       sendRapportFile:null,
       showSelect:false,
       showStatut:false,
+      showFile:false,
       showCategorie:false,
       auditVisible:false,
       auditAdd:false,
@@ -381,9 +389,12 @@ export default {
           formData.append('dateDeTransmission', data.dateDeTransmission)
           formData.append('etat', data.etat)
           formData.append('statut', audit.statut)
-          formData.append('categorie', audit.categorie)
+          formData.append('categorie', data.categorie)
           formData.append('projetId', audit.projetId)
-          formData.append('rapport', this.fichiers)
+          if(this.showFile) {
+            formData.append('rapport', this.fichiers)
+          }
+         
           
           AuditService.update(data.id,formData).then((data) => {
             this.chargement = false
@@ -409,7 +420,19 @@ export default {
       this.saveUpdate = data
       this.audit.projetId = data.projet
       this.audit.statut = data.statut
-      this.audit.categorie = data.categorie
+
+      if(data.categorie === 'Audit comptable et financier') {
+        data.categorie = 0
+      }else if(data.categorie === 'Audit de conformité environnementale et social') {
+        data.categorie = 1
+      }
+      else if(data.categorie === 'Audit des acquisitions') {
+        data.categorie = 2
+      }
+      else {
+        data.categorie = 3
+      }
+
       this.title='Modifier un audit'
       this.showModal = true
     },

@@ -76,9 +76,8 @@
          
 
           <!-- divide DUREE -->
-          <div class="border-b-2 border-gray-700 mx-4 mb-8 relative p-4">
-            <span
-              class="w-full -mx-4 font-bold absolute bg-gray-700 px-4 py-1 text-white border-2 border-gray-700">Durée du
+        <div class="border-b-2 border-gray-700 mx-4 mb-8 relative p-4">
+            <span class="w-full -mx-4 font-bold absolute bg-gray-700 px-4 py-1 text-white border-2 border-gray-700">Durée du
               projet : <span class="">du {{ projet.debut }} au {{ projet.fin }} </span></span>
           </div>
 
@@ -90,7 +89,7 @@
                   <td v-if="projet.audit!=null">{{projet.audit.dateDeTransmission}}</td>
                   <td v-else>Audit non disponible</td>
                   <td>
-                    <div class="p-2 text-white space-x-2">
+                    <div v-if="projet.audit!=null" class="p-2 text-white space-x-2">
                       <span v-if="projet.audit.statut == 1" class="bg-green-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Terminer</span>
                       <span v-if="projet.audit.statut == 0" class="bg-purple-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">En cours</span>
                       <span v-if="projet.audit.statut == -1" class="bg-yellow-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">En attente</span>
