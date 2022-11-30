@@ -1,6 +1,6 @@
 <template>
   <!-- cards Tâches -->
-  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative cursor-pointer">
+  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative cursor-pointer mb-4 sm:mb-0">
     <!-- dot -->
     <div class="absolute flex space-x-1 right-1 top-2 z-10  cursor-pointer">
       <span v-if="!isValidate" title="Tâche non valider" class="text-red-300"><svg stroke="currentColor"
@@ -76,7 +76,7 @@
               <span class="ml-2 uppercase font-bold">fcfa</span>
             </div>
           </div> -->
-          <p class="mt-1 text-gray-600 text-gray-300 text-xs font-bold space-x-2">
+          <p class="mt-1 text-gray-600  text-xs font-bold space-x-2">
             <span class="font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> <span>au</span> <span>{{ fin }}</span>
           </p>
         </div>
@@ -87,9 +87,10 @@
           {{ statut.libelle }} </span>
       </div>
       <div class="flex text-xs">
-      <div title="suivre une activité"
-        class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
-        {{ codePta }} </div>
+        <div title="suivre une activité"
+          class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
+          {{ codePta }} 
+        </div>
         <div title="suivre une activité"
           class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
           {{ poids }} 
