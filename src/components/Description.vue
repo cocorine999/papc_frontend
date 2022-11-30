@@ -22,7 +22,7 @@
 
       <div class="bg-white shadow p-3">
         <h2 class="text-indigo-700 font-semibold text-xs">Taux d'engagement</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{projet.tauxEngagement}}</h4>
+        <h4 class="text-2xl text-black font-bold mt-3">{{projet.tauxEngagement}} % </h4>
         <div class="mt-6 flex justify-between">
           <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
             <!-- if arrow UP -->

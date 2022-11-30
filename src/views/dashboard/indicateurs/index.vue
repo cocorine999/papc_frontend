@@ -163,7 +163,7 @@
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <div v-if="isUpdate">
-              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
+              <vform template="default"  isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
                 :cols="cols" submitText="Modifier" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
             <div v-if="!isUpdate">
@@ -217,9 +217,6 @@
         </div>
       </div>
 
-
-
-     
       <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers"
         :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
       </vtable>
