@@ -8,7 +8,8 @@
             <div class="form-group">
               <label for="bailleur" class="block my-2 font-semibold">Selectionnez un bailleur</label>
               <multiselect v-model="bailleur" :options="bailleurs" :custom-label="customLabel" :preselect-first="true"
-                placeholder="selectionnez un bailleur" label="nom" track-by="id"></multiselect>
+                placeholder="selectionnez un bailleur"  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
             </div>
 
             <div class="form-group">
@@ -2413,12 +2414,20 @@ export default {
       let data = {}
       this.chargement(true)
       if (this.ppm == null) {
-
-        data = {
-          bailleurId: this.bailleur.id,
-          programmeId: this.currentUser.programme.id,
-          annee: Number(this.annee)
+        console.log("id de bailleur",this.bailleur)
+        if(this.bailleur ==null) {
+          data = {
+            programmeId: this.currentUser.programme.id,
+            annee: Number(this.annee)
+          }
+        }else {
+          data = {
+            bailleurId: this.bailleur.id,
+            programmeId: this.currentUser.programme.id,
+            annee: Number(this.annee)
+          }
         }
+        
       } else {
         data = {
           bailleurId: this.bailleur.id,

@@ -2,10 +2,9 @@
   <div
     class="w-1/2 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter _scrollbar-w-2 _scrolling-touch o lg:block bg-primary z-30 no-scrollbar overflow-y-auto"
     :class="sideBarOpen ? '' : 'hidden'" id="main-nav">
-
     <div
-      class="w-full h-24 p-4 items-center border-b-2 text-xs text-center font-semibold uppercase text-white whitespace-nowrap">
-      <div class="flex h-10 gap2 mb-2">
+      class="w-full h-24 p-4 items-center text-xs text-center font-semibold uppercase text-white whitespace-nowrap">
+      <div class="flex h-10 gap-2 mb-2">
         <div class="w-1/2"><img src="@/assets/images/login/logo-gouv.webp" alt="" class="w-full transparent"></div>
         <div class="w-1/2"><img src="@/assets/images/login/logo-sirat.webp" alt="" class="w-full"></div>
       </div>

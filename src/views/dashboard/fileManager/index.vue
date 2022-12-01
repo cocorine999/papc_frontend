@@ -61,10 +61,7 @@
       <FileManager class="card-card rounded p-2" />
     </div> -->
 
-   
 
-   
-    
     <div class="bg-white relative p-4 border hover:border-gray-300 shadow-inner my-6 ">
       <div class="flex justify-between items-center space-x-3 border-gray-300 border p-2">
         <div class="flex ">

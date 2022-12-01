@@ -15,9 +15,9 @@
             <p tabindex="0" class="focus:outline-none mt-4 text-2xl font-semibold leading-6 ">
               Notifications
             </p>
-            <!-- <div class="mt-4">
-              <button class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500  ">Effacer tout</button>
-            </div> -->
+            <div class="mt-4">
+              <button @click="deleteAll" class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500  ">Effacer tout</button>
+            </div> 
           </div>
           <div class="my-2  h-1 bg-gray-200 "></div>
 
@@ -88,7 +88,7 @@
           </div>
          
           <div class="mt-4 flex justify-end ">
-            <button @click="gotoNotification" class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500 uppercase">voir tout  </button>
+            <button @click="gotoNotification" class="bg-blue-200 p-2  text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500 uppercase">voir tout  </button>
            </div>
         </div>
       </div>
@@ -118,6 +118,14 @@ export default {
       NotificationService.checkMessage(data).then((data) => {
            
           }).catch((e) => {
+          console.log(e)
+      })
+    },
+    deleteAll() {
+      NotificationService.destroy().then((data) => {
+          this.$toast.success('suppression reuissie')
+          this.datas = []
+        }).catch((e) => {
           console.log(e)
       })
     },

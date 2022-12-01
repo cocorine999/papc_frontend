@@ -81,6 +81,7 @@
         
       </table>
       <div class="my-4 absolute -bottom-18 right-2 " v-if="totalPages >5">
+        
         <pagination
             :totalPages="totalPages"
             :perPage="perPage"
@@ -98,7 +99,7 @@
   import Pagination from '@/components/Pagination'
   export default {
     components: { TrTable,Pagination },
-    props:['datas', 'headers', 'actions', 'extra','statut', 'sendRequest','isComment'],
+    props:['datas', 'headers', 'actions', 'extra','statut', 'sendRequest','isComment',],
     data() {
       return{
         currentPage:1,
