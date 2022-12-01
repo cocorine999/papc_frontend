@@ -25,9 +25,19 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
               </svg>
              </button>
-           </div>      </div>
+           </div>      
+        </div>
     </nav> 
-    
+    <div class="mt-4 mb-6 flex space-x-4 items-center">
+        <div class="py-2 font-semibold">Annee : <span class="font-bold px-2">{{annee}}</span> </div>
+        
+        <select id="pet-select" class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-1/4 focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" v-model="annee">
+          <option value="0">Global</option>
+          <option v-for="year in years" :value="year">{{ year }}</option>
+        </select>
+        <button  @click="filtre" class="bg-primary text-white border-primary border px-4 py-2 shadow rounded">Filtrer </button>
+    </div>
+
     <div class="flex items-center justify-between flex-wrap my-2">
         <titre>Point financier </titre>
         <div class="flex space-x-3 flex-wrap justify-end ">
@@ -46,6 +56,7 @@
  
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
 <script>
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
@@ -74,7 +85,8 @@ export default {
           {name:'TEF GLOBALE', cle:'tefGlobale'},
         ],
         search:'',
-        pointFinancier:[]
+        pointFinancier:[],
+        annee:'Globale'
       };
     },
     computed:{
@@ -89,7 +101,12 @@ export default {
 
     ...mapGetters({
       currentUser : 'auths/GET_AUTHENTICATE_USER'
-    }),   
+    }),
+    
+    years () {
+      const year = new Date().getFullYear()
+      return Array.from({length: year - 1999}, (value, index) => 2000 + index)
+    }
     
   },
     
@@ -105,6 +122,26 @@ export default {
       
     title_csv() {
         return "point-financier-" +"-" + new Date()
+    },
+
+    filtre()
+    {
+      if(this.annee != 0)
+      {
+        var form = 
+        {
+          "annee" : this.annee
+        }
+      }
+
+      else
+      {
+        this.annee = 'Globale'
+        var form = {}
+      }
+
+        this.fetchPointFinancier(form);
+      
     },
 
     json_data(){
@@ -158,8 +195,8 @@ export default {
       console.log("Fetching point financier ...")
       let form = 
         {
-          "programmeId" : this.currentUser?.programme?.id, 
-          "annee" : (new Date()).getFullYear()
+          /*"programmeId" : this.currentUser?.programme?.id, 
+          "annee" : (new Date()).getFullYear()*/
         }
       
       this.fetchPointFinancier(form);
