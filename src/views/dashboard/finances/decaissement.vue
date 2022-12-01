@@ -485,7 +485,7 @@ export default {
         this.$store.dispatch('disabled')
       },
       fetchProjets(programme) {
-        this.active()
+      
         ProgrammeService.projets(programme).then((data) => {
           const datas = data.data.data
           this.projets = datas
@@ -504,10 +504,10 @@ export default {
             {name:'Source',key:'type',placeholdere:'Source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.source, cle: 'id', value: 'nom',required:true,},
           ]
 
-          this.disabled()
+         
           
         }).catch((error) => {
-          this.disabled()
+         
           if (error.response) {
             // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
@@ -528,12 +528,9 @@ export default {
         this.$router.push('/401-non-autorise')
       } 
       else {
-        this.fetchDecaissements().then((value) => {
-        setTimeout(() => {
-          console.log("Fetching list of projets")
-          this.fetchProjets(this.currentUser?.programme?.id)
-        }, 500); 
-      })
+        this.fetchProjets(this.currentUser?.programme?.id)
+        this.fetchDecaissements()
+    
       }
      
        
