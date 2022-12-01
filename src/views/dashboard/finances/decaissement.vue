@@ -126,7 +126,7 @@ export default {
           sendRequest:false,
           title:'',
           isUpdate:false,
-          decaissementAttributs : ['montant', 'methodeDePaiement', 'date', 'projetId'],
+          decaissementAttributs : ['montant', 'methodeDePaiement', 'date', 'projetId', 'type'],
           decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
           champs:[],
           champsUpdate:[],
@@ -293,7 +293,7 @@ export default {
         }
           decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
           console.log('decaissement',decaissement.methodeDePaiement)
-          decaissement.type = 0
+          decaissement.type = decaissement.type.id
           decaissement.projetId = decaissement.projetId.id
 
           if (decaissement?.id) {
@@ -494,12 +494,14 @@ export default {
             {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
             {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
             {name:'Methode de paiement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
+            {name:'Source',key:'type',placeholdere:'Source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.source, cle: 'id', value: 'nom',required:true,},
           ]
           this.champsUpdate = [
             {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
             {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
             {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
-            {name:'Source de décaissement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
+            {name:'Méthode de paiement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
+            {name:'Source',key:'type',placeholdere:'Source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.source, cle: 'id', value: 'nom',required:true,},
           ]
 
           this.disabled()

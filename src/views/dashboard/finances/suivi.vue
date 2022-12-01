@@ -103,7 +103,7 @@
      
       <div class="my-4">
         
-        <suivi-budgetaire :suiviFinancier="suiviFinancier" ></suivi-budgetaire>
+        <suivi-budgetaire :suiviFinancier="suiviFinancier" :annee="annee" ></suivi-budgetaire>
       </div>
     </div>
   </dashboard>

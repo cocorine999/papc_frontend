@@ -20,6 +20,11 @@
 
                 <th scope="col" rowspan="2"
                   class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700  whitespace-nowrap">
+                  Année
+                </th>
+
+                <th scope="col" rowspan="2"
+                  class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700  whitespace-nowrap">
                   Trimestre
                 </th>
                
@@ -104,6 +109,10 @@
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <span  class="font-bold"> {{suivi.annee}} </span>
+                  <!--  <span v-else class="font-bold" >0 FCFA</span> -->
+                </td>
+                <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                   <span  class="font-bold"> {{suivi.trimestre}} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
@@ -185,7 +194,7 @@
 <script>
 
 export default {
-  props: ['suiviFinancier'],
+  props: ['suiviFinancier', 'annee'],
 
 }
 </script>

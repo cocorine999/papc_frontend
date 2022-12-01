@@ -186,13 +186,13 @@ export default new Vuex.Store({
     
     sources : [
       {
+        id : 0, 
+        nom : "Pret"
+      },
+      {
         id : 1, 
         nom : "Budget National"
       },
-      {
-        id : 0, 
-        nom : "Pret"
-      }
     ],
   },
   getters: {
