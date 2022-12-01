@@ -109,7 +109,7 @@
 
         <button @click="showPreview = true"
           class="text-white flex space-x-2 items-center bg-blue-500 px-4 py-2 hover:bg-gray-800">
-          <i class="bx bx-folder bx-sm p-0" alt="Documents du projet"></i>
+          <i class="bx bx-folder bx-sm p-0" aria-label="Documents du projet"></i>
           <span>Dossiers</span>
         </button>
       </div>

@@ -174,7 +174,8 @@
               </div>
 
             </li>
-            <ul></ul>
+          </ul>
+          <ul class="flex flex-wrap justify-end -mb-px">
             <li class="mr-2" role="presentation">
               <button @click="toggle2" :class="{ 'active': pending }"
                 class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "

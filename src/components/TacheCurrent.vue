@@ -162,60 +162,60 @@
               </div>
 
             </li>
-            
+
           </ul>
           <ul class="flex flex-wrap justify-end -mb-px">
-              <li class="mr-2" role="presentation">
-                <button @click="toggle2" :class="{ 'active': pending }"
-                  class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "
-                  id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
-                  aria-selected="true">Non démarré
+            <li class="mr-2" role="presentation">
+              <button @click="toggle2" :class="{ 'active': pending }"
+                class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "
+                id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
+                aria-selected="true">Non démarré
 
-                  <span
-                    class="px-2 py-1 text-sm font-medium leading-normal text-center align-middle  text-white bg-yellow-600 rounded-full undefined ">
-                    {{ enAttente.length }}
-                  </span>
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal text-center align-middle  text-white bg-yellow-600 rounded-full undefined ">
+                  {{ enAttente.length }}
+                </span>
 
-                </button>
-              </li>
-              <li class="mr-2" role="presentation">
-                <button @click="toggle3" :class="{ 'active': inProgress }"
-                  class="inline-block text-blue-500 hover:text-blue-600 hover:border-blue-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-blue-400 dark:hover:text-blue-300 "
-                  id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
-                  aria-selected="false">En cours
+              </button>
+            </li>
+            <li class="mr-2" role="presentation">
+              <button @click="toggle3" :class="{ 'active': inProgress }"
+                class="inline-block text-blue-500 hover:text-blue-600 hover:border-blue-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-blue-400 dark:hover:text-blue-300 "
+                id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
+                aria-selected="false">En cours
 
-                  <span
-                    class="px-2 py-1 text-sm text-center align-middle font-medium leading-normal  text-white bg-indigo-600 rounded-full undefined">
-                    {{ enCours.length }}
-                  </span>
-                </button>
-              </li>
-              <li class="mr-2" role="presentation">
-                <button @click="toggle" :class="{ 'active': success }"
-                  class="inline-block text-green-500 hover:text-green-600 hover:border-green-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-green-400 dark:hover:text-green-300"
-                  id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
-                  aria-selected="false">Terminé
+                <span
+                  class="px-2 py-1 text-sm text-center align-middle font-medium leading-normal  text-white bg-indigo-600 rounded-full undefined">
+                  {{ enCours.length }}
+                </span>
+              </button>
+            </li>
+            <li class="mr-2" role="presentation">
+              <button @click="toggle" :class="{ 'active': success }"
+                class="inline-block text-green-500 hover:text-green-600 hover:border-green-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-green-400 dark:hover:text-green-300"
+                id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
+                aria-selected="false">Terminé
 
-                  <span
-                    class="px-2 py-1 text-sm font-medium leading-normal  text-white  text-center align-middle  bg-green-600 rounded-full undefined">
-                    {{ terminer.length }}
-                  </span>
-                </button>
-              </li>
-              <li role="presentation">
-                <button @click="toggle4" :class="{ 'active': retard }"
-                  class="inline-block text-red-500 hover:text-red-600 hover:border-red-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-red-400 dark:hover:text-red-300"
-                  id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
-                  aria-selected="false">En retard
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal  text-white  text-center align-middle  bg-green-600 rounded-full undefined">
+                  {{ terminer.length }}
+                </span>
+              </button>
+            </li>
+            <li role="presentation">
+              <button @click="toggle4" :class="{ 'active': retard }"
+                class="inline-block text-red-500 hover:text-red-600 hover:border-red-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-red-400 dark:hover:text-red-300"
+                id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
+                aria-selected="false">En retard
 
-                  <span
-                    class="px-2 py-1 text-sm font-medium leading-normal  text-white bg-red-600 text-center align-middle  rounded-full undefined">
-                    {{ retardData.length }}
-                  </span>
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal  text-white bg-red-600 text-center align-middle  rounded-full undefined">
+                  {{ retardData.length }}
+                </span>
 
-                </button>
-              </li>
-            </ul>
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
