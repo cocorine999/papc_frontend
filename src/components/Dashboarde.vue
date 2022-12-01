@@ -97,10 +97,10 @@
         <div v-if="currentRole!='bailleur'" class="flex space-x-2 items-center">
 
           <button title="filtre" @click="showModal = true" class="bg-primary text-white p-2 hover:bg-gray-800"><i
-              class="bx bxs-filter-alt bx-sm p-0"></i></button>
+              class="bx bxs-filter-alt bx-sm p-0" alt="Filtre"></i></button>
 
           <button @click="showUpdateImage=true" class="bg-blue-500 text-white outline-none p-2 hover:bg-gray-800"><i
-              class="bx bx-image-add bx-sm p-0"></i></button>
+              class="bx bx-image-add bx-sm p-0" alt="Changer image" aria-label="changer"></i></button>
 
           <button @click="showUpdateFile=true"
             class="bg-blue-500 text-white p-2 uppercase outline-none hover:bg-gray-800"><i
@@ -109,7 +109,7 @@
 
         <button @click="showPreview = true"
           class="text-white flex space-x-2 items-center bg-blue-500 px-4 py-2 hover:bg-gray-800">
-          <i class="bx bx-folder bx-sm p-0"></i>
+          <i class="bx bx-folder bx-sm p-0" alt="Documents du projet"></i>
           <span>Dossiers</span>
         </button>
       </div>

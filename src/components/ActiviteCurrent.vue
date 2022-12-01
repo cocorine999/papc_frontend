@@ -137,7 +137,8 @@
     <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
       <div class=" mx-auto">
         <div class="mb-4">
-          <ul class="flex flex-wrap -mb-px items-end  space-y-4" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+          <ul class="flex flex-wrap -mb-px items-end  space-y-4" id="myTab" data-tabs-toggle="#myTabContent"
+            role="tablist">
 
             <li class="mr-2" role="presentation">
 
@@ -173,6 +174,7 @@
               </div>
 
             </li>
+            <ul></ul>
             <li class="mr-2" role="presentation">
               <button @click="toggle2" :class="{ 'active': pending }"
                 class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "
@@ -181,7 +183,7 @@
 
                 <span
                   class="px-2 py-1 text-sm font-medium leading-normal text-center align-middle  text-white bg-yellow-600 rounded-full undefined ">
-                  {{enAttente.length}}
+                  {{ enAttente.length }}
                 </span>
 
               </button>
@@ -194,7 +196,7 @@
 
                 <span
                   class="px-2 py-1 text-sm text-center align-middle font-medium leading-normal  text-white bg-indigo-600 rounded-full undefined">
-                  {{enCours.length}}
+                  {{ enCours.length }}
                 </span>
               </button>
             </li>
@@ -206,7 +208,7 @@
 
                 <span
                   class="px-2 py-1 text-sm font-medium leading-normal  text-white  text-center align-middle  bg-green-600 rounded-full undefined">
-                  {{terminer.length}}
+                  {{ terminer.length }}
                 </span>
               </button>
             </li>
