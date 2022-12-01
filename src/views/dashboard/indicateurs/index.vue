@@ -217,24 +217,24 @@
         </div>
       </div>
 
-      <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers"
+      <indicateur-table v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers"
         :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
-      </vtable>
-      <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest"
+      </indicateur-table>
+      <indicateur-table v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" :actions="actions" @modifier="modifier"  @updateInputData="updateInputData"
-        @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
+        @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></indicateur-table>
+      <indicateur-table v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi"
-        @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
+        @supprimer="supprimer"></indicateur-table>
+      <indicateur-table v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
-        @consulter="consulterSuivi"></vtable>
-      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
+        @consulter="consulterSuivi"></indicateur-table>
+      <indicateur-table v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi">
-      </vtable>
-      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd "  @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
+      </indicateur-table>
+      <indicateur-table v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd "  @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer">
-      </vtable>
+      </indicateur-table>
     </div>
   </dashboard>
 
@@ -244,7 +244,7 @@
 import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
-import Vtable from '@/components/Vtable'
+import IndicateurTable from '@/components/IndicateurTable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Vbutton from '@/components/Vbutton'
@@ -261,7 +261,7 @@ import DeleteAlert from "@/components/DeleteAlert.vue";
 import JsonExcel from "vue-json-excel";
 export default {
   components: {
-    Vtable,
+    IndicateurTable,
     Dashboard,
     Vmodal,
     Vbutton,
@@ -470,14 +470,13 @@ export default {
         const datas = data.data.data
         this.indicateurs= datas
         this.headers = [
-          {name: 'Indicateur', cle: 'nom', },
-          {name: 'Description', cle: 'description' },
-          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
-          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
-          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId' },
-          {name: 'Valeur de base', cle: 'valeurDeBase' },
-          {name: 'Année de base', cle: 'anneeDeBase' },
-          {name: 'Date de création', cle: 'created_at' },
+          {name: 'Indicateur ', cle: 'nom', width:'w-56' },
+          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width:'w-20' },
+          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width:'w-56' },
+          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width:'w-56' },
+          {name: 'Valeur de base', cle: 'valeurDeBase', width:'w-24' },
+          {name: 'Année de base', cle: 'anneeDeBase', width:'w-24' },
+          {name: 'Date de création', cle: 'created_at', width:'w-56' },
         ]
         this.champs = [
         { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
