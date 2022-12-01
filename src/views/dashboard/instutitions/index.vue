@@ -1,11 +1,27 @@
 <template>
   <dashboard>
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet element?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteInstitutions(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
     <div v-if="institutionVisible" class="w-full">
       <div v-if="showModal">
         <ModalTopRight :title="title" v-on:close="close">
           <div class="w-full px-4">
-            <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm"
+            <div v-if="!isUpdate">
+              <vform template="default" :champs="champs" :sendRequest="sendRequest" :cols="cols" :submitText="submitText" @sendForm="sendForm"
               @closeModal="close"></vform>
+            </div>
+            <div v-if="isUpdate">
+              <vform template="default" :champs="champsUpdate" :sendRequest="sendRequest" :cols="cols" :submitText="submitText" @sendForm="sendForm"
+              @closeModal="close"></vform>
+            </div>
           </div>
         </ModalTopRight>
       </div>
@@ -65,6 +81,7 @@
             </svg></span>
         </div>
       </div>
+
       <div class="flex items-center justify-between my-2">
         <titre>Les Institutions </titre>
         <button v-if="institutionVisible" @click="addInstitution" title="ajouter une instutitions"
@@ -81,7 +98,7 @@
         <div v-for="(institution, index) in filteredInstitution()" :key="index">
 
           <div class="relative mb-4 sm:mb-0 hover:shadow-lg ">
-            <div class="absolute right-0 top-3 z-10 cursor-pointer">
+            <!-- <div class="absolute right-0 top-3 z-10 cursor-pointer">
               <dropdown v-if="institutionDelete && institutionUpdate" @gotoNext="gotoNext"
                 @supprimer="supprimerInstitution(institution)" @modifier="modifierInstitution(institution)"
                 @duplicate='dupliquerInstitution(institution)' :option="option"></dropdown>
@@ -91,7 +108,7 @@
               <dropdown v-if="institutionDelete && !institutionUpdate" @gotoNext="gotoNext"
                 @supprimer="supprimerInstitution(institution)" @duplicate='dupliquerInstitution(institution)'
                 :option="optionD"></dropdown>
-            </div>
+            </div> -->
 
             <div class="relative p-4 min-w-full bg-white sm:rounded-lg overflow-hidden shadow-md">
               <span
@@ -129,14 +146,16 @@
 
 
               <div class="flex _items-end justify-end _mb-4 text-gray-600 dark:text-gray-400 space-x-2">
-                <div> <svg class=" text-gray-400 hover:text-blue-500" fill="currentColor"
+                <div @click="modifierInstitution(institution)"> 
+                  <svg class=" text-gray-400 hover:text-blue-500" fill="currentColor"
                     stroke="currentColor" stroke-width="0" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                     viewBox="0 0 24 24">
                     <path
                       d="M8.707 19.707 18 10.414 13.586 6l-9.293 9.293a1.003 1.003 0 0 0-.263.464L3 21l5.242-1.03c.176-.044.337-.135.465-.263zM21 7.414a2 2 0 0 0 0-2.828L19.414 3a2 2 0 0 0-2.828 0L15 4.586 19.414 9 21 7.414z">
                     </path>
-                  </svg> </div>
-                <div>
+                  </svg> 
+                </div>
+                <div @click="supprimerInstitution(institution)" class="cursor-pointer">
                   <svg class=" text-gray-400 hover:text-red-500" xmlns="http://www.w3.org/2000/svg" width="20"
                     height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0">
                     <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm10.618-3L15 2H9L7.382 4H3v2h18V4z"></path>
@@ -170,6 +189,8 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dropdown from '@/components/Dropdown'
 import Dashboard from '@/layouts/Dashboard'
+import DeleteAlert from "@/components/DeleteAlert.vue";
+import InstitutionService from "@/services/modules/institution.service";
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import extractFormData from "@/utils/extract-data";
 
@@ -185,12 +206,14 @@ export default {
     CardBailleur,
     Titre,
     SearchBar,
+    DeleteAlert,
     ModalTopRight,
     Dropdown
   },
 
   data() {
     return {
+      sendRequest: false,
       showModal: false,
       mosaique: true,
       line: false,
@@ -198,12 +221,15 @@ export default {
       search: '',
       submitText: "Enrégistrer une nouvelle institution",
       institutionAttributs: ["nom", "email", "contact"],
+      institutionAttributsUpdate: ["nom","contact"],
       champs: [
         { name: 'Nom', key: 'nom', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Email', key: 'email', type: 'email', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Contact', key: 'contact', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-
-        { name: 'Logo', key: 'logo', type: 'file', placeholdere: 'Votre logo', isSelect: false, isTextArea: false, data: '', required: true, errors: [] }
+      ],
+      champsUpdate: [
+        { name: 'Nom', key: 'nom', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Contact', key: 'contact', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
       ],
 
       actions: [
@@ -238,6 +264,9 @@ export default {
       institutionAdd: false,
       institutionDelete: false,
       institutionUpdate: false,
+      isUpdate:false,
+      deleteData:{},
+      deleteModal:false,
     }
   },
 
@@ -291,26 +320,26 @@ export default {
 
     addInstitution() {
       this.title = 'Ajouter une nouvelle institution'
-
+      this.isUpdate = false
       this.submitText = "Enrégistrer"
-
       this.showCloseModal(true)
     },
 
     modifierInstitution(institution) {
-
-      this.title = "Modification de l'institution {institution.nom}"
+      this.isUpdate = true
+      this.showCloseModal(true)
+      this.title = "Modification de l'institution "
 
       this.submitText = "Modifier"
 
       this.setInstitution(institution)
+      console.log('institution',institution)
+      this.institutionAttributsUpdate.forEach((item) => {
 
-      this.institutionAttributs.forEach((item) => {
-
-        this.champs.find((value, index) => {
+        this.champsUpdate.find((value, index) => {
 
           if (value.key === item) {
-            this.champs[index]['data'] = this.institution.user[item]
+            this.champsUpdate[index]['data'] = this.institution[item]
           }
 
         })
@@ -329,10 +358,36 @@ export default {
       });
     },
 
-    supprimerInstitution(institution) {
-      if (window.confirm("Voulez-vous vraiment supprimer l'institution " + institution.nom))
-        this.deleteInstitution(institution.id)
+
+    supprimerInstitution(institution,index) {
+      this.deleteModal= true
+      this.deleteData.data = institution
+      this.deleteData.index = index
     },
+
+    deleteInstitutions(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal= false
+      InstitutionService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchInstitutions()
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+   
 
     dupliquerInstitution() {
       this.title = "Dupliquer l'institution"
@@ -368,18 +423,24 @@ export default {
     sendForm() {
 
       this.champs = this.champs.map(item => { item.errors = []; return item })
-
-      let institution = extractFormData(this.champs, this.institutionAttributs)
+      this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+      let institution = {}
+      if (this.isUpdate) {
+        institution = extractFormData(this.champsUpdate, this.institutionAttributsUpdate)
+      } else {
+        institution = extractFormData(this.champs, this.institutionAttributs)
+      }
 
       institution.programmeId = this.currentUser?.programme?.id
-
-      if (this.institution?.id) {
-
-        this.updateInstitution({ institution: institution, id: this.institution?.id })
+      if (this.sendRequest == false) {
+       
+        if (this.institution?.id) {
+          this.sendRequest = true
+          this.updateInstitution({ institution: institution, id: this.institution?.id })
           .then(response => {
-
             if (response.status == 200 || response.status == 201) {
-
+              this.fetchInstitutions()
+              this.sendRequest = false
               this.close()
             }
 
@@ -389,20 +450,24 @@ export default {
               alert(value.response.data.errors.programmeId[0])
           })
 
-      }
-      else {
-
+        }
+        else {
+        this.sendRequest = true
         this.saveInstitution(institution)
           .then(response => {
             if (response.status == 200 || response.status == 201) {
+              this.fetchInstitutions()
+              this.sendRequest = false
               this.close()
             }
-
           })
           .catch((value) => {
+            this.sendRequest = false
             alert(value.response.data.errors.programmeId[0])
           })
+        }
       }
+      
     },
 
     gotoNext() {

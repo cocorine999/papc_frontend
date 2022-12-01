@@ -366,13 +366,13 @@ export default {
       this.$store.dispatch('disabled')
     },
     fetchProjets(programme) {
-      this.active()
+      //this.active()
       ProgrammeService.projets(programme).then((data) => {
         const datas = data.data.data
         this.projets = datas
-        this.disabled()
+        //this.disabled()
       }).catch((error) => {
-        this.disabled()
+        //this.disabled()
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
