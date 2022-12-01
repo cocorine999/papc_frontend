@@ -1,5 +1,15 @@
 <template>
   <dashboard>
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteRoles(deleteData)">Supprimer</button>
+        </div>
+    </delete-alert>
     <div  class="w-full">
       <nav class="text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
         <div>
@@ -159,7 +169,7 @@
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                             </svg>
                           </div>
-                          <div v-if="roleDelete" @click="deleteRole(data)"  class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
+                          <div v-if="roleDelete" @click="supprimeRole(data)"  class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -190,6 +200,7 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
 import RoleService from "@/services/modules/role.service.js";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
   export default {
@@ -200,6 +211,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
       Vform,
       Titre,
       SearchBar,
+      DeleteAlert,
       ModalTopRight,
       Multiselect,
       Vbutton
@@ -227,6 +239,8 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           roleAdd:false,
           roleDelete:false,
           roleUpdate:false,
+          deleteData:{},
+          deleteModal:false,
       };
     },
   
@@ -299,17 +313,44 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
           console.log(e)
         })
       },
-      deleteRole(data) {
-         if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + data.nom)) {
-            RoleService.destroy(data.id).then((data) => {
-            alert('suppression reuissie')
-            this.getRole()
-          }).catch((e) => {
-           alert(e)
-          })
-         }
+
+      getRoles() {
+        RoleService.get().then((data) => {
+          this.mesRoles = data.data.data
+        }).catch((e) => {
+          console.log(e)
+        })
       },
-      updateRole() {
+      supprimeRole(role,index) {
+        this.deleteModal= true
+        this.deleteData.data = role
+        this.deleteData.index = index
+      },
+
+      deleteRoles(data) {
+        //this.filteredIndicateur.splice(data.index,1)
+        this.deleteModal= false
+        RoleService.destroy(data.data.id).then((data) => {
+          this.$toast.success("Operation effectué avec success !")
+          this.getRoles()
+        
+        }).catch((error) => {
+          
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        }) 
+      },
+
+     
+    updateRole() {
         if (this.chargement == false) {
           this.chargement = true
           let roles =[]
@@ -333,7 +374,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 
         }
         
-      },
+    },
      modifier(data) {
         this.saveUpdate = data
         this.title='Modifier un rôle'

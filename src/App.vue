@@ -18,4 +18,8 @@
   span.inline-block {
     font-size: 12px;
   }
+  .multiselect--above
+  .multiselect__content-wrapper {
+    width: 100% !important;
+  }
 </style>

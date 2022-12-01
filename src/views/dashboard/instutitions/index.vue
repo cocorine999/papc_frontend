@@ -1,5 +1,15 @@
 <template>
   <dashboard>
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet element?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteInstitutions(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
     <div v-if="institutionVisible" class="w-full">
       <div v-if="showModal">
         <ModalTopRight :title="title" v-on:close="close">
@@ -179,6 +189,8 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dropdown from '@/components/Dropdown'
 import Dashboard from '@/layouts/Dashboard'
+import DeleteAlert from "@/components/DeleteAlert.vue";
+import InstitutionService from "@/services/modules/institution.service";
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import extractFormData from "@/utils/extract-data";
 
@@ -194,6 +206,7 @@ export default {
     CardBailleur,
     Titre,
     SearchBar,
+    DeleteAlert,
     ModalTopRight,
     Dropdown
   },
@@ -252,6 +265,8 @@ export default {
       institutionDelete: false,
       institutionUpdate: false,
       isUpdate:false,
+      deleteData:{},
+      deleteModal:false,
     }
   },
 
@@ -343,10 +358,36 @@ export default {
       });
     },
 
-    supprimerInstitution(institution) {
-      if (window.confirm("Voulez-vous vraiment supprimer l'institution " + institution.nom))
-        this.deleteInstitution(institution.id)
+
+    supprimerInstitution(institution,index) {
+      this.deleteModal= true
+      this.deleteData.data = institution
+      this.deleteData.index = index
     },
+
+    deleteInstitutions(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal= false
+      InstitutionService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchInstitutions()
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+   
 
     dupliquerInstitution() {
       this.title = "Dupliquer l'institution"
@@ -411,15 +452,17 @@ export default {
 
         }
         else {
+        this.sendRequest = true
         this.saveInstitution(institution)
           .then(response => {
             if (response.status == 200 || response.status == 201) {
               this.fetchInstitutions()
-              this.sendRequest = true
+              this.sendRequest = false
               this.close()
             }
           })
           .catch((value) => {
+            this.sendRequest = false
             alert(value.response.data.errors.programmeId[0])
           })
         }

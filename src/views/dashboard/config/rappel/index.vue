@@ -1,37 +1,48 @@
 <template>
   <dashboard>
     <div class="w-full">
-    <div v-if="showModal">
-      <modal-top-right  :title="title"  v-on:close="close">
-         <div class="w-full px-4">
-            <vform
-              template="default"
-              :champs="champs"
-              cols="1"
-              :submitText="submitText"
-              @sendForm="sendForm"
-              @closeModal="close" 
-            ></vform>
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteRappels(deleteData)">Supprimer</button>
         </div>
-      </modal-top-right>
-    </div>
-    <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
-      <div>
-        <ol class="inline-flex p-0 list-none">
-          <li class="flex items-center ">
-            <router-link to="#" class="text-gray-600">dashboard</router-link>
-            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-          </li>
-          
-          <li class="flex items-center text-blue-500 ">
-            <router-link to="" class="">rappels</router-link>
-          </li>
-        </ol>
+      </delete-alert>
+
+      <div v-if="showModal">
+        <modal-top-right  :title="title"  v-on:close="close">
+          <div class="w-full px-4">
+              <vform
+                template="default"
+                :champs="champs"
+                cols="1"
+                :submitText="submitText"
+                @sendForm="sendForm"
+                @closeModal="close" 
+              ></vform>
+          </div>
+        </modal-top-right>
       </div>
-      <div>
-        <search-bar ></search-bar>
-      </div>
-    </nav>
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center 	" aria-label="Breadcrumb">
+        <div>
+          <ol class="inline-flex p-0 list-none">
+            <li class="flex items-center ">
+              <router-link to="#" class="text-gray-600">dashboard</router-link>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+            </li>
+            
+            <li class="flex items-center text-blue-500 ">
+              <router-link to="" class="">rappels</router-link>
+            </li>
+          </ol>
+        </div>
+        <div>
+          <search-bar ></search-bar>
+        </div>
+      </nav>
     
     <div class="my-2 flex justify-between items-center ">
       <titre>rappels alert  </titre>
@@ -49,7 +60,7 @@
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Nom</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Date avant rappel</th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Date rappel </th>
+           <!--  <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Date rappel </th> -->
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Frequence</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider">Actions</th>
           </tr>
@@ -59,7 +70,7 @@
             <td :class="{'bg-green-500 text-white p-2':isSelect==true && indexSelect == index}" class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{rappel.nom}} </td>
             <td-description :data="rappel.description"></td-description>
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{rappel.dateAvant}} </td>
-            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">  </td>
+            <!-- <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">  </td> -->
             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"> {{rappel.frequence}} </td>
             <td class="px-6 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5">
               <div class="flex item-center justify-center">
@@ -93,13 +104,14 @@ import Vform from '@/components/Vform'
 import TdDescription from '@/components/TdDescription'
 import Dashboard from '@/layouts/Dashboard'
 import rappelService from "@/services/modules/rappel.service.js";
-
+import DeleteAlert from "@/components/DeleteAlert.vue";
 export default {
   components: {
     Dashboard,
     Vmodal,
     Titre,
     SearchBar,
+    DeleteAlert,
     ModalTopRight,
     Vform,
     TdDescription
@@ -113,7 +125,8 @@ export default {
         submitText:'ajouter',
         isSelect:false,
         indexSelect:0,
-      
+        deleteData:{},
+       deleteModal:false,       
         champs:[
             {name: 'libelle', key: "libelle", type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
             {name: 'Frequence (jours)', key: "frequence", type: 'number', placeholdere: "cette valeur est en nombre de jour", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
@@ -122,8 +135,8 @@ export default {
             {name: 'Description', key: "description", type: '', placeholdere: "", isSelect: false, isTextArea: true, data:'', required: true, errors : []}, 
         ],
         
-        
       });
+      
     },
     methods: {
         close() {
@@ -144,16 +157,31 @@ export default {
             this.showModal = true
             
         },
-        supprimerRappel(data,index) {
-            if ( window.confirm("Voulez-vous supprimez ce rappel " ) ) {
-                rappelService.destroy(data.id).then(() => {
-               this.$toast.success("suppression effectué avec success !")
-                this.rappels.splice(index, 1);
-                }).catch((e) => {
-                    console.log(e)
-                })
-            }
-            
+        supprimerRappel(rappel,index) {
+          this.deleteModal= true
+          this.deleteData.data = rappel
+          this.deleteData.index = index
+        },
+
+        deleteRappels(data) {
+              //this.filteredIndicateur.splice(data.index,1)
+              this.deleteModal= false
+              rappelService.destroy(data.data.id).then((data) => {
+                this.$toast.success("Operation effectué avec success !")
+                this.getRappel()
+              }).catch((error) => {
+                
+                if (error.response) {
+                  // Requête effectuée mais le serveur a répondu par une erreur.
+                  const message = error.response.data.message
+                  this.$toast.error(message)
+                } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+                } else {
+                  // Une erreur s'est produite lors de la configuration de la demande
+                }
+              }) 
         },
         modifierRappel(data,index) {
             this.title = "Modifier un rappel"
