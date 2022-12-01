@@ -88,9 +88,9 @@
     </div>
 
     <!-- fin de l'image de connexion -->
-    <div class=" absolute right-2 top-4">
+   <!--  <div class=" absolute right-2 top-4">
       <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici pour activer le compte</button>
-    </div>
+    </div> -->
     <div class="drapeau fixed bottom-0 right-0 left-0 grid grid-cols-3">
       <div class="h-2 bg-green-700"></div>
       <div class="h-2 bg-yellow-500"></div>
@@ -145,31 +145,10 @@ export default {
       this.chargement(true)
       await this.authentification(this.identifiant).then((response, status) =>{
           if (response.statut === "success" || response.status === 200) {
-            if(response.data.utilisateur.type =='bailleur') {
-              const datas = response.data.utilisateur
-              const bailleurInfo = datas.profil.projet
-              localStorage.setItem('bailleurInfo',JSON.stringify(bailleurInfo));
-
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard')
-            }
-            else if(response.data.utilisateur.type =='unitee-de-gestion') {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/projets')
-            }
-            else if (response.data.utilisateur.type =='administrateur') {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/programme')
-            }
-            else if(response.data.utilisateur.type =='mod') {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/indicateurs-mod')
-            }
-            //this.$router.push('/dashboard/bailleurs')
-            //this.$toast.success("Connexion réussie")
-            //window.location.assign(window.location.origin+"/dashboard/bailleurs")
+            this.$toast.success("Connexion réussie")
+            this.$router.push('/dashboard/projets')
           }else{
-            this.$toast.success(response.message)
+            this.$toast.error(response.message)
           }   
       })
       this.chargement(false)

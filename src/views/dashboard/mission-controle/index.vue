@@ -18,11 +18,22 @@
       </modal-top-right>
     </div>
 
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet element?
+      </p>
+
+      <div class="text-right mt-4">
+        <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+        <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteMos(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
+
     <nav class="text-sm font-semibold  " aria-label="Breadcrumb">
       <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center ">
-            <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+            <router-link to="#" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
 
@@ -85,12 +96,13 @@
 
   import ModalTopRight from '@/components/ModalTopRight'
   import CardChecklist from '@/components/CardChecklist'
+  import DeleteAlert from "@/components/DeleteAlert.vue";
   import Dashboard from '@/layouts/Dashboard'
   import CardMod from '@/components/CardMod'
   import Vtable from '@/components/Vtable'
   import Vmodal from '@/components/Vmodal'
   import Vform from '@/components/Vform'
-
+  import MoService from "@/services/modules/mission.controle.service"
   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import extractFormData from "@/utils/extract-data";
 export default {
@@ -100,6 +112,7 @@ export default {
     Vtable,
     Vform,
     Vmodal,
+    DeleteAlert,
     ModalTopRight,
     CardChecklist
   },
@@ -173,6 +186,8 @@ export default {
         passationUpdate:false,
         entreprisesExecutanteVisible:false,
         siteVisible:false,
+        deleteData:{},
+        deleteModal:false,
     }
     
   },
@@ -307,10 +322,33 @@ export default {
       this.showCloseModal(true)
     },
 
-    supprimerMissionDeControle(missionDeControle) {
-      if(window.confirm("Voulez-vous supprimer la mission de controle " + missionDeControle.user.nom))
-        this.deleteMissionDeControle(missionDeControle.id)
+    supprimerMissionDeControle(missionDeControle,index) {
+      this.deleteModal= true
+      this.deleteData.data = missionDeControle
+      this.deleteData.index = index
     },
+
+    deleteMos(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal= false
+      MoService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchMissionDeControles()
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
 
     supprimerPassation(passation) {
       if(window.confirm("Voulez-vous supprimer la passation "))
@@ -377,6 +415,7 @@ export default {
 
       this.setPassation({})
     },
+
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
@@ -385,6 +424,7 @@ export default {
 
      this.setMissionDeControle({})
     },
+
     addPassation() {
       this.title2 = 'Ajouter'
       

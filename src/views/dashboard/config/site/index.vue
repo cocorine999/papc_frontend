@@ -1,10 +1,20 @@
 <template>
   <dashboard>
     <div class="w-full">
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteSites(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="showModal = false">
           <div class="px-4 overflow-y-auto">
-            <form action="" @submit.prevent="sendForm" class="w-full"  >
+            <form v-if="!isUpdate" action="" @submit.prevent="sendForm" class="w-full"  >
        
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
@@ -26,12 +36,12 @@
 
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-              <input required v-model="longitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer la longitude" />
+              <input required v-model="longitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" step="0.01" placeholder="Entrer la longitude" />
             </div>
 
             <div class="my-4">
               <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-              <input required v-model="latitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" placeholder="Entrer la latitude" />
+              <input required v-model="latitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" step="0.01" placeholder="Entrer la latitude" />
             </div>
           
 
@@ -45,15 +55,44 @@
             </button>
 
           </div>
-        </form>
+            </form>
+
+            <form v-if="isUpdate" action="" @submit.prevent="updateForm" class="w-full"  >
+       
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="saveUpdate.nom" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" placeholder="Entrer le nom de l'activite" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="saveUpdate.longitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" step="0.01" placeholder="Entrer la longitude" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="saveUpdate.latitude" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" step="0.01" placeholder="Entrer la latitude" />
+              </div>
+          
+              <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
+                <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'> 
+                  modifier
+                </button>
+
+                <button type="submit" class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'> 
+                  Annuler
+                </button>
+
+              </div>
+            </form>
         </div>
         </modal-top-right>
       </div>
-      <nav class="mb-2 mt-4 text-sm font-semibold flex items-center " aria-label="Breadcrumb">
+      <nav class="mb-2 mt-4 text-sm font-semibold flex justify-between items-center " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center">
-              <router-link to="/dashboard" class="text-gray-600"
+              <router-link to="#" class="text-gray-600"
                 >dashboard</router-link
               >
               <svg
@@ -72,7 +111,7 @@
             </li>
           </ol>
         </div>
-        <div class="w-full flex text-gray-600">
+        <div class=" flex text-gray-600">
               <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
               <button type="submit" class="relative  p-2 rounded-lg">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
@@ -85,6 +124,7 @@
              </button>
         </div>
       </nav>
+
       <div class="flex items-center justify-between my-2" >
         <div class="flex space-x-4">
           <span
@@ -109,6 +149,8 @@
           <span class="mx-2 text-xs md:text-sm font-semibold">Ajouter </span>
         </button>
       </div>
+
+     
       <div id="dataTable">
         <vtable
           v-if="siteDelete && !siteUpdate"
@@ -123,7 +165,7 @@
           :headers="headers"
           :datas="filteredSite"
           :actions="actionsD"
-          @updateInputData="updateInputData"
+          @modifier="modifier"
         >
          </vtable>
          <vtable
@@ -132,7 +174,7 @@
           :datas="filteredSite"
           :actions="actions"
           @supprimer="supprimer"
-          @updateInputData="updateInputData"
+          @modifier="modifier"
         >
         </vtable>
       </div>
@@ -148,10 +190,10 @@ import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
 import Multiselect from 'vue-multiselect';
-
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import { mapActions, mapMutations, mapGetters, mapState } from "vuex";
 import extractFormData from "@/utils/extract-data";
-
+import SiteService from "@/services/modules/site.service";
 export default {
   components: {
     Vtable,
@@ -159,6 +201,7 @@ export default {
     Vmodal,
     Vform,
     SearchBar,
+     DeleteAlert,
     ModalTopRight,
     Multiselect,
   },
@@ -193,7 +236,13 @@ export default {
       siteVisible:false,
       siteAdd:false,
       siteDelete:false,
-      siteUpdate:false,      
+      siteUpdate:false, 
+      deleteData:{},
+      deleteModal:false,
+      isUpdate:false,
+      saveUpdate:{},   
+      showEntreprise:false,
+      showBailleur:false,        
     };
   },
 
@@ -237,7 +286,6 @@ export default {
     }),
 
     ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
-
     ...mapActions("entreprisesExecutante", {
       fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
     }),
@@ -280,9 +328,9 @@ export default {
     sendForm() {
       var entrepriseExecutantId = []
       
-      this.entreprises.forEach(element => {
-          entrepriseExecutantId.push(element.id)
-        });
+      this.value.forEach(element => {
+        entrepriseExecutantId.push(element.id)
+      });
 
       let site = {
         "nom" : this.nom,
@@ -292,16 +340,45 @@ export default {
         "entrepriseExecutantId" : entrepriseExecutantId
       }
 
-      console.log(site);
-
-      
-        this.saveSite(site).then((response) => {
+      this.saveSite(site).then((response) => {
           if (response.status == 200 || response.status == 201) {
+            this.$toast.success('operation effectuer avec sucess')
+            this.fetchSites(this.currentUser?.programme?.id)
             this.close();
           }
-        });
+      }).catch((e) => {
+        this.$toast.error(e)
+        this.sendRequest = false
+      });
       
     },
+    updateForm() {
+    
+      let site = {
+        "nom" : this.saveUpdate.nom,
+        "longitude" : this.saveUpdate.longitude,
+        "latitude" : this.saveUpdate.latitude,
+      }
+
+      SiteService.update(this.saveUpdate.id,site).then((data) => {
+            this.$toast.success("Operation effectué avec success !")
+            this.fetchSites(this.currentUser?.programme?.id)
+          
+      }).catch((error) => {
+            
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
+          }) 
+    },
+
 
     showCloseModal(value = false) {
       this.showModal = value
@@ -317,14 +394,49 @@ export default {
 
     addSite() {
       this.title='Ajouter un nouveau site'
+      this.isUpdate = false
       this.showCloseModal(true)
     },
+    modifier(data) {
+      this.saveUpdate = data
+      this.isUpdate = true
+      //this.audit.projetId = data.projet
+      //this.audit.statut = data.statut
 
-    async supprimer(site) {
-      if (window.confirm("Voulez-vous supprimer ce  site ?" + site.nom))
-        await this.deleteSite(site.id);
+     
+      this.title='Modifier un audit'
+      this.showModal = true
     },
 
+    supprimer(categorie,index) {
+        this.deleteModal= true
+        this.deleteData.data = categorie
+        this.deleteData.index = index
+    },
+
+    deleteSites(data) {
+          //this.filteredIndicateur.splice(data.index,1)
+          this.deleteModal= false
+          SiteService.destroy(data.data.id).then((data) => {
+            this.$toast.success("Operation effectué avec success !")
+            this.fetchSites(this.currentUser?.programme?.id)
+          
+          }).catch((error) => {
+            
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
+          }) 
+    },
+
+    
     close() {
       this.showModal = false;
     },
@@ -334,7 +446,8 @@ export default {
     this.getPermission()
     if(!this.siteVisible) {
       this.$router.push('/401-non-autorise')
-    } 
+    }
+
     console.log("Fetching sites ...")
     this.fetchSites(this.currentUser?.programme?.id)
 

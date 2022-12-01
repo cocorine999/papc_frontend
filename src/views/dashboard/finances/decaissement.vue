@@ -3,6 +3,17 @@
      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="decaissement" :data="data" :datas="commentaires"></commentaire>
       </modal-chat>
+
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet decaissement?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteDecaissements(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
     <div class="w-full">
     <nav class="text-sm font-semibold flex justify-between items-center  flex-wrap " aria-label="Breadcrumb">
       <div>
@@ -18,27 +29,27 @@
       </div>
       <div>
         <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  p-2 rounded-lg">
-              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
-                    width="512px" height="512px">
-                 <path
-                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-              </svg>
-             </button>
+          <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
+          <button type="submit" class="relative  p-2 rounded-lg">
+          <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+            viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+              width="512px" height="512px">
+            <path
+              d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+          </svg>
+        </button>
         </div>      
     </div>
     </nav> 
     <div v-if="showModal">
       <modal-top-right :title="title" v-on:close="close">
        <div class="w-full p-4">
-         <div v-if="title =='Ajouter'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+         <div v-if="!isUpdate">
+            <vform template="default" :champs="champs"  :sendRequest="sendRequest" submitText="Enregistrer" @sendForm="sendForm" ></vform>
          </div>
-         <div v-if="title =='Modifier un decaissement'">
-            <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
+         <div v-else>
+            <vform template="default" :champs="champsUpdate"  :sendRequest="sendRequest" submitText="Modifier" @sendForm="sendForm" ></vform>
          </div>
         
        </div>
@@ -47,7 +58,7 @@
     <div v-if="showModal2">
       <vmodal  title="Filtre decaissement"  v-on:close="showModal2 = false">
         <div class="px-4" style="width:500px" >
-          <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+          <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :sendRequest="sendRequest" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
         </div>
       </vmodal>
     </div>
@@ -68,9 +79,10 @@
       </div>
      
     </div>
-    <vtable v-if="!decaissementDelete && !decaissementUpdate"  :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-    <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-    <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" @commenter="commenter" :isComment="true" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
+    <vtable v-if="!decaissementDelete && !decaissementUpdate"   :headers="headers" :datas="filteredDecaissement()"  @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementDelete && !decaissementUpdate"   :headers="headers" :datas="filteredDecaissement()" :actions="actionsDelete"  @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false"  @modifier="modifier"  :headers="headers" :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+    <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false"  :actions="actionsUpdate"  @modifier="modifier" :headers="headers" :datas="filteredDecaissement()"  @updateInputData="updateInputData"></vtable>
     </div>
   </dashboard>
  
@@ -86,9 +98,12 @@ import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex"
 import { extractFormData } from '@/utils/index'
+import ProgrammeService from "@/services/modules/programme.service.js";
 import JsonExcel from "vue-json-excel"
 import ModalChat from '@/components/ModalChat'
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import Commentaire from '@/components/Commentaire.vue'
+import DecaissementService from "@/services/modules/decaissement.service";
 
 export default {
   components: {
@@ -99,6 +114,7 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    DeleteAlert,
     JsonExcel,
     ModalChat,
     Commentaire
@@ -107,27 +123,26 @@ export default {
         return {
           showModal:false,
           showModal2:false,
+          sendRequest:false,
           title:'',
-          decaissementAttributs : ['montant', 'type', 'date', 'projetId'],
+          isUpdate:false,
+          decaissementAttributs : ['montant', 'methodeDePaiement', 'date', 'projetId', 'type'],
           decaissementAttributsRecherche : ['type', 'debut', 'fin', 'projetId'],
-          champs:[
-          {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:true,},
-          {name:'Source de décaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:true,},
-        ],
-        champsRecherche:[
-          {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
-          {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
-          {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
-        ],
+          champs:[],
+          champsUpdate:[],
+          champsRecherche:[
+            {name:'Date debut',key:'debut',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+            {name:'Date fin ',key:'fin',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,},
+            {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:this.projets, cle: 'id', value: 'nom',required:false,},
+            {name:'Source de decaissement',key:'type',placeholdere:'Choisir la source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.sources, cle: 'id', value: 'nom',required:false,},
+          ],
+        decaissementId:'',
         
         search:"",
         headers:[
           {name:'Projets',cle:'projet'},
           {name:'Bailleur',cle:'bailleur'},
-          {name:'Type de décaissement',cle:'type'},
+          {name:'Methode de paiement',cle:'methodeDePaiement'},
           {name:'Montant',cle:'montant',monaie:true},
           {name:'Date de décaissement',cle:'date'},
           {name:'Date de création',cle:'created_at'},
@@ -137,6 +152,13 @@ export default {
         ],
         actions:[
           {name:'supprimer',iconne:''},
+          { name: 'modifier', iconne: '' },
+        ],
+        actionsDelete:[
+          {name:'supprimer',iconne:''},
+        ],
+        actionUpdate:[
+          { name: 'modifier', iconne: '' },
         ],
         decaissementVisible:false,
         decaissementAdd:false,
@@ -145,6 +167,10 @@ export default {
         exporterDecaissement:false,
         data:{},
         commentaires:[],
+        projets:[],
+        showComment:false,
+        deleteData:{},
+        deleteModal:false,
       };
     },
     computed:{
@@ -159,7 +185,6 @@ export default {
 
     ...mapGetters({
       decaissements: "decaissements/getDecaissements", decaissement: "getDecaissement",
-      projets: "projets/getProjets",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
@@ -174,7 +199,7 @@ export default {
       setDecaissement: 'decaissements/FILL' // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
     }),
      getPermission() {
-          this.currentUser.role[0].permissions.forEach(element => {
+      this.currentUser.role[0].permissions.forEach(element => {
             if(element.slug ==='voir-un-decaissement') {
               this.decaissementVisible = true
             }
@@ -190,7 +215,7 @@ export default {
             if(element.slug ==='exporter-un-decaissement') {
               this.exporterDecaissement = true
             }
-          });
+      });
 
      },
      commenter(data) {
@@ -213,8 +238,6 @@ export default {
       deleteDecaissement: "DESTROY_DECAISSEMENT"
     }),
 
-    ...mapActions('projets', { fetchProjets: 'FETCH_LIST_PROJET_OF_PROGRAMME' }),
-
       async updateInputData(id, attribut, value) {
           
             await this.updateDecaissement({decaissement: {[attribut] : value}, id : id}).catch((value, status) => {
@@ -230,8 +253,8 @@ export default {
 
         return this.decaissements.filter(function (decaissement){
           return decaissement.projet.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 decaissement.date.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 decaissement.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+          decaissement.date.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          decaissement.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
       },
 
@@ -257,24 +280,70 @@ export default {
       },
 
       sendForm() {
+        if( this.sendRequest === false ){
+          this.sendRequest = true;
+          this.champs = this.champs.map(item => { item.errors = []; return item })
+          this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+        let decaissement = {}
+        if (this.isUpdate) {
+          decaissement = extractFormData(this.champsUpdate, this.decaissementAttributs)
+          decaissement.id = this.decaissementId
+        } else {
+          decaissement = extractFormData(this.champs, this.decaissementAttributs)
+        }
+          decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
+          console.log('decaissement',decaissement.methodeDePaiement)
+          decaissement.type = decaissement.type.id
+          decaissement.projetId = decaissement.projetId.id
 
-        console.log(this.champs)
+          if (decaissement?.id) {
+        
+          this.updateDecaissement({ decaissement: decaissement, id: decaissement?.id }).then(response => {
 
-        this.champs = this.champs.map(item => { item.errors = []; return item})
+            if (response.status == 200 || response.status == 201) {
+              this.$toast.success("operation effectué avec success")
+              
+              this.fetchDecaissements()
+              this.sendRequest = false
+              this.close()
+            }
 
-        let decaissement = extractFormData(this.champs, this.decaissementAttributs)
+          }).catch((error) => {
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+            this.champs.map(value => value.errors = this.erreurs[value.key])
+          })
+        }
+        else {
+          this.saveDecaissement(decaissement).then(response => {
+            if(response.status == 200 || response.status == 201){
+             
+              this.$toast.success("nouveau enregistrement")
+              this.showModal = false
+              this.fetchDecaissements()
+              this.sendRequest = false
+              this.close()
+            }
 
-        decaissement.type = decaissement.type.id
-        decaissement.projetId = decaissement.projetId.id
+          }).finally((error) => {
+            this.sendRequest = false
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
+          })
+        }
 
-        this.saveDecaissement(decaissement).then(response => {
-          if(response.status == 200 || response.status == 201){
-            this.close()
-            this.showModal = false
-            this.fetchDecaissements()
-          }
+          
+        
 
-        })
+        }
         
       },  
 
@@ -300,14 +369,24 @@ export default {
         this.showComment = false
         this.commentaires = []
       },
+      resetForm() {
+
+        this.champs = this.champs.map(item => { item.data = ''; return item })
+
+        window.document.getElementById('vform')?.reset()
+
+
+      },
       close() {
+        this.resetForm()
         this.showModal = false
       },
       close2() {
           this.showModal2 = false
       },
-        addDecaissement() {
+      addDecaissement() {
             this.title ="Ajouter"
+            this.isUpdate = false
             let formData = this.champs.map((value) => {
               if(value.key === 'projetId'){ 
                 value['options'] = this.projets
@@ -322,10 +401,10 @@ export default {
 
           this.champs = formData
 
-            this.showModal = true
-        },
+         this.showModal = true
+      },
 
-        showFiltreModal2() {
+      showFiltreModal2() {
           this.title ="Filtre decaissement"
 
           let formData = this.champsRecherche.map((value) => {
@@ -343,12 +422,104 @@ export default {
         this.champsRecherche = formData
 
           this.showModal2 = true
-        },
-      
-      async supprimer(decaissement) {
-        if(window.confirm("Voulez-vous supprimer ce decaissement " ))
-          await this.deleteDecaissement(decaissement.id)
       },
+
+      supprimer(decaissement,index) {
+        this.deleteModal= true
+        this.deleteData.data = decaissement
+        this.deleteData.index = index
+      },
+
+      deleteDecaissements(data) {
+        //this.filteredIndicateur.splice(data.index,1)
+        this.deleteModal= false
+        DecaissementService.destroy(data.data.id).then((data) => {
+          this.$toast.success("Operation effectué avec success !")
+          this.fetchDecaissements()
+        
+        }).catch((error) => {
+          
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        }) 
+      },
+    
+      
+      modifier(decaissement) {
+      this.isUpdate = true
+      this.title = 'Modifier un decaissement'
+      this.showModal = true
+      
+    
+
+      this.decaissementId = decaissement.id
+
+      this.decaissementAttributs.forEach((item) => {
+        
+        this.champsUpdate.find((value, index) => {
+          if (value.key !== 'projetId') {
+            if (value.key === item) {
+              console.log(value.key +' ' + decaissement[item])
+              this.champsUpdate[index]['data'] = decaissement[item]
+            }
+          }
+       
+
+        })
+
+      })
+
+      },
+      active() {
+      this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
+      fetchProjets(programme) {
+        this.active()
+        ProgrammeService.projets(programme).then((data) => {
+          const datas = data.data.data
+          this.projets = datas
+          this.champs = [
+            {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
+            {name:'Methode de paiement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
+            {name:'Source',key:'type',placeholdere:'Source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.source, cle: 'id', value: 'nom',required:true,},
+          ]
+          this.champsUpdate = [
+            {name:'Montant',key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Date',key:'date',type:'date',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,},
+            {name:'Projet',key:'projetId',type:'',placeholdere:'Choisir un projet',isSelect:true,isTextArea:false,data:'',options:datas, cle: 'id', value: 'nom',required:true,},
+            {name:'Méthode de paiement',key:'methodeDePaiement',placeholdere:'Mode de paiement',isSelect:true,isTextArea:false,data:'',options:this.$store.state.modePaiement, cle: 'id', value: 'nom',required:true,},
+            {name:'Source',key:'type',placeholdere:'Source',isSelect:true,isTextArea:false,data:'',options:this.$store.state.source, cle: 'id', value: 'nom',required:true,},
+          ]
+
+          this.disabled()
+          
+        }).catch((error) => {
+          this.disabled()
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
     },
 
     mounted() {
@@ -356,13 +527,17 @@ export default {
       if(!this.decaissementVisible) {
         this.$router.push('/401-non-autorise')
       } 
-      console.log("Fetching decaissements ...")
+      else {
         this.fetchDecaissements().then((value) => {
         setTimeout(() => {
           console.log("Fetching list of projets")
           this.fetchProjets(this.currentUser?.programme?.id)
-        }, 500);
-    })
+        }, 500); 
+      })
+      }
+     
+       
+   
   }
 }
 </script>

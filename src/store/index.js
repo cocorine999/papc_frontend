@@ -154,35 +154,45 @@ export default new Vuex.Store({
     statutsAno : [
       {
         nom : "Non validé",
-        etat: -2
-      },
-      {
-        nom: "Validé",
         etat: -1
       },
       {
-        nom: "En cours",
-        etat: 0
-      },
-      {
-        nom: "En retard",
+        nom: "Validé", 
         etat: 1
       },
+     
+     
+     
+    ],
+    modePaiement : [
       {
-        nom: "Terminé",
-        etat: 2
-      }
+        id : 0, 
+        nom : "Paiement direct"
+      },
+      {
+        id : 1, 
+        nom : "Avance au compte designé"
+      },
+      {
+        id : 2, 
+        nom : "Remboursement"
+      },
+      {
+        id : 3, 
+        nom : "Engagement special"
+      },
+      
     ],
     
     sources : [
       {
+        id : 0, 
+        nom : "Pret"
+      },
+      {
         id : 1, 
         nom : "Budget National"
       },
-      {
-        id : 0, 
-        nom : "Pret"
-      }
     ],
   },
   getters: {

@@ -1,6 +1,17 @@
 <template>
   <dashboard>
     <div class="w-full">
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+        voulez vous supprimer cet bailleur?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteBailleurs(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="p-4 w-full">
@@ -79,7 +90,7 @@
         </div>
 
         <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-          <div v-for="(bailleur, index) in filteredBailleur()" :key="index">
+          <div v-for="(bailleur, index) in filteredBailleur" :key="index">
             <div class="relative">
               <div v-if="bailleurUpdate" class="absolute right-1 top-4 z-10  cursor-pointer">
                 <dropdown @modifier="modifier(bailleur)" @couverture="changeLogo(bailleur)" :option="optionUp">
@@ -184,7 +195,8 @@ import Vform from "@/components/Vform";
 import Vmodal from "@/components/Vmodal";
 import Dashboard from "@/layouts/Dashboard";
 import Dropdown from '@/components/Dropdown.vue'
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import extractFormData from "@/utils/extract-data";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import BailleurService from "@/services/modules/bailleur.service.js";
@@ -199,6 +211,7 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    DeleteAlert,
     Dropdown
   },
 
@@ -381,20 +394,39 @@ export default {
       logo: {},
       idBailleur: '',
       sendRequest: false,
-      code: ''
+      code: '',
+      bailleurs:[],
+      deleteData:{},
+      deleteModal:false,
 
     };
   },
 
   computed: {
+    ...mapState({
+     
+      loading: state => state.loading,
+      errors: state => state.errors
+    }),
+
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       bailleur: "bailleurs/getBailleur",
-      bailleurs: "bailleurs/getBailleurs",
+
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
-    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
+    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
+    filteredBailleur() {
+      var self = this;
+
+      return this.bailleurs.filter(function (bailleur) {
+        return bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          bailleur.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          bailleur.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
+    },
+
   },
 
   methods: {
@@ -446,6 +478,26 @@ export default {
     disabled() {
       this.$store.dispatch('disabled')
     },
+    fetchBailleurs(programme) {
+      this.active()
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+        const datas = data.data.data
+        this.bailleurs = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setBailleur: "bailleurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
@@ -469,7 +521,7 @@ export default {
     },
 
     ...mapActions("bailleurs", {
-      fetchBailleurs: "FETCH_LIST_BAILLEUR_OF_PROGRAMME",
+     
       saveBailleur: "STORE_BAILLEUR",
       updateBailleur: "UPDATE_BAILLEUR",
       deleteBailleur: "DESTROY_BAILLEUR",
@@ -507,14 +559,34 @@ export default {
 
       this.showCloseModal(true);
     },
-
-    supprimer(bailleur) {
-      console.log(bailleur)
-      if (
-        window.confirm("Voulez-vous supprimer le bailleur " + bailleur.user.nom)
-      )
-        this.deleteBailleur(bailleur.id);
+    supprimer(bailleur,index) {
+      this.deleteModal= true
+      this.deleteData.data = bailleur
+      this.deleteData.index = index
     },
+    deleteBailleurs(data) {
+      this.filteredBailleur.splice(data.index,1)
+      this.deleteModal= false
+      BailleurService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+
+   
 
     dupliquer() {
       this.title = "Dupliquer un bailleur";
@@ -551,16 +623,7 @@ export default {
       })
     },
 
-    filteredBailleur() {
-      var self = this;
-
-      return this.bailleurs.filter(function (bailleur) {
-        return bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          bailleur.user.email.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          bailleur.user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-      });
-    },
-
+   
     sendForm() {
 
       this.champs = this.champs.map((item) => {
@@ -582,20 +645,14 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.close();
+                this.fetchBailleurs(this.programmeId)
                 this.sendRequest = false
               }
             }
           ).catch((error) => {
-            this.sendRequest = false
-            if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-            } else if (error.request) {
-
-            } else {
-
-            }
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+            this.champs.map(value => value.errors = this.erreurs[value.key])          
           })
 
 
@@ -622,20 +679,15 @@ export default {
           this.saveBailleur(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.fetchBailleurs(this.programmeId)
               this.sendRequest = false
             }
           }).catch((error) => {
-            this.sendRequest = false
-            if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-            } else if (error.request) {
-              // Demande effectuée mais aucune réponse n'est reçue du serveur.
-              //console.log(error.request);
-            } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-            }
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+            this.champs.map(value => value.errors = this.erreurs[value.key])          
+            this.getImage()
+           
           })
         }
       }

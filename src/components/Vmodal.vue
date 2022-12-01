@@ -1,7 +1,6 @@
 <template>
   <div class="fixed w-full h-full top-0 left-0 flex items-center justify-center  z-50 " v-if="open">
     <div class="absolute w-full h-full bg-gray-900  opacity-75" @click="close"></div>
-
     <div class="absolute max-h-screen" :class="maxWidth">
       <div class="container bg-white overflow-auto md:rounded">
         <div class="px-4 py-2 leading-none flex justify-between items-center font-medium text-sm bg-gray-100 border-b select-none">

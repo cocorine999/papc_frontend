@@ -27,11 +27,11 @@
           <div class="my-2 p-2">
             <p class="text-sm font-semibold py-1 flex justify-between items-center"> 
               <span class="font-bold  ">Montant BN :</span> 
-              <span class="text-gray-700">{{montantBN}}</span> 
+              <span class="text-gray-700">{{montantBN | formatNumber}}</span> 
             </p>
             <p class="text-sm font-semibold py-1 flex justify-between items-center"> 
               <span class="font-bold">Montant EPM-PRET :</span> 
-              <span class="text-gray-700">{{montantEPM}}</span>
+              <span class="text-gray-700">{{montantEPM | formatNumber}}</span>
             </p>
             <div class="text-sm font-semibold py-1 flex justify-between items-center">
               <span class="font-bold pr-2">Durée :</span> 

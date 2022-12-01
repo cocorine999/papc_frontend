@@ -10,7 +10,7 @@
           </div>
           <p class="text-sm font-semibold py-1">{{description}} </p>
           <div class="my-2">
-            <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant BN :</span>  <span class="text-gray-700">{{montantBN}} FCFA </span> </p>
+            <p class="text-sm font-semibold py-1"> <span class="font-bold">Montant BN :</span>  <span class="text-gray-700">{{montantBN | formatNumber}} FCFA </span> </p>
             <p class="text-sm font-semibold py-1"> <span class="font-bold">Code PTA :</span> <span class="text-gray-700"> {{code}} </span> </p>
             <p class="text-sm font-semibold py-1"><span class="font-bold pr-2">De</span> {{dateDeb}} <span class="font-bold px-2">Au</span> {{dateFin}} </p>  
           </div>

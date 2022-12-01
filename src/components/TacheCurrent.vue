@@ -2,7 +2,7 @@
   <div class="w-full">
     <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
       <div style="width:60vw" class="p-0 w-full">
-        <form @submit.prevent="saveProlongerDate(tacheId,dates)" action="">
+        <form @submit.prevent="saveProlongerDate(tacheId, dates)" action="">
           <div class="grid grid-cols-2 gap-2 my-2">
             <div class="form-group my-2">
               <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date debut<span
@@ -39,7 +39,20 @@
       </div>
     </vmodal>
 
-    <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment=false">
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cette activité?
+      </p>
+
+      <div class="text-right mt-4">
+        <button @click="deleteModal = false"
+          class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+        <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+          @click="deleteTaches(deleteData)">Supprimer</button>
+      </div>
+    </delete-alert>
+
+    <modal-chat v-if="showComment" title="espace commentaire" v-on:close="showComment = false">
       <commentaire module="tache" :datas="commentaires"></commentaire>
     </modal-chat>
 
@@ -51,8 +64,7 @@
       </div>
     </modal-top-right>
 
-    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
-      aria-label="Breadcrumb">
+    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
       <div class="mb-2">
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center">
@@ -75,18 +87,18 @@
         </ol>
       </div>
       <div>
-        <search-bar></search-bar>
+        <search-bar @search="getSearchValue"></search-bar>
       </div>
     </nav>
 
     <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span :class="{ 'border-primary border-b-8 font-bold': seeTache}" @click="gotoTache()"
+        <span :class="{ 'border-primary border-b-8 font-bold': seeTache }" @click="gotoTache()"
           class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">Taches</span>
         <!--  <span :class="{ 'border-primary border-b-8 font-bold': seeSuivi}" @click="gotoSuivi()" class="inline-block cursor-pointer text-xs sm:text-sm  md:text-base uppercase border-primary py-2">Suivi tache</span> -->
       </div>
 
-      <button v-if="tacheAdd " @click="addTache" title="ajouter une tache"
+      <button v-if="tacheAdd" @click="addTache" title="ajouter une tache"
         class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -98,139 +110,198 @@
       </button>
 
     </div>
+    <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
+      <!--Filtre sur projet -->
+      <div class=" mx-auto">
+        <div class="mb-4">
+          <ul class="flex flex-wrap justify-start -mb-px items-end  space-y-2" id="myTab"
+            data-tabs-toggle="#myTabContent" role="tablist">
+
+            <li class="mr-2" role="presentation">
+
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
+                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true"
+                  :custom-label="customLabelP" placeholder="selectionnez un projet"
+                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
+                  track-by="id"></multiselect>
+              </div>
+
+            </li>
+            <li class=" mr-2" role="presentation">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
+                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true"
+                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                  placeholder="selectionnez une composante" label="nom" track-by="id">
+                </multiselect>
+              </div>
+
+            </li>
+            <li class="mr-2 " role="presentation">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
+                <multiselect v-model="valueFiltre" :options="sousComposantes" :preselect-first="true"
+                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                  placeholder="selectionnez une sous composante" label="nom" track-by="id">
+                </multiselect>
+              </div>
+
+            </li>
+            <li class="mr-2 " role="presentation">
+              <div>
+                <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
+                <multiselect v-model="valueFiltre" :options="activites" :custom-label="customLabel"
+                  placeholder="selectionnez l'activite" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
+                  track-by="id">
+                </multiselect>
+              </div>
+
+            </li>
+
+          </ul>
+          <ul class="flex flex-wrap justify-end -mb-px">
+            <li class="mr-2" role="presentation">
+              <button @click="toggle2" :class="{ 'active': pending }"
+                class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "
+                id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
+                aria-selected="true">Non démarré
+
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal text-center align-middle  text-white bg-yellow-600 rounded-full undefined ">
+                  {{ enAttente.length }}
+                </span>
+
+              </button>
+            </li>
+            <li class="mr-2" role="presentation">
+              <button @click="toggle3" :class="{ 'active': inProgress }"
+                class="inline-block text-blue-500 hover:text-blue-600 hover:border-blue-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-blue-400 dark:hover:text-blue-300 "
+                id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
+                aria-selected="false">En cours
+
+                <span
+                  class="px-2 py-1 text-sm text-center align-middle font-medium leading-normal  text-white bg-indigo-600 rounded-full undefined">
+                  {{ enCours.length }}
+                </span>
+              </button>
+            </li>
+            <li class="mr-2" role="presentation">
+              <button @click="toggle" :class="{ 'active': success }"
+                class="inline-block text-green-500 hover:text-green-600 hover:border-green-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-green-400 dark:hover:text-green-300"
+                id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
+                aria-selected="false">Terminé
+
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal  text-white  text-center align-middle  bg-green-600 rounded-full undefined">
+                  {{ terminer.length }}
+                </span>
+              </button>
+            </li>
+            <li role="presentation">
+              <button @click="toggle4" :class="{ 'active': retard }"
+                class="inline-block text-red-500 hover:text-red-600 hover:border-red-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-red-400 dark:hover:text-red-300"
+                id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
+                aria-selected="false">En retard
+
+                <span
+                  class="px-2 py-1 text-sm font-medium leading-normal  text-white bg-red-600 text-center align-middle  rounded-full undefined">
+                  {{ retardData.length }}
+                </span>
+
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
     <!-- le filtre -->
-    <div v-if="seeTache && tacheVisible ">
-      <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
-        <!--Filtre sur projet -->
-        <div class="w-full grid sm:grid-cols-2 sm:gap-2">
-          <div class="mb-3">
-            <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true"
-              placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
-          </div>
+    <div v-if="seeTache && tacheVisible">
+      <div v-if="!isSearch">
 
-          <div class="mb-3">
-            <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-            <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel"
-              :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
-          </div>
 
-          <div class="mb-3">
-            <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
-            <multiselect v-model="sousComposanteFiltre" :options="sousComposantes" :preselect-first="true"
-              :custom-label="customLabel" placeholder="selectionnez une sous composante" label="nom" track-by="id">
-            </multiselect>
+        <div v-if="inProgress">
+          <empty v-if="enCours.length === 0">tache vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enCours" :key="index">
+                <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :debut="tache.debut" :fin="tache.fin" :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @commentaire="showComment = true"
+                  :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
+              </div>
+            </div>
           </div>
-
-          <div class="mb-3">
-            <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
-            <multiselect v-model="valueFiltre" :options="activites" :custom-label="customLabel"
-              placeholder="selectionnez l'activite" label="nom" track-by="id">
-            </multiselect>
+        </div>
+        <div v-if="pending">
+          <empty v-if="enAttente.length === 0">tache vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in enAttente" :key="index">
+                <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"></card-tache>
+              </div>
+            </div>
           </div>
+        </div>
 
+        <div v-if="success">
+          <empty v-if="terminer.length === 0">tache vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in terminer" :key="index">
+                <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"></card-tache>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="retard">
+          <empty v-if="retardData.length === 0">tache vide !!!</empty>
+          <div v-else>
+            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in retardData" :key="index">
+                <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"></card-tache>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
-        <div class="flex   justify-between flex-wrap items-center">
-          <!--Filtre sur projet -->
-          <h2 class="uppercase font-bold w-full sm:w-2/5 mb-2">Listes des taches </h2>
-          <nav class="flex text-sm align-middle justify-evenly ">
-            <span @click="toggle2" :class="{ 'border-yellow-600 text-yellow-600': pending }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              attentes
-              <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined ">
-                {{enAttente.length}}
-              </span>
-            </span>
-            <span @click="toggle3" :class="{ 'border-indigo-600 text-indigo-600': inProgress }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              en cours
-              <span class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined">
-                {{enCours.length}}
-              </span>
-            </span>
-            <span @click="toggle" :class="{ 'border-green-600 text-green-600': success }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              terminé
-              <span class="px-2 text-base text-green-600 border border-green-600 rounded-full undefined">
-                {{terminer.length}}
-              </span>
-            </span>
-
-            <span @click="toggle4" :class="{ 'border-red-600 text-red-600': retard }"
-              class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer">
-              retard
-              <span class="px-2 text-base text-red-600 border border-red-600 rounded-full ">
-                {{retardL.length}}
-              </span>
-            </span>
-
-          </nav>
-        </div>
-      </div>
-
-
-      <div v-if="inProgress">
-        <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+      <div v-else>
+        <empty v-if="filtere.length === 0">tache vide !!!</empty>
         <div v-else>
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(tache, index) in enCours" :key="index">
+            <div v-for="(tache, index) in filtere" :key="index">
               <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
                 :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
-                :debut="tache.debut" :fin="tache.fin" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
+                :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
                 @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @prolonger="prolonger(tache)"
-                @suivre="suivreMyTache(tache)" @commentaire="showComment = true" :isDelete="tacheDelete"
-                :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="pending">
-        <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
-        <div v-else>
-          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(tache, index) in enAttente" :key="index">
-              <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
-                :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE" :codePta="tache.codePta"
-                :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)"
-                @modifier="modifier(tache)" @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)"
-                :debut="tache.debut" :fin="tache.fin" @commentaire="showComment = true" :isDelete="tacheDelete"
-                :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="success">
-        <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
-        <div v-else>
-          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(tache, index) in terminer" :key="index">
-              <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
-                :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE" :codePta="tache.codePta"
-                :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)"
-                @modifier="modifier(tache)" @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)"
-                :debut="tache.debut" :fin="tache.fin" @commentaire="showComment = true" :isDelete="tacheDelete"
-                :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="retard">
-        <empty v-if="retardL.length === 0">Ce composant est vide !!!</empty>
-        <div v-else>
-          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-            <div v-for="(tache, index) in retardL" :key="index">
-              <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
-                :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE" :codePta="tache.codePta"
-                :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)"
-                @modifier="modifier(tache)" @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)"
-                :debut="tache.debut" :fin="tache.fin" @commentaire="showComment = true" :isDelete="tacheDelete"
-                :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
+                @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin" @commentaire="showComment = true"
+                :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
             </div>
           </div>
         </div>
@@ -268,8 +339,10 @@ import Activite from "@/store/modules/activites/activite";
 import ComposanteService from "@/services/modules/composante.service.js";
 import TacheService from "@/services/modules/tache.service.js";
 import ActiviteService from '@/services/modules/activite.service';
+import ProgrammeService from "@/services/modules/programme.service.js";
 import Empty from '@/components/Empty.vue'
 import ModalChat from '@/components/ModalChat'
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import Commentaire from '@/components/Commentaire.vue'
 export default {
   components: {
@@ -283,6 +356,7 @@ export default {
     Vtable,
     Vform,
     ModalChat,
+    DeleteAlert,
     Composante,
     Empty,
     Commentaire
@@ -388,7 +462,12 @@ export default {
       newSC: null,
       newActivite: null,
       isClick: false,
-      isShow: true
+      isShow: true,
+      search: '',
+      isSearch: false,
+      projets: [],
+      deleteData: {},
+      deleteModal: false,
     };
   },
 
@@ -400,8 +479,19 @@ export default {
       errors: (state) => state.errors,
     }),
 
+    allData() {
+      if (this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return [].concat(this.terminer, this.enAttente, this.enCours, this.retardData)
+      }
+    },
+    filtere: function () {
+      var self = this;
+      return this.allData.filter(function (data) {
+        return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
+
     ...mapGetters({
-      projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposantes: "sousComposantes/getSousComposantes",
       activites: "activites/getActivites",
@@ -409,6 +499,7 @@ export default {
       tache: "taches/getTache",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
+
     terminer() {
       if (this.taches != undefined) {
         const datas = []
@@ -420,6 +511,7 @@ export default {
         return datas
       }
     },
+
     enAttente() {
       if (this.taches != undefined) {
         const datas = []
@@ -431,7 +523,8 @@ export default {
         return datas
       }
     },
-    retardL() {
+
+    retardData() {
       if (this.taches != undefined) {
         const datas = []
         this.taches.forEach(element => {
@@ -442,6 +535,7 @@ export default {
         return datas
       }
     },
+
     enCours() {
       if (this.taches != undefined) {
         const datas = []
@@ -458,8 +552,18 @@ export default {
 
   methods: {
 
-    changeProjet(projet) {
+    getSearchValue(data) {
+      if (data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
 
+    },
+    changeProjet(projet) {
       if (this.isClick) {
         this.projetFiltre = this.newProjet
         this.composanteFiltre = this.newComponent
@@ -597,7 +701,6 @@ export default {
       fetchActivites: "activites/FETCH_LIST_ACTIVITE_OF_COMPOSANTE",
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
       fetchSousComposantes: "sousComposantes/FETCH_LIST_SOUS_COMPOSANTE_OF_COMPOSANTE",
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
     getPermission() {
@@ -622,6 +725,10 @@ export default {
     customLabel({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
+    customLabelP({ bailleur, nom }) {
+      return `${bailleur.sigle} – ${nom}`
+    },
+
 
     filtreRange(value) {
       this.rangeValue = value
@@ -719,19 +826,35 @@ export default {
       return name;
     },
 
-    supprimer(tache) {
-      if (window.confirm("Voulez-vous supprimer la tache " + tache.nom)) {
-        if (this.sendRequest === false) {
-          this.sendRequest = true;
-          this.deleteTache(tache.id).then((value) => {
-            this.fetchTaches(this.valueFiltre.id);
-          })
-            .finally((error) => {
-              this.sendRequest = false;
-            });
-        }
-      }
+    supprimer(tache, index) {
+      this.deleteModal = true
+      this.deleteData.data = tache
+      this.deleteData.index = index
     },
+
+    deleteTaches(data) {
+      //this.filteredBailleur.splice(data.index,1)
+      this.deleteModal = false
+      TacheService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchTaches(this.valueFiltre.id);
+
+      }).catch((error) => {
+
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
+
 
     dupliquer(tache) {
 
@@ -830,32 +953,40 @@ export default {
         }); */
 
         let tache = extractFormData(this.champs, this.tacheAttributs);
-        console.log('tache', tache)
-        console.log(this.valueFiltre)
-        tache['activiteId'] = this.valueFiltre.id;
-
-        if (this.tache?.id) {
-          this.updateTache({ tache: tache, id: this.tache?.id })
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchTaches(this.valueFiltre.id);
-                this.close();
-              }
-            })
-            .finally((error) => {
-              this.sendRequest = false;
-            });
+        if (this.valueFiltre == undefined || this.valueFiltre == null) {
+          this.$toast.error('Activité non definit  ')
+          this.sendRequest = false;
+          this.close()
         } else {
-          this.saveTache(tache)
-            .then((response) => {
-              if (response.status === 200 || response.status === 201) {
-                this.fetchTaches(this.valueFiltre.id);
-                this.close();
-              }
-            })
-            .finally((error) => {
-              this.sendRequest = false;
-            });
+          tache['activiteId'] = this.valueFiltre.id;
+          if (this.tache?.id) {
+            this.updateTache({ tache: tache, id: this.tache?.id })
+              .then((response) => {
+                if (response.status === 200 || response.status === 201) {
+                  this.fetchTaches(this.valueFiltre.id);
+                  this.close();
+                }
+              })
+              .finally((error) => {
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs2.map(value => value.errors = this.erreurs[value.key])
+
+              });
+          } else {
+            this.saveTache(tache)
+              .then((response) => {
+                if (response.status === 200 || response.status === 201) {
+                  this.fetchTaches(this.valueFiltre.id);
+                  this.close();
+                }
+              })
+              .finally((error) => {
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs2.map(value => value.errors = this.erreurs[value.key])
+              });
+          }
         }
 
       }
@@ -890,7 +1021,34 @@ export default {
     gotoTache() {
       this.seeSuivi = false
       this.seeTache = true
-    }
+    },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
   },
 
   watch: {

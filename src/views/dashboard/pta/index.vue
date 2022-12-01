@@ -8,7 +8,7 @@
             <div class="flex items-center">
               <svg aria-hidden="true" class="w-5 h-5 mr-2 text-red-900 dark:text-red-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
               <span class="sr-only">Info</span>
-              <h3 class="text-lg font-medium text-red-900 dark:text-red-800">Voulez vous revisez le PTAB  ?</h3>
+              <h3 class="text-lg font-medium text-red-900 dark:text-red-800">Voulez vous revisez le PTBA  ?</h3>
             </div>
             <div class="mt-2 mb-4 text-sm text-red-900 dark:text-red-800">
              Cette action est irreversible , et les changements affecterront les données de votres applications 
@@ -39,7 +39,7 @@
     <div>
         <ol class="inline-flex p-0 list-none">
           <li class="flex items-center text-blue-500">
-            <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+            <router-link to="#" class="text-gray-600">dashboard</router-link>
             <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
           </li>
           <li class="flex items-center text-blue-500">
@@ -50,13 +50,13 @@
 
     <div class="flex items-center justify-between my-2" >
       <div class="flex space-x-4">
-        <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le pta </span>
+        <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le ptba </span>
         <span @click="goPpm" v-if="ppmVisible" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
       </div> 
       <div>
         <div v-if="seePta && revisionAdd " class="flex space-x-4 items-center">
-          <button @click="reviser = true" title="reviser pta"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
-            <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptab </span>
+          <button @click="reviser = true" title="reviser ptba"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
+            <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptba </span>
           </button>
          
         

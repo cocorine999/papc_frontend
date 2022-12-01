@@ -18,14 +18,14 @@
         <div class="bg-white h-full mt-3 p-2 shadow-sm" >
           <div class="mb-3">
             <h2 class="text-sm font-semibold text-purple-500 py-1">Activités </h2>
-            <p class=" text-sm leading-6">Taux d'execution physique <br> PTAB 2022 </p>
+            <p class=" text-sm leading-6">Taux d'execution global <br> PTBA {{currentDate.getFullYear()}} </p>
           </div>
           <apexchart type="donut" :options="chartOptionsCam1" :series="seriesCam1"></apexchart>
         </div>
          <div class="bg-white h-full mt-3 p-2 shadow-sm" >
           <div class="mb-3">
             <h2 class="text-sm font-semibold text-purple-500 py-1">Taux annuel </h2>
-            <p class=" text-sm leading-6 ">Taux d'execution financiere <br> PTAB 2022 </p>
+            <p class=" text-sm leading-6 ">Taux d'execution financiere <br> PTBA {{currentDate.getFullYear()}} </p>
           </div>
           <apexchart type="radialBar"  :options="chartOptionsCam2" :series="seriesCam2"></apexchart>
         </div>
@@ -39,6 +39,7 @@ export default {
 
   data() {
     return {
+      currentDate: new Date,
       series: [{
             name: 'Données 1',
             type: 'column',

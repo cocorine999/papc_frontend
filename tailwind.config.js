@@ -70,7 +70,7 @@ module.exports = {
         128: "43rem",
       },
       fontSize: {
-        'small': '8px',
+        'small': '10px',
     },
     },
   },

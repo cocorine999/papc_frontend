@@ -47,7 +47,7 @@
                 id="user-menu" aria-expanded="false" aria-haspopup="true">
                 <div
                   class="flex items-center  mx-2 justify-center w-10 h-10 bg-blue-400 rounded-full shadow-lg cursor-pointer">
-                  <span class="text-sm font-bold text-white uppercase"> {{ cigle }} </span>
+                  <span class="text-small font-bold text-white uppercase"> {{ cigle }} </span>
                 </div>
 
 
@@ -59,8 +59,7 @@
               role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
               <router-link to="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 role="menuitem"> {{ currentUser.nom }} {{ currentUser.prenom }} </router-link>
-              <router-link to="/admin/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem">Paramètres</router-link>
+              
               <span @click.prevent="deconnecter"
                 class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se
                 déconnecter</span>

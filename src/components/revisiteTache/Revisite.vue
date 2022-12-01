@@ -40,7 +40,7 @@
         </ol>
       </div>
       <div>
-        <search-bar></search-bar>
+        <search-bar  @search="getSearchValue"></search-bar>
       </div>
     </nav>
 
@@ -61,19 +61,17 @@
       </div>
     </div>
 
-    <!-- le filtre -->
-    <div v-if="seeTache && tacheVisible ">
-        <div class="2">
+    <div class="p-2">
           <!--Filtre sur projet -->
           <div class="w-full grid sm:grid-cols-2 sm:gap-2">
            <div class="mb-3">
             <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-            <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <multiselect  @input="changeProjet(projetFiltre)" v-model="projetFiltre" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
            </div>
 
            <div class="mb-3">
               <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-             <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+             <multiselect v-model="composanteFiltre"   @input="changeComposante(composanteFiltre)" :options="composantes" :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
            </div>
           
             <div class="mb-3">
@@ -84,6 +82,7 @@
                 @input="changeSC(sousComposanteFiltre)"
                 :preselect-first="true"
                 :custom-label="customLabel" 
+                :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
                 placeholder="selectionnez une sous composante"
                 label="nom"
                 track-by="id">
@@ -104,8 +103,11 @@
             </div>
               
           </div>
-        </div>
+    </div>
 
+    <!-- le filtre -->
+    <div v-if="seeTache && tacheVisible ">
+      <div  v-if="!isSearch" >
         <div class="py-2 px-4 mt-4 rounded-sm shadow-md relative bg-white">
           <div class="flex   justify-between flex-wrap items-center">
              <!--Filtre sur projet -->
@@ -116,7 +118,7 @@
                   :class="{ 'border-yellow-600 text-yellow-600': pending }"
                   class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer"
                 >
-                  attentes
+                Non demarrer
                   <span
                     class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined "
                   >
@@ -165,9 +167,9 @@
         </div>
      
         <div v-if="inProgress">
-          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="enCours.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in enCours" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -194,10 +196,11 @@
             </div>
           </div>
         </div>
+
         <div v-if="pending">
-          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="enAttente.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in enAttente" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -226,9 +229,9 @@
         </div>
 
          <div v-if="success">
-          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="terminer.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in terminer" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -256,9 +259,9 @@
           </div>
         </div>
          <div v-if="retard">
-          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
+          <empty v-if="retardData.length === 0">Tache vide !!!</empty>
           <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in retardData" :key="index">
                 <card-tache
                   :id="tache.id"
@@ -285,7 +288,38 @@
             </div>
           </div>
         </div>
-        
+      </div>
+      <div v-else>
+        <empty v-if="filtere.length === 0">Tache vide !!!</empty>
+        <div v-else>
+            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+              <div v-for="(tache, index) in filtere" :key="index">
+                <card-tache
+                  :id="tache.id"
+                  :bailleur="tache.bailleur.sigle"
+                  :statut="getStatus(tache.statut)"
+                  :poids="tache.poids"
+                  :poidsActuel="tache.poidsActuel"
+                  :libelle="tache.nom"
+                  :montantNE="tache.montantNE"
+                  :montantEPM="tache.montantEPM"
+                  @supprimer="supprimer(tache)"
+                  @dupliquer="dupliquer(tache)"
+                  :debut="tache.debut"
+                  :fin="tache.fin"
+                  @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)"
+                  @suivre="suivreMyTache(tache)"
+                  @commentaire="showComment = true"
+                  :isDelete="tacheDelete"
+                  :isUpdate="tacheUpdate"
+                  :isSuivi="tacheSuivi"
+                ></card-tache>
+              </div>
+            </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -305,6 +339,7 @@ import { getStringValueOfStatutCode } from "@/utils/index";
 import Composante from "@/store/modules/composantes/composante";
 import Empty from '@/components/Empty.vue'
 import Activite from "@/store/modules/activites/activite";
+import ProgrammeService from "@/services/modules/programme.service.js";
 import Suivi from "@/components/revisiteTache/Suivi.vue";
 export default {
   components: {
@@ -390,6 +425,9 @@ export default {
       taches: [],
       suivis: [],
       results: [],
+      search:'',
+      programmeId:'',
+      isSearch:false,
     };
   },
 
@@ -397,6 +435,17 @@ export default {
     ...mapGetters({
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
+    allData() {
+      if(this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return  [].concat(this.terminer,this.enAttente,this.enCours,this.retardData)
+      }
+    },
+    filtere: function () {
+        var self = this;
+          return this.allData.filter(function (data) {
+          return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
     terminer() {
       if(this.taches != undefined) {
         const datas = []
@@ -442,14 +491,24 @@ export default {
         return datas
       }
     },
-    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+  
   },
 
   methods: {
     ...mapActions({
       getPtabReviser: "revisionPtab/GET_PTAB_REVISER",
     }),
-
+    getSearchValue(data) {
+      if(data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
+      
+    },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
           if(element.slug ==='voir-une-tache') {
@@ -538,6 +597,33 @@ export default {
       this.seeTache = true;
     },
   },
+  active() {
+      this.$store.dispatch('active')
+  },
+  disabled() {
+    this.$store.dispatch('disabled')
+  },
+  fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+  },
+
 
   watch: {
     version: function (version) {
@@ -693,9 +779,12 @@ export default {
       "activites": null,
       "taches": null,
     };
-
+    this.programmeId = this.currentUser.programme.id
     this.getPtabReviser(params).then((value) => {
       this.results = value.data.data;
+      if(this.programmeId){
+        this.fetchProjets(this.programmeId)
+      } 
     });
   },
 };

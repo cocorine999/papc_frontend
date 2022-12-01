@@ -1,55 +1,59 @@
 <template>
   <div class="">
     <div class="grid grid-cols-3 gap-2">
-      <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution physique</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
-        <div class="mt-6 flex justify-between">
-          <div class="flex items-center space-x-3">
-            <!-- if arrow UP -->
-            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold">{{ projet.tepByAnnee }}% </span>
-          </div>
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
-        </div>
-      </div>
 
-      <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux d'execution financier</h2>
-        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_financier.tef }}%</h4>
-        <div class="mt-6 flex justify-between">
-          <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-3">
-            <!-- if arrow UP -->
-            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
-          </div>
-          <div v-else class="flex items-center space-x-3">
-            <!-- if arrow DOWN -->
-            <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-red-700 font-semibold"> {{ projet.taux_financier.percent }} </span>
-          </div>
-
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
-        </div>
-      </div>
-
-      <div class="bg-white shadow p-3">
-        <h2 class="text-indigo-700 font-semibold text-sm">Taux de decaissement</h2>
+      <div class="bg-white shadow p-3 hover:shadow-md">
+        <h2 class="text-indigo-700 font-semibold text-xs">Taux de decaissement</h2>
         <h4 class="text-2xl text-black font-bold mt-3">{{ projet.taux_decaissement.taux }}%</h4>
-        <div class="mt-6 flex justify-between">
-          <div v-if="projet.taux_decaissement.percent <= 100" class="flex items-center space-x-3">
+        <div class="mt-6 flex justify-between items-center">
+          <div v-if="projet.taux_decaissement.percent <= 100" class="flex items-center space-x-1">
             <!-- if arrow DOWN -->
             <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-green-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
+            <span class="text-sm text-green-700 font-semibold">{{ projet.taux_decaissement.percent }} %</span>
           </div>
-          <div v-else class="flex items-center space-x-3">
+          <div v-else class="flex items-center space-x-1">
             <!-- if arrow UP -->
             <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
-            <span class="text-sm text-red-700 font-semibold">{{ projet.taux_decaissement.percent }} </span>
+            <span class="text-sm text-red-700 font-semibold">{{ projet.taux_decaissement.percent }} %</span>
           </div>
-          <p class="text-gray-700 text-sm font-semibold">Depuis le 1 janvier</p>
+          <p class="text-gray-700 text-small font-semibold">Depuis le 1 janvier</p>
         </div>
       </div>
+
+      <div class="bg-white shadow p-3 hover:shadow-md">
+        <h2 class="text-indigo-700 font-semibold text-xs">Taux d'engagement</h2>
+        <h4 class="text-2xl text-black font-bold mt-3" v-if="projet.tauxEngagement != null">{{ projet.tauxEngagement }} %
+        </h4>
+        <h4 class="text-2xl text-black font-bold mt-3" v-else> 0 % </h4>
+        <div class="mt-6 flex justify-between items-center">
+          <div v-if="projet.taux_financier.percent <= 100" class="flex items-center space-x-1">
+            <!-- if arrow UP -->
+            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
+            <span class="text-xs text-green-700 font-semibold"> {{ projet.tauxEngagement }} %</span>
+          </div>
+          <div v-else class="flex items-center space-x-1">
+            <!-- if arrow DOWN -->
+            <i class="bx bx-down-arrow-alt bx-sm text-primary"></i>
+            <span class="text-xs text-red-700 font-semibold"> {{ projet.tauxEngagement }} %</span>
+          </div>
+
+          <p class="text-gray-700 text-small font-semibold">Depuis le 1 janvier</p>
+        </div>
+      </div>
+
+      <div class="bg-white shadow p-3 hover:shadow-md">
+        <h2 class="text-indigo-700 font-semibold text-xs">Taux d'execution physique</h2>
+        <h4 class="text-2xl text-black font-bold mt-3">{{ projet.tep }}%</h4>
+        <div class="mt-6 flex justify-between items-center">
+          <div class="flex items-center space-x-1">
+            <!-- if arrow UP -->
+            <i class="bx bx-up-arrow-alt bx-sm text-primary"></i>
+            <span class="text-xs text-green-700 font-semibold">{{ projet.tepByAnnee }}% </span>
+          </div>
+          <p class="text-gray-700 text-small font-semibold">Depuis le 1 janvier</p>
+        </div>
+      </div>
+
     </div>
     <div class="bg-white my-3 shadow">
       <div class="p-3">
@@ -62,16 +66,17 @@
               class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
               src="@/assets/images/login/logo-gouv.webp" alt="">
 
-              <!-- nombre de jours restants -->
-              <span class="absolute bottom-2 right-2 z-10 text-xl bg-red-500 px-2 py-2 font-semibold text-white rounded-lg">
-                <table class="text-center">
-                  <tr class="text-xs">Nombre de jour restant</tr>
-                  <tr><i class="bx bx-hourglass bx-xs font-bold"></i> {{projet.nbrJourRestant}}</tr>
-                </table>
-                </span>
+            <!-- nombre de jours restants -->
+            <span
+              class="absolute bottom-2 right-2 z-10 text-xl bg-red-500 px-2 py-2 font-semibold text-white rounded-lg">
+              <table class="text-center">
+                <tr class="text-xs">Nombre de jour restant</tr>
+                <tr><i class="bx bx-hourglass bx-xs font-bold"></i> {{ projet.nbrJourRestant }}</tr>
+              </table>
+            </span>
           </p>
 
-         
+
 
           <!-- divide DUREE -->
           <div class="border-b-2 border-gray-700 mx-4 mb-8 relative p-4">
@@ -85,11 +90,18 @@
               <tbody>
                 <tr class="p-4 font-semibold">
                   <td class="pl-2">Dernière date d’audit :</td>
-                  <td>28/12/2021</td>
+                  <td v-if="projet.audit != null">{{ projet.audit.dateDeTransmission }}</td>
+                  <td v-else>Audit non disponible</td>
                   <td>
-                    <div class="p-2 text-white space-x-2">
-                      <span class="bg-green-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Effectué</span>
-                  </div></td>
+                    <div v-if="projet.audit != null" class="p-2 text-white space-x-2">
+                      <span v-if="projet.audit.statut == 1"
+                        class="bg-green-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Terminer</span>
+                      <span v-if="projet.audit.statut == 0"
+                        class="bg-purple-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">En cours</span>
+                      <span v-if="projet.audit.statut == -1"
+                        class="bg-yellow-600 px-2 py-1 text-xs tracking-wide font-bold rounded-md">En attente</span>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -99,9 +111,11 @@
                   <td class="font-semibold">Secteur d’activité :</td>
                   <td>
                     <div class="p-2 text-white space-x-2">
-                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
-                      <span class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">Eau et assainissement</span>
-                  </div></td>
+                      <span
+                        class="bg-blue-500 opacity-50 px-2 py-1 text-xs tracking-wide font-bold rounded-md">{{ projet.secteurActivite }}</span>
+
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -110,34 +124,37 @@
           <!-- divide SITE -->
           <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
             <span
-              class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Zone d’intervention</span>
+              class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">Zone
+              d’intervention</span>
           </div>
           <div class="px-4">
             <table class="w-full text-sm">
               <tbody>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Pays :</td>
-                  <td>Bénin</td>
+                  <td>{{ projet.pays }}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Département :</td>
-                  <td>Littoral</td>
+                  <td>{{ projet.departement }}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Commune :</td>
-                  <td>Cotonou</td>
+                  <td>{{ projet.commune }}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Arrondissement :</td>
-                  <td>3, 4, 5, 6</td>
+                  <td>{{ projet.arrondissement }}</td>
                 </tr>
                 <tr class="p-2 border-b-2 border-gray-200">
                   <td class="font-semibold">Nom de site :</td>
                   <td>
                     <div class="p-2 text-white space-x-2">
-                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Pa3</span>
-                      <span class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">Aac</span>
-                  </div></td>
+                      <span v-for="(item, i) in projet.sites" :key="i" :value="item.id"
+                        class="bg-gray-500 px-2 py-1 text-xl tracking-wide font-bold rounded-md">{{ item.nom }}</span>
+
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -162,9 +179,13 @@
         </div>
         <div class="p-4">
           <p class="h-36 overflow-hidden text-sm italic text-justify">
-            {{projet.description}}
+
+            <span v-if="isShow"> {{ projet.description.substring(0, 200) }} </span>
+            <span v-else> {{ projet.description }} </span>
+
           </p>
-          <button class="font-semibold bg-gray-700 text-white px-4 py-2 mt-4 hover:bg-blue-500">Lire plus</button>
+          <button v-if="projet.description.length > 200" @click="isShow = false"
+            class="font-semibold bg-gray-700 text-white px-4 py-2 mt-4 hover:bg-blue-500">Lire plus</button>
         </div>
       </div>
 
@@ -178,16 +199,17 @@
           class="text-xs text-gray-700 uppercase border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="py-2 px-6">Nom</th>
-            <th scope="col" class="p-2">Type</th>
+
             <th scope="col" class="p-2">Contact</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr v-for="(entreprise, index) in projet.entreprises" :key="index"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <!-- <hover-ligne :code="suivi.activite.nom" libelle="lorem ipsum dolor"></hover-ligne> -->
-            <td class="py-2 px-6 uppercase">Agetur</td>
-            <td class="p-2 uppercase">mod</td>
-            <td class="p-2 uppercase">21 30 51 10</td>
+            <td class="py-2 px-6 uppercase">{{ entreprise.user.nom }}</td>
+
+            <td class="p-2 uppercase">{{ entreprise.user.contact }}</td>
           </tr>
         </tbody>
       </table>
@@ -234,6 +256,7 @@ export default {
       base_url: API_BASE_URL,
       pauseOnHover: true,
       autoPlaying: true,
+      isShow: true,
       internalAutoPlaying: true,
       slide: [
         {

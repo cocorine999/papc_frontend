@@ -51,6 +51,7 @@ import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
 import Dashboard from '@/layouts/Dashboard'
+import PointFinancierService from "@/services/modules/pointFinancier.service.js";
 import { mapGetters, mapActions, mapState} from "vuex"
 import JsonExcel from "vue-json-excel"
 
@@ -66,15 +67,14 @@ export default {
         return {
         headers:[
           {name:'Bailleur', cle:'sigle'},
-          {name:'Montants financier', cle:'montantFinancement'},
+          {name:'Montants financier', cle:'montantFinancement',monaie:true},
+          {name:'Decaissement', cle:'decaissement',monaie:true},
           {name:'Taux de decaissement', cle:'tauxDecaissement'},
-          {name:'PTAB', cle:'ptab'},
-          {name:'Decaissement', cle:'decaissement'},
-          {name:'Realisation PTAB ', cle:'realisationPta'},
-          {name:'TEF', cle:'tef'},
+          {name:'Execution Financier ', cle:'realisationPta',monaie:true},
           {name:'TEF GLOBALE', cle:'tefGlobale'},
         ],
         search:'',
+        pointFinancier:[]
       };
     },
     computed:{
@@ -82,34 +82,32 @@ export default {
   //importation des variables du module auths
     ...mapState({
       identifiant: state => state.auths.identifiant,
-      pointFinancier: state => state.pointFinancier.suiviFinancier,
+      
       loading : state => state.loading,
       errors : state => state.errors,
     }),
 
     ...mapGetters({
-      pointFinancier: "pointFinancier/getPointFinancier",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
     }),   
     
   },
     
   methods: {
-    ...mapActions('pointFinancier', { fetchPointFinancier: 'FETCH_LIST_POINTFINANCIER' }),
-
+    
     filteredPointFinancier(){
         var self = this;
 
         return this.pointFinancier.filter(function (pointFinancier){
           return pointFinancier.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-      },
+    },
       
-      title_csv() {
+    title_csv() {
         return "point-financier-" +"-" + new Date()
-      },
+    },
 
-      json_data(){
+    json_data(){
         let tab = [];
 
         this.filteredPointFinancier().forEach(element => {
@@ -118,18 +116,43 @@ export default {
               bailleur: element.sigle,
               montant_financier: element.montantFinancement,
               taux_de_decaissement: element.tauxDecaissement,
-              ptab: element.ptab,
               decaissement: element.decaissement,
-              realisation_ptab: element.realisationPta,
-              tef: element.tef,
+              execution_financier: element.realisationPta,
               tef_global: element.tefGlobale
             }
           );
         });
         return tab;
-      },
-
     },
+
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchPointFinancier(programme) {
+      this.active()
+      PointFinancierService.pointFinancier(programme).then((data) => {
+        const datas = data.data.data
+        this.pointFinancier = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
+  },
     
     mounted() {
       console.log("Fetching point financier ...")

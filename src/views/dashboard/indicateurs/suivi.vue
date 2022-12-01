@@ -134,7 +134,7 @@
             <div class="mb-2">
               <ol class="inline-flex p-0 list-none">
                 <li class="flex items-center text-blue-500">
-                  <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+                  <router-link to="#" class="text-gray-600">dashboard</router-link>
                   <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
                 </li>
                 <li class="flex items-center ">
@@ -239,7 +239,8 @@ export default {
         choiceDateOption: true,
         SuivisIndicateurs:[],
         dateSuivie:false,
-        dates:[]
+        dates:[],
+        suivis:[]
         
       });
   },
@@ -273,7 +274,7 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       indicateurs: "indicateurs/getIndicateurs",
-      suivis: "suiviIndicateurs/getSuivis",
+      
       suivi: "suiviIndicateurs/getSuivi",
     }),
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'}),
@@ -314,12 +315,19 @@ export default {
       this.showDate = true
     },
     ...mapActions("suiviIndicateurs", {
-      fetchSuivi: "FETCH_LIST_SUIVI",
+     
       filter: "FILTRE_SUIVI",
       saveSuivi: "STORE_SUIVI",
       updateSuivie: "UPDATE_SUIVI",
       deleteSuivi: "DESTROY_SUIVI",
     }),
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+   
     commenter(data) {
       const commentaires = data.commentaires
       commentaires.forEach(element => {
@@ -485,6 +493,7 @@ export default {
       });
     },
     getSuivi() {
+      this.active()
       IndicateurSuiviService.get().then((data) => {
        
         const datas = data.data.data
@@ -500,9 +509,10 @@ export default {
           const date_de_creation = element.created_at
           this.SuivisIndicateurs.push({bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
         }) 
-        console.log(this.SuivisIndicateurs)
+       this.disabled()
       }).catch((e) => {
         console.log(e)
+        this.disabled()
       })
     },
   },

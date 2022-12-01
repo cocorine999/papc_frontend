@@ -38,8 +38,7 @@
   import Dashboard from '@/layouts/Dashboard'
   import Titre from '@/components/Titre'
   import moment from 'moment'
-  moment.locale('fr');
-  console.log(moment.locale());
+
   import HistoriqueService from "@/services/modules/historique.service.js";
   export default {
     layout:'dashboard',
@@ -54,20 +53,28 @@
       }
     },
     methods: {
+      active() {
+        this.$store.dispatch('active')
+      },
+      disabled() {
+        this.$store.dispatch('disabled')
+      },
       getHistorique() {
-       
+        this.active()
         HistoriqueService.get().then((data) => {
           const datas = data.data.data
           datas.forEach(element => {
-           
+           this.disabled()
             element.created_at = moment(element.created_at).format('LLL')
             console.log(element.created_at)
           });
          console.log(datas)
           this.historiques = datas
+          this.disabled()
           console.log("les suiivs",this.dataTable)
         }).catch((e) => {
           console.log(e)
+          this.disabled()
         })
       },
     },

@@ -1,8 +1,7 @@
 
 import ApiService from '@/services/configs/api.service'
 
-const ProjetsService = {
-
+  const ProjetsService = {
     query(type, params) {
       return ApiService.query("projets", {
         params: params
@@ -18,7 +17,7 @@ const ProjetsService = {
     },
 
     update(slug, params) {
-      return ApiService.update("projets", slug, params);
+      return ApiService.post(`projets/${slug}/update`,params);
     },
 
     destroy(slug) {

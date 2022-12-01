@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full">
 
-      <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
+     <!--  <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <div v-if="anosReponses.length > 0" style="height:800px" class="overflow-auto ">
           <div v-for="data in anosReponses" :key="data.id">
 
@@ -14,7 +14,7 @@
           pas de commentaire
         </div>
 
-      </modal-chat>
+      </modal-chat> -->
 
       <vmodal v-if="showDetail" @close="showDetail = false">
         <div style="width:60vw">
@@ -22,11 +22,29 @@
         </div>
       </vmodal>
 
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+        voulez vous supprimer cet ano?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteAnos(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
+
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
               @getFile="getFile" submitText="Créer un ano" @sendForm="sendForm"></vform>
+          </div>
+        </modal-top-right>
+        <modal-top-right v-else :title="title" v-on:close="close">
+          <div class="px-4 overflow-y-auto">
+            <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
+              @getFile="getFile" submitText="Modifier" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -82,7 +100,7 @@
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
-              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+              <router-link to="#" class="text-gray-600">dashboard</router-link>
               <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                 <path
                   d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
@@ -110,10 +128,10 @@
           </div>
         </div>
       </nav>
+
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs 
- md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
+          <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
         </div>
         <div class="flex space-x-4">
 
@@ -127,17 +145,17 @@
           </button>
         </div>
       </div>
-
+       <!-- j'ai desactiver les commentaires iscomment false -->
       <div id="dataTable">
         <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false"
-          :headers="headers" :datas="filteredAno()" :actions="actionsDelete" @supprimer="supprimer"></vtable>
+          :headers="headers" :datas="filteredAno" :actions="actionsDelete" @supprimer="supprimer"></vtable>
         <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true"
-          :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno()"
-          :actions="actionsReponse" :isComment="true" @commenter="commenter" @seeUpload="seeUpload"></vtable>
+          :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno"
+          :actions="actionsReponse" :isComment="false"  @seeUpload="seeUpload"></vtable>
         <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"
-          :sendRequest="false" :headers="headers" :datas="filteredAno()"></vtable>
-        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="true"
-          @commenter="commenter" :sendRequest="false" :headers="headers" :datas="filteredAno()" :actions="actions"
+          :sendRequest="false" :headers="headers" :datas="filteredAno"></vtable>
+        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="false"
+           :sendRequest="false" :headers="headers" :datas="filteredAno" :actions="actions"
           @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
@@ -156,12 +174,12 @@ import Preview from '@/components/Preview.vue'
 import Vbutton from '@/components/Vbutton.vue'
 import PermissionsService from "@/services/modules/permission.service.js";
 import AnosService from "@/services/modules/ano.service.js";
-import { mapActions, mapMutations, mapGetters } from "vuex";
+import BailleurService from "@/services/modules/bailleur.service";
+import DeleteAlert from "@/components/DeleteAlert.vue";
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
-
 import ReponseAnos from '@/components/ReponseAnos.vue'
-
 import extractFormData from '@/utils/extract-data'
 
 export default {
@@ -176,16 +194,17 @@ export default {
     Vbutton,
     ModalChat,
     Commentaire,
+    DeleteAlert,
     ReponseAnos
   },
 
   data() {
     return {
       anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
+      anoAttributsUpdate: ['dossier', 'statut', 'dateDeSoumission', 'destinataire', 'bailleurId'],
       commentaires: [],
       data: {},
       showModal: false,
-      loading: false,
       showInput: true,
       showDetail: false,
       search: "",
@@ -210,20 +229,21 @@ export default {
         commentaire: '',
       },
       statuts: [
-        { name: 'en cours', value: 0 },
         { name: 'validé', value: 1 },
         { name: 'non validé', value: -1 }
       ],
-      champs: [
-        { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.$store.state.statuts, cle: 'id', value: 'nom', required: true, errors: [] },
+      statutsAno:[
+        {
+          nom : "Non validé",
+          etat: -1
+        },
+        {
+          nom: "Validé", 
+          etat: 1
+        },
       ],
-
+      champs: [],
+      champsUpdate: [],
       datas: [],
       cols: 1,
       headers: [
@@ -236,6 +256,7 @@ export default {
       actions: [
         { name: 'supprimer', iconne: '' },
         { name: 'detail' },
+        { name: 'modifier', iconne: '' },
         { name: 'reponse' },
       ],
       actionsDetail: [
@@ -259,24 +280,69 @@ export default {
       showReponse: false,
       anosId: '',
       showComment: false,
-      anosReponses: []
+      anos:[],
+      anoId:'',
+      anosReponses: [],
+      isUpdate:false,
+      bailleurs:[],
+      programmeId:[],
+      deleteData:{},
+      deleteModal:false,
     }
   },
 
   computed: {
     //importation des variables du module auths
+    ...mapState({
+     loading: state => state.loading,
+     errors: state => state.errors
+   }),
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       ano: "anos/getAno",
-      anos: "anos/getAnos",
       typeAnos: 'typeAnos/getTypeAnos',
-      bailleurs: 'bailleurs/getBailleurs',
       currentUser: "auths/GET_AUTHENTICATE_USER",
-    })
+    }),
+    filteredAno() {
+      var self = this;
+      return this.anos.filter(function (ano) {
+        return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.destinataire.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
+    },
   },
 
   methods: {
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchAnos() {
+      this.active()
+      AnosService.get().then((data) => {
+        const datas = data.data.data
+        this.anos = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
     previewFiles(event) {
       const data = event.target.files
       for (const property in data) {
@@ -332,8 +398,17 @@ export default {
           const idReponse = element.id
           this.anosReponses.push({ anoid, commentaire, bailleur, date, documents, idReponse, date, auteur })
         });
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
       })
     },
 
@@ -379,7 +454,6 @@ export default {
 
     // call action
     ...mapActions("anos", {
-      fetchAnos: "FETCH_LIST_ANO",
       saveAno: "STORE_ANO",
       updateAno: "UPDATE_ANO",
       deleteAno: "DESTROY_ANO",
@@ -392,7 +466,7 @@ export default {
     }),
 
     ...mapActions('typeAnos', { fetchTypeAnos: 'FETCH_LIST_TYPE_ANO' }),
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+  
 
     resetForm() { //delete data in form after submit
       this.champs = this.champs.map(item => { item.data = ''; return item })
@@ -400,16 +474,7 @@ export default {
       this.setAno({})
     },
 
-    filteredAno() {
-      var self = this;
-      return this.anos.filter(function (ano) {
-        return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.type.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.destinataire.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-      });
-    },
+   
     sendReponse() {
       if (this.chargement == false) {
         this.chargement = true
@@ -427,19 +492,36 @@ export default {
           this.$toast.success('operation effectué avec success !!!')
           this.showReponse = false
           this.chargement = false
-        }).catch((e) => {
-          this.$toast.error(e)
+        }).catch((error) => {
+          if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+            } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+            }
           this.chargement = false
         })
       }
 
     },
     sendForm() {
-      this.champs = this.champs.map((item) => {
-        item.errors = [];
-        return item;
-      });
-      let ano = extractFormData(this.champs, this.anoAttributs);
+
+      this.champs = this.champs.map(item => { item.errors = []; return item })
+        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+        let ano = {}
+        if (this.isUpdate) {
+          ano = extractFormData(this.champsUpdate, this.anoAttributsUpdate)
+          ano.id = this.anoId
+        } else {
+          ano = extractFormData(this.champs, this.anoAttributs)
+        }
+
+
+
       ano.bailleurId = ano.bailleurId.id
       ano.statut = ano.statut.etat
       console.log(ano);
@@ -454,8 +536,11 @@ export default {
                 this.sendRequest = false
               }
             }
-          ).catch((e) => {
+          ).catch((error) => {
+            
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false
+            this.champs.map(value => value.errors = this.erreurs[value.key])      
           });
         } else {
           this.sendRequest = true
@@ -466,7 +551,6 @@ export default {
             "destinataire": ano.destinataire,
             "bailleurId": ano.bailleurId,
           }
-
           const formData = new FormData();
           formData.append('dossier', demo.dossier)
           formData.append('statut', demo.statut)
@@ -482,9 +566,15 @@ export default {
             if (response.status == 200 || response.status == 201) {
               this.close();
               this.sendRequest = false
+              this.fetchAnos()
             }
-          }).catch((e) => {
-            this.sendRequest = false
+          }).catch((error) => {
+            this.getFile()
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+          
+            this.champs.map(value => value.errors = this.erreurs[value.key])      
+            
           })
         }
       }
@@ -493,33 +583,88 @@ export default {
     addAno() {
       this.title = 'Ajouter'
       this.showModal = true
+      this.isUpdate = false
     },
 
     modifier(ano) {
-      this.title = 'Modifier ano {{ ano.nom }}'
+      this.isUpdate = true
+      this.title = 'Modifier '
+      this.showModal = true
+      
       this.submitText = "Modifier"
-      this.setAno(ano)
-      this.anoAttributs.forEach((item) => {
 
-        this.champs.find((value, index) => {
+      this.anoId = ano.id
+
+      this.anoAttributsUpdate.forEach((item) => {
+        
+        this.champsUpdate.find((value, index) => {
+         
+        if (value.key !== 'statut') {
           if (value.key === item) {
-            if (value.key === 'debut' || value.key === 'fin') {
-              this.champs[index]['data'] = this.ano[item] + "-01"
-            } else {
-              this.champs[index]['data'] = this.ano[item]
-            }
+            console.log(value.key +' ' + ano[item])
+            this.champsUpdate[index]['data'] = ano[item]
           }
+        }
+
         })
 
       })
-      this.showCloseModal(true)
+
     },
 
-
-    async supprimer(ano) {
-      if (window.confirm("Voulez-vous supprimer ce ano ?" + ano.nom))
-        await this.deleteAno(ano.id)
+    supprimer(ano,index) {
+      this.deleteModal= true
+      this.deleteData.data = ano
+      this.deleteData.index = index
     },
+    deleteAnos(data) {
+      this.filteredAno.splice(data.index,1)
+      this.deleteModal= false
+      AnosService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+
+   
+    fetchBailleurs(programme) {
+    
+    BailleurService.bailleursOfProgramme(programme).then((data) => {
+      const datas = data.data.data
+      this.bailleurs = datas
+      this.champs =[
+        { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
+        { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
+      ]
+    this.champsUpdate = [
+      { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+      { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
+      { name: 'Date de soumission', key: 'dateDeSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+      { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+      { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
+    ]
+  
+    }).catch((error) => {
+     
+    })
+  },
 
     close() {
       this.showModal = false
@@ -534,10 +679,12 @@ export default {
       this.$router.push('/401-non-autorise')
     }
     else {
-      this.fetchAnos()
       if (this.bailleurVisible) {
-        this.fetchBailleurs()
+        this.programmeId = this.currentUser.programme.id
+        this.fetchBailleurs(this.programmeId)
       }
+      this.fetchAnos()
+     
     }
 
 
@@ -557,19 +704,7 @@ export default {
 
 
 
-    bailleurs: function (bailleurs) {
-      this.champs.map((item) => {
-        if (item.key === "bailleurId") {
-          item.options = bailleurs.map((bailleur) => {
-            return {
-              id: bailleur.id,
-              nom: bailleur.sigle,
-            };
-          });
-        }
-        return item;
-      });
-    },
+   
     // map du statut dans Store
     statuts: function (statuts) {
       this.champs.map((item) => {

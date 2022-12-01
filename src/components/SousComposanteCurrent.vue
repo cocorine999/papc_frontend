@@ -1,217 +1,252 @@
 <template>
-    <div class="w-full">
+  <div class="w-full">
 
-      <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
-            <div class="p-4 overflow-auto">
-              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest" @sendForm="sendForm" @closeModal="close"></vform>
-            </div>
-        </modal-top-right>
+    <div v-if="showModal">
+      <modal-top-right :title="title" v-on:close="close">
+        <div class="p-4 overflow-auto">
+          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
+            @sendForm="sendForm" @closeModal="close"></vform>
+        </div>
+      </modal-top-right>
+    </div>
+
+    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet sous composant?
+      </p>
+
+      <div class="text-right mt-4">
+        <button @click="deleteModal = false"
+          class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+        <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+          @click="deleteComposante(deleteData)">Supprimer</button>
       </div>
-      
-      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
-        <div class="mb-2" >
-          <ol class="inline-flex p-0 list-none">
-            <li class="flex items-center ">
-              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
-              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-            </li>
-            <li class="flex items-center text-blue-500 ">
-              <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
-              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-            </li>
-            <li class="flex items-center text-blue-500 ">
-              <router-link to="/dashboard/projets/sous-composantes-globale" class="">sous composantes</router-link>
-            </li>
-          </ol>
-        </div>
-        <div>
-          <search-bar ></search-bar>
-        </div>
-      </nav> 
+    </delete-alert>
 
-    
-    <div class="flex items-center justify-between my-2" >
+    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+      <div class="mb-2">
+        <ol class="inline-flex p-0 list-none">
+          <li class="flex items-center ">
+            <router-link to="#" class="text-gray-600">dashboard</router-link>
+            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <path
+                d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+            </svg>
+          </li>
+          <li class="flex items-center text-blue-500 ">
+            <router-link to="/dashboard/projets" class="text-gray-600">projets</router-link>
+            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <path
+                d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+            </svg>
+          </li>
+          <li class="flex items-center text-blue-500 ">
+            <router-link to="/dashboard/projets/sous-composantes-globale" class="">sous composantes</router-link>
+          </li>
+        </ol>
+      </div>
+      <div>
+        <search-bar @search="getSearchValue"></search-bar>
+      </div>
+    </nav>
+
+
+    <div class="flex items-center justify-between my-2">
       <div class="flex space-x-4">
-        <span :class="{'border-primary border-b-8 font-bold':seeSousComposantes}" @click="gotoSousComposante()" class="inline-block cursor-pointer  text-xs sm:text-sm  md:text-base  uppercase    border-primary py-2">Sous composantes </span>
-       
+        <span :class="{ 'border-primary border-b-8 font-bold': seeSousComposantes }" @click="gotoSousComposante()"
+          class="inline-block cursor-pointer  text-xs sm:text-sm  md:text-base  uppercase    border-primary py-2">Sous
+          composantes </span>
+
       </div>
-      
-      <button v-if="seeSousComposantes && composanteAdd" @click="addSousComposante" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-          <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
-          <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
+
+      <button v-if="composanteAdd" @click="addSousComposante" title="ajouter un projet"
+        class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+        <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+            <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+          </svg></span>
+        <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
       </button>
-     
+
     </div>
-    
-    <div>
+
+    <div v-if="!isSearch">
       <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
-        <div class="f ">
-        <!--Filtre sur projet -->
-        <div  class="w-full grid grid-cols-2  gap-2 items-center mb-2">
-      
-          <div>
-            <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
-            <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
-          </div>
+        <div class=" mx-auto">
+          <div class="mb-4">
+            <ul class="flex flex-wrap -mb-px items-end  space-y-4" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 
-          <div>
-            <label class="block mb-2 uppercase " for="">Selectionnez un composant</label>
-            <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel"  :preselect-first="true" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
-          </div>
+              <li class="mr-2" role="presentation">
 
-         
-          
-        </div>
-      <!--Filtre sur projet -->
-          <nav  class="flex justify-end p-2 shadow  text-xs space-x-4  md:text-sm align-middle  ">
-            <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-            attentes 
-              <span class="px-2 text-sm text-yellow-600 border border-yellow-600 rounded-full undefined tex-base">
-              {{enAttente.length}}
-              </span>
-            </span>
-            <span  @click="toggle3" :class="{'border-indigo-600 text-indigo-600' : inProgress}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              en cours
-              <span class="px-2 text-base text-indigo-600 border border-indigo-600 rounded-full undefined">
-              {{enCours.length}}
-              </span>
-            </span>
-            <span  @click="toggle" :class="{'border-green-600 text-green-600' : success}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-              terminé 
-              <span class="px-2 text-sm text-green-600 border border-green-600 rounded-full undefined">
-              {{terminer.length}}
-              </span>
-            </span>
-            <span  @click="toggle4" :class="{'border-red-600 text-red-600' : retard}" class="inline-block  py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-             en retard
-              <span class="px-2 text-sm text-red-600 border border-red-600 rounded-full undefined">
-              {{retardData.length}}
-              </span>
-            </span>
-            
-          </nav>
+                <div>
+                  <label class="block mb-2 uppercase " for="">Selectionnez un projet</label>
+                  <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP"
+                    :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                    :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                    :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id">
+                  </multiselect>
+                </div>
+
+              </li>
+              <li class=" mr-2" role="presentation">
+                <div>
+                  <label class="block mb-2 uppercase " for="">Selectionnez un composant</label>
+                  <multiselect v-model="valueFiltre" :options="composantes" :custom-label="customLabel"
+                    :preselect-first="true" placeholder="selectionnez une composante"
+                    :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                    :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
+                    track-by="id"></multiselect>
+                </div>
+
+              </li>
+              
+              <li class="mr-2" role="presentation">
+                <button @click="toggle2" :class="{ 'active': pending }"
+                  class="inline-block text-yellow-500 hover:text-yellow-600 hover:border-yellow-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-yellow-400 dark:hover:text-yellow-300 "
+                  id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
+                  aria-selected="true">Non démarré
+
+                  <span
+                    class="px-2 py-1 text-sm font-medium leading-normal text-center align-middle  text-white bg-yellow-600 rounded-full undefined ">
+                    {{ enAttente.length }}
+                  </span>
+
+                </button>
+              </li>
+              <li class="mr-2" role="presentation">
+                <button @click="toggle3" :class="{ 'active': inProgress }"
+                  class="inline-block text-blue-500 hover:text-blue-600 hover:border-blue-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-blue-400 dark:hover:text-blue-300 "
+                  id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
+                  aria-selected="false">En cours
+
+                  <span
+                    class="px-2 py-1 text-sm text-center align-middle font-medium leading-normal  text-white bg-indigo-600 rounded-full undefined">
+                    {{ enCours.length }}
+                  </span>
+                </button>
+              </li>
+              <li class="mr-2" role="presentation">
+                <button @click="toggle" :class="{ 'active': success }"
+                  class="inline-block text-green-500 hover:text-green-600 hover:border-green-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-green-400 dark:hover:text-green-300"
+                  id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
+                  aria-selected="false">Terminé
+
+                  <span
+                    class="px-2 py-1 text-sm font-medium leading-normal  text-white  text-center align-middle  bg-green-600 rounded-full undefined">
+                    {{terminer.length}}
+                  </span>
+                </button>
+              </li>
+              <li role="presentation">
+                <button @click="toggle4" :class="{ 'active': retard }"
+                  class="inline-block text-red-500 hover:text-red-600 hover:border-red-300 rounded-t-lg p-2 text-sm font-medium text-center border-transparent border-b-2 dark:text-red-400 dark:hover:text-red-300"
+                  id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
+                  aria-selected="false">En retard
+
+                  <span
+                    class="px-2 py-1 text-sm font-medium leading-normal  text-white bg-red-600 text-center align-middle  rounded-full undefined">
+                    {{retardData.length}}
+                  </span>
+
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-        <div v-if="pending">
-          <empty v-if="enAttente.length === 0">Ce composant est vide !!!</empty>
-          <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div v-for="(sousComposante, index) in enAttente" :key="index">
-                <card-composante
-                  :isComposante="false"
-                  :data="sousComposante"
-                  :libelle="sousComposante.nom"
-                  :code="sousComposante.code"
-                  composanteName="Sous Composante"
-                  :statut="getStatus(sousComposante.statut)"
-                  :montantEPM="sousComposante.pret"
-                  :position="sousComposante.position"
-                  :poids="sousComposante.poids"
-                  :bailleur="sousComposante.sigle"
-                  @modifier="modifier(sousComposante)"
-                  @dupliquer="dupliquer(sousComposante)"
-                  @supprimer="supprimer(sousComposante)"
-                  @suivre="suivreMyComposant(sousComposante)"
-                  @gotoNext="gotoNext(sousComposante)"
-                  :isDelete = "composanteDelete"
-                  :isUpdate="composanteUpdate"
-                ></card-composante>
-              </div>
+      <div v-if="pending">
+        <empty v-if="enAttente.length === 0">sous composant vide !!!</empty>
+        <div v-else>
+          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div v-for="(sousComposante, index) in enAttente" :key="index">
+              <card-composante :isComposante="false" :data="sousComposante" :libelle="sousComposante.nom"
+                :code="sousComposante.code" composanteName="Sous Composante" :statut="getStatus(sousComposante.statut)"
+                :montantEPM="sousComposante.pret" :position="sousComposante.position" :poids="sousComposante.poids"
+                :bailleur="sousComposante.sigle" @modifier="modifier(sousComposante)"
+                @dupliquer="dupliquer(sousComposante)" @supprimer="supprimer(sousComposante)"
+                @suivre="suivreMyComposant(sousComposante)" @gotoNext="gotoNext(sousComposante)"
+                :isDelete="composanteDelete" :isUpdate="composanteUpdate"></card-composante>
             </div>
           </div>
         </div>
+      </div>
 
-        <div v-if="retard">
-          <empty v-if="retardData.length === 0">Ce composant est vide !!!</empty>
-          <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div v-for="(sousComposante, index) in retardData" :key="index">
-                <card-composante
-                  :isComposante="false"
-                  :data="sousComposante"
-                  :libelle="sousComposante.nom"
-                  :code="sousComposante.code"
-                  composanteName="Sous Composante"
-                  :statut="getStatus(sousComposante.statut)"
-                  :montantEPM="sousComposante.pret"
-                  :position="sousComposante.position"
-                  :poids="sousComposante.poids"
-                  :bailleur="sousComposante.sigle"
-                  @modifier="modifier(sousComposante)"
-                  @dupliquer="dupliquer(sousComposante)"
-                  @supprimer="supprimer(sousComposante)"
-                  @suivre="suivreMyComposant(sousComposante)"
-                  @gotoNext="gotoNext(sousComposante)"
-                  :isDelete = "composanteDelete"
-                  :isUpdate="composanteUpdate"
-                ></card-composante>
-              </div>
+      <div v-if="retard">
+        <empty v-if="retardData.length === 0">sous composant vide !!!</empty>
+        <div v-else>
+          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div v-for="(sousComposante, index) in retardData" :key="index">
+              <card-composante :isComposante="false" :data="sousComposante" :libelle="sousComposante.nom"
+                :code="sousComposante.codePta" composanteName="Sous Composante"
+                :statut="getStatus(sousComposante.statut)" :montantEPM="sousComposante.pret"
+                :position="sousComposante.position" :poids="sousComposante.poids" :bailleur="sousComposante.sigle"
+                @modifier="modifier(sousComposante)" @dupliquer="dupliquer(sousComposante)"
+                @supprimer="supprimer(sousComposante)" @suivre="suivreMyComposant(sousComposante)"
+                @gotoNext="gotoNext(sousComposante)" :isDelete="composanteDelete"
+                :isUpdate="composanteUpdate"></card-composante>
             </div>
           </div>
         </div>
+      </div>
 
 
-        <div v-if="inProgress">
-          <empty v-if="enCours.length === 0">Ce composant est vide !!!</empty>
-          <div v-else>
-            <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div v-for="(sousComposante, index) in enCours" :key="index">
-                <card-composante
-                  :isComposante="false"
-                  :data="sousComposante"
-                  :libelle="sousComposante.nom"
-                  :code="sousComposante.code"
-                  composanteName="Sous Composante"
-                  :statut="getStatus(sousComposante.statut)"
-                  :montantEPM="sousComposante.pret"
-                  :position="sousComposante.position"
-                  :poids="sousComposante.poids"
-                  :bailleur="sousComposante.sigle"
-                  @modifier="modifier(sousComposante)"
-                  @dupliquer="dupliquer(sousComposante)"
-                  @supprimer="supprimer(sousComposante)"
-                  @suivre="suivreMyComposant(sousComposante)"
-                  @gotoNext="gotoNext(sousComposante)"
-                  :isDelete = "composanteDelete"
-                  :isUpdate="composanteUpdate"
-                ></card-composante>
-              </div>
+      <div v-if="inProgress">
+        <empty v-if="enCours.length === 0">sous composant vide !!!</empty>
+        <div v-else>
+          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div v-for="(sousComposante, index) in enCours" :key="index">
+              <card-composante :isComposante="false" :data="sousComposante" :libelle="sousComposante.nom"
+                :code="sousComposante.codePta" composanteName="Sous Composante"
+                :statut="getStatus(sousComposante.statut)" :montantEPM="sousComposante.pret"
+                :position="sousComposante.position" :poids="sousComposante.poids" :bailleur="sousComposante.sigle"
+                @modifier="modifier(sousComposante)" @dupliquer="dupliquer(sousComposante)"
+                @supprimer="supprimer(sousComposante)" @suivre="suivreMyComposant(sousComposante)"
+                @gotoNext="gotoNext(sousComposante)" :isDelete="composanteDelete"
+                :isUpdate="composanteUpdate"></card-composante>
             </div>
           </div>
         </div>
+      </div>
 
-        <div v-if="success">
-          <empty v-if="terminer.length === 0">Ce composant est vide !!!</empty>
-          <div v-else>
-            <div  class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-              <div v-for="(sousComposante, index) in terminer" :key="index">
-                <card-composante
-                  :isComposante="false"
-                  :data="sousComposante"
-                  :libelle="sousComposante.nom"
-                  :code="sousComposante.code"
-                  composanteName="Sous Composante"
-                  :statut="getStatus(sousComposante.statut)"
-                  :montantEPM="sousComposante.pret"
-                  :position="sousComposante.position"
-                  :poids="sousComposante.poids"
-                  :bailleur="sousComposante.sigle"
-                  @modifier="modifier(sousComposante)"
-                  @dupliquer="dupliquer(sousComposante)"
-                  @supprimer="supprimer(sousComposante)"
-                  @suivre="suivreMyComposant(sousComposante)"
-                  @gotoNext="gotoNext(sousComposante)"
-                  :isDelete = "composanteDelete"
-                  :isUpdate="composanteUpdate"
-                ></card-composante>
-              </div>
+      <div v-if="success">
+        <empty v-if="terminer.length === 0">sous composant vide !!!</empty>
+        <div v-else>
+          <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div v-for="(sousComposante, index) in terminer" :key="index">
+              <card-composante :isComposante="false" :data="sousComposante" :libelle="sousComposante.nom"
+                :code="sousComposante.codePta" composanteName="Sous Composante"
+                :statut="getStatus(sousComposante.statut)" :montantEPM="sousComposante.pret"
+                :position="sousComposante.position" :poids="sousComposante.poids" :bailleur="sousComposante.sigle"
+                @modifier="modifier(sousComposante)" @dupliquer="dupliquer(sousComposante)"
+                @supprimer="supprimer(sousComposante)" @suivre="suivreMyComposant(sousComposante)"
+                @gotoNext="gotoNext(sousComposante)" :isDelete="composanteDelete"
+                :isUpdate="composanteUpdate"></card-composante>
             </div>
           </div>
         </div>
+      </div>
     </div>
+    <div v-else>
+      <div>
+        <empty v-if="filtere.length === 0">Ce sous composant est vide !!!</empty>
+        <div v-else>
+          <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+            <div v-for="(sousComposante, index) in filtere" :key="index">
+              <card-composante :isComposante="false" :data="sousComposante" :libelle="sousComposante.nom"
+                :code="sousComposante.code" composanteName="Sous Composante" :statut="getStatus(sousComposante.statut)"
+                :montantEPM="sousComposante.pret" :position="sousComposante.position" :poids="sousComposante.poids"
+                :bailleur="sousComposante.sigle" @modifier="modifier(sousComposante)"
+                @dupliquer="dupliquer(sousComposante)" @supprimer="supprimer(sousComposante)"
+                @suivre="suivreMyComposant(sousComposante)" @gotoNext="gotoNext(sousComposante)"
+                :isDelete="composanteDelete" :isUpdate="composanteUpdate"></card-composante>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
- 
+  </div>
+
 </template>
 
 <script>
@@ -226,12 +261,14 @@ import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
 import Empty from '@/components/Empty.vue'
 import CardComposante from '@/components/CardComposante.vue'
-import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData, getStringValueOfStatutCode } from '@/utils/index'
+import DeleteAlert from "@/components/DeleteAlert.vue";
 import Composante from '@/store/modules/composantes/composante'
 import ComposanteService from "@/services/modules/composante.service.js";
+import ProgrammeService from "@/services/modules/programme.service.js";
 export default {
-  props:['valeurProjet','valueProfondeur'],
+  props: ['valeurProjet', 'valueProfondeur'],
   components: {
     Dashboard,
     Vmodal,
@@ -242,103 +279,117 @@ export default {
     ModalTopRight,
     Dropdown,
     CardComposante,
+    DeleteAlert,
     Vtable,
     Empty,
-},
+  },
   data() {
     return {
-      valueFiltre:null,
+      valueFiltre: null,
       projetFiltre: null,
-      projetId:'',
-      composanteId:'',
-      pending:false,
-      success:true,
-      inProgress:false,
-      retard:false,
-      rangeValue:0,
-      showFiltre:false,
-      programmeId: this.currentUser?.programme?.id,
-      cols:1,
+      projetId: '',
+      composanteId: '',
+      pending: false,
+      success: true,
+      inProgress: false,
+      retard: false,
+      rangeValue: 0,
+      showFiltre: false,
+      programmeId: '',
+      cols: 1,
       sendRequest: false,
-      submitText:"Enregistrer",
-      showModal:false,
-      line:false,
-      mosaique:true,
-      isStateChange:false,
-      seeSousComposantes:true,
-      seeSuivi:false,
-      showInput:true,
-      seeStatistique:false,
-      option:[
-        {name:"supprimer"},
-        {name:"modifier"},
-        {name:"dupliquer"},
-        {name:"continuer"},
+      submitText: "Enregistrer",
+      showModal: false,
+      line: false,
+      mosaique: true,
+      isStateChange: false,
+      seeSousComposantes: true,
+      seeSuivi: false,
+      showInput: true,
+      seeStatistique: false,
+      option: [
+        { name: "supprimer" },
+        { name: "modifier" },
+        { name: "dupliquer" },
+        { name: "continuer" },
       ],
-      sousComposanteAttributs : ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
-      champs:[
+      sousComposanteAttributs: ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
+      champs: [
+        { name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Taux d\'exécution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
 
-        {name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Taux d\'exécution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
-        {name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data:'', required: false, errors : []},
-        
       ],
 
-    headers: [
-        { name: "Composante", cle: "composante"},
-        { name: "code pta", cle: "codePta"},
-        { name: "poids initial", cle:'poidsInitial'},
-        { name: "poids actuel", cle:'poidsActuel'},
-        { name: "date de création", cle:'created_at'},
+      headers: [
+        { name: "Composante", cle: "composante" },
+        { name: "code pta", cle: "codePta" },
+        { name: "poids initial", cle: 'poidsInitial' },
+        { name: "poids actuel", cle: 'poidsActuel' },
+        { name: "date de création", cle: 'created_at' },
       ],
-      dataTable:[],
+      dataTable: [],
       actions: [
         { name: "supprimer", iconne: "" },
       ],
-      dates:[
+      dates: [
         {}
       ],
-      suivis:[],
-      composanteAdd:false,
-      composanteDelete:false,
-      composanteUpdate:false,
-      positionP:0,
-      idProjet:'',
-      positionC:0,
-      idComposante:'',
-      newProjet:null,
-      newComponent:null,
-      isClick:false,
-      isShow:true
-     
+      suivis: [],
+      composanteAdd: false,
+      composanteDelete: false,
+      composanteUpdate: false,
+      positionP: 0,
+      idProjet: '',
+      positionC: 0,
+      idComposante: '',
+      newProjet: null,
+      newComponent: null,
+      isClick: false,
+      isShow: true,
+      search: '',
+      isSearch: false,
+      projets: [],
+      deleteData: {},
+      deleteModal: false,
     }
-    
+
   },
 
-  computed:{
+  computed: {
 
     //importation des variables du module auths
     ...mapState({
       sousComposante: state => state.sousComposantes.composante,
-      loading : state => state.loading,
-      errors : state => state.errors
+      loading: state => state.loading,
+      errors: state => state.errors
     }),
 
     ...mapGetters({
-      projets: "projets/getProjets",
       composantes: "composantes/getComposantes",
       sousComposante: "sousComposantes/getSousComposante",
       sousComposantes: "sousComposantes/getSousComposantes",
-      currentUser : 'auths/GET_AUTHENTICATE_USER'
+      currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
+    allData() {
+      if (this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return [].concat(this.terminer, this.enAttente, this.enCours, this.retardData)
+      }
+    },
+    filtere: function () {
+      var self = this;
+      return this.allData.filter(function (data) {
+        return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
     terminer() {
-      if(this.sousComposantes != undefined) {
+      if (this.sousComposantes != undefined) {
         const datas = []
         this.sousComposantes.forEach(element => {
-          if(element.statut == 2) {
+          if (element.statut == 2) {
             datas.push(element)
           }
         })
@@ -346,10 +397,10 @@ export default {
       }
     },
     enAttente() {
-      if(this.sousComposantes != undefined) {
+      if (this.sousComposantes != undefined) {
         const datas = []
         this.sousComposantes.forEach(element => {
-          if(element.statut == -1 || element.statut == -2) {
+          if (element.statut == -1 || element.statut == -2) {
             datas.push(element)
           }
         })
@@ -357,10 +408,10 @@ export default {
       }
     },
     retardData() {
-      if(this.sousComposantes != undefined) {
+      if (this.sousComposantes != undefined) {
         const datas = []
         this.sousComposantes.forEach(element => {
-          if(element.statut == 1) {
+          if (element.statut == 1) {
             datas.push(element)
           }
         })
@@ -368,44 +419,55 @@ export default {
       }
     },
     enCours() {
-      if(this.sousComposantes != undefined) {
+      if (this.sousComposantes != undefined) {
         const datas = []
         this.sousComposantes.forEach(element => {
-          if(element.statut == 0) {
+          if (element.statut == 0) {
             datas.push(element)
           }
         })
         return datas
       }
     },
-    ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
+    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
 
   },
 
   methods: {
-     
+    getSearchValue(data) {
+      if (data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
+
+    },
+
     changeProjet(projet) {
       this.projetId = projet.id
-      if(this.isClick) {
+      if (this.isClick) {
         this.projetFiltre = this.newProjet
         this.fetchComposantes(this.idProjet);
         this.isClick = false
         localStorage.removeItem('profondeurComposante');
-      }else {
+      } else {
         this.fetchComposantes(projet.id);
         let indexProjet = 0
         for (let index = 0; index < this.projets.length; index++) {
           const element = this.projets[index];
-          if(projet.id == element.id) {
+          if (projet.id == element.id) {
             indexProjet = index
           }
         }
         let composantes = this.projets[indexProjet].composantes
         let indexComposante = ''
-        if(composantes[0] != null || composantes[0] != undefined ) {
+        if (composantes[0] != null || composantes[0] != undefined) {
           let code = composantes[0].codePta
           let nom = composantes[0].nom
-          this.valueFiltre = {codePta:code,nom:nom}
+          this.valueFiltre = { codePta: code, nom: nom }
           indexComposante = composantes[0].id
           this.composanteId = indexComposante
           this.fetchSousComposantes(indexComposante);
@@ -415,20 +477,20 @@ export default {
           this.isShow = false
           this.valueFiltre = null
         }
-       
-       
+
+
         //this.fetchSousComposantes(composante.id);
       }
-     
+
     },
     changeComposante(composante) {
-      if(this.isClick) {
+      if (this.isClick) {
         this.valueFiltre = this.newComponent
         this.composanteId = this.idComposante
         this.fetchSousComposantes(this.idComposante);
         this.isClick = false
         localStorage.removeItem('profondeurComposante');
-      }else {
+      } else {
         this.composanteId = composante.id
         this.fetchSousComposantes(composante.id);
       }
@@ -449,27 +511,26 @@ export default {
 
     ...mapActions({
       fetchComposantes: "composantes/FETCH_LIST_COMPOSANTE_OF_PROJET",
-      fetchProjets: "projets/FETCH_LIST_PROJET_OF_PROGRAMME",
     }),
 
     suivreMyComposant(sousComposante) {
-      this.$router.push({name:'dashboard_projets_sous_composantes_globale_suivis',params:{id:sousComposante.id}})
+      this.$router.push({ name: 'dashboard_projets_sous_composantes_globale_suivis', params: { id: sousComposante.id } })
     },
 
-     getPermission() {
+    getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
-       
-          if(element.slug === 'creer-une-composante') {
-            this.composanteAdd = true
-          }
-            if(element.slug === 'modifier-une-composante') {
-              this.composanteUpdate = true
-            }
-            if(element.slug ==='supprimer-une-composante') {
-              this.composanteDelete = true
-            }
-           
-        });
+
+        if (element.slug === 'creer-une-composante') {
+          this.composanteAdd = true
+        }
+        if (element.slug === 'modifier-une-composante') {
+          this.composanteUpdate = true
+        }
+        if (element.slug === 'supprimer-une-composante') {
+          this.composanteDelete = true
+        }
+
+      });
     },
 
     getSuivi() {
@@ -481,29 +542,32 @@ export default {
           const poidsInitial = element.tache.poids
           const poidsActuel = element.poidsActuel
           const created_at = element.created_at
-          this.dataTable.push({composante:composante,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
+          this.dataTable.push({ composante: composante, codePta: codePta, poidsInitial: poidsInitial, poidsActuel: poidsActuel, created_at: created_at })
         })
-        console.log("les suiivs",this.dataTable)
-       
+        console.log("les suiivs", this.dataTable)
+
       }).catch((e) => {
         console.log(e)
       })
     },
 
 
-    customLabel ({ codePta, nom }) {
+    customLabelP({ bailleur, nom }) {
+      return `${bailleur.sigle} – ${nom}`
+    },
+    customLabel({ codePta, nom }) {
       return `${codePta} – ${nom}`
     },
 
-    getIntervale(val){
+    getIntervale(val) {
       return val - 25;
     },
 
-    getStatus(status){
+    getStatus(status) {
       return getStringValueOfStatutCode(status);
     },
 
-    filtreRange(value){
+    filtreRange(value) {
 
       this.rangeValue = value
 
@@ -516,7 +580,7 @@ export default {
 
     },
 
-    selectProjet ({ nom}) {
+    selectProjet({ nom }) {
       return `${nom}`
     },
 
@@ -524,7 +588,7 @@ export default {
       this.dates.push({})
     },
 
-     gotoSuivi() {
+    gotoSuivi() {
       this.seeSuivi = true
       this.seeSousComposantes = false
     },
@@ -534,43 +598,43 @@ export default {
       this.seeSousComposantes = true
     },
 
-     gotoNext(sousComposante,index) {
+    gotoNext(sousComposante, index) {
 
       let codeP = ''
-      let nomP =''
-      let codeC=''
-      let nomC=''
-      let codeSC=sousComposante.codePta
-      let nomSC=sousComposante.nom
+      let nomP = ''
+      let codeC = ''
+      let nomC = ''
+      let codeSC = soussousComposante.codePta
+      let nomSC = sousComposante.nom
       for (let index = 0; index < this.projets.length; index++) {
         const element = this.projets[index];
-        if(element.id == sousComposante.projetId ) {
+        if (element.id == sousComposante.projetId) {
           codeP = element.codePta
           nomP = element.nom
         }
       }
       for (let index = 0; index < this.composantes.length; index++) {
         const element = this.composantes[index];
-        if(element.id == sousComposante.composanteId ) {
+        if (element.id == sousComposante.composanteId) {
           codeC = element.codePta
           nomC = element.nom
         }
-        
+
       }
 
       const profondeurSC = {
-        isClick:true,
-        idP:sousComposante.projetId,
-        idC:sousComposante.composanteId,
-        idSC:sousComposante.id,
-        projet:{codePta:codeP,nom:nomP},
-        composante:{codePta:codeC,nom:nomC},
-        sousComposante:{codePta:codeSC,nom:nomSC}
+        isClick: true,
+        idP: sousComposante.projetId,
+        idC: sousComposante.composanteId,
+        idSC: sousComposante.id,
+        projet: { codePta: codeP, nom: nomP },
+        composante: { codePta: codeC, nom: nomC },
+        sousComposante: { codePta: codeSC, nom: nomSC }
       }
-     
-      localStorage.setItem('profondeurSC',JSON.stringify(profondeurSC));
-     
-      this.$router.push({name:'dashboard_projets_activites_globale'})
+
+      localStorage.setItem('profondeurSC', JSON.stringify(profondeurSC));
+
+      this.$router.push({ name: 'dashboard_projets_activites_globale' })
     },
 
     editerSuivi(index) {
@@ -604,25 +668,25 @@ export default {
       this.inProgress = false
       this.retard = true
     },
-    
+
     addSousComposante() {
-      this.title ="Ajouter"
+      this.title = "Ajouter"
 
-      this.submitText="Enregistrer",
+      this.submitText = "Enregistrer",
 
-      this.showCloseModal(true)
+        this.showCloseModal(true)
 
     },
 
     dupliquer(sousComposante) {
 
-      this.title ="Ajouter un nouveau composant"
+      this.title = "Ajouter un nouveau composant"
 
       this.sousComposanteAttributs.forEach((item) => {
 
         this.champs.find((value, index) => {
 
-          if(value.key === item){
+          if (value.key === item) {
             this.champs[index]['data'] = sousComposante[item]
           }
 
@@ -630,12 +694,12 @@ export default {
 
       });
 
-      this.submitText="Enregistrer",
+      this.submitText = "Enregistrer",
 
-      this.showCloseModal(true)
+        this.showCloseModal(true)
     },
 
-    
+
     modifier(sousComposante) {
 
       this.title = 'Modifier un sous composant'
@@ -646,7 +710,7 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if(value.key === item){
+          if (value.key === item) {
             this.champs[index]['data'] = sousComposante[item]
           }
 
@@ -656,22 +720,37 @@ export default {
 
       this.submitText = "Modifier",
 
-      this.showCloseModal(true)
+        this.showCloseModal(true)
     },
 
-    supprimer(sousComposante) {
-      if(window.confirm("Voulez-vous supprimer la sous composante " + sousComposante.nom)){
-        if(this.sendRequest === false){
+    supprimer(sousComposante, index) {
+      this.deleteModal = true
+      this.deleteData.data = sousComposante
+      this.deleteData.index = index
+    },
+    deleteComposante(data) {
+      //this.filteredBailleur.splice(data.index,1)
+      this.deleteModal = false
+      ComposanteService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchSousComposantes(this.valueFiltre.id);
 
-          this.sendRequest = true;
+      }).catch((error) => {
 
-          this.deleteSousComposante(sousComposante.id).finally((response) => {
-                this.sendRequest = false;
-                this.fetchSousComposantes(this.valueFiltre.id);
-          });
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
         }
-      }
+      })
     },
+
+
 
     dupliquer(sousComposante) {
 
@@ -683,71 +762,78 @@ export default {
 
         this.champs.find((value, index) => {
 
-          if(value.key === item){
+          if (value.key === item) {
             this.champs[index]['data'] = sousComposante[item]
           }
 
         });
 
       });
-      
+
       this.showCloseModal(true);
-      
+
     },
 
-    resetForm(){
+    resetForm() {
 
-      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item})
-      
+      this.champs = this.champs.map(item => { item['data'] = ''; item['errors'] = []; return item })
+
       window.document.getElementById('vform').reset()
 
       this.setSousComposante({})
     },
-    
+
     sendForm() {
 
-      if( this.sendRequest === false ){
+      if (this.sendRequest === false) {
 
         this.sendRequest = true;
 
-        this.champs = this.champs.map(item => { item.errors = []; return item})
+        this.champs = this.champs.map(item => { item.errors = []; return item })
 
         let sousComposante = extractFormData(this.champs, this.sousComposanteAttributs)
-
-        sousComposante.composanteId = this.valueFiltre.id
-                
-        if(this.sousComposante?.id)
-        {
-
-          this.updateSousComposante({sousComposante: sousComposante, id : this.sousComposante?.id})
-            .then(response => {
-              
-              if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.valueFiltre.id);
-                this.close()
-              }
-
-            })
-            .finally((error) => {
-              this.sendRequest = false;
-            })
-
+        if (this.valueFiltre == undefined || this.valueFiltre == null) {
+          this.$toast.error('Composante indefinit ')
+          this.sendRequest = false;
+          this.close()
         }
-        else
-        {
-          
-          this.saveSousComposante(sousComposante)
-          
-            .then(response => {
-              if(response.status === 200 || response.status === 201){
-                this.fetchSousComposantes(this.valueFiltre.id);
-                this.close()
-              }
+        else {
+          sousComposante.composanteId = this.valueFiltre.id
 
-            })
-            .finally((error) => {          
-              this.sendRequest = false;    
-            })
+          if (this.sousComposante?.id) {
+            this.updateSousComposante({ sousComposante: sousComposante, id: this.sousComposante?.id })
+              .then(response => {
+
+                if (response.status === 200 || response.status === 201) {
+                  this.fetchSousComposantes(this.valueFiltre.id);
+                  this.close()
+                }
+
+              })
+              .finally((error) => {
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs.map(value => value.errors = this.erreurs[value.key])
+              })
+
+          }
+          else {
+
+            this.saveSousComposante(sousComposante)
+
+              .then(response => {
+                if (response.status === 200 || response.status === 201) {
+                  this.fetchSousComposantes(this.valueFiltre.id);
+                  this.close()
+                }
+
+              })
+              .finally((error) => {
+                this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+                this.sendRequest = false;
+                this.champs.map(value => value.errors = this.erreurs[value.key])
+              })
+          }
         }
       }
     },
@@ -758,92 +844,116 @@ export default {
       this.resetForm()
 
       this.sendRequest = false;
-    }, 
-    
+    },
+
     showCloseModal(value = false) {
       this.showModal = value
+    },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
     },
 
   },
   watch: {
-    loading: function(value) {
+    loading: function (value) {
       //this.loading = value
     },
 
-    errors: function(errors) {
+    errors: function (errors) {
 
       this.champs.forEach((value) => {
-        if(errors[value.key] instanceof Array || errors[value.key] !== undefined ){
+        if (errors[value.key] instanceof Array || errors[value.key] !== undefined) {
           value.errors = errors[value.key]
         }
       })
       //this.errors = errors
     },
 
-   valueFiltre: function(valeur){
-      if( valeur instanceof Composante || valeur instanceof Object )
-      {
-        if(this.isClick ==false) { 
+    valueFiltre: function (valeur) {
+      if (valeur instanceof Composante || valeur instanceof Object) {
+        if (this.isClick == false) {
 
-            this.fetchSousComposantes(valeur.id);
-             
-         }
-         else {
-          
-            this.fetchSousComposantes(this.idComposante);
-            //this.isClick = false
-           
-         }
-        
+          this.fetchSousComposantes(valeur.id);
+
+        }
+        else {
+
+          this.fetchSousComposantes(this.idComposante);
+          //this.isClick = false
+
+        }
+
       }
-      else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
+      else if (valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0) {
         this.fetchSousComposantes(valeur);
       }
     },
 
-    projetFiltre: function(valeur){
-      if( valeur instanceof Composante || valeur instanceof Object )
-      {
-        if(this.isClick ==false) { 
-            this.fetchComposantes(valeur.id);
-         }
-         else {
-            this.fetchComposantes(this.idProjet);
+    projetFiltre: function (valeur) {
+      if (valeur instanceof Composante || valeur instanceof Object) {
+        if (this.isClick == false) {
+          this.fetchComposantes(valeur.id);
+        }
+        else {
+          this.fetchComposantes(this.idProjet);
 
-         }
-        
+        }
+
       }
-      else if( valeur !== null ){
-      
+      else if (valeur !== null) {
+
         this.fetchComposantes(valeur);
       }
     },
-    
-    composantes: function(composantes){
-       if(this.isClick ==false) { 
-         
-          this.valueFiltre = composantes[0]
-         
-       }else {
-         
-          this.valueFiltre = composantes[this.positionC]
-        
-          
-       }
-    
-    } 
-     
-   
+
+    composantes: function (composantes) {
+      if (this.isClick == false) {
+
+        this.valueFiltre = composantes[0]
+
+      } else {
+
+        this.valueFiltre = composantes[this.positionC]
+
+
+      }
+
+    }
+
+
   },
 
-  created(){
+  created() {
     this.fetchComposantes()
-   
+    this.programmeId = this.currentUser.programme.id
     const profondeurComposante = JSON.parse(localStorage.getItem('profondeurComposante'))
-    console.log("profondeur",profondeurComposante)
-    if(profondeurComposante != undefined || profondeurComposante != null) {
+    console.log("profondeur", profondeurComposante)
+    if (profondeurComposante != undefined || profondeurComposante != null) {
       this.isClick = profondeurComposante.isClick
-      if(this.isClick) {
+      if (this.isClick) {
         console.log(profondeurComposante)
         this.idProjet = profondeurComposante.id
         this.positionP = profondeurComposante.positionP
@@ -851,23 +961,25 @@ export default {
         this.positionC = profondeurComposante.positionC
         this.newProjet = profondeurComposante.projet
         this.newComponent = profondeurComposante.composante
-       
-      }else {
-       this.positionP = 0
-       this.positionC = 0
+
+      } else {
+        this.positionP = 0
+        this.positionC = 0
       }
 
-    } 
+    }
 
     this.getPermission()
-    if(this.programmeId){
+    if (this.programmeId) {
       this.fetchProjets(this.programmeId)
     }
   }
-  
+
 }
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css">
+
+</style>
 <style>
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative">
+  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative mb-4  sm:mb-0">
     <div class="absolute flex space-x-3 right-1 top-2 z-10  cursor-pointer">
       <span v-if="!isValidate"
         :title="composanteName != undefined ? composanteName.concat(' non valider') : 'Composante non valider'"
@@ -50,7 +50,7 @@
         </div>
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
-          <span class="absolute bottom-12 right-1 rounded-lg text-sm text-white px-2 py-1 font-semibold"
+          <span class="absolute bottom-6 right-0  text-sm text-white px-2 py-1 font-semibold"
             :class="statut.couleur"> {{ statut.libelle }}<i class='bx bx-time-five ml-1'></i></span>
         </div>
 
@@ -59,20 +59,22 @@
           <span class="underline mr-2">{{ composanteName !== undefined ? composanteName : 'COMPOSANTE' }}</span> {{ position }} :</span>-->
           {{ libelle }}
         </p>
-        <div class="flex items-center mt-8 text-gray-600 dark:text-gray-400 mb-6">
+        <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400 mb-6">
           <i class='bx bxs-wallet bx-xs'></i>
           <div class="ml-2 text-xs tracking-wide font-semibold w-4/6 truncate">EMP : <span
-              class="font-bold italic text-lg">{{ montantEPM }}</span><span class="ml-2 uppercase font-bold">fcfa</span>
+              class="font-bold italic text-sm">{{ montantEPM | formatNumber }}</span><span class="ml-2 uppercase font-bold">fcfa</span>
           </div>
         </div>
       </div>
       <div class="flex text-xs">
         <div title="suivre une activité"
           class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
-          {{ codePta }} </div>
+          {{ code }} </div>
         <div title="suivre une activité"
           class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
           {{ poids }} </div>
+
+          
       </div>
       <!-- <span title="suivre une activité"
         class="cursor-pointer bottom-0 left-0 w-full bg-primary h-10 text-white font-bold leading-3 px-8 py-3 text-right">Poids
@@ -109,7 +111,7 @@ export default {
       clicks: 0,
       timer: null,
       showInput: false,
-      isValidate: null,
+      isValidate: false,
     }
   },
   methods: {
@@ -162,7 +164,7 @@ export default {
 
   },
   mounted() {
-    this.isValidate = this.statut.code > -2
+    this.isValidate = this.statut.code >= -1
   }
 }
 </script>

@@ -5,7 +5,7 @@
         <div>
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center ">
-              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+              <router-link to="#" class="text-gray-600">dashboard</router-link>
               <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
             </li>
             <li class="flex items-center text-blue-500 ">
@@ -18,7 +18,7 @@
           </ol>
         </div>
         <div>
-          <search-bar ></search-bar>
+          <search-bar @search="getSearchValue" ></search-bar>
         </div>
       </nav> 
 
@@ -28,25 +28,25 @@
         <span :class="{'border-primary border-b-8 font-bold':seeComposant}" @click="gotoComposante()" class="inline-block cursor-pointer  text-base uppercase    border-primary py-2">les composantes </span>
       </div>
       
-      <button v-if="seeComposant && composanteAdd" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+      <button v-if=" composanteAdd" @click="addComponent" title="ajouter un projet"   class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg></span>
           <span class="mx-1 md:mx-2 text-xs font-semibold">AJOUTER</span>
       </button>
      
     </div>
     
-     <div v-if="seeComposant">
+    <div v-if="!isSearch">
       <div class="p-2 my-4 rounded-sm shadow-md bg-gray-50">
         <div class="flex items-center justify-between ">
         <!--Filtre sur projet -->
         <div class="w-2/4  flex justify-between  items-center space-x-2 mb-2">
-          <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+          <multiselect v-model="valueFiltre" :options="projets" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
          
         </div>
       <!--Filtre sur projet -->
           <nav class="flex  text-xs  md:text-sm align-middle justify-between ">
           <span  @click="toggle2" :class="{'border-yellow-600 text-yellow-600' : pending}" class="inline-block px-4 py-2 font-semibold text-gray-700 uppercase border-b-8 border-transparent cursor-pointer  text-xs">
-            attentes 
+            Non demarrer
               <span class="px-2 text-base text-yellow-600 border border-yellow-600 rounded-full undefined ">
               {{enAttente.length}}
               </span>
@@ -82,7 +82,7 @@
               :isComposante = "true"
               :data = "composante"
               :libelle="composante.nom"
-              :code="composante.code"
+              :code="composante.codePta"
               :statut="getStatus(composante.statut)"
               :montantEPM="composante.pret"
               :position="composante.position"
@@ -107,7 +107,7 @@
               :isComposante = "true"
               :data = "composante"
               :libelle="composante.nom"
-              :code="composante.code"
+              :code="composante.codePta"
               :statut="getStatus(composante.statut)"
               :montantEPM="composante.pret"
               :position="composante.position"
@@ -131,7 +131,7 @@
               :isComposante = "true"
               :data = "composante"
               :libelle="composante.nom"
-              :code="composante.code"
+              :code="composante.codePta"
               :statut="getStatus(composante.statut)"
               :montantEPM="composante.pret"
               :position="composante.position"
@@ -176,6 +176,31 @@
        
       </div>
     </div>
+    <div v-else>
+      <h1 class="py-2 text-xl text-bold ">Resultat de la  Recherche ...</h1>
+      <empty v-if="filtere.length ==0">Ce composant est vide !!!</empty>
+      <div v-else class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
+          <div v-for="(composante, index) in filtere" :key="index">
+            <card-composante
+              :isComposante = "true"
+              :data = "composante"
+              :libelle="composante.nom"
+              :code="composante.codePta"
+              :statut="getStatus(composante.statut)"
+              :montantEPM="composante.pret"
+              :position="composante.position"
+              :poids="composante.poids"
+              :bailleur="composante.sigle"
+              @modifier="modifier(composante)"
+              @supprimer="supprimer(composante)"
+              @suivre="suivreMyComposant(composante)"
+              @gotoNext="gotoNext(composante,index)"
+              :isDelete = "composanteDelete"
+              :isUpdate="composanteUpdate"
+            ></card-composante>
+          </div>
+      </div>
+    </div>
     
   </div>
  
@@ -195,6 +220,7 @@ import  { getStringValueOfStatutCode }  from '@/utils/index'
 import Suivi from "@/components/revisiteC/Suivi.vue";
 import Empty from '@/components/Empty.vue'
 import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import ProgrammeService from "@/services/modules/programme.service.js";
 import Projet from '@/store/modules/projets/projet'
 export default {
   components: {
@@ -248,10 +274,13 @@ props: ['version'],
       dates:[
         {}
       ],
+      programmeId:'',
       results: [],
       projets: [],
       composantes: [],
-      suivis:[]
+      suivis:[],
+      search:'',
+      isSearch:false,
      
     }
     
@@ -265,6 +294,17 @@ props: ['version'],
       loading : state => state.loading,
       errors : state => state.errors
     }),
+    allData() {
+      if(this.terminer != undefined || this.enAttente != undefined || this.enCours != undefined || this.retardData != undefined) {
+        return  [].concat(this.terminer,this.enAttente,this.enCours,this.retardData)
+      }
+    },
+    filtere: function () {
+        var self = this;
+          return this.allData.filter(function (data) {
+          return data.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+      });
+    },
     terminer() {
       if(this.composantes != undefined) {
         const datas = []
@@ -310,7 +350,7 @@ props: ['version'],
       }
     },
     ...mapGetters({
-      projets: "projets/getProjets",
+     
       composantes: "composantes/getComposantes",
       composante: "composantes/getComposante",
       currentUser : 'auths/GET_AUTHENTICATE_USER'
@@ -321,12 +361,24 @@ props: ['version'],
 
   methods: {
 
+
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setComposante: 'composantes/FILL', // map `this.CREATE_INSTANCE_PROJET()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
       setComposantes: 'composantes/SET_LIST_COMPOSANTES'
     }),
+    getSearchValue(data) {
+      if(data != '') {
+        this.isSearch = true
+        this.search = data
+      }
+      else {
+        this.isSearch = false
+        this.search = data
+      }
+      
+    },
      getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         
@@ -424,10 +476,35 @@ props: ['version'],
     getStatus(status){
       return getStringValueOfStatutCode(status);
     },
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
   },
   watch: {
-
     version: function (version) {
 
       const params = {
@@ -479,9 +556,13 @@ props: ['version'],
       "version": this.version,
       "composantes": null
     };
+    this.programmeId = this.currentUser.programme.id
 
     this.getPtabReviser(params).then((value) => {
       this.results = value.data.data
+      if(this.programmeId){
+        this.fetchProjets(this.programmeId)
+      } 
     })
   }
   

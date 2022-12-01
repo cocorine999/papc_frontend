@@ -1,6 +1,6 @@
 <template>
   <!-- cards Tâches -->
-  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative cursor-pointer">
+  <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative cursor-pointer mb-4 sm:mb-0">
     <!-- dot -->
     <div class="absolute flex space-x-1 right-1 top-2 z-10  cursor-pointer">
       <span v-if="!isValidate" title="Tâche non valider" class="text-red-300"><svg stroke="currentColor"
@@ -62,7 +62,7 @@
         <div class="cursor-pointer text-sm">
           <p class="my-2 uppercase text-sm font-medium text-gray-600 mt-8 line-clamp-2 ">{{ libelle }}
           </p>
-          <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
+          <!-- <div class="flex items-center mt-2 pt-2 text-gray-600 dark:text-gray-400 border-t-2">
             <i class='bx bxs-wallet bx-sm'></i>
             <div class="ml-4 text-sm tracking-wide font-semibold w-4/6 truncate">EMP :
               <span class="font-bold italic text-lg"> {{ montantEPM }} </span><span
@@ -75,8 +75,8 @@
               <span class="font-bold italic text-lg"> {{ montantNE }} </span>
               <span class="ml-2 uppercase font-bold">fcfa</span>
             </div>
-          </div>
-          <p class="mt-1 text-gray-600 text-gray-300 text-xs font-bold space-x-2">
+          </div> -->
+          <p class="mt-1 text-gray-600  text-xs font-bold space-x-2">
             <span class="font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> <span>au</span> <span>{{ fin }}</span>
           </p>
         </div>
@@ -87,12 +87,15 @@
           {{ statut.libelle }} </span>
       </div>
       <div class="flex text-xs">
-      <div title="suivre une activité"
-        class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
-        {{ codePta }} </div>
-      <div title="suivre une activité"
-        class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
-        {{ poids }} </div></div>
+        <div title="suivre une activité"
+          class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-left">Code:
+          {{ codePta }} 
+        </div>
+        <div title="suivre une activité"
+          class="w-full _cursor-pointer bg-primary text-white font-bold px-4 py-1 text-right">Poids:
+          {{ poids }} 
+        </div>
+      </div>
     </div>
   </div>
   <!-- End cards Tâches -->
@@ -171,7 +174,7 @@ export default {
       }
       this.isDone = true
       TacheService.suiviTache(data).then((data) => {
-        window.location.reload()
+       
       }).catch((e) => {
         if (e.response) {
           const errors = {}
@@ -217,7 +220,7 @@ export default {
     }
   },
   mounted() {
-    this.isValidate = this.statut.code > -2
+    this.isValidate = this.statut.code >= -1
   }
 }
 </script>

@@ -41,12 +41,24 @@
           </div>
         </modal-top-right>
       </div>
+
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+        voulez vous supprimer cette projet?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteProjets(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
+
       <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
         aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
-              <router-link to="/dashboard" class="text-gray-600">dashboard</router-link>
+              <router-link to="#" class="text-gray-600">dashboard</router-link>
               <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                 <path
                   d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
@@ -80,7 +92,8 @@
         <div class="">
           <span
             class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-sm uppercase    border-primary py-2">Les
-            projets </span>
+            projets 
+          </span>
         </div>
 
         <button v-if="projetAdd" @click="addProjet" title="ajouter un projet"
@@ -94,7 +107,7 @@
       </div>
 
       <div class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
-        <div v-for="(projet, index) in filteredProjet()" :key="index">
+        <div v-for="(projet, index) in filteredProjet" :key="index">
 
           <div @click.stop="gotoDetails(projet)"
             class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
@@ -188,6 +201,10 @@ import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Dashboard from '@/layouts/Dashboard'
 import Dropdown from '@/components/Dropdown.vue'
+import ProgrammeService from "@/services/modules/programme.service.js";
+import ProjetService from "@/services/modules/projet.service.js";
+import DeleteAlert from "@/components/DeleteAlert.vue";
+import BailleurService from "@/services/modules/bailleur.service";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import { extractFormData } from '@/utils/index'
@@ -201,6 +218,7 @@ export default {
     Titre,
     SearchBar,
     ModalTopRight,
+    DeleteAlert,
     Dropdown
   },
   data() {
@@ -220,35 +238,10 @@ export default {
       projetId: '',
       title: '',
       search: "",
-      projetAttributs: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId'],
-      champs: [
-        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
-        { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture', isImage: true, isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Pièce jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
-        { name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Objectifs specifiques', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-      ],
-      champsUpdate: [
-        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
-        { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
-        { name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-      ],
+      projetAttributs: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId','tauxEngagement'],
+      projetAttributsUpdate: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville','tauxEngagement'],
+      champs: [],
+      champsUpdate:[],
       option: [
         { name: "supprimer" },
         { name: "modifier" },
@@ -273,7 +266,12 @@ export default {
       validation: false,
       sendRequest: false,
       fichiers: [],
-      image: {}
+      image: {},
+      projets:[],
+      bailleurs:[],
+      deleteData:{},
+      deleteModal:false,
+
     }
 
   },
@@ -289,10 +287,18 @@ export default {
     }),
 
     ...mapGetters({
-      projets: "projets/getProjets", projet: "getProjet",
-      bailleurs: "bailleurs/getBailleurs",
+       projet: "getProjet",
+      //bailleurs: "bailleurs/getBailleurs",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
+    filteredProjet() {
+      var self = this;
+      return this.projets.filter(function (projet) {
+        return projet.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+          projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      });
+    },
 
   },
 
@@ -353,6 +359,33 @@ export default {
       this.$router.push({ name: 'dashboard_projets_composantes_globale' })
     },
 
+    active() {
+      this.$store.dispatch('active')
+    },
+    disabled() {
+      this.$store.dispatch('disabled')
+    },
+    fetchProjets(programme) {
+      this.active()
+      ProgrammeService.projets(programme).then((data) => {
+        const datas = data.data.data
+        this.projets = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
@@ -360,21 +393,19 @@ export default {
     }),
 
     ...mapActions('projets', {
-      fetchProjets: "FETCH_LIST_PROJET_OF_PROGRAMME",
+     
       saveProjet: "STORE_PROJET",
       prolongerDateProjet: "PROLONGER_DATE_PROJET",
       updateProjet: "UPDATE_PROJET",
       deleteProjet: "DESTROY_PROJET"
     }),
 
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR_OF_PROGRAMME' }),
+   // ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR_OF_PROGRAMME' }),
 
     gotoDetails(projet) {
       if (this.dashboardProjetVisible) {
         this.$router.push({ name: 'projets_id_details', params: { id: projet.id, projet: projet } })
       }
-
-
     },
 
     addDate() {
@@ -391,17 +422,11 @@ export default {
       this.showModal = value
     },
 
-    filteredProjet() {
-      var self = this;
-      return this.projets.filter(function (projet) {
-        return projet.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          projet.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          projet.codePta.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
-      });
-    },
+    
 
     addProjet() {
       this.title = 'Ajouter'
+      this.submitText = "Enregistrer"
       this.isUpdate = false
       let formData = this.champs.map((value) => {
         if (value.key === 'bailleurId') {
@@ -424,16 +449,16 @@ export default {
     modifierProjet(projet) {
       this.isUpdate = true
       this.title = 'Modifier un projet'
-
+      console.log('mes projets',projet)
       this.submitText = "Modifier"
 
       this.projetId = projet.id
 
-      this.projetAttributs.forEach((item) => {
+      this.projetAttributsUpdate.forEach((item) => {
 
         this.champsUpdate.find((value, index) => {
 
-          if (value.key !== 'bailleurId' && value.key !== 'statut') {
+          if (value.key !== 'statut') {
             if (value.key === item) {
               this.champsUpdate[index]['data'] = projet[item]
             }
@@ -447,8 +472,31 @@ export default {
 
     },
 
-    async supprimerProjet(projet) {
-      if (window.confirm("Voulez-vous supprimer ce projet " + projet.nom)) await this.deleteProjet(projet.id)
+    
+    async supprimerProjet(projet,index) {
+      this.deleteModal= true
+      this.deleteData.data = projet
+      this.deleteData.index = index
+    },
+    deleteProjets(data) {
+      this.filteredProjet.splice(data.index,1)
+      this.deleteModal= false
+      ProjetService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
     },
 
     saveProlongerDate() {
@@ -495,31 +543,31 @@ export default {
         this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
         let projet = {}
         if (this.isUpdate) {
-          projet = extractFormData(this.champsUpdate, this.projetAttributs)
+          projet = extractFormData(this.champsUpdate, this.projetAttributsUpdate)
+          projet.id = this.projetId
         } else {
           projet = extractFormData(this.champs, this.projetAttributs)
+          projet.bailleurId = projet.bailleurId.id
         }
 
         projet.programmeId = this.programmeId
 
-        projet.bailleurId = projet.bailleurId.id
-        projet.id = this.projetId
-
+       
+      
         if (projet?.id) {
-          projet.statut = -1
+          projet.statut = projet.statut
           this.updateProjet({ projet: projet, id: projet?.id }).then(response => {
 
             if (response.status == 200 || response.status == 201) {
               this.sendRequest = false;
+              this.fetchProjets(this.programmeId)
               this.close()
             }
 
           }).catch((error) => {
-
-            this.setErrors({ message: error?.response?.data?.message, errors: error.response.data.errors })
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false;
             this.champs.map(value => value.errors = this.erreurs[value.key])
-
           })
         }
         else {
@@ -568,6 +616,7 @@ export default {
           this.saveProjet(formData).then(response => {
             if (response.status == 200 || response.status == 201) {
               this.close()
+              this.fetchProjets(this.programmeId)
               this.sendRequest = false;
             }
           }).catch((error) => {
@@ -591,6 +640,7 @@ export default {
 
         if (response.status == 200 || response.status == 201) {
           this.$toast.success("projet valider")
+          this.fetchProjets(this.programmeId)
         }
 
       }).catch((error) => {
@@ -609,6 +659,47 @@ export default {
       })
 
 
+    },
+    fetchBailleurs(programme) {
+    
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+        const datas = data.data.data
+        this.bailleurs = datas
+        this.champs =[
+        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
+        { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture', isImage: true, isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Pièce jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
+        { name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data: '', required: true, options: datas, cle: 'id', value: 'sigle', errors: [] },
+        { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+        { name: 'Objectifs specifiques', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Taux engagement', key: "tauxEngagement", type: 'text', placeholdere: 'Taux engagement', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+        
+      ]
+      this.champsUpdate =  [
+        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Prêt', type: 'text', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Budget Nationnal', key: "budgetNational", type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
+        { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
+        { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+        { name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Taux engagement', key: "tauxEngagement", type: 'text', placeholdere: 'Taux engagement', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+       
+      ]
+    
+      }).catch((error) => {
+       
+      })
     },
   },
 
@@ -631,14 +722,15 @@ export default {
     }
     this.programmeId = this.currentUser.programme.id
     if (this.programmeId) {
-      this.fetchProjets(this.programmeId).then((value) => {
-        setTimeout(() => {
-          console.log("Fetching list of bailleurs...")
-          if (this.bailleurVisible) {
-            this.fetchBailleurs(this.programmeId)
-          }
-        });
-      })
+      if (this.bailleurVisible) {
+        this.fetchBailleurs(this.programmeId)
+        this.fetchProjets(this.programmeId)
+      }
+      else {
+        this.fetchProjets(this.programmeId)
+      }
+     
+     
     }
   }
 }
