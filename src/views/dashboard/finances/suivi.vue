@@ -33,10 +33,10 @@
         <modal-top-right :title="title" v-on:close="close">
         <div  class="w-full p-4">
           <div v-if="title =='Ajouter un Suivi'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+              <vform template="default"  @closeModal="close" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
           <div v-if="title =='Modifier un Suivi'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
+              <vform template="default"  @closeModal="close" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
           </div>
           
         </div>
@@ -70,7 +70,7 @@
       <div v-if="showModal3">
         <vmodal  title="Filtre"  v-on:close="showModal3 = false">
           <div class="w-full" style="width:500px" >
-            <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+            <vform template="default" isAllPairSaufDescrip="true"  @closeModal="showModal3 = false" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
           </div>
         </vmodal>
       </div>
