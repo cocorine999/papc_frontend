@@ -217,24 +217,24 @@
         </div>
       </div>
 
-      <vtable v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :headers="headers"
+      <indicateur-table v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :key="componentKey" :headers="headers"
         :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
-      </vtable>
-      <vtable v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd  " :sendRequest="sendRequest"
+      </indicateur-table>
+      <indicateur-table v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd" :key="componentKey" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" :actions="actions" @modifier="modifier"  @updateInputData="updateInputData"
-        @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></vtable>
-      <vtable v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
+        @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></indicateur-table>
+      <indicateur-table v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi"
-        @supprimer="supprimer"></vtable>
-      <vtable v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
+        @supprimer="supprimer"></indicateur-table>
+      <indicateur-table v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
-        @consulter="consulterSuivi"></vtable>
-      <vtable v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
+        @consulter="consulterSuivi"></indicateur-table>
+      <indicateur-table v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi">
-      </vtable>
-      <vtable v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd "  @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
+      </indicateur-table>
+      <indicateur-table v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :key="componentKey" @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer">
-      </vtable>
+      </indicateur-table>
     </div>
   </dashboard>
 
@@ -244,7 +244,7 @@
 import ModalTopRight from '@/components/ModalTopRight'
 import SearchBar from '@/components/SearchBar'
 import Titre from '@/components/Titre'
-import Vtable from '@/components/Vtable'
+import IndicateurTable from '@/components/IndicateurTable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
 import Vbutton from '@/components/Vbutton'
@@ -261,7 +261,7 @@ import DeleteAlert from "@/components/DeleteAlert.vue";
 import JsonExcel from "vue-json-excel";
 export default {
   components: {
-    Vtable,
+    IndicateurTable,
     Dashboard,
     Vmodal,
     Vbutton,
@@ -305,7 +305,6 @@ export default {
         { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: true, cle: 'id', value: 'nom', required: false, },
         { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: false, cle: 'id', value: 'nom', errors: [] },
         { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'sigle' },
-
       ],
       headers: [],
       idIndicateur: '',
@@ -333,6 +332,7 @@ export default {
       isUpdate:false,
       deleteData:{},
       deleteModal:false,
+      componentKey: 0,
 
     };
   },
@@ -470,26 +470,25 @@ export default {
         const datas = data.data.data
         this.indicateurs= datas
         this.headers = [
-          {name: 'Indicateur', cle: 'nom', },
-          {name: 'Description', cle: 'description' },
-          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
-          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
-          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId' },
-          {name: 'Valeur de base', cle: 'valeurDeBase' },
-          {name: 'Année de base', cle: 'anneeDeBase' },
-          {name: 'Date de création', cle: 'created_at' },
+          {name: 'Indicateur ', cle: 'nom', width:'w-56' },
+          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width:'w-20' },
+          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width:'w-56' },
+          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width:'w-56' },
+          {name: 'Valeur de base', cle: 'valeurDeBase', width:'w-24' },
+          {name: 'Année de base', cle: 'anneeDeBase', width:'w-24' },
+          {name: 'Date de création', cle: 'created_at', width:'w-56' },
         ]
         this.champs = [
-        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
-      ]
+          { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+        ]
         this.disabled()
       }).catch((error) => {
         this.disabled()
@@ -506,19 +505,17 @@ export default {
       })
     },
     fetchIndicateur() {
-     
       IndicateurService.get().then((data) => {
         const datas = data.data.data
         this.indicateurs= datas
         this.headers = [
-          {name: 'Indicateur', cle: 'nom', },
-          {name: 'Description', cle: 'description' },
-          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId' },
-          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId' },
-          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId' },
-          {name: 'Valeur de base', cle: 'valeurDeBase' },
-          {name: 'Année de base', cle: 'anneeDeBase' },
-          {name: 'Date de création', cle: 'created_at' },
+          {name: 'Indicateur ', cle: 'nom', width:'w-56' },
+          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width:'w-20' },
+          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width:'w-56' },
+          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width:'w-56' },
+          {name: 'Valeur de base', cle: 'valeurDeBase', width:'w-24' },
+          {name: 'Année de base', cle: 'anneeDeBase', width:'w-24' },
+          {name: 'Date de création', cle: 'created_at', width:'w-56' },
         ]
         this.champs = [
         { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -546,7 +543,7 @@ export default {
         }
       })
     },
-
+   
     ...mapActions("indicateurs", {
       saveIndicateur: "STORE_INDICATEUR",
       filtre: "FILTRE_INDICATEUR",
@@ -711,6 +708,7 @@ export default {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
                 this.fetchIndicateur()
+                this.forceRerender()
                 this.sendRequest = false
                 this.close();
               }
@@ -725,6 +723,7 @@ export default {
               this.close();
               this.$toast.success('operation effectué avec success')
               this.fetchIndicateur()
+              this.forceRerender()
               this.sendRequest = false
             }
           }).catch((e) => {

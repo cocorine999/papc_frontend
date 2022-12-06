@@ -56,7 +56,7 @@
        
 
         <div v-if="statut.code >= -1 && statut.code <= 2">
-          <span class="absolute bottom-7 right-0 _rounded-lg text-sm text-white bg-yellow-500 px-2 py-1 font-semibold"
+          <span class="absolute bottom-7 right-0 _rounded-lg text-sm text-white  px-2 py-1 font-semibold"
             :class="statut.couleur">
             {{ statut.libelle }} <i class="bx bx-time-five ml-1"></i></span>
         </div>

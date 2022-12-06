@@ -33,10 +33,10 @@
         <modal-top-right :title="title" v-on:close="close">
         <div  class="w-full p-4">
           <div v-if="title =='Ajouter un Suivi'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+              <vform template="default"  @closeModal="close" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" ></vform>
           </div>
           <div v-if="title =='Modifier un Suivi'">
-              <vform template="default" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
+              <vform template="default"  @closeModal="close" :champs="champs" :cols="cols" submitText="Modifier" @sendForm="sendForm" ></vform>
           </div>
           
         </div>
@@ -70,7 +70,7 @@
       <div v-if="showModal3">
         <vmodal  title="Filtre"  v-on:close="showModal3 = false">
           <div class="w-full" style="width:500px" >
-            <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+            <vform template="default" isAllPairSaufDescrip="true"  @closeModal="showModal3 = false" :champs="champsRecherche" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
           </div>
         </vmodal>
       </div>
@@ -98,8 +98,12 @@
       
       </div>
 
-      <pre>Annee : {{annee}}</pre>
-      <pre>Bailleur : {{bailleur}}</pre>
+      <div v-if="showInfo" class="flex justify-center py-3">
+        <p class="text-center w-1/3 border bg-primary text-white shadow p-2   font-bold">
+         <span>Exercice :</span> {{filtreInfos.annee}} - trimestre {{filtreInfos.trimestre}} - {{filtreInfos.bailleur}}
+        </p>
+       
+      </div>
      
       <div class="my-4">
         
@@ -145,6 +149,7 @@ export default {
           title:'',
           file:'',
           chargement:false,
+          showInfo:false,
           suiviAttributs : ['consommer', 'type', 'trimestre', 'annee', 'activiteId'],
           suiviAttributsRecherche : ['trimestre', 'annee', 'activiteId','bailleurId'],
           champs:[
@@ -168,10 +173,12 @@ export default {
         actions:[
           {name:'supprimer',iconne:''},
         ],
-        suiviFinancier: [],
+        suiviFinancier:[],
         annee: "",
         bailleur: "",
+        trimestre:"",
         bailleurs: [],
+        filtreInfos:{},
         suiviFinancierVisible:false,
         suiviFinancierUpdate:false,
         suiviFinancierDelete:false,
@@ -313,8 +320,10 @@ export default {
         suivi.type = suivi.type.id
         suivi.trimestre = suivi.trimestre.valeur
         suivi.activiteId = suivi.activiteId.id
+        
+        
 
-        console.log(suivi)
+        //console.log(suivi)
       
           this.saveSuiviFinancier(suivi).then(response => {
             if(response.status === 200 || response.status === 201){
@@ -339,14 +348,15 @@ export default {
         suivi.activiteId = suivi.activiteId?.id
         suivi.bailleurId = suivi.bailleurId?.id
 
+        this.filtreInfos = suivi
       
 
         this.filter(suivi).then((response) => {
             if (response.status == 200 || response.status == 201) {
-            
               this.suiviFinancier = response.data.data.suiviFinanciers
               this.annee = response.data.data.annee
-              this.bailleur = response.data.data.bailleur
+              this.filtreInfos.bailleur = response.data.data.bailleur
+              this.showInfo = true
               this.close2();
             }
         });

@@ -42,9 +42,10 @@ const getStringValueOfStatutCode = (statut) => {
             data = {
                 "code": statut,
                 "libelle": "En retard",
-                "couleur": "bg-red-400"
+                "couleur": "bg-red-500"
             };
             break;
+            
         
         case 2:
             data = {

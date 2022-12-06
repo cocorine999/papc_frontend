@@ -38,13 +38,13 @@
         <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
-              @getFile="getFile" submitText="Créer un ano" @sendForm="sendForm"></vform>
+              @getFile="getFile" submitText="Créer un ano"  @closeModal="close" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
         <modal-top-right v-else :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
-              @getFile="getFile" submitText="Modifier" @sendForm="sendForm"></vform>
+              @getFile="getFile" submitText="Modifier"  @closeModal="close" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
       </div>

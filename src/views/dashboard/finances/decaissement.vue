@@ -46,10 +46,10 @@
       <modal-top-right :title="title" v-on:close="close">
        <div class="w-full p-4">
          <div v-if="!isUpdate">
-            <vform template="default" :champs="champs"  :sendRequest="sendRequest" submitText="Enregistrer" @sendForm="sendForm" ></vform>
+            <vform template="default"  @closeModal="close" :champs="champs"  :sendRequest="sendRequest" submitText="Enregistrer" @sendForm="sendForm" ></vform>
          </div>
          <div v-else>
-            <vform template="default" :champs="champsUpdate"  :sendRequest="sendRequest" submitText="Modifier" @sendForm="sendForm" ></vform>
+            <vform template="default"  @closeModal="close" :champs="champsUpdate"  :sendRequest="sendRequest" submitText="Modifier" @sendForm="sendForm" ></vform>
          </div>
         
        </div>
@@ -58,7 +58,7 @@
     <div v-if="showModal2">
       <vmodal  title="Filtre decaissement"  v-on:close="showModal2 = false">
         <div class="px-4" style="width:500px" >
-          <vform template="default" isAllPairSaufDescrip="true" :champs="champsRecherche" :sendRequest="sendRequest" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
+          <vform template="default" isAllPairSaufDescrip="true"  @closeModal="showModal2 = false" :champs="champsRecherche" :sendRequest="sendRequest" :cols="cols" submitText="Rechercher" @sendForm="filtre" ></vform>
         </div>
       </vmodal>
     </div>

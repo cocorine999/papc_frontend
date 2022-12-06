@@ -3,9 +3,9 @@
     <div  class="w-full">
       <route-name title="entreprises" />
       <div v-if="showModal">
-        <modal-top-right title="Ajouter" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="close">
           <div class="px-4">
-            <form-component :form="form" @send="sendForm" />
+            <form-component   @closeModal="close" :form="form" @send="sendForm" />
           </div>
         </modal-top-right>
       </div>
@@ -212,6 +212,7 @@ export default {
       seeChecklist: false,
       seeEntreprise: true,
       showModal: false,
+      title:'',
       entrepriseExecutanteAttributs: ["nom", "email", "contact", "mod"],
       currentRole:'',
       champs: [

@@ -4,7 +4,7 @@
     <div v-if="showModal">
       <ModalTopRight :title="title"  v-on:close="showModal = false">
         <div  class="px-4 overflow-y-auto">
-          <vform template="default" isAllPairSaufDescrip="true" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" ></vform>
+          <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal=false" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" ></vform>
         </div>
       </ModalTopRight>
     </div>

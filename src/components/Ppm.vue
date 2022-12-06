@@ -1,13 +1,13 @@
 <template>
   <div>
-
-     <div v-if="openFiltre">
+    <div v-if="openFiltre">
        <vmodal title="filtre"  v-on:close="openFiltre = false">
         <div  style="width:60vw !important">
           <form @submit.prevent="getPtaFiltre"  class="w-full">
             <div class="form-group">
               <label for="bailleur"  class="block my-2 font-semibold">Selectionnez un bailleur</label>
-              <multiselect v-model="bailleur"  :options="bailleurs" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un bailleur" label="nom" track-by="id"></multiselect>
+              <multiselect v-model="bailleur"  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"  :options="bailleurs" :custom-label="customLabel" :preselect-first="true" placeholder="selectionnez un bailleur" label="nom" track-by="id"></multiselect>
             </div> 
 
             <div class="form-group">
@@ -278,10 +278,10 @@
                   <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
-                <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                <!-- <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                   <span v-if="pta.poidsActuel != undefined" class="font-bold"> {{ pta.poidsActuel }} </span>
-                  <!--  <span v-else class="font-bold" >0 FCFA</span> -->
-                </td>
+                  <span v-else class="font-bold" >0 FCFA</span> 
+                </td> -->
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                   <span v-if="pta.structureAssocie != undefined" class="font-bold"> {{ pta.structureAssocie }} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -1102,12 +1102,23 @@ export default {
     getPtaFiltre() {
     
       this.chargement(true)
-        const  data={
+      let data = {}
+      if(this.bailleur ==null) {
+        data={
+          programmeId:this.currentUser.programme.id,
+          annee:Number(this.annee),
+          ppm: 2
+        }
+      }
+      else {
+        data={
           bailleurId:this.bailleur.id,
           programmeId:this.currentUser.programme.id,
           annee:Number(this.annee),
           ppm: 2
         }
+      }
+        
         this.active()
         PtabService.getFiltre(data).then((data) => {
          this.ptab =  data.data.data

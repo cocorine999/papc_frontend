@@ -41,8 +41,7 @@
 
         </div>
         <div v-else-if="champ.isSelect ===false && champ.isTextArea ===true">
-          <label  class=" block py-2 
-text-xs  md:text-sm font-semibold " for="">
+          <label  class=" block py-2 text-xs  md:text-sm font-semibold " for="">
             {{champ.name}} <span v-if="champ.required" class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
           </label>
           <textarea v-model='champ.data' class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" required rows="3"></textarea>
