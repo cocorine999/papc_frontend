@@ -19,7 +19,7 @@
       </nav> 
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
-        <div  class="w-full">
+        <div  class="w-full p-4">
           <div v-if="title =='Ajouter'">
               <vform template="default" :champs="champs" :cols="cols" submitText="Enregistrer" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
