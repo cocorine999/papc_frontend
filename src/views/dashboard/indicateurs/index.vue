@@ -708,7 +708,7 @@ export default {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
                 this.fetchIndicateur()
-                this.forceRerender()
+               
                 this.sendRequest = false
                 this.close();
               }
@@ -723,7 +723,7 @@ export default {
               this.close();
               this.$toast.success('operation effectué avec success')
               this.fetchIndicateur()
-              this.forceRerender()
+             
               this.sendRequest = false
             }
           }).catch((e) => {
