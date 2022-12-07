@@ -1,5 +1,9 @@
 <template>
   <div id="chart" class="bg-white  p-2 shadow-sm">
+    <div class="mb-3">
+      <h2 class="text-sm font-semibold text-purple-500 py-1">Taux  annuel </h2>
+      <p class=" text-sm leading-6 ">Taux d'engagement  <br> sur 12 mois </p>
+    </div>
     <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
   </div>
 </template>

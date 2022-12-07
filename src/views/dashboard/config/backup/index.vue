@@ -34,7 +34,7 @@
       </nav>
       
       <div class="my-2 flex justify-between items-center ">
-        <titre>alert systeme  </titre>
+        <titre>alerte systeme  </titre>
       </div>
     
    

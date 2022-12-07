@@ -59,7 +59,7 @@
           <tr>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Nom</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Description</th>
-            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Date avant rappel</th>
+            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Date</th>
            <!--  <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Date rappel </th> -->
             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">Frequence</th>
             <th class="px-6 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-primary tracking-wider">Actions</th>
@@ -130,8 +130,7 @@ export default {
         champs:[
             {name: 'libelle', key: "libelle", type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
             {name: 'Frequence (jours)', key: "frequence", type: 'number', placeholdere: "cette valeur est en nombre de jour", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
-            {name: 'Date avant rappel', key: "dateAvant", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
-            {name: 'Date du rappel', key: "dateDuRappel", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
+            {name: 'Date du rappel', key: "dateAvant", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
             {name: 'Description', key: "description", type: '', placeholdere: "", isSelect: false, isTextArea: true, data:'', required: true, errors : []}, 
         ],
         
@@ -147,7 +146,6 @@ export default {
             this.champs[1].data =''
             this.champs[2].data = ''
             this.champs[3].data = ''
-            this.champs[4].data = ''
         },
        
       
@@ -191,8 +189,7 @@ export default {
             this.champs[0].data = data.nom
             this.champs[1].data = data.frequence
             this.champs[2].data = data.dateAvant
-            this.champs[3].data = data.dateDeRappel
-            this.champs[4].data = data.description
+            this.champs[3].data = data.description
             this.showModal = true
             this.isSelect = true
             
@@ -200,9 +197,8 @@ export default {
         saveUpdate() {
             const data = {
                 nom:this.champs[0].data,
-                description:this.champs[4].data,
+                description:this.champs[3].data,
                 frequence:this.champs[1].data,
-                dateDeRappel:this.champs[3].data,
                 dateAvant:this.champs[2].data
             }
             rappelService.update(this.saveData.id,data).then(() => {
@@ -226,10 +222,9 @@ export default {
         sendForm() {
            const data = {
                 nom:this.champs[0].data,
-                description:this.champs[4].data,
+                description:this.champs[3].data,
                 frequence:this.champs[1].data,
-                dateDeRappel:this.champs[3].data,
-                dateAvant:this.champs[2].data
+                dateAvant:this.champs[2].data,
             }
             rappelService.create(data).then(() => {
                 this.$toast.success("nouveau rappel creer !")
