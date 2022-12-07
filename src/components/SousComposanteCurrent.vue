@@ -164,7 +164,7 @@
                 :montantEPM="sousComposante.pret" :position="sousComposante.position" :poids="sousComposante.poids"
                 :bailleur="sousComposante.sigle" @modifier="modifier(sousComposante)"
                 @dupliquer="dupliquer(sousComposante)" @supprimer="supprimer(sousComposante)"
-                @suivre="suivreMyComposant(sousComposante)" @gotoNext="gotoNext(sousComposante)"
+                @suivre="suivreMyComposant(sousComposante)" @validation="validation" @gotoNext="gotoNext(sousComposante)"
                 :isDelete="composanteDelete" :isUpdate="composanteUpdate"></card-composante>
             </div>
           </div>
@@ -176,12 +176,12 @@
         <div v-else>
           <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
             <div v-for="(sousComposante, index) in retardData" :key="index">
-              <card-composante :isComposante="false" :data="sousComposante" :libelle="sousComposante.nom"
+              <card-composante :isComposante="false"  :data="sousComposante" :libelle="sousComposante.nom"
                 :code="sousComposante.codePta" composanteName="Sous Composante"
                 :statut="getStatus(sousComposante.statut)" :montantEPM="sousComposante.pret"
                 :position="sousComposante.position" :poids="sousComposante.poids" :bailleur="sousComposante.sigle"
                 @modifier="modifier(sousComposante)" @dupliquer="dupliquer(sousComposante)"
-                @supprimer="supprimer(sousComposante)" @suivre="suivreMyComposant(sousComposante)"
+                @supprimer="supprimer(sousComposante)" @validation="validation" @suivre="suivreMyComposant(sousComposante)"
                 @gotoNext="gotoNext(sousComposante)" :isDelete="composanteDelete"
                 :isUpdate="composanteUpdate"></card-composante>
             </div>
@@ -200,7 +200,7 @@
                 :statut="getStatus(sousComposante.statut)" :montantEPM="sousComposante.pret"
                 :position="sousComposante.position" :poids="sousComposante.poids" :bailleur="sousComposante.sigle"
                 @modifier="modifier(sousComposante)" @dupliquer="dupliquer(sousComposante)"
-                @supprimer="supprimer(sousComposante)" @suivre="suivreMyComposant(sousComposante)"
+                @supprimer="supprimer(sousComposante)" @validation="validation" @suivre="suivreMyComposant(sousComposante)"
                 @gotoNext="gotoNext(sousComposante)" :isDelete="composanteDelete"
                 :isUpdate="composanteUpdate"></card-composante>
             </div>
@@ -218,7 +218,7 @@
                 :statut="getStatus(sousComposante.statut)" :montantEPM="sousComposante.pret"
                 :position="sousComposante.position" :poids="sousComposante.poids" :bailleur="sousComposante.sigle"
                 @modifier="modifier(sousComposante)" @dupliquer="dupliquer(sousComposante)"
-                @supprimer="supprimer(sousComposante)" @suivre="suivreMyComposant(sousComposante)"
+                @supprimer="supprimer(sousComposante)" @validation="validation" @suivre="suivreMyComposant(sousComposante)"
                 @gotoNext="gotoNext(sousComposante)" :isDelete="composanteDelete"
                 :isUpdate="composanteUpdate"></card-composante>
             </div>
@@ -236,7 +236,7 @@
                 :code="sousComposante.code" composanteName="Sous Composante" :statut="getStatus(sousComposante.statut)"
                 :montantEPM="sousComposante.pret" :position="sousComposante.position" :poids="sousComposante.poids"
                 :bailleur="sousComposante.sigle" @modifier="modifier(sousComposante)"
-                @dupliquer="dupliquer(sousComposante)" @supprimer="supprimer(sousComposante)"
+                @dupliquer="dupliquer(sousComposante)" @validation="validation" @supprimer="supprimer(sousComposante)"
                 @suivre="suivreMyComposant(sousComposante)" @gotoNext="gotoNext(sousComposante)"
                 :isDelete="composanteDelete" :isUpdate="composanteUpdate"></card-composante>
             </div>
@@ -781,6 +781,9 @@ export default {
       window.document.getElementById('vform').reset()
 
       this.setSousComposante({})
+    },
+    validation() {
+      this.fetchSousComposantes(this.valueFiltre.id);
     },
 
     sendForm() {

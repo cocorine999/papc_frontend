@@ -346,7 +346,7 @@
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                       </td>
                       <td v-if="statutActuel" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
-                        <span v-if="pta.poidsActuel != undefined" class="font-bold"> {{ pta.poidsActuel }} </span>
+                        <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                       </td>
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
@@ -768,7 +768,7 @@
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.poidsActuel != undefined" class="font-bold"> {{ pta.poidsActuel }} </span>
+                  <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
@@ -1192,7 +1192,7 @@
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.poidsActuel != undefined" class="font-bold"> {{ pta.poidsActuel }} </span>
+                  <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
@@ -1610,7 +1610,7 @@
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.poidsActuel != undefined" class="font-bold"> {{ pta.poidsActuel }} </span>
+                  <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }} </span>
                   <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                 </td>
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">

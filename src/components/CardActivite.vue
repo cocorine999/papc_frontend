@@ -2,9 +2,9 @@
   <!-- cards Tâches -->
   <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" style="height:250px" class="relative mb-4 lg:mb-0 ">
     <!-- dots -->
-
+    
     <div class="absolute right-1 flex space-x-3 top-2 z-10 cursor-pointer">
-      <span v-if="!isValidate" title="Activite non valider" class="text-red-300"><svg stroke="currentColor"
+      <span v-if="(this.statut.code == -2)" title="Activite non valider" class="text-red-300"><svg stroke="currentColor"
           fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em" width="2em"
           xmlns="http://www.w3.org/2000/svg">
           <path fill="none" d="M0 0h24v24H0z" stroke="none" />
@@ -18,7 +18,7 @@
             stroke="none" />
         </svg></span>
 
-      <span v-if="isValidate" title="Activite valider" class="text-green-500"><svg stroke="currentColor"
+      <span v-else title="Activite valider" class="text-green-500"><svg stroke="currentColor"
           fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="2em" width="2em"
           xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd"
@@ -44,8 +44,8 @@
           <span>{{ bailleur }}</span>
         </div>
 
-        <div v-if="!isValidate">
-          <button title="Valider l\' activite" v-if="showValidate" @click="validation(id)"
+        <div v-if="((this.statut.code == -2) && showValidate)">
+          <button title="Valider l' activite"  @click="validation(id)"
             class="bg-green-500 rounded-lg text-sm px-3 py-1 font-semibold text-white">
             Valider
           </button>
@@ -164,7 +164,7 @@ export default {
         composanteId: this.data.composanteId
       }
       ActiviteService.update(this.data.id, params).then((data) => {
-        this.isValidate = true
+        this.$emit('validation')
       }).catch((e) => {
         if (e.response) {
           this.$toast.error('erreur de validation')

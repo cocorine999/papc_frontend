@@ -234,7 +234,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :debut="tache.debut" :fin="tache.fin" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @commentaire="showComment = true"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" @commentaire="showComment = true"
                   :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
               </div>
             </div>
@@ -249,7 +249,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -266,7 +266,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -283,7 +283,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -299,7 +299,7 @@
               <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
                 :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
                 :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
-                @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @prolonger="prolonger(tache)"
+                @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @validation="validation" @prolonger="prolonger(tache)"
                 @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin" @commentaire="showComment = true"
                 :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
             </div>
@@ -940,6 +940,10 @@ export default {
 
     getStatus(status) {
       return getStringValueOfStatutCode(status);
+    },
+
+    validation() {
+      this.fetchTaches(this.valueFiltre.id);
     },
 
 

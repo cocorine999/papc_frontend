@@ -6,7 +6,7 @@
           <label   class=" block py-2 text-xs  md:text-sm font-semibold " for="">
           {{champ.name}} <span v-if="champ.required" class="px-2 w-full text-lg font-black text-red-700">*</span>
           </label>
-          <input v-if="champ.type !='file'" :required="champ.required" v-model='champ.data' :step="champ.type === 'number' ? '0.01' : ''" :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"    class="px-2 py-1 md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
+          <input v-if="champ.type !='file'" :required="champ.required" v-model='champ.data' :step="champ.type === 'number' ? '0.01' : ''" :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"  :class="{'h-14':champ.type==='color'}"  class="px-2 py-1  md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
           
            <div v-else class="">
               <div v-if="champ.isImage">

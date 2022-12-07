@@ -249,7 +249,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" @validation="validation" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -268,7 +268,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -287,7 +287,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -306,7 +306,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -326,7 +326,7 @@
                 :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                 :isUpdate="activiteUpdate"></card-activite>
               <!-- End cards Activités -->
             </div>
@@ -1456,6 +1456,7 @@ export default {
       this.inProgress = true;
       this.retard = false
     },
+
     toggle4() {
       this.pending = false;
       this.success = false;
@@ -1514,6 +1515,11 @@ export default {
             });
         }
       }
+    },
+
+   
+    validation() {
+      this.fetchActivites(this.composanteId);
     },
 
     sendForm() {
