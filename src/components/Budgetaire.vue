@@ -23,7 +23,7 @@
           <h2 class="uppercase font-semibold hover:font-bold py-2">
             budget national
           </h2>
-          <p class="hover:font-bold">{{( projet.budgetNational | formatNumber)}} XOF </p>
+          <p class="hover:font-bold">{{ projet.budgetNational | formatNumber}} XOF </p>
         </div>
       </div>
 
