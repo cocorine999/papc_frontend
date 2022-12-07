@@ -121,32 +121,24 @@
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true"
-                  :custom-label="customLabelP" placeholder="selectionnez un projet"
-                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
-                  track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP" :preselect-first="true"
+                placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
               </div>
 
             </li>
             <li class=" mr-2" role="presentation">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true"
-                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
-                  placeholder="selectionnez une composante" label="nom" track-by="id">
-                </multiselect>
+                <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel"
+                :preselect-first="true" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
 
             </li>
             <li class="mr-2 " role="presentation">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
-                <multiselect v-model="valueFiltre" :options="sousComposantes" :preselect-first="true"
-                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
-                  placeholder="selectionnez une sous composante" label="nom" track-by="id">
+                <multiselect v-model="sousComposanteFiltre" :options="sousComposantes" :preselect-first="true"
+                :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une sous composante" label="nom" track-by="id">
                 </multiselect>
               </div>
 
@@ -155,9 +147,7 @@
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
                 <multiselect v-model="valueFiltre" :options="activites" :custom-label="customLabel"
-                  placeholder="selectionnez l'activite" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
-                  track-by="id">
+                placeholder="selectionnez l'activite" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id">
                 </multiselect>
               </div>
 
