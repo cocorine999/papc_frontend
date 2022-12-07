@@ -4,7 +4,7 @@
       <div class="py-2  inline-block min-w-full">
        
         <div class=" overflow-x-auto">
-          <table class="min-w-full">
+          <table class="min-w-full table-auto">
             <thead class="border-b bg-gray-300">
               <tr>
                 <th  scope="col" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">
@@ -27,7 +27,7 @@
             </thead>
           
             <tbody>
-              <tr  class="border-b border-gray-300" v-for="(data, index) in listes" :key="index">
+              <tr  class="border-b border-gray-300 hover:bg-gray-200" v-for="(data, index) in listes" :key="index">
                 <td  class="text-sm text-gray-900 font-light py-2 px-4 ">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="getRowDetail($event, index,index)">

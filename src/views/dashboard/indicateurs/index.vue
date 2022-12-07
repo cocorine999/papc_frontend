@@ -65,7 +65,7 @@
                   <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurCible" required
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                  type="number" placeholder="" />
+                  type="text" placeholder="" />
               </div>
 
               <div class="my-4">
@@ -73,7 +73,7 @@
                   <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <input v-model="suiviIndicateurs.valeurRealise" required
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                  type="number" placeholder="" />
+                  type="text" placeholder="" />
               </div>
 
               <div class="my-4">
