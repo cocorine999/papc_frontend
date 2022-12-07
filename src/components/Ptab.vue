@@ -513,21 +513,54 @@
             </section>
           </vue-html2pdf>
         </div>
+        <div style="height:80vh;" class="flex overflow-y-auto">
+          <div style="width:35%" >
+            <table class="sticky z-20 top-0 left-0 w-full border-collaspe table-fixed block table1 text-left text-sm">
+              <thead class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr style="height:82px" class="">
+                  <th  rowspan="2"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700  whitespace-nowrap">
+                    Bailleurs
+                  </th>
+                  <th scope="col"  rowspan="2"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                    Code PTBA
+                  </th>
+                 
+                 
+                </tr>
+                <tr>
+                  
+                </tr>
+                
+                
+              </thead>
 
-        <div style="height:80vh" class="overflow-x-auto relative shadow-md sm:rounded-lg">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <tbody>
+              <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {{ pta.bailleur }}
+                </th>
+                <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <span v-if="pta.isProjet" class="font-bold text-lg"> {{ pta.code }}</span>
+                  <span v-if="pta.isComposante" class="text-blue-500 text-sm"> {{ pta.code }}</span>
+                  <span v-if="pta.isSC && pta.code != 0" class=" text-yellow-600 text-sm"> {{ pta.code }}</span>
+                  <span v-if="pta.isActivite" class="text-green-600 text-sm"> {{ pta.code }}</span>
+                  <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.code }}</span>
+                </td>
+                
+              </tr>
+              </tbody>
 
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            </table>
+          </div>
+          <div  class=" relative shadow-md sm:rounded-lg">
+            <table class="w-full overflow-auto text-sm text-left text-gray-500 dark:text-gray-400">
+
+            <thead class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
               <tr class="">
-                <th scope="col" rowspan="2"
-                  class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700  whitespace-nowrap">
-                  Bailleurs
-                </th>
-                <th scope="col" rowspan="2"
-                  class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                  Code PTBA
-                </th>
+                
                 <th scope="col" rowspan="3"
                   class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                   Composantes / Sous-composantes / activiés / Taches
@@ -589,8 +622,8 @@
                 <th scope="col"
                   class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
                   BN
-                </th>
-                <th scope="col"
+              </th>
+              <th scope="col"
                   class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
                   EMP
                 </th>
@@ -713,16 +746,7 @@
             </thead>
             <tbody>
               <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {{ pta.bailleur }}
-                </th>
-                <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.isProjet" class="font-bold text-lg"> {{ pta.code }}</span>
-                  <span v-if="pta.isComposante" class="text-blue-500 text-sm"> {{ pta.code }}</span>
-                  <span v-if="pta.isSC && pta.code != 0" class=" text-yellow-600 text-sm"> {{ pta.code }}</span>
-                  <span v-if="pta.isActivite" class="text-green-600 text-sm"> {{ pta.code }}</span>
-                  <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.code }}</span>
-                </td>
+               
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                   <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{ pta.nom }}</span>
                   <span v-if="pta.isComposante" class="text-blue-500 text-sm">composante: {{ pta.nom }}</span>
@@ -929,8 +953,10 @@
               </tr>
 
             </tbody>
-          </table>
+            </table>
         </div>
+        </div>
+        
       </div>
 
 
@@ -1359,20 +1385,54 @@
           </vue-html2pdf>
         </div>
 
-        <div style="height:80vh" class="overflow-x-auto relative shadow-md sm:rounded-lg">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <div style="height:80vh;" class="flex overflow-y-auto">
+          <div style="width:35%" >
+            <table class="sticky z-20 top-0 left-0 w-full border-collaspe table-fixed block table1 text-left text-sm">
+              <thead class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr style="height:82px" class="">
+                  <th  rowspan="2"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700  whitespace-nowrap">
+                    Bailleurs
+                  </th>
+                  <th scope="col"  rowspan="2"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                    Code PTBA
+                  </th>
+                 
+                 
+                </tr>
+                <tr>
+                  
+                </tr>
+                
+                
+              </thead>
 
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tbody>
+              <tr v-for="pta in dataNewR" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {{ pta.bailleur }}
+                </th>
+                <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <span v-if="pta.isProjet" class="font-bold text-lg"> {{ pta.code }}</span>
+                  <span v-if="pta.isComposante" class="text-blue-500 text-sm"> {{ pta.code }}</span>
+                  <span v-if="pta.isSC && pta.code != 0" class=" text-yellow-600 text-sm"> {{ pta.code }}</span>
+                  <span v-if="pta.isActivite" class="text-green-600 text-sm"> {{ pta.code }}</span>
+                  <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.code }}</span>
+                </td>
+                
+              </tr>
+              </tbody>
+
+            </table>
+          </div>
+          <div  class=" relative shadow-md sm:rounded-lg">
+            <table class="w-full overflow-auto text-sm text-left text-gray-500 dark:text-gray-400">
+
+            <thead class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
               <tr class="">
-                <th scope="col" rowspan="2"
-                  class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700  whitespace-nowrap">
-                  Bailleurs
-                </th>
-                <th scope="col" rowspan="2"
-                  class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                  Code PTBA
-                </th>
+                
                 <th scope="col" rowspan="3"
                   class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                   Composantes / Sous-composantes / activiés / Taches
@@ -1388,6 +1448,10 @@
                 <th scope="col" rowspan="2"
                   class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                   Poids
+                </th>
+                <th v-if="statutActuel" scope="col" rowspan="2"
+                  class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                  poids actuel
                 </th>
                 <th scope="col" rowspan="2"
                   class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
@@ -1430,8 +1494,8 @@
                 <th scope="col"
                   class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
                   BN
-                </th>
-                <th scope="col"
+              </th>
+              <th scope="col"
                   class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
                   EMP
                 </th>
@@ -1553,18 +1617,8 @@
 
             </thead>
             <tbody>
-
               <tr v-for="pta in dataNewR" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {{ pta.bailleur }}
-                </th>
-                <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                  <span v-if="pta.isProjet" class="font-bold text-lg"> {{ pta.code }}</span>
-                  <span v-if="pta.isComposante" class="text-blue-500 text-sm"> {{ pta.code }}</span>
-                  <span v-if="pta.isSC && pta.code != 0" class=" text-yellow-600 text-sm"> {{ pta.code }}</span>
-                  <span v-if="pta.isActivite" class="text-green-600 text-sm"> {{ pta.code }}</span>
-                  <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.code }}</span>
-                </td>
+               
                 <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                   <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{ pta.nom }}</span>
                   <span v-if="pta.isComposante" class="text-blue-500 text-sm">composante: {{ pta.nom }}</span>
@@ -1771,9 +1825,9 @@
               </tr>
 
             </tbody>
-          </table>
+            </table>
         </div>
-
+        </div>
        
 
 
