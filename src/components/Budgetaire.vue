@@ -36,7 +36,7 @@
           <h2 class="uppercase hover:font-bold font-semibold py-2">
             Decaissement bailleur
           </h2>
-          <p class="hover:font-bold">{{( projet.total_decaissement_bailleur | formatNumber)}} XOF</p>
+          <p class="hover:font-bold">{{ projet.total_decaissement_bailleur | formatNumber}} XOF</p>
         </div>
       </div>
       <div class="flex items-center space-x-2">
@@ -48,7 +48,7 @@
           <h2 class="uppercase font-semibold hover:font-bold py-2">
             Realisation globale
           </h2>
-          <p class="hover:font-bold">{{( projet.total_realisation | formatNumber)}} XOF</p>
+          <p class="hover:font-bold">{{ projet.total_realisation | formatNumber}} XOF</p>
         </div>
       </div>
     </div>
