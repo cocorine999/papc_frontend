@@ -1,8 +1,8 @@
-const API_BASE_URL = "http://137.255.9.235"
+const API_BASE_URL = "http://137.255.9.235:8001"
 
-const STAGGING_URL = "http://137.255.9.235"
+const STAGGING_URL = "http://137.255.9.235:8001"
 
-const DEPLOYMENT_URL = "http://137.255.9.235"
+const DEPLOYMENT_URL = "http://137.255.9.235:8001"
 
 const PUSHER_BASE_URL = "http://137.255.9.235"
 
