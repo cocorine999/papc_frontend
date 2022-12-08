@@ -3,7 +3,7 @@
   <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative cursor-pointer mb-4 sm:mb-0">
     <!-- dot -->
     <div class="absolute flex space-x-1 right-1 top-2 z-10  cursor-pointer">
-      <span v-if="!isValidate" title="Tâche non valider" class="text-red-300"><svg stroke="currentColor"
+      <span v-if="(this.statut.code == -2)" title="Tâche non valider" class="text-red-300"><svg stroke="currentColor"
           fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em" width="2em"
           xmlns="http://www.w3.org/2000/svg">
           <path fill="none" d="M0 0h24v24H0z" stroke="none" />
@@ -16,7 +16,7 @@
             d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41z"
             stroke="none" />
         </svg></span>
-      <span v-if="isValidate" title="Tâche valider" class="text-green-500"><svg stroke="currentColor"
+      <span v-else title="Tâche valider" class="text-green-500"><svg stroke="currentColor"
           fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="2em" width="2em"
           xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd"
@@ -40,8 +40,8 @@
             <span> {{ bailleur }} </span>
           </div>
 
-          <div v-if="!isValidate">
-            <button title="Valider la tâche" v-if="showValidate" @click="validation(id)"
+          <div v-if="((this.statut.code == -2) && showValidate)">
+            <button title="Valider la tâche"  @click="validation(id)"
               class="bg-green-500 rounded-lg text-sm px-3 py-1 font-semibold text-white">
               Valider
             </button>
@@ -200,7 +200,7 @@ export default {
         statut: -1
       }
       TacheService.update(id, params).then((data) => {
-        this.isValidate = true
+        this.$emit('validation')
       }).catch((e) => {
         if (e.response) {
           this.$toast.error('erreur de validation')

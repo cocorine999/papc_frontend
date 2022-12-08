@@ -182,7 +182,7 @@ export default {
 
     modifier(programme) {
 
-      this.title = 'Modification du programme { programme.nom }'
+      this.title = 'Modification du programme '
 
       this.submitText= "Modifier"
 
@@ -193,14 +193,8 @@ export default {
         this.champs.find((value, index) => {
 
           if(value.key === item){
-            if(value.key === 'debut' || value.key === 'fin')
-            {
-              this.champs[index]['data'] = this.programme[item] + "-01"
-            }else{
-                this.champs[index]['data'] = this.programme[item]
-            }
+            this.champs[index]['data'] = this.programme[item]
           }
-
         })
 
       })

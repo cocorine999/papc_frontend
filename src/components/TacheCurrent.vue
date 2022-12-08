@@ -121,32 +121,24 @@
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true"
-                  :custom-label="customLabelP" placeholder="selectionnez un projet"
-                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
-                  track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP" :preselect-first="true"
+                placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
               </div>
 
             </li>
             <li class=" mr-2" role="presentation">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
-                <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true"
-                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
-                  placeholder="selectionnez une composante" label="nom" track-by="id">
-                </multiselect>
+                <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel"
+                :preselect-first="true" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
 
             </li>
             <li class="mr-2 " role="presentation">
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
-                <multiselect v-model="valueFiltre" :options="sousComposantes" :preselect-first="true"
-                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
-                  placeholder="selectionnez une sous composante" label="nom" track-by="id">
+                <multiselect v-model="sousComposanteFiltre" :options="sousComposantes" :preselect-first="true"
+                :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une sous composante" label="nom" track-by="id">
                 </multiselect>
               </div>
 
@@ -155,9 +147,7 @@
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
                 <multiselect v-model="valueFiltre" :options="activites" :custom-label="customLabel"
-                  placeholder="selectionnez l'activite" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
-                  track-by="id">
+                placeholder="selectionnez l'activite" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id">
                 </multiselect>
               </div>
 
@@ -234,7 +224,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :debut="tache.debut" :fin="tache.fin" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @commentaire="showComment = true"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" @commentaire="showComment = true"
                   :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
               </div>
             </div>
@@ -249,7 +239,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -266,7 +256,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -283,7 +273,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -299,7 +289,7 @@
               <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
                 :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
                 :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
-                @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @prolonger="prolonger(tache)"
+                @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @validation="validation" @prolonger="prolonger(tache)"
                 @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin" @commentaire="showComment = true"
                 :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
             </div>
@@ -940,6 +930,10 @@ export default {
 
     getStatus(status) {
       return getStringValueOfStatutCode(status);
+    },
+
+    validation() {
+      this.fetchTaches(this.valueFiltre.id);
     },
 
 

@@ -1,7 +1,7 @@
 <template>
   <div @mouseenter="showValidate = true" @mouseleave="showValidate = false" class="relative mb-4  sm:mb-0">
     <div class="absolute flex space-x-3 right-1 top-2 z-10  cursor-pointer">
-      <span v-if="!isValidate"
+      <span v-if="(this.statut.code == -2)"
         :title="composanteName != undefined ? composanteName.concat(' non valider') : 'Composante non valider'"
         class="text-red-300"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
           height="2em" width="2em" xmlns="http://www.w3.org/2000/svg">
@@ -16,7 +16,7 @@
             stroke="none" />
         </svg></span>
 
-      <span v-if="isValidate"
+      <span v-else
         :title="composanteName != undefined ? composanteName.concat(' valider') : 'Composante valider'"
         class="text-green-500"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16"
           height="2em" width="2em" xmlns="http://www.w3.org/2000/svg">
@@ -41,10 +41,10 @@
             <span>{{ bailleur }}</span>
           </div>
 
-          <div v-if="!isValidate">
+          <div v-if="((this.statut.code == -2) && showValidate)">
             <button
               :title="composanteName != undefined ? 'Valider la '.concat(composanteName) : 'Valider la composante'"
-              v-if="showValidate" @click="validation"
+               @click="validation"
               class="bg-green-500 rounded-lg text-sm   px-3 py-1 font-semibold text-white">Valider</button>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default {
     },
     validation() {
       let params = {}
-      console.log('datadddd', this.data)
+      
       if (this.isComposante) {
         params = {
           statut: -1,
@@ -147,7 +147,7 @@ export default {
       }
 
       ComposanteService.update(this.data.id, params).then((data) => {
-        this.isValidate = true
+        this.$emit('validation')
       }).catch((e) => {
         if (e.response) {
           this.$toast.error('erreur de validation')

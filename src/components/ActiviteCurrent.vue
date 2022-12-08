@@ -144,11 +144,9 @@
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true"
-                  :custom-label="customLabelP" placeholder="selectionnez un projet"
-                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
-                  track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre" :options="projets" :preselect-first="true" :custom-label="customLabelP"
+                    placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id">
+                </multiselect>
               </div>
 
             </li>
@@ -156,9 +154,7 @@
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
                 <multiselect v-model="composanteFiltre" :options="composantes" :preselect-first="true"
-                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
-                  placeholder="selectionnez une composante" label="nom" track-by="id">
+                    :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une composante" label="nom" track-by="id">
                 </multiselect>
               </div>
 
@@ -167,9 +163,7 @@
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
                 <multiselect v-model="valueFiltre" :options="sousComposantes" :preselect-first="true"
-                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
-                  placeholder="selectionnez une sous composante" label="nom" track-by="id">
+                    :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une sous composante" label="nom" track-by="id">
                 </multiselect>
               </div>
 
@@ -249,7 +243,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" @validation="validation" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -268,7 +262,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -287,7 +281,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -306,7 +300,7 @@
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                  @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                  @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                   :isUpdate="activiteUpdate"></card-activite>
                 <!-- End cards Activités -->
               </div>
@@ -326,7 +320,7 @@
                 :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
-                @suivre="suivreMyActivite(activite)" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
+                @suivre="suivreMyActivite(activite)" @validation="validation" @gotoNext="gotoNext(activite)" :isDelete="activiteDelete"
                 :isUpdate="activiteUpdate"></card-activite>
               <!-- End cards Activités -->
             </div>
@@ -1456,6 +1450,7 @@ export default {
       this.inProgress = true;
       this.retard = false
     },
+
     toggle4() {
       this.pending = false;
       this.success = false;
@@ -1514,6 +1509,11 @@ export default {
             });
         }
       }
+    },
+
+   
+    validation() {
+      this.fetchActivites(this.composanteId);
     },
 
     sendForm() {

@@ -594,7 +594,7 @@
         <div v-if="alertVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link to="/dashboard/config/alert" style="width: 100%"
             class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
-            <span class="font-semibold text-xs">Alert systeme</span>
+            <span class="font-semibold text-xs">Alertes systeme</span>
           </router-link>
         </div>
         <div class="mb-10 flex items-center mt-2 text-gray-700 cursor-pointer">

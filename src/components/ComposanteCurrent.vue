@@ -133,6 +133,7 @@
               @supprimer="supprimer(composante)"
               @suivre="suivreMyComposant(composante)"
               @gotoNext="gotoNext(composante,index)"
+              @validation="validation"
               :isDelete = "composanteDelete"
               :isUpdate="composanteUpdate"
             ></card-composante>
@@ -154,6 +155,7 @@
               :position="composante.position"
               :poids="composante.poids"
               :bailleur="composante.sigle"
+              @validation="validation"
               @modifier="modifier(composante)"
               @supprimer="supprimer(composante)"
               @suivre="suivreMyComposant(composante)"
@@ -175,6 +177,7 @@
               :code="composante.codePta"
               :statut="getStatus(composante.statut)"
               :montantEPM="composante.pret"
+              @validation="validation"
               :position="composante.position"
               :poids="composante.poids"
               :bailleur="composante.sigle"
@@ -203,6 +206,7 @@
               :montantEPM="composante.pret"
               :position="composante.position"
               :poids="composante.poids"
+              @validation="validation"
               :bailleur="composante.sigle"
               @modifier="modifier(composante)"
               @supprimer="supprimer(composante)"
@@ -236,6 +240,7 @@
               :bailleur="composante.sigle"
               @modifier="modifier(composante)"
               @supprimer="supprimer(composante)"
+              @validation="validation"
               @suivre="suivreMyComposant(composante)"
               @gotoNext="gotoNext(composante,index)"
               :isDelete = "composanteDelete"
@@ -680,6 +685,10 @@ props:['valueProfondeur'],
     getStatus(status){
       return getStringValueOfStatutCode(status);
     },
+    validation() {
+     
+      this.fetchComposantes(this.valueFiltre.id);
+    },
 
     sendForm() {
 
@@ -702,9 +711,7 @@ props:['valueProfondeur'],
               
               if(response.status === 200 || response.status === 201){
                 //this.fetchComposantes(this.valueFiltre.id);
-                ComposanteService.composantes(this.valueFiltre.id).then((data) => {
-                  this.composantes = data.data.data
-                })
+                this.fetchComposantes(this.valueFiltre.id);
                 this.close()
               }
 
