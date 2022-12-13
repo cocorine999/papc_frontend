@@ -299,13 +299,7 @@ export default {
       champs: null,
       champsUpdate: [],
       cols: 2,
-      champsRecherche: [
-        { name: 'Indicateur', key: 'nom', type: 'text', placeholdere: "Donnez un nom d'indicateur", isSelect: false, isTextArea: false, data: '', required: false },
-        { name: 'Année de base', key: 'anneeDeBase', type: 'numer', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: false, },
-        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: true, cle: 'id', value: 'nom', required: false, },
-        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesure, required: false, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'sigle' },
-      ],
+      champsRecherche: [],
       headers: [],
       idIndicateur: '',
       isValeurCibleUse: true,
@@ -489,6 +483,13 @@ export default {
           { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
           { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
         ]
+        this.champsRecherche = [
+          { name: 'Indicateur', key: 'nom', type: 'text', placeholdere: "Donnez un nom d'indicateur", isSelect: false, isTextArea: false, data: '', required: false },
+          { name: 'Année de base', key: 'anneeDeBase', type: 'numer', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: false, },
+          { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: true, cle: 'id', value: 'nom', required: false, },
+          { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: false, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: this.bailleurs, cle: 'id', value: 'sigle' },
+        ]
         this.disabled()
       }).catch((error) => {
         this.disabled()
@@ -595,11 +596,13 @@ export default {
 
       });
     },
+
     suivreIndicateur(data) {
       this.idIndicateur = data
       this.showSuiviModal = true
       this.title = `Suivre l'indicateur`
     },
+
     consulterSuivi(id) {
       this.$router.push({ name: 'indicateurs_suivi_details', params: { id: id } })
     },
@@ -751,6 +754,8 @@ export default {
 
       this.filtre(indicateur).then((response) => {
         if (response.status == 200 || response.status == 201) {
+          const datas = response.data.data
+          this.indicateurs= datas
           this.close2();
         }
       });
@@ -866,6 +871,7 @@ export default {
         this.disabled()
       })
     },
+
     getUniteDeMesure() {
       this.active()
       UniteDeMesureService.get().then((data) => {
@@ -877,6 +883,7 @@ export default {
         this.disabled()
       })
     },
+
     getCategorie() {
       this.active()
       CategorieService.get().then((data) => {
@@ -915,10 +922,11 @@ export default {
         ]
       }
       else {
-        this.fetchIndicateurs()
         this.getBailleur(this.programmeId)
         this.getUniteDeMesure()
         this.getCategorie()
+        this.fetchIndicateurs()
+        
         this.champsUpdate = [
           { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
           { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
