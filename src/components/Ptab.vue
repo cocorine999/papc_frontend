@@ -528,7 +528,7 @@
           </vue-html2pdf>
         </div>
         <div style="height:80vh;" class="flex overflow-y-auto">
-          <div style="width:35%; position:sticky; left: 0; background: #ffc600; z-index: 1;">
+          <div style="width:35%; position:sticky; left: 0; background: transparent; z-index: 1;">
             <table class="_sticky _z-20 top-0 left-0 w-full border-collaspe table-fixed block table1 text-left text-sm">
               <thead
                 class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
