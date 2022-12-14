@@ -25,12 +25,12 @@ export default {
       console.log(this.$route.params.identifiant)
       this.active()
       resetService.verify(this.$route.params.identifiant).then((data) => {
-        const resetInfo = {
+          const resetInfo = {
             token:this.$route.params.identifiant,
             email:data.data.data.email,
           }
           localStorage.setItem('resetInfo',JSON.stringify(resetInfo))
-           this.$router.push('/change-password')
+          this.$router.push('/change-password')
           this.$toast.success("compte verifier avec sucess")
           this.disabled()
       }).catch((error) => {

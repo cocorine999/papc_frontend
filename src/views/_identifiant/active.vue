@@ -22,7 +22,7 @@ export default {
         this.$store.dispatch('disabled')
       },
     async activation() {
-        this.active()
+      this.active()
       actionService.activerCompte(this.$route.params.identifiant).then((data) => {
         this.$router.push('/change-password')
         this.$toast.success("compte activer")
