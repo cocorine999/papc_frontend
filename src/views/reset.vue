@@ -74,12 +74,19 @@
           <p class="text-xs text-red-500 italic text-center ">*** Le nouveau mot de passe doit contenir au moins un symbole.</p>
           <p class="text-xs text-red-500 italic text-center ">*** Le nouveau mot de passe doit contenir au moins une lettre majuscule et une lettre minuscule.</p>
           <div class="flex w-3/5 mx-auto justify-center my-4 relative z-50">
-            <button
-              type="submit"
-              class="w-full md:my-3 my-1 hover:opacity-75 transition-all duration-500 py-1 md:py-3 border bg-primary text-white text-sm md:text-base xl:text-lg text-center"
-            >
-              Envoyer
-            </button>
+            <button type="submit" class="bg-primary  flex space-x-2 justify-center w-2/3 items-center text-white px-4 py-3 border border-primary font-semibold uppercase">
+                  <span class="text-sm text-center font-semibold uppercase" v-if="!chargement">
+                    envoyer
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 text-center font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+              </button>
           </div>
         </form>
         <div class="flex justify-center">
@@ -109,6 +116,7 @@ export default {
       confirmPassword: "",
       email:'',
       soumettre: false,
+      chargement:false,
       statePassword:"password",
       statePassword1:"password",
       errors:{new_password:''},
@@ -140,28 +148,36 @@ export default {
               new_password: this.password,
               new_password_confirmation: this.confirmPassword,
             }
-            resetService.create(data).then(() => {
+            this.chargement = true
+            if(this.chargement === true ) {
+              resetService.create(data).then(() => {
               this.$toast.success('operation effectuer avec sucess')
+              this.chargement = false
               this.$router.push('/')
-            }).catch((error) => {
-
-              if (error.response) {
-                const errorMessage = error.response.data.errors
-                if(errorMessage != undefined){
-                this.errors.new_password = errorMessage['new_password']
-              
-               }
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-              } else if (error.request) {
-                // Demande effectuée mais aucune réponse n'est reçue du serveur.
-                //console.log(error.request);
-              } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-              //console.log('dernier message', error.message);
-              }
-          })
+              }).catch((error) => {
+                this.chargement = false
+                if (error.response) {
+                  const errorMessage = error.response.data.errors
+                  if(errorMessage != undefined){
+                  this.errors.new_password = errorMessage['new_password']
+                }
+                // Requête effectuée mais le serveur a répondu par une erreur.
+                const message = error.response.data.message
+                this.$toast.error(message)
+                } else if (error.request) {
+                  // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                  //console.log(error.request);
+                } else {
+                  // Une erreur s'est produite lors de la configuration de la demande
+                  //console.log('dernier message', error.message);
+                }
+              })
+            }
+            
+        }
+        else {
+          this.$toast.error("veuillez d'abord confirmer votre compte")
+          this.$router.push('/')
         }
       
       }

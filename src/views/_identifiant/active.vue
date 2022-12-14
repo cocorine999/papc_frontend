@@ -24,6 +24,10 @@ export default {
     async activation() {
       this.active()
       actionService.activerCompte(this.$route.params.identifiant).then((data) => {
+        const resetInfo = {
+            token:this.$route.params.identifiant,
+          }
+        localStorage.setItem('resetInfo',JSON.stringify(resetInfo))
         this.$router.push('/change-password-activer')
         this.$toast.success("compte activer")
         this.disabled()
