@@ -24,8 +24,9 @@ export default {
     async resendLink() {
     this.active()
       actionService.confirmationCompte(this.$route.params.identifiant).then((data) => {
+        this.$toast.success("Vous avez reçu un mail d'activation !")
         this.$router.push('/')
-        this.$toast.success(response.message)
+       
         this.disabled()
       }).catch((error) => {
           this.disabled()

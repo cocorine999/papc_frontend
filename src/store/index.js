@@ -92,6 +92,7 @@ export default new Vuex.Store({
     messageErreur : null,
     errors : [],
     isActive:false,
+    accountValidate:false,
     modSelect: "",
     missionDeControleSelect: "",
     types : [
@@ -234,6 +235,12 @@ export default new Vuex.Store({
     disabled(state) {
       state.isActive = false
     },
+    accountV(state) {
+      state.accountValidate = true
+    },
+    accountD(state) {
+      state.accountValidate = false
+    },
     toggleSidebar (state) {
       state.sideBarOpen = !state.sideBarOpen
     },
@@ -275,6 +282,12 @@ export default new Vuex.Store({
     },
     disabled(context) {
       context.commit('disabled')
+    },
+    accountV(context) {
+      context.commit('accountV')
+    },
+    accountD(context) {
+      context.commit('accountD')
     },
     toggleSidebar(context) {
       context.commit('toggleSidebar')

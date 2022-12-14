@@ -11,8 +11,9 @@
         <h1 class="xl:text-2xl text-base text-center font-bold text-primary py-6 ">PROGRAMME  D’ASSAINISSEMMENT PLUVIAL DE COTONOU</h1>
         <p class="text-sm font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte. </p>
         <form @submit.prevent="save" action="">
+          
           <div class="form-group my-3 relative">
-            <input v-model.trim='$v.login.$model' type="text" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email">
+            <input v-model.trim='$v.login.$model' type="email" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email">
             <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
             <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.required && soumettre' >
               Ce champ est obligatoire
@@ -88,9 +89,28 @@
     </div>
 
     <!-- fin de l'image de connexion -->
-   <!--  <div class=" absolute right-2 top-4">
-      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici pour activer le compte</button>
-    </div> -->
+   <div v-if="isValidate" class=" absolute right-2 top-4">
+      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici pour renvoyer le lien de validation</button>
+    </div> 
+    <vmodal title="envoyé votre mail" v-if="showSend">
+      <div style="width:500px">
+        <form @submit="resentLink">
+          <div class="form-group my-3 relative">
+            <input v-model.trim='$v.login.$model' type="email" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email">
+            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
+            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.required && soumettre' >
+              Ce champ est obligatoire
+            </div>
+            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre' >
+              Email invalide
+            </div>
+          </div>
+          <div class="flx justify-center">
+            <button type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">envoyer</button>
+          </div>
+        </form>
+      </div>
+    </vmodal>
     <div class="drapeau fixed bottom-0 right-0 left-0 grid grid-cols-3">
       <div class="h-2 bg-green-700"></div>
       <div class="h-2 bg-yellow-500"></div>
@@ -103,11 +123,12 @@
 import Vbutton from '@/components/Vbutton'
 import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
+import Vmodal from '@/components/Vmodal'
 import ifElse from 'ramda/src/ifElse';
 
 export default {
   name: 'IndexPage',
-
+  components:{Vmodal},
   data() {
     return {
       statePassword:"password",
@@ -115,6 +136,8 @@ export default {
       login: "",
       password: "",
       soumettre :false,
+      isValidate:false,
+      showSend:false
       
     }
   },
@@ -123,6 +146,7 @@ export default {
     //importation des variables du module auths
     ...mapState({
       identifiant: state => state.auths.identifiant,
+      accountValidate: state => state.accountValidate,
       loading : state => state.loading
     })
   },
@@ -137,7 +161,14 @@ export default {
       this.$store.dispatch('SET_LOADER',bool)
     },
     gotoValidate() {
-      this.$router.push({name:'resendLink',params:{identifiant:this.login}})
+     this.showSend = true
+    },
+    resentLink() {
+      this.soumettre = true;
+      if ( !this.$v.login.$invalid ) {
+        this.$router.push({name:'resendLink',params:{identifiant:this.login}})
+        this.showSend = false
+      }
     },
     async save() {
       this.identifiant.email = this.login
@@ -165,6 +196,10 @@ export default {
       this.show = !this.show;
       //this.$toast.success('Profile saved',)
     },
+  },
+  mounted() {
+    this.isValidate = localStorage.getItem("activeCompte")
+    
   },
 
   validations: {
