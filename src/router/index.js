@@ -11,6 +11,7 @@ import notification from "../views/dashboard/notification/index.vue";
 import liens from "../views/liens.vue";
 import password_update from "../views/password_update.vue";
 import newPassword from "../views/reset.vue";
+import newPasswordAc from "../views/resetAc.vue";
 import activation from "../views/_identifiant/active.vue";
 import confirm from "../views/_identifiant/confirm.vue";
 import resendLink from "../views/_identifiant/resend_link.vue";
@@ -242,6 +243,11 @@ const routes = [
     path: "/change-password",
     name: "newPassword",
     component:newPassword,
+  },
+  {
+    path: "/change-password-activer",
+    name: "newPasswordAc ",
+    component:newPasswordAc ,
   },
   {
     path: "/info",
