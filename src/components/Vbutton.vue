@@ -1,7 +1,6 @@
 <template>
   <div>
     <button v-if="template === 'none'" :class="`${padding} ${aroundi} ${textsize} ${graissage} ${size} ${bordere} ${bgcolore} ${textcolor} `" :type="type" class=" hover:opacity-80 transition-all flex space-x-4 duration-500  " >
-      <span v-html="iconne"></span>
       <span><slot></slot></span>
     </button>
     <button v-if="template==='default'" class="bg-gray-500 py-2 px-4 border text-white border-gray-500 rounded-md font-semibold outline-none">

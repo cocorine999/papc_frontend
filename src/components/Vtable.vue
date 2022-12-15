@@ -110,7 +110,7 @@ import TrTable from '@/components/TrTable'
 import Pagination from '@/components/Pagination'
 export default {
   components: { TrTable,Pagination },
-  props:['datas', 'headers', 'actions', 'extra','statut', 'sendRequest','isComment'],
+  props:['datas', 'headers', 'actions','statut', 'sendRequest','isComment'],
   data() {
     return{
       currentPage:1,

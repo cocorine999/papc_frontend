@@ -39,7 +39,7 @@
             </div>
       </nav> 
       <div v-if="showModal">
-        <modal-top-right title="Ajouter un utilisateur" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="close">
         <div v-if="!isUpdate" class="w-full px-4">
             <vform template="default" :sendRequest="sendRequest"  :champs="champs" submitText="Ajouter " @sendForm="sendForm" @closeModal="close"></vform>
         </div>
@@ -96,7 +96,8 @@ export default {
     data() {
       return ({
         showModal:false,
-        usersAttributes : ['nom', 'email', 'contact', 'prenom','roles'],
+        usersAttributes : ['nom', 'email', 'contact','roles'],
+        usersAttributesUp : ['nom', 'contact','roles'],
         showModal:false,
         isComment:false,
         sendRequest: false,
@@ -191,6 +192,7 @@ export default {
       fetchRoles: "FETCH_LIST_ROLE",
     }),
     addUsers() {
+      this.title = 'Ajouter un utilisateur'
       this.showModal = true
       this.isUpdate = false
     },
@@ -200,16 +202,13 @@ export default {
         const datas = data.data.data
         this.roles = datas
         this.champs = [
-          {name:'Nom', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
-          {name:'Prenom', key: 'prenom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
+          {name:'Nom et Prenoms', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
           {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
           {name:'Contact', key: 'contact', type:'number', placeholdere:'Votre contact', isSelect:false, isTextArea:false, data:'', required:true, errors : []},
           {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: datas, cle: 'id', value: 'nom', required:true, errors : []}
         ]
         this.champsUpdate = [
-          {name:'Nom', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
-          {name:'Prenom', key: 'prenom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
-          {name:'Email', key: 'email', type:'email', placeholdere:"Votre Email", isSelect:false, isTextArea:false, data:'', required:true, errors : []},
+          {name:'Nom et Prenoms', key: 'nom', type:'text', placeholdere:"", isSelect:false, isTextArea:false, data:'',required:true, errors : []},
           {name:'Contact', key: 'contact', type:'number', placeholdere:'Votre contact', isSelect:false, isTextArea:false, data:'', required:true, errors : []},
           {name:'Type utilisateurs', key: 'roles', type:'', placeholdere:'Choisir un type d\' utilisateur', isSelect:true, isTextArea:false, data:'', options: datas, cle: 'id', value: 'nom', required:true, errors : []}
         ]
@@ -245,7 +244,7 @@ export default {
 
       this.utilisateurId = utilisateur.id
 
-      this.usersAttributes.forEach((item) => {
+      this.usersAttributesUp.forEach((item) => {
 
         this.champsUpdate.find((value, index) => {
 
@@ -333,7 +332,7 @@ export default {
         this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
         let utilisateur = {}
         if (this.isUpdate) {
-          utilisateur = extractFormData(this.champsUpdate, this. usersAttributes)
+          utilisateur = extractFormData(this.champsUpdate, this. usersAttributesUp)
           utilisateur.id = this.utilisateurId
         } else {
           utilisateur = extractFormData(this.champs, this. usersAttributes)

@@ -58,7 +58,7 @@
               class="origin-top-right absolute divide-y z-50 right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
               role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
               <router-link to="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"> {{ currentUser.nom }} {{ currentUser.prenom }} </router-link>
+                role="menuitem"> {{ currentUser.nom }}  </router-link>
               
               <span @click.prevent="deconnecter"
                 class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Se
@@ -170,7 +170,7 @@ export default {
   mounted() {
     this.getNotification()
     this.getPermission()
-    let nom
+    let nom =''
 
     if (this.currentUser.nom != undefined)
       nom = this.currentUser.nom
