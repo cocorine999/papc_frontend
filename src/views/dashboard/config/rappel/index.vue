@@ -130,7 +130,7 @@ export default {
         champs:[
             {name: 'libelle', key: "libelle", type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []},
             {name: 'Frequence (jours)', key: "frequence", type: 'number', placeholdere: "cette valeur est en nombre de jour", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
-            {name: 'Date du rappel', key: "dateAvant", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
+            {name: 'Date du rappel', key: "dateAvant", type: 'datetime-local', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true, errors : []}, 
             {name: 'Description', key: "description", type: '', placeholdere: "", isSelect: false, isTextArea: true, data:'', required: true, errors : []}, 
         ],
         
