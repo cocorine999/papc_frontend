@@ -69,8 +69,8 @@ httpClient.interceptors.request.use(config =>{
   store.commit(SET_LOADER, true)
 
     let token = store.getters['auths/GET_ACCESS_TOKEN'] // modules.auths?.getters?.GET_ACCESS_TOKEN(modules.auths.state)
-
     if (token) {
+      token = token.slice(0,-1)
         config.headers.Authorization = `Bearer ${token}`
     }
     // ici les anciennes erreures sont écrasées
@@ -96,7 +96,7 @@ httpClient.interceptors.response.use(
 
     /** Do something with response error */
             
-    
+    console.log(error.response?.data)
 
     const statutCode = parseInt(error.response && error.response?.status)
 

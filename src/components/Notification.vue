@@ -1,4 +1,8 @@
 <!-- ./src/components/Notification.vue -->
+<template>
+  <div>
+  </div>
+</template>
 <script>
     import Pusher from 'pusher-js' 
     import Echo from 'laravel-echo'

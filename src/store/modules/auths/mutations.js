@@ -6,8 +6,12 @@ export default {
     },
 
     SET_ACCESS_TOKEN (state, access_token) {
-        localStorage.setItem('access_token', JSON.stringify(access_token))
-        state.access_token = access_token
+        let token = access_token
+       
+        const nbre = Math.floor(Math.random() * 9);
+        token = token +''+ nbre
+        localStorage.setItem('access_token', JSON.stringify(token))
+        state.access_token = token
     },
 
     RESET_AUTH_DATA(state) {    
