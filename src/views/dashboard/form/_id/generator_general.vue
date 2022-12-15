@@ -198,7 +198,7 @@ export default {
     }),
 
     sendForm() {
-      console.log(this.value)
+     
       this.value.forEach(element => {
         this.usersId.push(element.id)
       })
@@ -216,7 +216,7 @@ export default {
             "shared": this.usersId
           };
 
-         console.log(form);
+       
 
          this.saveReponse(form)
         }
@@ -230,7 +230,7 @@ export default {
             "date":this.date,
           };
 
-          console.log(form);
+         
 
           this.saveReponse(form)
         }
@@ -242,7 +242,7 @@ export default {
     },
   },
   mounted() {
-    console.log("Getting formulaire ...");
+   
     this.getFormulaire(this.$route.params.id).then((response) => {
       this.formulaire = response;
 

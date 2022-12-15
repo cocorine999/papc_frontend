@@ -177,7 +177,6 @@ export default {
   },
   mounted() {
 
-    console.log("Fetching list formulaires ...")
     this.fetchFormulaires()
 
 

@@ -141,9 +141,7 @@
                       <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         permissions
                       </th>
-                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
-                        Description
-                      </th>
+                      
                       <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
                         actions
                       </th>
@@ -152,16 +150,15 @@
                   <tbody>
                    <tr v-for="(data,index) in filteredRole()" :key="index" class="bg-white border-b">
                       <td class="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                       {{data.nom}}
+                       {{data.nom}} <br>
+                      <span class="italic"> {{data.description}}</span>
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
                         <div class="flex space-x-4  flex-wrap ">
                           <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold my-2 text-white border-green-500 rounded-xl"> {{permission.nom}} </span>
                         </div>
                       </td>
-                      <td class="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                       {{data.description}}
-                      </td>
+                     
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
                         <div class="flex item-center justify-center">
                           <div v-if="roleUpdate" @click="modifier(data)" class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" >
@@ -306,19 +303,39 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
         this.active()
         RoleService.get().then((data) => {
           this.mesRoles = data.data.data
-          console.log('mes  permissions',this.mesRoles)
+          
           this.disabled()
-        }).catch((e) => {
+        }).catch((error) => {
           this.disabled()
-          console.log(e)
+          if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
         })
       },
 
       getRoles() {
         RoleService.get().then((data) => {
           this.mesRoles = data.data.data
-        }).catch((e) => {
-          console.log(e)
+        }).catch((error) => {
+          if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
         })
       },
       supprimeRole(role,index) {
@@ -354,7 +371,7 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
         if (this.chargement == false) {
           this.chargement = true
           let roles =[]
-            console.log("les sauvegarde",this.saveUpdate)
+            
             this.saveUpdate.permissions.forEach(element => {
             roles.push(element.id)
           })

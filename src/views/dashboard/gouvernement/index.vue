@@ -245,7 +245,7 @@
       },
   
       mounted() {
-        console.log("Fetching gouvernement ...")
+       
         this.fetchProgrammes()
         this.getPermission()
         if(!this.gouvernementVisible) {
@@ -253,7 +253,6 @@
         } 
         this.fetchGouvernements().then((value) => {
           setTimeout(() => {
-            console.log("Fetching list of programmes...")
             this.fetchProgrammes()
           }, 100);
         })

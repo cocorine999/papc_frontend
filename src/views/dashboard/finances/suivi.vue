@@ -296,7 +296,7 @@ export default {
     ...mapActions('activites', { fetchActivites: 'FETCH_LIST_ACTIVITE_OF_PROGRAMME' }),
 
     async updateInputData(id, attribut, value) {
-      console.log('ok')
+    
         
           await this.updateSuiviFinancier({suivi: {[attribut] : value}, id : id}).catch((value, status) => {
             if(this.hasErrors[attribut] !== undefined)
@@ -311,7 +311,7 @@ export default {
 
       sendForm() {
 
-        console.log(this.champs)
+       
 
         this.champs = this.champs.map(item => { item.errors = []; return item})
 

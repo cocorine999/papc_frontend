@@ -255,7 +255,7 @@ export default {
     },
     getImage(data) {
       this.image = data
-      console.log('image', data)
+      
     },
     updateProjet() {
       if (this.sendRequest === false) {
@@ -268,7 +268,7 @@ export default {
           this.sendRequest = false
           this.detailsProjet(this.projet.id).then((response) => {
             this.projet = response.data.data
-            console.log("le projet statistique",response.data.data)
+            
           })
           this.showUpdateImage = false
         }).catch((error) => {
@@ -316,11 +316,11 @@ export default {
 
     },
     save() {
-      console.log(this.value)
+     
       this.value.forEach(element => {
         this.usersId.push(element.id)
       })
-      console.log(this.usersId)
+      
       const formData = new FormData();
       formData.append('fichier', this.datasFiles)
       for (let i = 0; i < this.usersId.length; i++) {
@@ -348,7 +348,7 @@ export default {
   mounted() {
     if (this.currentUser != undefined) {
       this.currentRole = this.currentUser.type
-      console.log("role courant", this.currentUser)
+     
     }
 
    

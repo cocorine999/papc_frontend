@@ -336,7 +336,6 @@ export default {
     if(!this.categorieVisible) {
       this.$router.push('/401-non-autorise')
     } 
-    console.log("Fetching unitees de mesure ...");
     this.fetchCategories()
   },
 

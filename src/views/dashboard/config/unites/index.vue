@@ -330,7 +330,7 @@ export default {
 
         uniteeDeMesure.type = this.champs[1].data.id
 
-        console.log(uniteeDeMesure)
+       
         
         if (this.uniteeDeMesure?.id) {
           this.updateUniteeDeMesure({ uniteeDeMesure: uniteeDeMesure, id: this.uniteeDeMesure?.id }).then(
@@ -368,12 +368,12 @@ export default {
 
   mounted() {
     this.getPermission();
-    console.log('ajout')
-    console.log(this.uniteAdd)
+   
+   
     if(!this.uniteVisible) {
       this.$router.push('/401-non-autorise')
     } 
-    console.log("Fetching unitees de mesure ...");
+   
     this.fetchUniteesDeMesure()
   },
 }

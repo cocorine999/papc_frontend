@@ -445,7 +445,7 @@ export default {
           logo: this.image,
           programme: this.programmeId
         }
-        console.log('les infos', info)
+       
         BailleurService.update(this.idBailleur, formData).then(() => {
           this.$toast.success('Le logo  à éte bien changer')
           this.showUpdateImage = false
@@ -469,7 +469,7 @@ export default {
       this.logo = data.logo
       this.idBailleur = data.id
       this.code = data.code
-      console.log(data)
+     
       this.showUpdateImage = true
     },
     active() {
@@ -619,7 +619,7 @@ export default {
         this.setBailleur({})
       }).catch((value, status) => {
         if (this.hasErrors[attribut] !== undefined)
-          alert(this.hasErrors[attribut])
+          this.$toast.error(this.hasErrors[attribut])
       })
     },
 
@@ -708,8 +708,7 @@ export default {
   },
 
   created() {
-    console.log("current users", this.currentUser)
-    console.log("Fetching bailleurs ...");
+   
     this.programmeId = this.currentUser.programme.id
     if (this.programmeId) {
       this.fetchBailleurs(this.programmeId)

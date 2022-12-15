@@ -96,7 +96,7 @@ httpClient.interceptors.response.use(
 
     /** Do something with response error */
             
-    console.log(error.response?.data)
+    
 
     const statutCode = parseInt(error.response && error.response?.status)
 

@@ -112,7 +112,7 @@ export default {
     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
   },
     mounted() {
-      console.log('utilisateur courant',this.currentUser)
+      
       const el = document.getElementById('messages')
 	    el.scrollTop = el.scrollHeight
     }

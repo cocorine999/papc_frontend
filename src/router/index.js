@@ -4,6 +4,7 @@ import store from "../store/index";
 
 import index from "../views/index.vue";
 import authPage from "../views/401.vue";
+import notFound from "../views/404.vue";
 import ano from "../views/dashboard/ano/index.vue";
 import role_permission from "../views/dashboard/role_permission/index.vue";
 import historique from "../views/dashboard/historique/index.vue";
@@ -193,8 +194,8 @@ const routes = [
   },
   {
     path :'*',
-    name: "authPage",
-    component: authPage,
+    name: "notFound",
+    component: notFound,
   },
   {
     path: "/dashboard/backup",
@@ -1053,14 +1054,14 @@ const routes = [
     name: "suivi_indicateur_bailleur",
   },
 
-  {
+  /* {
     path: "/bailleurs/finances/decaissement",
     component: finances_decaissement_bailleur,
     meta: {
       middleware: [auth, isBailleur],
     },
     name: "finances_decaissement",
-  },
+  }, */
 
   {
     path: "/bailleurs/finances/suivi",

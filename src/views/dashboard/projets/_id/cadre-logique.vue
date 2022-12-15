@@ -365,15 +365,35 @@ export default {
         this.objectifGlobals = this.cadreLogique.objectifGlobaux,
         this.objectifSpecifiques = this.cadreLogique.objectifSpecifique
         this.resultats = this.cadreLogique.resultat
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     getIndicateur() {
       indicateurService.get().then((data) => {
         this.indicateurs = data.data.data
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
   },

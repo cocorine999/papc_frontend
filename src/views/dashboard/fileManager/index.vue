@@ -818,14 +818,14 @@ export default {
     previewFiles(event) {
       const data = event.target.files[0]
       this.datasFiles = data
-      console.log(this.datasFiles)
+
     },
     save() {
-        console.log(this.value)
+       
         this.value.forEach(element => {
           this.usersId.push(element.id)
         })
-        console.log(this.usersId)
+       
         const formData = new FormData();
         formData.append('fichier',this.datasFiles)
         for( let i = 0; i < this.usersId.length; i++ ){
@@ -887,10 +887,20 @@ export default {
         this.sharedProjet = datasS.projet
         this.sharedAutre = datasS.autre
         this.allFiles = [].concat(datasF.ano,datasF.reponseAno,datasF.projet,datasF.autre,datasS.ano,datasS.reponseAno,datasS.projet,datasS.autre)
-        console.log('tous mes fichiers',this.allFiles)
       
-      }).catch((e) => {
-        console.log(e)
+      
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     getUser() {
@@ -898,8 +908,18 @@ export default {
         let datas = data.data.data
         this.users = datas
              
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     uploadFile() {

@@ -973,7 +973,7 @@ export default {
           }
         }
         let composantes = this.projets[indexProjet].composantes
-        console.log('composante', composantes)
+        
         if (composantes[0] != null) {
 
           let code = composantes[0].codePta
@@ -1000,8 +1000,18 @@ export default {
               this.valueFiltre = null
             }
 
-          }).catch((e) => {
-            console.log(e)
+          }).catch((error) => {
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
 
           })
 
@@ -1041,8 +1051,18 @@ export default {
             this.valueFiltre = null
           }
 
-        }).catch((e) => {
-          console.log(e)
+        }).catch((error) => {
+          if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
 
         })
       }
@@ -1051,7 +1071,7 @@ export default {
     },
 
     changeSC(Scomposante) {
-      console.log("id SC", Scomposante.id)
+     
       this.composanteId = Scomposante.id
       if (this.isClick) {
         this.valueFiltre = this.newSC
@@ -1070,9 +1090,19 @@ export default {
       ComposanteService.sousComposantes(id).then((data) => {
         const datas = data.data.data
         this.sous_composantes = datas
-        console.log('resultat', datas)
-      }).catch((e) => {
-        console.log(e)
+
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
 
       })
     },
@@ -1162,7 +1192,7 @@ export default {
       }
 
       localStorage.setItem('profondeurActivite', JSON.stringify(profondeurActivite));
-      console.log('profondeur Activite', profondeurActivite)
+     
       this.$router.push({ name: 'dashboard_projets_taches_globale' })
     },
 
@@ -1224,9 +1254,19 @@ export default {
           const created_at = element.created_at
           this.dataTable.push({ activite: activite, codePta: codePta, poidsInitial: poidsInitial, poidsActuel: poidsActuel, created_at: created_at })
         })
-        console.log('mes suivis', this.suivis)
-      }).catch((e) => {
-        console.log(e)
+       
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     supprimerT() { },
@@ -1234,9 +1274,20 @@ export default {
     saveProlongerDate(id, data) {
       this.chargement = true
       ActiviteService.addDate(id, data).then((data) => {
-        alert('envoyer')
-      }).catch((e) => {
-        console.log(e)
+      
+        this.$toast.success('operation éffectué avec succès')
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
 
       this.chargement = false
@@ -1313,7 +1364,7 @@ export default {
 
           }
           else if (value.key === 'annee') {
-            console.log(moment(planDeDecaissement.annee + "/" + planDeDecaissement.trimestre + '/01').format("YYYY-MM-DD"))
+           
             this.champs2[index]['data'] = moment(planDeDecaissement.annee + "/" + planDeDecaissement.trimestre + '/01').format("YYYY-MM-DD")
           }
           else if (value.key === item) {
@@ -1663,12 +1714,12 @@ export default {
         else if (this.seeActivite) {
           this.champs.forEach((value) => {
             if (errors[value.key] instanceof Array || errors[value.key] !== undefined) {
-              console.log("seeActivite boucle if ")
+              
               if (value.key === "types") {
                 value.errors = errors["type"];
               }
               else {
-                console.log(this.sendRequest)
+               
                 value.errors = errors[value.key];
               }
 
@@ -1817,7 +1868,7 @@ export default {
 
   created() {
     const profondeurSC = JSON.parse(localStorage.getItem('profondeurSC'))
-    console.log("profondeur", profondeurSC)
+   
     if (profondeurSC != undefined || profondeurSC != null) {
       this.isClick = profondeurSC.isClick
       if (this.isClick) {

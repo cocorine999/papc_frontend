@@ -314,7 +314,7 @@ export default {
           this.entrepriseExecutanteBailleur = datas
           this.disabled()
         }).catch((e) => {
-          console.log(e)
+         
           this.disabled()
         })
       },
@@ -519,7 +519,7 @@ export default {
   },
 
   mounted() {
-    console.log("Fetching entreprises executantes ...");
+   
    this.getPermission()
     if(!this.entrepriseExecutanteVisible) {
       this.$router.push('/401-non-autorise')

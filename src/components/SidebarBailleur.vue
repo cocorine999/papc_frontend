@@ -239,7 +239,7 @@ export default {
     mounted() {
       if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
-        console.log("role courant",this.currentRole)
+
       }
     }
 }

@@ -172,7 +172,7 @@ export default {
 
       let sinistre = extractFormData(this.champs,this.sinistreAttributes);
      
-      console.log("les sinistres",sinistre)
+     
 
       if (this.sinistre?.id) {
         this.updateSinistre({ sinistre: sinistre, id: this.sinistre?.id }).then(
@@ -229,7 +229,7 @@ export default {
   },
 
   mounted() {
-    console.log("Fetching sinistres ...");
+  
     this.fetchSinistre()
   },
 

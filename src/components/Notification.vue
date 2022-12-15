@@ -53,7 +53,7 @@
 
             var channel = pusher.subscribe("private-notification." + this.currentUser?.id);
             
-            console.log(channel);
+           
 
             channel.bind('notification.posted', function (data) {
               const count = data.notification.unread

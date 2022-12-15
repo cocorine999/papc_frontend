@@ -317,7 +317,7 @@ export default {
       },
 
     async updateInputData(id, attribut, value) {
-        console.log('update');
+       
           await this.updateSite({site: {[attribut] : value}, id : id}).catch((value, status) => {
             if(this.hasErrors[attribut] !== undefined)
               alert(this.hasErrors[attribut])            
@@ -449,13 +449,13 @@ export default {
       this.$router.push('/401-non-autorise')
     }
 
-    console.log("Fetching sites ...")
+  
     this.fetchSites(this.currentUser?.programme?.id)
 
-    console.log("Fetching entreprises executantes ...");
+   
     this.fetchEntreprisesExecutante();
 
-    console.log("Fetching list of bailleurs...")
+
     this.fetchBailleurs()
   },
 

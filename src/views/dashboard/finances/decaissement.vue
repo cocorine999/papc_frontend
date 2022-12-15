@@ -292,7 +292,7 @@ export default {
           decaissement = extractFormData(this.champs, this.decaissementAttributs)
         }
           decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
-          console.log('decaissement',decaissement.methodeDePaiement)
+         
           decaissement.type = decaissement.type.id
           decaissement.projetId = decaissement.projetId.id
 
@@ -357,7 +357,7 @@ export default {
         decaissement.projetId = decaissement.projetId?.id
         decaissement.type = decaissement.type?.id
 
-        console.log(decaissement)
+       
 
         this.filter(decaissement).then((response) => {
             if (response.status == 200 || response.status == 201) {
@@ -467,7 +467,7 @@ export default {
         this.champsUpdate.find((value, index) => {
           if (value.key !== 'projetId') {
             if (value.key === item) {
-              console.log(value.key +' ' + decaissement[item])
+             
               this.champsUpdate[index]['data'] = decaissement[item]
             }
           }

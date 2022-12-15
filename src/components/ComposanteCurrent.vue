@@ -472,10 +472,20 @@ props:['valueProfondeur'],
           const created_at = element.created_at
           this.dataTable.push({composante:composante,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
         })
-        console.log("les suiivs",this.dataTable)
        
-      }).catch((e) => {
-        console.log(e)
+       
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
 
@@ -800,9 +810,7 @@ props:['valueProfondeur'],
       if( valeur instanceof Projet || valeur instanceof Object )
       {
         let demo = valeur
-        console.log('demo valueur',demo)
-        console.log('valeur old',old)
-        console.log('valeur premier',valeur)
+       
        
 
         /*  */
@@ -818,7 +826,7 @@ props:['valueProfondeur'],
        
       }
       else if( valeur !== null && typeof valeur !== 'undefined' && valeur.length !== 0 ){
-         console.log('valeur second',valeur)
+
         this.fetchComposantes(valeur);
       }
     },
@@ -837,7 +845,7 @@ props:['valueProfondeur'],
 
   created(){
    const profondeurProjet = JSON.parse(localStorage.getItem('profondeurProjet'))
-    console.log("profondeur",profondeurProjet)
+   
     if(profondeurProjet != undefined || profondeurProjet != null) {
       this.isClick = profondeurProjet.isClick
       if(this.isClick) {

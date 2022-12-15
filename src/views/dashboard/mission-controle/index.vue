@@ -440,7 +440,7 @@ export default {
         missionDeControle.programmeId = this.currentUser?.programme?.id
         missionDeControle.bailleurId = missionDeControle.bailleurId.id
 
-        console.log(missionDeControle)
+       
 
         if(this.missionDeControle?.id)
         {
@@ -487,7 +487,7 @@ export default {
 
       passation.entrepriseExecutantId = passation.entrepriseExecutanteId.id
 
-      console.log(passation)
+    
       
       this.savePassation(passation).then(response => {
         if(response.status == 200 || response.status == 201){

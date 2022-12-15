@@ -513,9 +513,19 @@ export default {
             this.audit.categorie = ''
             this.audit.projetId = null
             this.fichiers = ''
-          }).catch((e) => {
+          }).catch((error) => {
             this.chargement = false  
-            this.$toast.error(e)
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+            }
           })
       }
     },
@@ -524,23 +534,53 @@ export default {
       AuditService.get().then((data) => {
         this.audits = data.data.data
         this.disabled()
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
         this.disabled()
       })
     },
     getAudits() {
       AuditService.get().then((data) => {
         this.audits = data.data.data
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     getProjet() {
       ProjetService.get().then((data) => {
         this.projets = data.data.data
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     getEntreprise() {
@@ -551,8 +591,18 @@ export default {
           const name = element.user.nom
           this.entreprises.push({name,id})
         });
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     createAudit() {

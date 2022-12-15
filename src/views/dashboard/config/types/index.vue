@@ -184,7 +184,7 @@ export default {
       });
       let typeAno = extractFormData(this.champs, this.typeAnoAttributs);
 
-      console.log(typeAno);
+     
 
       if (this.typeAno?.id) {
         this.updateTypeAno({ typeAno: typeAno, id: this.typeAno?.id }).then(
@@ -233,7 +233,7 @@ export default {
   },
 
   mounted() {
-    console.log("Fetching type anos ...");
+   
     this.fetchTypeAnos();
   },
 

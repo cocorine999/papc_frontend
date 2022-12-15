@@ -195,7 +195,7 @@ export default {
         }
       
 
-      console.log(formulaire)
+
       
       this.saveFormulaire(formulaire).then(response => {
         if(response.status == 200 || response.status == 201){
@@ -208,7 +208,7 @@ export default {
   },
   mounted() {
     
-    console.log("Fetching unuite de mesure")
+   
     this.fetchUnite()
   }
   

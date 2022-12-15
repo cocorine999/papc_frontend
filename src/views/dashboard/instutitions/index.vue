@@ -333,7 +333,7 @@ export default {
       this.submitText = "Modifier"
 
       this.setInstitution(institution)
-      console.log('institution',institution)
+    
       this.institutionAttributsUpdate.forEach((item) => {
 
         this.champsUpdate.find((value, index) => {
@@ -489,7 +489,7 @@ export default {
 
   mounted() {
     this.getPermission()
-    console.log("Fetching institutions ...")
+   
     this.fetchInstitutions()
   }
 }

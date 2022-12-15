@@ -2958,7 +2958,7 @@ export default {
       let data = {}
       this.chargement(true)
       if (this.ppm == null) {
-        console.log("id de bailleur", this.bailleur)
+       
         if (this.bailleur == null) {
           data = {
             programmeId: this.currentUser.programme.id,

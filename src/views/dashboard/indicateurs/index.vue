@@ -564,8 +564,18 @@ export default {
     getIndicateurBailleurs() {
       IndicateurService.getIndicateurBailleur().then((data) => {
         this.indicateurBailleurs = data.data.data
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     
@@ -681,8 +691,18 @@ export default {
         } else {
           this.isValeurCibleUse = true;
         }
-      }).catch((e) => {
-        // console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
 
@@ -701,7 +721,7 @@ export default {
       indicateur.bailleurId = indicateur.bailleurId.id
       indicateur.categorieId = indicateur.categorieId.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId.id
-      console.log('id indicateur',this.indicateur)
+      
       if (this.sendRequest == false) {
         this.sendRequest = true
         if (this.indicateurId != '') {
@@ -749,7 +769,7 @@ export default {
       indicateur.bailleurId = indicateur.bailleurId?.id
       indicateur.categorieId = indicateur.categorieId?.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId?.id
-      console.log("les indicateurs", indicateur)
+      
 
 
       this.filtre(indicateur).then((response) => {
@@ -935,7 +955,7 @@ export default {
           { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] }, */
           { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
         ]
-        console.log('listes des bailleurs',this.bailleurs)
+        
       }
     }
 

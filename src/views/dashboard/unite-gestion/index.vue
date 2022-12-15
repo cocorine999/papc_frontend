@@ -242,10 +242,10 @@ import extractFormData from '@/utils/extract-data'
     },
 
     mounted() {
-      console.log("Fetching unitees de gestion ...")
+     
       this.fetchUniteeDeGestions().then((value) => {
         setTimeout(() => {
-          console.log("Fetching list of programmes...")
+          
           this.fetchProgrammes()
           this.getPermission()
           if(!this.uniteDeGestionVisible) {

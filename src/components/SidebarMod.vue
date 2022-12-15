@@ -78,7 +78,7 @@ export default {
     mounted() {
       if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.role[0].nom
-        console.log("role courant",this.currentUser)
+       
       }
     }
 }

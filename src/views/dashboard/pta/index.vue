@@ -225,7 +225,7 @@ export default {
     } 
      if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
-        console.log("role courant",this.currentUser)
+       
      }
   }
 }

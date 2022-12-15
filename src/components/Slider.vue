@@ -72,7 +72,7 @@ export default {
       let sliderContainerWidth = this.$refs.sliderContainer.clientWidth
       let elementsToShow = 3
       let cardWidth = sliderContainerWidth / elementsToShow
-      console.log(+slider.style.marginLeft.slice(0,-2))
+     
       if(Math.round(+slider.style.marginLeft.slice(0,-2)) != 0) {
         slider.style.marginLeft = ((+slider.style.marginLeft.slice(0,-2)) +cardWidth) + 'px' 
       }

@@ -446,10 +446,20 @@ export default {
           const created_at = element.created_at
           this.dataTable.push({composante:composante,codePta:codePta,poidsInitial:poidsInitial,poidsActuel:poidsActuel,created_at:created_at})
         })
-        console.log("les suiivs",this.dataTable)
+        
        
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
   
@@ -617,7 +627,7 @@ export default {
     this.programmeId = this.currentUser.programme.id
     this.getPtabReviser(params).then((value) => {
       this.results = value.data.data
-      console.log("results : ", this.results)
+     
       if(this.programmeId){
         this.fetchProjets(this.programmeId)
       } 

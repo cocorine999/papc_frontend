@@ -66,14 +66,14 @@
           datas.forEach(element => {
            this.disabled()
             element.created_at = moment(element.created_at).format('LLL')
-            console.log(element.created_at)
+           
           });
-         console.log(datas)
+        
           this.historiques = datas
           this.disabled()
-          console.log("les suiivs",this.dataTable)
+         
         }).catch((e) => {
-          console.log(e)
+         
           this.disabled()
         })
       },

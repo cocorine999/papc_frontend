@@ -373,7 +373,7 @@ export default {
 
     },
     commenter(data) {
-      console.log(data)
+     
       this.anosId = data.id
       this.statut = data.statut
       this.getAnosReponse(data.id)
@@ -524,7 +524,7 @@ export default {
 
       ano.bailleurId = ano.bailleurId.id
       ano.statut = ano.statut.etat
-      console.log(ano);
+     
 
       if (this.sendRequest == false) {
         this.sendRequest = true
@@ -601,7 +601,7 @@ export default {
          
         if (value.key !== 'statut') {
           if (value.key === item) {
-            console.log(value.key +' ' + ano[item])
+          
             this.champsUpdate[index]['data'] = ano[item]
           }
         }

@@ -277,7 +277,7 @@
           };
         }
   
-        console.log("Getting suivi ...");
+       
         this.getSuivi(form).then((response) => {
         this.formulaire = response.data.data;
   
@@ -318,7 +318,7 @@
           };
         }
   
-        console.log("Getting graphes ...");
+
         this.getGraphes(form).then((response) => {
         this.graphes = response;
   
@@ -396,7 +396,7 @@
       this.getDates(form1).then((response) => {
         this.dates = response;
 
-        console.log(this.dates);
+       
   
         let form = {
         "userId": this.currentUser.id,
@@ -404,7 +404,7 @@
         "date": this.dates[0]?.date
       };
   
-      console.log("Getting suivi ...");
+      
       this.getSuivi(form).then((response) => {
         this.formulaire = response.data.data;
   
@@ -427,7 +427,7 @@
   
           this.formulaire = [];
          }
-          console.log(this.formulaire);
+         
       });
   
       });

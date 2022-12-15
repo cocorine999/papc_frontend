@@ -192,7 +192,7 @@ export default {
   },
     
     mounted() {
-      console.log("Fetching point financier ...")
+     
       let form = 
         {
           /*"programmeId" : this.currentUser?.programme?.id, 

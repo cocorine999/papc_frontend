@@ -478,8 +478,7 @@ export default {
 
       passation.entrepriseExecutantId = passation.entrepriseExecutanteId.id
 
-      console.log(passation)
-
+     
       this.savePassation(passation).then(response => {
         if (response.status == 200 || response.status == 201) {
           this.close2()

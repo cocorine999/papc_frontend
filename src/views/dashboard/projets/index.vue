@@ -310,13 +310,13 @@ export default {
       }
       this.fichiers.pop()
       this.fichiers.pop()
-      console.log('les fichiers dddd', this.fichiers)
+     
 
     },
     getImage(data) {
       this.champs[6].data = data
       this.image = data
-      console.log('image', this.image)
+      
     },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
@@ -449,7 +449,7 @@ export default {
     modifierProjet(projet) {
       this.isUpdate = true
       this.title = 'Modifier un projet'
-      console.log('mes projets',projet)
+     
       this.submitText = "Modifier"
 
       this.projetId = projet.id
@@ -606,7 +606,7 @@ export default {
           formData.append('image', this.image)
           for (let i = 0; i < this.fichiers.length; i++) {
             let file = this.fichiers[i];
-            console.log(file);
+          
             formData.append('fichier' + i, file);
           }
 
@@ -715,7 +715,7 @@ export default {
   },
 
   created() {
-    console.log("Fetching projets ...")
+
     this.getPermission()
     if (!this.projetVisible) {
       this.$router.push('/401-non-autorise')

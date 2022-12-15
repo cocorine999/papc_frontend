@@ -409,8 +409,18 @@ export default {
           const date_de_creation = element.created_at
           this.suiviBailleurs.push(bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,ecart,date_de_creation)
         }) 
-      }).catch((e) => {
-          console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     getDate() {
@@ -423,9 +433,19 @@ export default {
         this.dates = datas
         this.showDate = false
         this.chargement = false
-      }).catch((e) => {
+      }).catch((error) => {
         this.chargement = false
-        console.log(e)
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
 
       }
@@ -510,8 +530,18 @@ export default {
           this.SuivisIndicateurs.push({bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
         }) 
        this.disabled()
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
         this.disabled()
       })
     },

@@ -40,14 +40,14 @@ export default {
   created() {
     if(this.currentUser != undefined) {
        this.currentRole = this.currentUser.type
-        console.log("role courant",this.currentUser)
+       
      }
     const usersInfo = JSON.parse(localStorage.getItem("bailleurInfo"));
     if (usersInfo) {
         const idProjet = usersInfo.id
         this.detailsProjet(idProjet).then((response) => {
         this.projet = response.data.data
-        console.log(this.projet)
+       
         })
     }
    

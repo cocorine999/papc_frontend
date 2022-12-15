@@ -618,8 +618,18 @@ export default {
 
             }
 
-          }).catch((e) => {
-            console.log(e)
+          }).catch((error) => {
+            if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
 
           })
         }
@@ -741,9 +751,19 @@ export default {
     saveProlongerDate(id, data) {
       this.chargement = true
       TacheService.addDate(id, data).then((data) => {
-        alert('envoyer')
-      }).catch((e) => {
-        console.log(e)
+       this.$toast.success('Operation éffectué avec succès')
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
       this.chargement = false
     },
@@ -758,10 +778,20 @@ export default {
           const created_at = element.created_at
           this.dataTable.push({ tache: tache, codePta: codePta, poidsInitial: poidsInitial, poidsActuel: poidsActuel, created_at: created_at })
         })
-        console.log("les suiivs", this.dataTable)
+       
 
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     suivreMyTache(tache) {
@@ -1167,7 +1197,7 @@ export default {
 
   created() {
     const profondeurActivite = JSON.parse(localStorage.getItem('profondeurActivite'))
-    console.log("profondeur", profondeurActivite)
+    
     if (profondeurActivite != undefined || profondeurActivite != null) {
       this.isClick = profondeurActivite.isClick
       if (this.isClick) {

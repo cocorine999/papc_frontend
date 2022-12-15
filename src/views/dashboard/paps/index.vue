@@ -369,7 +369,7 @@ export default {
     },
     
     async updateInputData(id, attribut, value) {
-      console.log('mise a jour');
+     
       await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
         if(this.hasErrors[attribut] !== undefined)
         alert(this.hasErrors[attribut])            
@@ -441,7 +441,7 @@ export default {
   },
   
   mounted() {
-    console.log("Fetching paps ...")
+   
     this.getPermission()
     if(!this.papVisible) {
       this.$router.push('/401-non-autorise')
@@ -449,7 +449,7 @@ export default {
    
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
-          console.log("Fetching list of sites...")
+         
           this.fetchSites(this.currentUser?.programme?.id)
         }, 500);
     })

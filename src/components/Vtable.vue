@@ -170,7 +170,7 @@ export default {
         if(count ===0) {
           this.alert = false
         }
-        console.log(this.listeSelection)
+       
         
 		},
     selectAllCheckbox($event,count,dataId) {
@@ -180,7 +180,7 @@ export default {
 				columns.forEach(column => {
 				  column.checked = true
 				  this.listeSelection.push(parseInt(column.name))
-          console.log("tout les elements",this.listeSelection)
+          
 				});
 			} else {
 				columns.forEach(column => {

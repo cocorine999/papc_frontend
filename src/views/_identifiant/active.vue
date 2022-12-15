@@ -52,7 +52,7 @@ export default {
         this.disabled()
       }).catch((error) => {
           this.disabled()
-          console.log('deeee')
+         
          if (error.response) {
               // Requête effectuée mais le serveur a répondu par une erreur.
               const message = error.response.data.message

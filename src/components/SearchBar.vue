@@ -13,7 +13,7 @@ export default {
   methods:{
     filtre(e){
       this.$emit("search",e.target.value)
-      console.log(e.target.value)    
+
     }
   }
 }

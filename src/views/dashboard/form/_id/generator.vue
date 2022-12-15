@@ -159,13 +159,13 @@ export default {
     previewImage(event) {
       this.image = event.target.files[0];
       this.images.push({image:this.image})
-      console.log(this.images)
+     
      
     },
     previewFiles(event) {
       this.file = event.target.files;
       this.images.push({fichier:this.file})
-      console.log(this.fichiers)
+      
     },
     ...mapActions("formulaires", {
       getFormulaire: "GET_FORMULAIRE",
@@ -189,8 +189,18 @@ export default {
     getUsers(id) {
       ListeByEntreprise.usersForEntreprise(id).then((data) => {
         this.usersListe = data.data.data
-      }).catch((e) => {
-        console.log(e)
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
       })
     },
     sendForm() {
@@ -209,7 +219,6 @@ export default {
             "date":this.date
           };
 
-          console.log(form);
 
           this.saveESuivi(form)
         });
@@ -219,7 +228,7 @@ export default {
     },
   },
   mounted() {
-    console.log("Getting formulaire ...");
+    
     this.getFormulaire(this.$route.params.id).then((response) => {
       this.formulaire = response;
 
@@ -229,13 +238,13 @@ export default {
       });*/
     });
 
-    console.log("Fetching entreprises executantes ...");
+   
     this.fetchEntreprisesExecutante();
 
     /* console.log("Fetching users ...");
     this.fetchUtilisateurs() */
 
-    console.log("Fetching sites ...")
+   
     this.fetchSites(this.currentUser?.programme?.id)
   },
 };

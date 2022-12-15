@@ -22,7 +22,7 @@ export default {
         this.$store.dispatch('disabled')
       },
     async confirmIdentifiant() {
-      console.log(this.$route.params.identifiant)
+     
       this.active()
       resetService.verify(this.$route.params.identifiant).then((data) => {
           const resetInfo = {
