@@ -148,11 +148,11 @@
                       </th>
                       <th scope="col" colspan="3"
                         class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        Montant projet
+                        Montant projet XOF
                       </th>
                       <th scope="col" colspan="3"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
-                        Montant budgetisé
+                        Montant budgetisé XOF
                       </th>
                       <th scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
@@ -201,7 +201,7 @@
                     <tr class="">
 
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN 
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         EMP
@@ -255,37 +255,37 @@
                         DECE
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
-                      </th>
-                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        TOTAL
-                      </th>
-                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
-                      </th>
-                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN XOF
+                      </th>
+                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
+                        EMP XOF
+                      </th>
+                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
+                        TOTAL
+                      </th>
+                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
+                        BN XOF
                       </th>
                       <th scope="col" class="p-1 text-small  border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
@@ -583,11 +583,11 @@
                   </th>
                   <th scope="col" colspan="3"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    Montant projet
+                    Montant projet XOF
                   </th>
                   <th scope="col" colspan="3"
                     class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                    Montant budgetisé
+                    Montant budgetisé XOF
                   </th>
                   <th scope="col" rowspan="2"
                     class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
@@ -637,11 +637,11 @@
 
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -649,11 +649,11 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -709,23 +709,11 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
-                  </th>
-                  <th scope="col"
-                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    TOTAL
-                  </th>
-                  <th scope="col"
-                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
-                  </th>
-                  <th scope="col"
-                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -733,11 +721,11 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -745,11 +733,23 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN XOF
+                  </th>
+                  <th scope="col"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
+                    EMP XOF
+                  </th>
+                  <th scope="col"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
+                    TOTAL
+                  </th>
+                  <th scope="col"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
+                    BN XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6  border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -1044,11 +1044,11 @@
                       </th>
                       <th scope="col" colspan="3"
                         class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        Montant projet
+                        Montant projet XOF
                       </th>
                       <th scope="col" colspan="3"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
-                        Montant budgetisé
+                        Montant budgetisé XOF
                       </th>
                       <th scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
@@ -1093,10 +1093,10 @@
                     <tr class="">
 
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN 
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP 
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
@@ -1147,37 +1147,37 @@
                         DECE
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
-                      </th>
-                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        TOTAL
-                      </th>
-                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
-                      </th>
-                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN XOF
+                      </th>
+                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
+                        EMP XOF
+                      </th>
+                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
+                        TOTAL
+                      </th>
+                      <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
+                        BN XOF
                       </th>
                       <th scope="col" class="p-1 text-small  border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP XOF
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
@@ -1480,11 +1480,11 @@
                   </th>
                   <th scope="col" colspan="3"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    Montant projet
+                    Montant projet XOF
                   </th>
                   <th scope="col" colspan="3"
                     class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                    Montant budgetisé
+                    Montant budgetisé XOF
                   </th>
                   <th scope="col" rowspan="2"
                     class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
@@ -1606,23 +1606,11 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
-                  </th>
-                  <th scope="col"
-                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    TOTAL
-                  </th>
-                  <th scope="col"
-                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
-                  </th>
-                  <th scope="col"
-                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -1630,11 +1618,11 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -1642,11 +1630,23 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN XOF
+                  </th>
+                  <th scope="col"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
+                    EMP XOF
+                  </th>
+                  <th scope="col"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
+                    TOTAL
+                  </th>
+                  <th scope="col"
+                    class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
+                    BN XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6  border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP XOF
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
