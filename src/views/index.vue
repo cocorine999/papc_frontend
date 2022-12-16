@@ -35,7 +35,7 @@
           </div>
           <div class="py-2 my-4 flex justify-center space-x-8">
             <button type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
-                  <span class="text-sm font-semibold uppercase" v-if="!loading">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
                     Se connecter
                   </span>
                   <span v-else class="flex justify-center items-center space-x-2">
@@ -125,16 +125,20 @@ import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/vali
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import Vmodal from '@/components/Vmodal'
 import ifElse from 'ramda/src/ifElse';
+import axios from 'axios'
+import {API_BASE_URL} from "@/services/configs/environment.js";
 
 export default {
   name: 'IndexPage',
   components:{Vmodal},
   data() {
     return {
+      base_url:API_BASE_URL,
       statePassword:"password",
       show : false,
       login: "",
       password: "",
+      chargement:false,
       soumettre :false,
       isValidate:false,
       showSend:false
@@ -157,9 +161,7 @@ export default {
     ...mapActions({
       authentification: "auths/LOGIN"
     }),
-    chargement(bool) {
-      this.$store.dispatch('SET_LOADER',bool)
-    },
+   
     gotoValidate() {
      this.showSend = true
     },
@@ -171,24 +173,44 @@ export default {
       }
     },
     async save() {
-      this.identifiant.email = this.login
-      this.identifiant.password = this.password
-      this.chargement(true)
-      await this.authentification(this.identifiant).then((response, status) =>{
-          if (response.statut === "success" || response.status === 200) {
-            if (response.data.utilisateur.type =='administrateur') {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/programme')
-            }else {
-              this.$toast.success("Connexion réussie")
-              this.$router.push('/dashboard/projets')
-            }
-          }else{
-            this.$toast.error(response.message)
-          }   
-      })
-      this.chargement(false)
       this.soumettre = true;
+        if(!this.$v.login.$invalid && !this.$v.password.$invalid) {
+          this.chargement = true
+          if(this.chargement === true) {
+            const identifiant = {}
+            identifiant.email = this.login
+            identifiant.password = this.password
+            const datas= await axios.get(`${this.base_url}/sanctum/csrf-cookie`)
+            if(datas.status ==204) {
+              await this.authentification(identifiant).then((response, status) =>{
+              if (response.statut === "success" || response.status === 200) {
+                this.chargement = false
+                if (response.data.utilisateur.type =='administrateur') {
+                  this.$toast.success("Connexion réussie")
+                  this.$router.push('/dashboard/programme')
+                }else {
+                  this.$toast.success("Connexion réussie")
+                  this.$router.push('/dashboard/projets')
+                }
+              }else{
+                this.chargement = false
+                this.$toast.error(response.message)
+              }   
+            }) 
+            }
+            else {
+              this.$toast.error("Connexion impossible reesayer !!!")
+            }
+          }
+          
+         
+         
+         
+        
+         
+        }
+      
+     
     },
 
     invisible () {
