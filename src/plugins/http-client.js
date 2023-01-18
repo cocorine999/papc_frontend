@@ -19,7 +19,7 @@ import router from  "@/router/index"
  * */
 const config = {
   baseURL: API_BASE_URL + "/api/",
-  timeout: 60 * 1000, // Timeout
+  timeout: 60 * 100000000, // Timeout
   //withCredentials: true, // Check cross-site Access-Control,
   headers: {
     common: {
