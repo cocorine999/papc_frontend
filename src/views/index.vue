@@ -221,11 +221,10 @@ export default {
                   this.$toast.success("Connexion réussie")
                   this.$router.push('/dashboard/projets')
                 }
-              }else{
-                this.chargement = false
-                this.$toast.error(response.message)
-              }   
-            }) 
+              }  
+            }).catch((error) => {
+              this.chargement = false
+            })
             }
             else {
               this.$toast.error("Connexion impossible reesayer !!!")
