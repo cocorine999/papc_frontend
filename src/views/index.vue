@@ -36,12 +36,12 @@
           </div>
           <div v-if="isRobot" class="">
             <g-recaptcha 
-            data-sitekey="6Lcj7iskAAAAAHIO8LeCLNLjNKGhpo97y3JZFbCa" 
+            data-sitekey="6LdFrTAkAAAAAADsgeGs4SVod0NZl7_2RsE-MZQi" 
             :data-validate="validate"
             :data-callback="callback"
             >
-              <p class="py-1  rounded-xl flex space-x-2 items-center ">
-                <label for="">
+              <p class="py-1 rounded-xl flex space-x-2 items-center ">
+                <label class="cursor-pointer" title="cliquer ici" for="">
                    <input type="checkbox"  class="border border-gray-500" name="captcha" id="validate" />
                    Je ne suis pas un robot 
                 </label>
@@ -62,7 +62,7 @@
                     </svg>
                   </span>
             </button>
-            <button v-else  key="robot" disabled class="bg-gray-700 text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
+            <button v-else  key="robot" disabled class="bg-gray-300 text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
                   <span class="text-sm font-semibold uppercase" v-if="!chargement">
                     Se connecter
                   </span>

@@ -409,12 +409,11 @@ export default {
         { name: 'activite 5' },
       ],
       tacheId: '',
-      tacheAttributs: ['nom', 'description', 'debut', 'fin', 'tepPrevu', 'poids'],
+      tacheAttributs: ['nom', 'description', 'debut', 'fin', 'poids'],
 
       champs: [
         { name: 'Nom de la tâche', key: "nom", type: 'text', placeholdere: "Nom de la tâche", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Taux d\'execution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Date de debut', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Description', type: '', key: "description", placeholdere: 'Description de la tâche', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },

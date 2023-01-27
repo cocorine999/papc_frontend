@@ -305,13 +305,12 @@ export default {
         { name: "dupliquer" },
         { name: "continuer" },
       ],
-      sousComposanteAttributs: ['nom', 'description', 'budgetNational', 'pret', 'tepPrevu', 'poids'],
+      sousComposanteAttributs: ['nom', 'description', 'budgetNational', 'pret', 'poids'],
       champs: [
         { name: 'Nom ', key: "nom", type: 'text', placeholdere: "Nom ", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Poids', type: 'number', key: "poids", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Budget National', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Taux d\'exécution physique', key: "tepPrevu", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
 
       ],
