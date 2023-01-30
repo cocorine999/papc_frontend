@@ -1,5 +1,6 @@
 <template>
   <div class="bg-gray-100  grid lg:grid-cols-2 sm:grid-cols-1 relative">
+    
     <!-- le formulaire de connexion -->
     <div class="flex justify-center items-center px-10 md:px-20 h-screen">
       <div class="formulaire sm:max-w-md ">
@@ -33,8 +34,35 @@
               mot de passe très court
             </div>
           </div>
+          <div v-if="isRobot" class="">
+            <g-recaptcha 
+            data-sitekey="6LdFrTAkAAAAAADsgeGs4SVod0NZl7_2RsE-MZQi" 
+            :data-validate="validate"
+            :data-callback="callback"
+            >
+              <p class="py-1 rounded-xl flex space-x-2 items-center ">
+                <label class="cursor-pointer" title="cliquer ici" for="">
+                   <input type="checkbox"  class="border border-gray-500" name="captcha" id="validate" />
+                   Je ne suis pas un robot 
+                </label>
+              </p>
+            </g-recaptcha>
+          </div>
           <div class="py-2 my-4 flex justify-center space-x-8">
-            <button type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
+            <button v-if="!isRobot" key="humain" type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    Se connecter
+                  </span>
+                  <span v-else class="flex justify-center items-center space-x-2">
+                    <span class=" px-4 font-semibold ">
+                      chargement ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+            </button>
+            <button v-else  key="robot" disabled class="bg-gray-300 text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
                   <span class="text-sm font-semibold uppercase" v-if="!chargement">
                     Se connecter
                   </span>
@@ -105,9 +133,10 @@
               Email invalide
             </div>
           </div>
-          <div class="flx justify-center">
-            <button type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">envoyer</button>
+          <div class="flex justify-center">
+            <button type="submit"  class="bg-primary  text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">envoyer</button>
           </div>
+          
         </form>
       </div>
     </vmodal>
@@ -120,17 +149,16 @@
 </template>
 
 <script>
-import Vbutton from '@/components/Vbutton'
 import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
+import gRecaptcha from '@finpo/vue2-recaptcha-invisible';
 import Vmodal from '@/components/Vmodal'
-import ifElse from 'ramda/src/ifElse';
 import axios from 'axios'
 import {API_BASE_URL} from "@/services/configs/environment.js";
 
 export default {
   name: 'IndexPage',
-  components:{Vmodal},
+  components:{Vmodal,gRecaptcha},
   data() {
     return {
       base_url:API_BASE_URL,
@@ -138,6 +166,7 @@ export default {
       show : false,
       login: "",
       password: "",
+      isRobot:true,
       chargement:false,
       soumettre :false,
       isValidate:false,
@@ -192,11 +221,10 @@ export default {
                   this.$toast.success("Connexion réussie")
                   this.$router.push('/dashboard/projets')
                 }
-              }else{
-                this.chargement = false
-                this.$toast.error(response.message)
-              }   
-            }) 
+              }  
+            }).catch((error) => {
+              this.chargement = false
+            })
             }
             else {
               this.$toast.error("Connexion impossible reesayer !!!")
@@ -213,6 +241,22 @@ export default {
      
     },
 
+    validate() {
+      // validate your form , if you don't have validate prop , default validate pass .
+      return true;
+    },
+    callback(token) {
+      // google recaptcha token , then you can pass to backend with your form data .
+      if (token) {
+        //alert(token);
+        this.$toast.success("Confirmer")
+        this.isRobot = false
+      }else{
+        // if you use data-size show reCAPTCHA , maybe you will get empty token.
+        //alert('please check you are not robot');
+        this.$toast.error("Verifier que vous n'est pas un robot  !!!")
+      }
+    },
     invisible () {
       this.statePassword = !this.show ? 'text' : 'password'
       this.show = !this.show;
@@ -259,4 +303,5 @@ export default {
       transition: all 0.3s ease-in-out;
     }
   }
+ 
 </style>

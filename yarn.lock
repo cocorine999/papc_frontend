@@ -3,18 +3,18 @@
 
 
 "@achrinza/node-ipc@^9.2.5":
-  "integrity" "sha512-kBX7Ay911iXZ3VZ1pYltj3Rfu7Ow9H7sK4H4RSfWIfWR2JKNB40K808wppoRIEzE2j2hXLU+r6TJgCAliCGhyQ=="
-  "resolved" "https://registry.npmmirror.com/@achrinza/node-ipc/-/node-ipc-9.2.5.tgz"
-  "version" "9.2.5"
+  version "9.2.5"
+  resolved "https://registry.npmmirror.com/@achrinza/node-ipc/-/node-ipc-9.2.5.tgz"
+  integrity sha512-kBX7Ay911iXZ3VZ1pYltj3Rfu7Ow9H7sK4H4RSfWIfWR2JKNB40K808wppoRIEzE2j2hXLU+r6TJgCAliCGhyQ==
   dependencies:
     "@node-ipc/js-queue" "2.0.3"
-    "event-pubsub" "4.3.0"
-    "js-message" "1.0.7"
+    event-pubsub "4.3.0"
+    js-message "1.0.7"
 
 "@ampproject/remapping@^2.1.0":
-  "integrity" "sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w=="
-  "resolved" "https://registry.npmmirror.com/@ampproject/remapping/-/remapping-2.2.0.tgz"
-  "version" "2.2.0"
+  version "2.2.0"
+  resolved "https://registry.npmmirror.com/@ampproject/remapping/-/remapping-2.2.0.tgz"
+  integrity sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w==
   dependencies:
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
@@ -147,14 +147,14 @@
     semver "^6.1.2"
 
 "@babel/helper-environment-visitor@^7.18.6":
-  "integrity" "sha512-8n6gSfn2baOY+qlp+VSzsosjCVGFqWKmDF0cCWOybh52Dw3SEyoWR1KrhMJASjLwIEkkAufZ0xvr+SxLHSpy2Q=="
-  "resolved" "https://registry.npmmirror.com/@babel/helper-environment-visitor/-/helper-environment-visitor-7.18.6.tgz"
-  "version" "7.18.6"
+  version "7.18.6"
+  resolved "https://registry.npmmirror.com/@babel/helper-environment-visitor/-/helper-environment-visitor-7.18.6.tgz"
+  integrity sha512-8n6gSfn2baOY+qlp+VSzsosjCVGFqWKmDF0cCWOybh52Dw3SEyoWR1KrhMJASjLwIEkkAufZ0xvr+SxLHSpy2Q==
 
 "@babel/helper-explode-assignable-expression@^7.18.6":
-  "integrity" "sha512-eyAYAsQmB80jNfg4baAtLeWAQHfHFiR483rzFK+BhETlGZaQC9bsfrugfXDCbRHLQbIA7U5NxhhOxN7p/dWIcg=="
-  "resolved" "https://registry.npmmirror.com/@babel/helper-explode-assignable-expression/-/helper-explode-assignable-expression-7.18.6.tgz"
-  "version" "7.18.6"
+  version "7.18.6"
+  resolved "https://registry.npmmirror.com/@babel/helper-explode-assignable-expression/-/helper-explode-assignable-expression-7.18.6.tgz"
+  integrity sha512-eyAYAsQmB80jNfg4baAtLeWAQHfHFiR483rzFK+BhETlGZaQC9bsfrugfXDCbRHLQbIA7U5NxhhOxN7p/dWIcg==
   dependencies:
     "@babel/types" "^7.18.6"
 
@@ -369,17 +369,17 @@
     "@babel/plugin-syntax-export-namespace-from" "^7.8.3"
 
 "@babel/plugin-proposal-json-strings@^7.18.6":
-  "integrity" "sha512-lr1peyn9kOdbYc0xr0OdHTZ5FMqS6Di+H0Fz2I/JwMzGmzJETNeOFq2pBySw6X/KFL5EWDjlJuMsUGRFb8fQgQ=="
-  "resolved" "https://registry.npmmirror.com/@babel/plugin-proposal-json-strings/-/plugin-proposal-json-strings-7.18.6.tgz"
-  "version" "7.18.6"
+  version "7.18.6"
+  resolved "https://registry.npmmirror.com/@babel/plugin-proposal-json-strings/-/plugin-proposal-json-strings-7.18.6.tgz"
+  integrity sha512-lr1peyn9kOdbYc0xr0OdHTZ5FMqS6Di+H0Fz2I/JwMzGmzJETNeOFq2pBySw6X/KFL5EWDjlJuMsUGRFb8fQgQ==
   dependencies:
     "@babel/helper-plugin-utils" "^7.18.6"
     "@babel/plugin-syntax-json-strings" "^7.8.3"
 
 "@babel/plugin-proposal-logical-assignment-operators@^7.18.6":
-  "integrity" "sha512-zMo66azZth/0tVd7gmkxOkOjs2rpHyhpcFo565PUP37hSp6hSd9uUKIfTDFMz58BwqgQKhJ9YxtM5XddjXVn+Q=="
-  "resolved" "https://registry.npmmirror.com/@babel/plugin-proposal-logical-assignment-operators/-/plugin-proposal-logical-assignment-operators-7.18.6.tgz"
-  "version" "7.18.6"
+  version "7.18.6"
+  resolved "https://registry.npmmirror.com/@babel/plugin-proposal-logical-assignment-operators/-/plugin-proposal-logical-assignment-operators-7.18.6.tgz"
+  integrity sha512-zMo66azZth/0tVd7gmkxOkOjs2rpHyhpcFo565PUP37hSp6hSd9uUKIfTDFMz58BwqgQKhJ9YxtM5XddjXVn+Q==
   dependencies:
     "@babel/helper-plugin-utils" "^7.18.6"
     "@babel/plugin-syntax-logical-assignment-operators" "^7.10.4"
@@ -691,12 +691,12 @@
   dependencies:
     "@babel/helper-module-transforms" "^7.18.6"
     "@babel/helper-plugin-utils" "^7.18.6"
-    "babel-plugin-dynamic-import-node" "^2.3.3"
+    babel-plugin-dynamic-import-node "^2.3.3"
 
 "@babel/plugin-transform-modules-commonjs@^7.18.6":
-  "integrity" "sha512-Qfv2ZOWikpvmedXQJDSbxNqy7Xr/j2Y8/KfijM0iJyKkBTmWuvCA1yeH1yDM7NJhBW/2aXxeucLj6i80/LAJ/Q=="
-  "resolved" "https://registry.npmmirror.com/@babel/plugin-transform-modules-commonjs/-/plugin-transform-modules-commonjs-7.18.6.tgz"
-  "version" "7.18.6"
+  version "7.18.6"
+  resolved "https://registry.npmmirror.com/@babel/plugin-transform-modules-commonjs/-/plugin-transform-modules-commonjs-7.18.6.tgz"
+  integrity sha512-Qfv2ZOWikpvmedXQJDSbxNqy7Xr/j2Y8/KfijM0iJyKkBTmWuvCA1yeH1yDM7NJhBW/2aXxeucLj6i80/LAJ/Q==
   dependencies:
     "@babel/helper-module-transforms" "^7.18.6"
     "@babel/helper-plugin-utils" "^7.18.6"
@@ -983,6 +983,11 @@
     js-yaml "^3.13.1"
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
+
+"@finpo/vue2-recaptcha-invisible@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@finpo/vue2-recaptcha-invisible/-/vue2-recaptcha-invisible-1.2.0.tgz#c92f10079ccb454000c35508070d1eac0dfce76e"
+  integrity sha512-I6SBqYghcgAyA5BhOpvcE5JELfeaxgYWvDpB5dXG0lSOIQ0z8fjazNY6Oo9X2HrYE1CUis28ySQCtANPf22mFA==
 
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
@@ -6090,20 +6095,15 @@ regexpu-core@^5.1.0:
     unicode-match-property-ecmascript "^2.0.0"
     unicode-match-property-value-ecmascript "^2.0.0"
 
-"register-service-worker@^1.7.2":
-  "integrity" "sha512-CiD3ZSanZqcMPRhtfct5K9f7i3OLCcBBWsJjLh1gW9RO/nS94sVzY59iS+fgYBOBqaBpf4EzfqUF3j9IG+xo8A=="
-  "resolved" "https://registry.npmmirror.com/register-service-worker/-/register-service-worker-1.7.2.tgz"
-  "version" "1.7.2"
+regjsgen@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.npmmirror.com/regjsgen/-/regjsgen-0.6.0.tgz"
+  integrity sha512-ozE883Uigtqj3bx7OhL1KNbCzGyW2NQZPl6Hs09WTvCuZD5sTI4JY58bkbQWa/Y9hxIsvJ3M8Nbf7j54IqeZbA==
 
-"regjsgen@^0.6.0":
-  "integrity" "sha512-ozE883Uigtqj3bx7OhL1KNbCzGyW2NQZPl6Hs09WTvCuZD5sTI4JY58bkbQWa/Y9hxIsvJ3M8Nbf7j54IqeZbA=="
-  "resolved" "https://registry.npmmirror.com/regjsgen/-/regjsgen-0.6.0.tgz"
-  "version" "0.6.0"
-
-"regjsparser@^0.8.2":
-  "integrity" "sha512-J3LABycON/VNEu3abOviqGHuB/LOtOQj8SKmfP9anY5GfAVw/SPjwzSjxGjbZXIxbGfqTHtJw58C2Li/WkStmA=="
-  "resolved" "https://registry.npmmirror.com/regjsparser/-/regjsparser-0.8.4.tgz"
-  "version" "0.8.4"
+regjsparser@^0.8.2:
+  version "0.8.4"
+  resolved "https://registry.npmmirror.com/regjsparser/-/regjsparser-0.8.4.tgz"
+  integrity sha512-J3LABycON/VNEu3abOviqGHuB/LOtOQj8SKmfP9anY5GfAVw/SPjwzSjxGjbZXIxbGfqTHtJw58C2Li/WkStmA==
   dependencies:
     jsesc "~0.5.0"
 
@@ -7473,28 +7473,28 @@ webpack-dev-server@^4.7.3:
     "@types/serve-static" "^1.13.10"
     "@types/sockjs" "^0.3.33"
     "@types/ws" "^8.5.1"
-    "ansi-html-community" "^0.0.8"
-    "bonjour-service" "^1.0.11"
-    "chokidar" "^3.5.3"
-    "colorette" "^2.0.10"
-    "compression" "^1.7.4"
-    "connect-history-api-fallback" "^2.0.0"
-    "default-gateway" "^6.0.3"
-    "express" "^4.17.3"
-    "graceful-fs" "^4.2.6"
-    "html-entities" "^2.3.2"
-    "http-proxy-middleware" "^2.0.3"
-    "ipaddr.js" "^2.0.1"
-    "open" "^8.0.9"
-    "p-retry" "^4.5.0"
-    "rimraf" "^3.0.2"
-    "schema-utils" "^4.0.0"
-    "selfsigned" "^2.0.1"
-    "serve-index" "^1.9.1"
-    "sockjs" "^0.3.24"
-    "spdy" "^4.0.2"
-    "webpack-dev-middleware" "^5.3.1"
-    "ws" "^8.4.2"
+    ansi-html-community "^0.0.8"
+    bonjour-service "^1.0.11"
+    chokidar "^3.5.3"
+    colorette "^2.0.10"
+    compression "^1.7.4"
+    connect-history-api-fallback "^2.0.0"
+    default-gateway "^6.0.3"
+    express "^4.17.3"
+    graceful-fs "^4.2.6"
+    html-entities "^2.3.2"
+    http-proxy-middleware "^2.0.3"
+    ipaddr.js "^2.0.1"
+    open "^8.0.9"
+    p-retry "^4.5.0"
+    rimraf "^3.0.2"
+    schema-utils "^4.0.0"
+    selfsigned "^2.0.1"
+    serve-index "^1.9.1"
+    sockjs "^0.3.24"
+    spdy "^4.0.2"
+    webpack-dev-middleware "^5.3.1"
+    ws "^8.4.2"
 
 webpack-merge@^5.7.3:
   version "5.8.0"
