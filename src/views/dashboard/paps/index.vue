@@ -392,6 +392,7 @@ export default {
       PapService.create(pap).then((data) => {
         this.$toast.success("enregistrement éffectué avec success")
         this.showModal = false
+        
       }).catch((e) => {
         this.$toast.error(e)
       })
