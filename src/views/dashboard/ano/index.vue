@@ -528,8 +528,8 @@ export default {
 
       if (this.sendRequest == false) {
         this.sendRequest = true
-        if (this.ano?.id) {
-          this.updateAno({ ano: ano, id: this.ano?.id }).then(
+        if (ano?.id) {
+          this.updateAno({ ano: ano, id: ano?.id }).then(
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.close();
