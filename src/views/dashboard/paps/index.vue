@@ -161,7 +161,7 @@ export default {
       search:'',
       papAttributs : ['nom', 'rue', 'longitude', 'latitude', 'sexe', 'contact', 'siteId', 'montant', 'payer', 'referencePieceIdentite', 'statut', 'modeDePaiement', 'dateDePaiement'],
       champs:[
-        {name:' N° Rue', key:'rue',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
+        {name:' N° Rue', key:'rue',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Longitude', key:'longitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Latitude', key:'latitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Site', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
@@ -174,7 +174,7 @@ export default {
         {name:' Indeminisation', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Transféré', key:'payer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name: 'Date de paiement', key: "dateDePaiement", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true,errors : []},
-        
+
       ],
       cols:2,
       headers:[
@@ -191,6 +191,8 @@ export default {
         {name:'Indeminisation',cle:'montant'},
         {name:'Transféré',cle:'payer',monaie:true},
         {name:'Date de paiement',cle:'dateDePaiement'},
+        {name:'Date de paiement',cle:'dateDePaiement'},
+
       ],
       actions:[
         {name:'supprimer',iconne:''},
@@ -391,6 +393,8 @@ export default {
       pap.sexe = pap.sexe.sigle
       PapService.create(pap).then((data) => {
         this.$toast.success("enregistrement éffectué avec success")
+      this.fetchPaps({id : this.currentUser?.programme?.id})
+
         this.showModal = false
         
       }).catch((e) => {
@@ -447,11 +451,13 @@ export default {
     if(!this.papVisible) {
       this.$router.push('/401-non-autorise')
     }
+    this.fetchSites(this.currentUser?.programme?.id)
+
    
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
         setTimeout(() => {
          
-          this.fetchSites(this.currentUser?.programme?.id)
+          //this.fetchSites(this.currentUser?.programme?.id)
         }, 500);
     })
   }
