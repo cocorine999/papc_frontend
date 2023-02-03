@@ -397,7 +397,7 @@ export default {
 
           let formData = this.champs.map((value) => {
             if(value.key === 'activiteId'){ 
-              value['options'] = this.activites
+              //value['options'] = this.activites
             }
 
             else if(value.key === 'trimestre'){
@@ -501,7 +501,49 @@ export default {
      
 
 
-  }
+  },
+
+  watch: {
+    loading: function (value) {
+      //this.loading = value
+    },
+
+    errors: function (errors) {
+      this.champs.forEach((value) => { value.errors = errors[value.key] })
+      this.champsRecherche.forEach((value) => { value.errors = errors[value.key] })
+      //this.errors = errors
+    },
+
+
+
+   
+    // map du statut dans Store
+    activites: function (activites) {
+      this.champs.map((item) => {
+        if (item.key === 'activiteId') {
+          item.options = activites.map((activite) => {
+            return {
+              id: activite.id,
+              nom: activite.bailleur.sigle + '-' + activite.codePta + '-' + activite.nom,
+            }
+          });
+        }
+        return item;
+      });
+
+      this.champsRecherche.map((item) => {
+        if (item.key === 'activiteId') {
+          item.options = activites.map((activite) => {
+            return {
+              id: activite.id,
+              nom: activite.bailleur.sigle + '-' + activite.codePta + '-' + activite.nom,
+            }
+          });
+        }
+        return item;
+      });
+    }
+  },
 
   }
 </script>
