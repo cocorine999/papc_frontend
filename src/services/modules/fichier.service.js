@@ -13,7 +13,9 @@ const FormulaireService = {
       return ApiService.get("utilisateurs/fichiers", slug);
     },
 
- 
+    getById(slug) {
+      return ApiService.get("fichiers", slug);
+    },
 
     create(params) {
       return ApiService.post("fichiers", params);
