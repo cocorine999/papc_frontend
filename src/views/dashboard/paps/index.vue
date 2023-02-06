@@ -192,7 +192,7 @@ export default {
         {name:'Indeminisation',cle:'montant'},
         {name:'Transféré',cle:'payer',monaie:true},
         {name:'Date de paiement',cle:'dateDePaiement'},
-        {name:'Date de paiement',cle:'dateDePaiement'},
+        {name:'Date de creation',cle:'dateDeCreation'},
 
       ],
       actions:[
@@ -310,7 +310,8 @@ export default {
               mode_de_paiement: element.modeDePaiement,
               indeministation: element.montant,
               transferer: element.payer,
-              date_de_paiement: element.dateDePaiement
+              date_de_paiement: element.dateDePaiement,
+              date_de_creation: element.dateDeCreation
             }
           );
         });
