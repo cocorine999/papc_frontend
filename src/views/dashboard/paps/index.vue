@@ -181,6 +181,7 @@ export default {
         {name:'N° Rue',cle:'rue'},
         {name:'Longitude',cle:'longitude'},
         {name:'Latitude',cle:'latitude'},
+        {name:'Bailleur',cle:'bailleur'},
         {name:'Site',cle:'site'},
         {name:'Nom et prenom',cle:'nom'},
         {name:'Sexe',cle:'sexe'},
@@ -299,6 +300,7 @@ export default {
               rue: element.rue,
               longitude: element.longitude,
               latitude: element.latitude,
+              bailleur:element.bailleur,
               site: element.site,
               nom_prenoms: element.nom,
               sexe: element.sexe,
@@ -357,6 +359,7 @@ export default {
         return this.paps.sinistres.filter(function (pap){
           return pap.site.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  pap.sexe.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
+                 pap.bailleur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  pap.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
     },
