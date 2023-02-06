@@ -128,7 +128,7 @@
 
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire
-                  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  </label>
                 <textarea v-model="suiviIndicateurs.commentaire"
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   rows="3">
@@ -481,7 +481,7 @@ export default {
           { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
           { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
           { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-          { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+          { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
         ]
         this.champsRecherche = [
           { name: 'Indicateur', key: 'nom', type: 'text', placeholdere: "Donnez un nom d'indicateur", isSelect: false, isTextArea: false, data: '', required: false },

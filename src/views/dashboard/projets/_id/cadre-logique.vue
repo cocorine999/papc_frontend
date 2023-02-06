@@ -1,6 +1,36 @@
 <template>
   <dashboard>
     <div class="w-full">
+      <delete-alert v-if="deleteModal1" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal1 = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet objectif global?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal1 = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="delete1(deleteData)">Supprimer</button>
+      </div>
+      </delete-alert>
+      <delete-alert v-if="deleteModal2" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal2 = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet objectif specifique?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal2 = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="delete2(deleteData)">Supprimer</button>
+      </div>
+      </delete-alert>
+      <delete-alert v-if="deleteModal3" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal3 = false">
+      <p class="text-gray-800">
+        voulez vous supprimer cet résultat?
+      </p>
+
+      <div class="text-right mt-4">
+          <button @click="deleteModal3 = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="delete3(deleteData)">Supprimer</button>
+      </div>
+      </delete-alert>
       <nav class="mb-2 text-sm font-semibold" aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -180,6 +210,8 @@
       <vtable
         :headers="headers"
         :datas="objectifGlobals"
+        :actions="[{name:'supprimer'}]"
+        @supprimer="supprimer1"
       ></vtable>
      </div>
       <div class="my-2">
@@ -187,6 +219,8 @@
         <vtable
           :headers="headers"
           :datas="objectifSpecifiques"
+          :actions="[{name:'supprimer'}]"
+          @supprimer="supprimer2"
         ></vtable>
       </div>
      <div class="my-2">
@@ -194,6 +228,8 @@
       <vtable
         :headers="headers"
         :datas="resultats"
+        :actions="[{name:'supprimer'}]"
+        @supprimer="supprimer3"
       ></vtable>
      </div>
     </div>
@@ -215,6 +251,7 @@ import objectifSpecifiqueService from "@/services/modules/objectif.specifique.se
 import objectifGlobaux from "@/services/modules/objectif.global.service.js";
 import ResultatService from "@/services/modules/resultat.service.js";
 import CadreLogiqueService from "@/services/modules/cadre.logique.service.js";
+import DeleteAlert from "@/components/DeleteAlert.vue";
 export default {
   components: {
     Vtable,
@@ -225,6 +262,7 @@ export default {
     SearchBar,
     ModalTopRight,
     Vbutton,
+    DeleteAlert,
     Multiselect,
   },
   data() {
@@ -250,6 +288,10 @@ export default {
       objectifGlobals:[],
       objectifSpecifiques:[],
       resultats:[],
+      deleteModal1:false,
+      deleteModal2:false,
+      deleteModal3:false,
+      deleteData:{}
     };
   },
   computed: {
@@ -395,6 +437,85 @@ export default {
               //console.log('dernier message', error.message);
           }
       })
+    },
+    supprimer1(objectifGlobaux,index) {
+      this.deleteModal1= true
+      this.deleteData.data = objectifGlobaux
+      this.deleteData.index = index
+    },
+    supprimer2(objectifSpecifique,index) {
+      this.deleteModal2= true
+      this.deleteData.data = objectifSpecifique
+      this.deleteData.index = index
+    },
+    supprimer3(resultat,index) {
+      this.deleteModal3= true
+      this.deleteData.data = resultat
+      this.deleteData.index = index
+    },
+
+    delete1(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal1= false
+      objectifGlobaux.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.getCadreLogique()
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+    delete2(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal2= false
+      objectifSpecifiqueService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.getCadreLogique()
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
+    },
+    delete3(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal3= false
+      ResultatService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.getCadreLogique()
+       
+      }).catch((error) => {
+        
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      }) 
     },
   },
 };
