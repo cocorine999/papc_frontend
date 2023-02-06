@@ -398,6 +398,7 @@ export default {
       PapService.create(pap).then((data) => {
         this.$toast.success("enregistrement éffectué avec success")
       this.fetchPaps({id : this.currentUser?.programme?.id})
+      this.resetForm
 
         this.showModal = false
         
@@ -459,6 +460,9 @@ export default {
 
    
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
+     console.log(value.data)
+      console.log( 'les paps')
+
         setTimeout(() => {
          
           //this.fetchSites(this.currentUser?.programme?.id)
