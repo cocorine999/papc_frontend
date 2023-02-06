@@ -164,7 +164,7 @@ export default {
         {name:' N° Rue', key:'rue',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Longitude', key:'longitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:' Latitude', key:'latitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Site', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
+        {name:'Site du Bailleur', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
         {name:' Nom et prenoms', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
         {name:'Sexe', key:'sexe',type:'',placeholdere:"Selectionnez le sexe",isSelect:true,isTextArea:false,data:'',options:this.sexe, cle: 'sigle', value: 'nom',required:true,errors : []},
         {name:' Contact ', key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
@@ -181,7 +181,7 @@ export default {
         {name:'N° Rue',cle:'rue'},
         {name:'Longitude',cle:'longitude'},
         {name:'Latitude',cle:'latitude'},
-        {name:'Site',cle:'site'},
+        {name:'Site du Bailleur',cle:'site'},
         {name:'Nom et prenom',cle:'nom'},
         {name:'Sexe',cle:'sexe'},
         {name:'Contact',cle:'contact'},
@@ -191,7 +191,7 @@ export default {
         {name:'Indeminisation',cle:'montant'},
         {name:'Transféré',cle:'payer',monaie:true},
         {name:'Date de paiement',cle:'dateDePaiement'},
-        {name:'Date de paiement',cle:'dateDePaiement'},
+        {name:'date de création   ',cle:'dateDeCreation'},
 
       ],
       actions:[
@@ -308,7 +308,9 @@ export default {
               mode_de_paiement: element.modeDePaiement,
               indeministation: element.montant,
               transferer: element.payer,
-              date_de_paiement: element.dateDePaiement
+              date_de_paiement: element.dateDePaiement,
+              date_de_creation : element.dateDeCreation
+
             }
           );
         });
@@ -394,6 +396,7 @@ export default {
       PapService.create(pap).then((data) => {
         this.$toast.success("enregistrement éffectué avec success")
       this.fetchPaps({id : this.currentUser?.programme?.id})
+      this.resetForm
 
         this.showModal = false
       }).catch((e) => {
@@ -454,6 +457,9 @@ export default {
 
    
     this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
+     console.log(value.data)
+      console.log( 'les paps')
+
         setTimeout(() => {
          
           //this.fetchSites(this.currentUser?.programme?.id)
