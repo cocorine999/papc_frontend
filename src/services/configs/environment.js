@@ -1,11 +1,11 @@
-// const API_BASE_URL = "http://127.0.0.:8001"
-const API_BASE_URL = "http://137.255.9.235:8001"
+const API_BASE_URL = "http://192.168.8.105:8001"
+// const API_BASE_URL = "http://137.255.9.235:8001"
 
 const STAGGING_URL = "http://137.255.9.235:8001"
 
 const DEPLOYMENT_URL = "http://137.255.9.235:8001"
 
-const PUSHER_BASE_URL = "http://137.255.9.235"
+const PUSHER_BASE_URL = "http://192.168.8.105"
 
 const PUSHER_APP_KEY = "ae75f3a73201ef37c668"
 
