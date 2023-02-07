@@ -131,31 +131,30 @@
           <div class="overflow-x-auto ">
             <div class="py-4 inline-block min-w-full ">
               <div class="overflow-hidden">
-                <table class="min-w-full text-center">
+                <table class="min-w-full text-center table-fixed">
                   <thead class="border-b bg-gray-50">
                     <tr>
-                    
-                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4 w-5/12 whitespace-normal">
                         rôles
                       </th>
-                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4 w-5/12 whitespace-normal">
                         permissions
                       </th>
                       
-                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4">
+                      <th scope="col" class="text-xs md:text-sm font-semibold uppercase text-gray-900 px-6 py-4 w-2/12">
                         actions
                       </th>
                     </tr>
                   </thead >
                   <tbody>
-                   <tr v-for="(data,index) in filteredRole()" :key="index" class="bg-white border-b">
-                      <td class="text-sm text-gray-900 font-semibold px-6 py-4 whitespace-nowrap">
-                       {{data.nom}} <br>
-                      <span class="italic"> {{data.description}}</span>
+                   <tr v-for="(data,index) in filteredRole()" :key="index" class="bg-white border-b ">
+                      <td class="text-sm text-gray-900 font-semibold flex justify-start  text-left m-4 flex-wrap">
+                       {{data.nom}} : <br>
+                      <span class="italic text-start "> {{data.description}}</span>
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 ">
-                        <div class="flex space-x-4  flex-wrap ">
-                          <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold my-2 text-white border-green-500 rounded-xl"> {{permission.nom}} </span>
+                        <div class="container">
+                          <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold my-2 text-white border-green-500 rounded-xl role"> {{permission.nom}} </span>
                         </div>
                       </td>
                      
@@ -439,5 +438,13 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.role {
+  flex-grow: 1;
+  margin-right: 5px;
+}
 </style>

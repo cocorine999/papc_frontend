@@ -180,6 +180,8 @@
       <vtable
         :headers="headers"
         :datas="objectifGlobals"
+        :actions="actions" 
+        @supprimer="supprimerObjectifsGlobal"
       ></vtable>
      </div>
       <div class="my-2">
@@ -187,6 +189,7 @@
         <vtable
           :headers="headers"
           :datas="objectifSpecifiques"
+          :actions="actions" 
         ></vtable>
       </div>
      <div class="my-2">
@@ -194,6 +197,7 @@
       <vtable
         :headers="headers"
         :datas="resultats"
+        :actions="actions" 
       ></vtable>
      </div>
     </div>
@@ -250,6 +254,9 @@ export default {
       objectifGlobals:[],
       objectifSpecifiques:[],
       resultats:[],
+      actions: [
+        { name: 'supprimer'},
+      ],
     };
   },
   computed: {
@@ -396,6 +403,10 @@ export default {
           }
       })
     },
+    supprimerObjectifsGlobal(){
+      
+    }
+    
   },
 };
 </script>

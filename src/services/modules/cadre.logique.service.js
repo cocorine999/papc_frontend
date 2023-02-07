@@ -5,10 +5,9 @@ const cadreLogiqueService = {
 
   get(slug) {
     return ApiService.get(`projets/${slug}/cadreLogique/`);
-  },
+  }
 
-  };
+};
 
-  export default cadreLogiqueService;
-  
-  
+export default cadreLogiqueService;
+

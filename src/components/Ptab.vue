@@ -90,7 +90,7 @@
         <div class="my-3 px-3 py-1 justify-end flex space-x-4">
           <button @click="statutActuel = !statutActuel"
             class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le poids actuel </span>
+            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le poids actuel</span>
             <span v-else class="mx-2 text-sm font-semibold">masquer le poids actuel </span>
           </button>
           <button v-if="filtrePta" @click="openFiltre = !openFiltre" title="filtrer les données"
@@ -810,7 +810,7 @@
                     <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700 bg-yellow-100 ">
                     <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }}
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->

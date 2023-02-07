@@ -28,8 +28,8 @@
                 d="M20 5h-8.586L9.707 3.293A.996.996 0 0 0 9 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z">
               </path>
             </svg></router-link>
-          <button @click="viewNotification"
-            class="bg-white w-10 h-10 flex justify-center items-center relative rounded-full text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+          <button @click="viewNotification" :class="{'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' : showNotification}"
+            class="bg-white w-10 h-10 flex justify-center items-center relative rounded-full text-gray-700 hover:text-gray-900 ">
 
             <!-- Heroicon name: outline/bell -->
             <img src="/img/bell.gif" class="h-6 w-6 object-contain" alt="">
@@ -142,7 +142,7 @@ export default {
 
     viewNotification() {
       this.getNotification()
-      this.showNotification = true
+      this.showNotification = ! this.showNotification
     },
     openNotif() {
       this.showNotification = true
@@ -192,5 +192,10 @@ export default {
   },
 }
 </script>
+<style scoped>
+.active{
+  background: #000;
+}
+</style>
 
  
