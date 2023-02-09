@@ -9,7 +9,7 @@
     >
       <div class="flex justify-between items-center w-full px-4  py-2 bg-gray-100 border-b relative">
         <p class="font-bold text-sm md:text-lg text-primary uppercase">{{ title }}</p>
-         <div @click="closeModal" class="w-10 h-10  md:w-12 h-12 z-50 flex justify-center items-center bg-red-500 ">
+         <div @click="closeModal" class="w-10 h-10  md:w-12 z-50 flex justify-center items-center bg-red-500 ">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
           <path
             d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"

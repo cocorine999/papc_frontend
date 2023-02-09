@@ -594,7 +594,7 @@
                     Poids
                   </th>
                   <th v-if="statutActuel" scope="col" rowspan="2"
-                    class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                    class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap bg-green-50">
                     poids actuel
                   </th>
                   <th scope="col" rowspan="2"
@@ -810,7 +810,7 @@
                     <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700 bg-yellow-100 ">
+                  <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700 bg-green-50 ">
                     <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }}
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->

@@ -151,9 +151,6 @@
                     <textarea name="" v-model="cadreLogique.description" id="" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" rows="3"></textarea>
                    
                   </div>
-               
-
-                
                   <div class="py-2 my-4 flex justify-center space-x-8">
                   <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
                     <span class="text-sm font-semibold uppercase" v-if="!chargement">
@@ -460,7 +457,6 @@ export default {
       objectifGlobaux.destroy(data.data.id).then((data) => {
         this.$toast.success("Operation effectué avec success !")
         this.getCadreLogique()
-       
       }).catch((error) => {
         
         if (error.response) {

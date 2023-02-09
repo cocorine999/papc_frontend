@@ -6,15 +6,15 @@
           <label   class=" block py-2 text-xs  md:text-sm font-semibold " for="">
           {{champ.name}} <span v-if="champ.required" class="px-2 w-full text-lg font-black text-red-700">*</span>
           </label>
-          <input v-if="champ.type !='file'" :required="champ.required" v-model='champ.data' :step="champ.type === 'number' ? '0.01' : ''" :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"  :class="{'h-14':champ.type==='color'}"  class="px-2 py-1  md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
+          <input v-if="champ.type !='file'" :required="champ.required" :title="champ.title" v-title v-model='champ.data' :step="champ.type === 'number' ? '0.01' : ''" :min="champ.type === 'number' ? '0' : ''" :placeholder="champ.placeholdere" :type="champ.type"  :class="{'h-14':champ.type==='color'}"  class="px-2 py-1  md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm"  />
           
            <div v-else class="">
               <div v-if="champ.isImage">
-                <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage">
+                <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" title="choisir une image" v-title aria-describedby="file_input_help" id="file_input" accept="image/png, image/gif, image/jpeg" type="file" @change="previewImage">
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px, 3MO ).</p>
               </div>
               <div v-else>
-                <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
+                <input class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"  title="choisir un fichier" v-title aria-describedby="file_input_help" id="file_input" multiple type="file" @change="previewFiles">
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">IMAGE,PDF,WORD,EXCEL (MAX. 20 MO)</p>
               </div>
             </div>
@@ -163,4 +163,5 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 </style>

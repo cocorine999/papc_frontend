@@ -148,13 +148,13 @@
                   </thead >
                   <tbody>
                    <tr v-for="(data,index) in filteredRole()" :key="index" class="bg-white border-b ">
-                      <td class="text-sm text-gray-900 font-semibold flex justify-start  text-left m-4 flex-wrap">
+                      <td class="text-sm text-gray-900 font-semibold flex justify-start  text-left p-2 flex-wrap">
                        {{data.nom}} : <br>
                       <span class="italic text-start "> {{data.description}}</span>
                       </td>
-                      <td class="text-sm text-gray-900 font-light px-6 py-4 ">
+                      <td class="text-sm text-gray-900 font-light p-2">
                         <div class="container">
-                          <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-1 px-3 cursor-pointer text-xs font-bold my-2 text-white border-green-500 rounded-xl role"> {{permission.nom}} </span>
+                          <span v-for="permission in data.permissions" :key="permission.id" class="bg-green-500 py-0.5 px-2 cursor-pointer text-xs font-bold my-0.5 text-white border-green-500 rounded-xl  role"> {{permission.nom}} </span>
                         </div>
                       </td>
                      
@@ -444,7 +444,10 @@ import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
 }
 
 .role {
-  flex-grow: 1;
+  
   margin-right: 5px;
+  font-size: 10px;
 }
+
+
 </style>

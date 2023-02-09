@@ -7497,6 +7497,11 @@
   dependencies:
     "dropzone" "^5.5.1"
 
+"vuejs-title@^1.0.16":
+  "integrity" "sha512-HQTsbutGyW1QiEKDL5lPH0ryKS2szpv0dQaoR/6LnW4IKfKHcloe3vkvvLjxehbP7ldjh6vJX40odgCzeJNwJg=="
+  "resolved" "https://registry.npmjs.org/vuejs-title/-/vuejs-title-1.0.16.tgz"
+  "version" "1.0.16"
+
 "vuelidate@^0.7.7":
   "integrity" "sha512-pT/U2lDI67wkIqI4tum7cMSIfGcAMfB+Phtqh2ttdXURwvHRBJEAQ0tVbUsW9Upg83Q5QH59bnCoXI7A9JDGnA=="
   "resolved" "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.7.tgz"

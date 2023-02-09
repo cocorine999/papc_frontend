@@ -3,23 +3,23 @@
     <!-- <div @click.stop="$emit('closeNotifModal')"  class="fixed top-0 right-0 left-0 bottom-0 bg-gray-900 z-40 bg-opacity-60 "> -->
 
     <div style="height:auto max-heigth:50vh"
-      class="absolute  rounded-2xl w-3/4 md:w-2/5  position-card-notif z-50 shadow overflow-auto transform translate-x-0 transition ease-in-out duration-700 h-auto"
+      class="absolute  rounded-md w-3/4 md:w-2/5  position-card-notif z-50 shadow overflow-auto transform translate-x-0 transition ease-in-out duration-700 h-auto"
       id="notification" ref="notification">
 
       <div @click.stop="$emit('openNotif')"
-        class=" shadow-2xl w-full h-auto rounded-2xl  bg-white overflow-y-auto p-4  left-0 right-0">
+        class=" shadow-2xl w-full h-auto rounded-md  bg-white overflow-y-auto p-4  left-0 right-0">
         <div class="flex items-center justify-between flex-wrap ">
           <!-- <div @click="$emit('closeNotifModal')" class="absolute -top-3 -left-0 z-50">
                <div class="py-4  text-red-500  ">
                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path></svg>
             </div> 
             </div> -->
-          <p tabindex="0" class="focus:outline-none text-2xl font-semibold leading-6 ">
+          <p tabindex="0" class="focus:outline-none text-xl font-semibold leading-6 ">
             Notifications
           </p>
           <div class="mt-0">
             <button @click="deleteAll"
-              class="bg-blue-200 p-2 text-primary border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500  ">Effacer
+              class="bg-red-500 p-2 text-white border text-xs font-bold hover:bg-primary hover:text-white border-blue-200 transition-all duration-500  ">Effacer
               tout</button>
           </div>
         </div>

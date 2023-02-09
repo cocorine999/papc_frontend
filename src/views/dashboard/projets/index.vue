@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     <div class="w-full">
-      <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
+      <vmodal v-if="showProlonger" title="prolonger la date d'echeance " v-title @close="showProlonger = false">
         <div style="width:60vw" class="p-0 w-full">
           <form @submit.prevent="saveProlongerDate()" action="">
             <div class="form-group my-2">
@@ -31,7 +31,7 @@
         </div>
       </vmodal>
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-title  v-on:close="close">
           <div class="p-4 overflow-auto">
             <vform template="default" v-if="!isUpdate" :sendRequest="sendRequest" @getFile="getFile"
               @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm"
@@ -42,7 +42,7 @@
         </modal-top-right>
       </div>
 
-      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" v-title width="sm" v-on:close="deleteModal = false">
         <p class="text-gray-800">
         voulez vous supprimer cette projet?
         </p>
@@ -96,7 +96,7 @@
           </span>
         </div>
 
-        <button v-if="projetAdd" @click="addProjet" title="ajouter un projet"
+        <button v-if="projetAdd" @click="addProjet" title="ajouter un projet" v-title
           class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
               style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
@@ -666,7 +666,7 @@ export default {
         const datas = data.data.data
         this.bailleurs = datas
         this.champs =[
-        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, title:"renseigner le nom du projet", errors: [] },
         { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
