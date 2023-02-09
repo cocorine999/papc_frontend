@@ -110,10 +110,10 @@
         <div v-for="(projet, index) in filteredProjet" :key="index">
 
           <div @click.stop="gotoDetails(projet)"
-            class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
+            class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500 custom_height">
             <!-- <a href="#1" class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a> -->
             <div
-              class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
+              class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100 ">
               <p class="max-h-48 line-clamp-7 px-2"> {{ projet.description }} </p>
               <div class="absolute bottom-5 ">
                 <div v-if="dashboardProjetVisible"
@@ -143,12 +143,12 @@
                 </div>
               </div>
             </div>
-            <div class="relative mb-2">
+            <div class="relative mb-2 block_img">
               <img v-if="projet.image != null || projet.image != undefined"
-                class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+                class=" max-h-52 w-full object-contain transition-transform duration-300 transform group-hover:scale-100"
                 :src="`${base_url}${projet.image.url}`">
               <img v-else
-                class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+                class=" max-h-52 w-full object-contain transition-transform duration-300 transform group-hover:scale-100"
                 src="@/assets/images/login/logo-gouv.webp" alt="">
               <div class="absolute bottom-0 right-0">
                 <div v-if="projet.statut == 0 "
@@ -174,10 +174,10 @@
                 </div>
               </div>
             </div>
-            <div class="block px-4 pb-4">
+            <div class="block px-4 pb-4 ">
               <span :class="projet.couleur" :style="`background-color:${projet.couleur}`"
-                class="absolute bottom-0 left-0 w-full  h-2"></span>
-              <h3 class="font-medium text-xl">
+                class="absolute bottom-0 left-0 w-full   h-2"></span>
+              <h3 class="font-medium text-xl absolute bottom-2 my-2">
                 <a href="#2"
                   class="block uppercase relative group-hover:text-gray-800 transition-colors duration-200 line-clamp-2 text-lg">{{projet.nom}}
                 </a>
@@ -739,5 +739,14 @@ export default {
 <style scoped>
 .icon-bold {
   font-weight: 800;
+}
+.custom_height{
+  height: 288px;
+}
+.block_img{
+  height: 208px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
