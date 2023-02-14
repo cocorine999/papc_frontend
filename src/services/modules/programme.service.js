@@ -55,6 +55,9 @@ const ProgrammeService = {
 
     scopes(slug) {
       return ApiService.get(`programmes/${slug}/scopes`);
+    },
+    kobo() {
+      return ApiService.get(`programme/kobo`);
     }
 
   };

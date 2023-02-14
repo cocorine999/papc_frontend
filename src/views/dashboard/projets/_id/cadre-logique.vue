@@ -432,10 +432,13 @@ export default {
     modifier1(data) {
 
       this.isObjectifGlobale = true;
+      this.isObjectif = false;
+      this.isResultat = false;
       this.title = "Modifier un objectif global";
       this.showModal2 = true;
       this.specific_disable = true
       this.result_disable = true
+      this.global_disable = false,
       this.editCadreLogique.nom = data.nom
       this.editCadreLogique.description = data.description
       this.editCadreLogique.id = data.id
@@ -444,7 +447,9 @@ export default {
     },
     modifier2(data) {
 
+      this.isObjectifGlobale = false;
       this.isObjectif = true;
+      this.isResultat = false;
       this.title = "Modifier un objectif spécifique";
       this.showModal2 = true;
       this.global_disable = true,
@@ -462,6 +467,7 @@ export default {
       this.isResultat = true;
       this.title = "Modifier un résultat";
       this.showModal2 = true;
+      this.result_disable = false,
       this.global_disable = true, 
       this.specific_disable = true
       this.editCadreLogique.nom = data.nom

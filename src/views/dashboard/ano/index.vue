@@ -1,21 +1,6 @@
 <template>
   <dashboard>
     <div class="w-full">
-
-     <!--  <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
-        <div v-if="anosReponses.length > 0" style="height:800px" class="overflow-auto ">
-          <div v-for="data in anosReponses" :key="data.id">
-
-            <reponse-anos :anoId="anosId" :statut="statut" :datas="data"></reponse-anos>
-          </div>
-        </div>
-
-        <div v-else class="font-bold  text-gray-600 py-5  text-center">
-          pas de commentaire
-        </div>
-
-      </modal-chat> -->
-
       <vmodal v-if="showDetail" @close="showDetail = false">
         <div style="width:60vw">
           <preview template="ano" :datas="datas" @previewFile="previewFile"></preview>

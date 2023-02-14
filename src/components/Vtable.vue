@@ -2,7 +2,6 @@
   <div class="relative flex flex-col">
     <div class="overflow-x-auto">
       <div class="py-2  inline-block min-w-full">
-       
         <div class=" overflow-x-auto">
           <table class="min-w-full table-auto">
             <thead class="border-b bg-gray-300">
@@ -19,7 +18,7 @@
                   <span v-else> {{head.name}}   </span>
 
               
-                  </th>
+                </th>
                  <th scope="col" v-if="statut" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Statut</th>
                 <th scope="col" v-if="actions != undefined" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Actions</th>
                

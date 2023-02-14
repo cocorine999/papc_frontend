@@ -2,8 +2,7 @@
   <div
     class="w-1/2 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter _scrollbar-w-2 _scrolling-touch o lg:block bg-primary z-30 no-scrollbar overflow-y-auto"
     :class="sideBarOpen ? '' : 'hidden'" id="main-nav">
-    <div
-      class="w-full h-24 p-4 items-center text-xs text-center font-semibold uppercase text-white whitespace-nowrap">
+    <div class="w-full h-24 p-4 items-center text-xs text-center font-semibold uppercase text-white whitespace-nowrap">
       <div class="flex h-10 gap-2 mb-2">
         <div class="w-1/2"><img src="@/assets/images/login/logo-gouv.webp" alt="" class="w-full transparent"></div>
         <div class="w-1/2"><img src="@/assets/images/login/logo-sirat.webp" alt="" class="w-full"></div>
@@ -61,7 +60,8 @@
       </router-link>
     </div>
 
-    <div v-if="currentRole === 'administrateur'" class="mb-1 px-4 animation flex items-center text-white cursor-pointer">
+    <div v-if="currentRole === 'administrateur'"
+      class="mb-1 px-4 animation flex items-center text-white cursor-pointer">
       <router-link to="/dashboard/gouvernement" style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
         <span class=" ">
@@ -89,7 +89,8 @@
       </router-link>
     </div>
 
-    <div v-if="anoVisible || currentRole === 'bailleur'" class="mb-1 animation px-4 flex items-center text-white cursor-pointer">
+    <div v-if="anoVisible || currentRole === 'bailleur'"
+      class="mb-1 animation px-4 flex items-center text-white cursor-pointer">
       <router-link to="/dashboard/ano" style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -156,7 +157,8 @@
           </router-link>
         </div>
 
-        <div v-if="tacheVisible || tacheReVisible" class="mb-1 animation flex items-center text-gray-700 cursor-pointer">
+        <div v-if="tacheVisible || tacheReVisible"
+          class="mb-1 animation flex items-center text-gray-700 cursor-pointer">
           <router-link to="/dashboard/projets/taches-globale" style="width: 100%"
             class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
             <span class="font-semibold text-xs">Taches</span>
@@ -176,7 +178,8 @@
               <path d="M20 15H4v-2h16v2zm0 2H4v2h16v-2zm-5-6l5-3.55V5l-5 3.55L10 5 4 8.66V11l5.92-3.61L15 11z"></path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Cadre de résultat</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Cadre de
+            résultat</p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
           <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -185,7 +188,7 @@
         </div> -->
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
-      <div  class="tab-content mb-3 bg-white">
+      <div class="tab-content mb-3 bg-white">
         <div v-if="indicateurVisible" class="mb-1 animation flex items-center text-gray-700 cursor-pointer">
           <router-link to="/dashboard/indicateurs/" style="width: 100%"
             class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
@@ -234,7 +237,8 @@
       </div>
     </div> -->
 
-    <div v-if="currentRole === 'bailleur' || decaissementVisible || planDecaissementVisible || pointFinancierVisible || suiviFinancierVisible"
+    <div
+      v-if="currentRole === 'bailleur' || decaissementVisible || planDecaissementVisible || pointFinancierVisible || suiviFinancierVisible"
       class="mb-1 px-6 animation relative">
       <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck5" />
       <header class="flex justify-between items-center mb-3 cursor-pointer select-none tab-label" for="chck5">
@@ -247,7 +251,8 @@
               </path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Gestions Financières</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Gestions
+            Financières</p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
           <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -293,8 +298,7 @@
 
 
 
-    <div 
-      class="mb-1 px-6 animation relative">
+    <div class="mb-1 px-6 animation relative">
       <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck8" />
       <header class="flex justify-between items-center mb-3 cursor-pointer select-none tab-label" for="chck8">
         <div class="flex space-x-3">
@@ -306,7 +310,8 @@
               </path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Gestions Environnementales et sociales</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Gestions
+            Environnementales et sociales</p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
           <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -328,7 +333,8 @@
     </div>
 
 
-    <div v-if="voirPtaVisible || voirPpmVisible" class="mb-1 animation px-4 flex items-center text-white cursor-pointer">
+    <div v-if="voirPtaVisible || voirPpmVisible"
+      class="mb-1 animation px-4 flex items-center text-white cursor-pointer">
       <router-link to="/dashboard/pta" style="width: 100%"
         class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -347,7 +353,8 @@
       </router-link>
     </div> -->
 
-    <div v-if="entrepriseExecutanteVisible || modVsisible || missionControleVisible" class="mb-1 animation px-6 relative">
+    <div v-if="entrepriseExecutanteVisible || modVsisible || missionControleVisible"
+      class="mb-1 animation px-6 relative">
       <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck4" />
       <header class="flex justify-between mb-3 items-center cursor-pointer select-none tab-label" for="chck4">
         <div class="flex space-x-3">
@@ -360,7 +367,8 @@
               </path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Entreprises</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Entreprises
+          </p>
         </div>
         <i class="bx bx-chevron-down bx-sm text-white"></i>
       </header>
@@ -388,7 +396,7 @@
       </div>
     </div>
 
-   <!--  <div  class="mb-1 px-6 animation relative">
+    <!--  <div  class="mb-1 px-6 animation relative">
       <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck4" />
       <header class="flex justify-between mb-3 items-center cursor-pointer select-none tab-label" for="chck4">
         <div class="flex space-x-3">
@@ -500,7 +508,7 @@
     </div>
 
 
-   
+
 
     <div v-if="roleVisible" class="mb-1 px-4 flex animation items-center text-white cursor-pointer">
       <router-link to="/dashboard/roles" style="width: 100%"
@@ -533,6 +541,30 @@
         <span class="font-semibold text-xs uppercase">Utilisateurs</span>
       </router-link>
     </div>
+    <div v-if="utilisateurVisible" class="mb-1 px-4 flex animation items-center text-white cursor-pointer">
+      <router-link to="/dashboard/cobo" style="width: 100%"
+        class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+        <span class=" ">
+          <svg width="16px" height="16px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"
+            stroke="#ffffff">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+              stroke-width="1.32"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="m19.101 3.291-2.392-2.392507.3984-.398487c.6606-.660775 1.7319-.660775 2.3925 0 .6604.660574.6604 1.731414 0 2.391984z"
+                fill="#5c5f62"></path>
+              <path d="m15.6108 1.99445 2.392 2.39251-6.5028 6.50324-3.16846.7766.77644-3.16915z" fill="#5c5f62"></path>
+              <path
+                d="m3 3v11h3.5c.77479 0 1.38768.6623 1.92584 1.2439.00864.0093.01729.0186.02593.028.02846.0307.05688.0614.0848.0913.36511.3918.88566.6368 1.46343.6368.5778 0 1.0983-.245 1.4634-.6368.0336-.036.0675-.0726.1017-.1096l.0088-.0095c.5381-.5814 1.1515-1.2441 1.9261-1.2441h3.5v-3c0-.5523.4477-1.00001 1-1.00001s1 .44771 1 1.00001v6.5c0 .8284-.6716 1.5-1.5 1.5h-15c-.82843 0-1.5-.6716-1.5-1.5v-15c0-.82843.67157-1.5 1.5-1.5h6.5c.55229 0 1 .44772 1 1s-.44772 1-1 1z"
+                fill="#5c5f62"></path>
+            </g>
+          </svg>
+        </span>
+        <span class="font-semibold text-xs uppercase">kobotoolsbox</span>
+      </router-link>
+    </div>
+
 
     <div v-if="currentRole === 'unitee-de-gestion'" class="px-6 animation mb-10 relative">
       <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck2" />
@@ -547,7 +579,8 @@
               </path>
             </svg>
           </span>
-          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Configurations</p>
+          <p class="text-white text-xs hover:text-sm transition-all duration-200 font-semibold uppercase">Configurations
+          </p>
         </div>
         <!-- <div class="rounded-full border border-gray h-6 w-6 flex items-center justify-center test">
           <svg aria-hidden="true" class="" data-reactid="266" fill="none" height="24" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -570,7 +603,7 @@
         </div>
 
          -->
-      
+
         <div v-if="backupVisible" class="mb-1  flex items-center text-gray-700 cursor-pointer">
           <router-link to="/dashboard/backup" style="width: 100%"
             class="flex items-center px-2 py-2 z-10 relative space-x-4 text-gray-700 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
@@ -592,7 +625,7 @@
           </router-link>
         </div>
 
-        
+
 
 
         <div v-if="siteVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
@@ -601,7 +634,7 @@
             <span class="font-semibold text-xs">Sites</span>
           </router-link>
         </div>
-       
+
         <div v-if="alertVisible" class="mb-1 flex items-center mt-2 text-gray-700 cursor-pointer">
           <router-link to="/dashboard/config/alert" style="width: 100%"
             class="flex items-center px-2 py-2 z-10 relative space-x-4 hover:font-bold transition ease-in-out duration-500 cursor-pointer">
@@ -614,6 +647,7 @@
             <span class="font-semibold text-xs">Rappel taches</span>
           </router-link>
         </div>
+
       </div>
       <!-- <div style="width:100%" class=" flex items-center relative z-50 mt-12 mb-16   px-2 py-2 text-white hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
         <button @click="logout"  class="w-full bg-Primary text-white p-2 font-medium text-xs flex items-center space-x-3 ">
@@ -890,7 +924,7 @@ export default {
     this.getPermission()
     if (this.currentUser != undefined) {
       this.currentRole = this.currentUser.type
-     
+
     }
   }
 };
@@ -963,6 +997,5 @@ input:checked~.tab-content {
 .animation:hover {
   transform: rotate(-1deg);
   transition: all 0.2s ease-in-out;
-  }
- 
+}
 </style>
