@@ -33,7 +33,7 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-title v-on:close="close">
           <div class="p-4 overflow-auto">
-            <vform template="default" v-if="!isUpdate" :sendRequest="sendRequest" @getFile="getFile"
+            <vform template="default" v-if="!isUpdate" :sendRequest="sendRequest" @getFile="getFile" :savedInput="savedInput"
               @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm"
               @closeModal="close"></vform>
             <vform template="default" v-if="isUpdate" :sendRequest="sendRequest" :champs="champsUpdate" :cols="cols"
@@ -225,6 +225,7 @@ export default {
   },
   data() {
     return {
+      savedInput: [],
       base_url: API_BASE_URL,
       showModal: false,
       showSearch: false,
@@ -417,7 +418,6 @@ export default {
     close() {
       this.showCloseModal()
       this.sendRequest = false;
-      this.resetForm
     },
 
     showCloseModal(value = false) {
@@ -618,6 +618,8 @@ export default {
           this.saveProjet(formData).then(response => {
             if (response.status == 200 || response.status == 201) {
               this.close()
+              this.resetForm()
+              localStorage.removeItem('formData');
               this.fetchProjets(this.programmeId)
               this.sendRequest = false;
             }

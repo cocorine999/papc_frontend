@@ -42,7 +42,7 @@
 
     <modal-top-right v-if="showModal2" :title="title" v-on:close="close2">
       <div class="p-4 overflow-auto">
-        <vform template="default" :champs="champs2" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
+        <vform template="default" :champs="champs2" :cols="cols" :savedInput="savedInput"  :submitText="submitText" :sendRequest="sendRequest"
           @sendForm="savePlanDecaissement" @closeModal="close2"></vform>
       </div>
 
@@ -510,6 +510,7 @@ export default {
   },
   data() {
     return {
+      savedInput: [],
       suivis: [],
       valueFiltre: null,
       activiteFiltre: null,
@@ -1612,6 +1613,8 @@ export default {
                 if (response.status === 200 || response.status === 201) {
                   this.fetchActivites(this.composanteId);
                   this.close();
+                  this.resetForm()
+                  localStorage.removeItem('formData');
                 }
               })
               .finally((error) => {
@@ -1626,9 +1629,6 @@ export default {
 
     close() {
       this.showCloseModal();
-
-      this.resetForm();
-
       this.sendRequest = false;
     },
 

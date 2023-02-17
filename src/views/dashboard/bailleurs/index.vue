@@ -15,9 +15,9 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="p-4 w-full">
-            <vform v-if="!isUpdate" template="default" @getImage="getImage" :champs="champs" :cols="cols"
+            <vform v-if="!isUpdate" template="default" @getImage="getImage" :champs="champs" :savedInput="savedInput" :cols="cols"
               :submitText="submitText" @sendForm="sendForm" :sendRequest="sendRequest" @closeModal="close"></vform>
-            <vform v-else template="default" @getImage="getImage" :champs="champsUpdate" :cols="cols"
+            <vform v-else template="default" @getImage="getImage" :champs="champsUpdate" :cols="cols" 
               :sendRequest="sendRequest" :submitText="submitText" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
         </modal-top-right>
@@ -586,20 +586,14 @@ export default {
         }
       }) 
     },
-
-
-   
-
     dupliquer() {
       this.title = "Dupliquer un bailleur";
       this.showCloseModal();
     },
-
     close() {
       this.showCloseModal();
-      this.saveForm()
-    }, 
-
+      // this.saveForm()
+    },
     showCloseModal(value = false) {
       this.showModal = value;
     }, 
@@ -613,16 +607,7 @@ export default {
 
       this.setBailleur({});
     },
-
-    saveForm(){
-      
-     for(let i = 0 ; i < this.champs.length ; i++){
-         this.savedInput.push (this.champs[i].data) 
-     }
-     const parsed = JSON.stringify(this.savedInput);
-     localStorage.setItem('formDataBailleur', parsed);
-    
-    },
+   
 
     async updateInputData(id, attribut, value) {
       await this.updateBailleur({ bailleur: { [attribut]: value }, id: id }).then((value) => {
@@ -632,8 +617,6 @@ export default {
           this.$toast.error(this.hasErrors[attribut])
       })
     },
-
-   
     sendForm() {
       this.savedInput = []
       this.champs = this.champs.map((item) => {
@@ -655,8 +638,6 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.close();
-                this.resetForm()
-                localStorage.removeItem('formDataBailleur')
                 this.fetchBailleurs(this.programmeId)
                 this.sendRequest = false
               }
@@ -692,7 +673,7 @@ export default {
             if (response.status == 200 || response.status == 201) {
               this.close();
               this.resetForm()
-              localStorage.removeItem('formDataBailleur');
+              localStorage.removeItem('formData');
               this.fetchBailleurs(this.programmeId)
               this.sendRequest = false
             }
@@ -701,7 +682,6 @@ export default {
             this.sendRequest = false;
             this.champs.map(value => value.errors = this.erreurs[value.key])          
             this.getImage()
-           
           })
         }
       }
@@ -712,7 +692,6 @@ export default {
     isLoading: function (value) {
       //this.loading = value
     },
-
     hasErrors: function (errors) {
       this.champs.forEach((value) => {
         value.errors = errors[value.key];
@@ -722,7 +701,6 @@ export default {
   },
 
   created() {
-   
     this.programmeId = this.currentUser.programme.id
     if (this.programmeId) {
       this.fetchBailleurs(this.programmeId)
@@ -736,16 +714,15 @@ export default {
       this.$router.push('/401-non-autorise')
     }
 
-    if( localStorage.getItem("formDataBailleur")){
-      this.savedInput = []
-      this.savedInput = JSON.parse(localStorage.getItem("formDataBailleur"))
+    // if( localStorage.getItem("formDataBailleur")){
+    //   this.savedInput = []
+    //   this.savedInput = JSON.parse(localStorage.getItem("formDataBailleur"))
       
-      for (let i = 0 ; i < this.champs.length ; i ++){
-        this.champs[i].data = this.savedInput[i]
-      }
-
-      console.log(this.champs )
-    }
+    //   for (let i = 0 ; i < this.champs.length ; i ++){
+    //     this.champs[i].data = this.savedInput[i]
+    //   }
+     
+    // }
 
   }
 };

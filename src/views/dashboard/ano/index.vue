@@ -23,7 +23,7 @@
         <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
-              @getFile="getFile" submitText="Créer un ano"  @closeModal="close" @sendForm="sendForm"></vform>
+              @getFile="getFile"  :savedInput="savedInput" submitText="Créer un ano"  @closeModal="close" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
         <modal-top-right v-else :title="title" v-on:close="close">
@@ -185,6 +185,7 @@ export default {
 
   data() {
     return {
+      savedInput: [],
       anoAttributs: ['dossier', 'statut', 'dateSoumission', 'destinataire', 'bailleurId', 'fichiers'],
       anoAttributsUpdate: ['dossier', 'statut', 'dateDeSoumission', 'destinataire', 'bailleurId'],
       commentaires: [],
@@ -550,6 +551,8 @@ export default {
           this.saveAno(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.resetForm()
+              localStorage.removeItem('formData');
               this.sendRequest = false
               this.fetchAnos()
             }
@@ -653,7 +656,7 @@ export default {
 
     close() {
       this.showModal = false
-      this.resetForm()
+     
     },
   },
 

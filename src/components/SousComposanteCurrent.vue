@@ -4,7 +4,7 @@
     <div v-if="showModal">
       <modal-top-right :title="title" v-on:close="close">
         <div class="p-4 overflow-auto">
-          <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
+          <vform template="default" :champs="champs"  :savedInput="savedInput"  :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
             @sendForm="sendForm" @closeModal="close"></vform>
         </div>
       </modal-top-right>
@@ -277,6 +277,7 @@ export default {
   },
   data() {
     return {
+      savedInput: [],
       valueFiltre: null,
       projetFiltre: null,
       projetId: '',
@@ -829,6 +830,8 @@ export default {
                 if (response.status === 200 || response.status === 201) {
                   this.fetchSousComposantes(this.valueFiltre.id);
                   this.close()
+                  this.resetForm()
+                 localStorage.removeItem('formData');
                 }
 
               })
@@ -844,9 +847,6 @@ export default {
 
     close() {
       this.showCloseModal()
-
-      this.resetForm()
-
       this.sendRequest = false;
     },
 

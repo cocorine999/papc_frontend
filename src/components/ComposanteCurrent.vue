@@ -3,7 +3,7 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
             <div class="p-4 overflow-auto">
-              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest" @sendForm="sendForm" @closeModal="close"></vform>
+              <vform template="default"  :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"  :savedInput="savedInput" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
         </modal-top-right>
       </div>
@@ -290,6 +290,7 @@ export default {
 props:['valueProfondeur'],
   data() {
     return {
+      savedInput:[],
       valueFiltre: this.valueProfondeur,
       pending:false,
       success:true,
@@ -740,6 +741,9 @@ props:['valueProfondeur'],
               if(response.status === 200 || response.status === 201){
                 this.fetchComposantes(this.valueFiltre.id);
                 this.close()
+                this.resetForm()
+              localStorage.removeItem('formData');
+
               }
 
             })
@@ -754,9 +758,6 @@ props:['valueProfondeur'],
 
     close() {
       this.showCloseModal()
-
-      this.resetForm()
-
       this.sendRequest = false;
     }, 
     
