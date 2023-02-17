@@ -217,6 +217,7 @@ export default {
 
   data() {
     return {
+      savedInput:[],
       base_url: API_BASE_URL,
       isUpdate: false,
       bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
@@ -241,6 +242,7 @@ export default {
         { name: "modifier", iconne: "" },
         { name: "supprimer", iconne: "" },
       ],
+      table: [1,2,3,"bigJoe"],
 
       champs: [
         {
@@ -595,23 +597,31 @@ export default {
 
     close() {
       this.showCloseModal();
-
-      this.resetForm();
-    },
+      this.saveForm()
+    }, 
 
     showCloseModal(value = false) {
       this.showModal = value;
-    },
+    }, 
 
     resetForm() {
       this.champs = this.champs.map((item) => {
         item.data = "";
         return item;
       });
-
       window.document.getElementById("vform")?.reset();
 
       this.setBailleur({});
+    },
+
+    saveForm(){
+      
+     for(let i = 0 ; i < this.champs.length ; i++){
+         this.savedInput.push (this.champs[i].data) 
+     }
+     const parsed = JSON.stringify(this.savedInput);
+     localStorage.setItem('formDataBailleur', parsed);
+    
     },
 
     async updateInputData(id, attribut, value) {
@@ -625,7 +635,7 @@ export default {
 
    
     sendForm() {
-
+      this.savedInput = []
       this.champs = this.champs.map((item) => {
         item.errors = [];
         return item;
@@ -645,6 +655,8 @@ export default {
             (response) => {
               if (response.status == 200 || response.status == 201) {
                 this.close();
+                this.resetForm()
+                localStorage.removeItem('formDataBailleur')
                 this.fetchBailleurs(this.programmeId)
                 this.sendRequest = false
               }
@@ -679,6 +691,8 @@ export default {
           this.saveBailleur(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.resetForm()
+              localStorage.removeItem('formDataBailleur');
               this.fetchBailleurs(this.programmeId)
               this.sendRequest = false
             }
@@ -704,7 +718,7 @@ export default {
         value.errors = errors[value.key];
       });
       //this.errors = errors
-    }
+    },
   },
 
   created() {
@@ -720,6 +734,17 @@ export default {
     this.getPermission()
     if (!this.bailleurVisible) {
       this.$router.push('/401-non-autorise')
+    }
+
+    if( localStorage.getItem("formDataBailleur")){
+      this.savedInput = []
+      this.savedInput = JSON.parse(localStorage.getItem("formDataBailleur"))
+      
+      for (let i = 0 ; i < this.champs.length ; i ++){
+        this.champs[i].data = this.savedInput[i]
+      }
+
+      console.log(this.champs )
     }
 
   }

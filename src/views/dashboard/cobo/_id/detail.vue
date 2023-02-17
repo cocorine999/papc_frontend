@@ -1,7 +1,7 @@
 <template>
- <Dashboard>
-  <div class="w-full" >
-    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+  <Dashboard>
+    <div class="w-full">
+      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -16,47 +16,200 @@
             </li>
           </ol>
         </div>
-        <div>
-          <div class="w-full flex text-gray-600">
-            <input @input="$emit('search', $event.target.value)" :class="{ block: showSearch }"
-              class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block"
-              v-model="search" type="text" name="search" placeholder="Rechercher">
-            <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"
-              class="relative  p-2 rounded-lg">
-              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
-                width="512px" height="512px">
-                <path
-                  d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-    </nav>
-  </div>
- </Dashboard>
+      </nav>
+
+      <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
+        <span class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">
+          <span class="clr bg-white p-1 rounded-md">Titre:</span> {{ nom_questionnaire }} </span>
+      </div>
+    </div>
+
+    <div class="w-full bg-white border-grey-light border mt-4">
+      <accordion title="Cliquer pour voir les informations contenu dans cette souscription"
+        v-for=" item in souscription ">
+
+        <table class="min-w-full table-auto">
+          <thead class="border-b bg-gray-300">
+            <tr>
+              <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
+                Question
+              </th>
+              <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
+                Réponse
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-300 hover:bg-gray-200" v-for="(value, name) in item">
+
+
+              <td class="text-sm text-gray-900 font-light py-2 px-4 ">
+                {{ name }}
+              </td>
+              <td v-if="name == '_attachments'" class="text-sm text-gray-900 font-light py-2 px-4 ">
+                <div v-for="(img, index) in value ">
+                  <img :src="img.download_small_url" alt="img">
+                </div>
+
+              </td>
+
+              <td v-else class="text-sm text-gray-900 font-light py-2 px-4 ">
+                {{ value }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion>
+    </div>
+
+
+</Dashboard>
 </template>
 
 <script>
 
 import Dashboard from "@/layouts/Dashboard";
+import ProgrammeService from '@/services/modules/programme.service';
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+import accordion from "@/components/accordion.vue";
 
 export default {
   components: {
     Dashboard,
+    accordion
   },
   data() {
     return {
-
+      souscription: {},
+      nom_questionnaire: "",
+      metaData: {},
     }
   },
-
   computed: {
+    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
+  },
+  mounted() {
 
+    this.nom_questionnaire = this.$store.getters.getquestionnaire.contenu.name
+
+    ProgrammeService.createKobo({
+      url: this.$store.getters.getquestionnaire.contenu.url
+    }).then(response => {
+      var table = response.data.data
+
+
+      var d1 = {}
+
+
+      var edit = {
+      }
+
+      var allitem = []
+
+      for (let item = 0; item < table.length; item++) {
+
+        for (let i in table[item]) {
+
+          // if (i == "start") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'start');
+          // }
+
+          // if (i == "end") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'end');
+          // }
+
+          // if (i == "today") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'today');
+          // }
+          // if (i == "username") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'username');
+          // }
+          // if (i == "deviceid") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'deviceid');
+          // }
+          // if (i == "phonenumber") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'phonenumber');
+          // }
+          // if (i == "audit") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'audit');
+          // }
+          // if (i == "__version__") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], '__version__');
+          // }
+          // if (i == "_id") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], '_id');
+          // }
+          // if (i == "_submitted_by") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], '_submitted_by');
+          // }
+
+          // if (i == "formhub/uuid") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'formhub/uuid');
+          // }
+
+
+          // if (i == "_uuid") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], '_uuid');
+          // }
+
+          // if (i == "meta/instanceID") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], 'meta/instanceID');
+          // }
+
+          // if (i == "_xform_id_string") { 
+          //   d1[i] = table[item][i] 
+          //   Reflect.deleteProperty(table[item], '_xform_id_string');
+          // }
+
+          var slash = i.indexOf("/");
+          var j = ""
+
+          if (slash !== -1) {
+
+            j = i.slice(slash + 1)
+
+            edit[j] = table[item][i]
+
+
+          } else {
+            edit[i] = table[item][i]
+          }
+
+
+        }
+
+        allitem.push(edit)
+      }
+
+
+      this.souscription = allitem
+
+      console.log(this.souscription)
+
+      this.metaData = d1
+
+    })
   },
 
+
+
   methods: {
+    traitement(object) {
+
+    }
 
   }
 
@@ -66,5 +219,7 @@ export default {
 
 </script>
 <style scoped>
-
+.clr {
+  color:#000000;
+}
 </style>

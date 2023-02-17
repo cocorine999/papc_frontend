@@ -195,6 +195,7 @@ export default new Vuex.Store({
         nom : "Budget National"
       },
     ],
+    questionnaire: {}
   },
   getters: {
     getCount: state => {
@@ -226,7 +227,11 @@ export default new Vuex.Store({
 
     getMissionDeControleSelect: state => {
       return state.missionDeControleSelect
+    },
+    getquestionnaire: state => {
+      return state.questionnaire
     }
+
   },
   mutations: {
     active(state) {
@@ -257,6 +262,9 @@ export default new Vuex.Store({
     setMissionDeControleSelect(state, value)
     {
       state.missionDeControleSelect = value
+    },
+    setQuestionnaire(state,payload){
+       state.questionnaire = payload
     },
 
     [SET_LOADER](state, value) {

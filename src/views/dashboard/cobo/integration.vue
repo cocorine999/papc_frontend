@@ -25,15 +25,15 @@
             <div class="flex items-center justify-between my-2">
                 <titre>Listes des questionnaires déployés </titre>
             </div>
-            <div class=" overflow-x-auto">
+            <div class=" overflow-x-auto my-2">
                 <table class="min-w-full table-auto">
                     <thead class="border-b bg-gray-300">
                         <tr>
                             <th>
                                 <label
                                     class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer">
-                                    <input type="checkbox"
-                                        class="form-checkbox focus:outline-none focus:shadow-outline">
+                                    <input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline"
+                                        @click="selectAllCheckbox($event)">
                                 </label>
                             </th>
                             <th v-for="(head, index) in header" :key="index"
@@ -107,7 +107,6 @@
 
 <script>
 import Dashboard from '@/layouts/Dashboard'
-import axios from 'axios';
 import Titre from "@/components/Titre";
 import ProgrammeService from '@/services/modules/programme.service';
 
@@ -122,14 +121,14 @@ export default {
     data() {
         return {
             kobo_data: [],
-            header: ["Nom", "Description", "Total de souscription", "Créer le", "Modifié le",]
+            header: ["Nom", "Description", "Total de souscription", "Créer le", "Modifié le",],
+            selectedRows: [],
+            listeSelection: [],
         }
     },
     mounted() {
-        ProgrammeService.kobo().then(response => {
-
+        ProgrammeService.kobo().then(response => {           
             for (let i = 0; i < response.data.data.length; i++) {
-                console.log(response.data.data[i].status)
                 if (response.data.data[i].status == 'public') {
                     this.kobo_data.push(response.data.data[i])
                 }
@@ -143,9 +142,34 @@ export default {
 
     methods: {
         detail(index, data) {
-            this.$router.push({ name: 'questionnaire_id_details', params: { id: index, questionnaire: data } })
-            // console.log(data)
-        }
+            var questionnaire = {
+                id: index,
+                contenu: data 
+            }
+            this.$store.commit("setQuestionnaire", questionnaire);
+              this.$router.push({ name: 'questionnaire_id_details', params: { id: index, questionnaire: data } })
+
+
+            
+        },
+        selectAllCheckbox($event) {
+            alert('ok')
+            let columns = document.querySelectorAll('.rowCheckbox');
+            this.listeSelection = [];
+            if ($event.target.checked == true) {
+                columns.forEach(column => {
+                    column.checked = true
+                    this.listeSelection.push(parseInt(column.name))
+
+                });
+            } else {
+                columns.forEach(column => {
+                    column.checked = false
+                });
+                this.listeSelection = [];
+            }
+
+        },
 
     },
 }

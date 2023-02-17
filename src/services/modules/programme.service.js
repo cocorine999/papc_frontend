@@ -16,6 +16,9 @@ const ProgrammeService = {
     create(params) {
       return ApiService.post("programmes", params);
     },
+    createKobo(params) {
+      return ApiService.post("programme/kobo", params);
+    },
 
     update(slug, params) {
       return ApiService.update("programmes", slug, params);

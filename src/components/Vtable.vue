@@ -169,8 +169,6 @@ export default {
         if(count ===0) {
           this.alert = false
         }
-       
-        
 		},
     selectAllCheckbox($event,count,dataId) {
 			let columns = document.querySelectorAll('.rowCheckbox');
