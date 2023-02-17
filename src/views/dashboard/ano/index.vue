@@ -133,14 +133,14 @@
        <!-- j'ai desactiver les commentaires iscomment false -->
       <div id="dataTable">
         <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false"
-          :headers="headers" :datas="filteredAno" :actions="actionsDelete" @supprimer="supprimer"></vtable>
+          :headers="headers" :datas="anos" :search="search" :actions="actionsDelete" @supprimer="supprimer"></vtable>
         <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true"
-          :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="filteredAno"
+          :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="anos" :search="search"
           :actions="actionsReponse" :isComment="false"  @seeUpload="seeUpload"></vtable>
         <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"
-          :sendRequest="false" :headers="headers" :datas="filteredAno"></vtable>
+          :sendRequest="false" :headers="headers" :datas="anos" :search="search"></vtable>
         <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="false"
-           :sendRequest="false" :headers="headers" :datas="filteredAno" :actions="actions"
+           :sendRequest="false" :headers="headers" :datas="anos" :search="search" :actions="actions"
           @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
@@ -290,7 +290,7 @@ export default {
       typeAnos: 'typeAnos/getTypeAnos',
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
-    filteredAno() {
+    /*filteredAno() {
       var self = this;
       return this.anos.filter(function (ano) {
         return ano.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
@@ -299,7 +299,7 @@ export default {
           ano.dateDeSoumission.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
           ano.dossier.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
       });
-    },
+    },*/
   },
 
   methods: {
@@ -606,7 +606,7 @@ export default {
       this.deleteData.index = index
     },
     deleteAnos(data) {
-      this.filteredAno.splice(data.index,1)
+      this.anos.splice(data.index,1)
       this.deleteModal= false
       AnosService.destroy(data.data.id).then((data) => {
         this.$toast.success("Operation effectué avec success !")
@@ -660,7 +660,7 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
 
     this.getPermission()
     if (!this.anoVisible) {

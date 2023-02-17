@@ -19,7 +19,7 @@
             ref="html2Pdf"
         >
             <section slot="pdf-content">
-              <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis"  ></vtable> 
+              <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="this.SuivisIndicateurs"  ></vtable> 
             </section>
         </vue-html2pdf>
       </div>
@@ -170,10 +170,12 @@
               <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
             </div>
           </div>
+
+          
       
          <!--  <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>     -->
-          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
-          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="filteredSuivis"  ></vtable>    
+          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="this.SuivisIndicateurs" :search="search"  ></vtable>    
+          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="this.SuivisIndicateurs"  :search="search"></vtable>    
         
     </div>
   </dashboard>
@@ -286,19 +288,19 @@ export default {
       const year = new Date().getFullYear()+20
       return Array.from({length: year - 1900}, (value, index) => year + index)
     },
-    filteredSuivis(){
+    /*filteredSuivis(){
     
         if(this.SuivisIndicateurs != undefined && this.SuivisIndicateurs != null) {
 
            var self = this;
             return this.SuivisIndicateurs.filter(function (suivi) {
                 return suivi.indicateur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
-               /*  || suivi.eyes.toLowerCase().indexOf(self.search.toLowerCase()) >= 0; */
+                //|| suivi.eyes.toLowerCase().indexOf(self.search.toLowerCase()) >= 0; 
             });
 
         }
        
-    },
+    },*/
     
   },
   
@@ -546,7 +548,7 @@ export default {
       })
     },
   },
-  mounted() {
+  created() {
     this.getPermission()
     if(!this.suiviIndicateurVisible) {
         this.$router.push('/401-non-autorise')

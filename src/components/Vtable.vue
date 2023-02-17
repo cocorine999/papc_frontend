@@ -6,16 +6,21 @@
           <table class="min-w-full table-auto">
             <thead class="border-b bg-gray-300">
               <tr>
-                <th  scope="col" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">
+                <!--th  scope="col" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline" @click="selectAllCheckbox($event);">
                   </label>
-                </th>
+                </th!-->
                 
                 <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left"> 
                  
                   <span v-if="head.monaie != undifined"> {{head.name}}   XOF </span>
                   <span v-else> {{head.name}}   </span>
+                  
+                  <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                  
+                  <input type="checkbox" v-model="val[index]" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="searchcolumn($event,head.name)">
+                </label> 
 
               
                 </th>
@@ -23,15 +28,17 @@
                 <th scope="col" v-if="actions != undefined" class=" text-xs md:text-sm font-medium text-gray-900 py-2 px-4 text-left">Actions</th>
                
               </tr>
+              
             </thead>
           
             <tbody>
               <tr  class="border-b border-gray-300 hover:bg-gray-200" v-for="(data, index) in listes" :key="index">
-                <td  class="text-sm text-gray-900 font-light py-2 px-4 ">
+                <!--td  class="text-sm text-gray-900 font-light py-2 px-4 ">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                  
                     <input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="getRowDetail($event, index,index)">
                   </label> 
-                </td>
+                </td !-->
                 <td  v-for="(head, indice) in headers" :key="indice" class="text-sm text-gray-900 font-light py-2 px-4 ">
                   <div class="text-xs w-full" v-if="head.props !== undefined">
                     <span v-if="data[head.props] != null">
@@ -109,28 +116,33 @@ import TrTable from '@/components/TrTable'
 import Pagination from '@/components/Pagination'
 export default {
   components: { TrTable,Pagination },
-  props:['datas', 'headers', 'actions','statut', 'sendRequest','isComment'],
+  props:['datas', 'headers', 'actions','statut', 'sendRequest','isComment','count', 'search', 'total'],
   data() {
     return{
+       count :0,
       currentPage:1,
       perPage:15,
       selectedRows: [],
+      val: [],
+      test:'',
+      totalFiltre: 0,
+
       listeSelection:[],
       
     }
   },
   computed: {
     totalPages() {
-      if(this.datas != undefined) {
-        return this.datas.length
+      if(this.filtered() != undefined) {
+        return this.filtered().length
       }
     },
     listes() {
       let datas = []
-       if(this.datas != undefined) { 
+       if(this.filtered() != undefined) { 
           for (let index = this.perPage * this.currentPage - this.perPage; index < this.perPage * this.currentPage; index++) {
             if(index <= this.totalPages-1) {
-              const element = this.datas[index];
+              const element = this.filtered()[index];
               //console.log(index)
               datas.push(element)
             }
@@ -155,6 +167,7 @@ export default {
       }
       this.currentPage = page
     },
+    
     getRowDetail($event, count,dataId) {
         count++
 				let rows = this.selectedRows;
@@ -176,7 +189,7 @@ export default {
 			if ($event.target.checked == true) {
 				columns.forEach(column => {
 				  column.checked = true
-				  this.listeSelection.push(parseInt(column.name))
+				  this.listeSelection.push(parseFloat(column.name))
           
 				});
 			} else {
@@ -199,6 +212,127 @@ export default {
         });
       }
 		},
+
+    filtered(){
+      
+      var self = this;
+      var colonnes = [];
+      var i = 0;
+      this.totalFiltre = 0;
+
+      
+
+      this.headers.forEach(element => {
+        if(this.val[i])
+        {
+          if(element.props)
+          {
+            colonnes.push([element.props, element.cle])
+          }
+
+          else
+          {
+            colonnes.push(element.cle)
+          }
+        }
+
+        i++;
+      });
+
+      if(colonnes.length)
+      {
+        return this.datas.filter(function (data){
+          for(let col of colonnes)
+          {
+            if(Array.isArray(col))
+            {
+              if(data[col[0]][col[1]].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {
+
+                  if(self.total)
+                  {
+                    self.totalFiltre = parseFloat(data[self.total]) + parseFloat(self.totalFiltre)
+                    self.$emit('retour', self.totalFiltre);
+                  }
+
+                  return data
+              
+                }
+            }
+
+            else
+            {
+              if(data[col].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {
+
+                  if(self.total)
+                  {
+                    self.totalFiltre = parseFloat(data[self.total]) + parseFloat(self.totalFiltre)
+                    self.$emit('retour', self.totalFiltre);
+                  }
+
+                  return data
+              
+                }              
+            }
+            
+          }
+          
+               
+        });  
+      }
+
+      else
+      {
+        return this.datas.filter(function (data){
+    
+          for(let header of self.headers)
+          {
+
+            if(data[header.props] != null)
+            {
+              if(data[header.props][header.cle])
+              {
+                if(data[header.props][header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {
+                  //console.log(data)
+                  if(self.total)
+                  {
+                    self.totalFiltre = parseFloat(data[self.total]) + parseFloat(self.totalFiltre)
+                    self.$emit('retour', self.totalFiltre);
+                  }
+
+                  return data
+                  
+                }
+              }
+            }
+
+            else
+            {
+              if(data[header.cle])
+              {
+                if(data[header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {
+
+                  if(self.total)
+                  {
+                    self.totalFiltre = parseFloat(data[self.total]) + parseFloat(self.totalFiltre)
+                    self.$emit('retour', self.totalFiltre);
+                  }
+
+                  return data
+              
+                }
+              }
+            }
+            
+          }
+        });
+      }
+      
+  },
+
   }
   
 }

@@ -29,8 +29,8 @@
             <input v-model="audit.entrepriseContact" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Année Audit <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input v-model="audit.annee"  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Exercice Audité <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input v-model="audit.annee"  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
           </div>
          
           <div class="form-group my-2">
@@ -98,8 +98,8 @@
             <input v-model="saveUpdate.entrepriseContact" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
           </div>
           <div class="form-group my-2">
-            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Année Audit <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input v-model="saveUpdate.annee"  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="number" />
+            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Exercice Audité <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+            <input v-model="saveUpdate.annee"  required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
           </div>
          
           <div class="form-group my-2">
@@ -224,7 +224,7 @@
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Projet</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Prestataire</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider" >Contact</th>
-              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">année audit</th>
+              <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Exercice Audité</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Date de transmission</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Etat avancement</th>
               <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">Categorie</th>

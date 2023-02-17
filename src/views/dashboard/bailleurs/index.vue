@@ -567,11 +567,11 @@ export default {
       this.deleteData.index = index
     },
     deleteBailleurs(data) {
-      this.filteredBailleur.splice(data.index,1)
       this.deleteModal= false
       BailleurService.destroy(data.data.id).then((data) => {
+        this.filteredBailleur.splice(data.index,1)
         this.$toast.success("Operation effectué avec success !")
-       
+               
       }).catch((error) => {
         
         if (error.response) {

@@ -3,23 +3,28 @@
       <table class="w-full  table-fixed">
         <thead>
           <tr>
-            <th  class="px-4 w-16 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
+            <!--th  class="px-4 w-16 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-primary tracking-wider">
               <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer">
                 <input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline" @click="selectAllCheckbox($event);">
               </label>
+            </th!-->
+            <th v-for="(head ,index) in headers" :key="index" :class="`${head.width}`" class="px-4 py-1 uppercase border-b-2 border-gray-300 text-left text-xs leading-4 break-normal text-primary tracking-wider"> {{head.name}}     
+              <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                  
+                  <input type="checkbox" v-model="val[index]" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="setColonne()">
+                </label> 
             </th>
-            <th v-for="(head ,index) in headers" :key="index" :class="`${head.width}`" class="px-4 py-1 uppercase border-b-2 border-gray-300 text-left text-xs leading-4 break-normal text-primary tracking-wider"> {{head.name}} </th>
             <th class="px-4 py-1 w-52 border-b-2 border-gray-300 text-center  uppercase leading-4 text-primary tracking-wider text-xs">Actions</th>
           </tr>
         </thead>
        
         <tbody class="bg-white">
             <tr  class="border-b border-gray-300" v-for="(data, index) in listes" :key="index">
-                <td  class="text-sm text-gray-900 font-light py-2 px-4 ">
+                <!--td  class="text-sm text-gray-900 font-light py-2 px-4 ">
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                     <input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="getRowDetail($event, index,index)">
                   </label> 
-                </td>
+                </td!-->
                 <td  v-for="(head, indice) in headers" :key="indice" class="text-sm text-gray-900 font-light py-2 px-4 ">
                   <div class="text-xs w-full" v-if="head.props !== undefined">
                     <span v-if="data[head.props] != null">
@@ -106,6 +111,7 @@
         perPage:15,
         selectedRows: [],
         listeSelection:[],
+        val:[],
         
       }
     },
@@ -144,6 +150,10 @@
           page = this.totalPages / this.perPage
         }
         this.currentPage = page
+      },
+      setColonne()
+      {
+        this.$emit('colonneSearch', this.val)
       },
       getRowDetail($event, count,dataId) {
           count++

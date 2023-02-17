@@ -156,7 +156,8 @@
         <vtable
           v-if="siteDelete && !siteUpdate"
           :headers="headers"
-          :datas="filteredSite"
+          :datas="sites"
+          :search="search"
           :actions="actionsD"
           @supprimer="supprimer"
         >
@@ -164,7 +165,8 @@
          <vtable
           v-if="!siteDelete && siteUpdate"
           :headers="headers"
-          :datas="filteredSite"
+          :datas="sites"
+          :search="search"
           :actions="actionsD"
           @modifier="modifier"
         >
@@ -172,7 +174,8 @@
          <vtable
           v-if="siteDelete && siteUpdate"
           :headers="headers"
-          :datas="filteredSite"
+          :datas="sites"
+          :search="search"
           :actions="actions"
           @supprimer="supprimer"
           @modifier="modifier"
@@ -265,7 +268,7 @@ export default {
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
 
-    filteredSite(){
+    /*filteredSite(){
         var self = this;
 
         return this.sites.filter(function (site){
@@ -273,7 +276,7 @@ export default {
                  site.entreprise?.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  site.bailleur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-    },
+    },*/
 
   },
 
