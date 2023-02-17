@@ -57,9 +57,9 @@
       </div>
    
       <div  id="dataTable">
-        <vtable v-if="utilisateurUpdate && utilisateurDelete" :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actions" @modifier="modifier" @supprimer="supprimer"></vtable>
-        <vtable v-if="!utilisateurUpdate && utilisateurDelete" :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actionsDelete" @supprimer="supprimer"></vtable>
-        <vtable v-if="utilisateurUpdate && !utilisateurDelete" :headers="headers" :datas="filteredUser()"  :sendRequest="sendRequest" :actions="actionsUpdate" @modifier="modifier"></vtable>
+        <vtable v-if="utilisateurUpdate && utilisateurDelete" :headers="headers" :datas="utilisateurs" :search="search"  :sendRequest="sendRequest" :actions="actions" @modifier="modifier" @supprimer="supprimer"></vtable>
+        <vtable v-if="!utilisateurUpdate && utilisateurDelete" :headers="headers" :datas="utilisateurs" :search="search"  :sendRequest="sendRequest" :actions="actionsDelete" @supprimer="supprimer"></vtable>
+        <vtable v-if="utilisateurUpdate && !utilisateurDelete" :headers="headers" :datas="utilisateurs" :search="search"  :sendRequest="sendRequest" :actions="actionsUpdate" @modifier="modifier"></vtable>
       </div>
 
   </div>
@@ -373,7 +373,7 @@ export default {
       }
     },
     
-    filteredUser(){
+    /*filteredUser(){
         var self = this;
 
         return this.utilisateurs.filter(function (user){
@@ -381,7 +381,7 @@ export default {
                  user.prenom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
                  user.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
         });
-    },
+    },*/
     resetForm(){
 
       this.champs = this.champs.map(item => { item.data = ''; return item})
