@@ -293,7 +293,7 @@
 
 
 
-    <div 
+    <div v-if="papVisible"
       class="mb-1 px-6 animation relative">
       <input class="w-full absolute z-10 cursor-pointer opacity-0 h-5 top-0" type="checkbox" id="chck8" />
       <header class="flex justify-between items-center mb-3 cursor-pointer select-none tab-label" for="chck8">

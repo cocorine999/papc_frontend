@@ -1,112 +1,178 @@
 <template>
-<dashboard>
-  <div class="w-full">
-    <div v-if="showModal">
-      <ModalTopRight :title="title"  v-on:close="showModal = false">
-        <div  class="px-4 overflow-y-auto">
-          <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal=false" :champs="champs" :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" ></vform>
-        </div>
-      </ModalTopRight>
-    </div>
-    <div v-if="showModal2">
-        <vmodal  title="Importez les données "  v-on:close="showModal2 = false">
+  <dashboard>
+    <div class="w-full">
+      <div v-if="showModal">
+        <ModalTopRight :title="title" v-on:close="showModal = false">
+          <div class="px-4 overflow-y-auto">
+            <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal = false" :champs="champs"
+              :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm"></vform>
+          </div>
+        </ModalTopRight>
+      </div>
+      <div v-if="showModal2">
+        <vmodal title="Importez les données " v-on:close="showModal2 = false">
           <form @submit.prevent="importData" style="width:500px" class="">
-            <input class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm" aria-describedby="file_input_help" id="file_input" @change="previewFiles"   accept=".xlsx"  type="file">
-            <p class="my-4 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">FORMAT XLSX SEULEMENT AUTORISE </p>
+            <input
+              class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm"
+              aria-describedby="file_input_help" id="file_input" @change="previewFiles" accept=".xlsx" type="file">
+            <p class="my-4 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">FORMAT XLSX SEULEMENT AUTORISE
+            </p>
             <div class="flex justify-end">
-              <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                    importez
+              <button type="submit"
+                class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                  importez
+                </span>
+                <span v-else class="flex items-center space-x-2">
+                  <span class="text-xs px-4 font-semibold ">
+                    chargement ...
                   </span>
-                  <span v-else class="flex items-center space-x-2">
-                    <span class="text-xs px-4 font-semibold ">
-                      chargement ...
-                    </span>
-                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </span>
               </button>
             </div>
           </form>
         </vmodal>
-    </div>
-
-    <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
-      <p class="text-gray-800">
-        voulez vous supprimer cet element?
-      </p>
-
-      <div class="text-right mt-4">
-          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
-          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deletePaps(deleteData)">Supprimer</button>
       </div>
-    </delete-alert>
 
-    
-    <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
-      <div>
-        <ol class="inline-flex p-0 list-none">
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
 
-          <li class="flex items-center ">
-            <router-link to="#" class="text-gray-600">dashboard</router-link>
-            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
-          </li>
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false"
+            class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+            @click="deletePaps(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
 
-          <li class="flex items-center text-blue-500 ">
-            <router-link to="" class="">Pap</router-link>
-          </li>
-        </ol>
-      </div>
-      <div></div>
-      <div>
-        <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative  p-2 rounded-lg">
-              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
-                    width="512px" height="512px">
-                 <path
-                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+
+      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
+        <div>
+          <ol class="inline-flex p-0 list-none">
+
+            <li class="flex items-center ">
+              <router-link to="#" class="text-gray-600">dashboard</router-link>
+              <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path
+                  d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
               </svg>
-             </button>
-      </div>
-      </div>
-      
-    </nav>
+            </li>
 
-    <div class="flex justify-between items-center my-2" >
-      
-      <div class="flex space-x-4">
-        <span  class="inline-block cursor-pointer  border-b-8 font-bold text-sm uppercase    border-primary py-2">Tableau recapitulatif </span> 
-      </div>
+            <li class="flex items-center text-blue-500 ">
+              <router-link to="" class="">Pap</router-link>
+            </li>
+          </ol>
+        </div>
+        <div></div>
+        <div>
+          <div class="w-full flex text-gray-600">
+            <input @input="$emit('search', $event.target.value)"
+              class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block"
+              v-model="search" type="text" name="search" placeholder="Rechercher">
+            <button type="submit" class="relative  p-2 rounded-lg">
+              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                width="512px" height="512px">
+                <path
+                  d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
-      <div class="flex space-x-3">
-        <button  @click="showModal2 = true" v-if="papImporter" title="importez les données"   class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
-         <svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="m12 18 4-5h-3V2h-2v11H8z"></path><path d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z"></path></svg>
-          <span class="mx-2 text-sm font-semibold">Importez les données</span>
-       </button>
-        <json-excel v-if="papExporter" :data="json_data()" header="PAP" type="xlsx" :name="title_csv()"  >
-            <button  title="exporter en excel"   class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
-              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg"><path d="M11 16h2V7h3l-4-5-4 5h3z"></path><path d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z"></path></svg>
+      </nav>
+
+      <div class="flex justify-between items-center my-2">
+
+        <div class="flex space-x-4">
+          <span class="inline-block cursor-pointer  border-b-8 font-bold text-sm uppercase    border-primary py-2">Tableau
+            recapitulatif </span>
+        </div>
+
+        <div class="flex space-x-3">
+          <button @click="showModal2 = true" v-if="papImporter" title="importez les données"
+            class="py-2 flex space-x-3 items-center px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
+            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em"
+              width="1.3em" xmlns="http://www.w3.org/2000/svg">
+              <path d="m12 18 4-5h-3V2h-2v11H8z"></path>
+              <path
+                d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z">
+              </path>
+            </svg>
+            <span class="mx-2 text-sm font-semibold">Importez les données</span>
+          </button>
+          <json-excel v-if="papExporter" :data="json_data()" header="PAP" type="xlsx" :name="title_csv()">
+            <button title="exporter en excel"
+              class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 16h2V7h3l-4-5-4 5h3z"></path>
+                <path
+                  d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z">
+                </path>
+              </svg>
               <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
             </button>
-        </json-excel>
+          </json-excel>
 
-        <button v-if="papAdd" @click="addPap" title="ajouter un tabelau"  class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
-          <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span> 
-        </button>
+          <button v-if="papAdd" @click="addPap" title="ajouter un tabelau"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+            </svg>
+            <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span>
+          </button>
+        </div>
       </div>
-    </div>
-    
-     <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-     <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-     <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="filteredPap()"   @updateInputData="updateInputData"></vtable>
 
+
+      <section class="text-gray-600 body-font bg-gray-50 h-auto flex justify-center items-center">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-wrap -m-4 text-center"   >
+            <div class="p-4 sm:w-1/2 lg:w-1/4 w-full hover:scale-105 duration-500" v-for="(site, index) in paps.sites" :key="index">
+              <div class=" flex items-center  justify-between p-4  rounded-lg bg-white shadow-indigo-50 shadow-md">
+                <div>
+                  <h2 class="text-gray-900 text-lg font-bold">Total Transféré</h2>
+                  <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left">{{ site.total }} XOF</h3>
+                  
+                  <button
+                    class="text-sm mt-6 px-4 py-2 bg-yellow-400 text-white rounded-lg  tracking-wider hover:bg-yellow-300 outline-none">{{ site.nom }}</button>
+                </div>
+                <div
+                  class="bg-gradient-to-tr from-yellow-500 to-yellow-400 w-32 h-32  rounded-full shadow-2xl shadow-yellow-400 border-white  border-dashed border-2  flex justify-center items-center ">
+                  <div>
+                    <h1 class="text-white text-2xl">{{ site.bailleur }}</h1>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
     
-  </div>
+
+    </section>
+
+
+    <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+      :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
+    <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres" :search="search"
+      :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
+    <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+      :search="search" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
+
+      <h2 class="text-gray-900 text-lg font-bold">Total Transféré</h2>
+      <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left">{{ total }} XOF</h3>
+    </div>
 
   </dashboard>
 </template>
@@ -124,11 +190,11 @@ import Dashboard from '@/layouts/Dashboard'
 import JsonExcel from "vue-json-excel"
 import PapService from "@/services/modules/paps.service";
 
-import { mapGetters, mapActions, mapMutations, mapState} from "vuex";
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData } from '@/utils/index'
 
 export default {
-   components: {
+  components: {
     Vtable,
     Dashboard,
     Vmodal,
@@ -139,15 +205,18 @@ export default {
     SearchBar,
     ModalTopRight,
     JsonExcel,
-    
+
   },
   data() {
     return {
+
       sendRequest: false,
-      showModal:false,
-      showModal2:false,
-      showInput:true,
-      title:'',
+      showModal: false,
+      showModal2: false,
+      showInput: true,
+      title: '',
+      total:0,
+      cols: [],
       sexe: [
         {
           sigle: 'M',
@@ -158,77 +227,77 @@ export default {
           nom: 'Feminin'
         }
       ],
-      search:'',
-      papAttributs : ['nom', 'rue', 'longitude', 'latitude', 'sexe', 'contact', 'siteId', 'montant', 'payer', 'referencePieceIdentite', 'statut', 'modeDePaiement', 'dateDePaiement'],
-      champs:[
-        {name:' N° Rue', key:'rue',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Longitude', key:'longitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,errors : []},
-        {name:' Latitude', key:'latitude',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:false,errors : []},
-        {name:'Site', key:'siteId',type:'',placeholdere:"Selectionnez un site",isSelect:true,isTextArea:false,data:'',options:this.sites, cle: 'id', value: 'nom',required:true,errors : []},
-        {name:' Nom et prenoms', key:'nom',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Sexe', key:'sexe',type:'',placeholdere:"Selectionnez le sexe",isSelect:true,isTextArea:false,data:'',options:this.sexe, cle: 'sigle', value: 'nom',required:true,errors : []},
-        {name:' Contact ', key:'contact',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Référence Pièces identité', key:'referencePieceIdentite',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Statut', key:'statut',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:'Mode de paiement', key:'modeDePaiement',type:'text',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Indeminisation', key:'montant',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name:' Transféré', key:'payer',type:'number',placeholdere:"",isSelect:false,isTextArea:false,data:'',required:true,errors : []},
-        {name: 'Date de paiement', key: "dateDePaiement", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data:'', required: true,errors : []},
+      search: '',
+      papAttributs: ['nom', 'rue', 'longitude', 'latitude', 'sexe', 'contact', 'siteId', 'montant', 'payer', 'referencePieceIdentite', 'statut', 'modeDePaiement', 'dateDePaiement'],
+      champs: [
+        { name: ' N° Rue', key: 'rue', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: ' Longitude', key: 'longitude', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: ' Latitude', key: 'latitude', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
+        { name: ' Nom et prenoms', key: 'nom', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Sexe', key: 'sexe', type: '', placeholdere: "Selectionnez le sexe", isSelect: true, isTextArea: false, data: '', options: this.sexe, cle: 'sigle', value: 'nom', required: true, errors: [] },
+        { name: ' Contact ', key: 'contact', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Référence Pièces identité', key: 'referencePieceIdentite', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Statut', key: 'statut', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Mode de paiement', key: 'modeDePaiement', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: ' Indeminisation', key: 'montant', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: ' Transféré', key: 'payer', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+        { name: 'Date de paiement', key: "dateDePaiement", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
 
       ],
-      cols:2,
-      headers:[
-        {name:'N° Rue',cle:'rue'},
-        {name:'Longitude',cle:'longitude'},
-        {name:'Latitude',cle:'latitude'},
-        {name:'Bailleur',cle:'bailleur'},
-        {name:'Site',cle:'site'},
-        {name:'Nom et prenom',cle:'nom'},
-        {name:'Sexe',cle:'sexe'},
-        {name:'Contact',cle:'contact'},
-        {name:'Reference Pieèce Identite',cle:'referencePieceIdentite'},
-        {name:'Statut',cle:'statut'},
-        {name:'Mode de paiement',cle:'modeDePaiement'},
-        {name:'Indeminisation',cle:'montant'},
-        {name:'Transféré',cle:'payer',monaie:true},
-        {name:'Date de paiement',cle:'dateDePaiement'},
-        {name:'Date de creation',cle:'dateDeCreation'},
+      cols: 2,
+      headers: [
+        { name: 'N° Rue', cle: 'rue' },
+        { name: 'Longitude', cle: 'longitude' },
+        { name: 'Latitude', cle: 'latitude' },
+        { name: 'Bailleur', cle: 'bailleur' },
+        { name: 'Site', cle: 'site' },
+        { name: 'Nom et prenom', cle: 'nom' },
+        { name: 'Sexe', cle: 'sexe' },
+        { name: 'Contact', cle: 'contact' },
+        { name: 'Reference Pieèce Identite', cle: 'referencePieceIdentite' },
+        { name: 'Statut', cle: 'statut' },
+        { name: 'Mode de paiement', cle: 'modeDePaiement' },
+        { name: 'Indeminisation', cle: 'montant' },
+        { name: 'Transféré', cle: 'payer', monaie: true },
+        { name: 'Date de paiement', cle: 'dateDePaiement' },
+        { name: 'Date de creation', cle: 'dateDeCreation' },
 
       ],
-      actions:[
-        {name:'supprimer',iconne:''},
+      actions: [
+        { name: 'supprimer', iconne: '' },
       ],
-      file:'',
-      papVisible:false,
-      papAdd:false,
-      papDelete:false,
-      papUpdate:false,
-      papImporter:false,
-      papExporter:false,
-      deleteData:{},
-      deleteModal:false,
+      file: '',
+      papVisible: false,
+      papAdd: false,
+      papDelete: false,
+      papUpdate: false,
+      papImporter: false,
+      papExporter: false,
+      deleteData: {},
+      deleteModal: false,
     }
-    
+
   },
 
-  computed:{
+  computed: {
 
     //importation des variables du module auths
     ...mapState({
       identifiant: state => state.auths.identifiant,
       pap: state => state.paps.pap,
-      loading : state => state.loading,
-      errors : state => state.errors
+      loading: state => state.loading,
+      errors: state => state.errors
     }),
 
     ...mapGetters({
-      paps: "paps/getPaps", 
+      paps: "paps/getPaps",
       pap: "paps/getPap",
       sites: "sites/getSites",
-      currentUser : 'auths/GET_AUTHENTICATE_USER'
+      currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
-     ...mapGetters('auths', {currentUser : 'GET_AUTHENTICATE_USER'})
-    
+    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
+
   },
 
   methods: {
@@ -260,82 +329,86 @@ export default {
     },
 
     getPermission() {
-         this.currentUser.role[0].permissions.forEach(element => {
-            if(element.slug ==='voir-un-pap') {
-              this.papVisible = true
-            }
-            if(element.slug === 'creer-un-pap') {
-              this.papAdd = true
-            }
-            if(element.slug === 'modifier-un-pap') {
-              this.papUpdate = true
-            }
-            if(element.slug ==='supprimer-un-pap') {
-              this.papDelete = true
-            }
-            if(element.slug ==='importer-un-pap') {
-              this.papImporter = true
-            }
-            if(element.slug ==='exporter-un-pap') {
-              this.papExporter = true
-            }
-           
-          });
+      this.currentUser.role[0].permissions.forEach(element => {
+        if (element.slug === 'voir-un-pap') {
+          this.papVisible = true
+        }
+        if (element.slug === 'creer-un-pap') {
+          this.papAdd = true
+        }
+        if (element.slug === 'modifier-un-pap') {
+          this.papUpdate = true
+        }
+        if (element.slug === 'supprimer-un-pap') {
+          this.papDelete = true
+        }
+        if (element.slug === 'importer-un-pap') {
+          this.papImporter = true
+        }
+        if (element.slug === 'exporter-un-pap') {
+          this.papExporter = true
+        }
 
+      });
+
+    },
+    onRetour(data)
+    {
+      this.total = data
     },
     close() {
       this.showCloseModal()
       this.resetForm
     },
     title_csv() {
-      return "paps-" +"-" + new Date()
+      return "paps-" + "-" + new Date()
     },
-    
-    json_data(){
-        let tab = [];
 
-        this.filteredPap().forEach(element => {
-          tab.push(
-            {
-              rue: element.rue,
-              longitude: element.longitude,
-              latitude: element.latitude,
-              bailleur:element.bailleur,
-              site: element.site,
-              nom_prenoms: element.nom,
-              sexe: element.sexe,
-              contact: element.contact,
-              reference_piece_identite: element.referencePieceIdentite,
-              statut: element.statut,
-              mode_de_paiement: element.modeDePaiement,
-              indeministation: element.montant,
-              transferer: element.payer,
-              date_de_paiement: element.dateDePaiement,
-              date_de_creation: element.dateDeCreation
-            }
-          );
-        });
-        return tab;
+    json_data() {
+      let tab = [];
+
+      this.paps.sinistres.forEach(element => {
+        tab.push(
+          {
+            rue: element.rue,
+            longifilteredAnotude: element.longitude,
+            latitude: element.latitude,
+            bailleur: element.bailleur,
+            site: element.site,
+            nom_prenoms: element.nom,
+            sexe: element.sexe,
+            contact: element.contact,
+            reference_piece_identite: element.referencePieceIdentite,
+            statut: element.statut,
+            mode_de_paiement: element.modeDePaiement,
+            indeministation: element.montant,
+            transferer: element.payer,
+            date_de_paiement: element.dateDePaiement,
+            date_de_creation: element.dateDeCreation
+          }
+        );
+      });
+      return tab;
     },
-    
+
     showCloseModal(value = false) {
       this.showModal = value
     },
     addPap() {
-      this.title='Ajouter un nouveau pap'
+      this.title = 'Ajouter un nouveau pap'
 
       let formData = this.champs.map((value) => {
-          if(value.key === 'siteId'){ 
-            value['options'] = this.sites
-          }
+        if (value.key === 'siteId') {
+          value['options'] = this.sites
+        }
 
-          else if(value.key === 'sexe'){ 
-            value['options'] = this.sexe
-          }
+        else if (value.key === 'sexe') {
+          value['options'] = this.sexe
+        }
 
 
-          return value
-        })
+        return value
+      })
 
       this.champs = formData
 
@@ -346,39 +419,70 @@ export default {
       const formData = new FormData();
       formData.append('fichier', this.file);
       this.importSinistre(formData).then((data) => {
-      
+
         this.$toast.success("importation reussie")
       }).catch((e) => {
         this.$toast.error(e)
       })
-     
+
     },
 
-    filteredPap(){
+
+    /*filteredPap(){
+
         var self = this;
+        var colonnes = [];
+        var i = 0;
 
-        return this.paps.sinistres.filter(function (pap){
-          return pap.site.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 pap.sexe.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 pap.bailleur.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-                 pap.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        this.headers.forEach(element => {
+          if(this.cols[i])
+          {
+            colonnes.push(element.cle)
+          }
+
+          i++;
         });
-    },
 
-    
+        if(colonnes.length)
+        {
+          return this.paps.sinistres.filter(function (pap){
+            return pap[colonnes[0]].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+            
+                 
+          });  
+        }
 
-    resetForm(){
-      this.champs = this.champs.map(item => { item.data = ''; return item})
+        else
+        {
+          return this.paps.sinistres.filter(function (pap){
+            
+            for(let header of self.headers)
+            {
+              if(pap[header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+              {
+                 return pap
+              }
+            }
+
+          });
+        }
+        
+    },*/
+
+
+
+    resetForm() {
+      this.champs = this.champs.map(item => { item.data = ''; return item })
       window.document.getElementById('vform').reset()
 
       this.pap = {}
     },
-    
+
     async updateInputData(id, attribut, value) {
-     
-      await this.updatePap({pap: {[attribut] : value}, id : id}).catch((value, status) => {
-        if(this.hasErrors[attribut] !== undefined)
-        alert(this.hasErrors[attribut])            
+
+      await this.updatePap({ pap: { [attribut]: value }, id: id }).catch((value, status) => {
+        if (this.hasErrors[attribut] !== undefined)
+          alert(this.hasErrors[attribut])
       }).finally(() => {
         $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
       })
@@ -386,7 +490,7 @@ export default {
     },
 
     sendForm() {
-      this.champs = this.champs.map(item => { item.errors = []; return item})
+      this.champs = this.champs.map(item => { item.errors = []; return item })
 
       let pap = extractFormData(this.champs, this.papAttributs)
 
@@ -397,77 +501,75 @@ export default {
       pap.sexe = pap.sexe.sigle
       PapService.create(pap).then((data) => {
         this.$toast.success("enregistrement éffectué avec success")
-      this.fetchPaps({id : this.currentUser?.programme?.id})
-      this.resetForm
+        this.fetchPaps({ id: this.currentUser?.programme?.id })
+        this.resetForm
 
         this.showModal = false
-        
+
       }).catch((e) => {
         this.$toast.error(e)
       })
     },
-    supprimer(pap,index) {
-      this.deleteModal= true
+    supprimer(pap, index) {
+      this.deleteModal = true
       this.deleteData.data = pap
       this.deleteData.index = index
     },
 
     deletePaps(data) {
-        //this.filteredIndicateur.splice(data.index,1)
-        this.deleteModal= false
-        PapService.destroy(data.data.id).then((data) => {
-          this.$toast.success("Operation effectué avec success !")
-          this.fetchPaps({id : this.currentUser?.programme?.id})
-        
-        }).catch((error) => {
-          
-          if (error.response) {
-            // Requête effectuée mais le serveur a répondu par une erreur.
-            const message = error.response.data.message
-            this.$toast.error(message)
-          } else if (error.request) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal = false
+      PapService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.fetchPaps({ id: this.currentUser?.programme?.id })
+
+      }).catch((error) => {
+
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
           // Demande effectuée mais aucune réponse n'est reçue du serveur.
           //console.log(error.request);
-          } else {
-            // Une erreur s'est produite lors de la configuration de la demande
-          }
-        }) 
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
     },
-    
 
-   
+
+
   },
 
   watch: {
-    loading: function(value) {
+    loading: function (value) {
       //this.loading = value
     },
 
-    errors: function(errors) {
-      this.champs.forEach((value) => {value.errors = errors[value.key]})
+    errors: function (errors) {
+      this.champs.forEach((value) => { value.errors = errors[value.key] })
       //this.errors = errors
     }
 
   },
-  
-  mounted() {
-   
+
+  created() {
+
     this.getPermission()
-    if(!this.papVisible) {
+    if (!this.papVisible) {
       this.$router.push('/401-non-autorise')
     }
+
+    this.fetchPaps({ id: this.currentUser?.programme?.id }).then((value) => {
+      console.log(value.data)
+      this.total = value.data.data.total
+
+    })
+
     this.fetchSites(this.currentUser?.programme?.id)
 
-   
-    this.fetchPaps({id : this.currentUser?.programme?.id}).then((value) => {
-     console.log(value.data)
-      console.log( 'les paps')
 
-        setTimeout(() => {
-         
-          //this.fetchSites(this.currentUser?.programme?.id)
-        }, 500);
-    })
   }
 }
 </script>

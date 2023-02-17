@@ -34,7 +34,7 @@
               mot de passe très court
             </div>
           </div>
-          <div v-if="isRobot" class="">
+          <!--div v-if="isRobot" class="">
             <g-recaptcha 
             data-sitekey="6LdFrTAkAAAAAADsgeGs4SVod0NZl7_2RsE-MZQi" 
             :data-validate="validate"
@@ -47,9 +47,9 @@
                 </label>
               </p>
             </g-recaptcha>
-          </div>
+          </div!-->
           <div class="py-2 my-4 flex justify-center space-x-8">
-            <button v-if="!isRobot" key="humain" type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
+            <button  key="humain" type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
                   <span class="text-sm font-semibold uppercase" v-if="!chargement">
                     Se connecter
                   </span>
@@ -62,7 +62,7 @@
                     </svg>
                   </span>
             </button>
-            <button v-else  key="robot" disabled class="bg-gray-300 text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
+            <!--button v-if="!isRobot" key="humain" type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
                   <span class="text-sm font-semibold uppercase" v-if="!chargement">
                     Se connecter
                   </span>
@@ -74,7 +74,20 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                   </span>
-            </button>
+            </button!-->
+            <!--button v-else  key="robot" disabled class="bg-gray-300 text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    Se connecter
+                  </span>
+                  <span v-else class="flex justify-center items-center space-x-2">
+                    <span class=" px-4 font-semibold ">
+                      chargement ...
+                    </span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+            </button!-->
           
           </div>
           

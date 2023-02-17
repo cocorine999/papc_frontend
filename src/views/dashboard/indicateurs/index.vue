@@ -218,14 +218,14 @@
       </div>
 
       <indicateur-table v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :key="componentKey" :headers="headers"
-        :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer">
+        :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer" @colonneSearch="getColonne">
       </indicateur-table>
       <indicateur-table v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd" :key="componentKey" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" :actions="actions" @modifier="modifier"  @updateInputData="updateInputData"
-        @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"></indicateur-table>
+        @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer" @colonneSearch="getColonne"></indicateur-table>
       <indicateur-table v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi"
-        @supprimer="supprimer"></indicateur-table>
+        @supprimer="supprimer" @colonneSearch="getColonne"></indicateur-table>
       <indicateur-table v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
         @consulter="consulterSuivi"></indicateur-table>
@@ -233,7 +233,7 @@
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi">
       </indicateur-table>
       <indicateur-table v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :key="componentKey" @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer">
+        :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer" @colonneSearch="getColonne">
       </indicateur-table>
     </div>
   </dashboard>
@@ -303,6 +303,7 @@ export default {
       headers: [],
       idIndicateur: '',
       isValeurCibleUse: true,
+      colonnes:[],
       actions: [
         { name: 'suivre' },
         { name: 'supprimer', iconne: '' },
@@ -359,6 +360,7 @@ export default {
         return item;
       });
     },
+    
     categories: function (categories) {
       this.champs.map((item) => {
         if (item.key === "categorieId") {
@@ -429,14 +431,83 @@ export default {
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
     filteredIndicateur() {
       var self = this;
+      var colonnes = [];
+      var i = 0;
 
-      return this.indicateurs.filter(function (indicateur) {
-        return indicateur.bailleur.sigle.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.bailleur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.categorie.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.uniteDeMesure.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0 ||
-          indicateur.nom.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+      this.headers.forEach(element => {
+        if(this.colonnes[i])
+        {
+          if(element.props)
+          {
+            colonnes.push([element.props, element.cle])
+          }
+
+          else
+          {
+            colonnes.push(element.cle)
+          }
+        }
+
+        i++;
       });
+
+      if(colonnes.length)
+      {
+        return this.indicateurs.filter(function (data){
+          for(let col of colonnes)
+          {
+            if(Array.isArray(col))
+            {
+              if(data[col[0]][col[1]].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {
+                  return data              
+                }
+            }
+
+            else
+            {
+              if(data[col].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {
+                  return data              
+                }              
+            }
+            
+          }                         
+        });  
+      }
+
+      else
+      {
+        return this.indicateurs.filter(function (data){
+    
+          for(let header of self.headers)
+          {
+
+            if(data[header.props] != null)
+            {
+              if(data[header.props][header.cle])
+              {
+                if(data[header.props][header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {                  
+                  return data                  
+                }
+              }
+            }
+
+            else
+            {
+              if(data[header.cle])
+              {
+                if(data[header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
+                {                  
+                  return data              
+                }
+              }
+            }
+            
+          }
+        });
+      }
     },
   },
   methods: {
@@ -452,6 +523,11 @@ export default {
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
     }),
+    getColonne(data)
+    {
+      this.colonnes = data
+      console.log(this.colonnes)
+    },
     active() {
       this.$store.dispatch('active')
     },
@@ -919,7 +995,7 @@ export default {
 
   },
 
-  mounted() {
+  created() {
     this.getPermission()
     if (!this.indicateurVisible) {
       this.$router.push('/401-non-autorise')
