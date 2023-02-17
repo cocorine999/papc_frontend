@@ -574,9 +574,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.color {
- color: red
-}
-</style>
-
