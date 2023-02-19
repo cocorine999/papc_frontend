@@ -133,8 +133,7 @@ export default {
     }
   },
   mounted() {
-
-
+    
     if (localStorage.getItem("formData")) {
       this.savedInput = []
       this.savedInput = JSON.parse(localStorage.getItem("formData"))
@@ -142,7 +141,6 @@ export default {
       for (let i = 0; i < this.champs.length; i++) {
         this.champs[i].data = this.savedInput[i]
       }
-
     }
 
   },
@@ -160,11 +158,10 @@ export default {
       this.$emit('closeModal', this.savedInput)
 
       this.savedInput = []
-
       for (let i = 0; i < this.champs.length; i++) {
         this.savedInput.push(this.champs[i].data)
       }
-      console.log(this.savedInput)
+    
       const parsed = JSON.stringify(this.savedInput);
       localStorage.setItem('formData', parsed);
 

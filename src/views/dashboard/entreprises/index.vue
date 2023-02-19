@@ -5,7 +5,7 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close">
           <div class="px-4">
-            <form-component   @closeModal="close" :form="form" @send="sendForm" />
+            <form-component :savedInput="savedInput"   @closeModal="close" :form="form" @send="sendForm" />
           </div>
         </modal-top-right>
       </div>
@@ -207,6 +207,7 @@ export default {
   },
   data() {
     return {
+      savedInput: [],
       title: "Ajouter une nouvelle entreprise executante",
       submitText: "Ajouter",
       seeChecklist: false,
@@ -417,7 +418,7 @@ export default {
     close() {
       this.showCloseModal();
 
-      this.resetForm();
+      
     },
 
     showCloseModal(value = false) {
@@ -483,6 +484,9 @@ export default {
           .then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.resetForm();
+              localStorage.removeItem('formData');
+
             }
           })
           .catch((value) => {

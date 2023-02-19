@@ -7,8 +7,7 @@
                     <ol class="inline-flex p-0 list-none">
                         <li class="flex items-center ">
                             <router-link to="#" class="text-gray-600">dashboard</router-link>
-                            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 320 512">
+                            <svg class="w-3 h-3 mx-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                                 <path
                                     d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
                             </svg>
@@ -96,13 +95,56 @@
                 </table>
             </div>
 
-            <!-- <div class="overflow-auto">
-                <pre>{{ kobo_data }}</pre>
-            </div> -->
+            <div class="w-full h-auto relative">
+                <!-- component -->
+                <div class="p-3">
+                    <button onclick="openModal(true)"
+                        class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white focus:outline-none">
+                        Open Modal
+                    </button>
+                </div>
+
+                <!-- overlay -->
+                <div id="modal_overlay"  class="absolute inset-0 bg-black bg-opacity-30 h-full w-full flex justify-center items-start md:items-center pt-10 md:pt-0">
+
+                    <!-- modal -->
+                    <div id="modal"  class="pacity-0 transform -translate-y-full scale-150  relative w-10/12 md:w-1/2 md:h-3/4 bg-white rounded shadow-lg _transition-opacity transition-transform duration-300 h-auto">
+
+                        <!-- button close -->
+                        <button onclick="openModal(false)"
+                            class="absolute -top-3 -right-3 bg-red-500 hover:bg-red-600 text-2xl w-10 h-10 rounded-full focus:outline-none text-white">
+                            &cross;
+                        </button>
+
+                        <!-- header -->
+                        <div class="px-4 py-3 border-b border-gray-200">
+                            <h2 class="text-xl font-semibold text-gray-600">Title</h2>
+                        </div>
+
+                        <!-- body -->
+                        <div class="w-full p-3">
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, quis tempora! Similique,
+                            explicabo quaerat maxime corrupti tenetur blanditiis voluptas molestias totam? Quaerat
+                            laboriosam suscipit repellat aliquam blanditiis eum quos nihil.
+                        </div>
+
+                        <!-- footer -->
+                        <div
+                            class=" bottom-0 left-0 px-4 py-3 border-t border-gray-200 w-full flex justify-end items-center gap-3">
+                            <button
+                                class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white focus:outline-none">Save</button>
+                            <button onclick="openModal(false)"
+                                class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white focus:outline-none">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
 
         </div>
     </dashboard>
-
 </template>
 
 <script>
@@ -127,7 +169,7 @@ export default {
         }
     },
     mounted() {
-        ProgrammeService.kobo().then(response => {           
+        ProgrammeService.kobo().then(response => {
             for (let i = 0; i < response.data.data.length; i++) {
                 if (response.data.data[i].status == 'public') {
                     this.kobo_data.push(response.data.data[i])
@@ -144,13 +186,13 @@ export default {
         detail(index, data) {
             var questionnaire = {
                 id: index,
-                contenu: data 
+                contenu: data
             }
             this.$store.commit("setQuestionnaire", questionnaire);
-              this.$router.push({ name: 'questionnaire_id_details', params: { id: index, questionnaire: data } })
+            this.$router.push({ name: 'questionnaire_id_details', params: { id: index, questionnaire: data } })
 
 
-            
+
         },
         selectAllCheckbox($event) {
             alert('ok')

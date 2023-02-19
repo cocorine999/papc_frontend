@@ -15,7 +15,7 @@
         <ModalTopRight :title="title" v-on:close="close">
           <div class="w-full px-4">
             <div v-if="!isUpdate">
-              <vform template="default" :champs="champs" :sendRequest="sendRequest" :cols="cols" :submitText="submitText" @sendForm="sendForm"
+              <vform template="default" :champs="champs" :sendRequest="sendRequest" :cols="cols" :submitText="submitText" :savedInput="savedInput" @sendForm="sendForm"
               @closeModal="close"></vform>
             </div>
             <div v-if="isUpdate">
@@ -213,6 +213,7 @@ export default {
 
   data() {
     return {
+      savedInput: [],
       sendRequest: false,
       showModal: false,
       mosaique: true,
@@ -396,8 +397,6 @@ export default {
 
     close() {
       this.showCloseModal()
-
-      this.resetForm()
     },
 
     showCloseModal(value = false) {
@@ -459,6 +458,9 @@ export default {
               this.fetchInstitutions()
               this.sendRequest = false
               this.close()
+              this.resetForm()
+              localStorage.removeItem('formData');
+
             }
           })
           .catch((value) => {
