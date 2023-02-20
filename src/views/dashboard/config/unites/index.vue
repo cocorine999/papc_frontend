@@ -20,6 +20,7 @@
                 template="default"
                 :champs="champs"
                 cols="1"
+                :savedInput="savedInput"
                 :submitText="submitText"
                 @sendForm="sendForm"
                 @closeModal="close" 
@@ -133,6 +134,7 @@ export default {
   },
   data() {
     return ({
+      savedInput: [],
       showModal:false,
       title:'',
       submitText: 'Enrégistrer',
@@ -287,8 +289,6 @@ export default {
 
     close() {
         this.showCloseModal();
-
-        this.resetForm();
     },
 
     showCloseModal(value = false) {
@@ -346,6 +346,9 @@ export default {
             if (response.status == 200 || response.status == 201) {
               this.fetchUniteesDeMesure()
               this.close();
+              this.resetForm();
+              localStorage.removeItem('formData');
+
             }
           });
         }

@@ -19,14 +19,14 @@
       </nav>
 
       <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
-        <span class="font-bold absolute bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">
-          <span class="clr bg-white p-1 rounded-md">Titre:</span> {{ nom_questionnaire }} </span>
+        <span class="font-bold absolute clr bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">
+          <span class="  p-1 rounded-md">Titre:</span> {{ nom_questionnaire }} </span>
       </div>
     </div>
 
-    <div class="w-full bg-white border-grey-light border mt-4">
-      <accordion title="Cliquer pour voir les informations contenu dans cette souscription"
-        v-for=" item in souscription ">
+    <div class="w-full bg-white border-grey-light border mt-4"  v-for=" (item , index ) in souscription" :key="index">
+      <accordion :title="'Soumission du ' + item._submission_time"
+       >
 
         <table class="min-w-full table-auto">
           <thead class="border-b bg-gray-300">
@@ -61,6 +61,7 @@
         </table>
       </accordion>
     </div>
+    <!-- <div> <pre>{{ souscription }}</pre></div> -->
 
 
 </Dashboard>
@@ -83,6 +84,7 @@ export default {
       souscription: {},
       nom_questionnaire: "",
       metaData: {},
+      response: {}
     }
   },
   computed: {
@@ -97,109 +99,42 @@ export default {
     }).then(response => {
       var table = response.data.data
 
-
-      var d1 = {}
-
-
-      var edit = {
-      }
-
-      var allitem = []
-
-      for (let item = 0; item < table.length; item++) {
-
-        for (let i in table[item]) {
-
-          // if (i == "start") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'start');
-          // }
-
-          // if (i == "end") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'end');
-          // }
-
-          // if (i == "today") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'today');
-          // }
-          // if (i == "username") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'username');
-          // }
-          // if (i == "deviceid") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'deviceid');
-          // }
-          // if (i == "phonenumber") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'phonenumber');
-          // }
-          // if (i == "audit") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'audit');
-          // }
-          // if (i == "__version__") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], '__version__');
-          // }
-          // if (i == "_id") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], '_id');
-          // }
-          // if (i == "_submitted_by") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], '_submitted_by');
-          // }
-
-          // if (i == "formhub/uuid") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'formhub/uuid');
-          // }
+      // var d1 = {}
 
 
-          // if (i == "_uuid") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], '_uuid');
-          // }
+      // var edit = {}
 
-          // if (i == "meta/instanceID") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], 'meta/instanceID');
-          // }
+      // var allitem = []
 
-          // if (i == "_xform_id_string") { 
-          //   d1[i] = table[item][i] 
-          //   Reflect.deleteProperty(table[item], '_xform_id_string');
-          // }
+      // for (let item = 0; item < table.length; item++) {
 
-          var slash = i.indexOf("/");
-          var j = ""
+      //   console.log(table[item])
+      //   for (let i in table[item]) {
 
-          if (slash !== -1) {
+      //     var slash = i.indexOf("/");
+      //     var j = ""
 
-            j = i.slice(slash + 1)
+      //     if (slash !== -1) {
 
-            edit[j] = table[item][i]
+      //       j = i.slice(slash + 1)
+
+      //       edit[j] = table[item][i]
 
 
-          } else {
-            edit[i] = table[item][i]
-          }
+      //     } else {
+      //       edit[i] = table[item][i]
+      //     }
 
 
-        }
+      //   }
 
-        allitem.push(edit)
-      }
+        
+      // }
+      
+      this.souscription = table
 
+      this.response = this.souscription
 
-      this.souscription = allitem
-
-      console.log(this.souscription)
-
-      this.metaData = d1
 
     })
   },
@@ -220,6 +155,6 @@ export default {
 </script>
 <style scoped>
 .clr {
-  color:#000000;
+  background-color:#0E406E;
 }
 </style>

@@ -17,6 +17,7 @@
           <div class="w-full p-4">
               <vform
                 template="default"
+                :savedInput="savedInput"
                 :champs="champs"
                 cols="1"
                 :submitText="submitText"
@@ -131,6 +132,7 @@ export default {
   },
   data() {
       return ({
+        savedInput:[],
         showModal:false,
         categorieAttributes: ["nom"],
         submitText: 'Enrégistrer',
@@ -256,7 +258,6 @@ export default {
      
       close() {
         this.showCloseModal();
-        this.resetForm();
       },
 
       showCloseModal(value = false) {
@@ -311,6 +312,9 @@ export default {
           this.saveCategorie(categorie).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.resetForm();
+              localStorage.removeItem('formData');
+
             }
           });
         }
