@@ -212,9 +212,9 @@ export default {
 
   data() {
     return {
-      nom:"",
-      longitude: Number,
-      latitude:Number,
+      nom: "",
+      longitude: "",
+      latitude: "",
       bailleur: null,
       entrepriseExecutantId: "",
       savedInput: [],
@@ -354,7 +354,16 @@ export default {
         if (response.status == 200 || response.status == 201) {
           this.$toast.success('operation effectuer avec sucess')
           this.fetchSites(this.currentUser?.programme?.id)
-          this.close();
+          this.showModal = false;
+          this.nom = "",
+            this.bailleur = null,
+            this.value = [],
+            this.longitude = "",
+            this.latitude = ""
+          localStorage.removeItem('formData');
+
+
+
         }
       }).catch((e) => {
         this.$toast.error(e)
@@ -449,15 +458,15 @@ export default {
 
     close() {
       this.showModal = false;
-      this.savedInput.push(this.nom) ,
-     
+
+      this.savedInput.push(this.nom),
+        this.savedInput.push(this.bailleur),
+        this.savedInput.push(this.value)
       this.savedInput.push(this.longitude),
-      this.savedInput.push(this.latitude),
-      this.savedInput.push(this.bailleur),
-      this.savedInput.push(this.value)
- console.log(this.savedInput)
-      // const parsed = JSON.stringify(this.savedInput);
-      // localStorage.setItem('formData', parsed);
+        this.savedInput.push(this.latitude)
+
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
 
     },
   },
@@ -468,24 +477,21 @@ export default {
       this.$router.push('/401-non-autorise')
     }
 
-
     this.fetchSites(this.currentUser?.programme?.id)
 
-
     this.fetchEntreprisesExecutante();
-
 
     this.fetchBailleurs()
 
     if (localStorage.getItem("formData")) {
-      // this.savedInput = []
-      // this.savedInput = JSON.parse(localStorage.getItem("formData"))
-
-      // this.nom = this.savedInput.push(),
-      //   this.longitude = this.savedInput[0],
-      //   this.latitude = this.savedInput[1],
-      //   this.bailleur = this.savedInput[2],
-      //   this.value = this.savedInput[3]
+      this.savedInput = []
+      this.savedInput = JSON.parse(localStorage.getItem("formData"))
+      console.log(this.savedInput)
+      this.nom = this.savedInput[0],
+        this.bailleur = this.savedInput[1],
+        this.value = this.savedInput[2],
+        this.longitude = this.savedInput[3],
+        this.latitude = this.savedInput[4]
     }
 
   },

@@ -9,12 +9,14 @@
 
       <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
         <p class="text-gray-800">
-        voulez vous supprimer cet ano?
+          voulez vous supprimer cet ano?
         </p>
 
         <div class="text-right mt-4">
-          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
-          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteAnos(deleteData)">Supprimer</button>
+          <button @click="deleteModal = false"
+            class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+            @click="deleteAnos(deleteData)">Supprimer</button>
         </div>
       </delete-alert>
 
@@ -23,13 +25,14 @@
         <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
-              @getFile="getFile"  :savedInput="savedInput" submitText="Créer un ano"  @closeModal="close" @sendForm="sendForm"></vform>
+              @getFile="getFile" :savedInput="savedInput" submitText="Créer un ano" @closeModal="close"
+              @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
         <modal-top-right v-else :title="title" v-on:close="close">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
-              @getFile="getFile" submitText="Modifier"  @closeModal="close" @sendForm="sendForm"></vform>
+              @getFile="getFile" submitText="Modifier" @closeModal="close" @sendForm="sendForm"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -42,7 +45,7 @@
               <select id="choice" required v-model="Relance.statut"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm   focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="" selected>Selectionnez le statut</option>
-                <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{statut.name}}</option>
+                <option v-for="(statut, index) in statuts" :key="index" :value="statut.value"> {{ statut.name }}</option>
               </select>
             </div>
             <div class="my-2">
@@ -75,12 +78,12 @@
                   </svg>
                 </span>
               </button>
-              <vbutton type="reset" template="danger" @close="showReponse =false"> annuler </vbutton>
+              <vbutton type="reset" template="danger" @close="showReponse = false"> annuler </vbutton>
             </div>
           </form>
         </modal-chat>
       </div>
-   
+
       <nav class="text-xs md:text-sm font-semibold flex items-center justify-between flex-wrap " aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
@@ -99,9 +102,11 @@
         </div>
 
         <div>
-            <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)" class="h-8  w-full px-5  text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-7" v-model="search" type="text" name="search" placeholder="Rechercher" >
-              <button type="submit" class="relative">
+          <div class="w-full flex text-gray-600">
+            <input @input="$emit('search', $event.target.value)"
+              class="h-8  w-full px-5  text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-7"
+              v-model="search" type="text" name="search" placeholder="Rechercher">
+            <button type="submit" class="relative ">
               <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                 viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -116,7 +121,9 @@
 
       <div class="flex items-center justify-between my-2">
         <div class="flex space-x-4">
-          <span class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-base uppercase    border-primary py-2">Tableau récapitulatif </span>
+          <span
+            class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-base uppercase    border-primary py-2">Tableau
+            récapitulatif </span>
         </div>
         <div class="flex space-x-4">
 
@@ -130,22 +137,21 @@
           </button>
         </div>
       </div>
-       <!-- j'ai desactiver les commentaires iscomment false -->
+      <!-- j'ai desactiver les commentaires iscomment false -->
       <div id="dataTable">
-        <vtable v-if="anoDelete &&  reponseAnoVisible ==false && anoUpdate == false" :statut="true" :sendRequest="false"
+        <vtable v-if="anoDelete && reponseAnoVisible == false && anoUpdate == false" :statut="true" :sendRequest="false"
           :headers="headers" :datas="anos" :search="search" :actions="actionsDelete" @supprimer="supprimer"></vtable>
-        <vtable v-if="reponseAnoAdd && anoDelete==false && reponseAnoVisible  &&  anoUpdate == false" :statut="true"
+        <vtable v-if="reponseAnoAdd && anoDelete == false && reponseAnoVisible && anoUpdate == false" :statut="true"
           :sendRequest="false" @reponseAno="reponseAno" :headers="headers" :datas="anos" :search="search"
-          :actions="actionsReponse" :isComment="false"  @seeUpload="seeUpload"></vtable>
-        <vtable v-if="reponseAnoAdd==false && anoDelete==false && reponseAnoVisible ==false" :statut="true"
+          :actions="actionsReponse" :isComment="false" @seeUpload="seeUpload"></vtable>
+        <vtable v-if="reponseAnoAdd == false && anoDelete == false && reponseAnoVisible == false" :statut="true"
           :sendRequest="false" :headers="headers" :datas="anos" :search="search"></vtable>
-        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible " :statut="true" :isComment="false"
-           :sendRequest="false" :headers="headers" :datas="anos" :search="search" :actions="actions"
-          @seeUpload="seeUpload" @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
+        <vtable v-if="anoUpdate && anoDelete && reponseAnoAdd && reponseAnoVisible" :statut="true" :isComment="false"
+          :sendRequest="false" :headers="headers" :datas="anos" :search="search" :actions="actions" @seeUpload="seeUpload"
+          @reponseAno="reponseAno" @supprimer="supprimer" @modifier="modifier"></vtable>
       </div>
     </div>
   </dashboard>
-
 </template>
 
 <script>
@@ -218,13 +224,13 @@ export default {
         { name: 'validé', value: 1 },
         { name: 'non validé', value: -1 }
       ],
-      statutsAno:[
+      statutsAno: [
         {
-          nom : "Non validé",
+          nom: "Non validé",
           etat: -1
         },
         {
-          nom: "Validé", 
+          nom: "Validé",
           etat: 1
         },
       ],
@@ -266,23 +272,23 @@ export default {
       showReponse: false,
       anosId: '',
       showComment: false,
-      anos:[],
-      anoId:'',
+      anos: [],
+      anoId: '',
       anosReponses: [],
-      isUpdate:false,
-      bailleurs:[],
-      programmeId:[],
-      deleteData:{},
-      deleteModal:false,
+      isUpdate: false,
+      bailleurs: [],
+      programmeId: [],
+      deleteData: {},
+      deleteModal: false,
     }
   },
 
   computed: {
     //importation des variables du module auths
     ...mapState({
-     loading: state => state.loading,
-     errors: state => state.errors
-   }),
+      loading: state => state.loading,
+      errors: state => state.errors
+    }),
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
@@ -322,8 +328,8 @@ export default {
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
@@ -359,7 +365,7 @@ export default {
 
     },
     commenter(data) {
-     
+
       this.anosId = data.id
       this.statut = data.statut
       this.getAnosReponse(data.id)
@@ -390,8 +396,8 @@ export default {
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
@@ -438,6 +444,8 @@ export default {
       });
     },
 
+   
+
     // call action
     ...mapActions("anos", {
       saveAno: "STORE_ANO",
@@ -452,7 +460,7 @@ export default {
     }),
 
     ...mapActions('typeAnos', { fetchTypeAnos: 'FETCH_LIST_TYPE_ANO' }),
-  
+
 
     resetForm() { //delete data in form after submit
       this.champs = this.champs.map(item => { item.data = ''; return item })
@@ -460,7 +468,7 @@ export default {
       this.setAno({})
     },
 
-   
+
     sendReponse() {
       if (this.chargement == false) {
         this.chargement = true
@@ -480,15 +488,15 @@ export default {
           this.chargement = false
         }).catch((error) => {
           if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-            } else if (error.request) {
-              // Demande effectuée mais aucune réponse n'est reçue du serveur.
-              //console.log(error.request);
-            } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-            }
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
           this.chargement = false
         })
       }
@@ -497,20 +505,20 @@ export default {
     sendForm() {
 
       this.champs = this.champs.map(item => { item.errors = []; return item })
-        this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
-        let ano = {}
-        if (this.isUpdate) {
-          ano = extractFormData(this.champsUpdate, this.anoAttributsUpdate)
-          ano.id = this.anoId
-        } else {
-          ano = extractFormData(this.champs, this.anoAttributs)
-        }
+      this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
+      let ano = {}
+      if (this.isUpdate) {
+        ano = extractFormData(this.champsUpdate, this.anoAttributsUpdate)
+        ano.id = this.anoId
+      } else {
+        ano = extractFormData(this.champs, this.anoAttributs)
+      }
 
 
 
       ano.bailleurId = ano.bailleurId.id
       ano.statut = ano.statut.etat
-     
+
 
       if (this.sendRequest == false) {
         this.sendRequest = true
@@ -523,10 +531,10 @@ export default {
               }
             }
           ).catch((error) => {
-            
+
             this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false
-            this.champs.map(value => value.errors = this.erreurs[value.key])      
+            this.champs.map(value => value.errors = this.erreurs[value.key])
           });
         } else {
           this.sendRequest = true
@@ -560,9 +568,9 @@ export default {
             this.getFile()
             this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false;
-          
-            this.champs.map(value => value.errors = this.erreurs[value.key])      
-            
+
+            this.champs.map(value => value.errors = this.erreurs[value.key])
+
           })
         }
       }
@@ -578,21 +586,21 @@ export default {
       this.isUpdate = true
       this.title = 'Modifier '
       this.showModal = true
-      
+
       this.submitText = "Modifier"
 
       this.anoId = ano.id
 
       this.anoAttributsUpdate.forEach((item) => {
-        
+
         this.champsUpdate.find((value, index) => {
-         
-        if (value.key !== 'statut') {
-          if (value.key === item) {
-          
-            this.champsUpdate[index]['data'] = ano[item]
+
+          if (value.key !== 'statut') {
+            if (value.key === item) {
+
+              this.champsUpdate[index]['data'] = ano[item]
+            }
           }
-        }
 
         })
 
@@ -600,63 +608,63 @@ export default {
 
     },
 
-    supprimer(ano,index) {
-      this.deleteModal= true
+    supprimer(ano, index) {
+      this.deleteModal = true
       this.deleteData.data = ano
       this.deleteData.index = index
     },
     deleteAnos(data) {
-      this.anos.splice(data.index,1)
-      this.deleteModal= false
+      this.anos.splice(data.index, 1)
+      this.deleteModal = false
       AnosService.destroy(data.data.id).then((data) => {
         this.$toast.success("Operation effectué avec success !")
-       
+
       }).catch((error) => {
-        
+
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
-      }) 
+      })
     },
 
-   
+
     fetchBailleurs(programme) {
-    
-    BailleurService.bailleursOfProgramme(programme).then((data) => {
-      const datas = data.data.data
-      this.bailleurs = datas
-      this.champs =[
-        { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
-      ]
-    this.champsUpdate = [
-      { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-      { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
-      { name: 'Date de soumission', key: 'dateDeSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-      { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-      { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
-    ]
-  
-    }).catch((error) => {
-     
-    })
-  },
+
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+        const datas = data.data.data
+        this.bailleurs = datas
+        this.champs = [
+          { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Date de soumission', key: 'dateSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Pièce jointe', key: 'fichiers', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Description', key: '', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+          { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
+        ]
+        this.champsUpdate = [
+          { name: 'Objet', key: 'dossier', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: false, options: datas, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Date de soumission', key: 'dateDeSoumission', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Destinataire', key: 'destinataire', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Status', key: 'statut', type: '', placeholdere: "Selectionnez une valeur", isSelect: true, isTextArea: false, data: '', options: this.statutsAno, cle: 'etat', value: 'nom', required: true, errors: [] },
+        ]
+
+      }).catch((error) => {
+
+      })
+    },
 
     close() {
       this.showModal = false
-     
+
     },
   },
 
@@ -672,7 +680,7 @@ export default {
         this.fetchBailleurs(this.programmeId)
       }
       this.fetchAnos()
-     
+
     }
 
 
@@ -692,7 +700,7 @@ export default {
 
 
 
-   
+
     // map du statut dans Store
     statuts: function (statuts) {
       this.champs.map((item) => {
@@ -726,5 +734,4 @@ export default {
     transform: rotate(3deg);
     transition: all 0.3s ease-in-out;
   }
-}
-</style>
+}</style>
