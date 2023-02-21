@@ -544,7 +544,7 @@ export default {
         { name: 'Date de fin', key: "fin", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Structure Responsable', key: "structureResponsableId", type: '', placeholdere: 'Veuillez selectionnez la structure responsable', isSelect: true, isTextArea: false, data: '', required: true, options: this.structures, cle: 'id', value: 'nom', errors: [] },
         { name: 'Structure associée', key: "structureAssocieId", type: '', placeholdere: 'Veuillez selectionnez la structure associée', isSelect: true, isTextArea: false, data: '', required: true, options: this.structures, cle: 'id', value: 'nom', errors: [] },
-        { name: 'jDescription', type: '', key: "description", placeholdere: 'Description ede l\'activité', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+        { name: 'Description', type: '', key: "description", placeholdere: 'Description ede l\'activité', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
       ],
       champs2: [
         { name: 'Année de base', key: "annee", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
