@@ -16,12 +16,32 @@
             </li>
           </ol>
         </div>
+        <div>
+          <div class=" flex">
+            <div class="flex items-center mr-3 ">
+              <span class=" mr-3">Date de début:</span> <input placeholder="Date debut" v-model="date.dateDebut"
+                class="p-2 text-xs inputDate" type="date">
+            </div>
+            <div class="flex items-center">
+              <span class="mr-3">Date de fin:</span> <input placeholder="Date fin" v-model="date.dateFin"
+                class="p-2 text-xs inputDate" type="date">
+            </div>
+            <button class="inputDate mx-2 p-2 flex" title="vider les champs" @click="clear">
+              <svg stroke="currentColor" fill="#FFFFFF" stroke-width="0" viewBox="0 0 16 16" height="1.5em" width="1.5em"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                <path
+                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                </path>
+              </svg>
+            </button>
+          </div>
 
-        <div class=" flex">
-          <input placeholder="Date debut" v-model="date.dateDebut" class="m-3" type="date">
-          <input placeholder="Date fin" v-model="date.dateFin" class="m-3" type="date">
-          <button @click="recherche" class="clr text-white p-3 "> Rechercher </button>
+          <div class=" p-2 text-red-400" v-if="error">
+            <p> La date de fin doit est supérieur à la date de début </p>
+          </div>
         </div>
+
 
       </nav>
 
@@ -32,7 +52,8 @@
       </div>
     </div>
 
-    <div class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index ) in souscription" :key="index">
+    <div v-if="table" class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index ) in souscription"
+      :key="index">
       <accordion :title="'Soumission du ' + new Date(item._submission_time)">
         <table class="min-w-full table-auto">
           <thead class="border-b bg-gray-300">
@@ -65,46 +86,42 @@
       </accordion>
     </div>
 
-    <h1 class="m-2 text-xl"> Résultat de la recherche</h1>
+    <div v-if="searching">
+      <h1 class="m-2 text-xl"> Résultat de la recherche</h1>
+      <div  class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index2 ) in filtre"
+        :key="index2">
+        <accordion :title="'Soumission du ' + new Date(item._submission_time)">
+          <table class="min-w-full table-auto">
+            <thead class="border-b bg-gray-300">
+              <tr>
+                <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
+                  Question
+                </th>
+                <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
+                  Réponse
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-300 hover:bg-gray-200" v-for="(value, name) in item">
+                <td class="text-sm text-gray-900 font-light py-2 px-4 ">
+                  {{ name }}
+                </td>
+                <td v-if="name == '_attachments'" class="text-sm text-gray-900 font-light py-2 px-4 ">
+                  <div v-for="(img, index) in value ">
+                    <img :src="img.download_small_url" alt="img">
+                  </div>
 
-    <div  class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index2 ) in filtre"
-      :key="index2">
-      <accordion :title="'Soumission du ' + new Date(item._submission_time)">
-        <table class="min-w-full table-auto">
-          <thead class="border-b bg-gray-300">
-            <tr>
-              <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
-                Question
-              </th>
-              <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
-                Réponse
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-gray-300 hover:bg-gray-200" v-for="(value, name) in item">
-              <td class="text-sm text-gray-900 font-light py-2 px-4 ">
-                {{ name }}
-              </td>
-              <td v-if="name == '_attachments'" class="text-sm text-gray-900 font-light py-2 px-4 ">
-                <div v-for="(img, index) in value ">
-                  <img :src="img.download_small_url" alt="img">
-                </div>
-
-              </td>
-              <td v-else class="text-sm text-gray-900 font-light py-2 px-4 ">
-                {{ value }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </accordion>
+                </td>
+                <td v-else class="text-sm text-gray-900 font-light py-2 px-4 ">
+                  {{ value }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </accordion>
+      </div>
     </div>
-    <div>
-      <pre>{{ souscription }}</pre>
-    </div>
-
-
   </Dashboard>
 </template>
 
@@ -486,11 +503,12 @@ export default {
       response: {},
       filtre: [],
       table: true,
+      error: false,
       date: {
-        dateDebut: Date,
-        dateFin: Date,
+        dateDebut: "",
+        dateFin: "",
       },
-      test: [1, 2, 3, 4, 5, 6, 7,]
+      match: true,
 
 
     }
@@ -509,42 +527,55 @@ export default {
       this.souscription = table
 
       this.response = this.souscription
-
-
     })
 
 
   },
 
   watch: {
-       date: {
+    date: {
       handler(newValue) {
-        if(  new Date(newValue.dateDebut).getTime() !== NaN  && new Date(newValue.dateFin).getTime() !== NaN ){
-                console.log(newValue)
+        if (this.date.dateDebut !== "" && this.date.dateFin !== "") {
+
+          this.searching = true
+          this.table = false
+          this.recherche()
+
+        } else {
+          this.searching = false
+          this.table = true
         }
+
       },
       deep: true
-    }
+    },
+
   },
   methods: {
 
     recherche() {
-
-
       var start = new Date(this.date.dateDebut).getTime()
-      console.log(start)
+
       var end = new Date(this.date.dateFin).getTime()
 
-      // this.filtre = [];
+      if (end < start) {
+        this.error = true
+      } else {
+        this.error = false
+        this.filtre = [];
 
-      // this.filtre = this.souscription.filter(function (a) {
-      //   a._submission_time = new Date(a._submission_time).getTime()
-      //   if (a._submission_time >= start && a._submission_time <= end) {
-      //     return true
-      //   }
-      // });
-     
-     
+        this.filtre = this.souscription.filter(function (a) {
+          a._submission_time = new Date(a._submission_time).getTime()
+          if (a._submission_time >= start && a._submission_time <= end) {
+            return true
+          }
+        });
+      }
+    },
+
+    clear() {
+      this.date.dateDebut = "";
+      this.date.dateFin = "";
     }
 
   }
@@ -559,29 +590,16 @@ export default {
   background-color: #0E406E;
 }
 
-.sd-container {
-  position: relative;
-  float: left;
+.inputDate {
+  background-color: #0E406E;
+  color: white;
 }
 
-.sd {
-  padding: 5px 10px;
-  height: 30px;
-  width: 150px;
-}
-
-.open-button {
-  position: absolute;
-  top: 10px;
-  right: 11px;
-  width: 25px;
-  height: 25px;
-  background: #fff;
-  pointer-events: none;
-}
-
-.open-button button {
-  border: none;
-  background: transparent;
-}
-</style>
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: block;
+  background-image: url(@/assets/images/date-icon.svg);
+  background-repeat: no-repeat;
+  color: white;
+  -webkit-appearance: none;
+}</style>
