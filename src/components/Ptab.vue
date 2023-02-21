@@ -760,6 +760,8 @@
                 </tr>
 
               </thead>
+
+              
               <tbody>
                 <tr v-for="pta in dataNew" :key="pta.id"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -825,80 +827,105 @@
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
 
-                  <!--  Planing-->
+                  <!--  Planing vrai activité-->
 
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 relative dark:border-gray-700">
+                  <td v-if="pta.planing != undefined && pta.planing.janvier != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.janvier != ''"
                       class="font-bold block w-full   bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2 ">
                       2 </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                  <td  class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.fevrier != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.fevrier }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.mars != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.mars != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.mars }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.avril != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.avril != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.avril }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.mai != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.mai != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.mai }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.juin != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.juin != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.juin }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.juillet != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.juillet }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.aout != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.aout != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.aout }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                                      <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                
+                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.septembre != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.septembre }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.octobre != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.octobre }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.novembre != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.novembre }} </p>
                     <!--  <span v-else class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700">
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''" class="p-2  border relative bg-red-500 border-l-0 border-r-0">
                     <p v-if="pta.planing != undefined && pta.planing.decembre != ''"
                       class="font-bold block w-full  bg-red-500 absolute top-0 bottom-0 right-0 left-0 text-red-500 px-4 py-2">
                       {{ pta.planing.decembre }} </p>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
+                        <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
 
 
 
@@ -978,6 +1005,10 @@
         </div>
 
       </div>
+
+
+
+
 
 
 
@@ -2093,7 +2124,7 @@ export default {
                   if (activiteDuree[6] == 1) {
                     planing.juillet = "ok"
                   }
-                  if (activiteDuree[7] == 6) {
+                  if (activiteDuree[7] == 1) {
                     planing.aout = "ok"
                   }
                   if (activiteDuree[8] == 1) {
@@ -2531,7 +2562,7 @@ export default {
                   if (activiteDuree[6] == 1) {
                     planing.juillet = "ok"
                   }
-                  if (activiteDuree[7] == 6) {
+                  if (activiteDuree[7] == 1) {
                     planing.aout = "ok"
                   }
                   if (activiteDuree[8] == 1) {
@@ -2736,7 +2767,7 @@ export default {
                   if (activiteDuree[6] == 1) {
                     planing.juillet = "ok"
                   }
-                  if (activiteDuree[7] == 6) {
+                  if (activiteDuree[7] == 1) {
                     planing.aout = "ok"
                   }
                   if (activiteDuree[8] == 1) {
