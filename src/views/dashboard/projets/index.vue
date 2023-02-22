@@ -127,9 +127,8 @@
                 <button v-if="validation" @click.stop="validerProjet(projet.id)"
                   class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
               </div>
-              <div v-else class="absolute top-2 left-2 ">
-                <div v-if="projetDelete && projetUpdate"
-                  class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
+              <div v-else  class="absolute top-2 right-2">
+                <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
                   <dropdown @supprimer="supprimerProjet(projet)" @gotoNext="gotoNext(projet, index)"
                     @modifier="modifierProjet(projet)" @prolonger="prolonger(projet)" :option="option"></dropdown>
                 </div>
@@ -744,7 +743,9 @@ export default {
 .icon-bold {
   font-weight: 800;
 }
-
+.dropdown-content{
+  transform: translate(  200px, 200px);
+}
 .custom_height {
   height: 288px;
 }

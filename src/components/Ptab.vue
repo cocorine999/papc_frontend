@@ -986,15 +986,6 @@
                         
                         </td>
                         <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-
-
-
-
-
-
-
-
                   <!--  planing -->
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">

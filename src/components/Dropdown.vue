@@ -5,7 +5,7 @@
         <i class="bx bx-dots-vertical-rounded bx-sm pr-2 bg-white rounded-sm"></i>
       </button>
       <div class="dropdown-content">
-        <span class="option cursor-pointer" @click.stop="actions(link.name)" v-for="(link, indice) in option" :key="indice">{{link.name}}</span>
+        <span class="option cursor-pointer  hover:bg-white" @click.stop="actions(link.name)" v-for="(link, indice) in option" :key="indice">{{link.name}}</span>
       </div>
     </div>
   </div>
@@ -60,23 +60,25 @@ export default {
 }
 
 .dropdown-content {
-  /* display: none;
-  position: absolute;
-  top: 20px;
-  
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1; */
-display: none;
-   min-width: 160px;
+ 
+    display: none;
+    min-width: 160px;
     position: absolute;
     inset: 0px 0px auto auto;
     margin: 0px;
-    transform: translate(-17px, 23px);
-    background-color: #f9f9f9;
+    opacity: 1;
+    transform: translate(-17px, 17px);
+    background-color: #ffffff;
     transition: visibility 0s ease-in-out 0s, opacity .2s 0s;
     visibility: visible;
     z-index: 1;
+    border-radius: 0.375rem;
+    box-shadow: 0 3px 10px #00000017;
+    padding: 0.5rem;
+   
+   
+   
+    
 
 
 }
@@ -88,8 +90,11 @@ display: none;
   display: block;
   font-weight: 500;
 }
+.option:hover {
+  background: #EEF1F6;
+}
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {background-color: #EEF1F6}
 
 .dropdown:hover .dropdown-content {
   display: block;
