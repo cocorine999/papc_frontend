@@ -26,7 +26,7 @@
               <span class="mr-3">Date de fin:</span> <input placeholder="Date fin" v-model="date.dateFin"
                 class="p-2 text-xs inputDate" type="date">
             </div>
-            <button class="inputDate mx-2 p-2 flex" title="vider les champs" v-title  @click="clear">
+            <button class="inputDate mx-2 p-2 flex" title="vider les champs" v-title @click="clear">
               <svg stroke="currentColor" fill="#FFFFFF" stroke-width="0" viewBox="0 0 16 16" height="1.5em" width="1.5em"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
@@ -42,7 +42,6 @@
           </div>
         </div>
 
-
       </nav>
 
       <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
@@ -54,7 +53,8 @@
 
     <div v-if="table" class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index ) in souscription"
       :key="index">
-      <accordion :title="'Soumission du ' + new Date(item._submission_time)">
+     
+      <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index)">
         <table class="min-w-full table-auto">
           <thead class="border-b bg-gray-300">
             <tr>
@@ -88,9 +88,8 @@
 
     <div v-if="searching">
       <h1 class="m-2 text-xl"> Résultat de la recherche</h1>
-      <div  class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index2 ) in filtre"
-        :key="index2">
-        <accordion :title="'Soumission du ' + new Date(item._submission_time)">
+      <div class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index2 ) in filtre" :key="index2">
+        <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index2)" >
           <table class="min-w-full table-auto">
             <thead class="border-b bg-gray-300">
               <tr>
@@ -122,11 +121,51 @@
         </accordion>
       </div>
     </div>
+
+
+    <div class="relative" v-for=" (item, index ) in souscription" :key="index" >
+      <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="true" :preview-modal="true"
+        :paginate-elements-by-height="1400" :filename="'Soumission du ' + new Date(item._submission_time)" :pdf-quality="2" :manual-pagination="true"
+        pdf-format="a4" pdf-orientation="landscape" pdf-content-width="100vw" @progress="onProgress($event)"
+        @hasStartedGeneration="hasStartedGeneration()" @hasGenerated="hasGenerated($event)" ref="element" >
+       
+        <section slot="pdf-content"> 
+          <table class="min-w-full table-auto">
+            <thead class="border-b bg-gray-300">
+              <tr>
+                <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
+                  Question
+                </th>
+                <th class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left">
+                  Réponse
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-300 hover:bg-gray-200" v-for="(value, name) in item">
+                <td class="text-sm text-gray-900 font-light py-2 px-4 ">
+                  {{ name }}
+                </td>
+                <td v-if="name == '_attachments'" class="text-sm text-gray-900 font-light py-2 px-4 ">
+                  <div v-for="(img, index) in value ">
+                    <img :src="img.download_small_url" alt="img">
+                  </div>
+
+                </td>
+                <td v-else class="text-sm text-gray-900 font-light py-2 px-4 ">
+                  {{ value }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </vue-html2pdf>
+    </div>
   </Dashboard>
 </template>
 
 <script>
-
+import VueHtml2pdf from 'vue-html2pdf'
 import Dashboard from "@/layouts/Dashboard";
 import ProgrammeService from '@/services/modules/programme.service';
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
@@ -135,13 +174,14 @@ import accordion from "@/components/accordion.vue";
 export default {
   components: {
     Dashboard,
-    accordion
+    accordion,
+    VueHtml2pdf
   },
   data() {
     return {
       search: "",
       searching: false,
-      souscription:{},
+      souscription: {},
       nom_questionnaire: "",
       metaData: {},
       response: {},
@@ -153,7 +193,8 @@ export default {
         dateFin: "",
       },
       match: true,
-
+      pdf_id:""
+      
 
     }
   },
@@ -220,8 +261,10 @@ export default {
     clear() {
       this.date.dateDebut = "";
       this.date.dateFin = "";
+    },
+    generateReport(data) {
+      this.$refs.element[data].generatePdf()
     }
-
   }
 
 };
@@ -246,4 +289,5 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-repeat: no-repeat;
   color: white;
   -webkit-appearance: none;
-}</style>
+}
+</style>

@@ -8,8 +8,8 @@
           </label>
           <input v-if="champ.type != 'file'" :required="champ.required" :title="champ.title" v-title v-model='champ.data'
             :step="champ.type === 'number' ? '0.01' : ''" :min="champ.type === 'number' ? '0' : ''"
-            :placeholder="champ.placeholdere" :type="champ.type" :class="{ 'h-14': champ.type === 'color' }"
-            class="px-2 py-1  md:px-4 md:py-2 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" />
+            :placeholder="champ.placeholdere" :type="champ.type" :class="{ 'h-9': champ.type === 'color' }"
+            class="px-2 py-1  md:px-2 md:py-1  mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" />
 
           <div v-else class="">
             <div v-if="champ.isImage">
