@@ -543,6 +543,7 @@ export default {
     },
 
     modifier(bailleur) {
+      localStorage.removeItem('formData')
       this.title = "Modifier le bailleur";
       this.isUpdate = true
       this.submitText = "Modifier";

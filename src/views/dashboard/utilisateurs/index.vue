@@ -237,6 +237,8 @@ export default {
       this.$store.dispatch('disabled')
     },
     modifier(utilisateur) {
+      localStorage.removeItem('formData')
+
       this.isUpdate = true
       this.title = 'Modifier un projet'
 

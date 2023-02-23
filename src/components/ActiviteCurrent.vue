@@ -1451,6 +1451,7 @@ export default {
 
 
     modifier(activite) {
+      localStorage.removeItem('formData')
 
       this.title = 'Modifier une activite'
 

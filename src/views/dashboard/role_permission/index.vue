@@ -439,6 +439,8 @@ export default {
 
     },
     modifier(data) {
+      localStorage.removeItem('formData')
+
       this.saveUpdate = data
       this.title = 'Modifier un rôle'
       this.showCloseModal(true)

@@ -612,6 +612,8 @@ props:['valueProfondeur'],
     },
 
     modifier(composante) {
+      
+      localStorage.removeItem('formData')
 
       this.title = 'Modifier un composante'
 

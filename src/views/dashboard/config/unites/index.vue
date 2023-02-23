@@ -235,6 +235,8 @@ export default {
       },
 
       modifierUniteeDeMesure (uniteeDeMesure) {
+        localStorage.removeItem('formData')
+
         this.title = "Modification de l'unitee de mésure " + uniteeDeMesure.nom;
 
         this.submitText = "Modifier";

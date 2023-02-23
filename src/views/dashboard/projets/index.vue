@@ -448,6 +448,7 @@ export default {
     },
 
     modifierProjet(projet) {
+      localStorage.removeItem('formData')
       this.isUpdate = true
       this.title = 'Modifier un projet'
 

@@ -490,6 +490,8 @@ export default {
         this.showModal = true
     },
     modifier() {
+      localStorage.removeItem('formData')
+
         this.title ='Modifier un suivi'
         this.showModal = true
     },

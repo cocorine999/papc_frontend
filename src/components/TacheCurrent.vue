@@ -908,6 +908,7 @@ export default {
     },
 
     modifier(tache) {
+      localStorage.removeItem('formData')
 
       this.title = 'Modifier une tache'
 

@@ -417,6 +417,8 @@ export default {
       this.showCloseModal(true)
     },
     modifier(data) {
+      localStorage.removeItem('formData')
+
       this.saveUpdate = data
       this.isUpdate = true
       //this.audit.projetId = data.projet

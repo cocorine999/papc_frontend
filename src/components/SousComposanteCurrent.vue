@@ -703,6 +703,7 @@ export default {
 
 
     modifier(sousComposante) {
+      localStorage.removeItem('formData')
 
       this.title = 'Modifier un sous composant'
 

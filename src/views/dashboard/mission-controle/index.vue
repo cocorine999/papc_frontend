@@ -13,8 +13,8 @@
       <div v-if="showModal2">
         <modal-top-right :title="title2" v-on:close="close2">
           <div class="px-4 overflow-y-auto">
-            <vform template="default" :champs="passationChamps" isAllPairSaufDescrip="true" @closeModal="close2" :savedInput="savedInput2"
-              :cols="colsPassation" submitText="Enregistrer" @sendForm="sendForm2"></vform>
+            <vform template="default" :champs="passationChamps" isAllPairSaufDescrip="true" @closeModal="close2"
+              :savedInput="savedInput2" :cols="colsPassation" submitText="Enregistrer" @sendForm="sendForm2"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -301,6 +301,8 @@ export default {
     },
 
     modifierMissionDeControle(missionDeControle) {
+      localStorage.removeItem('formData')
+
 
       this.title = "Modifier une mission de controle"
 
@@ -396,7 +398,7 @@ export default {
       this.showCloseModal()
     },
     close2() {
-      this.showCloseModal2() 
+      this.showCloseModal2()
     },
 
     showCloseModal(value = false) {

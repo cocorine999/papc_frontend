@@ -50,10 +50,7 @@
         </div>
       </div>
 
-      <div
-      
-        class="align-middle inline-block w-full overflow-hidden pt-3 rounded-bl-lg rounded-br-lg"
-      >
+      <div class="align-middle inline-block w-full overflow-hidden pt-3 rounded-bl-lg rounded-br-lg">
         <table class="w-full p-4">
             <thead>
               <tr>
@@ -344,6 +341,7 @@ export default {
     },
 
     modifierEntrepriseExecutante(entrepriseExecutante) {
+      localStorage.removeItem('formData')
       this.title = "Modifier une entreprise executante";
 
       this.submitText = "Modifier l'entreprise executante";

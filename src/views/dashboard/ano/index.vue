@@ -583,6 +583,7 @@ export default {
     },
 
     modifier(ano) {
+      localStorage.removeItem('formData')
       this.isUpdate = true
       this.title = 'Modifier '
       this.showModal = true

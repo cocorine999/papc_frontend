@@ -933,6 +933,8 @@ export default {
     },
    
     modifier(indicateur) {
+      localStorage.removeItem('formData')
+
       this.isUpdate = true
       this.title = 'Modifier un indicateur'
       this.showModal = true

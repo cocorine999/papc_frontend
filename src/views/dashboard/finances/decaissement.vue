@@ -454,6 +454,8 @@ export default {
     
       
       modifier(decaissement) {
+        localStorage.removeItem('formData')
+
       this.isUpdate = true
       this.title = 'Modifier un decaissement'
       this.showModal = true

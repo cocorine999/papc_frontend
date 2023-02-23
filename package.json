@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "boxicons": "^2.1.2",
     "core-js": "^3.8.3",
+    "export-from-json": "^1.7.2",
     "jquery": "^3.6.0",
     "laravel-echo": "^1.14.0",
     "moment": "^2.29.4",

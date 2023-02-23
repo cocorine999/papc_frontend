@@ -366,6 +366,8 @@ export default {
     },
 
     modifierMod(mod) {
+      localStorage.removeItem('formData')
+
       this.title = "Modification du MOD " + mod.user.nom;
       this.submitText = "Modifier";
       this.setMod(mod);

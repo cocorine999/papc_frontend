@@ -43,18 +43,33 @@
         </div>
 
       </nav>
-
-      <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4">
-        <span
-          class="font-bold absolute clr bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">
-          <span class="  p-1 rounded-md">Titre:</span> {{ nom_questionnaire }} </span>
+      <div class="flex justify-between my-2 items-center">
+        <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4 w-10/12" >
+          <span
+            class="font-bold absolute clr bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">
+            <span class="  p-1 rounded-md">Titre:</span> {{ nom_questionnaire }} </span>
+        </div>
+        <button title="exporter toute les soumissions" v-title @click="downloadAllFile()"
+          class="h-9 w-2/12 py-1 px-2 space-x-1 text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+          <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+            height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 16h2V7h3l-4-5-4 5h3z"></path>
+            <path
+              d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z">
+            </path>
+          </svg>
+          <span class="text-xs font-semibold">Export Excel</span>
+        </button>
       </div>
+
     </div>
+
 
     <div v-if="table" class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index ) in souscription"
       :key="index">
-     
-      <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index)">
+
+      <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index)"
+        @generate-excel="downloadFile(item)">
         <table class="min-w-full table-auto">
           <thead class="border-b bg-gray-300">
             <tr>
@@ -89,7 +104,7 @@
     <div v-if="searching">
       <h1 class="m-2 text-xl"> Résultat de la recherche</h1>
       <div class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index2 ) in filtre" :key="index2">
-        <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index2)" >
+        <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index2)"  @generate-excel="downloadFile(item)" >
           <table class="min-w-full table-auto">
             <thead class="border-b bg-gray-300">
               <tr>
@@ -122,14 +137,14 @@
       </div>
     </div>
 
-
-    <div class="relative" v-for=" (item, index ) in souscription" :key="index" >
+    <div class="relative" v-for=" (item, index ) in souscription" :key="index">
       <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="true" :preview-modal="true"
-        :paginate-elements-by-height="1400" :filename="'Soumission du ' + new Date(item._submission_time)" :pdf-quality="2" :manual-pagination="true"
-        pdf-format="a4" pdf-orientation="landscape" pdf-content-width="100vw" @progress="onProgress($event)"
-        @hasStartedGeneration="hasStartedGeneration()" @hasGenerated="hasGenerated($event)" ref="element" >
-       
-        <section slot="pdf-content"> 
+        :paginate-elements-by-height="1400" :filename="'Soumission du ' + new Date(item._submission_time)"
+        :pdf-quality="2" :manual-pagination="true" pdf-format="a4" pdf-orientation="landscape" pdf-content-width="100vw"
+        @progress="onProgress($event)" @hasStartedGeneration="hasStartedGeneration()" @hasGenerated="hasGenerated($event)"
+        ref="element">
+
+        <section slot="pdf-content">
           <table class="min-w-full table-auto">
             <thead class="border-b bg-gray-300">
               <tr>
@@ -161,11 +176,14 @@
         </section>
       </vue-html2pdf>
     </div>
+
+   
   </Dashboard>
 </template>
 
 <script>
 import VueHtml2pdf from 'vue-html2pdf'
+import exportFromJSON from "export-from-json";
 import Dashboard from "@/layouts/Dashboard";
 import ProgrammeService from '@/services/modules/programme.service';
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
@@ -175,7 +193,7 @@ export default {
   components: {
     Dashboard,
     accordion,
-    VueHtml2pdf
+    VueHtml2pdf,
   },
   data() {
     return {
@@ -193,9 +211,7 @@ export default {
         dateFin: "",
       },
       match: true,
-      pdf_id:""
-      
-
+      pdf_id: "",
     }
   },
   computed: {
@@ -237,6 +253,26 @@ export default {
 
   },
   methods: {
+    downloadFile(json) {
+      var table = []
+      table.push(json)
+      console.log(table)
+
+      const data = table;
+
+     const fileName = "Soumission du " + new Date(data[0]._submission_time); 
+      const exportType = exportFromJSON.types.csv;
+
+      if (data) exportFromJSON({ data, fileName, exportType });
+    },
+
+    downloadAllFile() {
+      const data = this.souscription;
+      const fileName = this.nom_questionnaire;
+      const exportType = exportFromJSON.types.csv;
+
+      if (data) exportFromJSON({ data, fileName, exportType });
+    },
 
     recherche() {
       var start = new Date(this.date.dateDebut).getTime()
@@ -277,6 +313,7 @@ export default {
   background-color: #0E406E;
 }
 
+
 .inputDate {
   background-color: #0E406E;
   color: white;
@@ -289,5 +326,25 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-repeat: no-repeat;
   color: white;
   -webkit-appearance: none;
+}
+
+.np-list {
+  padding: 2px 8px;
+  margin: 12px 8px;
+  border: 1px solid #107fda;
+  background: #ffffff;
+  border-radius: 6px;
+  color: #107fda;
+}
+
+.np-btn {
+  padding: 2px 8px;
+  margin: 12px 8px;
+  border: 1px solid #107fda;
+  width: 110px;
+  background: #107fda;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
 }
 </style>

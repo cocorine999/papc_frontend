@@ -327,6 +327,8 @@ export default {
     },
 
     modifierInstitution(institution) {
+      localStorage.removeItem('formData')
+
       this.isUpdate = true
       this.showCloseModal(true)
       this.title = "Modification de l'institution "

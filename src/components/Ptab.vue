@@ -110,14 +110,14 @@
       <!-- pta current -->
       <div v-if="currentPage && ptaVisible" class="current">
         <div class="my-3 p-1 justify-end flex space-x-4">
-          
-            <div class="select w-52 flex space-x-4 items-center">
-              <select id="choice" v-model="version" @change="choiceVersion(version)"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="actuelle" selected>Version actuelle</option>
-                <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab"> {{ scopePtab.nom }}</option>
-              </select>
-            
+
+          <div class="select w-52 flex space-x-4 items-center">
+            <select id="choice" v-model="version" @change="choiceVersion(version)"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option value="actuelle" selected>Version actuelle</option>
+              <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab"> {{ scopePtab.nom }}</option>
+            </select>
+
           </div>
 
           <div class="flex space-x-4 items-center">
@@ -140,7 +140,8 @@
                 <path fill="none" d="M0 0h24v24H0V0z"></path>
               </svg>
               <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
-            </button></div>
+            </button>
+          </div>
 
           <div class="flex space-x-4 items-center">
             <json-excel :data="json_data" header="PTAB" type="xlsx" :name="title_excel">
@@ -155,18 +156,19 @@
                 </svg>
                 <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
               </button>
-            </json-excel>
+            </json-excel> 
           </div>
 
 
-          <div class="flex space-x-4 items-center"><button v-if="exporterSuiviPta" @click="generateReport"
-              title="filtrer les données"
+          <div class="flex space-x-4 items-center">
+            <button v-if="exporterSuiviPta" @click="generateReport" title="filtrer les données"
               class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
               <span class="mx-2 text-sm font-semibold">generer pdf </span>
-            </button></div>
+            </button>
+          </div>
 
 
-          <div class="flex space-x-4 items-center">
+           <div class="flex space-x-4 items-center">
             <button @click="reviser = true" title="reviser ptba"
               class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
               <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptba </span>
@@ -589,13 +591,9 @@
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                     Code PTBA
                   </th>
-
-
                 </tr>
                 <tr>
-
                 </tr>
-
 
               </thead>
 
@@ -823,10 +821,12 @@
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{ pta.nom }}</span>
                     <span v-if="pta.isComposante" class="text-blue-500 text-sm">Composante: {{ pta.nom }}</span>
-                    <span v-if="pta.isSC" class=" text-yellow-600 text-sm "> <span class=" text-yellow-600 text-sm " v-if="pta.code != 0">Sous
+                    <span v-if="pta.isSC" class=" text-yellow-600 text-sm "> <span class=" text-yellow-600 text-sm "
+                        v-if="pta.code != 0">Sous
                         composante:</span> {{ pta.nom }}</span>
-                    <span v-if="pta.isActivite" class="text-green-600 text-sm bg-yellow-200 shadow">Activite: {{ pta.nom }}</span>
-                    <span v-if="pta.isTache" class="text-red-600 text-sm">  {{ pta.nom }}</span>
+                    <span v-if="pta.isActivite" class="text-green-600 text-sm bg-yellow-200 shadow">Activite: {{ pta.nom
+                    }}</span>
+                    <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.nom }}</span>
 
                   </td>
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
@@ -884,108 +884,133 @@
 
                   <!--  Planing vrai activité-->
 
-                  <td v-if="pta.planing != undefined && pta.planing.janvier != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                  
+                  <td v-if="pta.planing != undefined && pta.planing.janvier != ''"
+                    class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.janvier != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                    
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.janvier != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
-                  <td  class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700 shadow" v-else></td>
-
-
-
-
-                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                   
+                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700 shadow" v-else>
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.fevrier != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                   
+
+
+
+
+                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''"
+                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
+                  </td>
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.fevrier != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.mars != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                   
+                  <td v-if="pta.planing != undefined && pta.planing.mars != ''"
+                    class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.mars != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                    
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.mars != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.avril != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                   
-                  </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.avril != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                    
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                  <td v-if="pta.planing != undefined && pta.planing.avril != ''"
+                    class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
 
-                 
-                  <td v-if="pta.planing != undefined && pta.planing.mai != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                    
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.mai != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                    
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.avril != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.juin != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                    
+                  <td v-if="pta.planing != undefined && pta.planing.mai != ''"
+                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.juin != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                   
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.mai != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                    
-                  </td>
-                   <td v-else-if="pta.planingt != undefined && pta.planingt.juillet != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                    
-                  </td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.aout != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                   
+                  <td v-if="pta.planing != undefined && pta.planing.juin != ''"
+                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.aout != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                   
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.juin != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                
-                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                    
+                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''"
+                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.septembre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                    
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.juillet != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
+                  </td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.aout != ''"
+                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
+                  </td>
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.aout != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                   
+
+                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''"
+                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.octobre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                  
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.septembre != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                   
+                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''"
+                    class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.novembre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-                    
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.octobre != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''" class="p-2   border  bg-red-500 border-l-0 border-r-0">
+                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''"
+                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.decembre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0"> 
-                        
-                        </td>
-                        <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.novembre != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
+                  </td>
+                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''"
+                    class="p-2   border  bg-red-500 border-l-0 border-r-0">
+                  </td>
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.decembre != ''"
+                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+
+                  </td>
+                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
                   <!--  planing -->
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
@@ -1059,12 +1084,6 @@
         </div>
 
       </div>
-
-
-
-
-
-
 
 
       <!-- pta revise -->
@@ -1961,7 +1980,8 @@
 
       </div>
     </div>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" @click="exportToExcel">Exporter vers Excel</button>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+      @click="exportToExcel">Exporter vers Excel</button>
 
   </div>
 </template>
@@ -1982,7 +2002,7 @@ export default {
   data() {
     return {
       ptab: [],
-        fich: [],
+      fich: [],
 
       ptabR: [],
       openFiltre: false,
@@ -2220,20 +2240,20 @@ export default {
 
                 programme.push({ bailleur, nom: activite.nom, code: activite.code, poids, poidsActuel, isActivite: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total, structureResponsable, structureAssocie, planing })
                 activite.taches.forEach(tache => {
-                      const planingt = {
-                  janvier: '',
-                  fevrier: '',
-                  mars: '',
-                  avril: '',
-                  mai: '',
-                  juin: '',
-                  juillet: '',
-                  aout: '',
-                  septembre: '',
-                  octobre: '',
-                  novembre: '',
-                  decembre: ''
-                }
+                  const planingt = {
+                    janvier: '',
+                    fevrier: '',
+                    mars: '',
+                    avril: '',
+                    mai: '',
+                    juin: '',
+                    juillet: '',
+                    aout: '',
+                    septembre: '',
+                    octobre: '',
+                    novembre: '',
+                    decembre: ''
+                  }
                   let poids = tache.poids
                   let poidsActuel = tache.poidsActuel
                   const tacheDuree = tache.durees
@@ -2290,7 +2310,8 @@ export default {
     json_data() {
       const programme = []
       if (this.ptab != undefined && this.ptab != null) {
-        this.ptab.forEach(element => {
+        this.ptab.forEach(element => 
+        {
           const bailleur = element.bailleur
           const bn = element.budgetNational
           const pret = element.pret
@@ -2965,15 +2986,15 @@ export default {
     },
   },
   methods: {
-     exportToExcel() {
-              console.log('gghghghgh');
-                      console.log(this.dataNew);
+    exportToExcel() {
+      console.log('gghghghgh');
+      console.log(this.dataNew);
 
 
       const tableDataWithColors = this.dataNew.map(row => {
         return {
           ...row,
-          bailleur:  'bg-red-500' 
+          bailleur: 'bg-red-500'
         };
       });
 
@@ -2981,8 +3002,8 @@ export default {
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Tableau de données');
       XLSX.writeFile(workbook, 'tableau.xlsx');
-    
-  },
+
+    },
     generateReport() {
       this.$refs.html2Pdf.generatePdf()
     },

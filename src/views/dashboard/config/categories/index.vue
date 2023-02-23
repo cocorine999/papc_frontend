@@ -190,6 +190,8 @@ export default {
       },
 
       modifierCategorie (categorie) {
+        localStorage.removeItem('formData')
+
         this.title = "Modification de la categorie " + categorie.nom;
 
         this.submitText = "Modifier";

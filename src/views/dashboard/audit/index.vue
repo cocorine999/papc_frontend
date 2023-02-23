@@ -554,6 +554,8 @@ export default {
       }
     },
     modifierAudit(data) {
+      localStorage.removeItem('formData')
+
       this.saveUpdate = data
       this.audit.projetId = data.projet
       this.audit.statut = data.statut

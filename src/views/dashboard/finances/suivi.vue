@@ -481,6 +481,8 @@ export default {
       this.showModal3 = true
     },
     modifier(data) {
+      localStorage.removeItem('formData')
+
       this.title = "Modifier un Suivi"
       this.showModal = true
       alert(data + " à ete modifier")

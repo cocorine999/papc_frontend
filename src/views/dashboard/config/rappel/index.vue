@@ -190,6 +190,8 @@ export default {
       })
     },
     modifierRappel(data, index) {
+      localStorage.removeItem('formData')
+
       this.title = "Modifier un rappel"
       this.submitText = "Modifier"
       this.indexSelect = index
