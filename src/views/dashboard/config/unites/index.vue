@@ -13,7 +13,7 @@
       </delete-alert>
 
       <div v-if="showModal">
-        <modal-top-right  :title="title"  v-on:close="close">
+        <modal-top-right  :title="title"  v-on:close="close2">
 
             <div class="w-full p-4">
               <vform
@@ -290,7 +290,19 @@ export default {
     },
 
     close() {
-        this.showCloseModal();
+      this.showCloseModal();
+      this.resetForm()
+      localStorage.removeItem('formData')
+      // this.saveForm()
+    },
+    close2() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
 
     showCloseModal(value = false) {

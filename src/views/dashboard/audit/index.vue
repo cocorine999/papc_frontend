@@ -20,7 +20,7 @@
         </div>
       </vmodal>
 
-      <modal-top-right v-if="showModal" :title="title" v-on:close="close">
+      <modal-top-right v-if="showModal" :title="title" v-on:close="closeA">
         <form action="" @submit.prevent="saveAudit" v-if="title == 'Ajouter'" class="p-5 w-full">
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Prestataire <span
@@ -184,7 +184,8 @@
                 @click="showCategorie = true" required
                 class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                 type="text" />
-              <input v-if="saveUpdate.categorie === 2" value="Audit des acquisitions" @click="showCategorie = true" required
+              <input v-if="saveUpdate.categorie === 2" value="Audit des acquisitions" @click="showCategorie = true"
+                required
                 class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                 type="text" />
               <input v-if="saveUpdate.categorie === 3" value="Audit techniques" @click="showCategorie = true" required
@@ -714,15 +715,28 @@ export default {
     },
 
 
-    close() {
+    closeA() {
       this.showModal = false
 
       this.savedInput = Object.values(this.audit)
 
       const parsed = JSON.stringify(this.savedInput);
       localStorage.setItem('formData', parsed);
-
     },
+    close() {
+      this.showModal = false
+      this.audit.annee = ''
+      this.audit.entreprise = ''
+      this.audit.entrepriseContact = ''
+      this.audit.dateDeTransmission = ''
+      this.audit.etat = ''
+      this.audit.statut = ''
+      this.audit.categorie = ''
+      this.audit.projetId = null
+      this.fichiers = ''
+      localStorage.removeItem('formData')
+
+    }
 
   },
   mounted() {
@@ -740,15 +754,15 @@ export default {
 
       console.log(this.savedInput)
 
-          this.audit.annee = this.savedInput[0]
-          this.audit.entreprise = this.savedInput[1]
-          this.audit.entrepriseContact = this.savedInput[2]
-          this.audit.dateDeTransmission =this.savedInput[3]
-          this.audit.etat = this.savedInput[4]
-          this.audit.statut = this.savedInput[5]
-          this.audit.categorie = this.savedInput[7]
-          this.audit.projetId = this.savedInput[6]
-    
+      this.audit.annee = this.savedInput[0]
+      this.audit.entreprise = this.savedInput[1]
+      this.audit.entrepriseContact = this.savedInput[2]
+      this.audit.dateDeTransmission = this.savedInput[3]
+      this.audit.etat = this.savedInput[4]
+      this.audit.statut = this.savedInput[5]
+      this.audit.categorie = this.savedInput[7]
+      this.audit.projetId = this.savedInput[6]
+
     }
 
 

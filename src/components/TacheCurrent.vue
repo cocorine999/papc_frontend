@@ -56,7 +56,7 @@
       <commentaire module="tache" :datas="commentaires"></commentaire>
     </modal-chat>
 
-    <modal-top-right v-if="showModal" :title="title" v-on:close="close">
+    <modal-top-right v-if="showModal" :title="title" v-on:close="close2">
       <div class="p-4 w-full">
         <vform template="default" :savedInput="savedInput" :champs="champs" :cols="cols" :submitText="submitText"
           :sendRequest="sendRequest" @sendForm="sendForm" @closeModal="close">
@@ -810,10 +810,18 @@ export default {
     },
     close() {
       this.showModal = false;
+      this.resetForm()
     },
     close2() {
-      this.showModal2 = false;
+      this.showModal = false;
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
+    
     addPlan() {
       this.title = "Ajouter un plan decaissement";
       this.showModal2 = true;

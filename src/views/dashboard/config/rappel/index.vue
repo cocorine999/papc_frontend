@@ -15,7 +15,7 @@
       </delete-alert>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="close2">
           <div class="w-full px-4">
             <vform template="default" :savedInput="savedInput" :champs="champs" cols="1" :submitText="submitText"
               @sendForm="sendForm" @closeModal="close"></vform>
@@ -153,8 +153,33 @@ export default {
   },
   methods: {
     close() {
-      this.showModal = false
+      this.showCloseModal();
+      this.isSelect = false
+      this.saveData = {}
+      this.champs[0].data = ''
+      this.champs[1].data = ''
+      this.champs[2].data = ''
+      this.champs[3].data = ''
+
+      localStorage.removeItem('formData')
+      // this.saveForm()
     },
+    close2() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+
+    showCloseModal(value = false) {
+      this.showModal = value;
+    },
+
+
+
 
 
     addRappel() {

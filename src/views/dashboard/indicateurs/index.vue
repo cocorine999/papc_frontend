@@ -160,7 +160,7 @@
       </div>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="closeA">
           <div class="px-4 overflow-y-auto">
             <div v-if="isUpdate">
               <vform template="default"  isAllPairSaufDescrip="true" :sendRequest="sendRequest"  :champs="champsUpdate"
@@ -786,6 +786,7 @@ export default {
     
 
     sendForm() {
+
       this.champs = this.champs.map(item => { item.errors = []; return item })
       this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
       let indicateur = {}
@@ -910,7 +911,16 @@ export default {
 
     close() {
       this.showCloseModal();
-     
+      this.resetForm()
+    },
+    closeA() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
 
     close2() {
@@ -933,8 +943,7 @@ export default {
     },
    
     modifier(indicateur) {
-      localStorage.removeItem('formData')
-
+      localStorage.removeItem('formData');
       this.isUpdate = true
       this.title = 'Modifier un indicateur'
       this.showModal = true

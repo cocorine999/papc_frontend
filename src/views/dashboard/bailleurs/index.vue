@@ -3,21 +3,24 @@
     <div class="w-full">
       <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
         <p class="text-gray-800">
-        voulez vous supprimer cet bailleur?
+          voulez vous supprimer cet bailleur?
         </p>
 
         <div class="text-right mt-4">
-          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
-          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteBailleurs(deleteData)">Supprimer</button>
+          <button @click="deleteModal = false"
+            class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+            @click="deleteBailleurs(deleteData)">Supprimer</button>
         </div>
       </delete-alert>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="close2">
           <div class="p-4 w-full">
-            <vform v-if="!isUpdate" template="default" @getImage="getImage" :champs="champs" :savedInput="savedInput" :cols="cols"
-              :submitText="submitText" @sendForm="sendForm" :sendRequest="sendRequest" @closeModal="close"></vform>
-            <vform v-else template="default" @getImage="getImage" :champs="champsUpdate" :cols="cols" 
+            <vform v-if="!isUpdate" template="default" @getImage="getImage" :champs="champs" :savedInput="savedInput"
+              :cols="cols" :submitText="submitText" @sendForm="sendForm" :sendRequest="sendRequest" @closeModal="close">
+            </vform>
+            <vform v-else template="default" @getImage="getImage" :champs="champsUpdate" :cols="cols"
               :sendRequest="sendRequest" :submitText="submitText" @sendForm="sendForm" @closeModal="close"></vform>
           </div>
         </modal-top-right>
@@ -40,10 +43,7 @@
         </vmodal>
       </div>
       <div class="w-full">
-          <nav
-          class="text-sm font-semibold flex justify-between items-center"
-          aria-label="Breadcrumb"
-        >
+        <nav class="text-sm font-semibold flex justify-between items-center" aria-label="Breadcrumb">
           <div class="hidden sm:block">
             <ol class="inline-flex p-0 list-none">
               <li class="flex items-center text-blue-500">
@@ -61,7 +61,7 @@
           <div></div>
           <div>
             <div class="w-full flex text-gray-600">
-              <input @input="$emit('search',$event.target.value)"
+              <input @input="$emit('search', $event.target.value)"
                 class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block"
                 v-model="search" type="text" name="search" placeholder="Rechercher">
               <button type="submit" class="relative">
@@ -131,8 +131,8 @@
                 </p>
 
                 <div class="flex items-center mt-8 text-gray-600">
-                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                       d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -144,8 +144,8 @@
                 </div>
 
                 <div class="flex items-center mt-1 text-gray-600 dark:text-gray-400">
-                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
@@ -155,8 +155,8 @@
                 </div>
 
                 <div class="flex items-center mb-8 text-gray-600 dark:text-gray-400">
-                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="1.5" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -217,7 +217,7 @@ export default {
 
   data() {
     return {
-      savedInput:[],
+      savedInput: [],
       base_url: API_BASE_URL,
       isUpdate: false,
       bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
@@ -242,7 +242,7 @@ export default {
         { name: "modifier", iconne: "" },
         { name: "supprimer", iconne: "" },
       ],
-      table: [1,2,3,"bigJoe"],
+      table: [1, 2, 3, "bigJoe"],
 
       champs: [
         {
@@ -397,16 +397,16 @@ export default {
       idBailleur: '',
       sendRequest: false,
       code: '',
-      bailleurs:[],
-      deleteData:{},
-      deleteModal:false,
+      bailleurs: [],
+      deleteData: {},
+      deleteModal: false,
 
     };
   },
 
   computed: {
     ...mapState({
-     
+
       loading: state => state.loading,
       errors: state => state.errors
     }),
@@ -447,7 +447,7 @@ export default {
           logo: this.image,
           programme: this.programmeId
         }
-       
+
         BailleurService.update(this.idBailleur, formData).then(() => {
           this.$toast.success('Le logo  à éte bien changer')
           this.showUpdateImage = false
@@ -471,7 +471,7 @@ export default {
       this.logo = data.logo
       this.idBailleur = data.id
       this.code = data.code
-     
+
       this.showUpdateImage = true
     },
     active() {
@@ -493,8 +493,8 @@ export default {
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
@@ -523,7 +523,7 @@ export default {
     },
 
     ...mapActions("bailleurs", {
-     
+
       saveBailleur: "STORE_BAILLEUR",
       updateBailleur: "UPDATE_BAILLEUR",
       deleteBailleur: "DESTROY_BAILLEUR",
@@ -562,30 +562,30 @@ export default {
 
       this.showCloseModal(true);
     },
-    supprimer(bailleur,index) {
-      this.deleteModal= true
+    supprimer(bailleur, index) {
+      this.deleteModal = true
       this.deleteData.data = bailleur
       this.deleteData.index = index
     },
     deleteBailleurs(data) {
-      this.deleteModal= false
+      this.deleteModal = false
       BailleurService.destroy(data.data.id).then((data) => {
-        this.filteredBailleur.splice(data.index,1)
+        this.filteredBailleur.splice(data.index, 1)
         this.$toast.success("Operation effectué avec success !")
-               
+
       }).catch((error) => {
-        
+
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
-      }) 
+      })
     },
     dupliquer() {
       this.title = "Dupliquer un bailleur";
@@ -593,11 +593,22 @@ export default {
     },
     close() {
       this.showCloseModal();
+      this.resetForm()
+      localStorage.removeItem('formData')
       // this.saveForm()
+    },
+    close2() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
     showCloseModal(value = false) {
       this.showModal = value;
-    }, 
+    },
 
     resetForm() {
       this.champs = this.champs.map((item) => {
@@ -608,7 +619,7 @@ export default {
 
       this.setBailleur({});
     },
-   
+
 
     async updateInputData(id, attribut, value) {
       await this.updateBailleur({ bailleur: { [attribut]: value }, id: id }).then((value) => {
@@ -646,7 +657,7 @@ export default {
           ).catch((error) => {
             this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false;
-            this.champs.map(value => value.errors = this.erreurs[value.key])          
+            this.champs.map(value => value.errors = this.erreurs[value.key])
           })
 
 
@@ -681,7 +692,7 @@ export default {
           }).catch((error) => {
             this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
             this.sendRequest = false;
-            this.champs.map(value => value.errors = this.erreurs[value.key])          
+            this.champs.map(value => value.errors = this.erreurs[value.key])
             this.getImage()
           })
         }
@@ -718,17 +729,15 @@ export default {
     // if( localStorage.getItem("formDataBailleur")){
     //   this.savedInput = []
     //   this.savedInput = JSON.parse(localStorage.getItem("formDataBailleur"))
-      
+
     //   for (let i = 0 ; i < this.champs.length ; i ++){
     //     this.champs[i].data = this.savedInput[i]
     //   }
-     
+
     // }
 
   }
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

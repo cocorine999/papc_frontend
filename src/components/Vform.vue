@@ -156,14 +156,14 @@ export default {
     },
     close() {
       this.$emit('closeModal', this.savedInput)
-
-      this.savedInput = []
-      for (let i = 0; i < this.champs.length; i++) {
-        this.savedInput.push(this.champs[i].data)
-      }
+      localStorage.removeItem('formData')
+      // this.savedInput = []
+      // for (let i = 0; i < this.champs.length; i++) {
+      //   this.savedInput.push(this.champs[i].data)
+      // }
     
-      const parsed = JSON.stringify(this.savedInput);
-      localStorage.setItem('formData', parsed);
+      // const parsed = JSON.stringify(this.savedInput);
+      // localStorage.setItem('formData', parsed);
 
     },
 

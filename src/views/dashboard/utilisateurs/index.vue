@@ -39,7 +39,7 @@
             </div>
       </nav>
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="close2">
         <div v-if="!isUpdate" class="w-full px-4">
             <vform template="default" :sendRequest="sendRequest"  :champs="champs" submitText="Ajouter " @sendForm="sendForm" @closeModal="close"></vform>
         </div>
@@ -433,6 +433,15 @@ export default {
     close() {
       this.showCloseModal();
       this.resetForm();
+    },
+    close2(){
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
     showCloseModal(value = false) {
       this.showModal = value;

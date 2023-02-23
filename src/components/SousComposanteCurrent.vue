@@ -2,7 +2,7 @@
   <div class="w-full">
 
     <div v-if="showModal">
-      <modal-top-right :title="title" v-on:close="close">
+      <modal-top-right :title="title" v-on:close="close2">
         <div class="p-4 overflow-auto">
           <vform template="default" :champs="champs"  :savedInput="savedInput"  :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
             @sendForm="sendForm" @closeModal="close"></vform>
@@ -849,6 +849,17 @@ export default {
     close() {
       this.showCloseModal()
       this.sendRequest = false;
+      this.resetForm()
+    },
+    close2() {
+      this.showCloseModal();
+      this.sendRequest = false;
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
 
     showCloseModal(value = false) {

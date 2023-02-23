@@ -15,7 +15,7 @@
       </delete-alert>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="showModal = false">
+        <modal-top-right :title="title" v-on:close="close2">
           <div class="px-4 overflow-y-auto">
             <form v-if="!isUpdate" action="" @submit.prevent="sendForm" class="w-full">
 
@@ -458,7 +458,7 @@ export default {
     },
 
 
-    close() {
+    close2() {
       this.showModal = false;
 
       this.savedInput.push(this.nom),
@@ -471,6 +471,15 @@ export default {
       localStorage.setItem('formData', parsed);
 
     },
+    close() {
+      this.showModal = false;
+      this.nom = "",
+        this.bailleur = null,
+        this.value = [],
+        this.longitude = "",
+        this.latitude = ""
+      localStorage.removeItem('formData');
+    }
   },
 
   mounted() {

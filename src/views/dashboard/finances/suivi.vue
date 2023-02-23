@@ -35,7 +35,7 @@
       </nav>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="closeA">
           <div class="w-full p-4">
             <div v-if="title == 'Ajouter un Suivi'">
               <vform template="default" @closeModal="close" :champs="champs" :cols="cols" submitText="Enregistrer"
@@ -428,6 +428,16 @@ export default {
     },
     close() {
       this.showModal = false
+      this.resetForm()
+    },
+    closeA() {
+      this.showModal = false
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
     close2() {
       this.showModal3 = false

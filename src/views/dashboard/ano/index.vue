@@ -22,7 +22,7 @@
 
 
       <div v-if="showModal">
-        <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close">
+        <modal-top-right v-if="!isUpdate" :title="title" v-on:close="close2">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
               @getFile="getFile" :savedInput="savedInput" submitText="Créer un ano" @closeModal="close"
@@ -665,8 +665,19 @@ export default {
 
     close() {
       this.showModal = false
-
+      this.resetForm()
     },
+    close2() {
+      this.showModal = false
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+
+
   },
 
   created() {

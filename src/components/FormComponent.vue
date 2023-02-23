@@ -67,14 +67,17 @@ export default {
     },
     close() {
       this.$emit('closeModal')
-      this.savedInput = []
 
-      for (let i = 0; i < this.form.length; i++) {
-        this.savedInput.push(this.form[i].value)
-      }
+      localStorage.removeItem("formData")
+      // this.savedInput = []
+
+
+      // for (let i = 0; i < this.form.length; i++) {
+      //   this.savedInput.push(this.form[i].value)
+      // }
      
-      const parsed = JSON.stringify(this.savedInput);
-      localStorage.setItem('formData', parsed);
+      // const parsed = JSON.stringify(this.savedInput);
+      // localStorage.setItem('formData', parsed);
     },
   }
 }

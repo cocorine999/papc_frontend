@@ -46,7 +46,7 @@
         </div>
       </nav>
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="closeA">
           <div class="w-full p-4">
             <form @submit.prevent="createRole" v-if="title == 'Créer'">
               <div class="my-4">
@@ -333,9 +333,9 @@ export default {
           this.showModal = false
           this.getRole()
           this.roles.nom = "",
-        this.roles.description = "",
-         this.roles.role = []
-         localStorage.removeItem('formData');
+            this.roles.description = "",
+            this.roles.role = []
+          localStorage.removeItem('formData');
 
 
         }).catch((e) => {
@@ -467,15 +467,22 @@ export default {
       this.showCloseModal(true)
     },
 
-    close() {
+    closeA() {
       this.showCloseModal()
 
       this.roles.role = this.value
-     
-        this.savedInput = Object.values(this.roles)
-          
-        const parsed = JSON.stringify(this.savedInput);
-        localStorage.setItem('formData', parsed);
+
+      this.savedInput = Object.values(this.roles)
+
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+    close() {
+      this.showCloseModal()
+      this.roles.nom = "",
+        this.roles.description = "",
+        this.roles.role = []
+      localStorage.removeItem('formData');
     },
 
     showCloseModal(value = false) {
@@ -496,16 +503,17 @@ export default {
       console.log(this.savedInput)
 
       this.roles.nom = this.savedInput[0]
-        this.roles.description = this.savedInput[1]
-        this.roles.role = this.savedInput[2]
-        this.value = this.roles.role
-     
+      this.roles.description = this.savedInput[1]
+      this.roles.role = this.savedInput[2]
+      this.value = this.roles.role
+
     }
   }
 }
 </script>
 
-<style scoped>.container {
+<style scoped>
+.container {
   display: flex;
   flex-wrap: wrap;
 }
@@ -514,4 +522,5 @@ export default {
 
   margin-right: 5px;
   font-size: 10px;
-}</style>
+}
+</style>

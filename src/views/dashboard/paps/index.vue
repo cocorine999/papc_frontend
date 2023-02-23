@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full">
       <div v-if="showModal">
-        <ModalTopRight :title="title" v-on:close="showModal = false">
+        <ModalTopRight :title="title" v-on:close="closeA">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal = false" :champs="champs"
               :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm"></vform>
@@ -209,7 +209,7 @@ export default {
   },
   data() {
     return {
-
+   
       sendRequest: false,
       showModal: false,
       showModal2: false,
@@ -276,6 +276,7 @@ export default {
       papExporter: false,
       deleteData: {},
       deleteModal: false,
+      savedInput:[]
     }
 
   },
@@ -358,7 +359,17 @@ export default {
     },
     close() {
       this.showCloseModal()
-      this.resetForm
+      this.resetForm()
+    },
+    closeA() {
+      this.showCloseModal()
+
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
     title_csv() {
       return "paps-" + "-" + new Date()

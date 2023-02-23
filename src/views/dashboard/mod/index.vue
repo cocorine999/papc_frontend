@@ -2,7 +2,7 @@
   <dashboard>
     <div class="w-full">
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="closeA">
           <div class="px-4 overflow-y-auto">
             <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm"
               @closeModal="close"></vform>
@@ -11,10 +11,10 @@
       </div>
 
       <div v-if="showModal2">
-        <modal-top-right :title="title2" v-on:close="showModal2 = false">
+        <modal-top-right :title="title2" v-on:close="closeB">
           <div class="px-4 overflow-y-auto">
             <vform template="default" :champs="passationChamps" isAllPairSaufDescrip="true" :cols="colsPassation"
-              submitText="Creer la passation" @sendForm="sendForm2"></vform>
+              submitText="Creer la passation" @sendForm="sendForm2"  @closeModal="close2" ></vform>
           </div>
         </modal-top-right>
       </div>
@@ -120,6 +120,7 @@ export default {
   },
   data() {
     return {
+      savedInput:[],
       showModal: false,
       showModal2: false,
       seeMod: true,
@@ -441,10 +442,29 @@ export default {
       this.showCloseModal();
       this.resetForm();
     },
+    closeA() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+    closeB() {
+      this.showCloseModal2()
+      this.savedInput = []
+      for (let i = 0; i < this.passationChamps.length; i++) {
+        this.savedInput.push(this.passationChamps[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+
+   
 
     close2() {
       this.showCloseModal2()
-
       this.resetForm2()
     },
 
