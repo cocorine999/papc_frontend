@@ -239,7 +239,7 @@
               <div v-for="(activite, index) in terminer" :key="index">
                 <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
                   :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
-                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin" :durees="activite.durees"
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -258,7 +258,7 @@
               <div v-for="(activite, index) in enAttente" :key="index">
                 <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
                   :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
-                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin" :durees="activite.durees"
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -277,7 +277,7 @@
               <div v-for="(activite, index) in enCours" :key="index">
                 <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
                   :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
-                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin" :durees="activite.durees"
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -296,7 +296,7 @@
               <div v-for="(activite, index) in retardData" :key="index">
                 <card-activite :data="activite" :bailleur="activite.bailleur.sigle" :libelle="activite.nom"
                   :poids="activite.poids" :code="activite.codePta" :montantEPM="activite.pret"
-                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                  :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin" :durees="activite.durees"
                   :statut="getStatus(activite.statut)"
                   :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                   @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"
@@ -316,7 +316,7 @@
             <div v-for="(activite, index) in filtere" :key="index">
               <card-activite :code="activite.codePta" :data="activite" :bailleur="activite.bailleur.sigle"
                 :libelle="activite.nom" :poids="activite.poids" :montantEPM="activite.pret"
-                :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin"
+                :montantNE="activite.budgetNational" :debut="activite.debut" :fin="activite.fin" :durees="activite.durees"
                 :statut="getStatus(activite.statut)"
                 :structureResponsable="activite.structureResponsable !== null ? getNom(activite.structureResponsable.nom, activite.structureResponsable.prenom) : ''"
                 @modifier="modifier(activite)" @supprimer="supprimer(activite)" @prolonger="prolonger(activite)"

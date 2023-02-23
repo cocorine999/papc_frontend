@@ -76,9 +76,12 @@
               <span class="ml-2 uppercase font-bold">fcfa</span>
             </div>
           </div> -->
-          <p class="mt-1 text-gray-600  text-xs font-bold space-x-2">
-            <span class="font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> <span>au</span> <span>{{ fin }}</span>
-          </p>
+          <div v-for="(duree, index) in durees" :key="index">
+            <p class=" mt-1 text-gray-600 dark:text-gray-400 mb-6">
+              <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ duree.debut }}</span> au
+              <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ duree.fin }} </span>
+            </p>
+          </div>       
         </div>
       </div>
       <div v-if="statut.code >= -1 && statut.code <= 2" class="text-right">
@@ -117,6 +120,7 @@ export default {
     "fin",
     "codePta",
     "statut",
+    "durees",
     "id",
     "isDelete",
     "isUpdate",
