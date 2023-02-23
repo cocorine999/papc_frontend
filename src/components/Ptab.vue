@@ -789,15 +789,15 @@
                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
                   <td v-if="pta.pret != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span  class="font-bold"> {{ pta.pret | formatNumber }} </span>
+                    <span  class="font-bold text-green-500 "> {{ pta.pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
                   <td  v-if="pta.pret != '' || pta.bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span class="font-bold"> {{ (pta.pret + pta.bn)
+                    <span class="font-bold text-yellow-500"> {{ (pta.pret + pta.bn)
                         | formatNumber
-                    }}
+                  }}
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
@@ -814,7 +814,7 @@
                   </td>
                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td  v-if="pta.tPret != undefined && pta.tPret != ''"  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td  v-if="pta.tPret != undefined && pta.tPret != ''"  class="p-2 whitespace-nowrap border dark:bg-gray-800 text-green-500 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.tPret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
@@ -849,10 +849,10 @@
 
                   <!--  Planing vrai activité-->
 
-                  <td v-if="pta.planing != undefined && pta.planing.janvier != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.janvier != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                   
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.janvier != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.janvier != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                     
                   </td>
                   <td  class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700 shadow" v-else></td>
@@ -860,96 +860,96 @@
 
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-blue-600 shadow border-l-0 border-r-0 ">
                    
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.fevrier != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.fevrier != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                    
                   </td>
                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.mars != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.mars != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                    
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.mars != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.mars != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                     
                   </td>
                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.avril != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.avril != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                    
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.avril != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.avril != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                     
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
                  
-                  <td v-if="pta.planing != undefined && pta.planing.mai != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.mai != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                     
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.mai != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.mai != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                     
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.juin != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.juin != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                     
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.juin != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.juin != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                    
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                     
                   </td>
-                   <td v-else-if="pta.planingt != undefined && pta.planingt.juillet != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                   <td v-else-if="pta.planingt != undefined && pta.planingt.juillet != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                     
                   </td>
                       
                     <td class="p-2 whitespace-nowrap border relative dark:bg-yellow-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.aout != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.aout != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                    
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.aout != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.aout != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                    
                   </td>
                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
                 
-                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                     
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.septembre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.septembre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                     
                   </td>
                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''" class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                    
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.octobre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.octobre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                   
                   </td>
                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''" class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
                    
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.novembre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.novembre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
                     
                   </td>
                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''" class="p-2   border  bg-red-500 border-l-0 border-r-0">
+                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''" class="p-2   border  bg-blue-500 border-l-0 border-r-0">
                   </td>
-                        <td v-else-if="pta.planingt != undefined && pta.planingt.decembre != ''" class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0"> 
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.decembre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0"> 
                         
                         </td>
                         <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
@@ -1047,10 +1047,10 @@
                   </td>
                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.t4Pret != '' || pta.t4Bn != ''class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td v-if="pta.t4Pret != '' || pta.t4Bn != ''"class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold"> {{ (pta.t4Pret +
                         pta.t4Bn) | formatNumber
-                    }} </span>
+                    }}  </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
