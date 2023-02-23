@@ -778,42 +778,55 @@
                     <span v-if="pta.isComposante" class="text-blue-500 text-sm">Composante: {{ pta.nom }}</span>
                     <span v-if="pta.isSC" class=" text-yellow-600 text-sm "> <span class=" text-yellow-600 text-sm " v-if="pta.code != 0">Sous
                         composante:</span> {{ pta.nom }}</span>
-                    <span v-if="pta.isActivite" class="text-green-600 text-sm bg-yellow-200 shadow">Activite: {{ pta.nom }}</span>
+                    <span v-if="pta.isActivite" class="text-green-600 text-sm bg-gradient-to-br from-yellow-400 to-yellow-600 shadow">Activite: {{ pta.nom }}</span>
                     <span v-if="pta.isTache" class="text-red-600 text-sm">  {{ pta.nom }}</span>
 
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.bn != undefined" class="font-bold"> {{ pta.bn | formatNumber }} </span>
+                  <td  v-if="pta.bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ pta.bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.pret != undefined" class="font-bold"> {{ pta.pret | formatNumber }} </span>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.pret != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.pret != undefined && pta.bn != undefined" class="font-bold"> {{ (pta.pret + pta.bn)
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td  v-if="pta.pret != '' || pta.bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ (pta.pret + pta.bn)
                         | formatNumber
                     }}
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
+                <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
 
                   <!-- total budgetaire-->
 
 
 
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.tBn != undefined" class="font-bold"> {{ pta.tBn | formatNumber }} </span>
+                  <td v-if="pta.tBn != undefined && pta.tBn != ''"  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ pta.tBn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.tPret != undefined" class="font-bold"> {{ pta.tPret | formatNumber }} </span>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td  v-if="pta.tPret != undefined && pta.tPret != ''"  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ pta.tPret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.total != undefined" class="font-bold"> {{ pta.total | formatNumber }} </span>
+                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td  v-if="pta.total != undefined && pta.total != ''  "  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ pta.total | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
@@ -952,68 +965,96 @@
 
                   <!--  planing -->
 
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t1Bn != undefined" class="font-bold"> {{ pta.t1Bn | formatNumber }} </span>
+                  <td v-if="pta.t1Bn != undefined && pta.t1Bn != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.t1Bn | formatNumber }} fcfabn</span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <!--  planing -->
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t1Pret != undefined" class="font-bold"> {{ pta.t1Pret | formatNumber }} </span>
+
+
+                  <!--  planing semestre -->
+                  <td v-if="pta.t1Pret != undefined && pta.t1Pret != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.t1Pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
+                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t1Pret != undefined && pta.t1Bn != undefined" class="font-bold"> {{ (pta.t1Pret +
+
+                  <td v-if="pta.t1Pret != '' || pta.t1Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ (pta.t1Pret +
                         pta.t1Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t2Bn != undefined" class="font-bold"> {{ pta.t2Bn | formatNumber }} </span>
+
+                  <td  v-if="pta.t2Bn != undefined  && pta.t2Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ pta.t2Bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t2Pret != undefined" class="font-bold"> {{ pta.t2Pret | formatNumber }} </span>
+                                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td  v-if="pta.t2Pret != undefined && pta.t2Pret != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ pta.t2Pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
+                                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t2Pret != undefined && pta.t2Bn != undefined" class="font-bold"> {{ (pta.t2Pret +
+                  
+
+                  <td v-if="pta.t2Pret != '' || pta.t2Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ (pta.t2Pret +
                         pta.t2Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
+                                                       <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t3Bn != undefined" class="font-bold"> {{ pta.t3Bn | formatNumber }} </span>
+                  
+
+                  <td  v-if="pta.t3Bn != undefined && pta.t3Bn != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ pta.t3Bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t3Pret != undefined" class="font-bold"> {{ pta.t3Pret | formatNumber }} </span>
+                                                                         <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.t3Pret != undefined && pta.t3Pret != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.t3Pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t3Pret != undefined && pta.t3Bn != undefined" class="font-bold"> {{ (pta.t3Pret +
+                                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.t3Pret != '' || pta.t3Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span class="font-bold"> {{ (pta.t3Pret +
                         pta.t3Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t4Bn != undefined" class="font-bold"> {{ pta.t4Bn | formatNumber }} </span>
+                                                                                                             <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.t4Bn != undefined && pta.t4Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.t4Bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span v-if="pta.t4Pret != undefined" class="font-bold"> {{ pta.t4Pret | formatNumber }} </span>
+
+                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.t4Pret != undefined  && pta.t4Pret != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.t4Pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                  <td v-if="pta.t4Pret != '' || pta.t4Bn != ''class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold"> {{ (pta.t4Pret +
                         pta.t4Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
 
                 </tr>
 
@@ -1996,17 +2037,17 @@ export default {
             const pret = composante.pret
             let poids = composante.poids
             let poidsActuel = composante.poidsActuel
-            let t1Bn = 0
-            let t1Pret = 0
-            let t2Bn = 0
-            let t2Pret = 0
-            let t3Bn = 0
-            let t3Pret = 0
-            let t4Bn = 0
-            let t4Pret = 0
-            let tBn = 0
-            let tPret = 0
-            let total = 0
+            let t1Bn = ''
+            let t1Pret = ''
+            let t2Bn = ''
+            let t2Pret = ''
+            let t3Bn = ''
+            let t3Pret = ''
+            let t4Bn = ''
+            let t4Pret = ''
+            let tBn = ''
+            let tPret = ''
+            let total = ''
             if (composante.trimestre1 != undefined) {
               t1Pret = composante.trimestre1.pret
               t1Bn = composante.trimestre1.budgetNational
@@ -2033,17 +2074,17 @@ export default {
               const pret = sousComposante.pret
               let poids = sousComposante.poids
               let poidsActuel = sousComposante.poidsActuel
-              let t1Bn = 0
-              let t1Pret = 0
-              let t2Bn = 0
-              let t2Pret = 0
-              let t3Bn = 0
-              let t3Pret = 0
-              let t4Bn = 0
-              let t4Pret = 0
-              let tBn = 0
-              let tPret = 0
-              let total = 0
+              let t1Bn = ''
+              let t1Pret = ''
+              let t2Bn = ''
+              let t2Pret = ''
+              let t3Bn = ''
+              let t3Pret = ''
+              let t4Bn = ''
+              let t4Pret = ''
+              let tBn = ''
+              let tPret = ''
+              let total = ''
               let nom = "PAS DE SOUS COMPOSANTE"
               if (sousComposante.nom != 0) {
                 nom = sousComposante.nom
@@ -2079,17 +2120,17 @@ export default {
                 let poidsActuel = activite.poidsActuel
                 let structureResponsable = activite.structureResponsable
                 let structureAssocie = activite.structureAssocie
-                let t1Bn = 0
-                let t1Pret = 0
-                let t2Bn = 0
-                let t2Pret = 0
-                let t3Bn = 0
-                let t3Pret = 0
-                let t4Bn = 0
-                let t4Pret = 0
-                let tBn = 0
-                let tPret = 0
-                let total = 0
+                let t1Bn = ''
+                let t1Pret = ''
+                let t2Bn = ''
+                let t2Pret = ''
+                let t3Bn = ''
+                let t3Pret = ''
+                let t4Bn = ''
+                let t4Pret = ''
+                let tBn = ''
+                let tPret = ''
+                let total = ''
                 const planing = {
                   janvier: '',
                   fevrier: '',
@@ -2202,6 +2243,20 @@ export default {
                   let poids = tache.poids
                   let poidsActuel = tache.poidsActuel
                    const tacheDuree = tache.durees
+                   const pret = ''
+                   const bn = ''
+                    let t1Bn = ''
+                let t1Pret = ''
+                let t2Bn = ''
+                let t2Pret = ''
+                let t3Bn = ''
+                let t3Pret = ''
+                let t4Bn = ''
+                let t4Pret = ''
+                let tBn = ''
+                let tPret = ''
+               // let total = ''
+
                    if (tacheDuree != undefined || activiteDuree != null) {
                   if (tacheDuree[0] == 1) {
                     planingt.janvier = "ok"
@@ -2259,6 +2314,7 @@ export default {
           const bailleur = element.bailleur
           const bn = element.budgetNational
           const pret = element.pret
+          
           let poids = ""
           let poidsActuel = ''
 
@@ -2282,17 +2338,17 @@ export default {
             const pret = composante.pret
             let poids = composante.poids
             let poidsActuel = composante.poidsActuel
-            let t1Bn = 0
-            let t1Pret = 0
-            let t2Bn = 0
-            let t2Pret = 0
-            let t3Bn = 0
-            let t3Pret = 0
-            let t4Bn = 0
-            let t4Pret = 0
-            let tBn = 0
-            let tPret = 0
-            let total = 0
+            let t1Bn = ''
+            let t1Pret = ''
+            let t2Bn = ''
+            let t2Pret = ''
+            let t3Bn = ''
+            let t3Pret = ''
+            let t4Bn = ''
+            let t4Pret = ''
+            let tBn = ''
+            let tPret = ''
+            let total = ''
             if (composante.trimestre1 != undefined) {
               t1Pret = composante.trimestre1.pret
               t1Bn = composante.trimestre1.budgetNational
@@ -2320,17 +2376,17 @@ export default {
               const pret = sousComposante.pret
               let poids = sousComposante.poids
               let poidsActuel = sousComposante.poidsActuel
-              let t1Bn = 0
-              let t1Pret = 0
-              let t2Bn = 0
-              let t2Pret = 0
-              let t3Bn = 0
-              let t3Pret = 0
-              let t4Bn = 0
-              let t4Pret = 0
-              let tBn = 0
-              let tPret = 0
-              let total = 0
+              let t1Bn = ''
+              let t1Pret = ''
+              let t2Bn = ''
+              let t2Pret = ''
+              let t3Bn = ''
+              let t3Pret = ''
+              let t4Bn = ''
+              let t4Pret = ''
+              let tBn = ''
+              let tPret = ''
+              let total = ''
               let nom = "PAS DE SOUS COMPOSANTE"
               if (sousComposante.nom != 0) {
                 nom = sousComposante.nom
@@ -2368,17 +2424,17 @@ export default {
                 let poidsActuel = activite.poidsActuel
                 let structureResponsable = activite.structureResponsable
                 let structureAssocie = activite.structureAssocie
-                let t1Bn = 0
-                let t1Pret = 0
-                let t2Bn = 0
-                let t2Pret = 0
-                let t3Bn = 0
-                let t3Pret = 0
-                let t4Bn = 0
-                let t4Pret = 0
-                let tBn = 0
-                let tPret = 0
-                let total = 0
+                let t1Bn = ''
+                let t1Pret = ''
+                let t2Bn = ''
+                let t2Pret = ''
+                let t3Bn = ''
+                let t3Pret = ''
+                let t4Bn = ''
+                let t4Pret = ''
+                let tBn = ''
+                let tPret = ''
+                let total = ''
                 const planing = {
                   janvier: '',
                   fevrier: '',
