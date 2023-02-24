@@ -44,18 +44,18 @@
         </div>
 
         <div v-else-if="champ.isSelect === true && champ.isTextArea === false">
-          <div v-if="champ.isSite === true">
+          <div v-if="champ.canAdd === true">
             <label class=" block py-2 text-xs  md:text-sm font-semibold " for="">
               {{ champ.name }} <span v-if="champ.required"
                 class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
-            </label>
+             </label>
             <div class="flex justify-between space-x-1">
               <multiselect class="w-11/12" v-model="champ.data" :required="champ.required" :preselect-first="true"
                 :options="champ.options" :custom-label="champ.methode" :placeholder="champ.placeholdere"
                 :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"
                 selectedLabel="Selectionné" :label="champ.value" :track-by="champ.cle"></multiselect>
               <div class="w-1/12  flex justify-center items-center">
-                <button title="Ajouter un site" v-title @click="addSite" class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+                <button :title="'Ajouter un(e) ' + champ.name" v-title @click="addSite" class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
                   <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
                     style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
                     <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
