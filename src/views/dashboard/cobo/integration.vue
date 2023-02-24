@@ -226,6 +226,7 @@ export default {
 
         },
         reload() {
+            this.kobo_data = []
             ProgrammeService.updatekobo().then(response => {
                 for (let i = 0; i < response.data.data.length; i++) {
                 if (response.data.data[i].status == 'public') {
