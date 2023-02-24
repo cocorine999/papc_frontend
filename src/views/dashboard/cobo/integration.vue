@@ -227,7 +227,11 @@ export default {
         },
         reload() {
             ProgrammeService.updatekobo().then(response => {
-            })
+                for (let i = 0; i < response.data.data.length; i++) {
+                if (response.data.data[i].status == 'public') {
+                    this.kobo_data.push(response.data.data[i])
+                }
+            }})
         },
         close() {
             this.modal1 = false
