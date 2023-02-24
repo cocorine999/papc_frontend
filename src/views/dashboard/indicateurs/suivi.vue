@@ -216,7 +216,7 @@ export default {
   data() {
       return ({
         suiviAttributes : ['annee', 'trimestre','valeurCible','valeurRealise','indicateurId','commentaire'],
-        suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','nom','bailleurId','categorieId'],
+        suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','bailleurId','categorieId'],
         showModal2:false,
         showModal3:false,
         showDate:true,
@@ -466,10 +466,10 @@ export default {
         })
     },
 
-    async supprimer(suivi) {
+    /*async supprimer(suivi) {
       if(window.confirm("Voulez-vous supprimer cette unitee de gestion  " + suivi.nom))
         await this.deleteSuivi(suivi.id)
-    },
+    },*/
 
     close() {
       this.showCloseModal();

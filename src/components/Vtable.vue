@@ -120,7 +120,7 @@ export default {
   props:['datas', 'headers', 'actions','statut', 'sendRequest','isComment','count', 'search', 'total'],
   data() {
     return{
-       count :0,
+       //count :0,
       currentPage:1,
       perPage:15,
       selectedRows: [],
