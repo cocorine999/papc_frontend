@@ -14,7 +14,76 @@
         <modal-top-right :title="title2" v-on:close="closeB">
           <div class="px-4 overflow-y-auto">
             <vform template="default" :champs="passationChamps" isAllPairSaufDescrip="true" @closeModal="close2"
-              :savedInput="savedInput2" :cols="colsPassation" submitText="Enregistrer" @sendForm="sendForm2"></vform>
+              :savedInput="savedInput2" :cols="colsPassation" submitText="Enregistrer" @addSite="addSite" @sendForm="sendForm2"></vform>
+          </div>
+        </modal-top-right>
+      </div>
+
+      <div v-if="showSiteModal">
+        <modal-top-right :title="title" v-on:close="closeSiteModal2">
+          <div class="px-4 overflow-y-auto">
+            <form action="" @submit.prevent="sendSiteForm" class="w-full">
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="nom"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="text" placeholder="Entrer un " />
+              </div>
+
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Bailleur <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <select v-model="bailleur"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent"
+                  placeholder="selectionnez une entreprise" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'">
+                  <option v-for="(item, i) in bailleurs" :key="i" :value="item.id">{{ item.sigle }}</option>
+                </select>
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez les
+                  entreprises <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <multiselect v-model="value" tag-placeholder="selectionnez une entreprise"
+                  placeholder="selectionnez une entreprise" label="nom" track-by="nom"
+                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true"
+                  :taggable="true" @tag="addTag"></multiselect>
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="longitude"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="number" step="0.01" placeholder="Entrer la longitude" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="latitude"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="number" step="0.01" placeholder="Entrer la latitude" />
+              </div>
+
+
+              <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
+                <button type="submit"
+                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'>
+                  Creer le site
+                </button>
+
+                <button type="submit" @click="closeSiteModal"
+                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'>
+                  Annuler
+                </button>
+
+              </div>
+            </form>
           </div>
         </modal-top-right>
       </div>
@@ -106,6 +175,7 @@ import Vform from '@/components/Vform'
 import MoService from "@/services/modules/mission.controle.service"
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import extractFormData from "@/utils/extract-data";
+import Multiselect from 'vue-multiselect';
 export default {
   components: {
     CardMod,
@@ -115,13 +185,20 @@ export default {
     Vmodal,
     DeleteAlert,
     ModalTopRight,
-    CardChecklist
+    CardChecklist,
+    Multiselect,
   },
   data() {
     return {
+      value: [],
+      nom: "",
+      longitude: "",
+      latitude: "",
+      bailleur: null,
+      entrepriseExecutantId: "",
+      showSiteModal: false,
       savedInput: [],
       savedInput2: [],
-
       showModal: false,
       showModal2: false,
       seeMo: true,
@@ -143,7 +220,7 @@ export default {
       ],
       passationChamps: [
         { name: 'Mission de controle', key: 'missionDeControleId', type: '', placeholdere: "Selectionnez une mission de controle", isSelect: true, isTextArea: false, data: '', required: true, options: this.missionDeControles, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
+        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", isSite:true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: 'Entreprise Executante', key: 'entrepriseExecutanteId', type: '', placeholdere: "Selectionnez une entreprise", isSelect: true, isTextArea: false, data: '', options: this.entreprisesExecutante, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: 'Montant passation', key: 'montant', type: 'number', placeholdere: "Montant passation", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Date obtention', key: 'dateDobtention', type: 'date', placeholdere: "Date obtention", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -207,6 +284,7 @@ export default {
       entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       sites: "sites/getSites",
       bailleurs: "bailleurs/getBailleurs",
+      entreprises: "entreprisesExecutante/getEntreprisesExecutante",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
@@ -217,7 +295,8 @@ export default {
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setMissionDeControle: 'missionDeControles/FILL', // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
-      setPassation: 'passations/FILL' // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      setPassation: 'passations/FILL', // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      setSite: "Sites/FILL",
     }),
 
 
@@ -225,7 +304,7 @@ export default {
       fetchMissionDeControles: "FETCH_LIST_MISSION_DE_CONTROLE",
       saveMissionDeControle: "STORE_MISSION_DE_CONTROLE",
       updateMissionDeControle: "UPDATE_MISSION_DE_CONTROLE",
-      deleteMissionDeControle: "DESTROY_MISSION_DE_CONTROLE"
+      deleteMissionDeControle: "DESTROY_MISSION_DE_CONTROLE",
     }),
     ...mapActions('passations', {
       fetchPassations: "FETCH_LIST_MISSIONDECONTROLE_PASSATION",
@@ -238,6 +317,7 @@ export default {
     }),
     ...mapActions("sites", {
       fetchSites: "FETCH_LIST_SITE",
+      saveSite: "STORE_SITE",
     }),
     ...mapActions("bailleurs", {
       fetchBailleurs: "FETCH_LIST_BAILLEUR",
@@ -275,7 +355,76 @@ export default {
         if (element.slug === 'voir-un-site') {
           this.siteVisible = true
         }
+        if (element.slug === 'creer-un-site') {
+          this.siteAdd = true
+        }
 
+      });
+
+    },
+
+    addSite() {
+      this.showSiteModal = true
+      this.title = 'Ajouter un nouveau site'
+      
+   this.fetchSites(this.currentUser?.programme?.id)
+   this.fetchEntreprisesExecutante();
+   this.fetchBailleurs()
+
+    },
+    closeSiteModal2() {
+      this.showSiteModal = false;
+
+      this.savedInput.push(this.nom),
+        this.savedInput.push(this.bailleur),
+        this.savedInput.push(this.value)
+      this.savedInput.push(this.longitude),
+        this.savedInput.push(this.latitude)
+
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+
+    },
+    closeSiteModal() {
+      this.showSiteModal = false;
+      this.nom = "",
+        this.bailleur = null,
+        this.value = [],
+        this.longitude = "",
+        this.latitude = ""
+      localStorage.removeItem('formData');
+    },
+
+    sendSiteForm() {
+      var entrepriseExecutantId = []
+
+      this.value.forEach(element => {
+        entrepriseExecutantId.push(element.id)
+      });
+
+      let site = {
+        "nom": this.nom,
+        "longitude": this.longitude,
+        "latitude": this.latitude,
+        "bailleurId": this.bailleur,
+        "entrepriseExecutantId": entrepriseExecutantId
+      }
+
+      this.saveSite(site).then((response) => {
+        if (response.status == 200 || response.status == 201) {
+          this.$toast.success('operation effectuer avec sucess')
+          this.fetchSites(this.currentUser?.programme?.id)
+          this.showSiteModal = false;
+          this.nom = "",
+            this.bailleur = null,
+            this.value = [],
+            this.longitude = "",
+            this.latitude = ""
+          localStorage.removeItem('formData');
+        }
+      }).catch((e) => {
+        this.$toast.error(e)
+        this.sendRequest = false
       });
 
     },
@@ -562,6 +711,14 @@ export default {
       });
     },
 
+
+ entreprises: function (entreprises) {
+      this.entreprises.map((item) => {
+        item.nom = item.user.nom
+        return item;
+
+      });
+    },
     missionDeControles: function (missionDeControles) {
       this.passationChamps.map((item) => {
         if (item.key === "missionDeControleId") {

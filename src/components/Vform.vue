@@ -44,27 +44,54 @@
         </div>
 
         <div v-else-if="champ.isSelect === true && champ.isTextArea === false">
-          <label class=" block py-2 text-xs  md:text-sm font-semibold " for="">
-            {{ champ.name }} <span v-if="champ.required"
-              class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
-          </label>
-          <multiselect v-model="champ.data" :required="champ.required" :preselect-first="true" :options="champ.options"
-            :custom-label="champ.methode" :placeholder="champ.placeholdere"
-            :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"
-            selectedLabel="Selectionné" :label="champ.value" :track-by="champ.cle"></multiselect>
-          <div v-for="(error, key) in champ.errors" :key="key">
-            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor"
-                stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z">
-                </path>
-              </svg></span>
-            <div class="text-red-500 text-sm   py-2 font-semibold">
-              {{ error }}
+          <div v-if="champ.isSite === true">
+            <label class=" block py-2 text-xs  md:text-sm font-semibold " for="">
+              {{ champ.name }} <span v-if="champ.required"
+                class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+            </label>
+            <div class="flex justify-between space-x-1">
+              <multiselect class="w-11/12" v-model="champ.data" :required="champ.required" :preselect-first="true"
+                :options="champ.options" :custom-label="champ.methode" :placeholder="champ.placeholdere"
+                :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"
+                selectedLabel="Selectionné" :label="champ.value" :track-by="champ.cle"></multiselect>
+              <div class="w-1/12  flex justify-center items-center">
+                <button title="Ajouter un site" v-title @click="addSite" class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+                  <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                    style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                    <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                  </svg>
+                </button>
+              </div>
+
             </div>
           </div>
 
+          <div v-else>
+            <label class=" block py-2 text-xs  md:text-sm font-semibold " for="">
+              {{ champ.name }} <span v-if="champ.required"
+                class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+            </label>
+            <multiselect v-model="champ.data" :required="champ.required" :preselect-first="true" :options="champ.options"
+              :custom-label="champ.methode" :placeholder="champ.placeholdere"
+              :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"
+              selectedLabel="Selectionné" :label="champ.value" :track-by="champ.cle"></multiselect>
+            <div v-for="(error, key) in champ.errors" :key="key">
+              <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor"
+                  stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z">
+                  </path>
+                </svg></span>
+              <div class="text-red-500 text-sm   py-2 font-semibold">
+                {{ error }}
+              </div>
+            </div>
+          </div>
+
+
         </div>
+
+
         <div v-else-if="champ.isSelect === false && champ.isTextArea === true">
           <label class=" block py-2 text-xs  md:text-sm font-semibold " for="">
             {{ champ.name }} <span v-if="champ.required"
@@ -133,7 +160,7 @@ export default {
     }
   },
   mounted() {
-    
+
     if (localStorage.getItem("formData")) {
       this.savedInput = []
       this.savedInput = JSON.parse(localStorage.getItem("formData"))
@@ -161,10 +188,13 @@ export default {
       // for (let i = 0; i < this.champs.length; i++) {
       //   this.savedInput.push(this.champs[i].data)
       // }
-    
+
       // const parsed = JSON.stringify(this.savedInput);
       // localStorage.setItem('formData', parsed);
 
+    },
+    addSite(){
+      this.$emit('addSite')
     },
 
     previewFiles(event) {
@@ -218,10 +248,15 @@ export default {
 }
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style>
+<style scoped>
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.custom {
+  font-size: 9px;
+  box-sizing: border-box;
 }
 </style>

@@ -5,7 +5,7 @@
         <ModalTopRight :title="title" v-on:close="closeA">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal = false" :champs="champs"
-              :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm"></vform>
+              :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" @addSite="addSite" ></vform>
           </div>
         </ModalTopRight>
       </div>
@@ -37,6 +37,75 @@
             </div>
           </form>
         </vmodal>
+      </div>
+
+      <div v-if="showSiteModal">
+        <modal-top-right :title="title" v-on:close="closeSiteModal2">
+          <div class="px-4 overflow-y-auto">
+            <form action="" @submit.prevent="sendSiteForm" class="w-full">
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="nom"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="text" placeholder="Entrer le nom de l'activite" />
+              </div>
+
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Bailleur <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <select v-model="bailleur"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent"
+                  placeholder="selectionnez une entreprise" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'">
+                  <option v-for="(item, i) in bailleurs" :key="i" :value="item.id">{{ item.sigle }}</option>
+                </select>
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez les
+                  entreprises <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <multiselect v-model="value" tag-placeholder="selectionnez une entreprise"
+                  placeholder="selectionnez une entreprise" label="nom" track-by="nom"
+                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true"
+                  :taggable="true" @tag="addTag"></multiselect>
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="longitude"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="number" step="0.01" placeholder="Entrer la longitude" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="latitude"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="number" step="0.01" placeholder="Entrer la latitude" />
+              </div>
+
+
+              <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
+                <button type="submit"
+                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'>
+                  Creer le site
+                </button>
+
+                <button type="submit" @click="closeSiteModal"
+                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'>
+                  Annuler
+                </button>
+
+              </div>
+            </form>
+          </div>
+        </modal-top-right>
       </div>
 
       <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
@@ -189,6 +258,7 @@ import DeleteAlert from "@/components/DeleteAlert.vue";
 import Dashboard from '@/layouts/Dashboard'
 import JsonExcel from "vue-json-excel"
 import PapService from "@/services/modules/paps.service";
+import Multiselect from 'vue-multiselect';
 
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { extractFormData } from '@/utils/index'
@@ -205,11 +275,18 @@ export default {
     SearchBar,
     ModalTopRight,
     JsonExcel,
+    Multiselect,
 
   },
   data() {
     return {
-   
+      value: [],
+      nom: "",
+      longitude: "",
+      latitude: "",
+      bailleur: null,
+      entrepriseExecutantId: "",
+      showSiteModal: false,
       sendRequest: false,
       showModal: false,
       showModal2: false,
@@ -233,7 +310,7 @@ export default {
         { name: ' N° Rue', key: 'rue', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: ' Longitude', key: 'longitude', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
         { name: ' Latitude', key: 'latitude', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
+        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site",isSite:true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: ' Nom et prenoms', key: 'nom', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Sexe', key: 'sexe', type: '', placeholdere: "Selectionnez le sexe", isSelect: true, isTextArea: false, data: '', options: this.sexe, cle: 'sigle', value: 'nom', required: true, errors: [] },
         { name: ' Contact ', key: 'contact', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -292,9 +369,14 @@ export default {
     }),
 
     ...mapGetters({
+      hasErrors: "GET_ERREURS",
+      isLoading: "IS_LOADING",
       paps: "paps/getPaps",
       pap: "paps/getPap",
       sites: "sites/getSites",
+      site: "sites/getSite",
+      entreprises: "entreprisesExecutante/getEntreprisesExecutante",
+      bailleurs: "bailleurs/getBailleurs",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
@@ -305,7 +387,8 @@ export default {
     //Charger les fonctions de communication avec le serveur
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setPap: 'paps/FILL' // map `this.CREATE_INSTANCE_PAP()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setPap: 'paps/FILL', // map `this.CREATE_INSTANCE_PAP()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
+      setSite: "Sites/FILL",
     }),
 
     previewFiles(event) {
@@ -322,7 +405,13 @@ export default {
       importSinistre: "IMPORTATION_PAP"
     }),
 
-    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE' }),
+    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE',saveSite: "STORE_SITE",}),
+
+    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+
+    ...mapActions("entreprisesExecutante", {
+      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
+    }), 
 
     addAno() {
       this.title = 'Ajouter un element'
@@ -349,6 +438,12 @@ export default {
         if (element.slug === 'exporter-un-pap') {
           this.papExporter = true
         }
+        if (element.slug === 'voir-un-site') {
+          this.siteVisible = true
+        }
+        if (element.slug === 'creer-un-site') {
+          this.siteAdd = true
+        }
 
       });
 
@@ -370,6 +465,71 @@ export default {
       }
       const parsed = JSON.stringify(this.savedInput);
       localStorage.setItem('formData', parsed);
+    },
+    addSite() {
+      this.showSiteModal = true
+      this.title = 'Ajouter un nouveau site'
+      
+   this.fetchSites(this.currentUser?.programme?.id)
+   this.fetchEntreprisesExecutante();
+   this.fetchBailleurs()
+
+    },
+    closeSiteModal2() {
+      this.showSiteModal = false;
+
+      this.savedInput.push(this.nom),
+        this.savedInput.push(this.bailleur),
+        this.savedInput.push(this.value)
+      this.savedInput.push(this.longitude),
+        this.savedInput.push(this.latitude)
+
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+
+    },
+    closeSiteModal() {
+      this.showSiteModal = false;
+      this.nom = "",
+        this.bailleur = null,
+        this.value = [],
+        this.longitude = "",
+        this.latitude = ""
+      localStorage.removeItem('formData');
+    },
+
+    sendSiteForm() {
+      var entrepriseExecutantId = []
+
+      this.value.forEach(element => {
+        entrepriseExecutantId.push(element.id)
+      });
+
+      let site = {
+        "nom": this.nom,
+        "longitude": this.longitude,
+        "latitude": this.latitude,
+        "bailleurId": this.bailleur,
+        "entrepriseExecutantId": entrepriseExecutantId
+      }
+
+      this.saveSite(site).then((response) => {
+        if (response.status == 200 || response.status == 201) {
+          this.$toast.success('operation effectuer avec sucess')
+          this.fetchSites(this.currentUser?.programme?.id)
+          this.showSiteModal = false;
+          this.nom = "",
+            this.bailleur = null,
+            this.value = [],
+            this.longitude = "",
+            this.latitude = ""
+          localStorage.removeItem('formData');
+        }
+      }).catch((e) => {
+        this.$toast.error(e)
+        this.sendRequest = false
+      });
+
     },
     title_csv() {
       return "paps-" + "-" + new Date()
@@ -561,7 +721,29 @@ export default {
     errors: function (errors) {
       this.champs.forEach((value) => { value.errors = errors[value.key] })
       //this.errors = errors
-    }
+    },
+
+    sites: function (sites) {
+      this.champs.map((item) => {
+        if (item.key === "siteId") {
+          item.options = sites.map((site) => {
+            return {
+              id: site.id,
+              nom: site.nom,
+            };
+          });
+        }
+        return item;
+      });
+    },
+    entreprises: function (entreprises) {
+      this.entreprises.map((item) => {
+        item.nom = item.user.nom
+        return item;
+
+      });
+    },
+   
 
   },
 
