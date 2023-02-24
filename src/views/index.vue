@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-100  grid lg:grid-cols-2 sm:grid-cols-1 relative">
-    
+
     <!-- le formulaire de connexion -->
     <div class="flex justify-center items-center px-10 md:px-20 h-screen">
       <div class="formulaire sm:max-w-md ">
@@ -8,29 +8,61 @@
           <img width="180" height="180" src="../assets/images/login/logo-gouv.webp">
           <img width="180" height="180" src="../assets/images/login/logo-sirat.webp">
         </div>
-  
-        <h1 class="xl:text-2xl text-base text-center font-bold text-primary py-6 ">PROGRAMME  D’ASSAINISSEMMENT PLUVIAL DE COTONOU</h1>
+
+        <h1 class="xl:text-2xl text-base text-center font-bold text-primary py-6 ">PROGRAMME D’ASSAINISSEMMENT PLUVIAL
+          DE COTONOU</h1>
         <p class="text-sm font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte. </p>
         <form @submit.prevent="save" action="">
-          
+
           <div class="form-group my-3 relative">
-            <input v-model.trim='$v.login.$model' type="email" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email">
-            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
-            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.required && soumettre' >
+            <input v-model.trim='$v.login.$model' v-title id="email" title="Entrer votre email"
+              type="email"
+              class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300"
+              placeholder="Entrer votre email">
+            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor"
+                stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z">
+                </path>
+              </svg></span>
+            <div class="text-red-500 text-sm py-2 font-semibold" v-if='!$v.login.required && soumettre'>
               Ce champ est obligatoire
             </div>
-            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre' >
-            Email invalide
+            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre'>
+              Email invalide
             </div>
           </div>
           <div class="form-group my-3 relative">
-            <input  v-model.trim='$v.password.$model' :type="statePassword" class="w-full bg-gray-100 outline-none border :placeholder-gray-500 py-3 px-4 text-sm font-semibold border-gray-300 " placeholder="Entrer votre mot de passe">
-            <span @click="invisible" v-if="show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><defs><clipPath><path fill="none" d="M124-288l388-672 388 672H124z" clip-rule="evenodd"></path></clipPath></defs><path d="M508 624a112 112 0 0 0 112-112c0-3.28-.15-6.53-.43-9.74L498.26 623.57c3.21.28 6.45.43 9.74.43zm370.72-458.44L836 122.88a8 8 0 0 0-11.31 0L715.37 232.23Q624.91 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.7 119.43 136.55 191.45L112.56 835a8 8 0 0 0 0 11.31L155.25 889a8 8 0 0 0 11.31 0l712.16-712.12a8 8 0 0 0 0-11.32zM332 512a176 176 0 0 1 258.88-155.28l-48.62 48.62a112.08 112.08 0 0 0-140.92 140.92l-48.62 48.62A175.09 175.09 0 0 1 332 512z"></path><path d="M942.2 486.2Q889.4 375 816.51 304.85L672.37 449A176.08 176.08 0 0 1 445 676.37L322.74 798.63Q407.82 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5z"></path></svg></span>
-            <span @click="invisible" v-if="!show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path></svg></span>
-            <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.required && soumettre' >
-              Ce champ est obligatoire 
+            <input v-model.trim='$v.password.$model' title="Entrer votre mot de passe" v-title id="password"
+              :type="statePassword"
+              class="w-full bg-gray-100 outline-none border :placeholder-gray-500 py-3 px-4 text-sm font-semibold border-gray-300 "
+              placeholder="Entrer votre mot de passe">
+            <span @click="invisible" v-if="show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg
+                stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.8em"
+                width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <clipPath>
+                    <path fill="none" d="M124-288l388-672 388 672H124z" clip-rule="evenodd"></path>
+                  </clipPath>
+                </defs>
+                <path
+                  d="M508 624a112 112 0 0 0 112-112c0-3.28-.15-6.53-.43-9.74L498.26 623.57c3.21.28 6.45.43 9.74.43zm370.72-458.44L836 122.88a8 8 0 0 0-11.31 0L715.37 232.23Q624.91 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.7 119.43 136.55 191.45L112.56 835a8 8 0 0 0 0 11.31L155.25 889a8 8 0 0 0 11.31 0l712.16-712.12a8 8 0 0 0 0-11.32zM332 512a176 176 0 0 1 258.88-155.28l-48.62 48.62a112.08 112.08 0 0 0-140.92 140.92l-48.62 48.62A175.09 175.09 0 0 1 332 512z">
+                </path>
+                <path
+                  d="M942.2 486.2Q889.4 375 816.51 304.85L672.37 449A176.08 176.08 0 0 1 445 676.37L322.74 798.63Q407.82 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5z">
+                </path>
+              </svg></span>
+            <span @click="invisible" v-if="!show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg
+                stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.8em"
+                width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>
+                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z">
+                </path>
+              </svg></span>
+            <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.required && soumettre'>
+              Ce champ est obligatoire
             </div>
-            <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.minLength && soumettre' >
+            <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.minLength && soumettre'>
               mot de passe très court
             </div>
           </div>
@@ -41,9 +73,9 @@
             :data-callback="callback"
             >
               <p class="py-1 rounded-xl flex space-x-2 items-center ">
-                <label class="cursor-pointer" title="cliquer ici" for="">
-                   <input type="checkbox"  class="border border-gray-500" name="captcha" id="validate" />
-                   Je ne suis pas un robot 
+                <label class="cursor-pointer" title="cliquer ici"  v-title for="">
+                  <input type="checkbox" class="border border-gray-500" name="captcha" id="validate" />
+                  Je ne suis pas un robot
                 </label>
               </p>
             </g-recaptcha>
@@ -90,9 +122,10 @@
             </button!-->
           
           </div>
-          
+
           <div class="flex justify-center mt-3">
-            <router-link to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mot de passe oublié ? </router-link>
+            <router-link title="cliquer ici pour récupérer votre Mot de passe" v-title to="/changer-mots-de-passe"
+              class="text-md font-semibold text-primary">Mot de passe oublié ? </router-link>
           </div>
         </form>
 
@@ -118,38 +151,49 @@
         </div>
 
         <div>
-          <p class="text-md font-semibold text-center text-base text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC</p>
+          <p class="text-md font-semibold text-center text-base text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC
+          </p>
         </div>
       </div>
     </div>
     <!-- fin du formulaire de connexion -->
 
-     <!-- l'image de connexion -->
+    <!-- l'image de connexion -->
     <div class="bg-img hidden lg:block">
       <img src="../assets/images/login/login-illustration.svg" class="w-5/6 h-full object-contain" alt="">
     </div>
 
     <!-- fin de l'image de connexion -->
-   <div v-if="isValidate" class=" absolute right-2 top-4">
-      <button @click="gotoValidate" v-if="true"  class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici pour renvoyer le lien de validation</button>
-    </div> 
+    <div v-if="isValidate" class=" absolute right-2 top-4">
+      <button @click="gotoValidate" v-if="true"
+        class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici
+        pour renvoyer le lien de validation</button>
+    </div>
     <vmodal title="envoyé votre mail" v-if="showSend">
       <div style="width:500px">
         <form @submit="resentLink">
           <div class="form-group my-3 relative">
-            <input v-model.trim='$v.login.$model' type="email" class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email">
-            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg"><path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg></span>
-            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.required && soumettre' >
+            <input v-model.trim='$v.login.$model' type="email"
+              class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300"
+              placeholder="Entrer votre email">
+            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor"
+                stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z">
+                </path>
+              </svg></span>
+            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.required && soumettre'>
               Ce champ est obligatoire
             </div>
-            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre' >
+            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre'>
               Email invalide
             </div>
           </div>
           <div class="flex justify-center">
-            <button type="submit"  class="bg-primary  text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">envoyer</button>
+            <button type="submit"
+              class="bg-primary  text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">envoyer</button>
           </div>
-          
+
         </form>
       </div>
     </vmodal>
@@ -162,38 +206,40 @@
 </template>
 
 <script>
-import { required, minLength, numeric,  email, sameAs } from 'vuelidate/lib/validators';
+import { required, minLength, numeric, email, sameAs } from 'vuelidate/lib/validators';
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import gRecaptcha from '@finpo/vue2-recaptcha-invisible';
 import Vmodal from '@/components/Vmodal'
 import axios from 'axios'
-import {API_BASE_URL} from "@/services/configs/environment.js";
+import { API_BASE_URL } from "@/services/configs/environment.js";
+
+
 
 export default {
   name: 'IndexPage',
-  components:{Vmodal,gRecaptcha},
+  components: { Vmodal, gRecaptcha },
   data() {
     return {
-      base_url:API_BASE_URL,
-      statePassword:"password",
-      show : false,
+      base_url: API_BASE_URL,
+      statePassword: "password",
+      show: false,
       login: "",
       password: "",
-      isRobot:true,
-      chargement:false,
-      soumettre :false,
-      isValidate:false,
-      showSend:false
-      
+      isRobot: true,
+      chargement: false,
+      soumettre: false,
+      isValidate: false,
+      showSend: false
+
     }
   },
-  computed:{
+  computed: {
 
     //importation des variables du module auths
     ...mapState({
       identifiant: state => state.auths.identifiant,
       accountValidate: state => state.accountValidate,
-      loading : state => state.loading
+      loading: state => state.loading
     })
   },
 
@@ -203,55 +249,49 @@ export default {
     ...mapActions({
       authentification: "auths/LOGIN"
     }),
-   
+
     gotoValidate() {
-     this.showSend = true
+      this.showSend = true
     },
     resentLink() {
       this.soumettre = true;
-      if ( !this.$v.login.$invalid ) {
-        this.$router.push({name:'resendLink',params:{identifiant:this.login}})
+      if (!this.$v.login.$invalid) {
+        this.$router.push({ name: 'resendLink', params: { identifiant: this.login } })
         this.showSend = false
       }
     },
     async save() {
       this.soumettre = true;
-        if(!this.$v.login.$invalid && !this.$v.password.$invalid) {
-          this.chargement = true
-          if(this.chargement === true) {
-            const identifiant = {}
-            identifiant.email = this.login
-            identifiant.password = this.password
-            const datas= await axios.get(`${this.base_url}/sanctum/csrf-cookie`)
-            if(datas.status ==204) {
-              await this.authentification(identifiant).then((response, status) =>{
+      if (!this.$v.login.$invalid && !this.$v.password.$invalid) {
+        this.chargement = true
+        if (this.chargement === true) {
+          const identifiant = {}
+          identifiant.email = this.login
+          identifiant.password = this.password
+          const datas = await axios.get(`${this.base_url}/sanctum/csrf-cookie`)
+          if (datas.status == 204) {
+            await this.authentification(identifiant).then((response, status) => {
               if (response.statut === "success" || response.status === 200) {
                 this.chargement = false
-                if (response.data.utilisateur.type =='administrateur') {
+                if (response.data.utilisateur.type == 'administrateur') {
                   this.$toast.success("Connexion réussie")
                   this.$router.push('/dashboard/programme')
-                }else {
+                } else {
                   this.$toast.success("Connexion réussie")
                   this.$router.push('/dashboard/projets')
                 }
-              }  
+              }
             }).catch((error) => {
               this.chargement = false
             })
-            }
-            else {
-              this.$toast.error("Connexion impossible reesayer !!!")
-            }
           }
-          
-         
-         
-         
-        
-         
+          else {
+            this.$toast.error("Connexion impossible reesayer !!!")
+          }
         }
-      
-     
+      }
+
+
     },
 
     validate() {
@@ -264,13 +304,13 @@ export default {
         //alert(token);
         this.$toast.success("Confirmer")
         this.isRobot = false
-      }else{
+      } else {
         // if you use data-size show reCAPTCHA , maybe you will get empty token.
         //alert('please check you are not robot');
         this.$toast.error("Verifier que vous n'est pas un robot  !!!")
       }
     },
-    invisible () {
+    invisible() {
       this.statePassword = !this.show ? 'text' : 'password'
       this.show = !this.show;
       //this.$toast.success('Profile saved',)
@@ -278,7 +318,7 @@ export default {
   },
   mounted() {
     this.isValidate = localStorage.getItem("activeCompte")
-    
+
   },
 
   validations: {
@@ -286,16 +326,16 @@ export default {
       required,
       email
     },
-    
+
     password: {
       required,
       minLength: minLength(6)
     },
-   
+
   },
 
   watch: {
-    loading: function(params) {
+    loading: function (params) {
       //this.loading = params
     }
   }
@@ -303,18 +343,21 @@ export default {
 }
 </script>
 <style scoped>
-  .animation {
-    animation: vibration infinite .3s;
+.animation {
+  animation: vibration infinite .3s;
+}
+
+@keyframes vibration {
+  to {
+    transform: rotate(0deg);
+    transition: all 0.3s ease-in-out;
   }
-  @keyframes vibration {
-    to {
-      transform: rotate(0deg);
-      transition: all 0.3s ease-in-out;
-    }
-    from {
-      transform: rotate(3deg);
-      transition: all 0.3s ease-in-out;
-    }
+
+  from {
+    transform: rotate(3deg);
+    transition: all 0.3s ease-in-out;
   }
- 
+}
+
+/*vue tooltip  */
 </style>

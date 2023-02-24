@@ -22,6 +22,7 @@ import form_gestion_generator_general from "../views/dashboard/form/_id/generato
 import backup from "../views/dashboard/backup/index.vue";
 import dashboard from "../views/dashboard/index.vue";
 
+
 //checklist environment unite de gestion
 import unite_de_gestion_checklist from "../views/dashboard/environements/unite-gestion/_idE/checklist.vue";
 
@@ -104,7 +105,8 @@ import config_rappel from "../views/dashboard/config/rappel/index.vue";
 import config_backup from "../views/dashboard/config/backup/index.vue";
 
 import audit from "../views/dashboard/audit/index.vue";
-import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
+import utilisateurs from "../views/dashboard/utilisateurs/index.vue"
+import cobo from "../views/dashboard/cobo/integration.vue";
 import finances_plan_decaissement from "../views/dashboard/finances/plan_decaissement.vue";
 import projets from "../views/dashboard/projets/index.vue";
 
@@ -124,6 +126,7 @@ import dashboard_projets_sous_composantes_globale from "../views/dashboard/proje
 import dashboard_projets_sous_composantes from "../views/dashboard/projets/composantes/sous-composantes/index.vue";
 import dashboard_projets_sous_composantes_globale_suivis from "../views/dashboard/projets/sous-composantes-globale/_id/suivis.vue";
 import projets_id_details from "../views/dashboard/projets/_id/details.vue";
+import questionnaire_id_details from "../views/dashboard/cobo/_id/detail.vue"
 import projets_id_cadreLogique from "../views/dashboard/projets/_id/cadre-logique.vue";
 import bailleurs from "../views/dashboard/bailleurs/index.vue";
 import fileManager from "../views/dashboard/fileManager/index.vue";
@@ -661,6 +664,14 @@ const routes = [
       middleware: [auth],
     },
   },
+  {
+    path: "/dashboard/cobo",
+    name: "cobo",
+    component: cobo,
+    meta: {
+      middleware: [auth],
+    },
+  },
 
   {
     path: "/dashboard/programme",
@@ -711,6 +722,14 @@ const routes = [
       middleware: [auth],
     },
     name: "projets_id_details",
+  },
+  {
+    path: "/dashboard/cobo/:id/details",
+    component: questionnaire_id_details,
+    meta: {
+      middleware: [auth],
+    },
+    name: "questionnaire_id_details",
   },
 
   {
@@ -1164,10 +1183,8 @@ const routes = [
     path: "/mo/ong",
     name: "ong_mo",
     component: ong_mo,
-    meta: {
-      middleware: [auth, isMissionDeControle],
-    },
   },
+  
 ];
 
 const router = new VueRouter({

@@ -160,14 +160,14 @@
       </div>
 
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-on:close="closeA">
           <div class="px-4 overflow-y-auto">
             <div v-if="isUpdate">
-              <vform template="default"  isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
+              <vform template="default"  isAllPairSaufDescrip="true" :sendRequest="sendRequest"  :champs="champsUpdate"
                 :cols="cols" submitText="Modifier" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
             <div v-if="!isUpdate">
-              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champs"
+              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :savedInput="savedInput" :champs="champs"
                 :cols="cols" submitText="Ajouter" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
             
@@ -275,6 +275,7 @@ export default {
   },
   data() {
     return {
+      savedInput: [],
       sendRequest: false,
       suiviIndicateurs: {
         annee: '',
@@ -787,6 +788,7 @@ export default {
     
 
     sendForm() {
+
       this.champs = this.champs.map(item => { item.errors = []; return item })
       this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
       let indicateur = {}
@@ -822,6 +824,8 @@ export default {
           this.saveIndicateur(indicateur).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.resetForm()
+              localStorage.removeItem('formData');
               this.$toast.success('operation effectué avec success')
               this.fetchIndicateur()
              
@@ -909,7 +913,16 @@ export default {
 
     close() {
       this.showCloseModal();
-      this.resetForm();
+      this.resetForm()
+    },
+    closeA() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
 
     close2() {
@@ -932,6 +945,7 @@ export default {
     },
    
     modifier(indicateur) {
+      localStorage.removeItem('formData');
       this.isUpdate = true
       this.title = 'Modifier un indicateur'
       this.showModal = true

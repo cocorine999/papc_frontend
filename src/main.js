@@ -1,8 +1,10 @@
 import Vue from "vue";
 import App from "./App.vue";
 
-import router from "./router";
+import router from "./router"; 
 import store from "./store";
+
+
 
 
 // custom import
@@ -32,6 +34,14 @@ Vue.filter("formatNumber", function (value) {
   return new Intl.NumberFormat().format(value)
   //return numeral(value).format("0,0");  displaying other groupings/separators is possible, look at the docs
 });
+
+import vTitle from 'vuejs-title'
+Vue.use(vTitle,{
+  fontSize: "12px",
+  padding: "12px"
+})
+
+
 
 
 Vue.use(Vuelidate);

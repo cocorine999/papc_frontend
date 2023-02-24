@@ -1,7 +1,7 @@
 <template>
   <dashboard>
     <div class="w-full">
-      <vmodal v-if="showProlonger" title="prolonger la date d'echeance " @close="showProlonger = false">
+      <vmodal v-if="showProlonger" title="prolonger la date d'echeance " v-title @close="showProlonger = false">
         <div style="width:60vw" class="p-0 w-full">
           <form @submit.prevent="saveProlongerDate()" action="">
             <div class="form-group my-2">
@@ -31,9 +31,9 @@
         </div>
       </vmodal>
       <div v-if="showModal">
-        <modal-top-right :title="title" v-on:close="close">
+        <modal-top-right :title="title" v-title v-on:close="close2">
           <div class="p-4 overflow-auto">
-            <vform template="default" v-if="!isUpdate" :sendRequest="sendRequest" @getFile="getFile"
+            <vform template="default" v-if="!isUpdate" :sendRequest="sendRequest" @getFile="getFile" :savedInput="savedInput"
               @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm"
               @closeModal="close"></vform>
             <vform template="default" v-if="isUpdate" :sendRequest="sendRequest" :champs="champsUpdate" :cols="cols"
@@ -42,19 +42,21 @@
         </modal-top-right>
       </div>
 
-      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" v-title width="sm"
+        v-on:close="deleteModal = false">
         <p class="text-gray-800">
-        voulez vous supprimer cette projet?
+          voulez vous supprimer cette projet?
         </p>
 
         <div class="text-right mt-4">
-          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
-          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteProjets(deleteData)">Supprimer</button>
+          <button @click="deleteModal = false"
+            class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+            @click="deleteProjets(deleteData)">Supprimer</button>
         </div>
       </delete-alert>
 
-      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap"
-        aria-label="Breadcrumb">
+      <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
         <div class="mb-2">
           <ol class="inline-flex p-0 list-none">
             <li class="flex items-center text-blue-500">
@@ -71,7 +73,7 @@
         </div>
         <div>
           <div class="w-full flex text-gray-600">
-            <input @input="$emit('search',$event.target.value)" :class="{ block: showSearch }"
+            <input @input="$emit('search', $event.target.value)" :class="{ block: showSearch }"
               class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block"
               v-model="search" type="text" name="search" placeholder="Rechercher">
             <button type="submit" @click="showSearch = !showSearch" :class="{ 'border-2': showSearch }"
@@ -92,11 +94,11 @@
         <div class="">
           <span
             class="inline-block cursor-pointer  border-b-8 font-bold text-xs md:text-sm uppercase    border-primary py-2">Les
-            projets 
+            projets
           </span>
         </div>
 
-        <button v-if="projetAdd" @click="addProjet" title="ajouter un projet"
+        <button v-if="projetAdd" @click="addProjet" title="ajouter un projet" v-title
           class="px-4 py-2 flex overflow-hidden items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
           <span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
               style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
@@ -110,10 +112,10 @@
         <div v-for="(projet, index) in filteredProjet" :key="index">
 
           <div @click.stop="gotoDetails(projet)"
-            class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500">
+            class="bg-white p-0 mb-6 transition duration-300 group transform hover:-translate-y-1 hover:shadow-lg cursor-pointer  shadow-md border-bottom border-indigo-500 custom_height">
             <!-- <a href="#1" class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a> -->
             <div
-              class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100">
+              class="flex justify-center items-top p-4 bg-gray-600 bg-opacity-100 z-10 absolute top-0 left-0 w-full h-full text-white opacity-0 transition-all duration-300 transform group-hover:scale-105 text-lg group-hover:opacity-100 ">
               <p class="max-h-48 line-clamp-7 px-2"> {{ projet.description }} </p>
               <div class="absolute bottom-5 ">
                 <div v-if="dashboardProjetVisible"
@@ -121,65 +123,64 @@
                   details
                 </div>
               </div>
-              <div v-if="projet.statut == -2 " class="absolute top-2 left-2 ">
+              <div v-if="projet.statut == -2" class="absolute top-2 left-2 ">
                 <button v-if="validation" @click.stop="validerProjet(projet.id)"
                   class="px-2 py-3  font-semibold text-sm uppercase bg-green-500 text-white  rounded-md shadow ">valider</button>
               </div>
-              <div v-else class="absolute top-2 left-2 ">
-                <div v-if="projetDelete && projetUpdate"
-                  class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
-                  <dropdown @supprimer="supprimerProjet(projet)" @gotoNext="gotoNext(projet,index)"
+              <div v-else  class="absolute top-2 right-2">
+                <div v-if="projetDelete && projetUpdate" class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
+                  <dropdown @supprimer="supprimerProjet(projet)" @gotoNext="gotoNext(projet, index)"
                     @modifier="modifierProjet(projet)" @prolonger="prolonger(projet)" :option="option"></dropdown>
                 </div>
-                <div v-if="projetUpdate && projetDelete ==false "
+                <div v-if="projetUpdate && projetDelete == false"
                   class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
-                  <dropdown @modifier="modifierProjet(projet)" @gotoNext="gotoNext(projet,index)"
+                  <dropdown @modifier="modifierProjet(projet)" @gotoNext="gotoNext(projet, index)"
                     @prolonger="prolonger(projet)" :option="optionUpdate"></dropdown>
                 </div>
-                <div v-if="projetDelete && projetUpdate==false"
+                <div v-if="projetDelete && projetUpdate == false"
                   class="uppercase text-sm flex bg-white text-primary p-1 font-bold">
-                  <dropdown @supprimer="supprimerProjet(projet)" @gotoNext="gotoNext(projet,index)"
+                  <dropdown @supprimer="supprimerProjet(projet)" @gotoNext="gotoNext(projet, index)"
                     @prolonger="prolonger(projet)" :option="optionD"></dropdown>
                 </div>
               </div>
             </div>
-            <div class="relative mb-2">
+            <div class="relative mb-2 block_img">
               <img v-if="projet.image != null || projet.image != undefined"
-                class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+                class=" max-h-52 w-full object-contain transition-transform duration-300 transform group-hover:scale-100"
                 :src="`${base_url}${projet.image.url}`">
               <img v-else
-                class=" max-h-52 w-full object-cover transition-transform duration-300 transform group-hover:scale-100"
+                class=" max-h-52 w-full object-contain transition-transform duration-300 transform group-hover:scale-100"
                 src="@/assets/images/login/logo-gouv.webp" alt="">
               <div class="absolute bottom-0 right-0">
-                <div v-if="projet.statut == 0 "
+                <div v-if="projet.statut == 0"
                   class=" text-sm flex items-center text-white bg-yellow-500 px-3 py-1 font-semibold">En cours<i
                     class='bx bx-time-five ml-1'></i></div>
-                <div v-if="projet.statut == 2 "
+                <div v-if="projet.statut == 2"
                   class=" text-sm flex items-center text-white bg-green-500 px-3 py-1 font-semibold">Terminé<i
                     class='bx bx-time-five ml-1'></i></div>
-                <div v-if="projet.statut == -1 "
+                <div v-if="projet.statut == -1"
                   class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En attente <i
                     class='bx bx-time-five ml-1'></i></div>
-                <div v-if="projet.statut == 1 "
+                <div v-if="projet.statut == 1"
                   class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">En retard <i
                     class='bx bx-time-five ml-1'></i></div>
-                <div v-if="projet.statut == -2 "
+                <div v-if="projet.statut == -2"
                   class=" text-sm flex items-center text-white bg-gray-500 px-3 py-1 font-semibold">Non validé <i
                     class='bx bx-time-five ml-1'></i></div>
               </div>
               <div class="absolute top-2 left-2">
                 <div :class="projet.couleur" :style="`background-color:${projet.couleur}`"
                   class="uppercase rounded-lg text-sm flex items-center text-white  px-3 py-1 font-semibold"><i
-                    class='bx bx-coin-stack mr-1'></i>{{projet.bailleur.sigle}}
+                    class='bx bx-coin-stack mr-1'></i>{{ projet.bailleur.sigle }}
                 </div>
               </div>
             </div>
-            <div class="block px-4 pb-4">
+            <div class="block px-4 pb-4 ">
               <span :class="projet.couleur" :style="`background-color:${projet.couleur}`"
-                class="absolute bottom-0 left-0 w-full  h-2"></span>
-              <h3 class="font-medium text-xl">
+                class="absolute bottom-0 left-0 w-full   h-2"></span>
+              <h3 class="font-medium text-xl absolute bottom-2 my-2">
                 <a href="#2"
-                  class="block uppercase relative group-hover:text-gray-800 transition-colors duration-200 line-clamp-2 text-lg">{{projet.nom}}
+                  class="block uppercase relative group-hover:text-gray-800 transition-colors duration-200 line-clamp-2 text-lg">{{ projet.nom }}
                 </a>
               </h3>
             </div>
@@ -223,6 +224,7 @@ export default {
   },
   data() {
     return {
+      savedInput: [],
       base_url: API_BASE_URL,
       showModal: false,
       showSearch: false,
@@ -238,10 +240,10 @@ export default {
       projetId: '',
       title: '',
       search: "",
-      projetAttributs: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId','tauxEngagement'],
-      projetAttributsUpdate: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville','tauxEngagement'],
+      projetAttributs: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId', 'tauxEngagement'],
+      projetAttributsUpdate: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'tauxEngagement'],
       champs: [],
-      champsUpdate:[],
+      champsUpdate: [],
       option: [
         { name: "supprimer" },
         { name: "modifier" },
@@ -267,10 +269,10 @@ export default {
       sendRequest: false,
       fichiers: [],
       image: {},
-      projets:[],
-      bailleurs:[],
-      deleteData:{},
-      deleteModal:false,
+      projets: [],
+      bailleurs: [],
+      deleteData: {},
+      deleteModal: false,
 
     }
 
@@ -287,7 +289,7 @@ export default {
     }),
 
     ...mapGetters({
-       projet: "getProjet",
+      projet: "getProjet",
       //bailleurs: "bailleurs/getBailleurs",
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
@@ -310,13 +312,13 @@ export default {
       }
       this.fichiers.pop()
       this.fichiers.pop()
-     
+
 
     },
     getImage(data) {
       this.champs[6].data = data
       this.image = data
-      
+
     },
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
@@ -378,8 +380,8 @@ export default {
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
@@ -393,14 +395,14 @@ export default {
     }),
 
     ...mapActions('projets', {
-     
+
       saveProjet: "STORE_PROJET",
       prolongerDateProjet: "PROLONGER_DATE_PROJET",
       updateProjet: "UPDATE_PROJET",
       deleteProjet: "DESTROY_PROJET"
     }),
 
-   // ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR_OF_PROGRAMME' }),
+    // ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR_OF_PROGRAMME' }),
 
     gotoDetails(projet) {
       if (this.dashboardProjetVisible) {
@@ -414,15 +416,26 @@ export default {
 
     close() {
       this.showCloseModal()
+      this.resetForm()
       this.sendRequest = false;
-      this.resetForm
+    },
+    close2() {
+      this.showCloseModal()
+      this.sendRequest = false;
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+
     },
 
     showCloseModal(value = false) {
       this.showModal = value
     },
 
-    
+
 
     addProjet() {
       this.title = 'Ajouter'
@@ -447,9 +460,10 @@ export default {
     },
 
     modifierProjet(projet) {
+      localStorage.removeItem('formData')
       this.isUpdate = true
       this.title = 'Modifier un projet'
-     
+
       this.submitText = "Modifier"
 
       this.projetId = projet.id
@@ -472,31 +486,31 @@ export default {
 
     },
 
-    
-    async supprimerProjet(projet,index) {
-      this.deleteModal= true
+
+    async supprimerProjet(projet, index) {
+      this.deleteModal = true
       this.deleteData.data = projet
       this.deleteData.index = index
     },
     deleteProjets(data) {
-      this.filteredProjet.splice(data.index,1)
-      this.deleteModal= false
+      this.filteredProjet.splice(data.index, 1)
+      this.deleteModal = false
       ProjetService.destroy(data.data.id).then((data) => {
         this.$toast.success("Operation effectué avec success !")
-       
+
       }).catch((error) => {
-        
+
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
-      }) 
+      })
     },
 
     saveProlongerDate() {
@@ -552,8 +566,8 @@ export default {
 
         projet.programmeId = this.programmeId
 
-       
-      
+
+
         if (projet?.id) {
           projet.statut = projet.statut
           this.updateProjet({ projet: projet, id: projet?.id }).then(response => {
@@ -577,7 +591,7 @@ export default {
             "nom": projet.nom,
             "description": projet.description,
             "debut": projet.debut,
-            "fin": projet.fin,
+            "fin": projet.fin, 
             "objectifGlobaux": projet.objectifGlobaux,
             "budgetNational": projet.budgetNational,
             "pret": projet.pret,
@@ -606,7 +620,7 @@ export default {
           formData.append('image', this.image)
           for (let i = 0; i < this.fichiers.length; i++) {
             let file = this.fichiers[i];
-          
+
             formData.append('fichier' + i, file);
           }
 
@@ -616,6 +630,8 @@ export default {
           this.saveProjet(formData).then(response => {
             if (response.status == 200 || response.status == 201) {
               this.close()
+              this.resetForm()
+              localStorage.removeItem('formData');
               this.fetchProjets(this.programmeId)
               this.sendRequest = false;
             }
@@ -661,44 +677,44 @@ export default {
 
     },
     fetchBailleurs(programme) {
-    
+
       BailleurService.bailleursOfProgramme(programme).then((data) => {
         const datas = data.data.data
         this.bailleurs = datas
-        this.champs =[
-        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
-        { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture', isImage: true, isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Pièce jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
-        { name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data: '', required: true, options: datas, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Objectifs specifiques', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Taux engagement', key: "tauxEngagement", type: 'text', placeholdere: 'Taux engagement', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        
-      ]
-      this.champsUpdate =  [
-        { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Prêt', type: 'text', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Budget Nationnal', key: "budgetNational", type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
-        { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
-        { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-        { name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Taux engagement', key: "tauxEngagement", type: 'text', placeholdere: 'Taux engagement', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
-       
-      ]
-    
+        this.champs = [
+          { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, title: "renseigner le nom du projet", errors: [] },
+          { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
+          { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture', isImage: true, isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Pièce jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
+          { name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data: '', required: true, options: datas, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+          { name: 'Objectifs specifiques', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Taux engagement', key: "tauxEngagement", type: 'text', placeholdere: 'Taux engagement', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+
+        ]
+        this.champsUpdate = [
+          { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Prêt', type: 'text', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Budget Nationnal', key: "budgetNational", type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
+          { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
+          { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+          { name: 'Objectif specifique', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Taux engagement', key: "tauxEngagement", type: 'text', placeholdere: 'Taux engagement', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+
+        ]
+
       }).catch((error) => {
-       
+
       })
     },
   },
@@ -729,8 +745,8 @@ export default {
       else {
         this.fetchProjets(this.programmeId)
       }
-     
-     
+
+
     }
   }
 }
@@ -739,5 +755,18 @@ export default {
 <style scoped>
 .icon-bold {
   font-weight: 800;
+}
+.dropdown-content{
+  transform: translate(  200px, 200px);
+}
+.custom_height {
+  height: 288px;
+}
+
+.block_img {
+  height: 208px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -56,10 +56,10 @@
       <commentaire module="tache" :datas="commentaires"></commentaire>
     </modal-chat>
 
-    <modal-top-right v-if="showModal" :title="title" v-on:close="close">
+    <modal-top-right v-if="showModal" :title="title" v-on:close="close2">
       <div class="p-4 w-full">
-        <vform template="default" :champs="champs" :cols="cols" :submitText="submitText" :sendRequest="sendRequest"
-          @sendForm="sendForm" @closeModal="close">
+        <vform template="default" :savedInput="savedInput" :champs="champs" :cols="cols" :submitText="submitText"
+          :sendRequest="sendRequest" @sendForm="sendForm" @closeModal="close">
         </vform>
       </div>
     </modal-top-right>
@@ -114,15 +114,18 @@
       <!--Filtre sur projet -->
       <div class=" mx-auto">
         <div class="mb-4">
-          <ul class="flex flex-wrap justify-start -mb-px items-end  space-y-2" id="myTab"
-            data-tabs-toggle="#myTabContent" role="tablist">
+          <ul class="flex flex-wrap justify-start -mb-px items-end  space-y-2" id="myTab" data-tabs-toggle="#myTabContent"
+            role="tablist">
 
             <li class="mr-2" role="presentation">
 
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un projet</label>
-                <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP" :preselect-first="true"
-                placeholder="selectionnez un projet" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id"></multiselect>
+                <multiselect v-model="projetFiltre" :options="projets" :custom-label="customLabelP"
+                  :preselect-first="true" placeholder="selectionnez un projet"
+                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
+                  track-by="id"></multiselect>
               </div>
 
             </li>
@@ -130,7 +133,9 @@
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un composant</label>
                 <multiselect v-model="composanteFiltre" :options="composantes" :custom-label="customLabel"
-                :preselect-first="true" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
+                  :preselect-first="true" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                  placeholder="selectionnez une composante" label="nom" track-by="id"></multiselect>
               </div>
 
             </li>
@@ -138,7 +143,9 @@
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez un sous composant</label>
                 <multiselect v-model="sousComposanteFiltre" :options="sousComposantes" :preselect-first="true"
-                :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" placeholder="selectionnez une sous composante" label="nom" track-by="id">
+                  :custom-label="customLabel" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                  placeholder="selectionnez une sous composante" label="nom" track-by="id">
                 </multiselect>
               </div>
 
@@ -147,7 +154,9 @@
               <div>
                 <label for="" class="block text-sm font-semibold uppercase my-2 ">Selectionnez une activité</label>
                 <multiselect v-model="valueFiltre" :options="activites" :custom-label="customLabel"
-                placeholder="selectionnez l'activite" :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom" track-by="id">
+                  placeholder="selectionnez l'activite" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné" label="nom"
+                  track-by="id">
                 </multiselect>
               </div>
 
@@ -240,6 +249,7 @@
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM" :durees="tache.durees"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
                   @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
+>>>>>>> origin/rwv-constantin
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -289,9 +299,10 @@
               <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
                 :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
                 :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
-                @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @validation="validation" @prolonger="prolonger(tache)"
-                @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin" @commentaire="showComment = true"
-                :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
+                @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @validation="validation"
+                @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
+                :isSuivi="tacheSuivi"></card-tache>
             </div>
           </div>
         </div>
@@ -299,15 +310,15 @@
 
     </div>
     <!-- <div v-if="seeSuivi">
-          <vtable
-            id="datatable"
-            :headers="headers"
-            :datas="dataTable"
-            :actions="actions"
+            <vtable
+              id="datatable"
+              :headers="headers"
+              :datas="dataTable"
+              :actions="actions"
 
-            >
-          </vtable>
-      </div> -->
+              >
+            </vtable>
+        </div> -->
 
   </div>
 </template>
@@ -354,6 +365,7 @@ export default {
   props: ['valeurProjet', 'valueProfondeur', 'valueComposante', 'valueSC'],
   data() {
     return {
+      savedInput: [],
       dates: { debut: '', fin: '' },
       suivis: [],
       commentaires: [
@@ -622,13 +634,13 @@ export default {
               // Requête effectuée mais le serveur a répondu par une erreur.
               const message = error.response.data.message
               this.$toast.error(message)
-              } else if (error.request) {
-                // Demande effectuée mais aucune réponse n'est reçue du serveur.
-                //console.log(error.request);
-              } else {
+            } else if (error.request) {
+              // Demande effectuée mais aucune réponse n'est reçue du serveur.
+              //console.log(error.request);
+            } else {
               // Une erreur s'est produite lors de la configuration de la demande
               //console.log('dernier message', error.message);
-          }
+            }
 
           })
         }
@@ -750,19 +762,19 @@ export default {
     saveProlongerDate(id, data) {
       this.chargement = true
       TacheService.addDate(id, data).then((data) => {
-       this.$toast.success('Operation éffectué avec succès')
+        this.$toast.success('Operation éffectué avec succès')
       }).catch((error) => {
         if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-              } else if (error.request) {
-                // Demande effectuée mais aucune réponse n'est reçue du serveur.
-                //console.log(error.request);
-              } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-              //console.log('dernier message', error.message);
-          }
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
       })
       this.chargement = false
     },
@@ -777,20 +789,20 @@ export default {
           const created_at = element.created_at
           this.dataTable.push({ tache: tache, codePta: codePta, poidsInitial: poidsInitial, poidsActuel: poidsActuel, created_at: created_at })
         })
-       
+
 
       }).catch((error) => {
         if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-              } else if (error.request) {
-                // Demande effectuée mais aucune réponse n'est reçue du serveur.
-                //console.log(error.request);
-              } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-              //console.log('dernier message', error.message);
-          }
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
       })
     },
     suivreMyTache(tache) {
@@ -799,10 +811,18 @@ export default {
     },
     close() {
       this.showModal = false;
+      this.resetForm()
     },
     close2() {
-      this.showModal2 = false;
+      this.showModal = false;
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
+    
     addPlan() {
       this.title = "Ajouter un plan decaissement";
       this.showModal2 = true;
@@ -897,6 +917,7 @@ export default {
     },
 
     modifier(tache) {
+      localStorage.removeItem('formData')
 
       this.title = 'Modifier une tache'
 
@@ -1002,6 +1023,9 @@ export default {
                 if (response.status === 200 || response.status === 201) {
                   this.fetchTaches(this.valueFiltre.id);
                   this.close();
+                  this.resetForm()
+                  localStorage.removeItem('formData');
+
                 }
               })
               .finally((error) => {
@@ -1017,8 +1041,6 @@ export default {
 
     close() {
       this.showCloseModal();
-
-      this.resetForm();
 
       this.sendRequest = false;
     },
@@ -1196,7 +1218,7 @@ export default {
 
   created() {
     const profondeurActivite = JSON.parse(localStorage.getItem('profondeurActivite'))
-    
+
     if (profondeurActivite != undefined || profondeurActivite != null) {
       this.isClick = profondeurActivite.isClick
       if (this.isClick) {
@@ -1229,6 +1251,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

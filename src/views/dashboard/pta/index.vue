@@ -17,7 +17,7 @@
               <button type="button" v-if="isClick" @click.once="reviserPta" class="text-white bg-red-900 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-red-800 dark:hover:bg-red-900">
                 confirmer 
               </button>
-              <button type="button" v-if="isClick" @click="reviser = false                                                                                                                " class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white" data-dismiss-target="#alert-additional-content-2" aria-label="Close">
+              <button type="button" v-if="isClick" @click="reviser = false " class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white" data-dismiss-target="#alert-additional-content-2" aria-label="Close">
                abandonner
               </button>
               <div v-if="!isClick"> 
@@ -53,21 +53,18 @@
         <span @click="goPta" v-if="ptaVisible" :class="{'border-primary border-b-8':seePta}" class="inline-block cursor-pointer  text-lg uppercase font-bold    py-2">Le ptba </span>
         <span @click="goPpm" v-if="ppmVisible" :class="{'border-primary border-b-8':seePpm}" class="inline-block cursor-pointer  text-lg uppercase font-bold   py-2">Le PPM </span>
       </div> 
-      <div>
+    
+    </div>
+    <!-- <div>
         <div v-if="seePta && revisionAdd " class="flex space-x-4 items-center">
           <button @click="reviser = true" title="reviser ptba"   class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
             <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptba </span>
           </button>
-         
-        
-        </div>
-       
-        
-      </div>
-    </div>
-
+        </div> 
+    </div> -->
    
     <div v-if="seePta && ptaVisible"  class="relative my-4  sm:rounded-lg">
+      
       <ptab  ></ptab>
     </div>
     <div v-if="seePpm && ppmVisible "  class="relative my-4  sm:rounded-lg">

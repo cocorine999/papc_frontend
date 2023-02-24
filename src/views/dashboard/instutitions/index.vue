@@ -12,10 +12,10 @@
     </delete-alert>
     <div v-if="institutionVisible" class="w-full">
       <div v-if="showModal">
-        <ModalTopRight :title="title" v-on:close="close">
+        <ModalTopRight :title="title" v-on:close="close2">
           <div class="w-full px-4">
             <div v-if="!isUpdate">
-              <vform template="default" :champs="champs" :sendRequest="sendRequest" :cols="cols" :submitText="submitText" @sendForm="sendForm"
+              <vform template="default" :champs="champs" :sendRequest="sendRequest" :cols="cols" :submitText="submitText" :savedInput="savedInput" @sendForm="sendForm"
               @closeModal="close"></vform>
             </div>
             <div v-if="isUpdate">
@@ -213,6 +213,7 @@ export default {
 
   data() {
     return {
+      savedInput: [],
       sendRequest: false,
       showModal: false,
       mosaique: true,
@@ -326,6 +327,8 @@ export default {
     },
 
     modifierInstitution(institution) {
+      localStorage.removeItem('formData')
+
       this.isUpdate = true
       this.showCloseModal(true)
       this.title = "Modification de l'institution "
@@ -396,8 +399,16 @@ export default {
 
     close() {
       this.showCloseModal()
-
       this.resetForm()
+    },
+    close2() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
 
     showCloseModal(value = false) {
@@ -459,6 +470,9 @@ export default {
               this.fetchInstitutions()
               this.sendRequest = false
               this.close()
+              this.resetForm()
+              localStorage.removeItem('formData');
+
             }
           })
           .catch((value) => {

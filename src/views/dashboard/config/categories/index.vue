@@ -13,10 +13,11 @@
       </delete-alert>
 
       <div v-if="showModal">
-        <modal-top-right  :title="title"  v-on:close="close">
+        <modal-top-right  :title="title"  v-on:close="close2">
           <div class="w-full p-4">
               <vform
                 template="default"
+                :savedInput="savedInput"
                 :champs="champs"
                 cols="1"
                 :submitText="submitText"
@@ -131,6 +132,7 @@ export default {
   },
   data() {
       return ({
+        savedInput:[],
         showModal:false,
         categorieAttributes: ["nom"],
         submitText: 'Enrégistrer',
@@ -188,6 +190,8 @@ export default {
       },
 
       modifierCategorie (categorie) {
+        localStorage.removeItem('formData')
+
         this.title = "Modification de la categorie " + categorie.nom;
 
         this.submitText = "Modifier";
@@ -255,9 +259,20 @@ export default {
 
      
       close() {
-        this.showCloseModal();
-        this.resetForm();
-      },
+      this.showCloseModal();
+      this.resetForm()
+      localStorage.removeItem('formData')
+      // this.saveForm()
+    },
+    close2() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
 
       showCloseModal(value = false) {
         this.showModal = value;
@@ -311,6 +326,9 @@ export default {
           this.saveCategorie(categorie).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.close();
+              this.resetForm();
+              localStorage.removeItem('formData');
+
             }
           });
         }

@@ -13,13 +13,14 @@
       </delete-alert>
 
       <div v-if="showModal">
-        <modal-top-right  :title="title"  v-on:close="close">
+        <modal-top-right  :title="title"  v-on:close="close2">
 
             <div class="w-full p-4">
               <vform
                 template="default"
                 :champs="champs"
                 cols="1"
+                :savedInput="savedInput"
                 :submitText="submitText"
                 @sendForm="sendForm"
                 @closeModal="close" 
@@ -133,6 +134,7 @@ export default {
   },
   data() {
     return ({
+      savedInput: [],
       showModal:false,
       title:'',
       submitText: 'Enrégistrer',
@@ -233,6 +235,8 @@ export default {
       },
 
       modifierUniteeDeMesure (uniteeDeMesure) {
+        localStorage.removeItem('formData')
+
         this.title = "Modification de l'unitee de mésure " + uniteeDeMesure.nom;
 
         this.submitText = "Modifier";
@@ -286,9 +290,19 @@ export default {
     },
 
     close() {
-        this.showCloseModal();
-
-        this.resetForm();
+      this.showCloseModal();
+      this.resetForm()
+      localStorage.removeItem('formData')
+      // this.saveForm()
+    },
+    close2() {
+      this.showCloseModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
     },
 
     showCloseModal(value = false) {
@@ -346,6 +360,9 @@ export default {
             if (response.status == 200 || response.status == 201) {
               this.fetchUniteesDeMesure()
               this.close();
+              this.resetForm();
+              localStorage.removeItem('formData');
+
             }
           });
         }
