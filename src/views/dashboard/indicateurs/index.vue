@@ -42,6 +42,8 @@
             </button>
           </div>
         </div>
+
+        <button>Actualiser</button>
       </nav>
 
       <div v-if="showSuiviModal">
@@ -184,6 +186,24 @@
         </vmodal>
       </div>
 
+      
+      <div v-if="showUniteDeMesureModal">
+        <modal-top-right  :title="title"  v-on:close="closeUniteDeMesure1">
+
+            <div class="w-full p-4">
+              <vform
+                template="default"
+                :champs="champsUniteDeMesure"
+                cols="1"
+                :savedInput="savedInput"
+                :submitText="submitText"
+                @sendForm="sendUniteDeMesureForm"
+                @closeModal="closeUniteDeMesure" 
+              ></vform>
+            </div>
+        </modal-top-right>
+      </div>
+
       <div class="flex items-end justify-between my-2">
         <titre>Les indicateurs </titre>
         <div class="flex items-center space-x-4">
@@ -298,6 +318,33 @@ export default {
       indicateurAttributsRecherche: ['nom', 'anneeDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       choiceDateOption: true,
       champs: null,
+      champsUniteDeMesure: [
+        {
+          name: "Nom",
+          type: "text",
+          key: "nom",
+          placeholdere: "Nom de l'unitee de mésure",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Type",
+          type: "",
+          key: "type",
+          placeholdere: "Type de l'unitée",
+          isSelect: true,
+          isTextArea: false,
+          options: [{id: 1, nom: "Numérique"}, {id:0, nom:"Non Numérique"}],
+          data:"",
+          cle: 'id',
+          value:'nom',
+          required: true,
+          errors: [],
+        }
+      ],
       champsUpdate: [],
       cols: 2,
       champsRecherche: [],

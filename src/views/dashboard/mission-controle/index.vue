@@ -220,7 +220,7 @@ export default {
       ],
       passationChamps: [
         { name: 'Mission de controle', key: 'missionDeControleId', type: '', placeholdere: "Selectionnez une mission de controle", isSelect: true, isTextArea: false, data: '', required: true, options: this.missionDeControles, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", isSite:true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
+        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", canAdd:true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: 'Entreprise Executante', key: 'entrepriseExecutanteId', type: '', placeholdere: "Selectionnez une entreprise", isSelect: true, isTextArea: false, data: '', options: this.entreprisesExecutante, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: 'Montant passation', key: 'montant', type: 'number', placeholdere: "Montant passation", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Date obtention', key: 'dateDobtention', type: 'date', placeholdere: "Date obtention", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },

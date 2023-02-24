@@ -61,6 +61,9 @@ const ProgrammeService = {
     },
     kobo() {
       return ApiService.get(`programme/kobo`);
+    },
+    updatekobo() {
+      return ApiService.put(`programme/kobo`);
     }
 
   };
