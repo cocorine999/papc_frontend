@@ -2,14 +2,16 @@
   <dashboard>
     <div class="w-full">
       <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
-      <p class="text-gray-800">
-        voulez vous supprimer cet indicateur?
-      </p>
+        <p class="text-gray-800">
+          voulez vous supprimer cet indicateur?
+        </p>
 
-      <div class="text-right mt-4">
-          <button @click="deleteModal = false" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
-          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400" @click="deleteIndicateur(deleteData)">Supprimer</button>
-      </div>
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false"
+            class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+            @click="deleteIndicateur(deleteData)">Supprimer</button>
+        </div>
       </delete-alert>
       <nav class="text-xs md:text-sm font-semibold flex flex-wrap justify-between items-center " aria-label="Breadcrumb">
         <div class="mb-2">
@@ -28,7 +30,7 @@
         </div>
         <div>
           <div class="w-full flex text-gray-600">
-            <input @input="$emit('search',$event.target.value)"
+            <input @input="$emit('search', $event.target.value)"
               class="h-10  w-full px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none"
               v-model="search" type="text" name="search" placeholder="Rechercher">
             <button type="submit" class="relative  right-10 ">
@@ -42,8 +44,6 @@
             </button>
           </div>
         </div>
-
-        <button>Actualiser</button>
       </nav>
 
       <div v-if="showSuiviModal">
@@ -59,7 +59,7 @@
                 <input v-model="suiviIndicateurs.annee" @change="verifyValeurCible(suiviIndicateurs.annee)" required
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   type="number" placeholder="" />
-                </div>
+              </div>
 
               <div v-if="isValeurCibleUse" class="my-true">
 
@@ -84,12 +84,12 @@
                     class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
                 <div class="flex justify-between my-3">
                   <div>
-                    <input type="radio" :checked="choiceDateOption" @click="choiceDateOption= true" id="date"
+                    <input type="radio" :checked="choiceDateOption" @click="choiceDateOption = true" id="date"
                       name="choix" value="date">
                     <label class="px-2" for="all">Par date</label>
                   </div>
                   <div>
-                    <input type="radio" @click="choiceDateOption= false" id="trimestre" name="choix" value="trimestre">
+                    <input type="radio" @click="choiceDateOption = false" id="trimestre" name="choix" value="trimestre">
                     <label class="px-2" for="sauf">Par trimestre</label>
                   </div>
                 </div>
@@ -130,11 +130,11 @@
 
               <div class="my-4">
                 <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire
-                  </label>
+                </label>
                 <textarea v-model="suiviIndicateurs.commentaire"
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   rows="3">
-                </textarea>
+                          </textarea>
               </div>
 
               <div class="py-2 my-4 flex justify-center space-x-8">
@@ -165,14 +165,15 @@
         <modal-top-right :title="title" v-on:close="closeA">
           <div class="px-4 overflow-y-auto">
             <div v-if="isUpdate">
-              <vform template="default"  isAllPairSaufDescrip="true" :sendRequest="sendRequest"  :champs="champsUpdate"
+              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :champs="champsUpdate"
                 :cols="cols" submitText="Modifier" @sendForm="sendForm" @closeModal="close"></vform>
             </div>
             <div v-if="!isUpdate">
-              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :savedInput="savedInput" :champs="champs"
-                :cols="cols" submitText="Ajouter" @sendForm="sendForm" @closeModal="close"></vform>
+              <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :savedInput="savedInput"
+                :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" @closeModal="close"
+                 @addSomeThing2="addCategorie"  @addSomeThing="openModal" ></vform>
             </div>
-            
+
           </div>
         </modal-top-right>
       </div>
@@ -186,26 +187,28 @@
         </vmodal>
       </div>
 
-      
-      <div v-if="showUniteDeMesureModal">
-        <modal-top-right  :title="title"  v-on:close="closeUniteDeMesure1">
 
-            <div class="w-full p-4">
-              <vform
-                template="default"
-                :champs="champsUniteDeMesure"
-                cols="1"
-                :savedInput="savedInput"
-                :submitText="submitText"
-                @sendForm="sendUniteDeMesureForm"
-                @closeModal="closeUniteDeMesure" 
-              ></vform>
-            </div>
+      <div v-if="showUniteDeMesureModal">
+        <modal-top-right :title="title" v-on:close="closeUniteDeMesure1">
+
+          <div class="w-full p-4">
+            <vform template="default" :champs="champsUniteDeMesure" cols="1" :savedInput="savedInput"
+              :submitText="submitText" @sendForm="sendUniteDeMesureForm" @closeModal="closeUniteDeMesure"></vform>
+          </div>
+        </modal-top-right>
+      </div>
+
+      <div v-if="showCategorieModal">
+        <modal-top-right :title="title" v-on:close="closeCategorie2">
+          <div class="w-full p-4">
+            <vform template="default" :savedInput="savedInput" :champs="champsCategorie" cols="1" :submitText="submitText"
+              @sendForm="sendCategorieForm" @closeModal="closeCategorie"></vform>
+          </div>
         </modal-top-right>
       </div>
 
       <div class="flex items-end justify-between my-2">
-        <titre>Les indicateurs </titre>
+        <titre>Les indicateurs</titre>
         <div class="flex items-center space-x-4">
           <button @click="showModal2 = true" title="filtre" class="bg-primary text-white px-2 py-1"><svg
               stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
@@ -238,26 +241,32 @@
       </div>
 
       <indicateur-table v-if="currentRole == 'bailleur'" :sendRequest="sendRequest" :key="componentKey" :headers="headers"
-        :datas="indicateurBailleurs" :actions="[{name:'consulter'}]" @consulter="consulterSuivi" @supprimer="supprimer" @colonneSearch="getColonne">
+        :datas="indicateurBailleurs" :actions="[{ name: 'consulter' }]" @consulter="consulterSuivi" @supprimer="supprimer"
+        @colonneSearch="getColonne">
       </indicateur-table>
-      <indicateur-table v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd" :key="componentKey" :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur" :actions="actions" @modifier="modifier"  @updateInputData="updateInputData"
-        @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer" @colonneSearch="getColonne"></indicateur-table>
-      <indicateur-table v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'supprimer'},{name:'consulter'},{name:'suivre'},]" :sendRequest="sendRequest"
+      <indicateur-table v-if="indicateurUpdate && indicateurDelete && suiviIndicateurAdd" :key="componentKey"
+        :sendRequest="sendRequest" :headers="headers" :datas="filteredIndicateur" :actions="actions" @modifier="modifier"
+        @updateInputData="updateInputData" @suivre="suivreIndicateur" @consulter="consulterSuivi" @supprimer="supprimer"
+        @colonneSearch="getColonne"></indicateur-table>
+      <indicateur-table v-if="indicateurDelete && !indicateurUpdate && suiviIndicateurAdd" :key="componentKey"
+        :actions="[{ name: 'supprimer' }, { name: 'consulter' }, { name: 'suivre' },]" :sendRequest="sendRequest"
         :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi"
         @supprimer="supprimer" @colonneSearch="getColonne"></indicateur-table>
-      <indicateur-table v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
+      <indicateur-table v-if="!indicateurDelete && indicateurUpdate && suiviIndicateurAdd" :key="componentKey"
+        :actions="[{ name: 'suivre' }, { name: 'consulter' }]" :sendRequest="sendRequest" :headers="headers"
+        :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @suivre="suivreIndicateur"
         @consulter="consulterSuivi"></indicateur-table>
-      <indicateur-table v-if="!indicateurDelete && !indicateurUpdate  && suiviIndicateurAdd " :key="componentKey" :actions="[{name:'suivre'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi">
+      <indicateur-table v-if="!indicateurDelete && !indicateurUpdate && suiviIndicateurAdd" :key="componentKey"
+        :actions="[{ name: 'suivre' }, { name: 'consulter' }]" :sendRequest="sendRequest" :headers="headers"
+        :datas="filteredIndicateur" @suivre="suivreIndicateur" @consulter="consulterSuivi">
       </indicateur-table>
-      <indicateur-table v-if="indicateurDelete && indicateurUpdate  && !suiviIndicateurAdd " :key="componentKey" @consulter="consulterSuivi" :actions="[{name:'supprimer'},{name:'consulter'}]"  :sendRequest="sendRequest"
-        :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData" @supprimer="supprimer" @colonneSearch="getColonne">
+      <indicateur-table v-if="indicateurDelete && indicateurUpdate && !suiviIndicateurAdd" :key="componentKey"
+        @consulter="consulterSuivi" :actions="[{ name: 'supprimer' }, { name: 'consulter' }]" :sendRequest="sendRequest"
+        :headers="headers" :datas="filteredIndicateur" @modifier="modifier" @updateInputData="updateInputData"
+        @supprimer="supprimer" @colonneSearch="getColonne">
       </indicateur-table>
     </div>
   </dashboard>
-
 </template>
 
 <script>
@@ -305,6 +314,7 @@ export default {
         valeurRealise: 0,
         commentaire: '',
       },
+
       showModal: false,
       showModal2: false,
       showSuiviModal: false,
@@ -312,12 +322,14 @@ export default {
       search: "",
       title: '',
       chargement: false,
-      indicateurId:'',
-      indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId','sourceDeVerification','hypothese'],
+      indicateurId: '',
+      indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId', 'sourceDeVerification', 'hypothese'],
       indicateurAttributsUpdate: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       indicateurAttributsRecherche: ['nom', 'anneeDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       choiceDateOption: true,
       champs: null,
+      // add Unite de mesure
+      showUniteDeMesureModal: false, // open and close unite de mesure
       champsUniteDeMesure: [
         {
           name: "Nom",
@@ -337,21 +349,37 @@ export default {
           placeholdere: "Type de l'unitée",
           isSelect: true,
           isTextArea: false,
-          options: [{id: 1, nom: "Numérique"}, {id:0, nom:"Non Numérique"}],
-          data:"",
+          options: [{ id: 1, nom: "Numérique" }, { id: 0, nom: "Non Numérique" }],
+          data: "",
           cle: 'id',
-          value:'nom',
+          value: 'nom',
           required: true,
           errors: [],
         }
       ],
+      // fin Unite de mesure
+      showCategorieModal: false,
+      champsCategorie: [
+        {
+          name: "Nom",
+          type: "text",
+          key: "nom",
+          placeholdere: "Nom de la categorie",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        }
+      ],
+      categorieAttributes: ["nom"],
       champsUpdate: [],
       cols: 2,
       champsRecherche: [],
       headers: [],
       idIndicateur: '',
       isValeurCibleUse: true,
-      colonnes:[],
+      colonnes: [],
       actions: [
         { name: 'suivre' },
         { name: 'supprimer', iconne: '' },
@@ -367,14 +395,14 @@ export default {
       suiviIndicateurAdd: false,
       suiviIndicateurVisible: false,
       exporterIndicateur: false,
-      indicateurs:[],
-      bailleurs:[],
-      categories:[],
-      uniteDeMesures:[],
-      programmeId:[],
-      isUpdate:false,
-      deleteData:{},
-      deleteModal:false,
+      indicateurs: [],
+      bailleurs: [],
+      categories: [],
+      uniteDeMesures: [],
+      programmeId: [],
+      isUpdate: false,
+      deleteData: {},
+      deleteModal: false,
       componentKey: 0,
 
     };
@@ -408,7 +436,7 @@ export default {
         return item;
       });
     },
-    
+
     categories: function (categories) {
       this.champs.map((item) => {
         if (item.key === "categorieId") {
@@ -461,7 +489,15 @@ export default {
       this.champs.forEach((value) => {
         value.errors = errors[value.key];
       });
-      //this.errors = errors
+
+      this.champsUniteDeMesure.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+
+      this.champsCategorie.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+
     },
   },
 
@@ -470,28 +506,27 @@ export default {
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
       indicateur: "indiateurs/getIndicateur",
-
+      uniteeDeMesure: "uniteesDeMesure/getUniteeDeMesure",
+      uniteesDeMesure: "uniteesDeMesure/getUniteesDeMesure",
       /* categories: "categories/getCategorie",
       bailleurs: "bailleurs/getBailleurs",
       categories: "categories/getCategories",
-      uniteDeMesure: "uniteesDeMesure/getUniteesDeMesure", */
+      , */
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
+
     filteredIndicateur() {
       var self = this;
       var colonnes = [];
       var i = 0;
 
       this.headers.forEach(element => {
-        if(this.colonnes[i])
-        {
-          if(element.props)
-          {
+        if (this.colonnes[i]) {
+          if (element.props) {
             colonnes.push([element.props, element.cle])
           }
 
-          else
-          {
+          else {
             colonnes.push(element.cle)
           }
         }
@@ -499,60 +534,45 @@ export default {
         i++;
       });
 
-      if(colonnes.length)
-      {
-        return this.indicateurs.filter(function (data){
-          for(let col of colonnes)
-          {
-            if(Array.isArray(col))
-            {
-              if(data[col[0]][col[1]].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
-                {
-                  return data              
-                }
+      if (colonnes.length) {
+        return this.indicateurs.filter(function (data) {
+          for (let col of colonnes) {
+            if (Array.isArray(col)) {
+              if (data[col[0]][col[1]].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0) {
+                return data
+              }
+            }
+            else {
+              if (data[col].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0) {
+                return data
+              }
             }
 
-            else
-            {
-              if(data[col].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
-                {
-                  return data              
-                }              
-            }
-            
-          }                         
-        });  
+          }
+        });
       }
 
-      else
-      {
-        return this.indicateurs.filter(function (data){
-    
-          for(let header of self.headers)
-          {
+      else {
+        return this.indicateurs.filter(function (data) {
 
-            if(data[header.props] != null)
-            {
-              if(data[header.props][header.cle])
-              {
-                if(data[header.props][header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
-                {                  
-                  return data                  
+          for (let header of self.headers) {
+
+            if (data[header.props] != null) {
+              if (data[header.props][header.cle]) {
+                if (data[header.props][header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0) {
+                  return data
                 }
               }
             }
 
-            else
-            {
-              if(data[header.cle])
-              {
-                if(data[header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0)
-                {                  
-                  return data              
+            else {
+              if (data[header.cle]) {
+                if (data[header.cle].toString().toLowerCase().indexOf(self.search.toLowerCase()) >= 0) {
+                  return data
                 }
               }
             }
-            
+
           }
         });
       }
@@ -560,9 +580,9 @@ export default {
   },
   methods: {
 
-    modalclose(){
-     // this.suiviIndicateurs.annee='',
-     // this.suiviIndicateurs.trimestre='',
+    modalclose() {
+      // this.suiviIndicateurs.annee='',
+      // this.suiviIndicateurs.trimestre='',
       //this.suiviIndicateurs.valeurCible=0,
       //this.suiviIndicateurs.valeurRealise=0,
       //this.suiviIndicateurs.commentaire='',
@@ -570,9 +590,10 @@ export default {
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      setUniteeDeMesure: "uniteesDeMesure/FILL",
     }),
-    getColonne(data)
-    {
+
+    getColonne(data) {
       this.colonnes = data
       console.log(this.colonnes)
     },
@@ -586,22 +607,22 @@ export default {
       this.active()
       IndicateurService.get().then((data) => {
         const datas = data.data.data
-        this.indicateurs= datas
+        this.indicateurs = datas
         this.headers = [
-          {name: 'Indicateur ', cle: 'nom', width:'w-56' },
-          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width:'w-20' },
-          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width:'w-56' },
-          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width:'w-56' },
-          {name: 'Valeur de base', cle: 'valeurDeBase', width:'w-24' },
-          {name: 'Année de base', cle: 'anneeDeBase', width:'w-24' },
-          {name: 'Date de création', cle: 'created_at', width:'w-56' },
+          { name: 'Indicateur ', cle: 'nom', width: 'w-56' },
+          { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width: 'w-20' },
+          { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width: 'w-56' },
+          { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width: 'w-56' },
+          { name: 'Valeur de base', cle: 'valeurDeBase', width: 'w-24' },
+          { name: 'Année de base', cle: 'anneeDeBase', width: 'w-24' },
+          { name: 'Date de création', cle: 'created_at', width: 'w-56' },
         ]
         this.champs = [
           { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
           { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
           { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-          { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
-          { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", canAdd: true, isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", canAdd: true, isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
           { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
           { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
           { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
@@ -622,8 +643,8 @@ export default {
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
@@ -632,48 +653,52 @@ export default {
     fetchIndicateur() {
       IndicateurService.get().then((data) => {
         const datas = data.data.data
-        this.indicateurs= datas
+        this.indicateurs = datas
         this.headers = [
-          {name: 'Indicateur ', cle: 'nom', width:'w-56' },
-          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width:'w-20' },
-          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width:'w-56' },
-          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width:'w-56' },
-          {name: 'Valeur de base', cle: 'valeurDeBase', width:'w-24' },
-          {name: 'Année de base', cle: 'anneeDeBase', width:'w-24' },
-          {name: 'Date de création', cle: 'created_at', width:'w-56' },
+          { name: 'Indicateur ', cle: 'nom', width: 'w-56' },
+          { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width: 'w-20' },
+          { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width: 'w-56' },
+          { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width: 'w-56' },
+          { name: 'Valeur de base', cle: 'valeurDeBase', width: 'w-24' },
+          { name: 'Année de base', cle: 'anneeDeBase', width: 'w-24' },
+          { name: 'Date de création', cle: 'created_at', width: 'w-56' },
         ]
         this.champs = [
-        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
-      ]
-       
+          { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+        ]
+
       }).catch((error) => {
-       
+
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
       })
     },
-   
+
     ...mapActions("indicateurs", {
       saveIndicateur: "STORE_INDICATEUR",
       filtre: "FILTRE_INDICATEUR",
       updateIndicateur: "UPDATE_INDICATEUR",
       deleteIndicateur: "DESTROY_INDICATEUR",
+    }),
+    ...mapActions("uniteesDeMesure", {
+      fetchUniteesDeMesure: "FETCH_LIST_UNITEE_DE_MESURE",
+      saveUniteeDeMesure: "STORE_UNITEE_DE_MESURE",
     }),
     /* ...mapActions("bailleurs", {
       fetchBailleurs: "FETCH_LIST_BAILLEUR",
@@ -685,25 +710,174 @@ export default {
       fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
     }), */
 
+    // all  unite de mesure add modal methods
+
+   openModal(champsName){
+      if ( champsName == "Unite de mesure" ){
+       this.addUniteeDeMesure()
+      }else if ( champsName == "Categories" ){
+         this.addCategorie()
+      }
+   },
+
+    addUniteeDeMesure() {
+
+      this.title = "Ajouter une nouvelle unitee de mésure";
+
+      this.submitText = "Enrégistrer";
+
+      this.showUniteDeMesureModal = true
+      this.showCategorieModal = false
+
+
+      this.fetchUniteesDeMesure()
+    },
+    closeUniteDeMesure() {
+      this.showCloseUniteDeMesureModal();
+      this.resetUniteDeMesureForm()
+      localStorage.removeItem('formData')
+      // this.saveForm()
+    },
+    closeUniteDeMesure1() {
+      this.showCloseUniteDeMesureModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champsUniteDeMesure.length; i++) {
+        this.savedInput.push(this.champsUniteDeMesure[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+    showCloseUniteDeMesureModal(value = false) {
+      this.showUniteDeMesureModal = value;
+    },
+    resetUniteDeMesureForm() {
+      this.champsUniteDeMesure = this.champsUniteDeMesure.map((item) => {
+        item.data = "";
+        return item;
+      });
+
+      window.document.getElementById("vform")?.reset();
+
+      this.setUniteeDeMesure({});
+    },
+    sendUniteDeMesureForm() {
+      this.champsUniteDeMesure = this.champsUniteDeMesure.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let uniteeDeMesure = {
+        nom: "",
+        type: ""
+      }
+
+      uniteeDeMesure.nom = this.champsUniteDeMesure[0].data
+
+      uniteeDeMesure.type = this.champsUniteDeMesure[1].data.id
+
+
+
+      if (this.uniteeDeMesure?.id) {
+        this.updateUniteeDeMesure({ uniteeDeMesure: uniteeDeMesure, id: this.uniteeDeMesure?.id }).then(
+          (response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.fetchUniteesDeMesure()
+              this.closeUniteDeMesure();
+            }
+          }
+        );
+      }
+    },
+    // fin all Unite de mesure add modal methods
+
+
+    //  all categorie add modal methods
+    addCategorie() {
+      this.title = "Ajouter une nouvelle categorie";
+     
+
+      this.submitText = "Enrégistrer";
+
+      this.showCategorieModal = true;
+      this.fetchUniteesDeMesure()
+    },
+    closeCategorie() {
+      this.showCloseCategorieModal();
+      this.resetCategorieForm()
+      localStorage.removeItem('formData')
+      // this.saveForm()
+    },
+    closeCategorie2() {
+      this.showCloseCategorieModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champsCategorie.length; i++) {
+        this.savedInput.push(this.champsCategorie[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+    showCloseCategorieModal(value = false) {
+      this.showCategorieModal = value;
+    },
+    resetCategorieForm() {
+      this.champs = this.champs.map((item) => {
+        item.data = "";
+        return item;
+      });
+    },
+
+    sendCategorieForm() {
+      this.champsCaregorie = this.champsCaregorie.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let uniteeDeMesure = {
+        nom: "",
+        type: ""
+      }
+
+      uniteeDeMesure.nom = this.champsCaregorie[0].data
+
+      uniteeDeMesure.type = this.champsCaregorie[1].data.id
+
+
+
+      if (this.uniteeDeMesure?.id) {
+      this.saveUniteeDeMesure(uniteeDeMesure).then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            this.fetchUniteesDeMesure()
+            this.closeCategorie();
+            this.resetCategorieForm();
+            localStorage.removeItem('formData');
+          }
+        });
+      } 
+    },
+    //fin  all categorie add modal methods
+
+
+
+
     getIndicateurBailleurs() {
       IndicateurService.getIndicateurBailleur().then((data) => {
         this.indicateurBailleurs = data.data.data
       }).catch((error) => {
         if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-              } else if (error.request) {
-                // Demande effectuée mais aucune réponse n'est reçue du serveur.
-                //console.log(error.request);
-              } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-              //console.log('dernier message', error.message);
-          }
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
       })
     },
-    
-    
+
+
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         if (element.slug === 'voir-un-indicateur') {
@@ -726,6 +900,12 @@ export default {
         }
         if (element.slug == 'exporter-un-indicateur') {
           this.exporterIndicateur = true
+        }
+        if (element.slug === 'voir-une-unite-de-mesure') {
+          this.uniteVisible = true
+        }
+        if (element.slug === 'creer-une-unite-de-mesure') {
+          this.uniteAdd = true
         }
 
       });
@@ -760,21 +940,21 @@ export default {
           this.$toast.success('suivi éffectué')
           this.showSuiviModal = false
           this.chargement = false
-          this.suiviIndicateurs.annee =''
+          this.suiviIndicateurs.annee = ''
           this.suiviIndicateurs.trimestre = ''
-          this.suiviIndicateurs.dateSuivie= ''
-          this.suiviIndicateurs.valeurCible =0
+          this.suiviIndicateurs.dateSuivie = ''
+          this.suiviIndicateurs.valeurCible = 0
           this.suiviIndicateurs.valeurRealise = 0
-          this.suiviIndicateurs.commentaire =''
+          this.suiviIndicateurs.commentaire = ''
         }).catch((error) => {
           this.chargement = false
           if (error.response) {
-          // Requête effectuée mais le serveur a répondu par une erreur.
-          const message = error.response.data.message
-          this.$toast.error(message)
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
           } else if (error.request) {
-          // Demande effectuée mais aucune réponse n'est reçue du serveur.
-          //console.log(error.request);
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
           } else {
             // Une erreur s'est produite lors de la configuration de la demande
           }
@@ -817,20 +997,20 @@ export default {
         }
       }).catch((error) => {
         if (error.response) {
-              // Requête effectuée mais le serveur a répondu par une erreur.
-              const message = error.response.data.message
-              this.$toast.error(message)
-              } else if (error.request) {
-                // Demande effectuée mais aucune réponse n'est reçue du serveur.
-                //console.log(error.request);
-              } else {
-              // Une erreur s'est produite lors de la configuration de la demande
-              //console.log('dernier message', error.message);
-          }
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
       })
     },
 
-    
+
 
     sendForm() {
 
@@ -846,7 +1026,7 @@ export default {
       indicateur.bailleurId = indicateur.bailleurId.id
       indicateur.categorieId = indicateur.categorieId.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId.id
-      
+
       if (this.sendRequest == false) {
         this.sendRequest = true
         if (this.indicateurId != '') {
@@ -856,7 +1036,7 @@ export default {
               if (response.status == 200 || response.status == 201) {
                 this.$toast.success('operation effectué avec success')
                 this.fetchIndicateur()
-               
+
                 this.sendRequest = false
                 this.close();
               }
@@ -873,7 +1053,7 @@ export default {
               localStorage.removeItem('formData');
               this.$toast.success('operation effectué avec success')
               this.fetchIndicateur()
-             
+
               this.sendRequest = false
             }
           }).catch((e) => {
@@ -896,13 +1076,13 @@ export default {
       indicateur.bailleurId = indicateur.bailleurId?.id
       indicateur.categorieId = indicateur.categorieId?.id
       indicateur.uniteeMesureId = indicateur.uniteeMesureId?.id
-      
+
 
 
       this.filtre(indicateur).then((response) => {
         if (response.status == 200 || response.status == 201) {
           const datas = response.data.data
-          this.indicateurs= datas
+          this.indicateurs = datas
           this.close2();
         }
       });
@@ -926,35 +1106,35 @@ export default {
       })
     },
 
-    supprimer(indicateur,index) {
-      this.deleteModal= true
+    supprimer(indicateur, index) {
+      this.deleteModal = true
       this.deleteData.data = indicateur
       this.deleteData.index = index
     },
 
     deleteIndicateur(data) {
       //this.filteredIndicateur.splice(data.index,1)
-      this.deleteModal= false
+      this.deleteModal = false
       IndicateurService.destroy(data.data.id).then((data) => {
         this.$toast.success("Operation effectué avec success !")
         this.fetchIndicateur()
-       
+
       }).catch((error) => {
-        
+
         if (error.response) {
           // Requête effectuée mais le serveur a répondu par une erreur.
           const message = error.response.data.message
           this.$toast.error(message)
         } else if (error.request) {
-        // Demande effectuée mais aucune réponse n'est reçue du serveur.
-        //console.log(error.request);
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
-      }) 
+      })
     },
-    
-    
+
+
 
     close() {
       this.showCloseModal();
@@ -988,28 +1168,28 @@ export default {
       this.showModal = true
       this.isUpdate = false
     },
-   
+
     modifier(indicateur) {
       localStorage.removeItem('formData');
       this.isUpdate = true
       this.title = 'Modifier un indicateur'
       this.showModal = true
-      
+
       this.submitText = "Modifier"
 
       this.indicateurId = indicateur.id
 
       this.indicateurAttributsUpdate.forEach((item) => {
-        
+
         this.champsUpdate.find((value, index) => {
-         
-        if (value.key !== 'bailleurId' && value.key !== 'categorieId' && value.key !== 'uniteeMesureId') {
-          if (value.key === item) {
-           
-            this.champsUpdate[index]['data'] = indicateur[item]
-           
+
+          if (value.key !== 'bailleurId' && value.key !== 'categorieId' && value.key !== 'uniteeMesureId') {
+            if (value.key === item) {
+
+              this.champsUpdate[index]['data'] = indicateur[item]
+
+            }
           }
-        }
 
         })
 
@@ -1083,7 +1263,7 @@ export default {
         this.getUniteDeMesure()
         this.getCategorie()
         this.fetchIndicateurs()
-        
+
         this.champsUpdate = [
           { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
           { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -1092,7 +1272,7 @@ export default {
           { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] }, */
           { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
         ]
-        
+
       }
     }
 
@@ -1100,6 +1280,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
