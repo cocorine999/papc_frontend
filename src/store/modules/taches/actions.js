@@ -65,6 +65,14 @@ export default {
 
     },
 
+    async SUIVRE_OLD_TACHE ({ commit }) {
+        
+        const { data, status } = await TacheService.myOldSuivis(commit);
+
+        return { data, status };
+
+    },
+
     async DESTROY_TACHE ({ commit }, idTache) {
         
         const { data, status } = await TacheService.destroy(idTache);

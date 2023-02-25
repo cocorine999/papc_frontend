@@ -27,6 +27,9 @@ const TachesService = {
     mySuivis(slug) {
       return ApiService.get(`taches/${slug}/suivis`);
     },
+    myOldSuivis(params) {
+      return ApiService.post(`suivisV2`, params);
+    },
     getSuivi() {
       const params = {
         type: "tache"

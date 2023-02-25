@@ -86,11 +86,12 @@
       </div>
 
      
+      <div v-for="(duree, index) in durees" :key="index">
         <p class=" mt-1 text-gray-600 dark:text-gray-400 mb-6">
-          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ debut }}</span> au
-          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ fin }} </span>
+          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ duree.debut }}</span> au
+          <span class="text-xs font-bold"><i class="bx bxs-calendar mr-1"></i> {{ duree.fin }} </span>
         </p>
-       
+      </div>       
       </div>
     </div>
   </div>
@@ -115,7 +116,8 @@ export default {
     "isDelete",
     "isUpdate",
     "code",
-    "data"
+    "data",
+    "durees"
   ],
   components: { Dropdown },
   data() {

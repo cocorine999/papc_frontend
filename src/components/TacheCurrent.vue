@@ -230,10 +230,10 @@
             <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in enCours" :key="index">
                 <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
-                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
-                  :debut="tache.debut" :fin="tache.fin" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
-                  @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @prolonger="prolonger(tache)"
-                  @suivre="suivreMyTache(tache)" @validation="validation" @commentaire="showComment = true"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :debut="tache.debut" :fin="tache.fin" :montantEPM="tache.montantEPM" :durees="tache.durees"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" @commentaire="showComment = true"
                   :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
               </div>
             </div>
@@ -245,10 +245,11 @@
             <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in enAttente" :key="index">
                 <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
-                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
-                  :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
-                  @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @prolonger="prolonger(tache)"
-                  @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM" :durees="tache.durees"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
+>>>>>>> origin/rwv-constantin
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -262,10 +263,10 @@
             <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in terminer" :key="index">
                 <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
-                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
-                  :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
-                  @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @prolonger="prolonger(tache)"
-                  @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM" :durees="tache.durees"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -279,10 +280,10 @@
             <div v-if="isShow" class="grid grid-cols-1 my-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5">
               <div v-for="(tache, index) in retardData" :key="index">
                 <card-tache :id="tache.id" :bailleur="tache.bailleur.sigle" :statut="getStatus(tache.statut)"
-                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
-                  :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
-                  @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @prolonger="prolonger(tache)"
-                  @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
+                  :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
+                  :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM" :durees="tache.durees"
+                  @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
