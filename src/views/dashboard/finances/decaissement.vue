@@ -73,6 +73,18 @@
           </div>
         </vmodal>
       </div>
+     <!-- modal ajout projet -->
+      <div v-if="showProjetModal">
+        <modal-top-right :title="title" v-title v-on:close="closeProjet2">
+          <div class="p-4 overflow-auto">
+            <vform template="default"  :sendRequest="sendRequest" @getFile="getProjetFile" :savedInput="savedInput"
+              @getImage="getImage" :champs="champs" :cols="cols" :submitText="submitText" @sendForm="sendForm"
+              @closeModal="closeProjet"></vform>
+          </div>
+        </modal-top-right>
+      </div>
+
+        <!--  modal ajout projet -->
       <div class="flex items-center justify-between my-2">
         <titre>Decaissement </titre>
         <div class="flex space-x-3">
@@ -136,6 +148,9 @@ import ModalChat from '@/components/ModalChat'
 import DeleteAlert from "@/components/DeleteAlert.vue";
 import Commentaire from '@/components/Commentaire.vue'
 import DecaissementService from "@/services/modules/decaissement.service";
+
+// add projet
+
 
 export default {
   components: {
@@ -535,7 +550,7 @@ export default {
         this.champs = [
           { name: 'Montant', key: 'montant', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Date', key: 'date', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
-          { name: 'Projet', key: 'projetId', type: '', placeholdere: 'Choisir un projet', isSelect: true, isTextArea: false, data: '', options: datas, cle: 'id', value: 'nom', required: true, },
+          { name: 'Projet', key: 'projetId', type: '', placeholdere: 'Choisir un projet', canAdd: true,  isSelect: true, isTextArea: false, data: '', options: datas, cle: 'id', value: 'nom', required: true, },
           { name: 'Methode de paiement', key: 'methodeDePaiement', placeholdere: 'Mode de paiement', isSelect: true, isTextArea: false, data: '', options: this.$store.state.modePaiement, cle: 'id', value: 'nom', required: true, },
           { name: 'Source', key: 'type', placeholdere: 'Source', isSelect: true, isTextArea: false, data: '', options: this.$store.state.source, cle: 'id', value: 'nom', required: true, },
         ]

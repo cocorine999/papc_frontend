@@ -134,7 +134,7 @@
                 <textarea v-model="suiviIndicateurs.commentaire"
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   rows="3">
-                          </textarea>
+                                  </textarea>
               </div>
 
               <div class="py-2 my-4 flex justify-center space-x-8">
@@ -171,7 +171,7 @@
             <div v-if="!isUpdate">
               <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :savedInput="savedInput"
                 :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" @closeModal="close"
-                 @addSomeThing2="addCategorie"  @addSomeThing="openModal" ></vform>
+                @addSomeThing2="addCategorie" @addSomeThing="openModal"></vform>
             </div>
 
           </div>
@@ -203,6 +203,17 @@
           <div class="w-full p-4">
             <vform template="default" :savedInput="savedInput" :champs="champsCategorie" cols="1" :submitText="submitText"
               @sendForm="sendCategorieForm" @closeModal="closeCategorie"></vform>
+          </div>
+        </modal-top-right>
+      </div>
+
+      <div v-if="showBailleurModal">
+        <modal-top-right :title="title" v-on:close="closeBailleur2">
+          <div class="p-4 w-full">
+            <vform  template="default" @getImage="getBailleurImage" :champs="champsBailleur"
+              :savedInput="savedBailleurInput" :cols="cols" :submitText="submitText" @sendForm="sendBailleurForm"
+              :sendRequest="sendRequest" @closeModal="closeBailleur">
+            </vform>
           </div>
         </modal-top-right>
       </div>
@@ -279,15 +290,20 @@ import Vmodal from '@/components/Vmodal'
 import Vbutton from '@/components/Vbutton'
 import Dashboard from '@/layouts/Dashboard'
 import CardProgramme from '@/components/CardProgramme'
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 import extractFormData from "@/utils/extract-data";
 import SuiviService from "@/services/modules/indicateur.suivi.service.js";
 import IndicateurService from "@/services/modules/indicateur.service";
+import CategorieService from "@/services/modules/categorie.service"; // add categorie modal
+// add Unite de mesure modal
 import BailleurService from "@/services/modules/bailleur.service";
-import CategorieService from "@/services/modules/categorie.service";
 import UniteDeMesureService from "@/services/modules/unitee.mesure.service";
 import DeleteAlert from "@/components/DeleteAlert.vue";
 import JsonExcel from "vue-json-excel";
+// add bailleurs Modal import
+import Dropdown from '@/components/Dropdown.vue'
+import { API_BASE_URL } from "@/services/configs/environment.js";
+
 export default {
   components: {
     IndicateurTable,
@@ -300,7 +316,8 @@ export default {
     CardProgramme,
     DeleteAlert,
     ModalTopRight,
-    JsonExcel
+    JsonExcel,
+    Dropdown,
   },
   data() {
     return {
@@ -322,8 +339,8 @@ export default {
       search: "",
       title: '',
       chargement: false,
-      indicateurId:'',
-      indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId','sourceDeVerification','hypothese', 'kobo', 'koboVersion'],
+      indicateurId: '',
+      indicateurAttributs: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId', 'sourceDeVerification', 'hypothese', 'kobo', 'koboVersion'],
       indicateurAttributsUpdate: ['nom', 'description', 'anneeDeBase', 'valeurDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId', 'kobo', 'koboVersion'],
       indicateurAttributsRecherche: ['nom', 'anneeDeBase', 'bailleurId', 'categorieId', 'uniteeMesureId'],
       choiceDateOption: true,
@@ -357,7 +374,7 @@ export default {
           errors: [],
         }
       ],
-      // fin Unite de mesure
+      // add categories data
       showCategorieModal: false,
       champsCategorie: [
         {
@@ -373,6 +390,91 @@ export default {
         }
       ],
       categorieAttributes: ["nom"],
+      // add bailleur data
+      showBailleurModal: false,
+      base_url: API_BASE_URL,
+      bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
+      showModal: false,
+      champsLogo: [
+        { name: 'Changer le logo', type: 'file', placeholdere: 'Changer le logo', isImage: true, isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+      ],
+      image: {},
+      showUpdateImage: false,
+      bailleurVisible: false,
+      bailleurAdd: false,
+      programmeId: this.currentUser?.programme?.id,
+      bailleurUpdate: false,
+      champsBailleur: [
+        {
+          name: "Nom",
+          type: "text",
+          key: "nom",
+          placeholdere: "Nom du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Code",
+          type: "number",
+          key: "code",
+          placeholdere: "Code du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Sigle",
+          type: "text",
+          key: "sigle",
+          placeholdere: "Sigle du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Email",
+          type: "email",
+          key: "email",
+          placeholdere: "Votre Email",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Contact",
+          type: "number",
+          key: "contact",
+          placeholdere: "Votre contact",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Pays",
+          type: "text",
+          key: "pays",
+          placeholdere: "Pays du bailleur",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+
+        { name: 'Logo', type: 'file', isImage: true, placeholdere: 'Votre logo ', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+      ],
+      // indicateur data
       champsUpdate: [],
       cols: 2,
       champsRecherche: [],
@@ -498,6 +600,10 @@ export default {
         value.errors = errors[value.key];
       });
 
+      this.champsBailleur.forEach((value) => {
+        value.errors = errors[value.key];
+      });
+
     },
   },
 
@@ -508,8 +614,10 @@ export default {
       indicateur: "indiateurs/getIndicateur",
       uniteeDeMesure: "uniteesDeMesure/getUniteeDeMesure",
       uniteesDeMesure: "uniteesDeMesure/getUniteesDeMesure",
-      /* categories: "categories/getCategorie",
       bailleurs: "bailleurs/getBailleurs",
+
+      /* categories: "categories/getCategorie",
+     
       categories: "categories/getCategories",
       , */
     }),
@@ -577,6 +685,7 @@ export default {
         });
       }
     },
+
   },
   methods: {
 
@@ -591,6 +700,7 @@ export default {
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       setUniteeDeMesure: "uniteesDeMesure/FILL",
+      setBailleur: "bailleurs/FILL", //for add's bailleur modal
     }),
 
     getColonne(data) {
@@ -609,15 +719,15 @@ export default {
         const datas = data.data.data
         this.indicateurs = datas
         this.headers = [
-          {name: 'Indicateur ', cle: 'nom', width:'w-56' },
-          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width:'w-20' },
-          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width:'w-56' },
-          { name: 'Kobo champs', cle: 'kobo',width:'w-24' },
-          { name: 'Kobo version', cle: 'koboVersion',width:'w-24' },
-          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width:'w-56' },
-          {name: 'Valeur de base', cle: 'valeurDeBase', width:'w-24' },
-          {name: 'Année de base', cle: 'anneeDeBase', width:'w-24' },
-          {name: 'Date de création', cle: 'created_at', width:'w-56' },
+          { name: 'Indicateur ', cle: 'nom', width: 'w-56' },
+          { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width: 'w-20' },
+          { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width: 'w-56' },
+          { name: 'Kobo champs', cle: 'kobo', width: 'w-24' },
+          { name: 'Kobo version', cle: 'koboVersion', width: 'w-24' },
+          { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width: 'w-56' },
+          { name: 'Valeur de base', cle: 'valeurDeBase', width: 'w-24' },
+          { name: 'Année de base', cle: 'anneeDeBase', width: 'w-24' },
+          { name: 'Date de création', cle: 'created_at', width: 'w-56' },
         ]
         this.champs = [
           { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -625,7 +735,7 @@ export default {
           { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
           { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", canAdd: true, isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
           { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", canAdd: true, isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
-          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", canAdd: true, isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
           { name: 'Kobo champs', type: 'text', key: 'kobo', placeholdere: "Paramètre champ kobo", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
           { name: 'Kobo version', type: 'text', key: 'koboVersion', placeholdere: "Paramètre version kobo", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
           { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
@@ -659,30 +769,30 @@ export default {
         const datas = data.data.data
         this.indicateurs = datas
         this.headers = [
-          {name: 'Indicateur ', cle: 'nom', width:'w-56' },
-          {name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width:'w-20' },
-          {name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width:'w-56' },
-          { name: 'Kobo champs', cle: 'kobo' , width:'w-56' },
-          { name: 'Kobo version', cle: 'koboVersion' , width:'w-56' },
-          {name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width:'w-56' },
-          {name: 'Valeur de base', cle: 'valeurDeBase', width:'w-24' },
-          {name: 'Année de base', cle: 'anneeDeBase', width:'w-24' },
-          {name: 'Date de création', cle: 'created_at', width:'w-56' },
+          { name: 'Indicateur ', cle: 'nom', width: 'w-56' },
+          { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width: 'w-20' },
+          { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width: 'w-56' },
+          { name: 'Kobo champs', cle: 'kobo', width: 'w-56' },
+          { name: 'Kobo version', cle: 'koboVersion', width: 'w-56' },
+          { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width: 'w-56' },
+          { name: 'Valeur de base', cle: 'valeurDeBase', width: 'w-24' },
+          { name: 'Année de base', cle: 'anneeDeBase', width: 'w-24' },
+          { name: 'Date de création', cle: 'created_at', width: 'w-56' },
         ]
         this.champs = [
-        { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
-        { name: 'Kobo champs', type: 'text', key: 'kobo', placeholdere: "Paramètre champs kobo", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Kobo version', type: 'text', key: 'koboVersion', placeholdere: "Paramètre version kobo", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
-        { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
-      ]
-       
+          { name: 'Nom', type: 'text', key: 'nom', placeholdere: "Nom de l'indicateur", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Année de base', key: 'anneeDeBase', type: 'number', placeholdere: "l'année de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Valeur de base', key: 'valeurDeBase', type: 'text', placeholdere: "Valeur de base", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: this.uniteDeMesures, required: true, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Categories', key: 'categorieId', type: '', placeholdere: "Selectionnez une categorie", isSelect: true, isTextArea: false, data: '', options: this.categories, required: false, cle: 'id', value: 'nom', errors: [] },
+          { name: 'Bailleurs', key: 'bailleurId', type: '', placeholdere: "Selectionnez le bailleur", isSelect: true, isTextArea: false, data: '', required: true, options: this.bailleurs, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Kobo champs', type: 'text', key: 'kobo', placeholdere: "Paramètre champs kobo", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Kobo version', type: 'text', key: 'koboVersion', placeholdere: "Paramètre version kobo", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Source de verification', type: 'text', key: 'sourceDeVerification', placeholdere: "Source de verification", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Hypothese', type: 'text', key: 'hypothese', placeholdere: "Hypothese", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Description', key: 'description', type: '', placeholdere: "Description", isSelect: false, isTextArea: true, data: '', required: true, },
+        ]
+
       }).catch((error) => {
 
         if (error.response) {
@@ -704,10 +814,18 @@ export default {
       updateIndicateur: "UPDATE_INDICATEUR",
       deleteIndicateur: "DESTROY_INDICATEUR",
     }),
+
+
     ...mapActions("uniteesDeMesure", {
       fetchUniteesDeMesure: "FETCH_LIST_UNITEE_DE_MESURE",
       saveUniteeDeMesure: "STORE_UNITEE_DE_MESURE",
     }),
+
+    ...mapActions("bailleurs", {
+      fetchBailleurs: "FETCH_LIST_BAILLEUR",
+      saveBailleur: "STORE_BAILLEUR",
+    }),
+
     /* ...mapActions("bailleurs", {
       fetchBailleurs: "FETCH_LIST_BAILLEUR",
     }),
@@ -720,13 +838,15 @@ export default {
 
     // all  unite de mesure add modal methods
 
-   openModal(champsName){
-      if ( champsName == "Unite de mesure" ){
-       this.addUniteeDeMesure()
-      }else if ( champsName == "Categories" ){
-         this.addCategorie()
+    openModal(champsName) {
+      if (champsName == "Unite de mesure") {
+        this.addUniteeDeMesure()
+      } else if (champsName == "Categories") {
+        this.addCategorie()
+      } else if (champsName == "Bailleurs") {
+        this.addBailleur()
       }
-   },
+    },
 
     addUniteeDeMesure() {
 
@@ -735,9 +855,7 @@ export default {
       this.submitText = "Enrégistrer";
 
       this.showUniteDeMesureModal = true
-      this.showCategorieModal = false
-
-
+    
       this.fetchUniteesDeMesure()
     },
     closeUniteDeMesure() {
@@ -802,7 +920,7 @@ export default {
     //  all categorie add modal methods
     addCategorie() {
       this.title = "Ajouter une nouvelle categorie";
-     
+
 
       this.submitText = "Enrégistrer";
 
@@ -813,7 +931,7 @@ export default {
       this.showCloseCategorieModal();
       this.resetCategorieForm()
       localStorage.removeItem('formData')
-      // this.saveForm()
+
     },
     closeCategorie2() {
       this.showCloseCategorieModal();
@@ -852,7 +970,7 @@ export default {
 
 
       if (this.uniteeDeMesure?.id) {
-      this.saveUniteeDeMesure(uniteeDeMesure).then((response) => {
+        this.saveUniteeDeMesure(uniteeDeMesure).then((response) => {
           if (response.status == 200 || response.status == 201) {
             this.fetchUniteesDeMesure()
             this.closeCategorie();
@@ -860,13 +978,104 @@ export default {
             localStorage.removeItem('formData');
           }
         });
-      } 
+      }
     },
     //fin  all categorie add modal methods
 
+    // all bailleurs methods
+
+    addBailleur() {
+      this.title = "Ajouter un bailleur";
+
+      this.submitText = "Enrégistrer";
+
+      this.showBailleurModal = true
+    },
+
+    closeBailleur() {
+      this.showCloseBailleurModal();
+      this.resetBailleurForm()
+      localStorage.removeItem('formData')
+      // this.saveForm()
+    },
+    closeBailleur2() {
+      this.showCloseBailleurModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champsBailleur.length; i++) {
+        this.savedInput.push(this.champsBailleur[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+    showCloseBailleurModal(value = false) {
+      this.showBailleurModal = value;
+    },
+
+    resetBailleurForm() {
+      this.champsBailleur = this.champsBailleur.map((item) => {
+        item.data = "";
+        return item;
+      });
+      window.document.getElementById("vform")?.reset();
+
+      this.setBailleur({});
+    },  
+
+  
+    sendBailleurForm() {
+      this.savedInput = []
+      this.champsBailleur = this.champsBailleur.map((item) => {
+        item.errors = [];
+        return item;
+      });
+      let bailleur = {}
+
+      bailleur = extractFormData(this.champsBailleur, this.bailleurAttributs);
 
 
+      bailleur.programmeId = this.programmeId;
+      if (this.sendRequest == false) {
+        this.sendRequest = true
+        if (this.bailleur?.id) {
 
+          const demo = {
+            "nom": bailleur.nom,
+            "email": bailleur.email,
+            "contact": bailleur.contact,
+            "code": bailleur.code,
+            "pays": bailleur.pays,
+            "sigle": bailleur.sigle,
+          }
+
+          const formData = new FormData();
+          formData.append('nom', demo.nom)
+          formData.append('email', demo.email)
+          formData.append('contact', demo.contact)
+          formData.append('code', demo.code)
+          formData.append('pays', demo.pays)
+          formData.append('sigle', demo.sigle)
+          formData.append('logo', this.image)
+          formData.append('programmeId', this.programmeId)
+
+          this.saveBailleur(formData).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.closeBailleur();
+              this.resetBailleurForm()
+              localStorage.removeItem('formData');
+              this.fetchBailleurs(this.programmeId)
+              this.sendRequest = false
+            }
+          }).catch((error) => {
+            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+            this.sendRequest = false;
+            this.champsBailleur.map(value => value.errors = this.erreurs[value.key])
+            this.getImage()
+          })
+        }
+      }
+    },
+
+    // fin all bailleurs methods
     getIndicateurBailleurs() {
       IndicateurService.getIndicateurBailleur().then((data) => {
         this.indicateurBailleurs = data.data.data
@@ -914,6 +1123,12 @@ export default {
         }
         if (element.slug === 'creer-une-unite-de-mesure') {
           this.uniteAdd = true
+        }
+        if (element.slug === 'voir-un-bailleur') {
+          this.bailleurVisible = true
+        }
+        if (element.slug === 'creer-un-bailleur') {
+          this.bailleurAdd = true
         }
 
       });
@@ -1245,6 +1460,10 @@ export default {
   },
 
   created() {
+    this.programmeId = this.currentUser.programme.id
+    if (this.programmeId) {
+      this.fetchBailleurs(this.programmeId)
+    }
     this.getPermission()
     if (!this.indicateurVisible) {
       this.$router.push('/401-non-autorise')

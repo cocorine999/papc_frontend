@@ -453,7 +453,6 @@ export default {
         return value
 
       })
-
       this.champs = formData
 
       this.showCloseModal(true)
