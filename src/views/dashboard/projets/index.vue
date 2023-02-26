@@ -414,7 +414,7 @@ export default {
       this.dates.push({})
     },
 
-    close() {
+   close () {
       this.showCloseModal()
       this.resetForm()
       this.sendRequest = false;

@@ -20,6 +20,19 @@
         </div>
       </vmodal>
 
+      <!-- modal ajout projet -->
+      <div v-if="showProjetModal" class="z-50">
+        <modal-top-right :title="titleProjet" v-title v-on:close="closeProjet2">
+          <div class="p-4 overflow-auto">
+            <vform template="default" :sendRequest="sendRequest" @getFile="getProjetFile" :savedInput="savedInput"
+              @getImage="getProjetImage" :champs="champsProjet" :cols="cols" :submitText="submitText" @sendForm="sendProjetForm"
+              @closeModal="closeProjet"></vform>
+          </div>
+        </modal-top-right>
+      </div>
+
+      <!--  modal ajout projet -->
+
       <modal-top-right v-if="showModal" :title="title" v-on:close="closeA">
         <form action="" @submit.prevent="saveAudit" v-if="title == 'Ajouter'" class="p-5 w-full">
           <div class="form-group my-2">
@@ -95,8 +108,20 @@
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Projets <span
                 class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <multiselect v-model="audit.projetId" :options="projets" :preselect-first="true"
-              placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+            <div class="flex justify-between space-x-1">
+              <multiselect class="w-11/12" v-model="audit.projetId" :options="projets" :preselect-first="true"
+                placeholder="selectionnez un projet" label="nom" track-by="id"></multiselect>
+              <div class="w-1/12  flex justify-center items-center">
+                <button title="Ajouter un projet" v-title @click="addProjet"
+                  class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+                  <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                    style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                    <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
           </div>
 
           <div class="py-2 my-4 flex justify-center space-x-8">
@@ -409,6 +434,14 @@ import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
 import DeleteAlert from "@/components/DeleteAlert.vue";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+
+//add import
+import BailleurService from "@/services/modules/bailleur.service";
+import { API_BASE_URL } from "@/services/configs/environment.js";
+import Dropdown from '@/components/Dropdown.vue'
+import { extractFormData } from '@/utils/index'
+
+
 export default {
   components: {
     Dashboard,
@@ -419,7 +452,8 @@ export default {
     Multiselect,
     Vmodal,
     Preview,
-    Vform
+    Vform,
+    Dropdown
   },
   data() {
     return {
@@ -453,10 +487,36 @@ export default {
       saveUpdate: {},
       deleteData: {},
       deleteModal: false,
+
+      //data projet
+      champsProjet: [],
+      showProjetModal: false,
+      projetAttributs: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId', 'tauxEngagement'],
+      programmeId: this.currentUser?.programme?.id,
+      fichiersProjet: [],
+     
+      bailleurs: [],
+      projetVisible: true,
+      projetAdd: true,
+      bailleurVisible: true,
+      cols: 1 ,
+      sendRequest: false
     }
 
   },
   computed: {
+    ...mapState({
+      identifiant: state => state.auths.identifiant,
+      loading: state => state.loading,
+      errors: state => state.errors,
+      projet: state => state.projets.projet, //add projet
+    }),
+
+    ...mapGetters({
+      currentUser: 'auths/GET_AUTHENTICATE_USER',
+      projet: "getProjet", //add projet
+    }),
+
     //importation des variables du module auths
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
   },
@@ -481,6 +541,15 @@ export default {
         }
         if (element.slug === 'supprimer-un-audit') {
           this.auditDelete = true
+        }
+        if (element.slug === 'voir-un-projet') {
+          this.projetVisible = true
+        }
+        if (element.slug === 'creer-un-projet') {
+          this.projetAdd = true
+        }
+        if (element.slug === 'voir-un-bailleur') {
+          this.bailleurVisible = true
         }
       });
     },
@@ -736,8 +805,183 @@ export default {
       this.fichiers = ''
       localStorage.removeItem('formData')
 
-    }
+    },
 
+
+    // all methods ajout projet
+
+
+    getProjetFile(data) {
+      this.champsProjet[7].data = data
+      for (const property in data) {
+        this.fichiersProjet.push(data[property])
+      }
+      this.fichiers.pop()
+      this.fichiers.pop()
+
+
+    },
+    getProjetImage(data) {
+      this.champsProjetProjet[6].data = data
+      this.image = data
+
+    },
+    closeProjet() {
+      this.showCloseProjetModal()
+      this.resetProjetForm()
+      this.sendRequest = false;
+    },
+    closeProjet2() {
+      this.showCloseProjetModal()
+      this.sendRequest = false;
+      this.savedInput = []
+      for (let i = 0; i < this.champsProjet.length; i++) {
+        this.savedInput.push(this.champsProjet[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+
+    },
+
+    showCloseProjetModal(value = false) {
+      this.showProjetModal = value
+    },
+    ...mapMutations({
+      setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
+      setProjet: 'projets/FILL'
+    }),
+
+    ...mapActions('projets', { saveProjet: "STORE_PROJET", }),
+
+    addProjet() {
+  this.closeA()
+      this.showProjetModal = true
+      console.log(this.showProjetModal)
+      this.fetchBailleurs(this.programmeId)
+      this.titleProjet = 'Ajouter un projet'
+      this.submitText = "Enregistrer"
+
+      let formData = this.champsProjet.map((value) => {
+        if (value.key === 'bailleurId') {
+          value['options'] = this.bailleurs
+        }
+
+        else if (value.key === 'statut') {
+          value['options'] = this.$store.state.statuts
+        }
+
+        return value
+
+      })
+      this.champsProjet = formData
+
+
+    },
+
+    fetchBailleurs(programme) {
+
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+        const datas = data.data.data
+        this.bailleurs = datas
+        this.champsProjet = [
+          { name: 'Nom du projet', key: "nom", type: 'text', placeholdere: "Nom du projet", isSelect: false, isTextArea: false, data: '', required: true, title: "renseigner le nom du projet", errors: [] },
+          { name: 'Prêt', type: 'number', key: "pret", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Budget Nationnal', key: "budgetNational", type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Date début', key: "debut", type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
+          { name: 'Date fin', type: 'date', key: "fin", placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Couleur', type: 'color', key: "couleur", placeholdere: 'Choississez une couleur', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'couverture du projet', type: 'file', placeholdere: 'Choississez une couverture', isImage: true, isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
+          { name: 'Pièce jointe', type: 'file', placeholdere: 'televerser des fichiers', isSelect: false, isImage: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Ville', key: "ville", type: '', placeholdere: 'Selectionnez une ville', isSelect: true, isTextArea: false, data: '', required: true, options: ['cotonou', 'calavi', 'bohicon'], isSimpleTable: true, errors: [] },
+          { name: 'Bailleur', key: "bailleurId", type: '', placeholdere: 'Selectionnez un bailleur', isSelect: true, isTextArea: false, data: '', required: true, options: datas, cle: 'id', value: 'sigle', errors: [] },
+          { name: 'Objectifs globaux', key: "objectifGlobaux", type: '', placeholdere: '', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+          { name: 'Objectifs specifiques', key: "objectifSpecifique", type: 'text', placeholdere: 'Definir les objectifs', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Taux engagement', key: "tauxEngagement", type: 'text', placeholdere: 'Taux engagement', isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
+          { name: 'Description', type: '', key: "description", placeholdere: 'Description du projet', isSelect: false, isTextArea: true, data: '', required: false, errors: [] },
+
+        ]
+
+
+      }).catch((error) => {
+
+      })
+    },
+    sendProjetForm() {
+      if (this.sendRequest === false) {
+        this.sendRequest = true;
+
+        this.champsProjet = this.champsProjet.map(item => { item.errors = []; return item })
+        let projet = {}
+
+        projet = extractFormData(this.champsProjet, this.projetAttributs)
+        projet.bailleurId = projet.bailleurId.id
+
+
+        projet.programmeId = this.programmeId
+
+
+
+        this.sendRequest = true;
+        projet.statut = -2
+        const demo = {
+          "nom": projet.nom,
+          "description": projet.description,
+          "debut": projet.debut,
+          "fin": projet.fin,
+          "objectifGlobaux": projet.objectifGlobaux,
+          "budgetNational": projet.budgetNational,
+          "pret": projet.pret,
+          "couleur": projet.couleur,
+          "ville": projet.ville,
+          "statut": -1,
+          "bailleurId": projet.bailleurId,
+          "programmeId": projet.programmeId,
+          "id": ""
+        }
+
+        const formData = new FormData();
+        formData.append('nom', demo.nom)
+        formData.append('description', demo.description)
+        formData.append('debut', demo.debut)
+        formData.append('fin', demo.fin)
+        formData.append('objectifGlobaux', demo.objectifGlobaux)
+        formData.append('budgetNational', demo.budgetNational)
+        formData.append('pret', demo.pret)
+        formData.append('couleur', demo.couleur)
+        formData.append('budgetNational', Number(demo.budgetNational))
+        formData.append('pret', demo.pret)
+        formData.append('couleur', demo.couleur)
+        formData.append('ville', demo.ville)
+        formData.append('statut', demo.statut)
+        formData.append('image', this.image)
+        for (let i = 0; i < this.fichiers.length; i++) {
+          let file = this.fichiers[i];
+
+          formData.append('fichier' + i, file);
+        }
+
+        formData.append('bailleurId', demo.bailleurId)
+        formData.append('programmeId', demo.programmeId)
+
+        this.saveProjet(formData).then(response => {
+          if (response.status == 200 || response.status == 201) {
+            this.closeProjet()
+            this.resetProjetForm()
+            localStorage.removeItem('formData');
+            this.fetchProjets(this.programmeId)
+            this.sendRequest = false;
+            this.createAudit()
+          }
+        }).catch((error) => {
+          this.sendRequest = false;
+        })
+
+
+      }
+
+
+    },
+    // fin all methods ajout projet
   },
   mounted() {
     this.getPermission()
@@ -746,6 +990,18 @@ export default {
     } else {
       this.getProjet()
       this.getAudit()
+
+    }
+
+    this.programmeId = this.currentUser.programme.id
+    if (this.programmeId) {
+      if (this.bailleurVisible) {
+        this.fetchBailleurs(this.programmeId)
+        this.fetchProjets(this.programmeId)
+      }
+      else {
+        this.fetchProjets(this.programmeId)
+      }
     }
 
     if (localStorage.getItem("formData")) {

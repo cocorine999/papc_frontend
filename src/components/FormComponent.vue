@@ -6,11 +6,32 @@
       <input v-if="item.type !== 'select'" v-model="item.value" required
         class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full focus:border-transparent"
         :type="item.type" :placeholder="'Entrer ' + item.label" />
-      <select :multiple="item.mutiple" v-if="item.type === 'select'" v-model="item.value"
-        class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent">
-        <option v-for="option in item.options" :key="option[item.cle]" :value="option[item.cle]">{{ option[item.text] }}
-        </option>
-      </select>
+      <div v-if="item.type === 'select'">
+        <div v-if="item.canAdd === true" class="flex justify-between space-x-1">
+          <select :multiple="item.mutiple" v-if="item.type === 'select'" v-model="item.value"
+            class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2  focus:border-transparent w-11/12">
+            <option v-for="option in item.options" :key="option[item.cle]" :value="option[item.cle]">{{ option[item.text]
+            }}
+            </option>
+          </select>
+          <div class="w-1/12  flex justify-center items-center">
+            <button :title="'Ajouter un(e)' + item.name" v-title @click="addSomeThing(item.label)"
+              class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+              <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <select :multiple="item.mutiple" v-else v-model="item.value"
+          class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent">
+          <option v-for="option in item.options" :key="option[item.cle]" :value="option[item.cle]">{{ option[item.text] }}
+          </option>
+
+        </select>
+      </div>
+
 
       <div v-for="(error, key) in item.errors" :key="key">
         <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor" stroke-width="0"
@@ -69,15 +90,11 @@ export default {
       this.$emit('closeModal')
 
       localStorage.removeItem("formData")
-      // this.savedInput = []
-
-
-      // for (let i = 0; i < this.form.length; i++) {
-      //   this.savedInput.push(this.form[i].value)
-      // }
      
-      // const parsed = JSON.stringify(this.savedInput);
-      // localStorage.setItem('formData', parsed);
+    },
+    addSomeThing(champName){
+      this.$emit('addSomeThing',champName)
+     
     },
   }
 }

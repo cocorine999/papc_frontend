@@ -58,11 +58,23 @@
               </div>
 
               <div class="my-4">
-                <multiselect v-model="value" :hideSelected="true" :closeOnSelect="false"
+                <div class="flex justify-between space-x-1">
+                  <multiselect v-model="value" :hideSelected="true" :closeOnSelect="false"
                   tag-placeholder="Ajouter un type utilisateur" placeholder="Ajouter une permission" label="nom"
                   track-by="nom" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
                   :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="permissions" :multiple="true"
                   :taggable="true" @tag="addTag"></multiselect>
+                  <div class="w-1/12  flex justify-center items-center">
+                    <button title="Ajouter un projet" v-title @click="addRole"
+                      class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+                      <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                        style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                        <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+               
                 <!-- <div v-for="role in errors.roles" :key="role.id" class="text-red-500 text-sm   py-2 font-bold"> {{role}} </div> -->
               </div>
 

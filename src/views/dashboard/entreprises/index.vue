@@ -5,7 +5,16 @@
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="close1">
           <div class="px-4">
-            <form-component :savedInput="savedInput" @closeModal="close" :form="form" @send="sendForm" />
+            <form-component :savedInput="savedInput" @closeModal="close" :form="form" @send="sendForm" @addSomeThing="openModal" />
+          </div>
+        </modal-top-right>
+      </div>
+
+      <div v-if="showModModal">
+        <modal-top-right :title="titleMod " v-on:close="closeModA">
+          <div class="px-4 overflow-y-auto">
+            <vform template="default" :champs="champsMod" :cols="cols" :submitText="submitText" @sendForm="sendModForm"
+              @closeModal="closeMod"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -26,7 +35,7 @@
       <div class="flex items-center justify-between flex-wrap">
         <div class="flex space-x-4">
           <span class="inline-block cursor-pointer border-primary border-b-8 text-base uppercase font-bold py-2">Listes
-            entreprises executantes
+            entreprises executantes 
           </span>
 
         </div>
@@ -137,6 +146,12 @@ import EntrepriseService from "@/services/modules/entreprise.executante.service"
 import Titre from "@/components/Titre";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import EntrepriseExecutanteService from '@/services/modules/entreprise.executante.service';
+// ajout mod 
+import Vform from "@/components/Vform";
+import extractFormData from "@/utils/extract-data";
+import ModService from "@/services/modules/mod.service"
+import Multiselect from 'vue-multiselect';
+
 export default {
   components: {
     ModalTopRight,
@@ -145,6 +160,9 @@ export default {
     FormComponent,
     DeleteAlert,
     Titre,
+    Vform,
+    Multiselect,
+   
 
   },
   data() {
@@ -185,8 +203,7 @@ export default {
           errors: [],
         },
       ],
-
-      seeEntreprise: true,
+     seeEntreprise: true,
       see_checklist: false,
       form: [
         { label: "nom", type: "text", value: null, errors: [] },
@@ -195,6 +212,7 @@ export default {
         {
           label: "mod",
           type: "select",
+          canAdd: true,
           value: null,
           errors: [],
           options: [],
@@ -210,6 +228,58 @@ export default {
       deleteData: {},
       deleteModal: false,
 
+      // add mod data
+      showModModal: false,
+      champsMod:[
+        {
+          name: "Nom",
+          key: "nom",
+          type: "text",
+          placeholdere: "",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Email",
+          key: "email",
+          type: "email",
+          placeholdere: "",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Contact",
+          key: "contact",
+          type: "number",
+          placeholdere: "",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+        {
+          name: "Logo",
+          key: "logo",
+          type: "file",
+          placeholdere: "Votre logo",
+          isSelect: false,
+          isTextArea: false,
+          data: "",
+          required: true,
+          errors: [],
+        },
+      ],
+      titleMod:"",
+      modAttributs: ["nom", "email", "contact"],
+
+
     };
   },
 
@@ -220,6 +290,7 @@ export default {
       entrepriseExecutante: "entreprisesExecutante/getEntrepriseExecutante",
       entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       mods: "mods/getMods",
+      mod: "mods/getMod",
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
@@ -246,6 +317,12 @@ export default {
         if (element.slug === 'supprimer-une-entreprise-executante') {
           this.entrepriseExecutanteDelete = true
         }
+        if (element.slug === 'voir-un-mod') {
+          this.modVisible = true
+        }
+        if (element.slug === 'modifier-un-mod') {
+          this.modAdd = true
+        }
 
 
       });
@@ -265,6 +342,7 @@ export default {
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setEntrepriseExecutante: "entreprisesExecutante/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
+      setMod: "mods/FILL",
     }),
 
     ...mapActions("entreprisesExecutante", {
@@ -276,6 +354,7 @@ export default {
 
     ...mapActions("mods", {
       fetchMods: "FETCH_LIST_MOD",
+      saveMod: "STORE_MOD",
     }),
 
     addEntrepriseExecutante() {
@@ -449,7 +528,63 @@ export default {
           });
       }
     },
+
+    // add MOD methods
+
+    openModal(itemName) {
+
+     if(itemName == "mod") {
+      this.addMod()
+     } 
   },
+
+  
+  addMod() {
+      this.titleMod = "Ajouter un mod" ;
+
+      this.submitText = "Enrégistrer";
+
+      this.showModModal = true;
+      this.fetchMods()
+    },
+  closeMod() {
+      this.showCloseModModal();
+      this.resetModForm();
+    },
+    closeModA() {
+      this.showCloseModModal();
+      this.savedInput = []
+      for (let i = 0; i < this.champsMod.length; i++) {
+        this.savedInput.push(this.champsMod[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+    showCloseModModal(value = false) {
+      this.showModModal = value;
+    },
+    sendModForm() {
+      this.champsMod = this.champsMod.map((item) => {
+        item.errors = [];
+        return item;
+      });
+
+      let mod = extractFormData(this.champsMod, this.modAttributs);
+
+      mod.programmeId = this.currentUser?.programme?.id;
+  this.saveMod(mod).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.close();
+            }
+          })
+          .catch((value) => {
+            alert(value.response.data.errors.programmeId[0]);
+          });
+      
+    },
+
+    // fin methods ajout mod
+},
 
   watch: {
     isLoading: function (value) {
@@ -474,10 +609,13 @@ export default {
       this.form.forEach((value) => {
         value.errors = errors[value.label];
       });
+      this.champsMod.forEach((value) => {
+        value.errors = errors[value.key];
+      });
     },
   },
 
-  mounted() {
+  mounted() { 
 
     this.getPermission()
     if (!this.entrepriseExecutanteVisible) {
