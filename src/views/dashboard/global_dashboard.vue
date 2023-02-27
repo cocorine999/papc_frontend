@@ -8,29 +8,29 @@
             <div
               class="rounded-lg border-t-8 border-yellow-500 space-y-8 bg-white/60 p-4 _text-center shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
               <span class="text-lg font-bold block mb-6">Projets / Bailleurs</span>
-              <span class="grid grid-cols-2 gap-x-8">
-                <span class="font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              <span class="flex items-stretch">
+                <span class="grid grid-cols-2 font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                   </svg>
                 </span>
-                <span class="text-xl font-bold text-right">6 / 6</span>
+                <span class="text-xl font-bold text-right pl-4 whitespace-nowrap self-center">6 / 6</span>
               </span>
             </div>
           </section>
           <section>
             <div
-              class="rounded-lg border-t-8 border-indigo-500 space-y-8 bg-white/60 p-4 text-center shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
+              class="rounded-lg border-t-8 border-indigo-500 space-y-8 bg-white/60 p-4 text-left shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
               <span class="text-lg font-bold block mb-6">Activités / Activités réalisées / TEP</span>
-              <span class="grid grid-cols-2 gap-x-8">
-                <span class="font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              <span class="flex items-stretch">
+                <span class="grid grid-cols-2 font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                   </svg>
                 </span>
-                <span class="text-xl font-bold text-right">128 / 63 / 57%</span>
+                <span class="text-xl font-bold text-right pl-4 whitespace-nowrap self-center">128 / 63 / 57%</span>
               </span>
             </div>
           </section>
@@ -39,52 +39,251 @@
               class="rounded-lg border-t-8 border-red-500 space-y-8 bg-white/60 p-4 shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
               <!-- <span class="font-bold block">Montant</span> -->
               <span class="text-lg font-bold block mb-6">Montant Total</span>
-              <span class="grid grid-cols-2 gap-x-8">
-                <span class="font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              <span class="flex items-stretch">
+                <span class="grid grid-cols-2 font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                   </svg>
                 </span>
-                <span class="text-xl font-bold text-right">243 0434 438 XOF</span>
+                <span class="text-xl font-bold text-right pl-4 whitespace-nowrap self-center block">243 0434 438 XOF</span>
               </span>
             </div>
           </section>
           <section>
             <div
-              class="rounded-lg border-t-8 border-red-500 space-y-8 bg-white/60 p-4 shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
+              class="rounded-lg border-t-8 border-purple-500 space-y-8 bg-white/60 p-4 shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
               <!-- <span class="font-bold block">Montant</span> -->
               <span class="text-lg font-bold block mb-6">Montant Décaissé</span>
-              <span class="grid grid-cols-2 gap-x-8">
-                <span class="font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              <span class="flex items-stretch">
+                <span class="grid grid-cols-2 font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                   </svg>
                 </span>
-                <span class="text-xl font-bold text-right">243 0434 438 XOF</span>
+                <span class="text-xl font-bold text-right pl-4 whitespace-nowrap self-center">243 0434 438 XOF</span>
               </span>
             </div>
           </section>
           <section>
             <div
-              class="rounded-lg border-t-8 border-red-500 space-y-8 bg-white/60 p-4 shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
+              class="rounded-lg border-t-8 border-green-500 space-y-8 bg-white/60 p-4 shadow-lg shadow-blue-900/5 backdrop-blur background--card-stats">
               <!-- <span class="font-bold block">Montant</span> -->
               <span class="text-lg font-bold block mb-6">Montant Dépensé</span>
-              <span class="grid grid-cols-2 gap-x-8">
-                <span class="font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              <span class="flex items-stretch">
+                <span class="grid grid-cols-2 font-bold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                   </svg>
                 </span>
-                <span class="text-xl font-bold text-right">243 0434 438 XOF</span>
+                <span class="text-xl font-bold pl-4 whitespace-nowrap self-center">
+                  2 430 434 438 XOF</span>
               </span>
             </div>
           </section>
         </div>
       </div>
       <!-- END CARDS TOTAUX -->
+
+
+      <div class="mx-auto _max-w-7xl sm:px-0 lg:px-0 relative mt-8">
+        <div class="flex flex-wrap justify-start overflow-hidden bg-blue-900 text-white">
+          <label class="grow px-4 py-3 font-medium" for="collapse">Who?</label>
+          <input class="peer mx-4 my-3 h-0 w-0 appearance-none rounded border text-blue-800 accent-blue-600 opacity-0" type="checkbox" name="collapse" id="collapse" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-4 my-3 h-6 w-6 transition-all duration-200 peer-checked:rotate-45">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+          </svg>
+          <div class="opacity-0 transition-all duration-200 -mt-4 px-4 py-3 scale-0 peer-checked:opacity-100 peer-checked:scale-100 peer-checked:mt-0 peer-checked:bg-blue-800">
+              We don’t serve their kind here! What? Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble. I heartily agree with you sir. Negola dewaghi wooldugger?!? He doesn’t like you. I’m sorry. I don’t like you either You just watch yourself. We’re wanted men. I have the death sentence in twelve systems. I’ll be careful than. You’ll be dead. This little one isn’t worth the effort. Come let me buy you something…
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-start overflow-hidden bg-blue-900 text-white">
+          <label class="grow px-4 py-3 font-medium" for="collapse2">How?</label>
+          <input class="peer mx-4 my-3 h-0 w-0 appearance-none rounded border text-blue-800 accent-blue-600 opacity-0" type="checkbox" name="collapse2" id="collapse2" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-4 my-3 h-6 w-6 transition-all duration-200 peer-checked:rotate-45">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+          </svg>
+          <div class="opacity-0 transition-all duration-200 -mt-4 px-4 py-3 scale-0 peer-checked:opacity-100 peer-checked:scale-100 peer-checked:mt-0 peer-checked:bg-blue-800">The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide. It’s a small thermal exhaust port, right below the main port. The shaft leads directly to the reactor system. A precise hit will start a chain reaction which should destroy the station. Only a precise hit will set up a chain reaction. The shaft is ray-shielded, so you’ll have to use proton torpedoes. That’s impossible, even for a computer. It’s not impossible. I used to bull’s-eye womp rats in
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Accordion --> 
+      <div class="mx-auto _max-w-7xl sm:px-0 lg:px-0 relative mt-8">sdfsdfd
+        <div class="flex flex-wrap justify-start overflow-hidden bg-blue-900 text-white">
+          <label class="grow px-4 py-3 font-medium" for="collapse">Who?</label>
+          <input class="peer mx-4 my-3 h-0 w-0 appearance-none rounded border text-slate-800 accent-slate-600 opacity-0" type="checkbox" name="collapse" id="collapse" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-4 my-3 h-6 w-6 transition-all duration-200 peer-checked:rotate-45">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+          </svg>
+          <div class="transparent absolute translate-y-full scale-75 scale-y-0 px-4 py-3 opacity-0 transition-all duration-200 peer-checked:relative peer-checked:translate-y-0 peer-checked:scale-100 peer-checked:scale-y-100 peer-checked:bg-slate-800 peer-checked:opacity-100">
+              We don’t serve their kind here! What? Your droids. They’ll have to wait outside. We don’t want them here. Listen, why don’t you wait out by the speeder. We don’t want any trouble. I heartily agree with you sir. Negola dewaghi wooldugger?!? He doesn’t like you. I’m sorry. I don’t like you either You just watch yourself. We’re wanted men. I have the death sentence in twelve systems. I’ll be careful than. You’ll be dead. This little one isn’t worth the effort. Come let me buy you something…
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-start overflow-hidden bg-blue-900 text-white">
+          <label class="grow px-4 py-3 font-medium" for="collapse2">How?</label>
+          <input class="peer mx-4 my-3 h-0 w-0 appearance-none rounded border text-slate-800 accent-slate-600 opacity-0" type="checkbox" name="collapse2" id="collapse2" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-4 my-3 h-6 w-6 transition-all duration-200 peer-checked:rotate-45">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+          </svg>
+          <div class="-transparent absolute -translate-y-full scale-75 scale-y-0 px-4 py-3 opacity-0 transition-all duration-200 peer-checked:relative peer-checked:translate-y-0 peer-checked:scale-100 peer-checked:scale-y-100 peer-checked:bg-slate-800 peer-checked:opacity-100">The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide. It’s a small thermal exhaust port, right below the main port. The shaft leads directly to the reactor system. A precise hit will start a chain reaction which should destroy the station. Only a precise hit will set up a chain reaction. The shaft is ray-shielded, so you’ll have to use proton torpedoes. That’s impossible, even for a computer. It’s not impossible. I used to bull’s-eye womp rats in my T-sixteen back home. They’re not much bigger than two meters. Man your ships! And may the Force be with you!</div>
+        </div>
+      </div>
+
+      <div id="accordionExample">
+  <div
+    class="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
+    <h2 class="mb-0" id="headingOne">
+      <button
+        class="group relative flex w-full items-center rounded-t-[15px] border-0 bg-white py-4 px-5 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
+        type="button"
+        data-te-collapse-init
+        data-te-target="#collapseOne"
+        aria-expanded="true"
+        aria-controls="collapseOne">
+        Accordion Item #1
+        <span
+          class="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </span>
+      </button>
+    </h2>
+    <div
+      id="collapseOne"
+      class="!visible"
+      data-te-collapse-item
+      data-te-collapse-show
+      aria-labelledby="headingOne"
+      data-te-parent="#accordionExample">
+      <div class="py-4 px-5">
+        <strong>This is the first item's accordion body.</strong> It is
+        shown by default, until the collapse plugin adds the appropriate
+        classes that we use to style each element. These classes control
+        the overall appearance, as well as the showing and hiding via CSS
+        transitions. You can modify any of this with custom CSS or
+        overriding our default variables. It's also worth noting that just
+        about any HTML can go within the <code>.accordion-body</code>,
+        though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+  <div
+    class="border border-t-0 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
+    <h2 class="mb-0" id="headingTwo">
+      <button
+        class="group relative flex w-full items-center rounded-none border-0 bg-white py-4 px-5 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
+        type="button"
+        data-te-collapse-init
+        data-te-collapse-collapsed
+        data-te-target="#collapseTwo"
+        aria-expanded="false"
+        aria-controls="collapseTwo">
+        Accordion Item #2
+        <span
+          class="ml-auto -mr-1 h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </span>
+      </button>
+    </h2>
+    <div
+      id="collapseTwo"
+      class="!visible hidden"
+      data-te-collapse-item
+      aria-labelledby="headingTwo"
+      data-te-parent="#accordionExample">
+      <div class="py-4 px-5">
+        <strong>This is the second item's accordion body.</strong> It is
+        hidden by default, until the collapse plugin adds the appropriate
+        classes that we use to style each element. These classes control
+        the overall appearance, as well as the showing and hiding via CSS
+        transitions. You can modify any of this with custom CSS or
+        overriding our default variables. It's also worth noting that just
+        about any HTML can go within the <code>.accordion-body</code>,
+        though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+  <div
+    class="rounded-b-lg border border-t-0 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
+    <h2 class="accordion-header mb-0" id="headingThree">
+      <button
+        class="group relative flex w-full items-center border-0 bg-white py-4 px-5 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)] [&[data-te-collapse-collapsed]]:rounded-b-[15px] [&[data-te-collapse-collapsed]]:transition-none"
+        type="button"
+        data-te-collapse-init
+        data-te-collapse-collapsed
+        data-te-target="#collapseThree"
+        aria-expanded="false"
+        aria-controls="collapseThree">
+        Accordion Item #3
+        <span
+          class="ml-auto -mr-1 h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </span>
+      </button>
+    </h2>
+    <div
+      id="collapseThree"
+      class="!visible hidden"
+      data-te-collapse-item
+      aria-labelledby="headingThree"
+      data-te-parent="#accordionExample">
+      <div class="py-4 px-5">
+        <strong>This is the third item's accordion body.</strong> It is
+        hidden by default, until the collapse plugin adds the appropriate
+        classes that we use to style each element. These classes control
+        the overall appearance, as well as the showing and hiding via CSS
+        transitions. You can modify any of this with custom CSS or
+        overriding our default variables. It's also worth noting that just
+        about any HTML can go within the <code>.accordion-body</code>,
+        though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 
     </div>
   </dashboard>
