@@ -334,6 +334,15 @@ const routes = [
   },
 
   {
+    path: "/dashboard/global_dashboard",
+    name: "global dashboard",
+    component: global_dashboard,
+    meta: {
+      middleware: [auth],
+    },
+  },
+  
+  {
     path: "/form/:id",
     name: "form_gestion_generator",
     component: form_gestion_generator,
