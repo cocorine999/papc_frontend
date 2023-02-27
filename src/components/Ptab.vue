@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div v-if="openFiltre && revisionVisible">
       <vmodal title="filtre" v-on:close="openFiltre = false">
         <div v-if="currentPage" style="width:60vw !important">
@@ -71,116 +72,64 @@
 
       </vmodal>
     </div>
-    <div v-if="reviser">
-      <vmodal title="confirmation !" v-on:close="reviser = false">
-        <div style="width:60vw !important">
-          <div class="p-4 mb-4 border border-red-300 rounded-lg bg-red-50 dark:bg-red-200" role="alert">
-            <div class="flex items-center">
-              <svg aria-hidden="true" class="w-5 h-5 mr-2 text-red-900 dark:text-red-800" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="sr-only">Info</span>
-              <h3 class="text-lg font-medium text-red-900 dark:text-red-800">Voulez vous revisez le PTBA ?</h3>
-            </div>
-            <div class="mt-2 mb-4 text-sm text-red-900 dark:text-red-800">
-              Cette action est irreversible , et les changements affecterront les données de votres applications
-            </div>
-            <div class="flex">
-              <button type="button" v-if="isClick" @click.once="reviserPta"
-                class="text-white bg-red-900 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-red-800 dark:hover:bg-red-900">
-                confirmer
-              </button>
-              <button type="button" v-if="isClick" @click="reviser = false"
-                class="text-red-900 bg-transparent border border-red-900 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-red-800 dark:text-red-800 dark:hover:text-white"
-                data-dismiss-target="#alert-additional-content-2" aria-label="Close">
-                abandonner
-              </button>
-              <div v-if="!isClick">
-                chargement ...
-              </div>
-            </div>
-          </div>
-        </div>
-      </vmodal>
+
+    <div class="select w-52 mb-2">
+
+      <select id="choice" v-model="version" @change="choiceVersion(version)"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2 ">
+
+        <option value="actuelle" selected>Version actuelle</option>
+        <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab"> {{ scopePtab.nom }}</option>
+      </select>
+
     </div>
+
     <div class="border my-4 rounded-lg border-gray-300 shadow-md">
       <!-- pta current -->
       <div v-if="currentPage && ptaVisible" class="current">
-        <div class="my-3 p-1 justify-end flex space-x-4">
-
-          <div class="select w-52 flex space-x-4 items-center">
-            <select id="choice" v-model="version" @change="choiceVersion(version)"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg  focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="actuelle" selected>Version actuelle</option>
-              <option v-for="(scopePtab, index) in scopes" :key="index" :value="scopePtab"> {{ scopePtab.nom }}</option>
-            </select>
-
-          </div>
-
-          <div class="flex space-x-4 items-center">
-            <button @click="statutActuel = !statutActuel"
-              class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-              <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le poids actuel</span>
-              <span v-else class="mx-2 text-sm font-semibold">masquer le poids actuel </span>
-            </button>
-          </div>
-
-          <div class="flex space-x-4 items-center"><button v-if="filtrePta" @click="openFiltre = !openFiltre"
-              title="filtrer les données"
-              class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em"
-                width="1.3em" xmlns="http://www.w3.org/2000/svg">
-                <path fill="none" d="M0 0h24m0 24H0"></path>
+        <div class="my-3 px-3 py-1 justify-end flex space-x-4">
+          <button @click="statutActuel = !statutActuel"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <span v-if="!statutActuel" class="mx-2 text-sm font-semibold">voir le poids actuel </span>
+            <span v-else class="mx-2 text-sm font-semibold">masquer le poids actuel </span>
+          </button>
+          <button v-if="filtrePta" @click="openFiltre = !openFiltre" title="filtrer les données"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em"
+              width="1.3em" xmlns="http://www.w3.org/2000/svg">
+              <path fill="none" d="M0 0h24m0 24H0"></path>
+              <path
+                d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z">
+              </path>
+              <path fill="none" d="M0 0h24v24H0V0z"></path>
+            </svg>
+            <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
+          </button>
+          <json-excel :data="json_data" header="PTAB" type="xlsx" :name="title_excel">
+            <button title="exporter en excel"
+              class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 16h2V7h3l-4-5-4 5h3z"></path>
                 <path
-                  d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0018.95 4H5.04c-.83 0-1.3.95-.79 1.61z">
+                  d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z">
                 </path>
-                <path fill="none" d="M0 0h24v24H0V0z"></path>
               </svg>
-              <span class="mx-2 text-xs  md:text-sm font-semibold">Filtre</span>
+              <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
             </button>
-          </div>
-
-          <div class="flex space-x-4 items-center">
-            <json-excel :data="json_data" header="PTAB" type="xlsx" :name="title_excel">
-              <button title="exporter en excel"
-                class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
-                <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
-                  height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M11 16h2V7h3l-4-5-4 5h3z"></path>
-                  <path
-                    d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z">
-                  </path>
-                </svg>
-                <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
-              </button>
-            </json-excel>
-          </div>
-
-
-          <div class="flex space-x-4 items-center">
-            <button v-if="exporterSuiviPta" @click="generateReport" title="filtrer les données"
-              class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
-              <span class="mx-2 text-sm font-semibold">generer pdf </span>
-            </button>
-          </div>
-
-
-          <div class="flex space-x-4 items-center">
-            <button @click="reviser = true" title="reviser ptba"
-              class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-red-500 focus:outline-none focus:shadow-outline">
-              <span class="mx-2 text-xs  md:text-sm font-semibold"> reviser ptba </span>
-            </button>
-          </div>
+          </json-excel>
+          <button v-if="exporterSuiviPta" @click="generateReport" title="filtrer les données"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <span class="mx-2 text-sm font-semibold">generer pdf </span>
+          </button>
         </div>
 
         <div class="relative">
           <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="true" :preview-modal="true"
-            :paginate-elements-by-height="200000000000" :filename="title_pdf" :pdf-quality="2" :manual-pagination="false"
-            pdf-format="a2" pdf-orientation="landscape" pdf-content-width="100vw" @progress="onProgress($event)"
-            @hasStartedGeneration="hasStartedGeneration()" @hasGenerated="hasGenerated($event)" ref="html2Pdf">
+            :paginate-elements-by-height="200000000000" :filename="title_pdf" :pdf-quality="2"
+            :manual-pagination="false" pdf-format="a2" pdf-orientation="landscape" pdf-content-width="100vw"
+            @progress="onProgress($event)" @hasStartedGeneration="hasStartedGeneration()"
+            @hasGenerated="hasGenerated($event)" ref="html2Pdf">
             <section slot="pdf-content">
               <div class=" relative shadow-md sm:rounded-lg">
                 <table class=" text-left text-gray-500 dark:text-gray-400">
@@ -252,7 +201,7 @@
                     <tr class="">
 
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN 
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         EMP
@@ -379,7 +328,7 @@
                       </td>
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.pret != undefined && pta.bn != undefined" class="font-bold"> {{ (pta.pret +
-                          pta.bn) | formatNumber
+                            pta.bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -516,8 +465,8 @@
 
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t1Pret != undefined && pta.t1Bn != undefined" class="font-bold"> {{ (pta.t1Pret
-                          +
-                          pta.t1Bn) | formatNumber
+                            +
+                            pta.t1Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -533,8 +482,8 @@
 
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t2Pret != undefined && pta.t2Bn != undefined" class="font-bold"> {{ (pta.t2Pret
-                          +
-                          pta.t2Bn) | formatNumber
+                            +
+                            pta.t2Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -549,8 +498,8 @@
                       </td>
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t3Pret != undefined && pta.t3Bn != undefined" class="font-bold"> {{ (pta.t3Pret
-                          +
-                          pta.t3Bn) | formatNumber
+                            +
+                            pta.t3Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -564,8 +513,8 @@
                       </td>
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold"> {{ (pta.t4Pret
-                          +
-                          pta.t4Bn) | formatNumber
+                            +
+                            pta.t4Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -591,14 +540,19 @@
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                     Code PTBA
                   </th>
+
+
                 </tr>
                 <tr>
+
                 </tr>
+
 
               </thead>
 
               <tbody>
-                <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr v-for="pta in dataNew" :key="pta.id"
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ pta.bailleur }}
                   </th>
@@ -647,7 +601,7 @@
                     Poids
                   </th>
                   <th v-if="statutActuel" scope="col" rowspan="2"
-                    class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap bg-green-50">
+                    class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                     poids actuel
                   </th>
                   <th scope="col" rowspan="2"
@@ -690,11 +644,11 @@
 
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -702,11 +656,11 @@
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    BN
+                    BN 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
-                    EMP
+                    EMP 
                   </th>
                   <th scope="col"
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">
@@ -814,78 +768,71 @@
 
               </thead>
 
-
+              
               <tbody>
-                <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr v-for="pta in dataNew" :key="pta.id"
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{ pta.nom }}</span>
                     <span v-if="pta.isComposante" class="text-blue-500 text-sm">Composante: {{ pta.nom }}</span>
-                    <span v-if="pta.isSC" class=" text-yellow-600 text-sm "> <span class=" text-yellow-600 text-sm "
-                        v-if="pta.code != 0">Sous
+                    <span v-if="pta.isSC" class=" text-yellow-600 text-sm "> <span class=" text-yellow-600 text-sm " v-if="pta.code != 0">Sous
                         composante:</span> {{ pta.nom }}</span>
-                    <span v-if="pta.isActivite"
-                      class="text-green-600 text-sm bg-gradient-to-br from-yellow-400 to-yellow-600 shadow">Activite: {{
-                        pta.nom }}</span>
-                    <span v-if="pta.isTache" class="text-red-600 text-sm"> {{ pta.nom }}</span>
+                    <span v-if="pta.isActivite" class="text-green-600 text-sm bg-gradient-to-br from-yellow-400 to-yellow-600 shadow">Activite: {{ pta.nom }}</span>
+                    <span v-if="pta.isTache" class="text-red-600 text-sm">  {{ pta.nom }}</span>
 
                   </td>
-                  <td v-if="pta.bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td  v-if="pta.bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
                   <td v-if="pta.pret != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span class="font-bold text-green-500 "> {{ pta.pret | formatNumber }} </span>
+                    <span  class="font-bold text-green-500 "> {{ pta.pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.pret != '' || pta.bn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td  v-if="pta.pret != '' || pta.bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold text-yellow-500"> {{ (pta.pret + pta.bn)
-                      | formatNumber
-                    }}
+                        | formatNumber
+                  }}
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
                   <!-- total budgetaire-->
 
 
 
-                  <td v-if="pta.tBn != undefined && pta.tBn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td v-if="pta.tBn != undefined && pta.tBn != ''"  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.tBn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.tPret != undefined && pta.tPret != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 text-green-500 dark:border-gray-700">
+                  <td  v-if="pta.tPret != undefined && pta.tPret != ''"  class="p-2 whitespace-nowrap border dark:bg-gray-800 text-green-500 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.tPret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.total != undefined && pta.total != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td  v-if="pta.total != undefined && pta.total != ''  "  class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.total | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-
+                  
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td v-if="statutActuel"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700 bg-green-50 ">
+                  <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }}
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -902,241 +849,172 @@
 
                   <!--  Planing vrai activité-->
 
-                  <td v-if="pta.planing != undefined && pta.planing.janvier != ''"
-                    class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
+                  <td v-if="pta.planing != undefined && pta.planing.janvier != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                  
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.janvier != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
-
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.janvier != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700 shadow" v-else>
+                  <td  class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700 shadow" v-else></td>
+
+
+
+
+                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                   
                   </td>
-
-
-
-
-                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''"
-                    class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.fevrier != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                   
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.fevrier != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
+
+
+                  <td v-if="pta.planing != undefined && pta.planing.mars != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                   
+                  </td>
+                  <td v-else-if="pta.planingt != undefined && pta.planingt.mars != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    
+                  </td>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+
+                  <td v-if="pta.planing != undefined && pta.planing.avril != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                   
+                  </td>
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.avril != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    
+                  </td>
+                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+
+                 
+                  <td v-if="pta.planing != undefined && pta.planing.mai != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                    
+                  </td>
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.mai != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-
-                  <td v-if="pta.planing != undefined && pta.planing.mars != ''"
-                    class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
+                  <td v-if="pta.planing != undefined && pta.planing.juin != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                    
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.mars != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
-
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.juin != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                   
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.fevrier != ''"
-                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                    
                   </td>
-                  <td v-if="pta.planing != undefined && pta.planing.avril != ''"
-                    class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
+                   <td v-else-if="pta.planingt != undefined && pta.planingt.juillet != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.avril != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                      
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-yellow-800 dark:border-gray-700" v-else></td>
 
+                  <td v-if="pta.planing != undefined && pta.planing.aout != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                   
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-
-                  <td v-if="pta.planing != undefined && pta.planing.mai != ''"
-                    class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.aout != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                   
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.mai != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
+                
+                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                    
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-
-                  <td v-if="pta.planing != undefined && pta.planing.juin != ''"
-                    class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.septembre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.juin != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
+                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''" class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                   
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''"
-                    class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.octobre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                  
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.juillet != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
+                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''" class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                   
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-
-                  <td v-if="pta.planing != undefined && pta.planing.mai != ''"
-                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.novembre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
+                    
                   </td>
-                  <td v-if="pta.planing != undefined && pta.planing.aout != ''"
-                    class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
+                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''" class="p-2   border  bg-blue-500 border-l-0 border-r-0">
                   </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.aout != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
-
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-
-                  <td v-if="pta.planing != undefined && pta.planing.juin != ''"
-                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-
-                  </td>
-                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''"
-                    class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
-                  </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.septembre != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
-
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-                  <td v-if="pta.planing != undefined && pta.planing.juillet != ''"
-                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-                  </td>
-                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''"
-                    class=" p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
-                  </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.octobre != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
-
-                  </td>
-
-                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''"
-                    class="p-2 border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0 ">
-
-                  </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.novembre != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
-
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                        <td v-else-if="pta.planingt != undefined && pta.planingt.decembre != ''" class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0"> 
+                        
+                        </td>
+                        <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-                  <td v-if="pta.planing != undefined && pta.planing.septembre != ''"
-                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
 
-                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''"
-                    class="p-2   border  bg-blue-500 border-l-0 border-r-0">
-                  </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.decembre != ''"
-                    class="p-2  border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0">
 
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+   
 
-                  <td v-if="pta.planing != undefined && pta.planing.octobre != ''"
-                    class=" p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
 
-                  </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.octobre != ''"
-                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
 
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.planing != undefined && pta.planing.novembre != ''"
-                    class="p-2 border  bg-gradient-to-br from-red-400 to-red-600 shadow border-l-0 border-r-0 ">
-
-                  </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.novembre != ''"
-                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
-
-                  <td v-if="pta.planing != undefined && pta.planing.decembre != ''"
-                    class="p-2   border  bg-red-500 border-l-0 border-r-0">
-                  </td>
-                  <td v-else-if="pta.planingt != undefined && pta.planingt.decembre != ''"
-                    class="p-2  border  bg-gradient-to-br from-blue-400 to-blue-600 shadow border-l-0 border-r-0">
-
-                  </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
                   <!--  planing -->
 
-                  <td v-if="pta.t1Bn != undefined && pta.t1Bn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span class="font-bold"> {{ pta.t1Bn | formatNumber }} fcfabn</span>
+                  <td v-if="pta.t1Bn != undefined && pta.t1Bn != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.t1Bn | formatNumber }} fcfabn</span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
 
                   <!--  planing semestre -->
-                  <td v-if="pta.t1Pret != undefined && pta.t1Pret != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span class="font-bold"> {{ pta.t1Pret | formatNumber }} </span>
+                  <td v-if="pta.t1Pret != undefined && pta.t1Pret != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ pta.t1Pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-                  <td v-if="pta.t1Pret != '' || pta.t1Bn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span class="font-bold"> {{ (pta.t1Pret +
-                      pta.t1Bn) | formatNumber
+                  <td v-if="pta.t1Pret != '' || pta.t1Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                    <span  class="font-bold"> {{ (pta.t1Pret +
+                        pta.t1Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                   <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
-                  <td v-if="pta.t2Bn != undefined && pta.t2Bn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td  v-if="pta.t2Bn != undefined  && pta.t2Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.t2Bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.t2Pret != undefined && pta.t2Pret != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td  v-if="pta.t2Pret != undefined && pta.t2Pret != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.t2Pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
+                  
 
-
-                  <td v-if="pta.t2Pret != '' || pta.t2Bn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td v-if="pta.t2Pret != '' || pta.t2Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ (pta.t2Pret +
-                      pta.t2Bn) | formatNumber
+                        pta.t2Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                                                       <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
+                  
 
-
-                  <td v-if="pta.t3Bn != undefined && pta.t3Bn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td  v-if="pta.t3Bn != undefined && pta.t3Bn != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ pta.t3Bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
@@ -1148,14 +1026,13 @@
                   </td>
                                      <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.t3Pret != '' || pta.t3Bn != ''"
-                    class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td v-if="pta.t3Pret != '' || pta.t3Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span class="font-bold"> {{ (pta.t3Pret +
-                      pta.t3Bn) | formatNumber
+                        pta.t3Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                                                                                                             <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
                   <td v-if="pta.t4Bn != undefined && pta.t4Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span  class="font-bold"> {{ pta.t4Bn | formatNumber }} </span>
@@ -1168,15 +1045,15 @@
                     <span  class="font-bold"> {{ pta.t4Pret | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
                   <td v-if="pta.t4Pret != '' || pta.t4Bn != ''"class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold"> {{ (pta.t4Pret +
-                      pta.t4Bn) | formatNumber
-                    }} </span>
+                        pta.t4Bn) | formatNumber
+                    }}  </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
-                  <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
+                    <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
 
                 </tr>
@@ -1187,6 +1064,12 @@
         </div>
 
       </div>
+
+
+
+
+
+
 
 
       <!-- pta revise -->
@@ -1300,10 +1183,10 @@
                     <tr class="">
 
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        BN
+                        BN 
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
-                        EMP
+                        EMP 
                       </th>
                       <th scope="col" class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700 text-center ">
                         TOTAL
@@ -1427,7 +1310,7 @@
                       </td>
                       <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.pret != undefined && pta.bn != undefined" class="font-bold"> {{ (pta.pret +
-                          pta.bn) | formatNumber
+                            pta.bn) | formatNumber
                         }}
                         </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
@@ -1454,7 +1337,8 @@
                         <span v-if="pta.poids != undefined" class="font-bold"> {{ pta.poids }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                       </td>
-                      <td v-if="statutActuel" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                      <td v-if="statutActuel"
+                        class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -1466,7 +1350,7 @@
                       </td>
                       <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.structureResponsable != undefined" class="font-bold"> {{
-                          pta.structureResponsable
+                            pta.structureResponsable
                         }}
                         </span>
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -1567,8 +1451,8 @@
 
                       <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t1Pret != undefined && pta.t1Bn != undefined" class="font-bold"> {{ (pta.t1Pret
-                          +
-                          pta.t1Bn) | formatNumber
+                            +
+                            pta.t1Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -1584,8 +1468,8 @@
 
                       <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t2Pret != undefined && pta.t2Bn != undefined" class="font-bold"> {{ (pta.t2Pret
-                          +
-                          pta.t2Bn) | formatNumber
+                            +
+                            pta.t2Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -1600,8 +1484,8 @@
                       </td>
                       <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t3Pret != undefined && pta.t3Bn != undefined" class="font-bold"> {{ (pta.t3Pret
-                          +
-                          pta.t3Bn) | formatNumber
+                            +
+                            pta.t3Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -1615,8 +1499,8 @@
                       </td>
                       <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold"> {{ (pta.t4Pret
-                          +
-                          pta.t4Bn) | formatNumber
+                            +
+                            pta.t4Bn) | formatNumber
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                       </td>
@@ -1654,7 +1538,8 @@
               </thead>
 
               <tbody>
-                <tr v-for="pta in dataNewR" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr v-for="pta in dataNewR" :key="pta.id"
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ pta.bailleur }}
                   </th>
@@ -1863,7 +1748,8 @@
 
               </thead>
               <tbody>
-                <tr v-for="pta in dataNewR" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr v-for="pta in dataNewR" :key="pta.id"
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.isProjet" class="font-bold text-lg">projet: {{ pta.nom }}</span>
@@ -1884,7 +1770,7 @@
                   </td>
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.pret != undefined && pta.bn != undefined" class="font-bold"> {{ (pta.pret + pta.bn)
-                      | formatNumber
+                        | formatNumber
                     }}
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
@@ -2021,7 +1907,7 @@
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t1Pret != undefined && pta.t1Bn != undefined" class="font-bold"> {{ (pta.t1Pret +
-                      pta.t1Bn) | formatNumber
+                        pta.t1Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
@@ -2037,7 +1923,7 @@
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t2Pret != undefined && pta.t2Bn != undefined" class="font-bold"> {{ (pta.t2Pret +
-                      pta.t2Bn) | formatNumber
+                        pta.t2Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
@@ -2052,7 +1938,7 @@
                   </td>
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t3Pret != undefined && pta.t3Bn != undefined" class="font-bold"> {{ (pta.t3Pret +
-                      pta.t3Bn) | formatNumber
+                        pta.t3Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
@@ -2066,7 +1952,7 @@
                   </td>
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold"> {{ (pta.t4Pret +
-                      pta.t4Bn) | formatNumber
+                        pta.t4Bn) | formatNumber
                     }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA </span> -->
                   </td>
@@ -2083,8 +1969,7 @@
 
       </div>
     </div>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-      @click="exportToExcel">Exporter vers Excel</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" @click="exportToExcel">Exporter vers Excel</button>
 
   </div>
 </template>
@@ -3329,8 +3214,12 @@ export default {
         this.scopes = response.data.data
       });
     }
+
+
   }
 }
 </script>
 
-<style></style>
+<style>
+
+</style>
