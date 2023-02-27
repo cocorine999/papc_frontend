@@ -15,7 +15,7 @@
         <modal-top-right :title="title2" v-on:close="closeB">
           <div class="px-4 overflow-y-auto">
             <vform template="default" :champs="passationChamps" isAllPairSaufDescrip="true" :cols="colsPassation"
-              submitText="Creer la passation" @sendForm="sendForm2" @addSite="addSite" @closeModal="close2"></vform>
+              submitText="Creer la passation" @sendForm="sendForm2" @addSomeThing="addSite" @closeModal="close2"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -198,6 +198,7 @@ export default {
       latitude: "",
       bailleur: null,
       entrepriseExecutantId: "",
+      // données du modal de site
       showSiteModal: false,
       savedInput: [],
       showModal: false,
@@ -352,9 +353,11 @@ export default {
       passations: "passations/getPassations",
       entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       sites: "sites/getSites",
+      // modal de site 
       site: "sites/getSite",
       entreprises: "entreprisesExecutante/getEntreprisesExecutante",
       bailleurs: "bailleurs/getBailleurs",
+      // fin modal site
       currentUser: "auths/GET_AUTHENTICATE_USER",
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
@@ -363,8 +366,8 @@ export default {
   methods: {
     ...mapMutations({
       setErrors: "SET_ERRORS_MESSAGE", // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
-      setMod: "mods/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
-      setSite: "Sites/FILL",
+      setMod: "mods/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')` 
+      setSite: "Sites/FILL",  // for site modal
     }),
 
     ...mapActions(
@@ -375,22 +378,24 @@ export default {
       deleteMod: "DESTROY_MOD",
     }
     ),
-   
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
-
     ...mapActions('passations', {
       fetchPassations: "FETCH_LIST_MOD_PASSATION",
       savePassation: "STORE_PASSATION",
       updatePassation: "UPDATE_PASSATION",
       deletePassation: "DESTROY_PASSATION"
     }),
+    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+
     ...mapActions("entreprisesExecutante", {
       fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
     }),
+    // for site modal
     ...mapActions("sites", {
       fetchSites: "FETCH_LIST_SITE",
-       saveSite: "STORE_SITE",
+      saveSite: "STORE_SITE",
     }),
+    // fin site modal
+
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
         if (element.slug === 'voir-un-mod') {
@@ -429,13 +434,15 @@ export default {
       });
 
     },
+
+    // site methods
     addSite() {
       this.showSiteModal = true
       this.title = 'Ajouter un nouveau site'
-      
-   this.fetchSites(this.currentUser?.programme?.id)
-   this.fetchEntreprisesExecutante();
-   this.fetchBailleurs()
+
+      this.fetchSites(this.currentUser?.programme?.id)
+      this.fetchEntreprisesExecutante();
+      this.fetchBailleurs()
 
     },
     closeSiteModal2() {
@@ -460,7 +467,41 @@ export default {
         this.latitude = ""
       localStorage.removeItem('formData');
     },
+    sendSiteForm() {
+      var entrepriseExecutantId = []
 
+      this.value.forEach(element => {
+        entrepriseExecutantId.push(element.id)
+      });
+
+      let site = {
+        "nom": this.nom,
+        "longitude": this.longitude,
+        "latitude": this.latitude,
+        "bailleurId": this.bailleur,
+        "entrepriseExecutantId": entrepriseExecutantId
+      }
+
+      this.saveSite(site).then((response) => {
+        if (response.status == 200 || response.status == 201) {
+          this.$toast.success('operation effectuer avec sucess')
+          this.fetchSites(this.currentUser?.programme?.id)
+          this.showSiteModal = false;
+          this.nom = "",
+            this.bailleur = null,
+            this.value = [],
+            this.longitude = "",
+            this.latitude = ""
+          localStorage.removeItem('formData');
+        }
+      }).catch((e) => {
+        this.$toast.error(e)
+        this.sendRequest = false
+      });
+
+    },
+
+    // fin site methods 
     addPassation() {
       this.title2 = "Ajouter une Passation";
       this.showModal2 = true;
@@ -647,39 +688,7 @@ export default {
       this.setMod({});
     },
 
-    sendSiteForm() {
-      var entrepriseExecutantId = []
 
-      this.value.forEach(element => {
-        entrepriseExecutantId.push(element.id)
-      });
-
-      let site = {
-        "nom": this.nom,
-        "longitude": this.longitude,
-        "latitude": this.latitude,
-        "bailleurId": this.bailleur,
-        "entrepriseExecutantId": entrepriseExecutantId
-      }
-
-      this.saveSite(site).then((response) => {
-        if (response.status == 200 || response.status == 201) {
-          this.$toast.success('operation effectuer avec sucess')
-          this.fetchSites(this.currentUser?.programme?.id)
-          this.showSiteModal = false;
-          this.nom = "",
-            this.bailleur = null,
-            this.value = [],
-            this.longitude = "",
-            this.latitude = ""
-          localStorage.removeItem('formData');
-        }
-      }).catch((e) => {
-        this.$toast.error(e)
-        this.sendRequest = false
-      });
-
-    },
 
     sendForm() {
       this.champs = this.champs.map((item) => {
@@ -740,7 +749,7 @@ export default {
         return item;
       });
     },
-    
+
     entreprises: function (entreprises) {
       this.entreprises.map((item) => {
         item.nom = item.user.nom

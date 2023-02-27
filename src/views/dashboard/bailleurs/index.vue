@@ -419,6 +419,7 @@ export default {
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
+   
     filteredBailleur() {
       var self = this;
 
@@ -591,7 +592,7 @@ export default {
       this.title = "Dupliquer un bailleur";
       this.showCloseModal();
     },
-    close() {
+   close()  {
       this.showCloseModal();
       this.resetForm()
       localStorage.removeItem('formData')
@@ -661,7 +662,8 @@ export default {
           })
 
 
-        } else {
+        } 
+        else {
           const demo = {
             "nom": bailleur.nom,
             "email": bailleur.email,

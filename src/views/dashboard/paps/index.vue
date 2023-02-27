@@ -5,7 +5,8 @@
         <ModalTopRight :title="title" v-on:close="closeA">
           <div class="px-4 overflow-y-auto">
             <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal = false" :champs="champs"
-              :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" @addSite="addSite" ></vform>
+              :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" @addSite="addSite">
+            </vform>
           </div>
         </ModalTopRight>
       </div>
@@ -206,15 +207,18 @@
 
       <section class="text-gray-600 body-font bg-gray-50 h-auto flex justify-center items-center">
         <div class="container px-5 py-24 mx-auto">
-          <div class="flex flex-wrap -m-4 text-center"   >
-            <div class="p-4 sm:w-1/2 lg:w-1/4 w-full hover:scale-105 duration-500" v-for="(site, index) in paps.sites" :key="index">
+          <div class="flex flex-wrap -m-4 text-center">
+            <div class="p-4 sm:w-1/2 lg:w-1/4 w-full hover:scale-105 duration-500" v-for="(site, index) in paps.sites"
+              :key="index">
               <div class=" flex items-center  justify-between p-4  rounded-lg bg-white shadow-indigo-50 shadow-md">
                 <div>
 
-                  <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left" :style="`color:${site.bailleurCouleur}`">{{ site.total | formatNumber }} XOF</h3>
-                  
+                  <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left" :style="`color:${site.bailleurCouleur}`">{{
+                    site.total | formatNumber }} XOF</h3>
+
                   <button
-                    class="text-sm mt-6 px-4 py-2 bg-yellow-400 text-white rounded-lg  tracking-wider hover:bg-yellow-300 outline-none" :style="`background-color:${site.bailleurCouleur}`">{{ site.nom }}</button>
+                    class="text-sm mt-6 px-4 py-2 bg-yellow-400 text-white rounded-lg  tracking-wider hover:bg-yellow-300 outline-none"
+                    :style="`background-color:${site.bailleurCouleur}`">{{ site.nom }}</button>
                 </div>
                 <div
                   class="bg-gradient-to-tr from-red-500 to-yellow-400 w-32 h-32  rounded-full shadow-2xl shadow-yellow-400 border-white  border-dashed border-2  flex justify-center items-center ">
@@ -227,17 +231,19 @@
             </div>
           </div>
         </div>
-    
-
-    </section>
 
 
-    <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
-      :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
-    <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres" :search="search"
-      :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
-    <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
-      :search="search" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
+      </section>
+
+
+      <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+        :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'"
+        @retour="onRetour"></vtable>
+      <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+        :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'"
+        @retour="onRetour"></vtable>
+      <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+        :search="search" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
 
       <h2 class="text-gray-900 text-lg font-bold">Total Transféré</h2>
       <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left">{{ total | formatNumber }} XOF</h3>
@@ -286,13 +292,13 @@ export default {
       latitude: "",
       bailleur: null,
       entrepriseExecutantId: "",
-      showSiteModal: false,
+      showSiteModal: false, //open and close add site modal
       sendRequest: false,
       showModal: false,
       showModal2: false,
       showInput: true,
       title: '',
-      total:0,
+      total: 0,
       cols: [],
       sexe: [
         {
@@ -310,7 +316,7 @@ export default {
         { name: ' N° Rue', key: 'rue', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: ' Longitude', key: 'longitude', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
         { name: ' Latitude', key: 'latitude', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
-        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site",canAdd:true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
+        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", canAdd: true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: ' Nom et prenoms', key: 'nom', type: 'text', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Sexe', key: 'sexe', type: '', placeholdere: "Selectionnez le sexe", isSelect: true, isTextArea: false, data: '', options: this.sexe, cle: 'sigle', value: 'nom', required: true, errors: [] },
         { name: ' Contact ', key: 'contact', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -353,7 +359,7 @@ export default {
       papExporter: false,
       deleteData: {},
       deleteModal: false,
-      savedInput:[]
+      savedInput: []
     }
 
   },
@@ -374,9 +380,11 @@ export default {
       paps: "paps/getPaps",
       pap: "paps/getPap",
       sites: "sites/getSites",
+      // for site modal   
       site: "sites/getSite",
       entreprises: "entreprisesExecutante/getEntreprisesExecutante",
       bailleurs: "bailleurs/getBailleurs",
+      // end for site modal
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
@@ -388,7 +396,7 @@ export default {
     ...mapMutations({
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setPap: 'paps/FILL', // map `this.CREATE_INSTANCE_PAP()` to `this.$store.commit('CREATE_INSTANCE_PROJET')`
-      setSite: "Sites/FILL",
+      setSite: "Sites/FILL", //for site modal
     }),
 
     previewFiles(event) {
@@ -404,75 +412,21 @@ export default {
       deletePap: "DESTROY_PAP",
       importSinistre: "IMPORTATION_PAP"
     }),
-
-    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE',saveSite: "STORE_SITE",}),
+    //  all site modal methods
+    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE', saveSite: "STORE_SITE", }),
 
     ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
 
     ...mapActions("entreprisesExecutante", {
       fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
-    }), 
-
-    addAno() {
-      this.title = 'Ajouter un element'
-      this.showModal = true
-    },
-
-    getPermission() {
-      this.currentUser.role[0].permissions.forEach(element => {
-        if (element.slug === 'voir-un-pap') {
-          this.papVisible = true
-        }
-        if (element.slug === 'creer-un-pap') {
-          this.papAdd = true
-        }
-        if (element.slug === 'modifier-un-pap') {
-          this.papUpdate = true
-        }
-        if (element.slug === 'supprimer-un-pap') {
-          this.papDelete = true
-        }
-        if (element.slug === 'importer-un-pap') {
-          this.papImporter = true
-        }
-        if (element.slug === 'exporter-un-pap') {
-          this.papExporter = true
-        }
-        if (element.slug === 'voir-un-site') {
-          this.siteVisible = true
-        }
-        if (element.slug === 'creer-un-site') {
-          this.siteAdd = true
-        }
-
-      });
-
-    },
-    onRetour(data)
-    {
-      this.total = data
-    },
-    close() {
-      this.showCloseModal()
-      this.resetForm()
-    },
-    closeA() {
-      this.showCloseModal()
-
-      this.savedInput = []
-      for (let i = 0; i < this.champs.length; i++) {
-        this.savedInput.push(this.champs[i].data)
-      }
-      const parsed = JSON.stringify(this.savedInput);
-      localStorage.setItem('formData', parsed);
-    },
+    }),
     addSite() {
       this.showSiteModal = true
       this.title = 'Ajouter un nouveau site'
-      
-   this.fetchSites(this.currentUser?.programme?.id)
-   this.fetchEntreprisesExecutante();
-   this.fetchBailleurs()
+
+      this.fetchSites(this.currentUser?.programme?.id)
+      this.fetchEntreprisesExecutante();
+      this.fetchBailleurs()
 
     },
     closeSiteModal2() {
@@ -531,6 +485,62 @@ export default {
       });
 
     },
+    // end all site modal methods
+    addAno() {
+      this.title = 'Ajouter un element'
+      this.showModal = true
+    },
+
+    getPermission() {
+      this.currentUser.role[0].permissions.forEach(element => {
+        if (element.slug === 'voir-un-pap') {
+          this.papVisible = true
+        }
+        if (element.slug === 'creer-un-pap') {
+          this.papAdd = true
+        }
+        if (element.slug === 'modifier-un-pap') {
+          this.papUpdate = true
+        }
+        if (element.slug === 'supprimer-un-pap') {
+          this.papDelete = true
+        }
+        if (element.slug === 'importer-un-pap') {
+          this.papImporter = true
+        }
+        if (element.slug === 'exporter-un-pap') {
+          this.papExporter = true
+        }
+        if (element.slug === 'voir-un-site') {
+          this.siteVisible = true
+        }
+        if (element.slug === 'creer-un-site') {
+          this.siteAdd = true
+        }
+
+      });
+
+    },
+    onRetour(data) {
+      this.total = data
+    },
+    close() {
+      this.showCloseModal()
+      this.resetForm()
+    },
+    closeA() {
+      this.showCloseModal()
+
+      this.savedInput = []
+      for (let i = 0; i < this.champs.length; i++) {
+        this.savedInput.push(this.champs[i].data)
+      }
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+    },
+
+
+
     title_csv() {
       return "paps-" + "-" + new Date()
     },
@@ -722,7 +732,7 @@ export default {
       this.champs.forEach((value) => { value.errors = errors[value.key] })
       //this.errors = errors
     },
-
+  //  site modal
     sites: function (sites) {
       this.champs.map((item) => {
         if (item.key === "siteId") {
@@ -743,7 +753,7 @@ export default {
 
       });
     },
-   
+//  end site modal
 
   },
 

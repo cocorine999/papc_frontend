@@ -565,6 +565,15 @@
         <span class="font-semibold text-xs uppercase">kobotoolsbox</span>
       </router-link>
     </div>
+    <div v-if="utilisateurVisible" class="mb-1 px-4 flex animation items-center text-white cursor-pointer">
+      <router-link to="/dashboard/rapport" style="width: 100%"
+        class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+        <span class=" ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="m20 8-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9 19H7v-9h2v9zm4 0h-2v-6h2v6zm4 0h-2v-3h2v3zM14 9h-1V4l5 5h-4z"></path></svg>
+        </span>
+        <span class="font-semibold text-xs uppercase">Rapport</span>
+      </router-link>
+    </div>
 
 
     <div v-if="currentRole === 'unitee-de-gestion'" class="px-6 animation mb-10 relative">

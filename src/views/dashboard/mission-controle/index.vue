@@ -14,7 +14,8 @@
         <modal-top-right :title="title2" v-on:close="closeB">
           <div class="px-4 overflow-y-auto">
             <vform template="default" :champs="passationChamps" isAllPairSaufDescrip="true" @closeModal="close2"
-              :savedInput="savedInput2" :cols="colsPassation" submitText="Enregistrer" @addSite="addSite" @sendForm="sendForm2"></vform>
+              :savedInput="savedInput2" :cols="colsPassation" submitText="Enregistrer" @addSomeThing="addSite"
+              @sendForm="sendForm2"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -196,6 +197,7 @@ export default {
       latitude: "",
       bailleur: null,
       entrepriseExecutantId: "",
+      // modal d'ajout de site
       showSiteModal: false,
       savedInput: [],
       savedInput2: [],
@@ -220,7 +222,7 @@ export default {
       ],
       passationChamps: [
         { name: 'Mission de controle', key: 'missionDeControleId', type: '', placeholdere: "Selectionnez une mission de controle", isSelect: true, isTextArea: false, data: '', required: true, options: this.missionDeControles, cle: 'id', value: 'nom', errors: [] },
-        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", canAdd:true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
+        { name: 'Site', key: 'siteId', type: '', placeholdere: "Selectionnez un site", canAdd: true, isSelect: true, isTextArea: false, data: '', options: this.sites, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: 'Entreprise Executante', key: 'entrepriseExecutanteId', type: '', placeholdere: "Selectionnez une entreprise", isSelect: true, isTextArea: false, data: '', options: this.entreprisesExecutante, cle: 'id', value: 'nom', required: true, errors: [] },
         { name: 'Montant passation', key: 'montant', type: 'number', placeholdere: "Montant passation", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
         { name: 'Date obtention', key: 'dateDobtention', type: 'date', placeholdere: "Date obtention", isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
@@ -282,9 +284,11 @@ export default {
       passation: "passations/getPassation",
       passations: "passations/getPassations",
       entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
+      // modal d'ajout de site
       sites: "sites/getSites",
       bailleurs: "bailleurs/getBailleurs",
       entreprises: "entreprisesExecutante/getEntreprisesExecutante",
+      // fin modal d'ajout de site
       currentUser: 'auths/GET_AUTHENTICATE_USER'
     }),
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
@@ -296,7 +300,7 @@ export default {
       setErrors: 'SET_ERRORS_MESSAGE', // map `this.setErrors()` to `this.$store.commit('SET_ERRORS_MESSAGE')`,
       setMissionDeControle: 'missionDeControles/FILL', // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       setPassation: 'passations/FILL', // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
-      setSite: "Sites/FILL",
+      setSite: "Sites/FILL", // for site modal
     }),
 
 
@@ -312,6 +316,7 @@ export default {
       updatePassation: "UPDATE_PASSATION",
       deletePassation: "DESTROY_PASSATION"
     }),
+    // site modal all methods
     ...mapActions("entreprisesExecutante", {
       fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
     }),
@@ -322,6 +327,7 @@ export default {
     ...mapActions("bailleurs", {
       fetchBailleurs: "FETCH_LIST_BAILLEUR",
     }),
+
 
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
@@ -352,12 +358,14 @@ export default {
         if (element.slug === 'voir-une-entreprise-executante') {
           this.entreprisesExecutanteVisible = true
         }
+        // permissions modal site
         if (element.slug === 'voir-un-site') {
           this.siteVisible = true
         }
         if (element.slug === 'creer-un-site') {
           this.siteAdd = true
         }
+        // fin permissions modal site
 
       });
 
@@ -366,10 +374,10 @@ export default {
     addSite() {
       this.showSiteModal = true
       this.title = 'Ajouter un nouveau site'
-      
-   this.fetchSites(this.currentUser?.programme?.id)
-   this.fetchEntreprisesExecutante();
-   this.fetchBailleurs()
+
+      this.fetchSites(this.currentUser?.programme?.id)
+      this.fetchEntreprisesExecutante();
+      this.fetchBailleurs()
 
     },
     closeSiteModal2() {
@@ -428,6 +436,8 @@ export default {
       });
 
     },
+
+    // fin modal site methods
 
     goMo() {
       this.seeMo = true
@@ -682,7 +692,7 @@ export default {
       this.champs.forEach((value) => { value.errors = errors[value.key] })
       //this.errors = errors
     },
-
+    // for site modal
     sites: function (sites) {
       this.passationChamps.map((item) => {
         if (item.key === "siteId") {
@@ -711,14 +721,14 @@ export default {
       });
     },
 
-
- entreprises: function (entreprises) {
+    entreprises: function (entreprises) {
       this.entreprises.map((item) => {
         item.nom = item.user.nom
         return item;
 
       });
     },
+    // fin for site modal
     missionDeControles: function (missionDeControles) {
       this.passationChamps.map((item) => {
         if (item.key === "missionDeControleId") {

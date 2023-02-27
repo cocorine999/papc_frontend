@@ -414,7 +414,7 @@ export default {
       this.dates.push({})
     },
 
-    close() {
+   close () {
       this.showCloseModal()
       this.resetForm()
       this.sendRequest = false;
@@ -453,7 +453,6 @@ export default {
         return value
 
       })
-
       this.champs = formData
 
       this.showCloseModal(true)
