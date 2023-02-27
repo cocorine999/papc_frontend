@@ -134,7 +134,7 @@
                 <textarea v-model="suiviIndicateurs.commentaire"
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   rows="3">
-                                  </textarea>
+                                      </textarea>
               </div>
 
               <div class="py-2 my-4 flex justify-center space-x-8">
@@ -190,7 +190,6 @@
 
       <div v-if="showUniteDeMesureModal">
         <modal-top-right :title="title" v-on:close="closeUniteDeMesure1">
-
           <div class="w-full p-4">
             <vform template="default" :champs="champsUniteDeMesure" cols="1" :savedInput="savedInput"
               :submitText="submitText" @sendForm="sendUniteDeMesureForm" @closeModal="closeUniteDeMesure"></vform>
@@ -210,7 +209,7 @@
       <div v-if="showBailleurModal">
         <modal-top-right :title="title" v-on:close="closeBailleur2">
           <div class="p-4 w-full">
-            <vform  template="default" @getImage="getBailleurImage" :champs="champsBailleur"
+            <vform template="default" @getImage="getBailleurImage" :champs="champsBailleur"
               :savedInput="savedBailleurInput" :cols="cols" :submitText="submitText" @sendForm="sendBailleurForm"
               :sendRequest="sendRequest" @closeModal="closeBailleur">
             </vform>
@@ -514,6 +513,15 @@ export default {
       //this.loading = value
     },
 
+    showUniteDeMesureModal: function (value) {
+
+      if (this.showUniteDeMesureModal === false) {
+        // console.log(this.showUniteDeMesureModal)
+        this.getUpdateUniteDeMesure()
+      }
+
+    },
+
     bailleurs: function (bailleurs) {
       this.champs.map((item) => {
         if (item.key === "bailleurId") {
@@ -657,7 +665,7 @@ export default {
             }
 
           }
-        });
+        })
       }
 
       else {
@@ -855,7 +863,7 @@ export default {
       this.submitText = "Enrégistrer";
 
       this.showUniteDeMesureModal = true
-    
+
       this.fetchUniteesDeMesure()
     },
     closeUniteDeMesure() {
@@ -900,19 +908,17 @@ export default {
       uniteeDeMesure.nom = this.champsUniteDeMesure[0].data
 
       uniteeDeMesure.type = this.champsUniteDeMesure[1].data.id
+      console.log(uniteeDeMesure)
 
+      this.saveUniteeDeMesure(uniteeDeMesure).then((response) => {
+        if (response.status == 200 || response.status == 201) {
+          this.fetchIndicateurs()
+          this.closeUniteDeMesure();
+          this.resetUniteDeMesureForm();
+          localStorage.removeItem('formData');
 
-
-      if (this.uniteeDeMesure?.id) {
-        this.updateUniteeDeMesure({ uniteeDeMesure: uniteeDeMesure, id: this.uniteeDeMesure?.id }).then(
-          (response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.fetchUniteesDeMesure()
-              this.closeUniteDeMesure();
-            }
-          }
-        );
-      }
+        }
+      });
     },
     // fin all Unite de mesure add modal methods
 
@@ -1019,9 +1025,9 @@ export default {
       window.document.getElementById("vform")?.reset();
 
       this.setBailleur({});
-    },  
+    },
 
-  
+
     sendBailleurForm() {
       this.savedInput = []
       this.champsBailleur = this.champsBailleur.map((item) => {
@@ -1444,6 +1450,20 @@ export default {
       })
     },
 
+    getUpdateUniteDeMesure() {
+     
+     
+      UniteDeMesureService.get().then((data) => {
+        const datas = data.data.data
+         console.log(datas)
+        // this.uniteDeMesures = datas
+        // this.champsUpdate.push({ name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: datas, required: true, cle: 'id', value: 'nom', errors: [] },)
+        // this.disabled()
+      }).catch((error) => {
+        this.disabled()
+      })
+    },
+
     getCategorie() {
       this.active()
       CategorieService.get().then((data) => {
@@ -1456,6 +1476,9 @@ export default {
       })
     },
 
+
+  },
+  mounted() {
 
   },
 
