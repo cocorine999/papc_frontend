@@ -62,10 +62,13 @@
           <div>
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Rapport <span
                 class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-            <input
-              class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-              aria-describedby="file_input_help" id="file_input" multiple type="file" @change="getFile">
+                <input class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm" aria-describedby="file_input_help" id="file_input" type="file" @change="previewFiles">
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF,WORD(MAX. 20 MO)</p>
+          </div>
+          
+          <div>
+            <label class="text-xs font-semibold text-gray-500 uppercase md:text-sm text-light">Partager à</label>
+            <multiselect :hideSelected="true" :closeOnSelect="false"  v-model="value" tag-placeholder="Ajouter une nouvelle personne" placeholder="Ajouter une nouvelle personne" label="nom" track-by="nom"  :selectLabel="'Appuyez sur Entrée pour sélectionner'" :deselectLabel="'Appuyez sur Entrée pour supprimer'"  :options="users" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
           </div>
           <div class="form-group my-2">
             <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Categorie <span
@@ -405,6 +408,7 @@ import Preview from '@/components/Preview.vue'
 import AuditService from "@/services/modules/audit.service.js";
 import ProjetService from "@/services/modules/projet.service.js";
 import EntrepriseService from "@/services/modules/entreprise.executante.service.js";
+import UsersService from "@/services/modules/utilisateur.service.js";
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
 import DeleteAlert from "@/components/DeleteAlert.vue";
@@ -453,6 +457,10 @@ export default {
       saveUpdate: {},
       deleteData: {},
       deleteModal: false,
+      value: [],
+      users: [],
+      usersId:[],
+      shared:[],
     }
 
   },
@@ -461,6 +469,18 @@ export default {
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
   },
   methods: {
+    addTag (newTag) {
+      const tag = {
+        nom: newTag,
+      }
+      this.options.push(tag)
+      this.value.push(tag)
+    },
+    previewFiles(event) {
+      const data = event.target.files[0]
+      this.datasFiles = data
+
+    },
     active() {
       this.$store.dispatch('active')
     },
@@ -586,11 +606,35 @@ export default {
     selectProjet({ nom }) {
       return `${nom}`
     },
+    getUser() {
+      UsersService.getByProgramme(this.programmeId).then((data) => {
+        let datas = data.data.data
+        this.users = datas
+             
+      }).catch((error) => {
+        if (error.response) {
+              // Requête effectuée mais le serveur a répondu par une erreur.
+              const message = error.response.data.message
+              this.$toast.error(message)
+              } else if (error.request) {
+                // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                //console.log(error.request);
+              } else {
+              // Une erreur s'est produite lors de la configuration de la demande
+              //console.log('dernier message', error.message);
+          }
+      })
+    },
     saveAudit() {
       if (this.chargement == false) {
         this.chargement = true
         const data = this.audit
         data.projetId = data.projetId.id
+
+        this.value.forEach(element => {
+          this.usersId.push(element.id)
+        })
+
         const formData = new FormData();
         formData.append('annee', data.annee)
         formData.append('entreprise', data.entreprise)
@@ -600,7 +644,12 @@ export default {
         formData.append('statut', data.statut)
         formData.append('categorie', data.categorie)
         formData.append('projetId', data.projetId)
-        formData.append('rapport', this.fichiers)
+        //formData.append('rapport', this.fichiers)
+        formData.append('fichier',this.datasFiles)
+        for( let i = 0; i < this.usersId.length; i++ ){
+          let file = this.usersId[i];
+          formData.append('sharedId[]', file);
+        }
 
         AuditService.create(formData).then((data) => {
           this.chargement = false
@@ -746,6 +795,7 @@ export default {
     } else {
       this.getProjet()
       this.getAudit()
+      this.getUser()
     }
 
     if (localStorage.getItem("formData")) {
