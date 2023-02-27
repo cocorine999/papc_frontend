@@ -662,7 +662,8 @@ export default {
           })
 
 
-        } else {
+        } 
+        else {
           const demo = {
             "nom": bailleur.nom,
             "email": bailleur.email,

@@ -210,7 +210,7 @@
         <modal-top-right :title="title" v-on:close="closeBailleur2">
           <div class="p-4 w-full">
             <vform template="default" @getImage="getBailleurImage" :champs="champsBailleur"
-              :savedInput="savedBailleurInput" :cols="cols" :submitText="submitText" @sendForm="sendBailleurForm"
+              :savedInput="savedInput" :cols="cols" :submitText="submitText" @sendForm="sendBailleurForm"
               :sendRequest="sendRequest" @closeModal="closeBailleur">
             </vform>
           </div>
@@ -865,8 +865,11 @@ export default {
       }
     },
 
-    addUniteeDeMesure() {
+    getBailleurImage(data) {
+      this.image = data
+    },
 
+    addUniteeDeMesure() {
       this.title = "Ajouter une nouvelle unitee de mésure";
 
       this.submitText = "Enrégistrer";
@@ -903,6 +906,7 @@ export default {
 
       this.setUniteeDeMesure({});
     },
+    
     sendUniteDeMesureForm() {
       this.champsUniteDeMesure = this.champsUniteDeMesure.map((item) => {
         item.errors = [];
@@ -973,13 +977,16 @@ export default {
         return item;
       });
 
-      let categorie = extractFormData(this.champs, this.categorieAttributes);
+      
+
+      let categorie = extractFormData(this.champsCategorie, this.categorieAttributes);
+      
       this.saveCategorie(categorie).then((response) => {
             if (response.status == 200 || response.status == 201) {
               this.closeCategorie();
               this.resetCategorieForm();
               localStorage.removeItem('formData');
-
+              this.getCategorie()
             }
           });
 
@@ -1025,7 +1032,10 @@ export default {
 
       this.setBailleur({});
     },
-
+    
+    getBailleurImage(data) {
+      this.image = data
+    },
 
     sendBailleurForm() {
       this.savedInput = []
@@ -1033,12 +1043,16 @@ export default {
         item.errors = [];
         return item;
       });
+      
+
       let bailleur = {}
 
       bailleur = extractFormData(this.champsBailleur, this.bailleurAttributs);
 
 
       bailleur.programmeId = this.programmeId;
+
+
       if (this.sendRequest == false) {
         this.sendRequest = true
         if (this.bailleur?.id) {
@@ -1061,6 +1075,7 @@ export default {
           formData.append('sigle', demo.sigle)
           formData.append('logo', this.image)
           formData.append('programmeId', this.programmeId)
+          
 
           this.saveBailleur(formData).then((response) => {
             if (response.status == 200 || response.status == 201) {

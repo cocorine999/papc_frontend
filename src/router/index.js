@@ -76,6 +76,7 @@ import mod from "../views/dashboard/mod/index.vue";
 // import projets from "../views/dashboard/projets/index.vue";
 import pta from "../views/dashboard/pta/index.vue";
 import kobotoolsbox from "../views/dashboard/kobotoolsbox/index.vue";
+import rapport from "../views/dashboard/rapport/index.vue";
 // import unitegestion from "../views/dashboard/unite-gestion/index.vue";
 // import utilisateurs from "../views/dashboard/utilisateurs/index.vue";
 // import config from "../views/dashboard/config/index.vue";
@@ -263,6 +264,11 @@ const routes = [
     path: "/dashboard/kobotoolsbox",
     name: "kobotoolsbox",
     component:kobotoolsbox,
+  },
+  {
+    path: "/dashboard/rapport",
+    name: "rapport",
+    component:rapport
   },
 
   {
