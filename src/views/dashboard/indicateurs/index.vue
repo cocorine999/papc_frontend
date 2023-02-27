@@ -134,7 +134,7 @@
                 <textarea v-model="suiviIndicateurs.commentaire"
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   rows="3">
-                                      </textarea>
+                                        </textarea>
               </div>
 
               <div class="py-2 my-4 flex justify-center space-x-8">
@@ -622,6 +622,8 @@ export default {
       indicateur: "indiateurs/getIndicateur",
       uniteeDeMesure: "uniteesDeMesure/getUniteeDeMesure",
       uniteesDeMesure: "uniteesDeMesure/getUniteesDeMesure",
+      categorie: "categories/getCategorie",
+      categories: "categories/getCategories",
       bailleurs: "bailleurs/getBailleurs",
 
       /* categories: "categories/getCategorie",
@@ -709,6 +711,7 @@ export default {
       setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       setUniteeDeMesure: "uniteesDeMesure/FILL",
       setBailleur: "bailleurs/FILL", //for add's bailleur modal
+      setCategorie: "categories/FILL", 
     }),
 
     getColonne(data) {
@@ -822,6 +825,12 @@ export default {
       updateIndicateur: "UPDATE_INDICATEUR",
       deleteIndicateur: "DESTROY_INDICATEUR",
     }),
+
+    ...mapActions("categories", {
+        fetchCategories: "FETCH_LIST_CATEGORIE",
+        saveCategorie: "STORE_CATEGORIE",
+       
+      }),
 
 
     ...mapActions("uniteesDeMesure", {
@@ -959,32 +968,22 @@ export default {
     },
 
     sendCategorieForm() {
-      this.champsCaregorie = this.champsCaregorie.map((item) => {
+      this.champsCategorie = this.champsCategorie.map((item) => {
         item.errors = [];
         return item;
       });
 
-      let uniteeDeMesure = {
-        nom: "",
-        type: ""
-      }
+      let categorie = extractFormData(this.champs, this.categorieAttributes);
+      this.saveCategorie(categorie).then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              this.closeCategorie();
+              this.resetCategorieForm();
+              localStorage.removeItem('formData');
 
-      uniteeDeMesure.nom = this.champsCaregorie[0].data
+            }
+          });
 
-      uniteeDeMesure.type = this.champsCaregorie[1].data.id
-
-
-
-      if (this.uniteeDeMesure?.id) {
-        this.saveUniteeDeMesure(uniteeDeMesure).then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            this.fetchUniteesDeMesure()
-            this.closeCategorie();
-            this.resetCategorieForm();
-            localStorage.removeItem('formData');
-          }
-        });
-      }
+    
     },
     //fin  all categorie add modal methods
 
@@ -1451,16 +1450,16 @@ export default {
     },
 
     getUpdateUniteDeMesure() {
-     
-     
+      let old = this.champs[3].options 
       UniteDeMesureService.get().then((data) => {
-        const datas = data.data.data
-         console.log(datas)
-        // this.uniteDeMesures = datas
-        // this.champsUpdate.push({ name: 'Unite de mesure', key: 'uniteeMesureId', type: '', placeholdere: "Selectionnez une unité de mesure", isSelect: true, isTextArea: false, data: '', options: datas, required: true, cle: 'id', value: 'nom', errors: [] },)
-        // this.disabled()
+        this.uniteDeMesure = {}
+        this.uniteDeMesures = datas
+        this.champs[3].options = old
+        this.champs[3].options = []
+        this.champs[3].options = datas
+
       }).catch((error) => {
-        this.disabled()
+        this.champs[3].options = old
       })
     },
 

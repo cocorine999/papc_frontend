@@ -54,8 +54,8 @@
             </button>
             <button v-if="(statut.code == 1 || statut.code ==0)  && !isSuivi && !isDone" title="suivre tache anterieur"
             @click="$emit('suivreOld')"
-              class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
-              suivre 2
+              class="bg-red-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
+            suivie anterieur
             </button>
             <button title="suivre tache" v-if="statut.code == 2"
               class="bg-gray-500 text-gray-300  rounded-lg text-sm px-3 py-1 font-semibold ">
