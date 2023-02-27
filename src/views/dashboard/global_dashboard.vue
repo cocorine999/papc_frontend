@@ -1,6 +1,7 @@
 <template>
   <dashboard>
-    <div class="w-full">
+    <div class="w-full mb-4">
+      <h1 class="font-bold text-xl mb-4 uppercase border-l-8 border-blue-900 pl-4">statistiques Globales</h1>
       <!-- CARDS TOTAUX -->
       <div class="mx-auto _max-w-7xl sm:px-0 lg:px-0 relative ">
         <div class="_hidden grid gap-4 md:grid-cols-2 md:gap-4 lg:grid lg:grid-cols-2 lg:gap-6 xl:grid-cols-3">
@@ -104,16 +105,12 @@
 
             <div class="grid grid-cols-2 gap-x-6 leading-normal text-md bg-white rounded-lg text-black p-4">
               <div class="">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos porro temporibus, saepe omnis nam
-              obcaecati provident quos. Necessitatibus asperiores impedit dolores fuga expedita voluptas earum laboriosam
-              animi rem non atque delectus eum maiores veniam omnis, quas iste incidunt dolorum culpa. Numquam atque
-              reprehenderit doloribus autem quo placeat sequi molestiae ad? Facere nulla praesentium, exercitationem sed
+                <span class="font-bold text-lg">AFD</span>
+                <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
               </div>
               <div class="">
-              dignissimos inventore eligendi quaerat necessitatibus tempore ipsum ea aperiam animi assumenda ad deserunt
-              eaque? Consequatur harum optio incidunt suscipit rem ex dolores, veniam hic, fugiat ipsa sequi! Magnam id
-              ratione architecto atque fugiat. Officiis dolore assumenda sequi aperiam perferendis dolorem voluptatem
-              facere laudantium! Possimus, quaerat.
+                <span class="font-bold text-lg">BEI</span>
+                <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
               </div>
             </div>
           </details>
@@ -137,7 +134,30 @@ export default {
   },
   data() {
     return {
-
+      series: [{
+            data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
+            data: [409, 439, 449, 479, 549, 589, 699, 1109, 1209, 1389]
+          }],
+          chartOptions: {
+            chart: {
+              type: 'bar',
+              height: 350
+            },
+            plotOptions: {
+              bar: {
+                borderRadius: 4,
+                horizontal: true,
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            xaxis: {
+              categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+                'United States', 'China', 'Germany'
+              ],
+            }
+          },
     }
   }
 }
