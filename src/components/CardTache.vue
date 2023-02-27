@@ -24,12 +24,12 @@
             stroke="none" />
         </svg></span>
       <dropdown v-if="isDelete && isUpdate" @commentaire="$emit('commentaire')" @supprimer="$emit('supprimer')"
-        @modifier="$emit('modifier')" @suivre="$emit('suivre')" @prolonger="$emit('prolonger')" :option="option">
+        @modifier="$emit('modifier')" @suivre="$emit('suivre')" @suivreOld="$emit('suivreOld')" @prolonger="$emit('prolonger')" :option="option">
       </dropdown>
       <dropdown v-if="isDelete && !isUpdate" @commentaire="$emit('commentaire')" @supprimer="$emit('supprimer')"
-        @suivre="$emit('suivre')" @prolonger="$emit('prolonger')" :option="optionD"></dropdown>
+        @suivre="$emit('suivre')" @suivreOld="$emit('suivreOld')" @prolonger="$emit('prolonger')" :option="optionD"></dropdown>
       <dropdown v-if="!isDelete && !isUpdate" @commentaire="$emit('commentaire')" @modifier="$emit('modifier')"
-        @suivre="$emit('suivre')" @prolonger="$emit('prolonger')" :option="optionUpdate"></dropdown>
+        @suivre="$emit('suivre')" @suivreOld="$emit('suivreOld')" @prolonger="$emit('prolonger')" :option="optionUpdate"></dropdown>
     </div>
     <!-- dot -->
     <div class="relative bg-white sm:rounded-lg overflow-hidden ">
@@ -51,6 +51,11 @@
               @click="validerSuivi(id)"
               class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
               suivre
+            </button>
+            <button v-if="(statut.code == 1 || statut.code ==0)  && !isSuivi && !isDone" title="suivre tache anterieur"
+            @click="$emit('suivreOld')"
+              class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
+              suivre 2
             </button>
             <button title="suivre tache" v-if="statut.code == 2"
               class="bg-gray-500 text-gray-300  rounded-lg text-sm px-3 py-1 font-semibold ">

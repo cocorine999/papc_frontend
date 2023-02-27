@@ -39,6 +39,38 @@
       </div>
     </vmodal>
 
+    <vmodal v-if="doSuiviOld" title="Suivre la tache " @close="doSuiviOld = false">
+      <div style="width:60vw" class="p-0 w-full">
+        <form @submit.prevent="saveSuiviOld(tacheId, date)" action="">
+          <div class="grid grid-cols-2 gap-2 my-2">
+            <div class="form-group my-2">
+              <label class="text-xs font-semibold block text-gray-500 uppercase md:text-sm text-light">Date<span
+                  class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+              <input v-model="date" required
+                class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent"
+                type="date" />
+            </div>
+          </div>
+          <button type="submit"
+            class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+            <span class="text-sm font-semibold uppercase" v-if="!chargement">
+              enregistrer
+            </span>
+            <span v-else class="flex items-center space-x-2">
+              <span class="text-xs px-4 font-semibold ">
+                envoi ...
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </span>
+          </button>
+        </form>
+      </div>
+    </vmodal>
+
     <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
       <p class="text-gray-800">
         voulez vous supprimer cette activité?
@@ -233,7 +265,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :debut="tache.debut" :fin="tache.fin" :montantEPM="tache.montantEPM" :durees="tache.durees"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" @commentaire="showComment = true"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @suivreOld="suiviOld(tache)" @validation="validation" @commentaire="showComment = true"
                   :isDelete="tacheDelete" :isUpdate="tacheUpdate" :isSuivi="tacheSuivi"></card-tache>
               </div>
             </div>
@@ -248,8 +280,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM" :durees="tache.durees"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
->>>>>>> origin/rwv-constantin
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @suivreOld="suiviOld(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -266,14 +297,13 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM" :durees="tache.durees"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @suivreOld="suiviOld(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
             </div>
           </div>
         </div>
-
         <div v-if="retard">
           <empty v-if="retardData.length === 0">tache vide !!!</empty>
           <div v-else>
@@ -283,7 +313,7 @@
                   :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom"
                   :montantNE="tache.montantNE" :codePta="tache.codePta" :montantEPM="tache.montantEPM" :durees="tache.durees"
                   @supprimer="supprimer(tache)" @dupliquer="dupliquer(tache)" @modifier="modifier(tache)"
-                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
+                  @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @suivreOld="suiviOld(tache)" @validation="validation" :debut="tache.debut" :fin="tache.fin"
                   @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                   :isSuivi="tacheSuivi"></card-tache>
               </div>
@@ -300,7 +330,7 @@
                 :poids="tache.poids" :poidsActuel="tache.poidsActuel" :libelle="tache.nom" :montantNE="tache.montantNE"
                 :codePta="tache.codePta" :montantEPM="tache.montantEPM" @supprimer="supprimer(tache)"
                 @dupliquer="dupliquer(tache)" @modifier="modifier(tache)" @validation="validation"
-                @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" :debut="tache.debut" :fin="tache.fin"
+                @prolonger="prolonger(tache)" @suivre="suivreMyTache(tache)" @suivreOld="suiviOld(tache)" :debut="tache.debut" :fin="tache.fin"
                 @commentaire="showComment = true" :isDelete="tacheDelete" :isUpdate="tacheUpdate"
                 :isSuivi="tacheSuivi"></card-tache>
             </div>
@@ -367,6 +397,7 @@ export default {
     return {
       savedInput: [],
       dates: { debut: '', fin: '' },
+      date:'',
       suivis: [],
       commentaires: [
         { nom: 'Gomez jacob', message: 'lorem ipsum', date: '22 septembre 2022' },
@@ -408,6 +439,7 @@ export default {
       showFiltre: false,
       showModal: false,
       showModal2: false,
+      doSuiviOld: false,
       line: false,
       mosaique: true,
       isStateChange: false,
@@ -759,9 +791,37 @@ export default {
       this.tacheId = tache.id
       this.showProlonger = true
     },
+    suiviOld(tache) {
+      this.tacheId = tache.id
+      this.doSuiviOld = true
+    },
     saveProlongerDate(id, data) {
       this.chargement = true
       TacheService.addDate(id, data).then((data) => {
+        this.$toast.success('Operation éffectué avec succès')
+      }).catch((error) => {
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
+      })
+      this.chargement = false
+    },
+    saveSuiviOld(id, data) {
+      this.chargement = true
+      var form = {
+        date:data,
+        tacheId:id
+      }
+      TacheService.myOldSuivis(form).then((data) => {
+        this.doSuiviOld = false
         this.$toast.success('Operation éffectué avec succès')
       }).catch((error) => {
         if (error.response) {
