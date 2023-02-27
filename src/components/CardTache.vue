@@ -47,12 +47,12 @@
             </button>
           </div>
           <div v-else>
-            <button v-if="(statut.code == 1 || statut.code ==0)  && !isSuivi && !isDone" title="suivre tache"
+            <button v-if="(statut.code == 1 || statut.code == 0 || statut.code== -1)  && !isSuivi && !isDone" title="suivre tache"
               @click="validerSuivi(id)"
               class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
               suivre
             </button>
-            <button v-if="(statut.code == 1 || statut.code ==0)  && !isSuivi && !isDone" title="suivre tache anterieur"
+            <button v-if="(statut.code == 1 || statut.code == 0 || statut.code== -1)  && !isSuivi && !isDone" title="suivre tache anterieur"
             @click="$emit('suivreOld')"
               class="bg-red-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
             suivie anterieur
