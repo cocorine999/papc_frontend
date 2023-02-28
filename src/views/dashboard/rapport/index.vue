@@ -19,6 +19,78 @@
                 </div>
             </nav>
 
+            <vmodal v-if="showSendMail" @close="showSendMail = false">
+        
+                <div style="width:60vw">
+        
+                    <form action="" @submit.prevent="sendRapport"  class="p-5 w-full">
+                    
+                        <div class="form-group my-2">
+                    
+                            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Objet
+                    
+                                <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+                            </label>
+                    
+                            <input v-model="objet" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+                    
+                        </div>
+
+                    
+                        <div class="form-group my-2">
+                    
+                            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Destinataire
+                    
+                                <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+                    
+                            </label>
+                    
+                            <input v-model="bcc" required
+                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                            type="text" />
+                    
+                        </div>
+                    
+                    
+                        <div class="py-2 my-4 flex justify-center space-x-8">
+                    
+                            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                    
+
+                                <span class="text-sm font-semibold uppercase" v-if="!chargement">
+
+                                    enregistrer
+
+                                </span>
+                    
+
+                                <span v-else class="flex items-center space-x-2">
+
+                                    <span class="text-xs px-4 font-semibold ">
+
+                                        envoi ...
+
+                                    </span>
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+
+                                    </svg>
+
+                                </span>
+
+                            </button>                        
+
+                        </div>
+
+                    </form>                    
+                
+                </div>
+      
+            </vmodal>
+
             <div class="p-4">
                 <h1 class="text-3xl">Template de rapport</h1>
                 <form action="" @submit.prevent="saveRapport"  class="p-5 w-full">
@@ -55,9 +127,28 @@
                                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
                             </span>
-                        </button>
+                        </button>                        
                     </div>
                 </form>
+
+
+                <button type="submit"
+                            class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                            <span class="text-sm font-semibold uppercase" v-if="!chargement" @click="modalMail()">
+                                Envoyer le mail
+                            </span>
+                            <span v-else class="flex items-center space-x-2">
+                                <span class="text-xs px-4 font-semibold ">
+                                    envoi ...
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </span>
+                        </button>                        
+                
             </div>     
             
             <div class="align-middle inline-block w-full bg-white overflow-x-auto pt-3 rounded-bl-lg rounded-br-lg">                  
@@ -101,7 +192,8 @@
 <script>
 
 import Multiselect from 'vue-multiselect'
-import ModalTopRight from '@/components/ModalTopRight'
+import Vmodal from '@/components/Vmodal'
+
 import SearchBar from '@/components/SearchBar'
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
@@ -120,7 +212,7 @@ export default {
     components: {
         Dashboard,
         SearchBar,
-        ModalTopRight,
+        Vmodal,
         Vbutton,
         Multiselect,
         Dropdown
@@ -131,8 +223,12 @@ export default {
             savedInput: [],
             chargement: false,
             showModal: false,
+            showSendMail: false,
             title: '',
             nom:'',
+            objet: '',
+            bcc: '',
+            users:[],
             rapports:[],
             editor: ClassicEditor,
             editorData: '<p>Contenu du rapport.</p>',
@@ -145,6 +241,10 @@ export default {
     computed: {
     },
     methods: {
+        modalMail()
+        {
+            this.showSendMail = true;
+        },
         getRapports() {
             ProgrammeService.rapports().then((data) => {
                 this.rapports = data.data.data
@@ -198,7 +298,44 @@ export default {
       
             }
     
-        },   
+        },
+        sendRapport() {
+            if (this.chargement == false) {
+                this.chargement = true
+
+                this.users = this.bcc.split(',').map((email) => email.trim());
+                
+                var form = {
+                    objet: this.objet,
+                    destinataires: this.users,
+                    rapport: this.editorData
+                }
+                ProgrammeService.sendMailRapport(form).then((data) => {
+          
+                    this.chargement = false          
+                    this.$toast.success('Email envoyé')                    
+                    this.showSendMail = false
+                }).catch((error) => {
+        
+                    this.chargement = false
+        
+                    if (error.response) {        
+                        // Requête effectuée mais le serveur a répondu par une erreur.    
+                        const message = error.response.data.message        
+                        this.$toast.error(message)                
+                    } else if (error.request) {
+        
+                        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        
+                        //console.log(error.request);
+        
+                    } 
+        
+                })
+      
+            }
+    
+        },      
         useRapport(data)     
         {
             this.editorData = data
