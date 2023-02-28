@@ -16,6 +16,8 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import numeral from 'numeral';
 import numFormat from 'vue-filter-number-format';
+import CKEditor from '@ckeditor/ckeditor5-vue2';
+
 
 import Vuelidate from 'vuelidate';
 Vue.component('apexchart', VueApexCharts)
@@ -51,6 +53,8 @@ Vue.use(VueToast,{
   duration:5000
 });
 
+Vue.use( CKEditor );
+
 Vue.config.productionTip = false;
 
 new Vue({
@@ -58,3 +62,5 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+

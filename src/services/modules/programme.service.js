@@ -64,7 +64,14 @@ const ProgrammeService = {
     },
     updatekobo() {
       return ApiService.put(`programme/kobo`);
-    }
+    },
+    rapport(params) {
+      return ApiService.post(`programme/rapport`, params);
+    },
+
+    rapports() {
+      return ApiService.get(`programme/rapports`);
+    },
 
   };
 

@@ -8,6 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^36.0.1",
+    "@ckeditor/ckeditor5-export-pdf": "^36.0.1",
+    "@ckeditor/ckeditor5-vue2": "^3.0.1",
     "@finpo/vue2-recaptcha-invisible": "^1.2.0",
     "apexcharts": "^3.35.3",
     "axios": "^0.27.2",
