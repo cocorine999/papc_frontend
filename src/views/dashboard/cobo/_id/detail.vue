@@ -44,7 +44,7 @@
 
       </nav>
       <div class="flex justify-between my-2 items-center">
-        <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4 w-10/12" >
+        <div class="border-b-2 border-blue-500 mx-4 mb-8 relative p-4 w-10/12">
           <span
             class="font-bold absolute clr bg-blue-500 px-4 py-1 text-white border-2 border-blue-500 rounded-lg uppercase">
             <span class="  p-1 rounded-md">Titre:</span> {{ nom_questionnaire }} </span>
@@ -104,7 +104,8 @@
     <div v-if="searching">
       <h1 class="m-2 text-xl"> Résultat de la recherche</h1>
       <div class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index2 ) in filtre" :key="index2">
-        <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index2)"  @generate-excel="downloadFile(item)" >
+        <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index2)"
+          @generate-excel="downloadFile(item)">
           <table class="min-w-full table-auto">
             <thead class="border-b bg-gray-300">
               <tr>
@@ -177,7 +178,7 @@
       </vue-html2pdf>
     </div>
 
-   
+
   </Dashboard>
 </template>
 
@@ -212,12 +213,17 @@ export default {
       },
       match: true,
       pdf_id: "",
+      suiviVisible: false
     }
   },
   computed: {
     ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
   },
   mounted() {
+    this.getPermission()
+    if (!this.suiviVisible) {
+      this.$router.push('/401-non-autorise')
+    }
 
     this.nom_questionnaire = this.$store.getters.getquestionnaire.contenu.name
 
@@ -260,7 +266,7 @@ export default {
 
       const data = table;
 
-     const fileName = "Soumission du " + new Date(data[0]._submission_time); 
+      const fileName = "Soumission du " + new Date(data[0]._submission_time);
       const exportType = exportFromJSON.types.csv;
 
       if (data) exportFromJSON({ data, fileName, exportType });
@@ -294,6 +300,16 @@ export default {
       }
     },
 
+    getPermission() {
+      console.log(this.currentUser)
+      this.currentUser.role[0].permissions.forEach(element => {
+
+        if (element.slug === 'voir-suivi-kobo') {
+          this.suiviVisible = true
+        }
+
+      });
+    },
     clear() {
       this.date.dateDebut = "";
       this.date.dateFin = "";

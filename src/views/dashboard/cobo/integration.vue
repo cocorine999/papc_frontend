@@ -1,51 +1,5 @@
 <template>
     <div>
-        <div v-if="modal2" class="bg2 flex justify-center items-center">
-            <div class="bg-white rounded flex flex-col justify-center items-center relative">
-
-                <button class=" mx-2 p-2 flex absolute -right-2.5 -top-1" title="fermer le modal 2" v-title @click="close2">
-                    <svg stroke="currentColor" fill="#FF0000" stroke-width="0" viewBox="0 0 16 16" height="1.5em"
-                        width="1.5em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                        <path
-                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
-                        </path>
-                    </svg>
-                </button>
-
-                <div class="p-7 flex flex-col justify-between items-center">
-                    <p>je suis le contenu du modal2. fermer les modals pour revenir en arrière</p>
-                </div>
-
-            </div>
-        </div>
-        <div v-if="modal1" class="bg flex justify-center items-center">
-            <div class="bg-white rounded flex flex-col justify-center items-center relative">
-
-                <button class=" mx-2 p-2 flex absolute -right-2.5 -top-1" title="fermer le modal 1" v-title @click="close">
-                    <svg stroke="currentColor" fill="#FF0000" stroke-width="0" viewBox="0 0 16 16" height="1.5em"
-                        width="1.5em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                        <path
-                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
-                        </path>
-                    </svg>
-                </button>
-
-                <div class="p-7 flex flex-col justify-between items-center">
-                    <p>je suis le contenu du modal1</p>
-                    <button @click="openModal2" title="essayer le modal2" v-title
-                        class="p-2  mx-auto my-2 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
-                            <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
-                        </svg>
-                        <span class="mx-2 text-xs  font-semibold">Open modal 2 </span>
-                    </button>
-                </div>
-
-            </div>
-        </div>
         <dashboard>
 
             <div class="w-full">
@@ -80,9 +34,9 @@
                                 <g id="spin">
                                     <g>
                                         <path style="fill:#ffffff;" d="M25.883,6.086l-2.82,2.832C24.953,10.809,26,13.324,26,16c0,5.516-4.484,10-10,10v-2l-4,4l4,4v-2
-            				c7.719,0,14-6.281,14-14C30,12.254,28.539,8.734,25.883,6.086z" />
+                				c7.719,0,14-6.281,14-14C30,12.254,28.539,8.734,25.883,6.086z" />
                                         <path style="fill:#ffffff;" d="M20,4l-4-4v2C8.281,2,2,8.281,2,16c0,3.746,1.461,7.266,4.117,9.914l2.82-2.832
-            				C7.047,21.191,6,18.676,6,16c0-5.516,4.484-10,10-10v2L20,4z" />
+                				C7.047,21.191,6,18.676,6,16c0-5.516,4.484-10,10-10v2L20,4z" />
                                     </g>
                                 </g>
                             </g>
@@ -161,17 +115,7 @@
                     </table>
                 </div>
 
-                <div class="m-4">
-                    <p class="text-3xl mb-3">Modals in modals</p>
-                    <button @click="openModal" title="ouvrir modal 1" v-title
-                        class="p-2  overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase _rounded bg-primary focus:outline-none focus:shadow-outline">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
-                            <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
-                        </svg>
-                        <span class="mx-2 text-xs  font-semibold">Open modal 1 </span>
-                    </button>
-                </div>
+            
 
             </div>
         </dashboard>
@@ -194,10 +138,9 @@ export default {
         return {
             kobo_data: [],
             header: ["Nom", "Description", "Total de souscription", "Créer le", "Modifié le",],
+            koboVisible: false,
             selectedRows: [],
             listeSelection: [],
-            modal1: false,
-            modal2: false
         }
     },
     mounted() {
@@ -211,6 +154,10 @@ export default {
         })
 
         this.getPermission()
+       
+        if (!this.koboVisible) {
+            this.$router.push('/401-non-autorise')
+        }
     },
     computed: {
         ...mapGetters({
@@ -224,11 +171,12 @@ export default {
     methods: {
 
         getPermission() {
+            console.log(this.currentUser)
             this.currentUser.role[0].permissions.forEach(element => {
-                console.log(this.currentUser)
-                // if (element.slug === 'voir-un-audit') {
-                //     this.auditVisible = true
-                // }
+
+                if (element.slug === 'voir-formulaire-kobo') {
+                    this.koboVisible = true
+                }
 
             });
         },
@@ -253,18 +201,7 @@ export default {
                 }
             })
         },
-        close() {
-            this.modal1 = false
-        },
-        close2() {
-            this.modal2 = false
-        },
-        openModal() {
-            this.modal1 = true
-        },
-        openModal2() {
-            this.modal2 = true
-        },
+     
         selectAllCheckbox($event) {
             alert('ok')
             let columns = document.querySelectorAll('.rowCheckbox');
