@@ -78,8 +78,8 @@
         <modal-top-right :title="titleProjet" v-title v-on:close="closeProjet2">
           <div class="p-4 overflow-auto">
             <vform template="default" :sendRequest="sendRequest" @getFile="getProjetFile" :savedInput="savedInput"
-              @getImage="getImage" :champs="champsProjet" :cols="cols" :submitText="submitText" @sendForm="sendForm"
-              @closeModal="closeProjet"></vform>
+              @getImage="getProjetImage" :champs="champsProjet" :cols="cols" :submitText="submitText"
+              @sendForm="sendProjetForm" @closeModal="closeProjet"></vform>
           </div>
         </modal-top-right>
       </div>
@@ -581,7 +581,7 @@ export default {
           { name: 'Montant', key: 'montant', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Date', key: 'date', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Projet', key: 'projetId', type: '', placeholdere: 'Choisir un projet', canAdd: true, isSelect: true, isTextArea: false, data: '', options: datas, cle: 'id', value: 'nom', required: true, },
-          { name: 'Methode de paiement', key: 'methodeDePaiement', placeholdere: 'Mode de paiement', canAdd: true, isSelect: true, isTextArea: false, data: '', options: this.$store.state.modePaiement, cle: 'id', value: 'nom', required: true, },
+          { name: 'Methode de paiement', key: 'methodeDePaiement', placeholdere: 'Mode de paiement', isSelect: true, isTextArea: false, data: '', options: this.$store.state.modePaiement, cle: 'id', value: 'nom', required: true, },
           { name: 'Source', key: 'type', placeholdere: 'Source', isSelect: true, isTextArea: false, data: '', options: this.$store.state.source, cle: 'id', value: 'nom', required: true, },
         ]
         this.champsUpdate = [
@@ -689,6 +689,23 @@ export default {
 
       })
     },
+
+    getProjetFile(data) {
+
+      this.champsProjet[7].data = data
+      console.log(this.champsProjet[7].data)
+      for (const property in data) {
+        this.fichiers.push(data[property])
+      }
+      this.fichiers.pop()
+      this.fichiers.pop()
+
+    },
+
+    getProjetImage(data) {
+      this.champsProjet[6].data = data
+      this.image = data
+    },
     sendProjetForm() {
       if (this.sendRequest === false) {
         this.sendRequest = true;
@@ -751,8 +768,9 @@ export default {
             this.closeProjet()
             this.resetProjetForm()
             localStorage.removeItem('formData');
-            this.fetchProjets(this.programmeId)
             this.sendRequest = false;
+
+            this.fetchProjets(this.programmeId)
           }
         }).catch((error) => {
           this.sendRequest = false;
@@ -777,9 +795,10 @@ export default {
     }
     this.programmeId = this.currentUser.programme.id
     if (this.programmeId) {
-      if (this.bailleurVisible) {
-        this.fetchBailleurs(this.programmeId)
+      if (this.bailleurVisible) { 
         this.fetchProjets(this.programmeId)
+        this.fetchBailleurs(this.programmeId)
+       
       }
       else {
         this.fetchProjets(this.programmeId)
@@ -788,7 +807,18 @@ export default {
 
 
 
+  },
+  watch: {
+    showProjetModal: function (value) {
+      
+      if (this.showProjetModal === false) {
+        this.fetchProjets(this.programmeId)
+      }
+
+    },
+
   }
+
 }
 </script>
 

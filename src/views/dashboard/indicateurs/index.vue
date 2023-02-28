@@ -134,7 +134,7 @@
                 <textarea v-model="suiviIndicateurs.commentaire"
                   class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                   rows="3">
-                                        </textarea>
+                                                  </textarea>
               </div>
 
               <div class="py-2 my-4 flex justify-center space-x-8">
@@ -171,7 +171,7 @@
             <div v-if="!isUpdate">
               <vform template="default" isAllPairSaufDescrip="true" :sendRequest="sendRequest" :savedInput="savedInput"
                 :champs="champs" :cols="cols" submitText="Ajouter" @sendForm="sendForm" @closeModal="close"
-                @addSomeThing2="addCategorie" @addSomeThing="openModal"></vform>
+                @addSomeThing="openModal"></vform>
             </div>
 
           </div>
@@ -206,16 +206,18 @@
         </modal-top-right>
       </div>
 
+      <!-- bailleur -->
       <div v-if="showBailleurModal">
         <modal-top-right :title="title" v-on:close="closeBailleur2">
           <div class="p-4 w-full">
-            <vform template="default" @getImage="getBailleurImage" :champs="champsBailleur"
-              :savedInput="savedInput" :cols="cols" :submitText="submitText" @sendForm="sendBailleurForm"
-              :sendRequest="sendRequest" @closeModal="closeBailleur">
+            <vform template="default" @getImage="getBailleurImage" :champs="champsBailleur" :savedInput="savedInput"
+              :cols="cols" :submitText="submitText" @sendForm="sendBailleurForm" :sendRequest="sendBailleurRequest"
+              @closeModal="closeBailleur">
             </vform>
           </div>
         </modal-top-right>
       </div>
+      <!-- bailleur -->
 
       <div class="flex items-end justify-between my-2">
         <titre>Les indicateurs</titre>
@@ -393,7 +395,7 @@ export default {
       showBailleurModal: false,
       base_url: API_BASE_URL,
       bailleurAttributs: ["nom", "email", "contact", "code", "pays", "sigle"],
-      showModal: false,
+      sendBailleurRequest: false,
       champsLogo: [
         { name: 'Changer le logo', type: 'file', placeholdere: 'Changer le logo', isImage: true, isSelect: false, isTextArea: false, data: '', required: false, errors: [] },
       ],
@@ -402,7 +404,8 @@ export default {
       bailleurVisible: false,
       bailleurAdd: false,
       programmeId: this.currentUser?.programme?.id,
-      bailleurUpdate: false,
+      bailleurVisible: false,
+      bailleurAdd: false,
       champsBailleur: [
         {
           name: "Nom",
@@ -473,6 +476,7 @@ export default {
 
         { name: 'Logo', type: 'file', isImage: true, placeholdere: 'Votre logo ', isSelect: false, isTextArea: false, data: '', required: true, errors: [] },
       ],
+      cols: 1,
       // indicateur data
       champsUpdate: [],
       cols: 2,
@@ -521,6 +525,19 @@ export default {
       }
 
     },
+
+    showBailleurModal: function (value) {
+
+      if (this.showBailleurModal === false) {
+        // console.log(this.showUniteDeMesureModal)
+        this.getUpdateBailleur(this.programmeId)
+      }
+
+    },
+
+
+
+
 
     bailleurs: function (bailleurs) {
       this.champs.map((item) => {
@@ -616,6 +633,12 @@ export default {
   },
 
   computed: {
+
+    ...mapState({
+
+      loading: state => state.loading,
+      errors: state => state.errors
+    }),
     ...mapGetters({
       hasErrors: "GET_ERREURS",
       isLoading: "IS_LOADING",
@@ -711,7 +734,7 @@ export default {
       setIndicateur: "indicateurs/FILL", // map `this.CREATE_INSTANCE_PROGRAMME()` to `this.$store.commit('CREATE_INSTANCE_PROGRAMME')`
       setUniteeDeMesure: "uniteesDeMesure/FILL",
       setBailleur: "bailleurs/FILL", //for add's bailleur modal
-      setCategorie: "categories/FILL", 
+      setCategorie: "categories/FILL",
     }),
 
     getColonne(data) {
@@ -827,10 +850,10 @@ export default {
     }),
 
     ...mapActions("categories", {
-        fetchCategories: "FETCH_LIST_CATEGORIE",
-        saveCategorie: "STORE_CATEGORIE",
-       
-      }),
+      fetchCategories: "FETCH_LIST_CATEGORIE",
+      saveCategorie: "STORE_CATEGORIE",
+
+    }),
 
 
     ...mapActions("uniteesDeMesure", {
@@ -839,19 +862,10 @@ export default {
     }),
 
     ...mapActions("bailleurs", {
-      fetchBailleurs: "FETCH_LIST_BAILLEUR",
       saveBailleur: "STORE_BAILLEUR",
     }),
 
-    /* ...mapActions("bailleurs", {
-      fetchBailleurs: "FETCH_LIST_BAILLEUR",
-    }),
-    ...mapActions("categories", {
-      fetchCategories: "FETCH_LIST_CATEGORIE",
-    }),
-    ...mapActions("uniteesDeMesure", {
-      fetchUnite: "FETCH_LIST_UNITEE_DE_MESURE",
-    }), */
+
 
     // all  unite de mesure add modal methods
 
@@ -865,9 +879,6 @@ export default {
       }
     },
 
-    getBailleurImage(data) {
-      this.image = data
-    },
 
     addUniteeDeMesure() {
       this.title = "Ajouter une nouvelle unitee de mésure";
@@ -906,7 +917,7 @@ export default {
 
       this.setUniteeDeMesure({});
     },
-    
+
     sendUniteDeMesureForm() {
       this.champsUniteDeMesure = this.champsUniteDeMesure.map((item) => {
         item.errors = [];
@@ -929,7 +940,6 @@ export default {
           this.closeUniteDeMesure();
           this.resetUniteDeMesureForm();
           localStorage.removeItem('formData');
-
         }
       });
     },
@@ -939,8 +949,6 @@ export default {
     //  all categorie add modal methods
     addCategorie() {
       this.title = "Ajouter une nouvelle categorie";
-
-
       this.submitText = "Enrégistrer";
 
       this.showCategorieModal = true;
@@ -970,32 +978,57 @@ export default {
         return item;
       });
     },
-
     sendCategorieForm() {
       this.champsCategorie = this.champsCategorie.map((item) => {
         item.errors = [];
         return item;
       });
 
-      
+
 
       let categorie = extractFormData(this.champsCategorie, this.categorieAttributes);
-      
-      this.saveCategorie(categorie).then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.closeCategorie();
-              this.resetCategorieForm();
-              localStorage.removeItem('formData');
-              this.getCategorie()
-            }
-          });
 
-    
+      this.saveCategorie(categorie).then((response) => {
+        if (response.status == 200 || response.status == 201) {
+          this.closeCategorie();
+          this.resetCategorieForm();
+          localStorage.removeItem('formData');
+          this.getCategorie()
+        }
+      });
+
+
     },
     //fin  all categorie add modal methods
 
+
+
     // all bailleurs methods
 
+    fetchBailleurs(programme) {
+      this.active()
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+        const datas = data.data.data
+        this.bailleurs = datas
+        this.disabled()
+      }).catch((error) => {
+        this.disabled()
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
+
+    getBailleurImage(data) {
+      this.image = data
+    },
     addBailleur() {
       this.title = "Ajouter un bailleur";
 
@@ -1032,67 +1065,63 @@ export default {
 
       this.setBailleur({});
     },
-    
-    getBailleurImage(data) {
-      this.image = data
-    },
+
+
 
     sendBailleurForm() {
+
       this.savedInput = []
       this.champsBailleur = this.champsBailleur.map((item) => {
         item.errors = [];
         return item;
       });
-      
 
       let bailleur = {}
 
       bailleur = extractFormData(this.champsBailleur, this.bailleurAttributs);
-
-
       bailleur.programmeId = this.programmeId;
-
 
       if (this.sendRequest == false) {
         this.sendRequest = true
-        if (this.bailleur?.id) {
 
-          const demo = {
-            "nom": bailleur.nom,
-            "email": bailleur.email,
-            "contact": bailleur.contact,
-            "code": bailleur.code,
-            "pays": bailleur.pays,
-            "sigle": bailleur.sigle,
-          }
-
-          const formData = new FormData();
-          formData.append('nom', demo.nom)
-          formData.append('email', demo.email)
-          formData.append('contact', demo.contact)
-          formData.append('code', demo.code)
-          formData.append('pays', demo.pays)
-          formData.append('sigle', demo.sigle)
-          formData.append('logo', this.image)
-          formData.append('programmeId', this.programmeId)
-          
-
-          this.saveBailleur(formData).then((response) => {
-            if (response.status == 200 || response.status == 201) {
-              this.closeBailleur();
-              this.resetBailleurForm()
-              localStorage.removeItem('formData');
-              this.fetchBailleurs(this.programmeId)
-              this.sendRequest = false
-            }
-          }).catch((error) => {
-            this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
-            this.sendRequest = false;
-            this.champsBailleur.map(value => value.errors = this.erreurs[value.key])
-            this.getImage()
-          })
+        const demo = {
+          "nom": bailleur.nom,
+          "email": bailleur.email,
+          "contact": bailleur.contact,
+          "code": bailleur.code,
+          "pays": bailleur.pays,
+          "sigle": bailleur.sigle,
         }
+
+        const formData = new FormData();
+        formData.append('nom', demo.nom)
+        formData.append('email', demo.email)
+        formData.append('contact', demo.contact)
+        formData.append('code', demo.code)
+        formData.append('pays', demo.pays)
+        formData.append('sigle', demo.sigle)
+        formData.append('logo', this.image)
+        formData.append('programmeId', this.programmeId)
+
+        console.log(demo)
+
+        this.saveBailleur(formData).then((response) => {
+          console.log(response);
+          if (response.status == 200 || response.status == 201) {
+            this.closeBailleur();
+            this.resetBailleurForm()
+            localStorage.removeItem('formData');
+            this.fetchBailleurs(this.programmeId)
+            this.sendRequest = false
+          }
+        }).catch((error) => {
+          this.setErrors({ message: error?.response?.data?.message, errors: error?.response?.data?.data?.errors })
+          this.sendRequest = false;
+          this.champsBailleur.map(value => value.errors = this.erreurs[value.key])
+          this.getImage()
+        })
       }
+
     },
 
     // fin all bailleurs methods
@@ -1465,16 +1494,26 @@ export default {
     },
 
     getUpdateUniteDeMesure() {
-      let old = this.champs[3].options 
-      UniteDeMesureService.get().then((data) => {
-        this.uniteDeMesure = {}
-        this.uniteDeMesures = datas
-        this.champs[3].options = old
-        this.champs[3].options = []
-        this.champs[3].options = datas
 
+      let old = this.champs[3].options
+      UniteDeMesureService.get().then((data) => {
+        this.uniteDeMesure = data.data.data
+        this.champs[3].options = this.uniteDeMesure
       }).catch((error) => {
         this.champs[3].options = old
+      })
+    },
+
+    getUpdateBailleur(programme) {
+      let old = this.champs[5].options
+
+      BailleurService.bailleursOfProgramme(programme).then((data) => {
+
+        this.bailleurs = data.data.data
+        this.champs[5].options = this.bailleurs
+        console.log(this.champs[5].options)
+      }).catch((error) => {
+        this.champs[5].options = old
       })
     },
 
@@ -1505,6 +1544,7 @@ export default {
     if (!this.indicateurVisible) {
       this.$router.push('/401-non-autorise')
     }
+
     if (this.currentUser != undefined) {
       this.currentRole = this.currentUser.type
       this.programmeId = this.currentUser.programme.id

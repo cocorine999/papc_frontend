@@ -134,8 +134,7 @@
         </div>
       </div>
     </div>
-
-
+    
     <div class="py-2 my-2 flex justify-center space-x-8">
       <vbutton type="submit" :isloading="sendRequest" template="success"> {{ submitText }} </vbutton>
       <vbutton type="reset" template="danger" @close="close()"> annuler </vbutton>

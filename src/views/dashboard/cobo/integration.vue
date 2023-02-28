@@ -80,9 +80,9 @@
                                 <g id="spin">
                                     <g>
                                         <path style="fill:#ffffff;" d="M25.883,6.086l-2.82,2.832C24.953,10.809,26,13.324,26,16c0,5.516-4.484,10-10,10v-2l-4,4l4,4v-2
-    				c7.719,0,14-6.281,14-14C30,12.254,28.539,8.734,25.883,6.086z" />
+            				c7.719,0,14-6.281,14-14C30,12.254,28.539,8.734,25.883,6.086z" />
                                         <path style="fill:#ffffff;" d="M20,4l-4-4v2C8.281,2,2,8.281,2,16c0,3.746,1.461,7.266,4.117,9.914l2.82-2.832
-    				C7.047,21.191,6,18.676,6,16c0-5.516,4.484-10,10-10v2L20,4z" />
+            				C7.047,21.191,6,18.676,6,16c0-5.516,4.484-10,10-10v2L20,4z" />
                                     </g>
                                 </g>
                             </g>
@@ -182,8 +182,7 @@
 import Dashboard from '@/layouts/Dashboard'
 import Titre from "@/components/Titre";
 import ProgrammeService from '@/services/modules/programme.service';
-
-
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 
 export default {
     components: {
@@ -210,12 +209,31 @@ export default {
             }
 
         })
+
+        this.getPermission()
     },
     computed: {
+        ...mapGetters({
+            currentUser: 'auths/GET_AUTHENTICATE_USER',
 
+        }),
+
+        ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' }),
     },
 
     methods: {
+
+        getPermission() {
+            this.currentUser.role[0].permissions.forEach(element => {
+                console.log(this.currentUser)
+                // if (element.slug === 'voir-un-audit') {
+                //     this.auditVisible = true
+                // }
+
+            });
+        },
+
+
         detail(index, data) {
             var questionnaire = {
                 id: index,
@@ -229,10 +247,11 @@ export default {
             this.kobo_data = []
             ProgrammeService.updatekobo().then(response => {
                 for (let i = 0; i < response.data.data.length; i++) {
-                if (response.data.data[i].status == 'public') {
-                    this.kobo_data.push(response.data.data[i])
+                    if (response.data.data[i].status == 'public') {
+                        this.kobo_data.push(response.data.data[i])
+                    }
                 }
-            }})
+            })
         },
         close() {
             this.modal1 = false

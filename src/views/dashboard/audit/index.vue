@@ -20,19 +20,6 @@
         </div>
       </vmodal>
 
-      <!-- modal ajout projet -->
-      <div v-if="showProjetModal" class="z-50">
-        <modal-top-right :title="titleProjet" v-title v-on:close="closeProjet2">
-          <div class="p-4 overflow-auto">
-            <vform template="default" :sendRequest="sendRequest" @getFile="getProjetFile" :savedInput="savedInput"
-              @getImage="getProjetImage" :champs="champsProjet" :cols="cols" :submitText="submitText" @sendForm="sendProjetForm"
-              @closeModal="closeProjet"></vform>
-          </div>
-        </modal-top-right>
-      </div>
-
-      <!--  modal ajout projet -->
-
       <modal-top-right v-if="showModal" :title="title" v-on:close="closeA">
         <form action="" @submit.prevent="saveAudit" v-if="title == 'Ajouter'" class="p-5 w-full">
           <div class="form-group my-2">
@@ -281,6 +268,21 @@
           </div>
         </form>
       </modal-top-right>
+
+      <!-- modal ajout projet -->
+      <div v-if="showProjetModal" class="z-50">
+        <modal-top-right :title="titleProjet" v-title v-on:close="closeProjet2">
+          <div class="p-4 overflow-auto">
+            <vform template="default" :sendRequest="sendRequest" @getFile="getProjetFile" :savedInput="savedInput"
+              @getImage="getProjetImage" :champs="champsProjet" :cols="cols" :submitText="submitText"
+              @sendForm="sendProjetForm" @closeModal="closeProjet"></vform>
+          </div>
+        </modal-top-right>
+      </div>
+
+      <!--  modal ajout projet -->
+
+
       <nav class="mb-2 text-sm font-semibold  " aria-label="Breadcrumb">
         <div>
           <ol class="inline-flex p-0 list-none">
@@ -494,12 +496,12 @@ export default {
       projetAttributs: ['nom', 'description', 'debut', 'fin', 'objectifGlobaux', 'budgetNational', 'pret', 'couleur', 'ville', 'bailleurId', 'tauxEngagement'],
       programmeId: this.currentUser?.programme?.id,
       fichiersProjet: [],
-     
+
       bailleurs: [],
       projetVisible: true,
       projetAdd: true,
       bailleurVisible: true,
-      cols: 1 ,
+      cols: 1,
       sendRequest: false
     }
 
@@ -513,6 +515,7 @@ export default {
     }),
 
     ...mapGetters({
+      
       currentUser: 'auths/GET_AUTHENTICATE_USER',
       projet: "getProjet", //add projet
     }),
@@ -842,6 +845,14 @@ export default {
       localStorage.setItem('formData', parsed);
 
     },
+    resetProjetForm() {
+
+      this.champsProjet = this.champsProjet.map(item => { item.data = ''; return item })
+
+      window.document.getElementById('vform').reset()
+
+      this.setProjet({})
+    },
 
     showCloseProjetModal(value = false) {
       this.showProjetModal = value
@@ -854,7 +865,6 @@ export default {
     ...mapActions('projets', { saveProjet: "STORE_PROJET", }),
 
     addProjet() {
-  this.closeA()
       this.showProjetModal = true
       console.log(this.showProjetModal)
       this.fetchBailleurs(this.programmeId)
@@ -905,6 +915,24 @@ export default {
       }).catch((error) => {
 
       })
+    },
+
+
+    getProjetFile(data) {
+
+      this.champsProjet[7].data = data
+      console.log(this.champsProjet[7].data)
+      for (const property in data) {
+        this.fichiers.push(data[property])
+      }
+      this.fichiers.pop()
+      this.fichiers.pop()
+
+    },
+
+    getProjetImage(data) {
+      this.champsProjet[6].data = data
+      this.image = data
     },
     sendProjetForm() {
       if (this.sendRequest === false) {
@@ -970,7 +998,7 @@ export default {
             localStorage.removeItem('formData');
             this.fetchProjets(this.programmeId)
             this.sendRequest = false;
-            this.createAudit()
+            this.showModal = true;
           }
         }).catch((error) => {
           this.sendRequest = false;
@@ -1022,6 +1050,15 @@ export default {
     }
 
 
+  },
+  watch: {
+    showProjetModal: function (value) {
+
+      if (this.showProjetModal === false) {
+        this.getProjet()
+      }
+
+    },
   }
 }
 </script>

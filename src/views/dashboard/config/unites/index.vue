@@ -376,7 +376,6 @@ export default {
             this.close();
             this.resetForm();
             localStorage.removeItem('formData');
-
           }
         });
       }

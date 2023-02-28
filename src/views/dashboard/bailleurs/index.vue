@@ -524,7 +524,6 @@ export default {
     },
 
     ...mapActions("bailleurs", {
-
       saveBailleur: "STORE_BAILLEUR",
       updateBailleur: "UPDATE_BAILLEUR",
       deleteBailleur: "DESTROY_BAILLEUR",
@@ -662,8 +661,7 @@ export default {
           })
 
 
-        } 
-        else {
+        } else {
           const demo = {
             "nom": bailleur.nom,
             "email": bailleur.email,
