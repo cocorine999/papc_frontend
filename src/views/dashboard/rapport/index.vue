@@ -19,85 +19,96 @@
                 </div>
             </nav>
 
-            
+            <vmodal v-if="showSendMail" @close="showSendMail = false">
+        
+                <div style="width:60vw">
+        
+                    <form action="" @submit.prevent="sendRapport"  class="p-5 w-full">
+                    
+                        <div class="form-group my-2">
+                    
+                            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Objet
+                    
+                                <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+                            </label>
+                    
+                            <input v-model="objet" required class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" type="text" />
+                    
+                        </div>
+
+                    
+                        <div class="form-group my-2">
+                    
+                            <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Destinataire
+                    
+                                <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+                    
+                            </label>
+                    
+                            <input v-model="bcc" required
+                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                            type="text" />
+                    
+                        </div>
+                    
+                    
+                        <div class="py-2 my-4 flex justify-center space-x-8">
+                    
+                            <button type="submit" class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                    
+
+                                <span class="text-sm font-semibold uppercase" v-if="!chargement">
+
+                                    enregistrer
+
+                                </span>
+                    
+
+                                <span v-else class="flex items-center space-x-2">
+
+                                    <span class="text-xs px-4 font-semibold ">
+
+                                        envoi ...
+
+                                    </span>
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+
+                                    </svg>
+
+                                </span>
+
+                            </button>                        
+
+                        </div>
+
+                    </form>                    
+                
+                </div>
+      
+            </vmodal>
 
             <div class="p-4">
-                <h1 class="text-3xl">Formulaire</h1>
-                <form action="" @submit.prevent="saveAudit"  class="p-5 w-full">
+                <h1 class="text-3xl">Template de rapport</h1>
+                <form action="" @submit.prevent="saveRapport"  class="p-5 w-full">
                     <div class="form-group my-2">
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Prestataire
+                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Nom
                             <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <input v-model="audit.entreprise" required
-                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                            type="text" />
-                    </div>
-                    <div class="form-group my-2">
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Contact
-                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <input v-model="audit.entrepriseContact" required
-                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                            type="number" />
-                    </div>
-                    <div class="form-group my-2">
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Exercice
-                            Audité <span
-                                class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <input v-model="audit.annee" required
+                        <input v-model="nom" required
                             class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
                             type="text" />
                     </div>
 
                     <div class="form-group my-2">
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Date de
-                            transmission
-                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <input v-model="audit.dateDeTransmission" required
-                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                            type="date" />
+                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Contenu du rapport
+                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+                        </label>
+                        <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
                     </div>
-
-                    <div class="form-group my-2">
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Etat
-                            avancement <span
-                                class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <input v-model="audit.etat" required
-                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                            type="text" />
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Rapport
-                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <input
-                            class="block w-full text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="file_input_help" id="file_input" multiple type="file" @change="getFile">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF,WORD(MAX. 20 MO)
-                        </p>
-                    </div>
-                    <div class="form-group my-2">
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Categorie
-                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <select v-model="audit.categorie"
-                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                            name="" id="">
-                            <option value="0"> Audit comptable et financier </option>
-                            <option value="1"> Audit de conformité environnementale et social </option>
-                            <option value="2"> Audit des acquisitions </option>
-                            <option value="3"> Audit techniques </option>
-
-                        </select>
-                    </div>
-                    <div class="form-group my-2">
-                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Statut
-                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                        <select v-model="audit.statut"
-                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                            name="" id="">
-                            <option value="1"> Terminer </option>
-                            <option value="0"> En cours </option>
-                            <option value="-1"> En attente </option>
-
-                        </select>
-                    </div>
+                    
                    
 
                     <div class="py-2 my-4 flex justify-center space-x-8">
@@ -116,63 +127,275 @@
                                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
                             </span>
-                        </button>
-                        <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+                        </button>                        
                     </div>
                 </form>
-            </div>
 
 
+                <button type="submit"
+                            class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                            <span class="text-sm font-semibold uppercase" v-if="!chargement" @click="modalMail()">
+                                Envoyer le mail
+                            </span>
+                            <span v-else class="flex items-center space-x-2">
+                                <span class="text-xs px-4 font-semibold ">
+                                    envoi ...
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </span>
+                        </button>                        
+                
+            </div>     
+            
+            <div class="align-middle inline-block w-full bg-white overflow-x-auto pt-3 rounded-bl-lg rounded-br-lg">                  
+                <table class="w-full">
+                    <thead>
+                        <tr>
+              
+                            <th class="p-3 border border-gray-500 text-left  whitespace-nowrap leading-4 text-primary tracking-wider">
+                
+                                Nom</th>              
+            
+                            </tr>
+                        
+                    </thead>
+          
+                    <!--Il s'agit d'un tableau decomposé alors filter vos donnée avant de 'integretrer par bailleur' -->
+          
+                    <tbody class="bg-white">
+          
+                        <!--Specifier le nombre de ligne +1 de la table -->
+
+          
+                        <tr v-for="(rapport, index) in rapports" :key="index">
+          
+                            <td class="p-3 whitespace-no-wrap border border-gray-500 text-xs" @click="useRapport(rapport.rapport)">{{ rapport.nom }} </td>
+              
+          
+                        </tr>
+                        
+                    </tbody>
+        
+                </table>
+
+            </div>            
 
         </div>
     </dashboard>
 </template>
-  
+
+
 <script>
 
 import Multiselect from 'vue-multiselect'
-import ModalTopRight from '@/components/ModalTopRight'
+import Vmodal from '@/components/Vmodal'
+
 import SearchBar from '@/components/SearchBar'
 import Dashboard from '@/layouts/Dashboard'
 import Vbutton from '@/components/Vbutton'
 
 //add import
-import BailleurService from "@/services/modules/bailleur.service";
 import Dropdown from '@/components/Dropdown.vue'
-import { extractFormData } from '@/utils/index'
+import ProgrammeService from "@/services/modules/programme.service.js";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+//import ExportPdf from '@ckeditor/ckeditor5-export-pdf/src/exportpdf';
+
+
+
 
 
 export default {
     components: {
         Dashboard,
         SearchBar,
-        ModalTopRight,
+        Vmodal,
         Vbutton,
         Multiselect,
         Dropdown
+
     },
     data() {
         return {
             savedInput: [],
+            chargement: false,
             showModal: false,
+            showSendMail: false,
             title: '',
-            audit: {
-                annee: '',
-                entreprise: '',
-                entrepriseContact: '',
-                dateDeTransmission: '',
-                etat: '',
-                statut: '',
-                projetId: '',
-                categorie: ''
-            },
+            nom:'',
+            objet: '',
+            bcc: '',
+            users:[],
+            rapports:[],
+            editor: ClassicEditor,
+            editorData: '<p>Contenu du rapport.</p>',
+            editorConfig: {
+                // The configuration of the editor.
+            }
 
         }
     },
     computed: {
     },
-    methods: {},
-    mounted() { }
+    methods: {
+        modalMail()
+        {
+            this.showSendMail = true;
+        },
+        getRapports() {
+            ProgrammeService.rapports().then((data) => {
+                this.rapports = data.data.data
+                
+            }).catch((error) => {
+        
+                if (error.response) {
+                    // Requête effectuée mais le serveur a répondu par une erreur.
+                    const message = error.response.data.message
+                    this.$toast.error(message)
+                } else if (error.request) {
+                    // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                   //console.log(error.request);
+                } else {
+                    // Une erreur s'est produite lors de la configuration de la demande
+                   //console.log('dernier message', error.message);
+                }
+            })
+    
+        },
+        saveRapport() {
+            if (this.chargement == false) {
+                this.chargement = true
+
+                var form = {
+                    nom: this.nom,
+                    rapport: this.editorData
+                }
+                ProgrammeService.rapport(form).then((data) => {
+          
+                    this.chargement = false          
+                    this.$toast.success('nouveau element')                    
+                    this.getRapports()        
+                }).catch((error) => {
+        
+                    this.chargement = false
+        
+                    if (error.response) {        
+                        // Requête effectuée mais le serveur a répondu par une erreur.    
+                        const message = error.response.data.message        
+                        this.$toast.error(message)                
+                    } else if (error.request) {
+        
+                        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        
+                        //console.log(error.request);
+        
+                    } 
+        
+                })
+      
+            }
+    
+        },
+        sendRapport() {
+            if (this.chargement == false) {
+                this.chargement = true
+
+                this.users = this.bcc.split(',').map((email) => email.trim());
+                
+                var form = {
+                    objet: this.objet,
+                    destinataires: this.users,
+                    rapport: this.editorData
+                }
+                ProgrammeService.sendMailRapport(form).then((data) => {
+          
+                    this.chargement = false          
+                    this.$toast.success('Email envoyé')                    
+                    this.showSendMail = false
+                }).catch((error) => {
+        
+                    this.chargement = false
+        
+                    if (error.response) {        
+                        // Requête effectuée mais le serveur a répondu par une erreur.    
+                        const message = error.response.data.message        
+                        this.$toast.error(message)                
+                    } else if (error.request) {
+        
+                        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+        
+                        //console.log(error.request);
+        
+                    } 
+        
+                })
+      
+            }
+    
+        },      
+        useRapport(data)     
+        {
+            this.editorData = data
+        }
+    },
+    created() {
+        this.getRapports()
+
+        
+        /*ClassicEditor.create( document.querySelector( '#editor' ), {
+        
+            plugins: [CloudServices, ExportPdf],
+            
+            toolbar: ['exportPdf'],
+    
+        exportPdf: {
+    
+            stylesheets: [ 'EDITOR_STYLES' ],
+    
+            fileName: 'document.pdf',
+    
+            converterUrl: 'https://pdf-converter.cke-cs.com/v1/convert',
+    
+            converterOptions: {
+    
+                format: 'A4',
+    
+                margin_top: '0mm',
+    
+                margin_bottom: '0mm',
+    
+                margin_right: '0mm',
+    
+                margin_left: '0mm',
+    
+                page_orientation: 'portrait',
+    
+                header_html: undefined,
+    
+                footer_html: undefined,
+    
+                header_and_footer_css: undefined,
+    
+                wait_for_network: true,
+    
+                wait_time: 0
+    
+            },
+    
+            dataCallback: ( editor ) => editor.getData()
+    
+        }
+  
+    } )*/
+
+    //.then( /* ... */ )
+
+    //.catch( /* ... */ )     
+       
+     }
 }
 </script>
   

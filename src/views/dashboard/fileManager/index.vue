@@ -179,10 +179,10 @@
                       <span v-if="ano.extension =='xlsx' || ano.extension =='xlsm' || ano.extension =='xlsb' || ano.extension =='xltx'    " class="text-green-500">
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
-                       <a :href="`${base_url}${ano.url}`" target="_blank" :download="ano.nom" class="font-medium text-gray-700 ">
-                        
+                       
+                        <p @click="$event => getFichier(ano.id)" target="_blank" :download="ano.nom" class="font-medium text-gray-700 ">
                           {{ano.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="ano.nom.length > 20" :title="ano.nom" >...</span>
-                        </a>
+                       </p>
                     </div>
                 </div>
                 
@@ -228,10 +228,10 @@
                       <span v-if="reponse.extension =='xlsx' || reponse.extension =='xlsm' || reponse.extension =='xlsb' || reponse.extension =='xltx'    " class="text-green-500">
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
-
-                      <a :href="`${base_url}${reponse.url}`" target="_blank" :download="reponse.nom" class="font-medium text-gray-700 ">
-                         {{reponse.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="reponse.nom.length > 20" :title="reponse.nom" >...</span>
-                        </a>
+                      
+                        <p @click="$event => getFichier(reponse.id)" target="_blank" :download="reponse.nom" class="font-medium text-gray-700 ">
+                          {{reponse.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="reponse.nom.length > 20" :title="reponse.nom" >...</span>
+                       </p>
                     </div>
                 </div>
               </div>
@@ -277,9 +277,9 @@
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
 
-                       <a :href="`${base_url}${projet.url}`" target="_blank" :download="projet.nom" class="font-medium text-gray-700 ">
+                        <p @click="$event => getFichier(projet.id)" target="_blank" :download="projet.nom" class="font-medium text-gray-700 ">
                           {{projet.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="projet.nom.length > 20" :title="projet.nom" >...</span>
-                        </a>
+                       </p>
                 </div>
               </div>
             </div>
@@ -323,9 +323,9 @@
                       <span v-if="autre.extension =='xlsx' || autre.extension =='xlsm' || autre.extension =='xlsb' || autre.extension =='xltx'    " class="text-green-500">
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
-                       <a :click="getFichier(autre.id)" target="_blank" :download="autre.nom" class="font-medium text-gray-700 ">
+                       <p @click="$event => getFichier(autre.id)" target="_blank" :download="autre.nom" class="font-medium text-gray-700 ">
                           {{autre.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="autre.nom.length > 20" :title="autre.nom" >...</span>
-                         </a>
+                       </p>
                     </div>
               </div>
             </div>
@@ -408,9 +408,9 @@
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
 
-                      <a :href="`${base_url}${ano.url}`" target="_blank" :download="ano.nom" class="font-medium text-gray-700 ">
-                        {{ano.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="ano.nom.length > 20" :title="ano.nom" >...</span>
-                      </a>
+                      <p @click="$event => getFichier(ano.id)" target="_blank" :download="ano.nom" class="font-medium text-gray-700 ">
+                          {{ano.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="ano.nom.length > 20" :title="ano.nom" >...</span>
+                       </p>
                     </div>
                   </div>
                
@@ -457,9 +457,9 @@
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
 
-                      <a :href="`${base_url}${reponse.url}`" target="_blank" :download="reponse.nom" class="font-medium text-gray-700 ">
-                        {{reponse.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="reponse.nom.length > 20" :title="reponse.nom" >...</span>
-                      </a>
+                      <p @click="$event => getFichier(reponse.id)" target="_blank" :download="reponse.nom" class="font-medium text-gray-700 ">
+                          {{reponse.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="reponse.nom.length > 20" :title="reponse.nom" >...</span>
+                       </p>
                     </div>
               </div>
             </div>
@@ -505,9 +505,9 @@
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
 
-                       <a :href="`${base_url}${projet.url}`" target="_blank" :download="projet.nom" class="font-medium text-gray-700 ">
+                      <p @click="$event => getFichier(projet.id)" target="_blank" :download="projet.nom" class="font-medium text-gray-700 ">
                           {{projet.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="projet.nom.length > 20" :title="projet.nom" >...</span>
-                        </a>
+                       </p>
                     </div>
                   </div>
             </div>
@@ -551,9 +551,9 @@
                       <span v-if="autre.extension =='xlsx' || autre.extension =='xlsm' || autre.extension =='xlsb' || autre.extension =='xltx'    " class="text-green-500">
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
-                       <a :href="`${base_url}${autre.url}`" target="_blank" :download="autre.nom" class="font-medium text-gray-700 ">
+                      <p @click="$event => getFichier(autre.id)" target="_blank" :download="autre.nom" class="font-medium text-gray-700 ">
                           {{autre.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="autre.nom.length > 20" :title="autre.nom" >...</span>
-                        </a>
+                       </p>
                     </div>
               </div>
             </div>
@@ -583,10 +583,9 @@
                       <span v-if="data.extension =='xlsx' || data.extension =='xlsm' || data.extension =='xlsb' || data.extension =='xltx'    " class="text-green-500">
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" role="img" viewBox="0 0 24 24" height="3.0em" width="3.0em" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"></path></svg>
                       </span>
-                       <a :href="`${base_url}${data.url}`" target="_blank" :download="data.nom" class="font-medium text-gray-700 ">
-                        
+                      <p @click="$event => getFichier(data.id)" target="_blank" :download="data.nom" class="font-medium text-gray-700 ">
                           {{data.nom.substring(0,20)}} <span class=" cursor-pointer font-black text-xl px-1 rounded-md" v-if="data.nom.length > 20" :title="data.nom" >...</span>
-                        </a>
+                       </p>
                     </div>
                 </div>
                 
