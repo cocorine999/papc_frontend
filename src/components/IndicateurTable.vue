@@ -9,8 +9,7 @@
               </label>
             </th!-->
             <th v-for="(head ,index) in headers" :key="index" :class="`${head.width}`" class="px-4 py-1 uppercase border-b-2 border-gray-300 text-left text-xs leading-4 break-normal text-primary tracking-wider"> {{head.name}}     
-              <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                  
+              <label class="text-teal-500 inline-block justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
                   <input type="checkbox" v-model="val[index]" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="index" @click="setColonne()">
                 </label> 
             </th>

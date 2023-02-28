@@ -524,6 +524,7 @@ export default {
     },
 
     ...mapActions("bailleurs", {
+
       saveBailleur: "STORE_BAILLEUR",
       updateBailleur: "UPDATE_BAILLEUR",
       deleteBailleur: "DESTROY_BAILLEUR",

@@ -754,13 +754,13 @@ export default {
         this.indicateurs = datas
         this.headers = [
           { name: 'Indicateur ', cle: 'nom', width: 'w-56' },
-          { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width: 'w-20' },
+          { name: 'Bailleur', cle: 'sigle', props: 'bailleur', select: true, options: this.bailleurs, key: 'sigle', updateKey: 'bailleurId', width: 'w-56' },
           { name: 'Catégorie', cle: 'nom', props: 'categorie', select: true, options: this.categories, key: 'nom', updateKey: 'categorieId', width: 'w-56' },
-          { name: 'Kobo champs', cle: 'kobo', width: 'w-24' },
-          { name: 'Kobo version', cle: 'koboVersion', width: 'w-24' },
+          { name: 'Kobo champs', cle: 'kobo', width: 'w-56' },
+          { name: 'Kobo version', cle: 'koboVersion', width: 'w-56' },
           { name: 'Unité de mesure', cle: 'nom', props: 'uniteeDeMesure', select: true, options: this.uniteDeMesures, key: 'nom', updateKey: 'uniteeMesureId', width: 'w-56' },
-          { name: 'Valeur de base', cle: 'valeurDeBase', width: 'w-24' },
-          { name: 'Année de base', cle: 'anneeDeBase', width: 'w-24' },
+          { name: 'Valeur de base', cle: 'valeurDeBase', width: 'w-56' },
+          { name: 'Année de base', cle: 'anneeDeBase', width: 'w-56' },
           { name: 'Date de création', cle: 'created_at', width: 'w-56' },
         ]
         this.champs = [
