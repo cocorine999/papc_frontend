@@ -77,6 +77,10 @@ const ProgrammeService = {
       return ApiService.get(`programme/rapports`);
     },
 
+    emailRapports() {
+      return ApiService.get(`programme/emailRapports`);
+    },
+
   };
 
   export default ProgrammeService;
