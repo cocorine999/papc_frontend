@@ -303,120 +303,122 @@ export default {
             bcc: '',
             rapport: '',
             users: [],
-            rapports: [
-                {
-                    "id": "W5NQoYrXzkQ0qEWXLaKj87nA6PewBgMWaxO4y9mRYpDodlJvZ1rN52VG82OKvy61",
-                    "rapport": "<p>Contenu du rapport.</p>",
-                    "userId": 2,
-                    "created_at": "2023-02-27T19:30:31.000000Z",
-                    "updated_at": "2023-02-27T19:30:31.000000Z",
-                    "nom": "Test"
-                },
-                {
-                    "id": "4927OPKge7Ny5LAWzQ2vR1JDKVXj40xXDxEYlpqn8PZgkBdOGw9a6omr6DjVEvpG",
-                    "rapport": "<p>Contenu du rapport 2</p>",
-                    "userId": 2,
-                    "created_at": "2023-02-27T19:49:57.000000Z",
-                    "updated_at": "2023-02-27T19:49:57.000000Z",
-                    "nom": "Test 2"
-                },
-                {
-                    "id": "BpDjPmLVndYEJvgVNZKORaGwmeqkl6bP8bzW9LB2o85Qjr10X4Ay7DpPQRywn579",
-                    "rapport": "<p>Il s'agit d'un rapport pour tester le troisieme enregistrement</p>",
-                    "userId": 2,
-                    "created_at": "2023-02-27T19:50:44.000000Z",
-                    "updated_at": "2023-02-27T19:50:44.000000Z",
-                    "nom": "Test 3"
-                },
-                {
-                    "id": "gkLwdBEvPn7pZQLBO4ADgqlaYy6o0wbopME19K5XjGdvr8J2mRzkWeVN8yZ5nOXz",
-                    "rapport": "<p>Il s'agit d'un rapport pour tester le troisieme enregistrementbjgggugu</p>",
-                    "userId": 2,
-                    "created_at": "2023-02-27T19:53:07.000000Z",
-                    "updated_at": "2023-02-27T19:53:07.000000Z",
-                    "nom": "Test 4"
-                },
-                {
-                    "id": "X4gaoE6mEAkLnJOYodemX5VzKNP4w73lExQr8lvD2p0qg1BjaR6yG9WZ1YeqpJPd",
-                    "rapport": "<ol><li>&nbsp;</li><li><i><strong>Contenu du rapport 2</strong></i></li></ol><figure class=\"table\"><table><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table></figure>",
-                    "userId": 2,
-                    "created_at": "2023-02-27T20:01:48.000000Z",
-                    "updated_at": "2023-02-27T20:01:48.000000Z",
-                    "nom": "Test 4"
-                },
-                {
-                    "id": "qRJ8Kw0Y5XgkBa1DrAlvznjK6dNO4q3k9bEy8JpWoRVYe7ZmP2Lw09QGA47V5lN9",
-                    "rapport": "<p>Contenu du rapport.j'ai subit une modification</p>",
-                    "userId": 2,
-                    "created_at": "2023-03-01T14:03:17.000000Z",
-                    "updated_at": "2023-03-01T14:03:17.000000Z",
-                    "nom": "Modification 1"
-                },
-                {
-                    "id": "9Vl4ePnGAXz8yDJG9wRQgaPKLNYd6m3npbOpjvWq2o4Enl5Bk1eZVr708ELDJkmA",
-                    "rapport": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
-                    "userId": 2,
-                    "created_at": "2023-03-01T14:18:49.000000Z",
-                    "updated_at": "2023-03-01T14:18:49.000000Z",
-                    "nom": "Lorem Upsum"
-                }
-            ],
-            emails: [
-                {
-                    "id": "mMyDek2lNvxJMOrZknEBQgXKo5m4Rqp9R8D967LbAl1jwaedY23yG0zVQoznbYEg",
-                    "objet": "Test",
-                    "rapport": "<p>Contenu du rapport.</p>",
-                    "destinataires": "yannkellyolou@gmail.com",
-                    "userId": 2,
-                    "created_at": "2023-02-28T16:35:50.000000Z",
-                    "updated_at": "2023-02-28T16:35:50.000000Z"
-                },
-                {
-                    "id": "kELQowZRyJgRE2z6ea03YKxOBrZn9G8QXpMk7jAdXLDwNQ41oblm5vqVayD09X43",
-                    "objet": "Test2",
-                    "rapport": "<p>Contenu du rapport.</p>",
-                    "destinataires": "yannkellyolou@gmail.com",
-                    "userId": 2,
-                    "created_at": "2023-02-28T16:39:19.000000Z",
-                    "updated_at": "2023-02-28T16:39:19.000000Z"
-                },
-                {
-                    "id": "Ny7Kzq5M09EnZyekYlvgNxKDzjdV1a84aWrq2Oo5AQ7m6LBMbJXwGR34Gr4ZxjXL",
-                    "objet": "Test2",
-                    "rapport": "<p>Contenu du rapport.</p>",
-                    "destinataires": "yannkellyolou@gmail.com",
-                    "userId": 2,
-                    "created_at": "2023-02-28T16:40:26.000000Z",
-                    "updated_at": "2023-02-28T16:40:26.000000Z"
-                },
-                {
-                    "id": "NmXJrgzDqkY792gOGJLrXb3NdRzKEVpBO8o0Max6yDZn1BlvAme54jwQ3YEMdx5B",
-                    "objet": "Test2",
-                    "rapport": "<p>Contenu du rapport.</p>",
-                    "destinataires": "yannkellyolou@gmail.com, yann.olou@imsp-uac.org",
-                    "userId": 2,
-                    "created_at": "2023-02-28T16:41:06.000000Z",
-                    "updated_at": "2023-02-28T16:41:06.000000Z"
-                },
-                {
-                    "id": "GX2Bwjo1jyAknbNZEr09LMq2mGogdVpMepYeO4a61xz3D5BlK7wJQRvXVgJyO3K9",
-                    "objet": "Demande",
-                    "rapport": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
-                    "destinataires": "a@gmail.com",
-                    "userId": 2,
-                    "created_at": "2023-03-01T14:22:19.000000Z",
-                    "updated_at": "2023-03-01T14:22:19.000000Z"
-                },
-                {
-                    "id": "KegR09NvrL9JQvz7ZlX1j0w4nMKbaYWnLpyDe3VONdB5RmoExqk2A6gGOGbZk4jr",
-                    "objet": "test2",
-                    "rapport": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
-                    "destinataires": "alao@moutawakil.com",
-                    "userId": 2,
-                    "created_at": "2023-03-01T18:46:04.000000Z",
-                    "updated_at": "2023-03-01T18:46:04.000000Z"
-                }
-            ],
+            // rapports: [
+            //     {
+            //         "id": "W5NQoYrXzkQ0qEWXLaKj87nA6PewBgMWaxO4y9mRYpDodlJvZ1rN52VG82OKvy61",
+            //         "rapport": "<p>Contenu du rapport.</p>",
+            //         "userId": 2,
+            //         "created_at": "2023-02-27T19:30:31.000000Z",
+            //         "updated_at": "2023-02-27T19:30:31.000000Z",
+            //         "nom": "Test"
+            //     },
+            //     {
+            //         "id": "4927OPKge7Ny5LAWzQ2vR1JDKVXj40xXDxEYlpqn8PZgkBdOGw9a6omr6DjVEvpG",
+            //         "rapport": "<p>Contenu du rapport 2</p>",
+            //         "userId": 2,
+            //         "created_at": "2023-02-27T19:49:57.000000Z",
+            //         "updated_at": "2023-02-27T19:49:57.000000Z",
+            //         "nom": "Test 2"
+            //     },
+            //     {
+            //         "id": "BpDjPmLVndYEJvgVNZKORaGwmeqkl6bP8bzW9LB2o85Qjr10X4Ay7DpPQRywn579",
+            //         "rapport": "<p>Il s'agit d'un rapport pour tester le troisieme enregistrement</p>",
+            //         "userId": 2,
+            //         "created_at": "2023-02-27T19:50:44.000000Z",
+            //         "updated_at": "2023-02-27T19:50:44.000000Z",
+            //         "nom": "Test 3"
+            //     },
+            //     {
+            //         "id": "gkLwdBEvPn7pZQLBO4ADgqlaYy6o0wbopME19K5XjGdvr8J2mRzkWeVN8yZ5nOXz",
+            //         "rapport": "<p>Il s'agit d'un rapport pour tester le troisieme enregistrementbjgggugu</p>",
+            //         "userId": 2,
+            //         "created_at": "2023-02-27T19:53:07.000000Z",
+            //         "updated_at": "2023-02-27T19:53:07.000000Z",
+            //         "nom": "Test 4"
+            //     },
+            //     {
+            //         "id": "X4gaoE6mEAkLnJOYodemX5VzKNP4w73lExQr8lvD2p0qg1BjaR6yG9WZ1YeqpJPd",
+            //         "rapport": "<ol><li>&nbsp;</li><li><i><strong>Contenu du rapport 2</strong></i></li></ol><figure class=\"table\"><table><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table></figure>",
+            //         "userId": 2,
+            //         "created_at": "2023-02-27T20:01:48.000000Z",
+            //         "updated_at": "2023-02-27T20:01:48.000000Z",
+            //         "nom": "Test 4"
+            //     },
+            //     {
+            //         "id": "qRJ8Kw0Y5XgkBa1DrAlvznjK6dNO4q3k9bEy8JpWoRVYe7ZmP2Lw09QGA47V5lN9",
+            //         "rapport": "<p>Contenu du rapport.j'ai subit une modification</p>",
+            //         "userId": 2,
+            //         "created_at": "2023-03-01T14:03:17.000000Z",
+            //         "updated_at": "2023-03-01T14:03:17.000000Z",
+            //         "nom": "Modification 1"
+            //     },
+            //     {
+            //         "id": "9Vl4ePnGAXz8yDJG9wRQgaPKLNYd6m3npbOpjvWq2o4Enl5Bk1eZVr708ELDJkmA",
+            //         "rapport": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            //         "userId": 2,
+            //         "created_at": "2023-03-01T14:18:49.000000Z",
+            //         "updated_at": "2023-03-01T14:18:49.000000Z",
+            //         "nom": "Lorem Upsum"
+            //     }
+            // ],
+            // emails: [
+            //     {
+            //         "id": "mMyDek2lNvxJMOrZknEBQgXKo5m4Rqp9R8D967LbAl1jwaedY23yG0zVQoznbYEg",
+            //         "objet": "Test",
+            //         "rapport": "<p>Contenu du rapport.</p>",
+            //         "destinataires": "yannkellyolou@gmail.com",
+            //         "userId": 2,
+            //         "created_at": "2023-02-28T16:35:50.000000Z",
+            //         "updated_at": "2023-02-28T16:35:50.000000Z"
+            //     },
+            //     {
+            //         "id": "kELQowZRyJgRE2z6ea03YKxOBrZn9G8QXpMk7jAdXLDwNQ41oblm5vqVayD09X43",
+            //         "objet": "Test2",
+            //         "rapport": "<p>Contenu du rapport.</p>",
+            //         "destinataires": "yannkellyolou@gmail.com",
+            //         "userId": 2,
+            //         "created_at": "2023-02-28T16:39:19.000000Z",
+            //         "updated_at": "2023-02-28T16:39:19.000000Z"
+            //     },
+            //     {
+            //         "id": "Ny7Kzq5M09EnZyekYlvgNxKDzjdV1a84aWrq2Oo5AQ7m6LBMbJXwGR34Gr4ZxjXL",
+            //         "objet": "Test2",
+            //         "rapport": "<p>Contenu du rapport.</p>",
+            //         "destinataires": "yannkellyolou@gmail.com",
+            //         "userId": 2,
+            //         "created_at": "2023-02-28T16:40:26.000000Z",
+            //         "updated_at": "2023-02-28T16:40:26.000000Z"
+            //     },
+            //     {
+            //         "id": "NmXJrgzDqkY792gOGJLrXb3NdRzKEVpBO8o0Max6yDZn1BlvAme54jwQ3YEMdx5B",
+            //         "objet": "Test2",
+            //         "rapport": "<p>Contenu du rapport.</p>",
+            //         "destinataires": "yannkellyolou@gmail.com, yann.olou@imsp-uac.org",
+            //         "userId": 2,
+            //         "created_at": "2023-02-28T16:41:06.000000Z",
+            //         "updated_at": "2023-02-28T16:41:06.000000Z"
+            //     },
+            //     {
+            //         "id": "GX2Bwjo1jyAknbNZEr09LMq2mGogdVpMepYeO4a61xz3D5BlK7wJQRvXVgJyO3K9",
+            //         "objet": "Demande",
+            //         "rapport": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            //         "destinataires": "a@gmail.com",
+            //         "userId": 2,
+            //         "created_at": "2023-03-01T14:22:19.000000Z",
+            //         "updated_at": "2023-03-01T14:22:19.000000Z"
+            //     },
+            //     {
+            //         "id": "KegR09NvrL9JQvz7ZlX1j0w4nMKbaYWnLpyDe3VONdB5RmoExqk2A6gGOGbZk4jr",
+            //         "objet": "test2",
+            //         "rapport": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            //         "destinataires": "alao@moutawakil.com",
+            //         "userId": 2,
+            //         "created_at": "2023-03-01T18:46:04.000000Z",
+            //         "updated_at": "2023-03-01T18:46:04.000000Z"
+            //     }
+            // ],
+            rapports:[],
+            emails:[],
             editor: ClassicEditor,
             editorData: '<p>Contenu du rapport.</p>',
             editorConfig: {
