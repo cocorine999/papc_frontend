@@ -39,8 +39,8 @@ Vue.filter("formatNumber", function (value) {
 
 import vTitle from 'vuejs-title'
 Vue.use(vTitle,{
-  fontSize: "12px",
-  padding: "12px"
+  fontSize: "10px",
+  padding: "9px"
 })
 
 

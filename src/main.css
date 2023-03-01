@@ -5,6 +5,8 @@
 @import "./assets/css/fonts.css";
 @tailwind utilities;
 
+ 
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -15,4 +17,5 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+ 
 }
