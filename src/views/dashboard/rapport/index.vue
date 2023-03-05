@@ -91,12 +91,15 @@
 
             </vmodal>
 
-            <vmodal v-if="showRapport" @close="showRapport = false">
+            <vmodal v-if="showRapport"  @close="showRapport = false">
 
-                <div style="width:60vw" class="p-3 custom-ck" id="modalRapport"></div>
+                <div style="width:60vw" v-html="rapport" class="custom-ck" >
+                    
+                </div>
 
             </vmodal>
 
+            <!-- formulaire -->
             <div v-if="!Update" class="p-4">
                 <h1 class="text-3xl">Production de rapport</h1>
 
@@ -176,7 +179,7 @@
                         <ckeditor class="ck-editor" :editor="editor" v-model="edit.Data" :config="editorConfig"></ckeditor>
                     </div>
                     <div class="py-2 my-4 flex justify-end space-x-8">
-                        <button type="submit" title="enregistrer un nouveau template" v-title 
+                        <button type="submit" title="enregistrer un nouveau template" v-title
                             class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
                             <span class="text-sm font-semibold uppercase" v-if="!chargement3">
                                 Modifier
@@ -214,13 +217,14 @@
 
             </div>
 
+            <!-- fin formulaire -->
 
-
-
-
-
+            <!-- tableau -->
 
             <div class="align-middle inline-block  bg-white overflow-x-auto p-3 rounded-sm rounded-br-lg w-full">
+
+                <!-- header -->
+
                 <table class="w-1/2">
                     <thead>
                         <tr>
@@ -250,7 +254,10 @@
                     </thead>
 
                 </table>
-                <table class="w-full border-t border-gray-200">
+                <!-- fin header -->
+
+
+                <table  class="w-full border-t border-gray-200">
                     <!--Il s'agit d'un tableau decomposé alors filter vos donnée avant de 'integretrer par bailleur' -->
 
                     <tbody v-if="voirExempleMail" class="bg-white" id="table1">
@@ -276,7 +283,8 @@
                                     </svg>
                                 </span>
 
-                                <span @click="" class=" mr-2 cursor-pointer transform hover:text-red-500 hover:scale-110"
+                                <span @click="deleteRapport(rapport.id)"
+                                    class=" mr-2 cursor-pointer transform hover:text-red-500 hover:scale-110"
                                     title="supprimer" v-title>
                                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024"
                                         height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
@@ -285,30 +293,22 @@
                                         </path>
                                     </svg>
                                 </span>
-
                             </td>
-
-
                         </tr>
-
                     </tbody>
-
-
-
                 </table>
 
                 <table v-if="voirHistorique" class="w-full">
                     <tbody class="bg-white">
-
                         <!--Specifier le nombre de ligne +1 de la table -->
                         <tr v-for="(email, index2) in emails" :key="index2"
                             class="border-b bg-white border-gray-200 hover:shadow  hover:bg-gray-50">
 
-                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(email.rapport, index2)">
+                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(emai, index2)">
                                 Objet : {{
                                     email.objet }} </td>
 
-                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(email.rapport, index2)">
+                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(email, index2)">
                                 Enyoyé à : {{ email.destinataires }}
                             </td>
 
@@ -319,12 +319,12 @@
                                     <span class="mx-2 text-sm font-semibold">generer pdf </span>
                                 </button>
                             </td>
-
                         </tr>
-
                     </tbody>
                 </table>
             </div>
+
+            <!-- fin tableau -->
 
             <div class="relative" v-for=" (email, index2 ) in emails" :key="index2">
                 <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="true" :preview-modal="true"
@@ -386,6 +386,7 @@ export default {
             objet: '',
             bcc: '',
             rapport: '',
+            objetRapport: '',
             users: [],
             // rapports: [
             //     {
@@ -501,8 +502,9 @@ export default {
             //         "updated_at": "2023-03-01T18:46:04.000000Z"
             //     }
             // ],
-            rapports:[],
-            emails:[],
+
+            rapports: [],
+            emails: [],
             editor: ClassicEditor,
             editorData: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
             editorConfig: {
@@ -528,6 +530,7 @@ export default {
             this.showSendMail = true;
             this.chargement2 = false
         },
+
         getRapports() {
             ProgrammeService.rapports().then((data) => {
                 this.rapports = data.data.data
@@ -556,8 +559,6 @@ export default {
 
         },
 
-        // Tabulation
-
         showMail() {
 
             this.voirExempleMail = true;
@@ -573,8 +574,6 @@ export default {
             this.voirHistorique = true;
 
         },
-
-        // Fin Tabulation
 
         getEmails() {
             ProgrammeService.emailRapports().then((data) => {
@@ -631,6 +630,7 @@ export default {
             }
 
         },
+
         sendRapport() {
             if (this.chargement2 == false) {
                 this.chargement2 = true
@@ -669,6 +669,7 @@ export default {
             }
 
         },
+
         useRapport(data, index) {
             this.editorData = data
             for (var i = 0; i < this.rapports.length; i++) {
@@ -687,12 +688,15 @@ export default {
         },
 
         showModalRapport(data, index2) {
-
+    
             this.rapportId = index2
+            this.rapport = data
+            
+            console.log(data)
             this.showRapport = true
+            // console.log(this.$refs.modalRapport)
 
-            document.getElementById("modalRapport").innerHTML = ""
-
+            // this.$refs.modalRapport[index2].innerHTML = data
         },
 
         editRapport(data) {
@@ -703,8 +707,8 @@ export default {
             this.edit.Data = data.rapport
             this.edit.id = data.id
         },
-        saveEditRapport(){
 
+        saveEditRapport() {
             if (this.chargement3 == false) {
                 this.chargement3 = true
 
@@ -712,7 +716,7 @@ export default {
                     nom: this.edit.nom,
                     rapport: this.edit.Data
                 }
-                ProgrammeService.updateRapports( this.edit.id, form).then((data) => {
+                ProgrammeService.updateRapports(this.edit.id, form).then((data) => {
 
                     this.chargement3 = false
                     this.$toast.success('element modifié avec success')
@@ -738,9 +742,29 @@ export default {
                 })
 
             }
-           
+
+        },
+        deleteRapport(data) {
+            ProgrammeService.deleteRapport(data).then((data) => {
+
+                this.$toast.success('element supprimé avec success')
+                this.getRapports()
+
+            }).catch((error) => {
+                this.$toast.error('erreur suppression')
+                if (error.response) {
+                    // Requête effectuée mais le serveur a répondu par une erreur.    
+                    const message = error.response.data.message
+                    this.$toast.error(message)
+                } else if (error.request) {
+                    // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                    //console.log(error.request);
+                }
+
+            })
         }
     },
+
     created() {
         this.getRapports()
 
