@@ -26,91 +26,7 @@
     <modal-chat v-if="showComment" title="espace commentaire" v-on:close="closeCommentaire">
         <commentaire  module="suivi" :data="data" :datas="commentaires"></commentaire>
     </modal-chat>
-    <div v-if="showModal2">
-      <vmodal title="Filtre de suivi"  v-on:close="closeFiltre">
-        <div style="width:40vw" class="p-4">
-            <form v-if="showDate" @submit.prevent="getDate" class="my-4">
-                <div  class="my-4">
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Année de suivi
-                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                  <input v-model="filtre.annee" required
-                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                    type="number" placeholder="" />
-                </div>
-
-                <div class="my-4">
-                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez
-                    un trimestre <span
-                      class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                  <div class="flex justify-between my-3">
-                    <div>
-                      <input v-model="filtre.trimestre" type="radio" id="T1" name="trimestre" value="1">
-                      <label class="px-2" for="T1">T1</label>
-                    </div>
-                    <div>
-                      <input type="radio" v-model="filtre.trimestre" id="T2" name="trimestre" value="2">
-                      <label class="px-2" for="T2">T2</label>
-                    </div>
-                    <div>
-                      <input type="radio" v-model="filtre.trimestre" id="T3" name="trimestre" value="3">
-                      <label class="px-2" for="T3">T3</label>
-                    </div>
-                    <div>
-                      <input type="radio" v-model="filtre.trimestre" id="T4" name="trimestre" value="4">
-                      <label class="px-2" for="T4">T4</label>
-                    </div>
-                  </div>
-
-                </div>
-
-              <div class="py-2 my-4 flex justify-center space-x-8">
-                <button type="submit"
-                  class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                    enregistrer
-                  </span>
-                  <span v-else class="flex items-center space-x-2">
-                    <span class="text-xs px-4 font-semibold ">
-                      envoi ...
-                    </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </span>
-                </button>
-              </div>
-            </form>
-            <form v-else @submit.prevent="filtreDate">
-              <div class="form-group my-2">
-                <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Listes des dates <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                <select v-model="dateSuivie" class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent" name="" id="">
-                  <option v-for="date in dates" :key="date.id" :value="date"> {{date}} </option>
-                </select>
-              </div>
-              <div class="py-2 my-4 flex justify-center space-x-8">
-                <button type="submit"
-                  class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                    enregistrer
-                  </span>
-                  <span v-else class="flex items-center space-x-2">
-                    <span class="text-xs px-4 font-semibold ">
-                      envoi ...
-                    </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </span>
-                </button>
-              </div>
-            </form>
-        </div>
-      </vmodal>
-    </div>
+    
     <div v-if="showModal3">
       <vmodal title="Exportez les données "  v-on:close="showModal3 = false">
         <div style="width:40vw" class="p-4 flex items-center space-x-4 ">
@@ -157,6 +73,122 @@
             </div>          
             </div>
           </nav> 
+
+
+          <div v-if="showModal">
+        <modal-top-right :title="title" v-on:close="showModal = false">
+          <div class="px-4 overflow-y-auto">
+            <form action="" @submit.prevent="updateSuivi" class="p-0 w-full">
+
+              <div class="my-4">
+
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> l'année suivi
+                  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+
+                <input v-model="suiviIndicateurs.annee" @change="verifyValeurCible(suiviIndicateurs.annee)" required
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="number" placeholder="" />
+              </div>
+
+              <div v-if="isValeurCibleUse" class="my-true">
+
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur cible
+                  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input v-model="suiviIndicateurs.valeurCible" required
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="text" placeholder="" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Valeur Realisé
+                  <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input v-model="suiviIndicateurs.valeurRealise" required
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="text" placeholder="" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Suivi par date
+                  ou par trimestre ? <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <div class="flex justify-between my-3">
+                  <div>
+                    <input type="radio" :checked="choiceDateOption" @click="choiceDateOption = true" id="date"
+                      name="choix" value="date">
+                    <label class="px-2" for="all">Par date</label>
+                  </div>
+                  <div>
+                    <input type="radio" @click="choiceDateOption = false" id="trimestre" name="choix" value="trimestre">
+                    <label class="px-2" for="sauf">Par trimestre</label>
+                  </div>
+                </div>
+
+                <div v-if="choiceDateOption" class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Date de suivi
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="suiviIndicateurs.dateSuivie" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="date" placeholder="" />
+                </div>
+
+                <div v-else class="my-4">
+                  <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez
+                    un trimestre <span
+                      class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between my-3">
+                    <div>
+                      <input v-model="suiviIndicateurs.trimestre" type="radio" id="T1" name="trimestre" value="1">
+                      <label class="px-2" for="T1">T1</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="suiviIndicateurs.trimestre" id="T2" name="trimestre" value="2">
+                      <label class="px-2" for="T2">T2</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="suiviIndicateurs.trimestre" id="T3" name="trimestre" value="3">
+                      <label class="px-2" for="T3">T3</label>
+                    </div>
+                    <div>
+                      <input type="radio" v-model="suiviIndicateurs.trimestre" id="T4" name="trimestre" value="4">
+                      <label class="px-2" for="T4">T4</label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Commentaire
+                </label>
+                <textarea v-model="suiviIndicateurs.commentaire"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  rows="3">
+                                                  </textarea>
+              </div>
+
+              <div class="py-2 my-4 flex justify-center space-x-8">
+                <button type="submit"
+                  class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                    Modifier
+                  </span>
+                  <span v-else class="flex items-center space-x-2">
+                    <span class="text-xs px-4 font-semibold ">
+                      envoi ...
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </span>
+                </button>
+                <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+              </div>
+            </form>
+          </div>
+        </modal-top-right>
+      </div>
           
           
 
@@ -174,8 +206,8 @@
           
       
          <!--  <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>     -->
-          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" :isComment="true"   :sendRequest="false" :datas="this.SuivisIndicateurs" :search="search"  ></vtable>    
-          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" :datas="this.SuivisIndicateurs"  :search="search"></vtable>    
+          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" @modifier="modifier" :actions="actions" :isComment="true"   :sendRequest="false" :datas="this.SuivisIndicateurs" :search="search"  ></vtable>    
+          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" @modifier="modifier" :actions="actions"  :datas="this.SuivisIndicateurs"  :search="search"></vtable>    
         
     </div>
   </dashboard>
@@ -189,12 +221,13 @@ import Titre from '@/components/Titre'
 import Vtable from '@/components/Vtable'
 import Vform from '@/components/Vform'
 import Vmodal from '@/components/Vmodal'
+import Vbutton from '@/components/Vbutton'
 import Dashboard from '@/layouts/Dashboard'
 import VueHtml2pdf from 'vue-html2pdf'
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import extractFormData from "@/utils/extract-data";
 import IndicateurSuiviService from "@/services/modules/indicateur.suivi.service";
-
+import SuiviService from "@/services/modules/indicateur.suivi.service.js";
 import JsonExcel from "vue-json-excel";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
@@ -202,6 +235,7 @@ import Commentaire from '@/components/Commentaire.vue'
 export default {
   components: {
     Vtable,
+    Vbutton,
     Dashboard,
     Vmodal,
     Vform,
@@ -217,16 +251,31 @@ export default {
       return ({
         suiviAttributes : ['annee', 'trimestre','valeurCible','valeurRealise','indicateurId','commentaire'],
         suiviAttributesRecherche : ['date_debut', 'date_fin', 'trimestre','bailleurId','categorieId'],
-        showModal2:false,
+        updateInput:[],
+        indicateurId: '',
+        suiviId: '',
+        isValeurCibleUse: false,
+        suiviIndicateurs: {
+        annee: '',
+        trimestre: '',
+        dateSuivie: '',
+        valeurCible: 0,
+        valeurRealise: 0,
+        commentaire: '',
+      },
+        showModal: false,
+        showModal:false,
         showModal3:false,
         showDate:true,
         suiviBailleurs:[],
+        isUpdate:false,
+        saveUpdate: [],
         filtre:{
           annee:'',
           trimestre:''
         },
         currentRole:'',
-        actions:[{name:''}],
+        actions:[{name:''}, { name: 'modifier', iconne: '' },],
         cols:2,
         title:'',
         search:'',
@@ -313,7 +362,7 @@ export default {
       fetchIndicateurs: "FETCH_LIST_INDICATEUR",
     }),
     closeFiltre() {
-      this.showModal2 = false
+      this.showModal = false
       this.showDate = true
     },
     ...mapActions("suiviIndicateurs", {
@@ -329,6 +378,86 @@ export default {
     disabled() {
       this.$store.dispatch('disabled')
     },
+    /*modifier(data) {
+      localStorage.removeItem('formData')
+
+      this.saveUpdate = data
+      this.isUpdate = true
+      //this.audit.projetId = data.projet
+      //this.audit.statut = data.statut
+
+
+      this.title = 'Modifier un audit'
+      this.showModal = true
+    },*/
+
+    verifyValeurCible(date) {
+      SuiviService.checksuivi(this.indicateurId, date).then((data) => {
+        //recuperation de la valeur de verfication pour la valeur cible
+        if (data.data.data === true) {
+          this.isValeurCibleUse = false;
+        } else {
+          this.isValeurCibleUse = true;
+        }
+      }).catch((error) => {
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
+      })
+    },
+
+    updateSuivi() {
+      if (this.chargement == false) {
+        this.chargement = true
+        const data = this.suiviIndicateurs
+        data.valeurRealise = [Number(data.valeurRealise)]
+        //data.valeurCible = [90000]
+        data.valeurCible = [Number(data.valeurCible)]
+        data.indicateurId = this.indicateurId
+        if (this.choiceDateOption == true) {
+          delete data.trimestre
+        }
+        else {
+          delete data.dateSuivie
+        }
+
+        SuiviService.update(this.suiviId, data).then((data) => {
+          this.$toast.success('modification éffectué')
+          this.showModal = false
+          this.chargement = false
+          this.suiviIndicateurs.annee = ''
+          this.suiviIndicateurs.trimestre = ''
+          this.suiviIndicateurs.dateSuivie = ''
+          this.suiviIndicateurs.valeurCible = 0
+          this.suiviIndicateurs.valeurRealise = 0
+          this.suiviIndicateurs.commentaire = ''
+        }).catch((error) => {
+          this.chargement = false
+          if (error.response) {
+            // Requête effectuée mais le serveur a répondu par une erreur.
+            const message = error.response.data.message
+            this.$toast.error(message)
+          } else if (error.request) {
+            // Demande effectuée mais aucune réponse n'est reçue du serveur.
+            //console.log(error.request);
+          } else {
+            // Une erreur s'est produite lors de la configuration de la demande
+          }
+        })
+      }
+
+
+    },
+
+
    
     commenter(data) {
       const commentaires = data.commentaires
@@ -409,7 +538,7 @@ export default {
           const valeur_realise = element.valeurRealise[0]
           const ecart = valeur_realise - valeur_cible
           const date_de_creation = element.created_at
-          this.suiviBailleurs.push(bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,ecart,date_de_creation)
+          this.suiviBailleurs.push(id,bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,ecart,date_de_creation)
         }) 
       }).catch((error) => {
         if (error.response) {
@@ -489,10 +618,18 @@ export default {
         this.title ='Creer un suivi'
         this.showModal = true
     },
-    modifier() {
+    modifier(data) {
       localStorage.removeItem('formData')
 
         this.title ='Modifier un suivi'
+        this.indicateurId = data.indicateurId
+        this.suiviId = data.id
+        this.suiviIndicateurs.annee = data.dateSuivie
+        this.suiviIndicateurs.trimestre = data.trimestre
+        this.suiviIndicateurs.dateSuivie = data.dateSuivie
+        this.suiviIndicateurs.valeurCible = data.valeur_cible
+        this.suiviIndicateurs.valeurRealise = data.valeur_realise
+        this.suiviIndicateurs.commentaire = data.commentaire
         this.showModal = true
     },
     supprimer(data) {
@@ -522,7 +659,9 @@ export default {
        
         const datas = data.data.data
          datas.forEach(element => {
+          const id = element.id
           const bailleur = element.indicateur.bailleur.nom
+          const indicateurId = element.indicateur.id
           const indicateur = element.indicateur.nom
           const unitee_de_mesure = element.indicateur.unitee_mesure.nom
           const annee_de_base = element.indicateur.anneeDeBase
@@ -530,8 +669,9 @@ export default {
           const valeur_cible = element.valeurCible.valeurCible[0]
           const valeur_realise = element.valeurRealise[0]
           const ecart = Number(valeur_realise) - valeur_cible
+          const commentaire = element.commentaire
           const date_de_creation = element.created_at
-          this.SuivisIndicateurs.push({bailleur,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart,date_de_creation})
+          this.SuivisIndicateurs.push({id,bailleur,indicateurId,indicateur,unitee_de_mesure,annee_de_base,valeur_de_base,valeur_cible,valeur_realise,ecart, commentaire,date_de_creation})
         }) 
        this.disabled()
       }).catch((error) => {
@@ -569,6 +709,7 @@ export default {
           {name:'valeur cible',cle:'valeur_cible',edit:false},
           {name:'Valeur réalisée',cle:'valeur_realise',edit:false},
           {name:'Ecart',cle:'ecart',edit:false},
+          {name:'Commentaire',cle:'commentaire',edit:false},
           {name:'Date de création',cle:'date_de_creation',width:"w-24",edit:false},
           ]
         this.headers = headers
@@ -584,6 +725,7 @@ export default {
           {name:'valeur cible',cle:'valeur_cible',edit:false},
           {name:'Valeur réalisée',cle:'valeur_realise',edit:false},
           {name:'Ecart',cle:'ecart',edit:false},
+          {name:'Commentaire',cle:'commentaire',edit:false},
           {name:'Date de création',cle:'date_de_creation',width:"w-24",edit:false},
         ]
         this.headers = headers
