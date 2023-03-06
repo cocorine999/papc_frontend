@@ -76,7 +76,12 @@ const ProgrammeService = {
     rapports() {
       return ApiService.get(`programme/rapports`);
     },
-
+    updateRapports(slug, params){
+          return ApiService.put(`programme/rapport/${slug}`, params);
+    },
+    deleteRapport(slug){
+        return ApiService.delete(`programme/rapport/${slug}`);
+    },
     emailRapports() {
       return ApiService.get(`programme/emailRapports`);
     },

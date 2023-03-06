@@ -59,15 +59,11 @@
 
                             <button type="submit"
                                 class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-
-
                                 <span class="text-sm font-semibold uppercase" v-if="!chargement">
 
                                     envoyer
 
                                 </span>
-
-
                                 <span v-else class="flex items-center space-x-2">
 
                                     <span class="text-xs px-4 font-semibold ">
@@ -95,14 +91,18 @@
 
             </vmodal>
 
-            <vmodal v-if="showRapport" @close="showRapport = false">
+            <vmodal v-if="showRapport"  @close="showRapport = false">
 
-                <div style="width:60vw"> {{ rapport }}</div>
+                <div style="width:60vw" v-html="rapport" class="custom-ck" >
+                    
+                </div>
 
             </vmodal>
 
-            <div class="p-4">
+            <!-- formulaire -->
+            <div v-if="!Update" class="p-4">
                 <h1 class="text-3xl">Production de rapport</h1>
+
                 <form action="" @submit.prevent="saveRapport" class="p-5 w-full">
                     <div class="form-group my-2">
                         <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Titre du
@@ -118,11 +118,8 @@
                             rapport
                             <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
                         </label>
-                        <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+                        <ckeditor class="ck-editor" :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
                     </div>
-
-
-
                     <div class="py-2 my-4 flex justify-end space-x-8">
                         <button type="submit" title="enregistrer un nouveau template" v-title
                             class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
@@ -131,7 +128,7 @@
                             </span>
                             <span v-else class="flex items-center space-x-2">
                                 <span class="text-xs px-4 font-semibold ">
-                                    envoi ...
+                                    en cour ...
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -143,7 +140,7 @@
 
                         <button title="envoyer le contenu du rapport par mail" v-title
                             class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-                            <span class="text-sm font-semibold uppercase" v-if="!chargement" @click="modalMail()">
+                            <span class="text-sm font-semibold uppercase" v-if="!chargement2" @click="modalMail()">
                                 Envoyer le mail
                             </span>
                             <span v-else class="flex items-center space-x-2">
@@ -160,12 +157,74 @@
                     </div>
                 </form>
 
+            </div>
 
+            <div v-else class="p-4">
+                <h1 class="text-3xl">Modification de rapport</h1>
+                <form action="" @submit.prevent="saveEditRapport" class="p-5 w-full">
+                    <div class="form-group my-2">
+                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Titre du
+                            rapport
+                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                        <input v-model="edit.nom" required
+                            class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                            type="text" />
+                    </div>
 
+                    <div class="form-group my-2">
+                        <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light">Contenu du
+                            rapport
+                            <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
+                        </label>
+                        <ckeditor class="ck-editor" :editor="editor" v-model="edit.Data" :config="editorConfig"></ckeditor>
+                    </div>
+                    <div class="py-2 my-4 flex justify-end space-x-8">
+                        <button type="submit" title="enregistrer un nouveau template" v-title
+                            class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                            <span class="text-sm font-semibold uppercase" v-if="!chargement3">
+                                Modifier
+                            </span>
+                            <span v-else class="flex items-center space-x-2">
+                                <span class="text-xs px-4 font-semibold ">
+                                    en cour ...
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <button title="envoyer le contenu du rapport par mail" v-title
+                            class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                            <span class="text-sm font-semibold uppercase" v-if="!chargement2" @click="modalMail()">
+                                Envoyer le mail
+                            </span>
+                            <span v-else class="flex items-center space-x-2">
+                                <span class="text-xs px-4 font-semibold ">
+                                    envoi ...
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </form>
 
             </div>
 
+            <!-- fin formulaire -->
+
+            <!-- tableau -->
+
             <div class="align-middle inline-block  bg-white overflow-x-auto p-3 rounded-sm rounded-br-lg w-full">
+
+                <!-- header -->
+
                 <table class="w-1/2">
                     <thead>
                         <tr>
@@ -195,37 +254,61 @@
                     </thead>
 
                 </table>
+                <!-- fin header -->
 
-                <table class="w-full border-t border-gray-200">
+
+                <table  class="w-full border-t border-gray-200">
                     <!--Il s'agit d'un tableau decomposé alors filter vos donnée avant de 'integretrer par bailleur' -->
 
-                    <tbody v-if="voirExempleMail" class="bg-white" id="table1" >
+                    <tbody v-if="voirExempleMail" class="bg-white" id="table1">
 
                         <!--Specifier le nombre de ligne +1 de la table -->
 
-                        <tr v-for="(rapport, index) in rapports" :key="index"
-                           :class="{'bg-white': voirHistorique }" class="border-b border-gray-200 hover:shadow  hover:bg-gray-50" title="Cliquer pour éditer"
+                        <tr v-for="(rapport, index) in rapports" :key="index" :class="{ 'bg-white': voirHistorique }"
+                            class="border-b border-gray-200 hover:shadow hover:bg-gray-50" title="Cliquer pour voir"
                             v-title>
-
                             <td class="p-3 whitespace-no-wrap  text-xs" ref="mail"
                                 @click="useRapport(rapport.rapport, index)">
                                 {{ rapport.nom }}
                             </td>
+                            <td class="flex items-center justify-center">
+                                <span class=" mr-2 cursor-pointer transform hover:text-blue-500 hover:scale-110"
+                                    title="modifier le rapport" v-title @click="editRapport(rapport)">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                        height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path
+                                            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+                                        </path>
+                                    </svg>
+                                </span>
 
-
+                                <span @click="deleteRapport(rapport.id)"
+                                    class=" mr-2 cursor-pointer transform hover:text-red-500 hover:scale-110"
+                                    title="supprimer" v-title>
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024"
+                                        height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </td>
                         </tr>
-
                     </tbody>
+                </table>
 
-                    <tbody v-if="voirHistorique" class="bg-white">
-
+                <table v-if="voirHistorique" class="w-full">
+                    <tbody class="bg-white">
                         <!--Specifier le nombre de ligne +1 de la table -->
-                        <tr v-for="(email, index2) in emails" :key="index2" class="border-b bg-white border-gray-200 hover:shadow  hover:bg-gray-50">
+                        <tr v-for="(email, index2) in emails" :key="index2"
+                            class="border-b bg-white border-gray-200 hover:shadow  hover:bg-gray-50">
 
-                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(email.rapport)">Objet : {{
-                                email.objet }} </td>
+                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(emai, index2)">
+                                Objet : {{
+                                    email.objet }} </td>
 
-                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(email.rapport)">
+                            <td class="p-3 whitespace-no-wrap  text-xs" @click="showModalRapport(email, index2)">
                                 Enyoyé à : {{ email.destinataires }}
                             </td>
 
@@ -236,15 +319,12 @@
                                     <span class="mx-2 text-sm font-semibold">generer pdf </span>
                                 </button>
                             </td>
-
                         </tr>
-
                     </tbody>
-
                 </table>
-
-
             </div>
+
+            <!-- fin tableau -->
 
             <div class="relative" v-for=" (email, index2 ) in emails" :key="index2">
                 <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="true" :preview-modal="true"
@@ -252,8 +332,8 @@
                     pdf-format="a4" pdf-orientation="landscape" pdf-content-width="100vw" @progress="onProgress($event)"
                     @hasStartedGeneration="hasStartedGeneration()" @hasGenerated="hasGenerated($event)" ref="element">
 
-                    <section  slot="pdf-content" class="flex justify-center items-center m-4 p-4 h-auto">
-                        <div :id="index2" class="p-3 flex justify-center items-center text-justify" ></div>
+                    <section slot="pdf-content" class="flex justify-center items-center m-4 p-4 h-auto">
+                        <div :id="index2" class="p-3 custom-ck"></div>
                     </section>
                 </vue-html2pdf>
             </div>
@@ -294,14 +374,19 @@ export default {
         return {
             savedInput: [],
             chargement: false,
+            chargement2: false,
+            chargement3: false,
             showModal: false,
             showSendMail: false,
             showRapport: false,
+            update: false,
+            Update: false,
             title: '',
             nom: '',
             objet: '',
             bcc: '',
             rapport: '',
+            objetRapport: '',
             users: [],
             // rapports: [
             //     {
@@ -417,16 +502,23 @@ export default {
             //         "updated_at": "2023-03-01T18:46:04.000000Z"
             //     }
             // ],
-            rapports:[],
-            emails:[],
+
+            rapports: [],
+            emails: [],
             editor: ClassicEditor,
-            editorData: '<p>Contenu du rapport.</p>',
+            editorData: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
             editorConfig: {
                 // The configuration of the editor.
             },
             voirExempleMail: true,
             voirHistorique: false,
             selectMail: false,
+            rapportId: '',
+            edit: {
+                nom: "",
+                Data: "",
+                id: "",
+            }
 
 
         }
@@ -436,7 +528,9 @@ export default {
     methods: {
         modalMail() {
             this.showSendMail = true;
+            this.chargement2 = false
         },
+
         getRapports() {
             ProgrammeService.rapports().then((data) => {
                 this.rapports = data.data.data
@@ -465,8 +559,6 @@ export default {
 
         },
 
-        // Tabulation
-
         showMail() {
 
             this.voirExempleMail = true;
@@ -480,10 +572,8 @@ export default {
             this.voirExempleMail = false;
 
             this.voirHistorique = true;
-          
-        },
 
-        // Fin Tabulation
+        },
 
         getEmails() {
             ProgrammeService.emailRapports().then((data) => {
@@ -540,9 +630,10 @@ export default {
             }
 
         },
+
         sendRapport() {
-            if (this.chargement == false) {
-                this.chargement = true
+            if (this.chargement2 == false) {
+                this.chargement2 = true
 
                 this.users = this.bcc.split(',').map((email) => email.trim());
 
@@ -553,13 +644,13 @@ export default {
                 }
                 ProgrammeService.sendMailRapport(form).then((data) => {
 
-                    this.chargement = false
+                    this.chargement2 = false
                     this.$toast.success('Email envoyé')
                     this.emails = data.data.data
                     this.showSendMail = false
                 }).catch((error) => {
 
-                    this.chargement = false
+                    this.chargement2 = false
 
                     if (error.response) {
                         // Requête effectuée mais le serveur a répondu par une erreur.    
@@ -578,6 +669,7 @@ export default {
             }
 
         },
+
         useRapport(data, index) {
             this.editorData = data
             for (var i = 0; i < this.rapports.length; i++) {
@@ -595,18 +687,88 @@ export default {
 
         },
 
-        showModalRapport(data) {
+        showModalRapport(data, index2) {
+    
+            this.rapportId = index2
             this.rapport = data
-
+            
+            console.log(data)
             this.showRapport = true
+            // console.log(this.$refs.modalRapport)
+
+            // this.$refs.modalRapport[index2].innerHTML = data
+        },
+
+        editRapport(data) {
+
+            this.Update = true;
+            console.log(data)
+            this.edit.nom = data.nom
+            this.edit.Data = data.rapport
+            this.edit.id = data.id
+        },
+
+        saveEditRapport() {
+            if (this.chargement3 == false) {
+                this.chargement3 = true
+
+                var form = {
+                    nom: this.edit.nom,
+                    rapport: this.edit.Data
+                }
+                ProgrammeService.updateRapports(this.edit.id, form).then((data) => {
+
+                    this.chargement3 = false
+                    this.$toast.success('element modifié avec success')
+
+                    this.Update = false;
+                    this.getRapports()
+                }).catch((error) => {
+
+                    this.chargement3 = false
+
+                    if (error.response) {
+                        // Requête effectuée mais le serveur a répondu par une erreur.    
+                        const message = error.response.data.message
+                        this.$toast.error(message)
+                    } else if (error.request) {
+
+                        // Demande effectuée mais aucune réponse n'est reçue du serveur.
+
+                        //console.log(error.request);
+
+                    }
+
+                })
+
+            }
+
+        },
+        deleteRapport(data) {
+            ProgrammeService.deleteRapport(data).then((data) => {
+
+                this.$toast.success('element supprimé avec success')
+                this.getRapports()
+
+            }).catch((error) => {
+                this.$toast.error('erreur suppression')
+                if (error.response) {
+                    // Requête effectuée mais le serveur a répondu par une erreur.    
+                    const message = error.response.data.message
+                    this.$toast.error(message)
+                } else if (error.request) {
+                    // Demande effectuée mais aucune réponse n'est reçue du serveur.
+                    //console.log(error.request);
+                }
+
+            })
         }
     },
+
     created() {
         this.getRapports()
 
         this.getEmails()
-
-
         /*ClassicEditor.create( document.querySelector( '#editor' ), {
         
             plugins: [CloudServices, ExportPdf],
@@ -657,8 +819,178 @@ export default {
 
         //.catch( /* ... */ )     
 
-    }
+    },
+
+
 }
 </script>
   
-<style scoped></style>
+<style>
+.custom-ck {
+    text-align: left;
+    word-wrap: break-word;
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    transition: none;
+    vertical-align: middle;
+    margin: 0.9em 0;
+}
+
+.custom-ck h2 {
+    display: block;
+    font-size: 24px;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+
+.custom-ck h3 {
+    display: block;
+    font-size: 18.72px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.custom-ck h4 {
+    display: block;
+    margin-block-start: 21.28px;
+    margin-block-end: 21.28px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.custom-ck p {
+    display: block;
+}
+
+.custom-ck strong {
+    font-weight: bold;
+}
+
+.custom-ck i {
+    font-style: italic;
+}
+
+.custom-ck a {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #0000EE;
+}
+
+.custom-ck ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 16px;
+    margin-block-end: 16px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.custom-ck li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+.custom-ck ol {
+    display: block;
+    list-style-type: decimal;
+    margin-block-start: 16px;
+    margin-block-end: 16px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+
+}
+
+.custom-ck blockquote {
+    display: block;
+    margin-block-start: 16px;
+    margin-block-end: 16px;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
+    border-left: 5px solid #ccc;
+    font-style: italic;
+    margin-left: 0;
+    margin-right: 0;
+    overflow: hidden;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.custom-ck figure {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
+}
+
+.custom-ck table {
+    border: 1px double #b3b3b3;
+    border-collapse: collapse;
+    border-spacing: 0;
+    height: 100%;
+    width: 100%;
+    text-indent: initial;
+    box-sizing: border-box;
+    text-indent: initial;
+    text-align: left;
+}
+
+.custom-ck tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.custom-ck tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+.custom-ck td {
+    display: table-cell;
+    vertical-align: inherit;
+}
+
+.custom-ck figure {
+    display: block;
+    position: relative;
+    margin-block-start: 16px;
+    margin-block-end: 16px;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
+    clear: both;
+    outline: 3px solid #dedede;
+    margin: 14.4px 0;
+    min-width: 240px;
+}
+
+.custom-ck iframe {
+    overflow-clip-margin: content-box !important;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+</style>
