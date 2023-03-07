@@ -3333,12 +3333,4 @@ this.chargement = true
 </script>
 
 <style scoped>
-<<<<<<< Updated upstream
-
-=======
-.toggle-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
->>>>>>> Stashed changes
 </style>
