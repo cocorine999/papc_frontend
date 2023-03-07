@@ -847,12 +847,14 @@
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
                                         <td>
-<button v-if="pta.isTache "           @click="togglesuivie(pta.id)"
+<button  v-if="pta.isTache "           @click="togglesuivie(pta.id)"
 class=" text-white rounded-full w-14 h-7 px-1 flex items-center justify-between transition-all" 
           :class="{ 'bg-gray-400': false ,'bg-red-400': true ,'bg-green-400 cursor-not-allowed':pta.poidsActuel>0,}"  
 
 :disabled="pta.poidsActuel>0">
-  <div class="w-5 h-5 bg-white rounded-full transform translate-x-0" :class="{'translate-x-full':pta.poidsActuel>0 || translatetoggle}"></div>
+  <div class="w-5 h-5 bg-white rounded-full transform translate-x-0" :class="{'translate-x-full':pta.poidsActuel>0 || translatetoggle}">
+  
+  </div>
 </button>
 
 
@@ -988,7 +990,7 @@ class=" text-white rounded-full w-14 h-7 px-1 flex items-center justify-between 
                   <!--  planing -->
 
                   <td v-if="pta.t1Bn != undefined && pta.t1Bn != '' " class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
-                    <span  class="font-bold"> {{ pta.t1Bn | formatNumber }} fcfabn</span>
+                    <span  class="font-bold"> {{ pta.t1Bn | formatNumber }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
                                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
@@ -1069,7 +1071,7 @@ class=" text-white rounded-full w-14 h-7 px-1 flex items-center justify-between 
                   </td>
                     <td class="p-2 whitespace-nowrap border relative dark:bg-gray-800 dark:border-gray-700" v-else></td>
 
-                  <td v-if="pta.t4Pret != '' || pta.t4Bn != ''"class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
+                  <td v-if="pta.t4Pret != '' || pta.t4Bn != ''" class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.t4Pret != undefined && pta.t4Bn != undefined" class="font-bold"> {{ (pta.t4Pret +
                         pta.t4Bn) | formatNumber
                     }}  </span>
@@ -1993,7 +1995,6 @@ class=" text-white rounded-full w-14 h-7 px-1 flex items-center justify-between 
 
       </div>
     </div>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" @click="exportToExcel">Exporter vers Excel</button>
 
   </div>
 </template>
