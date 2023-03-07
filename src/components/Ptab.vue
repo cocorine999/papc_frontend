@@ -160,7 +160,11 @@
                       </th>
                       <th v-if="statutActuel" scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
-                        poids actuel
+                        poids actuelu
+                      </th>
+                        <th  scope="col" rowspan="2"
+                        class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
+                        Suivi
                       </th>
                       <th scope="col" rowspan="2"
                         class="p-1 text-small text-center border dark:bg-gray-800 dark:border-gray-700 ">
@@ -359,6 +363,7 @@
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                       </td>
+                       
                       <td class="p-1 text-small border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.structureAssocie != undefined" class="font-bold"> {{ pta.structureAssocie }}
                         </span>
@@ -606,6 +611,10 @@
                   </th>
                   <th scope="col" rowspan="2"
                     class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                    Etat des taches
+                  </th>
+                  <th scope="col" rowspan="2"
+                    class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                     STRUCTURE ASSOCIER
                   </th>
                   <th scope="col" rowspan="2"
@@ -770,7 +779,7 @@
 
               
               <tbody>
-                <tr v-for="pta in dataNew" :key="pta.id"
+                <tr v-for="pta  in dataNew" :key="pta.id"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
@@ -837,6 +846,19 @@
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
+                                        <td>
+<button v-if="pta.isTache "           @click="togglesuivie(pta.id)"
+class=" text-white rounded-full w-14 h-7 px-1 flex items-center justify-between transition-all" 
+          :class="{ 'bg-gray-400': false ,'bg-red-400': true ,'bg-green-400 cursor-not-allowed':pta.poidsActuel>0,}"  
+
+:disabled="pta.poidsActuel>0">
+  <div class="w-5 h-5 bg-white rounded-full transform translate-x-0" :class="{'translate-x-full':pta.poidsActuel>0 || translatetoggle}"></div>
+</button>
+
+
+ </td>
+
+                  
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.structureAssocie != undefined" class="font-bold"> {{ pta.structureAssocie }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -1343,6 +1365,7 @@
                         }} </span>
                         <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                       </td>
+
                       <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                         <span v-if="pta.structureAssocie != undefined" class="font-bold"> {{ pta.structureAssocie }}
                         </span>
@@ -1802,6 +1825,7 @@
                     </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
+
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.structureAssocie != undefined" class="font-bold"> {{ pta.structureAssocie }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -1981,15 +2005,27 @@ import Multiselect from 'vue-multiselect'
 import Vmodal from '@/components/Vmodal'
 import PtabService from "@/services/modules/pta.service.js";
 import BailleursService from "@/services/modules/bailleur.service.js";
-import JsonExcel from "vue-json-excel"
-import VueHtml2pdf from 'vue-html2pdf'
+import JsonExcel from "vue-json-excel";
+import VueHtml2pdf from 'vue-html2pdf';
+import TacheService from "@/services/modules/tache.service.js";
+
 import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   props: ['ppm'],
   components: { Multiselect, Vmodal, VueHtml2pdf, JsonExcel },
   data() {
     return {
+      etattoggle:true,
+      graytoggle:true,
+      redtoggle:false,
+      translatetoggle:false,
+            chargement: false,
+
+
+      greentoggle:false,
       ptab: [],
+       items: ['Item 1', 'Item 2', 'Item 3'],
+      activeItems: [],
         fich: [],
 
       ptabR: [],
@@ -2296,7 +2332,7 @@ export default {
                   }
                 }
 
-                  programme.push({ bailleur, nom: tache.nom, code: tache.code, poids, poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret,planingt })
+                  programme.push({ bailleur, id:tache.id, nom: tache.nom, code: tache.code, poids, poidsActuel, isTache: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret,planingt })
                 })
               })
             })
@@ -2986,6 +3022,82 @@ export default {
     },
   },
   methods: {
+  saveSuiviOld(id, data) {
+      this.chargement = true
+      var form = {
+        tacheId:id
+      }
+      TacheService.suiviTache(form).then((data) => {
+       // this.doSuiviOld = false
+        //this.$toast.success('Operation éffectué avec succès')
+      }).catch((error) => {
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
+      })
+      this.chargement = false
+    },
+
+
+    
+      isgray() {
+      return true;
+    },
+    isActive(index) {
+      return this.activeItems.includes(index);
+    },
+    toggle(index) {
+      const isActive = this.activeItems.includes(index);
+      if (isActive) {
+        this.activeItems.splice(this.activeItems.indexOf(index), 1);
+      } else {
+        this.activeItems.push(index);
+      }
+    }
+  ,
+    togglesuivie(id){
+
+     // this.redtoggle = true;
+    //  this.graytoggle =false;
+    //  this.translatetoggle =true;
+    
+  
+this.chargement = true
+      var form = {
+        tacheId:id
+      }
+      console.log(id)
+      TacheService.suiviTache(form).then((data) => {
+        
+       // this.doSuiviOld = false
+      // this.dataNew;
+        this.$toast.success('Operation éffectué avec succès')
+       // window.location.reload();
+      }).catch((error) => {
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+          //console.log('dernier message', error.message);
+        }
+      })
+      this.chargement = false
+
+
+    },
      exportToExcel() {
               console.log('gghghghgh');
                       console.log(this.dataNew);
@@ -3221,5 +3333,12 @@ export default {
 </script>
 
 <style scoped>
+<<<<<<< Updated upstream
 
+=======
+.toggle-button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+>>>>>>> Stashed changes
 </style>
