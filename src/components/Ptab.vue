@@ -3332,5 +3332,5 @@ this.chargement = true
 }
 </script>
 
-<style scoped>
+<style >
 </style>
