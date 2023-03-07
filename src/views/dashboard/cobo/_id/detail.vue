@@ -67,7 +67,6 @@
 
     <div v-if="table" class="w-full bg-white border-grey-light border mT-2" v-for=" (item, index ) in souscription"
       :key="index">
-
       <accordion :title="'Soumission du ' + new Date(item._submission_time)" @generate-pdf="generateReport(index)"
         @generate-excel="downloadFile(item)">
         <table class="min-w-full table-auto">
@@ -189,6 +188,7 @@ import Dashboard from "@/layouts/Dashboard";
 import ProgrammeService from '@/services/modules/programme.service';
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import accordion from "@/components/accordion.vue";
+import Objectif_speficique from '../../cadre_logique/objectif_speficique.vue';
 
 export default {
   components: {
@@ -213,7 +213,9 @@ export default {
       },
       match: true,
       pdf_id: "",
-      suiviVisible: false
+      suiviVisible: false,
+      labelData:{},
+      deployedId: "",
     }
   },
   computed: {
@@ -225,16 +227,27 @@ export default {
       this.$router.push('/401-non-autorise')
     }
 
+   
+    this.souscription = this.copyKeyInArray(this.souscription)
+
+    console.log(this.copyKeyInArray(this.souscription))
+
+    this.deployedId = this.$store.getters.getquestionnaire.deployed_version_id
+    ProgrammeService.getLabel({ deployed_version_id: this.deployedId, url: this.$store.getters.getquestionnaire.contenu.url }).then(response => {
+      this.labelData = response.data.data
+    })
+
     this.nom_questionnaire = this.$store.getters.getquestionnaire.contenu.name
 
     ProgrammeService.createKobo({
       url: this.$store.getters.getquestionnaire.contenu.url
     }).then(response => {
       var table = response.data.data
-      this.souscription = table
-
-      this.response = this.souscription
+      this.souscription = this.copyKeyInArray(table)
+      // this.response = this.souscription
     })
+
+
 
 
   },
@@ -262,7 +275,7 @@ export default {
     downloadFile(json) {
       var table = []
       table.push(json)
-      console.log(table)
+
 
       const data = table;
 
@@ -301,7 +314,6 @@ export default {
     },
 
     getPermission() {
-      console.log(this.currentUser)
       this.currentUser.role[0].permissions.forEach(element => {
 
         if (element.slug === 'voir-suivi-kobo') {
@@ -316,9 +328,68 @@ export default {
     },
     generateReport(data) {
       this.$refs.element[data].generatePdf()
-    }
-  }
+    },
 
+    // new fonctions
+
+    findValueInObject(obj, key, value) {
+      let result1 = null;
+
+      for (const prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          const propValue = obj[prop];
+
+          if (prop === key && propValue === value) {
+            return obj.label[0];
+          } else if (typeof propValue === "object") {
+            result1 = this.findValueInObject(propValue, key, value);
+            if (result1) {
+              return result1;
+            }
+          }
+        }
+      }
+
+
+    },
+
+
+
+    copyKeyInArray(arr) {
+      const newArr = [];
+
+      for (let i = 0; i < arr.length; i++) {
+        const obj = arr[i];
+        const newObj = {};
+
+        for (const prop in obj) {
+          if (obj.hasOwnProperty(prop)) {
+            if (prop.includes("/")) {
+              const keyParts = prop.split("/");
+              const newKey = keyParts[keyParts.length - 1].split(":")[0];
+
+              var result7 = this.findValueInObject(this.labelData, "$autoname", newKey);
+              //console.log(result7); 
+              if (result7 == null) {
+                result7 = "instanceID";
+              }
+
+              newObj[result7] = obj[prop];
+            } else {
+              newObj[prop] = obj[prop];
+            }
+          }
+        }
+
+        newArr.push(newObj);
+      }
+
+      console.log(newArr)
+      return newArr;
+    },
+
+
+  }
 };
 
 

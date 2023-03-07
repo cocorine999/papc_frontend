@@ -20,6 +20,9 @@ const ProgrammeService = {
       return ApiService.post("programme/kobo", params);
     },
 
+    getLabel(params){
+         return ApiService.post("programme/koboPreview",params);
+    },
     update(slug, params) {
       return ApiService.update("programmes", slug, params);
     },

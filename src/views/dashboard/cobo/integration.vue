@@ -135,7 +135,7 @@ export default {
     },
 
     data() {
-        return {
+      return {
             kobo_data: [],
             header: ["Nom", "Description", "Total de souscription", "Créer le", "Modifié le",],
             koboVisible: false,
@@ -171,7 +171,7 @@ export default {
     methods: {
 
         getPermission() {
-            console.log(this.currentUser)
+         
             this.currentUser.role[0].permissions.forEach(element => {
 
                 if (element.slug === 'voir-formulaire-kobo') {
@@ -183,10 +183,17 @@ export default {
 
 
         detail(index, data) {
+            
+
             var questionnaire = {
                 id: index,
-                contenu: data
+                contenu: data,
+                deployed_version_id: data.deployed_version_id
+               
             }
+
+         
+            
             this.$store.commit("setQuestionnaire", questionnaire);
             this.$router.push({ name: 'questionnaire_id_details', params: { id: index, questionnaire: data } })
 
