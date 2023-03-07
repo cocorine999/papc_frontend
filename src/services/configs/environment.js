@@ -1,4 +1,4 @@
- const API_BASE_URL = "http://192.168.8.100:8001"
+ const API_BASE_URL = "http://192.168.8.111:8002"
 //const API_BASE_URL = "http://137.255.9.235:8001"
 
 const STAGGING_URL = "http://137.255.9.235:8001"
