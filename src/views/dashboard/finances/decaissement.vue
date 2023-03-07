@@ -118,15 +118,15 @@
         </div>
 
       </div>
-      <vtable v-if="!decaissementDelete && !decaissementUpdate" :headers="headers" :datas="filteredDecaissement()"
-        @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
-      <vtable v-if="decaissementDelete && !decaissementUpdate" :headers="headers" :datas="filteredDecaissement()"
-        :actions="actionsDelete" @supprimer="supprimer" @updateInputData="updateInputData"></vtable>
+      <vtable v-if="!decaissementDelete && !decaissementUpdate" :headers="headers" :datas="decaissements"
+        @supprimer="supprimer" @updateInputData="updateInputData" :search="search"></vtable>
+      <vtable v-if="decaissementDelete && !decaissementUpdate" :headers="headers" :datas="decaissements"
+        :actions="actionsDelete" @supprimer="supprimer" @updateInputData="updateInputData" :search="search"></vtable>
       <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @modifier="modifier" :headers="headers"
-        :datas="filteredDecaissement()" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData">
+        :datas="decaissements" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :search="search">
       </vtable>
       <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" :actions="actionsUpdate"
-        @modifier="modifier" :headers="headers" :datas="filteredDecaissement()" @updateInputData="updateInputData">
+        @modifier="modifier" :headers="headers" :datas="decaissements" @updateInputData="updateInputData" :search="search">
       </vtable>
     </div>
   </dashboard>
