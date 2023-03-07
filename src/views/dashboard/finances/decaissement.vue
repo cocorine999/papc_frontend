@@ -49,6 +49,125 @@
           </div>
         </div>
       </nav>
+
+      <div v-if="showModal4">
+        <modal-top-right :title="title" v-on:close="closeA">
+          <div class="w-full p-4">
+            <div v-if="!isUpdate">
+              <form action="" @submit.prevent="sendForm" class="p-3 w-full">
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Montant
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="champs[0].data" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="text" />
+                </div>
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Date
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="champs[1].data" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="date" />
+                </div>
+
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Projet
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect class="w-11/12" v-model="champs[2].data" required :preselect-first="true"
+                      :options="champs[2].options" :custom-label="champs[2].methode" :placeholder="champs[2].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champs[2].value" :track-by="champs[2].cle"></multiselect>
+                    <div class="w-1/12  flex justify-center items-center">
+                      <button title="Ajouter un Projet" v-title @click="openModal"
+                        class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+                        <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                          style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                        </svg>
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Moyens de
+                    payement
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect v-model="champs[3].data" required :preselect-first="true" :options="champs[3].options"
+                      :custom-label="champs[3].methode" :placeholder="champs[3].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champs[3].value" :track-by="champs[3].cle" @change="changeShowEntreprise(champs[3].data)" ></multiselect>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2" v-if="showEntreprise" >
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Moyens de
+                    payement
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect v-model="champs[3].data" required :preselect-first="true" :options="champs[3].options"
+                      :custom-label="champs[3].methode" :placeholder="champs[3].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champs[3].value" :track-by="champs[3].cle"></multiselect>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Sources
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect v-model="champs[3].data" required :preselect-first="true" :options="champs[4].options"
+                     :placeholder="champs[3].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champs[3].value" :track-by="champs[3].cle"></multiselect>
+
+                  </div>
+                </div>
+
+
+                <div class="py-2 my-4 flex justify-center space-x-8">
+                  <button type="submit"
+                    class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                    <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                      enregistrer
+                    </span>
+                    <span v-else class="flex items-center space-x-2">
+                      <span class="text-xs px-4 font-semibold ">
+                        envoi ...
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </span>
+                  </button>
+                  <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+                </div>
+              </form>
+            </div>
+            <div v-else>
+
+            </div>
+
+          </div>
+        </modal-top-right>
+      </div>
       <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="closeA">
           <div class="w-full p-4">
@@ -115,6 +234,14 @@
               </svg></span>
             <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
           </button>
+          <button v-if="decaissementAdd" @click="addDecaissement2" title="ajouter "
+            class="px-4 py-2 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+              </svg></span>
+            <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter 2</span>
+          </button>
         </div>
 
       </div>
@@ -123,10 +250,12 @@
       <vtable v-if="decaissementDelete && !decaissementUpdate" :headers="headers" :datas="decaissements"
         :actions="actionsDelete" @supprimer="supprimer" @updateInputData="updateInputData" :search="search"></vtable>
       <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @modifier="modifier" :headers="headers"
-        :datas="decaissements" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :search="search">
+        :datas="decaissements" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"
+        :search="search">
       </vtable>
       <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" :actions="actionsUpdate"
-        @modifier="modifier" :headers="headers" :datas="decaissements" @updateInputData="updateInputData" :search="search">
+        @modifier="modifier" :headers="headers" :datas="decaissements" @updateInputData="updateInputData"
+        :search="search">
       </vtable>
     </div>
   </dashboard>
@@ -148,11 +277,14 @@ import ModalChat from '@/components/ModalChat'
 import DeleteAlert from "@/components/DeleteAlert.vue";
 import Commentaire from '@/components/Commentaire.vue'
 import DecaissementService from "@/services/modules/decaissement.service";
+import Multiselect from 'vue-multiselect'
+import Vbutton from '@/components/Vbutton.vue'
 
 // add projet
 import BailleurService from "@/services/modules/bailleur.service";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import Dropdown from '@/components/Dropdown.vue'
+
 
 
 
@@ -171,15 +303,20 @@ export default {
     JsonExcel,
     ModalChat,
     Commentaire,
-    Dropdown
+    Dropdown,
+    Multiselect,
+    Vbutton
   },
   data() {
     return {
+      showEntreprise: false,
+      showModal4: false,
       showModal: false,
       showModal2: false,
       sendRequest: false,
       title: '',
       titleProjet: '',
+      source: {},
       isUpdate: false,
       decaissementAttributs: ['montant', 'methodeDePaiement', 'date', 'projetId', 'type'],
       decaissementAttributsRecherche: ['type', 'debut', 'fin', 'projetId'],
@@ -360,6 +497,17 @@ export default {
       return tab;
     },
 
+    changeShowEntreprise(data){
+      
+      console.log(data);
+      // if(!data){
+      //   this.showEntreprise = true;
+
+      // }else {
+      //   this.showEntreprise = false
+      // }
+    },
+
     sendForm() {
       if (this.sendRequest === false) {
         this.sendRequest = true;
@@ -460,6 +608,7 @@ export default {
     },
     closeA() {
       this.showModal = false
+      this.showModal4 = false
       this.savedInput = []
       for (let i = 0; i < this.champs.length; i++) {
         this.savedInput.push(this.champs[i].data)
@@ -488,6 +637,26 @@ export default {
       this.champs = formData
 
       this.showModal = true
+    },
+    addDecaissement2() {
+      this.title = "Ajouter"
+      this.isUpdate = false
+
+      // let formData = this.champs.map((value) => {
+      //   if (value.key === 'projetId') {
+      //     value['options'] = this.projets
+      //   }
+
+      //   else if (value.key === 'type') {
+      //     value['options'] = this.$store.state.sources;
+      //   }
+
+      //   return value
+      // })
+
+
+
+      this.showModal4 = true
     },
 
     showFiltreModal2() {
@@ -577,6 +746,9 @@ export default {
       ProgrammeService.projets(programme).then((data) => {
         const datas = data.data.data
         this.projets = datas
+        this.source = this.$store.state.source
+
+        console.log(this.source)
         this.champs = [
           { name: 'Montant', key: 'montant', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Date', key: 'date', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
@@ -693,7 +865,7 @@ export default {
     getProjetFile(data) {
 
       this.champsProjet[7].data = data
-      console.log(this.champsProjet[7].data)
+    
       for (const property in data) {
         this.fichiers.push(data[property])
       }
@@ -795,10 +967,10 @@ export default {
     }
     this.programmeId = this.currentUser.programme.id
     if (this.programmeId) {
-      if (this.bailleurVisible) { 
+      if (this.bailleurVisible) {
         this.fetchProjets(this.programmeId)
         this.fetchBailleurs(this.programmeId)
-       
+
       }
       else {
         this.fetchProjets(this.programmeId)
@@ -810,7 +982,7 @@ export default {
   },
   watch: {
     showProjetModal: function (value) {
-      
+
       if (this.showProjetModal === false) {
         this.fetchProjets(this.programmeId)
       }
