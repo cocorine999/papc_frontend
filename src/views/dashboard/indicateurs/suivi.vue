@@ -1,6 +1,19 @@
 <template>
   <dashboard>
      <div class="relative">
+
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false"
+            class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+            @click="deleteSuivis(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
         <vue-html2pdf
             :show-layout="false"
             :float-layout="true"
@@ -206,8 +219,8 @@
           
       
          <!--  <vtable v-if="currentRole==='bailleur'" @commenter="commenter" :isComment="true"  :actions="actions" :sendRequest="false" :headers="headers" :datas=" suiviBailleurs"  ></vtable>     -->
-          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" @modifier="modifier" :actions="actions" :isComment="true"   :sendRequest="false" :datas="this.SuivisIndicateurs" :search="search"  ></vtable>    
-          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" @modifier="modifier" :actions="actions"  :datas="this.SuivisIndicateurs"  :search="search"></vtable>    
+          <vtable v-if="commenterSuivi" :headers="headers" @commenter="commenter" @modifier="modifier" @supprimer="supprimer" :actions="actions" :isComment="true"   :sendRequest="false" :datas="this.SuivisIndicateurs" :search="search"  ></vtable>    
+          <vtable v-if="!commenterSuivi" :headers="headers"  :sendRequest="false" @modifier="modifier" @supprimer="supprimer" :actions="actions"  :datas="this.SuivisIndicateurs"  :search="search"></vtable>    
         
     </div>
   </dashboard>
@@ -231,6 +244,7 @@ import SuiviService from "@/services/modules/indicateur.suivi.service.js";
 import JsonExcel from "vue-json-excel";
 import ModalChat from '@/components/ModalChat'
 import Commentaire from '@/components/Commentaire.vue'
+import DeleteAlert from "@/components/DeleteAlert.vue";
 
 export default {
   components: {
@@ -245,7 +259,8 @@ export default {
     JsonExcel,
     ModalChat,
     VueHtml2pdf,
-    Commentaire
+    Commentaire,
+    DeleteAlert
   },
   data() {
       return ({
@@ -275,7 +290,7 @@ export default {
           trimestre:''
         },
         currentRole:'',
-        actions:[{name:''}, { name: 'modifier', iconne: '' },],
+        actions:[{name:''}, { name: 'modifier', iconne: '' }, { name: 'supprimer', iconne: '' }],
         cols:2,
         title:'',
         search:'',
@@ -291,7 +306,9 @@ export default {
         SuivisIndicateurs:[],
         dateSuivie:false,
         dates:[],
-        suivis:[]
+        suivis:[],
+        deleteData: {},
+        deleteModal: false,
         
       });
   },
@@ -390,6 +407,34 @@ export default {
       this.title = 'Modifier un audit'
       this.showModal = true
     },*/
+
+    supprimer(suivi, index) {
+      this.deleteModal = true
+      this.deleteData.data = suivi
+      this.deleteData.index = index
+    },
+
+    deleteSuivis(data) {
+      //this.filteredIndicateur.splice(data.index,1)
+      this.deleteModal = false
+      SuiviService.destroy(data.data.id).then((data) => {
+        this.$toast.success("Operation effectué avec success !")
+        this.getSuivi()
+
+      }).catch((error) => {
+
+        if (error.response) {
+          // Requête effectuée mais le serveur a répondu par une erreur.
+          const message = error.response.data.message
+          this.$toast.error(message)
+        } else if (error.request) {
+          // Demande effectuée mais aucune réponse n'est reçue du serveur.
+          //console.log(error.request);
+        } else {
+          // Une erreur s'est produite lors de la configuration de la demande
+        }
+      })
+    },
 
     verifyValeurCible(date) {
       SuiviService.checksuivi(this.indicateurId, date).then((data) => {
@@ -631,9 +676,6 @@ export default {
         this.suiviIndicateurs.valeurRealise = data.valeur_realise
         this.suiviIndicateurs.commentaire = data.commentaire
         this.showModal = true
-    },
-    supprimer(data) {
-        alert(data+" à ete bien supprimer")
     },
     dupliquer() {
         this.title ='Dupliquer un suivi'
