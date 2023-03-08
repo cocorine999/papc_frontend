@@ -328,13 +328,16 @@ export default {
     },
     createRole() {
 
+      let roles = []
+      //console.log(this.value)
       this.value.forEach(element => {
-        this.roles.role.push(element.id)
+        
+        roles.push(element.id)
       })
       const data = {
         nom: this.roles.nom,
         description: this.roles.description,
-        permissions: this.roles.role
+        permissions: roles
       }
 
       if (this.chargement == false) {
