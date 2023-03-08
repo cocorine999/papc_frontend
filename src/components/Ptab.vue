@@ -849,10 +849,10 @@
                                         <td>
 <button  v-if="pta.isTache "           @click="togglesuivie(pta.id)"
 class=" text-white rounded-full w-14 h-7 px-1 flex items-center justify-between transition-all" 
-          :class="{ 'bg-gray-400': false ,'bg-red-400': true ,'bg-green-400 cursor-not-allowed':pta.poidsActuel>0,}"  
+          :class="{ 'bg-gray-400': false ,'bg-red-400': true ,'bg-green-400 cursor-not-allowed':greentoggle  && (pta.poidsActuel>0||tabletoggle[pta.id]==pta.id)}"  
 
 :disabled="pta.poidsActuel>0">
-  <div class="w-5 h-5 bg-white rounded-full transform translate-x-0" :class="{'translate-x-full':pta.poidsActuel>0 || translatetoggle}">
+  <div class="w-5 h-5 bg-white rounded-full transform translate-x-0" :class="{'translate-x-full':pta.poidsActuel>0 || translatetoggle ||tabletoggle[pta.id]==pta.id }">
   
   </div>
 </button>
@@ -2016,6 +2016,7 @@ export default {
   components: { Multiselect, Vmodal, VueHtml2pdf, JsonExcel },
   data() {
     return {
+      tabletoggle :[],
       etattoggle:true,
       graytoggle:true,
       redtoggle:false,
@@ -2023,7 +2024,7 @@ export default {
             chargement: false,
 
 
-      greentoggle:false,
+      greentoggle:true,
       ptab: [],
        items: ['Item 1', 'Item 2', 'Item 3'],
       activeItems: [],
@@ -3065,17 +3066,20 @@ export default {
     }
   ,
     togglesuivie(id){
+      this.dataNew;
 
-     // this.redtoggle = true;
-    //  this.graytoggle =false;
-    //  this.translatetoggle =true;
-    
+      this.redtoggle = false;
+     this.graytoggle =false;
+     //this.greentoggle=true;
+      this.translatetoggle =false;
+    this.tabletoggle[id]=id;
+    //console.log(this.tabletoggle[id]);
   
 this.chargement = true
       var form = {
         tacheId:id
       }
-      console.log(id)
+    //  console.log(id)
       TacheService.suiviTache(form).then((data) => {
         
        // this.doSuiviOld = false
@@ -3100,8 +3104,8 @@ this.chargement = true
 
     },
      exportToExcel() {
-              console.log('gghghghgh');
-                      console.log(this.dataNew);
+            //  console.log('gghghghgh');
+                    //  console.log(this.dataNew);
 
 
       const tableDataWithColors = this.dataNew.map(row => {
