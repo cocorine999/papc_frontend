@@ -848,7 +848,7 @@
                   </td>
                                         <td>
 <button  v-if="pta.isTache "           @click="togglesuivie(pta.id)"
-class=" text-white rounded-full w-14 h-7 px-1 flex items-center justify-between transition-all" 
+class=" text-white  rounded-full w-14 h-7 px-1 flex items-center justify-between transition-all shadow" 
           :class="{ 'bg-gray-400': false ,'bg-red-400': true ,'bg-green-400 cursor-not-allowed':greentoggle  && (pta.poidsActuel>0||tabletoggle[pta.id]==pta.id)}"  
 
 :disabled="pta.poidsActuel>0">
