@@ -30,6 +30,9 @@ const TachesService = {
     myOldSuivis(params) {
       return ApiService.post(`suivisV2`, params);
     },
+    deleteSuivis(slug) {
+      return ApiService.get(`taches/${slug}/changeStatut`);
+    },
     getSuivi() {
       const params = {
         type: "tache"
