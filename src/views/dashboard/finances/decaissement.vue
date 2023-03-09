@@ -49,7 +49,229 @@
           </div>
         </div>
       </nav>
-      <div v-if="showModal">
+
+      <div v-if="showModal4">
+        <modal-top-right :title="title" v-on:close="closeA">
+          <div class="w-full p-4">
+            <div v-if="!isUpdate">
+              <form action="" @submit.prevent="sendForm" class="p-3 w-full">
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Montant
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="champs[0].data" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="text" />
+                </div>
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Date
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="champs[1].data" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="date" />
+                </div>
+
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Projet
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect class="w-11/12" v-model="champs[2].data" required :preselect-first="true"
+                      :options="champs[2].options" :placeholder="champs[2].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champs[2].value" :track-by="champs[2].cle"></multiselect>
+                    <div class="w-1/12  flex justify-center items-center">
+                      <button title="Ajouter un Projet" v-title @click="addProjet"
+                        class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+                        <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                          style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                        </svg>
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Moyens de
+                    payement
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect v-model="champs[3].data" required :preselect-first="true" :options="champs[3].options"
+                      :custom-label="champs[3].methode" :placeholder="champs[3].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champs[3].value" :track-by="champs[3].cle" @change="changeShowEntreprise(champs[3].data)">
+                    </multiselect>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2" v-show="showEntreprise">
+
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Entreprise
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect class="w-11/12" v-model="champs[5].data" required :preselect-first="true"
+                      :options="champs[5].options" :placeholder="champs[5].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champs[5].value" :track-by="champs[5].cle"></multiselect>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2">
+
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Sources
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+
+                  <multiselect v-model="champs[4].data" required :preselect-first="true" :options="champs[4].options"
+                    :placeholder="champs[4].placeholdere" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                    :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                    :label="champs[4].value" :track-by="champs[4].cle"></multiselect>
+
+
+                </div>
+
+
+                <div class="py-2 my-4 flex justify-center space-x-8">
+                  <button type="submit"
+                    class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                    <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                      enregistrer
+                    </span>
+                    <span v-else class="flex items-center space-x-2">
+                      <span class="text-xs px-4 font-semibold ">
+                        envoi ...
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </span>
+                  </button>
+                  <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+                </div>
+              </form>
+            </div>
+            <div v-else>
+              <form action="" @submit.prevent="sendForm" class="p-3 w-full">
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Montant
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="champsUpdate[0].data" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="text" />
+                </div>
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Date
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <input v-model="champsUpdate[1].data" required
+                    class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                    type="date" />
+                </div>
+
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Projet
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect class="w-11/12" v-model="champsUpdate[2].data" required :preselect-first="true"
+                      :options="champsUpdate[2].options" :placeholder="champsUpdate[2].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champsUpdate[2].value" :track-by="champsUpdate[2].cle"></multiselect>
+                    <div class="w-1/12  flex justify-center items-center">
+                      <button title="Ajouter un Projet" v-title @click="openModal"
+                        class="p-1 rounded-full shadow flex justify-center items-center custom text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+                        <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                          style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                        </svg>
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2">
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Moyens de
+                    payement
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect v-model="champsUpdate[3].data" required :preselect-first="true"
+                      :options="champsUpdate[3].options" :custom-label="champsUpdate[3].methode"
+                      :placeholder="champsUpdate[3].placeholdere" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champsUpdate[3].value" :track-by="champsUpdate[3].cle"
+                      @change="changeShowEntreprise(champsUpdate[3].data)">
+                    </multiselect>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2" v-if="showEntreprise">
+
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Entreprise
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                  <div class="flex justify-between space-x-1">
+
+                    <multiselect class="w-11/12" v-model="champsUpdate[5].data" required :preselect-first="true"
+                      :options="champsUpdate[5].options" :placeholder="champsUpdate[5].placeholdere"
+                      :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                      :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                      :label="champsUpdate[5].value" :track-by="champsUpdate[5].cle"></multiselect>
+
+                  </div>
+                </div>
+
+                <div class="form-group my-2">
+
+                  <label class="text-xs font-semibold text-gray-500 block uppercase md:text-sm text-light"> Sources
+                    <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+
+                  <multiselect v-model="champsUpdate[4].data" required :preselect-first="true"
+                    :options="champsUpdate[4].options" :placeholder="champsUpdate[4].placeholdere"
+                    :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                    :deselectLabel="'Appuyez sur Entrée pour supprimer'" selectedLabel="Selectionné"
+                    :label="champsUpdate[4].value" :track-by="champsUpdate[4].cle"></multiselect>
+
+                </div>
+                <div class="py-2 my-4 flex justify-center space-x-8">
+                  <button type="submit"
+                    class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                    <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                      enregistrer
+                    </span>
+                    <span v-else class="flex items-center space-x-2">
+                      <span class="text-xs px-4 font-semibold ">
+                        envoi ...
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </span>
+                  </button>
+                  <vbutton type="reset" template="danger" @close="close"> annuler </vbutton>
+                </div>
+              </form>
+            </div>
+          </div>
+        </modal-top-right>
+      </div>
+      <!-- <div v-if="showModal">
         <modal-top-right :title="title" v-on:close="closeA">
           <div class="w-full p-4">
             <div v-if="!isUpdate">
@@ -63,7 +285,7 @@
 
           </div>
         </modal-top-right>
-      </div>
+      </div> -->
       <div v-if="showModal2">
         <vmodal title="Filtre decaissement" v-on:close="showModal2 = false">
           <div class="px-4" style="width:500px">
@@ -107,7 +329,15 @@
               stroke-linejoin="round" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg></button>
-          <button v-if="decaissementAdd" @click="addDecaissement" title="ajouter "
+          <!-- <button v-if="decaissementAdd" @click="addDecaissement" title="ajouter "
+            class="px-4 py-2 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
+            <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+              </svg></span>
+            <span class="mx-1 md:mx-2 text-xs font-semibold">ajouter</span>
+          </button> -->
+          <button v-if="decaissementAdd" @click="addDecaissement2" title="ajouter "
             class="px-4 py-2 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase  bg-primary focus:outline-none focus:shadow-outline">
             <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
@@ -123,10 +353,12 @@
       <vtable v-if="decaissementDelete && !decaissementUpdate" :headers="headers" :datas="decaissements"
         :actions="actionsDelete" @supprimer="supprimer" @updateInputData="updateInputData" :search="search"></vtable>
       <vtable v-if="decaissementDelete && decaissementUpdate" :sendRequest="false" @modifier="modifier" :headers="headers"
-        :datas="decaissements" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :search="search">
+        :datas="decaissements" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData"
+        :search="search">
       </vtable>
       <vtable v-if="decaissementUpdate && !decaissementDelete" :sendRequest="false" :actions="actionsUpdate"
-        @modifier="modifier" :headers="headers" :datas="decaissements" @updateInputData="updateInputData" :search="search">
+        @modifier="modifier" :headers="headers" :datas="decaissements" @updateInputData="updateInputData"
+        :search="search">
       </vtable>
     </div>
   </dashboard>
@@ -148,11 +380,15 @@ import ModalChat from '@/components/ModalChat'
 import DeleteAlert from "@/components/DeleteAlert.vue";
 import Commentaire from '@/components/Commentaire.vue'
 import DecaissementService from "@/services/modules/decaissement.service";
+import Multiselect from 'vue-multiselect'
+import Vbutton from '@/components/Vbutton.vue'
+import EntrepriseExecutanteService from '@/services/modules/entreprise.executante.service';
 
 // add projet
 import BailleurService from "@/services/modules/bailleur.service";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 import Dropdown from '@/components/Dropdown.vue'
+
 
 
 
@@ -171,19 +407,27 @@ export default {
     JsonExcel,
     ModalChat,
     Commentaire,
-    Dropdown
+    Dropdown,
+    Multiselect,
+    Vbutton
   },
   data() {
     return {
+      entrepriseExecutante: [],
+      chargement: false,
+      showEntreprise: false,
+      showModal4: false,
       showModal: false,
       showModal2: false,
       sendRequest: false,
       title: '',
       titleProjet: '',
+      source: [],
       isUpdate: false,
-      decaissementAttributs: ['montant', 'methodeDePaiement', 'date', 'projetId', 'type'],
+      decaissementAttributs: ['montant', 'methodeDePaiement', 'date', 'projetId', 'type', 'beneficiaireId'],
       decaissementAttributsRecherche: ['type', 'debut', 'fin', 'projetId'],
-      champs: [], title: '',
+      champs: [],
+      title: '',
       champsUpdate: [],
       champsRecherche: [
         { name: 'Date debut', key: 'debut', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: false, },
@@ -212,6 +456,7 @@ export default {
       actionUpdate: [
         { name: 'modifier', iconne: '' },
       ],
+      entrepriseExecutanteVisible: false,
       decaissementVisible: false,
       decaissementAdd: false,
       decaissementDelete: false,
@@ -250,6 +495,8 @@ export default {
 
     ...mapGetters({
       decaissements: "decaissements/getDecaissements", decaissement: "getDecaissement",
+      // entrepriseExecutante: "entreprisesExecutante/getEntrepriseExecutante",
+      // entreprisesExecutante: "entreprisesExecutante/getEntreprisesExecutante",
       currentUser: 'auths/GET_AUTHENTICATE_USER',
       projet: "getProjet", //add projet
     }),
@@ -269,6 +516,9 @@ export default {
       this.currentUser.role[0].permissions.forEach(element => {
         if (element.slug === 'voir-un-decaissement') {
           this.decaissementVisible = true
+        }
+        if (element.slug === 'voir-une-entreprise-executante') {
+          this.entrepriseExecutanteVisible = true
         }
         if (element.slug === 'modifier-un-decaissement') {
           this.decaissementAdd = true
@@ -312,6 +562,11 @@ export default {
       saveDecaissement: "STORE_DECAISSEMENT",
       updateDecaissement: "UPDATE_DECAISSEMENT",
       deleteDecaissement: "DESTROY_DECAISSEMENT"
+    }),
+
+    ...mapActions("entreprisesExecutante", {
+      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
+
     }),
 
     ...mapActions('projets', {
@@ -360,22 +615,52 @@ export default {
       return tab;
     },
 
+    changeShowEntreprise(data) {
+
+
+      // if(!data){
+      //   this.showEntreprise = true;
+
+      // }else {
+      //   this.showEntreprise = false
+      // }
+    },
+
     sendForm() {
+
       if (this.sendRequest === false) {
         this.sendRequest = true;
         this.champs = this.champs.map(item => { item.errors = []; return item })
+
+
+
         this.champsUpdate = this.champsUpdate.map(item => { item.errors = []; return item })
         let decaissement = {}
+
+
         if (this.isUpdate) {
           decaissement = extractFormData(this.champsUpdate, this.decaissementAttributs)
           decaissement.id = this.decaissementId
         } else {
           decaissement = extractFormData(this.champs, this.decaissementAttributs)
+
+
         }
         decaissement.methodeDePaiement = decaissement.methodeDePaiement.id
 
         decaissement.type = decaissement.type.id
         decaissement.projetId = decaissement.projetId.id
+
+        if (this.showEntreprise) {
+
+          var beneficiaireId = decaissement.beneficiaireId.id
+          decaissement.beneficiaireId = beneficiaireId
+
+        } else {
+          Reflect.deleteProperty(decaissement, 'beneficiaireId');
+        }
+
+        console.log(decaissement)
 
         if (decaissement?.id) {
 
@@ -396,6 +681,7 @@ export default {
           })
         }
         else {
+
           this.saveDecaissement(decaissement).then(response => {
             if (response.status == 200 || response.status == 201) {
 
@@ -414,7 +700,7 @@ export default {
               this.$toast.error(message)
             } else if (error.request) {
               // Demande effectuée mais aucune réponse n'est reçue du serveur.
-              //console.log(error.request);
+
             } else {
               // Une erreur s'est produite lors de la configuration de la demande
             }
@@ -457,9 +743,11 @@ export default {
     close() {
       this.resetForm()
       this.showModal = false
+      this.showModal4 = false
     },
     closeA() {
       this.showModal = false
+      this.showModal4 = false
       this.savedInput = []
       for (let i = 0; i < this.champs.length; i++) {
         this.savedInput.push(this.champs[i].data)
@@ -481,6 +769,9 @@ export default {
         else if (value.key === 'type') {
           value['options'] = this.$store.state.sources;
         }
+        else if (value.key === 'beneficiaireId') {
+          value['options'] = this.entrepriseExecutante
+        }
 
         return value
       })
@@ -488,6 +779,29 @@ export default {
       this.champs = formData
 
       this.showModal = true
+    },
+    addDecaissement2() {
+      this.title = "Ajouter"
+
+      this.isUpdate = false
+      let formData = this.champs.map((value) => {
+        if (value.key === 'projetId') {
+          value['options'] = this.projets
+        }
+
+        else if (value.key === 'type') {
+          value['options'] = this.$store.state.sources;
+        }
+        else if (value.key === 'beneficiaireId') {
+          value['options'] = this.entrepriseExecutante
+        }
+
+        return value
+      })
+
+      this.champs = formData
+
+      this.showModal4 = true
     },
 
     showFiltreModal2() {
@@ -531,7 +845,7 @@ export default {
           this.$toast.error(message)
         } else if (error.request) {
           // Demande effectuée mais aucune réponse n'est reçue du serveur.
-          //console.log(error.request);
+
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
@@ -544,7 +858,7 @@ export default {
 
       this.isUpdate = true
       this.title = 'Modifier un decaissement'
-      this.showModal = true
+      this.showModal4 = true
 
 
 
@@ -572,24 +886,34 @@ export default {
     disabled() {
       this.$store.dispatch('disabled')
     },
+
+
     fetchProjets(programme) {
 
       ProgrammeService.projets(programme).then((data) => {
         const datas = data.data.data
         this.projets = datas
+
+
+
+
         this.champs = [
           { name: 'Montant', key: 'montant', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Date', key: 'date', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Projet', key: 'projetId', type: '', placeholdere: 'Choisir un projet', canAdd: true, isSelect: true, isTextArea: false, data: '', options: datas, cle: 'id', value: 'nom', required: true, },
           { name: 'Methode de paiement', key: 'methodeDePaiement', placeholdere: 'Mode de paiement', isSelect: true, isTextArea: false, data: '', options: this.$store.state.modePaiement, cle: 'id', value: 'nom', required: true, },
-          { name: 'Source', key: 'type', placeholdere: 'Source', isSelect: true, isTextArea: false, data: '', options: this.$store.state.source, cle: 'id', value: 'nom', required: true, },
+          { name: 'Source', key: 'type', placeholdere: 'Source', isSelect: true, isTextArea: false, data: '', options: this.$store.state.sources, cle: 'id', value: 'nom', required: true, },
+          { name: 'Entreprise', key: 'beneficiaireId', type: '', placeholdere: 'Choisir une entreprise', isSelect: true, isTextArea: false, data: '', options: this.entrepriseExecutante, cle: 'id', value: 'nom', required: true, },
+
         ]
         this.champsUpdate = [
           { name: 'Montant', key: 'montant', type: 'number', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Date', key: 'date', type: 'date', placeholdere: "", isSelect: false, isTextArea: false, data: '', required: true, },
           { name: 'Projet', key: 'projetId', type: '', placeholdere: 'Choisir un projet', isSelect: true, isTextArea: false, data: '', options: datas, cle: 'id', value: 'nom', required: true, },
           { name: 'Méthode de paiement', key: 'methodeDePaiement', placeholdere: 'Mode de paiement', isSelect: true, isTextArea: false, data: '', options: this.$store.state.modePaiement, cle: 'id', value: 'nom', required: true, },
-          { name: 'Source', key: 'type', placeholdere: 'Source', isSelect: true, isTextArea: false, data: '', options: this.$store.state.source, cle: 'id', value: 'nom', required: true, },
+          { name: 'Source', key: 'type', placeholdere: 'Source', isSelect: true, isTextArea: false, data: '', options: this.$store.state.sources, cle: 'id', value: 'nom', required: true, },
+          { name: 'Entreprise', key: 'beneficiaireId', type: '', placeholdere: 'Choisir une entreprise', isSelect: true, isTextArea: false, data: '', options: this.entrepriseExecutante, cle: 'id', value: 'nom', required: true, },
+
         ]
 
 
@@ -602,7 +926,7 @@ export default {
           this.$toast.error(message)
         } else if (error.request) {
           // Demande effectuée mais aucune réponse n'est reçue du serveur.
-          //console.log(error.request);
+
         } else {
           // Une erreur s'est produite lors de la configuration de la demande
         }
@@ -693,7 +1017,7 @@ export default {
     getProjetFile(data) {
 
       this.champsProjet[7].data = data
-      console.log(this.champsProjet[7].data)
+
       for (const property in data) {
         this.fichiers.push(data[property])
       }
@@ -701,6 +1025,8 @@ export default {
       this.fichiers.pop()
 
     },
+
+
 
     getProjetImage(data) {
       this.champsProjet[6].data = data
@@ -793,15 +1119,46 @@ export default {
       this.fetchProjets(this.currentUser?.programme?.id)
       this.fetchDecaissements()
     }
+
+
+
     this.programmeId = this.currentUser.programme.id
     if (this.programmeId) {
-      if (this.bailleurVisible) { 
+      if (this.bailleurVisible) {
         this.fetchProjets(this.programmeId)
         this.fetchBailleurs(this.programmeId)
-       
+
       }
       else {
         this.fetchProjets(this.programmeId)
+      }
+    }
+
+    if (!this.entrepriseExecutanteVisible) {
+      this.$router.push('/401-non-autorise')
+    } else {
+      if (this.currentUser != undefined) {
+
+        this.fetchEntreprisesExecutante().then((value) => {
+
+          var table = value.data.data
+
+          for (let step = 0; step < table.length; step++) {
+
+            let objet = {}
+            let id = 'id'
+            let nom = 'nom'
+            objet[id] = table[step].id
+            objet[nom] = table[step].user.nom
+
+            this.entrepriseExecutante.push(objet)
+
+          }
+
+
+
+        });
+
       }
     }
 
@@ -810,12 +1167,34 @@ export default {
   },
   watch: {
     showProjetModal: function (value) {
-      
+
       if (this.showProjetModal === false) {
         this.fetchProjets(this.programmeId)
       }
 
     },
+
+    champs: {
+      handler(newValue, oldValue) {
+        if (this.champs[3].data.id === 0) {
+          this.showEntreprise = true
+        } else {
+          this.showEntreprise = false
+        }
+      },
+      deep: true
+    },
+
+    champsUpdate: {
+      handler(newValue, oldValue) {
+        if (this.champsUpdate[3].data.id === 0) {
+          this.showEntreprise = true
+        } else {
+          this.showEntreprise = false
+        }
+      },
+      deep: true
+    }
 
   }
 

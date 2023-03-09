@@ -14,7 +14,7 @@
                 
                 <th v-for="(head ,index) in headers" :key="index" scope="col" class="text-xs md:text-sm whitespace-nowrap font-medium text-gray-900 py-2 px-4 text-left"> 
                  
-                  <span v-if="head.monaie != undifined"> {{head.name}}   XOF </span>
+                  <span v-if="head.monaie != undefined"> {{head.name}}   XOF </span>
                   <span v-else> {{head.name}}   </span>
                   
                   <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
