@@ -47,6 +47,7 @@
             </button>
           </div>
           <div v-else>
+             <!--
             <button v-if="(statut.code == 1 || statut.code == 0 || statut.code== -1)  && !isSuivi && !isDone" title="suivre tache"
               @click="validerSuivi(id)"
               class="bg-purple-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
@@ -57,12 +58,14 @@
               class="bg-red-500 text-white animation rounded-lg text-sm px-3 py-1 font-semibold ">
             suivie anterieur
             </button>
+            -->
             <button title="suivre tache" v-if="statut.code == 2"
               class="bg-gray-500 text-gray-300  rounded-lg text-sm px-3 py-1 font-semibold ">
               effectuée
             </button>
           </div>
         </div>
+         
         <!--  -->
         <div class="cursor-pointer text-sm">
           <p class="my-2 uppercase text-sm font-medium text-gray-600 mt-8 line-clamp-2 ">{{ libelle }}
