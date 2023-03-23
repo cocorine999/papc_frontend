@@ -178,7 +178,7 @@
             DU PROJET</span>
         </div>
         <div class="p-4">
-          <p class="h-36 overflow-hidden text-sm italic text-justify">
+          <p class="h-auto overflow-hidden text-sm italic text-justify">
 
             <span v-if="isShow"> {{ projet.description.substring(0, 200) }} </span>
             <span v-else> {{ projet.description }} </span>
