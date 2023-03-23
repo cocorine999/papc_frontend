@@ -544,8 +544,6 @@
                     class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
                     Code PTBA
                   </th>
-
-
                 </tr>
                 <tr>
 
