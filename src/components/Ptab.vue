@@ -3342,7 +3342,7 @@ if (error.response) {
     },
     getPtaFiltre() {
       let data = {}
-      this.chargement(true)
+      this.chargement = true
       if (this.ppm == null) {
 
         if (this.bailleur == null) {
@@ -3370,10 +3370,10 @@ if (error.response) {
       PtabService.getFiltre(data).then((data) => {
         this.ptab = data.data.data
         this.openFiltre = false
-        this.chargement(false)
+        this.chargement = false
         this.disabled()
       }).catch((e) => {
-        this.chargement(false)
+        this.chargement = false
         this.$toast.error(e)
         this.disabled()
 
