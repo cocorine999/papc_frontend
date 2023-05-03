@@ -48,8 +48,8 @@
           <div class="pl-3 w-full">
             <div class="flex items-center justify-between w-full">
               <p tabindex="0" class="focus:outline-none text-sm leading-6">
-                <span class="text-indigo-700 uppercase font-semibold">{{ data.module }} :</span> {{ data.texte }} par
-                <span class="text-indigo-700 font-bold">{{ data.auteur.nom }}</span>
+                <span class="text-indigo-700 uppercase font-semibold">{{ data.module }} :</span> {{ data.texte }}
+                <span v-if="data.auteur" class="text-indigo-700 font-bold"> par {{ data.auteur.nom }}</span>
               </p>
               <div @click="viewNotification(data.id, index)" tabindex="0" aria-label="close icon" role="button"
                 class="focus:outline-none cursor-pointer">
