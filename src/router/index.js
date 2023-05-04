@@ -133,7 +133,7 @@ import bailleurs from "../views/dashboard/bailleurs/index.vue";
 import fileManager from "../views/dashboard/fileManager/index.vue";
 import demo from "../views/demo.vue";
 import instutitions from "../views/dashboard/instutitions/index.vue";
-import paps from "../views/dashboard/paps/index2.vue";
+import paps from "../views/dashboard/paps/index.vue";
 import collecteur_mod from "../views/dashboard/agetur/index.vue";
 import formulaire from "../views/dashboard/formulaire/index.vue";
 import formulaire_create from "../views/dashboard/formulaire/create.vue";
