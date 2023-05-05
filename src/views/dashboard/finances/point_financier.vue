@@ -50,7 +50,7 @@
         </div>
       
     </div>
-    <vtable :headers="headers" :datas="filteredPointFinancier()"></vtable>
+    <vtable :headers="headers" :datas="pointFinancier" :search="search"></vtable>
   </div>
   </dashboard>
  
