@@ -333,6 +333,16 @@
       </div>
     </div>
 
+    <div v-if="voirPtaVisible || voirPpmVisible"
+      class="mb-1 animation px-4 flex items-center text-white cursor-pointer">
+      <router-link to="/dashboard/paps" style="width: 100%"
+        class="flex space-x-3 items-center px-2 py-2 z-10 relative text-white hover:font-bold transition ease-in-out duration-500 cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 11h7v2H7zm0-4h10.97v2H7zm0 8h13v2H7zM4 4h2v16H4z"></path>
+        </svg>
+        <span class="font-semibold text-xs uppercase">PAP</span>
+      </router-link>
+    </div>
 
     <div v-if="voirPtaVisible || voirPpmVisible"
       class="mb-1 animation px-4 flex items-center text-white cursor-pointer">
