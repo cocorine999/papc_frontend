@@ -128,14 +128,14 @@
       </section>
 
 
-      <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+      <vtable :sendRequest="false" :headers="headers" :datas="paps.sinistres"
         :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'"
         @retour="onRetour"></vtable>
-      <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+      <!-- <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
         :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'"
         @retour="onRetour"></vtable>
       <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
-        :search="search" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
+        :search="search" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable> -->
 
       <h2 class="text-gray-900 text-lg font-bold">Total Transféré</h2>
       <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left">{{ total | formatNumber }} XOF</h3>
