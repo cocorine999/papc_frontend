@@ -324,7 +324,7 @@
       <div class="tab-content mb-3 bg-white">
         <div v-if="activiteEnVisible || entrepriseExecutanteVisible || formulaireVisible || papVisible"
           class="mb-1  flex items-center text-gray-700  cursor-pointer ">
-          <router-link to="/dashboard/PAP" style="width:100%"
+          <router-link to="/dashboard/paps" style="width:100%"
             class="flex items-center  px-2 py-2 z-10 relative space-x-4 text-gray hover:font-bold  transition ease-in-out duration-500  cursor-pointer">
             <span class="font-semibold text-xs">PAP</span>
           </router-link>
