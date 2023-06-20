@@ -1,5 +1,5 @@
 <template>
-  
+ 
 </template>
 
 <script>
@@ -157,11 +157,89 @@ export default {
 
     ...mapActions('paps', {
       fetchPaps: "FETCH_LIST_PAP",
+      savePap: "STORE_PAP",
+      updatePap: "UPDATE_PAP",
       deletePap: "DESTROY_PAP",
       importSinistre: "IMPORTATION_PAP"
     }),
     //  all site modal methods
+    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE', saveSite: "STORE_SITE", }),
 
+    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
+
+    ...mapActions("entreprisesExecutante", {
+      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
+    }),
+    addSite() {
+      this.showSiteModal = true
+      this.title = 'Ajouter un nouveau site'
+
+      this.fetchSites(this.currentUser?.programme?.id)
+      this.fetchEntreprisesExecutante();
+      this.fetchBailleurs()
+
+    },
+    closeSiteModal2() {
+      this.showSiteModal = false;
+
+      this.savedInput.push(this.nom),
+        this.savedInput.push(this.bailleur),
+        this.savedInput.push(this.value)
+      this.savedInput.push(this.longitude),
+        this.savedInput.push(this.latitude)
+
+      const parsed = JSON.stringify(this.savedInput);
+      localStorage.setItem('formData', parsed);
+
+    },
+    closeSiteModal() {
+      this.showSiteModal = false;
+      this.nom = "",
+        this.bailleur = null,
+        this.value = [],
+        this.longitude = "",
+        this.latitude = ""
+      localStorage.removeItem('formData');
+    },
+
+    sendSiteForm() {
+      var entrepriseExecutantId = []
+
+      this.value.forEach(element => {
+        entrepriseExecutantId.push(element.id)
+      });
+
+      let site = {
+        "nom": this.nom,
+        "longitude": this.longitude,
+        "latitude": this.latitude,
+        "bailleurId": this.bailleur,
+        "entrepriseExecutantId": entrepriseExecutantId
+      }
+
+      this.saveSite(site).then((response) => {
+        if (response.status == 200 || response.status == 201) {
+          this.$toast.success('operation effectuer avec sucess')
+          this.fetchSites(this.currentUser?.programme?.id)
+          this.showSiteModal = false;
+          this.nom = "",
+            this.bailleur = null,
+            this.value = [],
+            this.longitude = "",
+            this.latitude = ""
+          localStorage.removeItem('formData');
+        }
+      }).catch((e) => {
+        this.$toast.error(e)
+        this.sendRequest = false
+      });
+
+    },
+    // end all site modal methods
+    addAno() {
+      this.title = 'Ajouter un element'
+      this.showModal = true
+    },
 
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
@@ -331,6 +409,38 @@ export default {
       this.pap = {}
     },
 
+    async updateInputData(id, attribut, value) {
+
+      await this.updatePap({ pap: { [attribut]: value }, id: id }).catch((value, status) => {
+        if (this.hasErrors[attribut] !== undefined)
+          alert(this.hasErrors[attribut])
+      }).finally(() => {
+        $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
+      })
+
+    },
+
+    sendForm() {
+      this.champs = this.champs.map(item => { item.errors = []; return item })
+
+      let pap = extractFormData(this.champs, this.papAttributs)
+
+      pap.programmeId = this.currentUser?.programme?.id
+
+      pap.siteId = pap.siteId.id
+
+      pap.sexe = pap.sexe.sigle
+      PapService.create(pap).then((data) => {
+        this.$toast.success("enregistrement éffectué avec success")
+        this.fetchPaps({ id: this.currentUser?.programme?.id })
+        this.resetForm
+
+        this.showModal = false
+
+      }).catch((e) => {
+        this.$toast.error(e)
+      })
+    },
     supprimer(pap, index) {
       this.deleteModal = true
       this.deleteData.data = pap
@@ -397,24 +507,23 @@ export default {
 
   },
 
-  created: function() {
-    console.log('mounted')
-     this.getPermission()
-     
+  created() {
+
+    this.getPermission()
     // if (!this.papVisible) {
     //   this.$router.push('/401-non-autorise')
     // }
 
-     this.fetchPaps({ id: this.currentUser?.programme?.id }).then((value) => {
+    this.fetchPaps({ id: this.currentUser?.programme?.id }).then((value) => {
       console.log(value.data)
       this.total = value.data.data.total
 
     })
 
     this.fetchSites(this.currentUser?.programme?.id)
-  },
 
-  
+
+  }
 }
 </script>
 
