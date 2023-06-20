@@ -1,10 +1,126 @@
 <template>
   <dashboard>
     <div class="w-full">
-     
+      <div v-if="showModal">
+        <ModalTopRight :title="title" v-on:close="closeA">
+          <div class="px-4 overflow-y-auto">
+            <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal = false" :champs="champs"
+              :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" @addSite="addSite">
+            </vform>
+          </div>
+        </ModalTopRight>
+      </div>
+      <div v-if="showModal2">
+        <vmodal title="Importez les données " v-on:close="showModal2 = false">
+          <form @submit.prevent="importData" style="width:500px" class="">
+            <input
+              class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm"
+              aria-describedby="file_input_help" id="file_input" @change="previewFiles" accept=".xlsx" type="file">
+            <p class="my-4 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">FORMAT XLSX SEULEMENT AUTORISE
+            </p>
+            <div class="flex justify-end">
+              <button type="submit"
+                class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
+                <span class="text-sm font-semibold uppercase" v-if="!chargement">
+                  importez
+                </span>
+                <span v-else class="flex items-center space-x-2">
+                  <span class="text-xs px-4 font-semibold ">
+                    chargement ...
+                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </form>
+        </vmodal>
+      </div>
+
+      <div v-if="showSiteModal">
+        <modal-top-right :title="title" v-on:close="closeSiteModal2">
+          <div class="px-4 overflow-y-auto">
+            <form action="" @submit.prevent="sendSiteForm" class="w-full">
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="nom"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="text" placeholder="Entrer le nom de l'activite" />
+              </div>
 
 
-      
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Bailleur <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <select v-model="bailleur"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent"
+                  placeholder="selectionnez une entreprise" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'">
+                  <option v-for="(item, i) in bailleurs" :key="i" :value="item.id">{{ item.sigle }}</option>
+                </select>
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez les
+                  entreprises <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <multiselect v-model="value" tag-placeholder="selectionnez une entreprise"
+                  placeholder="selectionnez une entreprise" label="nom" track-by="nom"
+                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
+                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true"
+                  :taggable="true" @tag="addTag"></multiselect>
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="longitude"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="number" step="0.01" placeholder="Entrer la longitude" />
+              </div>
+
+              <div class="my-4">
+                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span
+                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
+                <input required v-model="latitude"
+                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
+                  type="number" step="0.01" placeholder="Entrer la latitude" />
+              </div>
+
+
+              <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
+                <button type="submit"
+                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'>
+                  Creer le site
+                </button>
+
+                <button type="submit" @click="closeSiteModal"
+                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'>
+                  Annuler
+                </button>
+
+              </div>
+            </form>
+          </div>
+        </modal-top-right>
+      </div>
+
+      <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
+        <p class="text-gray-800">
+          voulez vous supprimer cet element?
+        </p>
+
+        <div class="text-right mt-4">
+          <button @click="deleteModal = false"
+            class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">Annuler</button>
+          <button class="mr-2 px-4 py-2 text-sm rounded text-white bg-red-500 focus:outline-none hover:bg-red-400"
+            @click="deletePaps(deleteData)">Supprimer</button>
+        </div>
+      </delete-alert>
 
 
       <nav class="text-xs md:text-sm font-semibold flex justify-between items-center flex-wrap" aria-label="Breadcrumb">
@@ -20,13 +136,26 @@
             </li>
 
             <li class="flex items-center text-blue-500 ">
-              <router-link to="" class="">Paps</router-link>
+              <router-link to="" class="">Pap</router-link>
             </li>
           </ol>
         </div>
         <div></div>
         <div>
-          
+          <div class="w-full flex text-gray-600">
+            <input @input="$emit('search', $event.target.value)"
+              class="h-8 w-full px-5 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none relative -mr-9 block sm:block"
+              v-model="search" type="text" name="search" placeholder="Rechercher">
+            <button type="submit" class="relative  p-2 rounded-lg">
+              <svg class="w-4 h-4 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                width="512px" height="512px">
+                <path
+                  d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+              </svg>
+            </button>
+          </div>
         </div>
 
       </nav>
@@ -38,11 +167,73 @@
             recapitulatif </span>
         </div>
 
-       
+        <div class="flex space-x-3">
+          <button @click="showModal2 = true" v-if="papImporter" title="importez les données"
+            class="py-2 flex space-x-3  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-blue-500 focus:outline-none focus:shadow-outline">
+            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.3em"
+              width="1.3em" xmlns="http://www.w3.org/2000/svg">
+              <path d="m12 18 4-5h-3V2h-2v11H8z"></path>
+              <path
+                d="M19 9h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2z">
+              </path>
+            </svg>
+            <span class="mx-2 text-sm font-semibold">Importez les données</span>
+          </button>
+          <json-excel v-if="papExporter" :data="json_data()" header="PAP" type="xlsx" :name="title_csv()">
+            <button title="exporter en excel"
+              class="py-2  px-4 overflow-hidden  space-x-2 items-center text-xs font-semibold text-white uppercase bg-indigo-500 focus:outline-none focus:shadow-outline">
+              <svg class="inline" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                height="1.3em" width="1.3em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 16h2V7h3l-4-5-4 5h3z"></path>
+                <path
+                  d="M5 22h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2z">
+                </path>
+              </svg>
+              <span class="mx-2 text-xs  md:text-sm font-semibold">Export Excel</span>
+            </button>
+          </json-excel>
+
+          <button v-if="papAdd" @click="addPap" title="ajouter un tabelau"
+            class="py-2 px-4 overflow-hidden flex space-x-2 items-center text-xs font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
+              <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+            </svg>
+            <span class="mx-1 md:mx-2 text-xs font-semibold">Ajouter </span>
+          </button>
+        </div>
       </div>
 
 
-     
+      <section class="text-gray-600 body-font bg-gray-50 h-auto flex justify-center items-center">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-wrap -m-4 text-center">
+            <div class="p-4 sm:w-1/2 lg:w-1/4 w-full hover:scale-105 duration-500" v-for="(site, index) in paps.sites"
+              :key="index">
+              <div class=" flex items-center  justify-between p-4  rounded-lg bg-white shadow-indigo-50 shadow-md">
+                <div>
+
+                  <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left" :style="`color:${site.bailleurCouleur}`">{{
+                    site.total | formatNumber }} XOF</h3>
+
+                  <button
+                    class="text-sm mt-6 px-4 py-2 bg-yellow-400 text-white rounded-lg  tracking-wider hover:bg-yellow-300 outline-none"
+                    :style="`background-color:${site.bailleurCouleur}`">{{ site.nom }}</button>
+                </div>
+                <div
+                  class="bg-gradient-to-tr from-red-500 to-yellow-400 w-32 h-32  rounded-full shadow-2xl shadow-yellow-400 border-white  border-dashed border-2  flex justify-center items-center ">
+                  <div>
+                    <h1 class="text-white text-2xl">{{ site.bailleur }}</h1>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </section>
 
 
       <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
@@ -568,7 +759,15 @@ export default {
 
   created() {
 
-    this.getPermission()
+   
+
+
+  },
+
+  mounted: function() {
+    console.log('mounted')
+     this.getPermission()
+     
     if (!this.papVisible) {
       this.$router.push('/401-non-autorise')
     }
@@ -580,9 +779,7 @@ export default {
     })
 
     this.fetchSites(this.currentUser?.programme?.id)
-
-
-  }
+  },
 }
 </script>
 
