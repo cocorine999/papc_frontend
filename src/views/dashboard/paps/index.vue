@@ -1,114 +1,6 @@
 <template>
   <dashboard>
-    <div class="w-full">
-      <div v-if="showModal">
-        <ModalTopRight :title="title" v-on:close="closeA">
-          <div class="px-4 overflow-y-auto">
-            <vform template="default" isAllPairSaufDescrip="true" @closeModal="showModal = false" :champs="champs"
-              :cols="cols" :sendRequest="sendRequest" submitText="Creer un pap" @sendForm="sendForm" @addSite="addSite">
-            </vform>
-          </div>
-        </ModalTopRight>
-      </div>
-      <div v-if="showModal2">
-        <vmodal title="Importez les données " v-on:close="showModal2 = false">
-          <form @submit.prevent="importData" style="width:500px" class="">
-            <input
-              class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm"
-              aria-describedby="file_input_help" id="file_input" @change="previewFiles" accept=".xlsx" type="file">
-            <p class="my-4 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">FORMAT XLSX SEULEMENT AUTORISE
-            </p>
-            <div class="flex justify-end">
-              <button type="submit"
-                class="bg-primary  flex space-x-2  items-center text-white px-4 py-2 border border-primary font-semibold uppercase">
-                <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                  importez
-                </span>
-                <span v-else class="flex items-center space-x-2">
-                  <span class="text-xs px-4 font-semibold ">
-                    chargement ...
-                  </span>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-center animate-spin" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </form>
-        </vmodal>
-      </div>
-
-      <div v-if="showSiteModal">
-        <modal-top-right :title="title" v-on:close="closeSiteModal2">
-          <div class="px-4 overflow-y-auto">
-            <form action="" @submit.prevent="sendSiteForm" class="w-full">
-
-              <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Site <span
-                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                <input required v-model="nom"
-                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                  type="text" placeholder="Entrer le nom de l'activite" />
-              </div>
-
-
-              <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Bailleur <span
-                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                <select v-model="bailleur"
-                  class="px-3 py-2 mt-1 border-2 border-gray-300  focus:outline-none focus:ring-2 w-full  focus:border-transparent"
-                  placeholder="selectionnez une entreprise" :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'">
-                  <option v-for="(item, i) in bailleurs" :key="i" :value="item.id">{{ item.sigle }}</option>
-                </select>
-              </div>
-
-              <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light"> Selectionnez les
-                  entreprises <span class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                <multiselect v-model="value" tag-placeholder="selectionnez une entreprise"
-                  placeholder="selectionnez une entreprise" label="nom" track-by="nom"
-                  :selectLabel="'Appuyez sur Entrée pour sélectionner'"
-                  :deselectLabel="'Appuyez sur Entrée pour supprimer'" :options="entreprises" :multiple="true"
-                  :taggable="true" @tag="addTag"></multiselect>
-              </div>
-
-              <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Longitude <span
-                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                <input required v-model="longitude"
-                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                  type="number" step="0.01" placeholder="Entrer la longitude" />
-              </div>
-
-              <div class="my-4">
-                <label class="text-xs font-semibold text-gray-500 uppercase block md:text-sm text-light">Latitude <span
-                    class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span></label>
-                <input required v-model="latitude"
-                  class="px-3 py-2 mt-1 border-2 border-gray-300 w-full focus:outline-none focus:ring-2  focus:border-transparent"
-                  type="number" step="0.01" placeholder="Entrer la latitude" />
-              </div>
-
-
-              <div class='flex items-center justify-center gap-4 pt-5 pb-5 my-4 md:gap-8'>
-                <button type="submit"
-                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-blue-500 hover:opacity-80'>
-                  Creer le site
-                </button>
-
-                <button type="submit" @click="closeSiteModal"
-                  class='w-auto px-4 py-2 font-medium text-white  shadow-xl bg-red-500 hover:opacity-80'>
-                  Annuler
-                </button>
-
-              </div>
-            </form>
-          </div>
-        </modal-top-right>
-      </div>
-
+    <div>
       <delete-alert v-if="deleteModal" type="danger" title="Confirm Action" width="sm" v-on:close="deleteModal = false">
         <p class="text-gray-800">
           voulez vous supprimer cet element?
@@ -407,89 +299,11 @@ export default {
 
     ...mapActions('paps', {
       fetchPaps: "FETCH_LIST_PAP",
-      savePap: "STORE_PAP",
-      updatePap: "UPDATE_PAP",
       deletePap: "DESTROY_PAP",
       importSinistre: "IMPORTATION_PAP"
     }),
     //  all site modal methods
-    ...mapActions('sites', { fetchSites: 'FETCH_LIST_SITE', saveSite: "STORE_SITE", }),
 
-    ...mapActions('bailleurs', { fetchBailleurs: 'FETCH_LIST_BAILLEUR' }),
-
-    ...mapActions("entreprisesExecutante", {
-      fetchEntreprisesExecutante: "FETCH_LIST_ENTREPRISE_EXECUTANTE",
-    }),
-    addSite() {
-      this.showSiteModal = true
-      this.title = 'Ajouter un nouveau site'
-
-      this.fetchSites(this.currentUser?.programme?.id)
-      this.fetchEntreprisesExecutante();
-      this.fetchBailleurs()
-
-    },
-    closeSiteModal2() {
-      this.showSiteModal = false;
-
-      this.savedInput.push(this.nom),
-        this.savedInput.push(this.bailleur),
-        this.savedInput.push(this.value)
-      this.savedInput.push(this.longitude),
-        this.savedInput.push(this.latitude)
-
-      const parsed = JSON.stringify(this.savedInput);
-      localStorage.setItem('formData', parsed);
-
-    },
-    closeSiteModal() {
-      this.showSiteModal = false;
-      this.nom = "",
-        this.bailleur = null,
-        this.value = [],
-        this.longitude = "",
-        this.latitude = ""
-      localStorage.removeItem('formData');
-    },
-
-    sendSiteForm() {
-      var entrepriseExecutantId = []
-
-      this.value.forEach(element => {
-        entrepriseExecutantId.push(element.id)
-      });
-
-      let site = {
-        "nom": this.nom,
-        "longitude": this.longitude,
-        "latitude": this.latitude,
-        "bailleurId": this.bailleur,
-        "entrepriseExecutantId": entrepriseExecutantId
-      }
-
-      this.saveSite(site).then((response) => {
-        if (response.status == 200 || response.status == 201) {
-          this.$toast.success('operation effectuer avec sucess')
-          this.fetchSites(this.currentUser?.programme?.id)
-          this.showSiteModal = false;
-          this.nom = "",
-            this.bailleur = null,
-            this.value = [],
-            this.longitude = "",
-            this.latitude = ""
-          localStorage.removeItem('formData');
-        }
-      }).catch((e) => {
-        this.$toast.error(e)
-        this.sendRequest = false
-      });
-
-    },
-    // end all site modal methods
-    addAno() {
-      this.title = 'Ajouter un element'
-      this.showModal = true
-    },
 
     getPermission() {
       this.currentUser.role[0].permissions.forEach(element => {
@@ -659,38 +473,6 @@ export default {
       this.pap = {}
     },
 
-    async updateInputData(id, attribut, value) {
-
-      await this.updatePap({ pap: { [attribut]: value }, id: id }).catch((value, status) => {
-        if (this.hasErrors[attribut] !== undefined)
-          alert(this.hasErrors[attribut])
-      }).finally(() => {
-        $('#' + "dataTable").load(location.href + '#' + id + '>*', '')
-      })
-
-    },
-
-    sendForm() {
-      this.champs = this.champs.map(item => { item.errors = []; return item })
-
-      let pap = extractFormData(this.champs, this.papAttributs)
-
-      pap.programmeId = this.currentUser?.programme?.id
-
-      pap.siteId = pap.siteId.id
-
-      pap.sexe = pap.sexe.sigle
-      PapService.create(pap).then((data) => {
-        this.$toast.success("enregistrement éffectué avec success")
-        this.fetchPaps({ id: this.currentUser?.programme?.id })
-        this.resetForm
-
-        this.showModal = false
-
-      }).catch((e) => {
-        this.$toast.error(e)
-      })
-    },
     supprimer(pap, index) {
       this.deleteModal = true
       this.deleteData.data = pap
@@ -757,14 +539,7 @@ export default {
 
   },
 
-  created() {
-
-   
-
-
-  },
-
-  mounted: function() {
+  created: function() {
     console.log('mounted')
      this.getPermission()
      
