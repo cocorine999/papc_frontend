@@ -236,7 +236,7 @@
       </section>
 
 
-      <vtable  :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+      <vtable v-if="paps.sinistres" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
         :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'"
         @retour="onRetour"></vtable>
       <!-- <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
