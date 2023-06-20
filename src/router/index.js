@@ -545,7 +545,7 @@ const routes = [
   },
 
   {
-    path: "/dashboard/PAP",
+    path: "/dashboard/paps",
     name: "paps",
     component: paps,
     meta: {
