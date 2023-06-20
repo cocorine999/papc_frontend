@@ -539,7 +539,7 @@ export default {
 
   },
 
-  created: function() {
+  beforeMount: function() {
     console.log('mounted')
      this.getPermission()
      
