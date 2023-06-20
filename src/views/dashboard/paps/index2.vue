@@ -545,12 +545,16 @@ export default {
     if (!this.papVisible) {
       this.$router.push('/401-non-autorise')
     }
-
-    this.fetchPaps({ id: this.currentUser?.programme?.id }).then((value) => {
+     PapService.programme({ id: this.currentUser?.programme?.id }).then((data) => {
       console.log(value.data)
-      this.total = value.data.data.total
+      return data
 
-    })
+    });
+    // this.fetchPaps({ id: this.currentUser?.programme?.id }).then((value) => {
+    //   console.log(value.data)
+    //   this.total = value.data.data.total
+
+    // })
 
   }
 }
