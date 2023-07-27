@@ -11,7 +11,7 @@
         </ModalTopRight>
       </div>
       <div v-if="showModal2">
-        <vmodal title="Importez les données " v-on:close="showModal2 = false">
+        <vmodal title="Importez les données. " v-on:close="showModal2 = false">
           <form @submit.prevent="importData" style="width:500px" class="">
             <input
               class="block w-full text-xs md:text-sm text-gray-900 bg-gray-50  border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 placeholder:text-xs md:placeholder:text-sm"
@@ -236,14 +236,14 @@
       </section>
 
 
-      <vtable v-if="!papDelete && !papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
-        :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'"
+      <vtable v-if="paps.sinistres" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+        :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" 
         @retour="onRetour"></vtable>
-      <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
+      <!-- <vtable v-if="papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
         :search="search" :actions="actions" @supprimer="supprimer" @updateInputData="updateInputData" :total="'payer'"
         @retour="onRetour"></vtable>
       <vtable v-if="!papDelete && papUpdate" :sendRequest="false" :headers="headers" :datas="paps.sinistres"
-        :search="search" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable>
+        :search="search" @updateInputData="updateInputData" :total="'payer'" @retour="onRetour"></vtable> -->
 
       <h2 class="text-gray-900 text-lg font-bold">Total Transféré</h2>
       <h3 class="mt-2 text-xl font-bold text-yellow-500 text-left">{{ total | formatNumber }} XOF</h3>
