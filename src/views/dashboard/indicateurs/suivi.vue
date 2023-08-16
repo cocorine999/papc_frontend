@@ -499,8 +499,12 @@ export default {
 
         SuiviService.update(this.suiviId, data).then((data) => {
           this.$toast.success('modification éffectué')
+
           this.showModal = false
           this.chargement = false
+       //  this.getSuivi()
+       window.location.reload();
+
           this.suiviIndicateurs.annee = ''
           this.suiviIndicateurs.trimestre = ''
           this.suiviIndicateurs.dateSuivie = ''
