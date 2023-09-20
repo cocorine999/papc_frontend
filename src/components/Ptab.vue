@@ -350,7 +350,7 @@
           </vue-html2pdf>
         </div>
         <div style="height: 80vh" class="flex overflow-y-auto">
-          <div style="width: 35%; position: sticky; left: 0; background: transparent; z-index: 1">
+          <div style="width: 30%; position: sticky; left: 0; background: transparent; z-index: 1">
             <table class="_sticky _z-20 top-0 left-0 w-full border-collaspe table-fixed block table1 text-left text-sm">
               <thead class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr style="height: 82px" class="">
@@ -395,7 +395,7 @@
             </table>
           </div>
 
-          <div class="relative shadow-md sm:rounded-lg">
+          <div class="relative ml-5 shadow-md sm:rounded-lg">
             <table class="w-full overflow-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead class="text-xs sticky _z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="">
