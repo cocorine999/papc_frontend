@@ -349,9 +349,9 @@
             </section>
           </vue-html2pdf>
         </div>
-        <div style="height: 80vh" class="flex overflow-y-auto">
-          <div style="width: 30%; position: sticky; left: 0; background: transparent; z-index: 1">
-            <table class="_sticky _z-20 top-0 left-0 w-full border-collaspe table-fixed block table1 text-left text-sm">
+        <div style="height: 80vh" class="flex overflow-y-auto relative">
+          <div style="width: 33.33%; position: sticky; left: 0; background: transparent; z-index: 1; margin-right: 1%">
+            <table class="top-0 left-0 w-full border-collaspe table-fixed block table1 text-left text-sm">
               <thead class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr style="height: 82px" class="">
                   <th rowspan="2" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">Bailleurs</th>
@@ -395,7 +395,7 @@
             </table>
           </div>
 
-          <div class="relative ml-5 shadow-md sm:rounded-lg">
+          <div class="absolute perso left-96 shadow-md sm:rounded-lg">
             <table class="w-full overflow-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead class="text-xs sticky _z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="">
@@ -404,7 +404,7 @@
                   <th scope="col" colspan="3" class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">Montant budgetisé XOF</th>
                   <th scope="col" rowspan="2" class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">Poids</th>
                   <th v-if="statutActuel" scope="col" rowspan="2" class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">poids actuel</th>
-                  
+
                   <th scope="col" rowspan="2" class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">STRUCTURE ASSOCIER</th>
                   <th scope="col" rowspan="2" class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">STRUCTURE RESPONSABLE</th>
                   <th scope="col" colspan="12" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 text-center whitespace-nowrap">PLANING</th>
@@ -506,7 +506,7 @@
                     <span v-if="pta.poidsActuel != undefined" class="font-bold text-green-500"> {{ pta.poidsActuel }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
                   </td>
-   
+
                   <td class="p-2 whitespace-nowrap border dark:bg-gray-800 dark:border-gray-700">
                     <span v-if="pta.structureAssocie != undefined" class="font-bold"> {{ pta.structureAssocie }} </span>
                     <!--  <span v-else class="font-bold" >0 FCFA</span> -->
@@ -2561,4 +2561,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.perso {
+  position: absolute;
+  left: 397px ; 
+}
+</style>
