@@ -92,7 +92,7 @@
         </div>
 
 
-        <div v-else-if="champ.isSelect === false && champ.isTextArea === true">
+        <div v-else-if="champ.isSelect === false && champ.isTextArea === true"  >
           <label class=" block py-2 text-xs  md:text-sm font-semibold " for="">
             {{ champ.name }} <span v-if="champ.required"
               class="px-2 text-xs sm:text-sm  md:text-lg font-black text-red-700">*</span>
