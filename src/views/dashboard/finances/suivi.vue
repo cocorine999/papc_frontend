@@ -207,7 +207,7 @@ export default {
         }),
         ...mapGetters({
             projets: "projets/getProjets",
-            activites: "activites/getActivites",
+            //  activites: "activites/getActivites",
             isLoading: "IS_LOADING",
             currentUser: "auths/GET_AUTHENTICATE_USER",
         }),
@@ -270,18 +270,13 @@ export default {
             deleteSuiviFinancier: "DESTROY_SUIVIFINANCIER",
         }),
         getSuivi() {
-            this.loadingSuivi = true;
             SuiviFinancierService.byProgramme(this.currentUser.programme.id)
                 .then((data) => {
                     this.suiviFinancier = data.data.data.suiviFinanciers;
                     this.annee = data.data.data.annee;
-                    this.disabled();
-                    this.loadingSuivi = false;
                 })
                 .catch((e) => {
                     this.$toast.error(e);
-                    this.disabled();
-                    this.loadingSuivi = false;
                 });
         },
         getPermission() {
@@ -430,7 +425,7 @@ export default {
 
         addSuivi() {
             this.title = "Ajouter un Suivi";
-
+            this.getFiltreActivites();
             //  this.activites = this.activites.map((value) => {
             //      value.nom = `${value.codePta} – ${value.nom}`;
             //      return value;
@@ -455,17 +450,17 @@ export default {
         showFiltreModal() {
             this.title = "Filtre";
 
-            let formData = this.champsRecherche.map((value) => {
-                if (value.key === "activiteId") {
-                    value["options"] = this.activites;
-                } else if (value.key === "trimestre") {
-                    value["options"] = this.$store.state.trimestres;
-                }
+            // let formData = this.champsRecherche.map((value) => {
+            //     if (value.key === "activiteId") {
+            //         value["options"] = this.activites;
+            //     } else if (value.key === "trimestre") {
+            //         value["options"] = this.$store.state.trimestres;
+            //     }
 
-                return value;
-            });
+            //     return value;
+            // });
 
-            this.champsRecherche = formData;
+            // this.champsRecherche = formData;
 
             this.showModal3 = true;
         },
@@ -508,7 +503,6 @@ export default {
         },
 
         getBailleur() {
-            this.loadingBailleur = true;
             BailleursService.get()
                 .then((data) => {
                     const datas = data.data.data;
@@ -519,15 +513,13 @@ export default {
                         { name: "Trimestre", key: "trimestre", type: "", placeholdere: "Sélectionnez un trimestre", isSelect: true, isTextArea: false, data: "", options: this.$store.state.trimestres, cle: "valeur", value: "trimestre", required: false, errors: [] },
                         { name: "Bailleur", key: "bailleurId", type: "", placeholdere: "Sélectionnez un bailleur", isSelect: true, isTextArea: false, data: "", options: datas, cle: "id", value: "sigle", required: false, errors: [] },
                     ];
-                    this.loadingBailleur = false;
                 })
                 .catch((e) => {
                     this.$toast.error(e);
-                    this.loadingBailleur = false;
                 });
         },
         getFiltreActivites() {
-            this.loadingFiltre = true;
+            this.active();
             ProgrammeService.filtreActivites({ annee: this.oldValue })
                 .then((data) => {
                     this.activites = data.data.data;
@@ -537,10 +529,10 @@ export default {
                     });
 
                     this.champs[3].options = this.activites;
-                    this.loadingFiltre = false;
+                    this.disabled();
                 })
                 .catch((error) => {
-                    this.loadingFiltre = false;
+                    this.disabled();
                     if (error.response) {
                         // Requête effectuée mais le serveur a répondu par une erreur.
                         const message = error.response.data.message;
@@ -558,6 +550,7 @@ export default {
 
     mounted() {
         this.getPermission();
+
         if (!this.suiviFinancierVisible) {
             this.$router.push("/401-non-autorise");
         } else {
@@ -567,21 +560,14 @@ export default {
                 i++;
                 this.years.push({ id: i, nom: `${annee}` });
             }
+
             this.champs[2].options = this.years;
             console.log(this.years[this.years.length - 6]);
             this.champs[2].data = this.years[this.years.length - 6];
             this.getSuivi();
             this.getBailleur();
-            this.getFiltreActivites();
+            // this.getFiltreActivites();
             // this.fetchActivites(this.currentUser?.programme?.id);
-        }
-
-        if (this.loadingFiltre || this.loadingBailleur || this.loadingFiltre) {
-            this.active();
-        }
-
-        if (!this.loadingFiltre && !this.loadingBailleur && !this.loadingFiltre) {
-            this.disabled();
         }
     },
 
