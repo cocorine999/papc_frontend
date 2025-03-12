@@ -354,6 +354,8 @@
             <table class="top-0 left-0 w-full border-collaspe table-fixed block table1 text-left text-sm">
               <thead class="text-xs sticky z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr style="height: 82px" class="">
+                  <th scope="col" rowspan="2" class="px-6 py-3 border dark:bg-gray-800 border-gray-300 whitespace-nowrap">Actions</th>
+
                   <th rowspan="2" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">Bailleurs</th>
                   <th scope="col" rowspan="2" class="py-3 px-6 border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">Code PTBA</th>
                   <th scope="col" rowspan="2" class="py-3 px-6 text-center border dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">Etat des taches</th>
@@ -363,6 +365,18 @@
 
               <tbody>
                 <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td class="border whitespace-nowrap dark:bg-gray-800 dark:border-gray-300 text-center">
+                    <!-- <button v-if="pta.isActivite" @click="ouvrirModalPlanDeDecaissementActivite(pta)" title="Ajouter un plan de décaissement" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2">
+                      <DollarSignIcon class="w-4 h-4" />
+                    </button> -->
+                    <button v-if="pta.isActivite" @click="ouvrirModalSuiviFinancierActivite(pta)" title="suivre" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2">Ajouter un suivi</button>
+
+                    <!-- <button v-if="pta.isActivite" @click="voirSuiviActivite()" title="Voir les suivis" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2">
+                      <EyeIcon class="w-4 h-4" />
+                    </button> -->
+
+                    <!-- <button v-if="pta.isActivite" @click="handleDelete(pta)" class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-xs px-4 py-2">Supprimer</button> -->
+                  </td>
                   <th scope="row" class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ pta.bailleur }}
                   </th>
@@ -382,12 +396,14 @@
                         'bg-gray-400': false,
                         'bg-red-400': pta.poidsActuel == 0 || tabletoggle[pta.id] == 0,
                         'bg-green-400 ': greentoggle && (pta.poidsActuel > 0 || tabletoggle[pta.id] == 1),
-                      }">
+                      }"
+                    >
                       <div
                         class="w-5 h-5 bg-white rounded-full transform translate-x-0"
                         :class="{
                           'translate-x-full': pta.poidsActuel > 0 || translatetoggle || tabletoggle[pta.id] == 1,
-                        }"></div>
+                        }"
+                      ></div>
                     </button>
                   </td>
                 </tr>
@@ -395,7 +411,7 @@
             </table>
           </div>
 
-          <div class="absolute perso left-96 shadow-md sm:rounded-lg">
+          <div class="absolute perso left-64 shadow-md sm:rounded-lg">
             <table class="w-full overflow-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead class="text-xs sticky _z-20 top-0 text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="">
@@ -1211,6 +1227,88 @@
         </div>
       </div>
     </div>
+
+    <div v-if="showModalSuiviFinancier">
+      <!-- v-on:close="closeA" -->
+      <modal-top-right title="Ajouter un suivi financier" v-on:close="closeSuiviModal">
+        <!-- <pre>{{ suiviFinancierss }}</pre> -->
+        <form @submit.prevent="sendForm2" id="vform">
+          <div v-for="(plan, index) in suiviFinancierss" :key="plan.id" class="col-span-12 border-b pb-4 mb-4">
+            <div :class="`grid grid-cols-1 gap-4`">
+              <div class="w-full px-4 font-bold text-base mt-4">Suivi {{ index + 1 }}</div>
+              <div class="w-full px-4 py-2">
+                <div>
+                  <label class="block py-2 text-xs md:text-sm font-semibold" for="">
+                    Consommé
+                    <span class="px-2 w-full text-lg font-black text-red-700">*</span>
+                  </label>
+                  <input :required="true" placeholder="champ.placeholdere" type="numpber" v-model="plan.consommer" class="px-2 py-1 md:px-2 md:py-1 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" />
+                </div>
+              </div>
+              <!-- <pre>{{ $store.state.trimestres }}</pre> -->
+              <div class="w-full px-4 py-2">
+                <label for="dropdown" class="block text-sm font-medium text-gray-700">Sélectionner le trimestre</label>
+                <div class="flex items-center">
+                  <select id="dropdown" v-model="plan.trimestre" class="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option v-for="trimestre in $store.state.trimestres" :key="trimestre.valeur" :value="trimestre.valeur">{{ trimestre.trimestre }}</option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="w-full px-4 py-2">
+                  <div>
+                    <label class="block py-2 text-xs md:text-sm font-semibold" for="">
+                      Sélectionner le trimestre
+                      <span class="px-2 w-full text-lg font-black text-red-700">*</span>
+                    </label>
+                    <input v-model="plan.trimestre" :required="true" placeholder="champ.placeholdere" type="number" min="1" max="4" class="px-2 py-1 md:px-2 md:py-1 mt-1 border-2 border-gray-300 outile-none focus:outline-none focus:ring-2 w-full focus:ring-blue-500/50 focus:border-transparent placeholder:text-xs md:placeholder:text-sm" />
+                  </div>
+                </div> -->
+
+              <!-- <div class="w-full px-4 py-2">
+                  <div>
+                    <label class="block py-2 text-xs md:text-sm font-semibold" for="">
+                      Saisissez l'année de décaissement
+                      <span class="px-2 w-full text-lg font-black text-red-700">*</span>
+                    </label>
+                    <div class="flex justify-between space-x-1">
+                      <multiselect v-model="plan.annee" value="nom" :required="true" :preselect-first="false" label="nom" class="w-full" placeholder="Sélectionner l'année de décaissement" :options="years" selectLabel="Appuyez sur Entrée pour sélectionner" deselectLabel="Appuyez sur Entrée pour supprimer" selectedLabel="Selectionné" track-by=""></multiselect>
+                    </div>
+                  </div>
+                </div> -->
+              <div class="w-full px-4 py-2">
+                <label for="dropdown" class="block text-sm font-medium text-gray-700">Sélectionnez l'année de décaissement</label>
+                <div class="flex items-center">
+                  <select id="dropdown" v-model="plan.annee" class="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" @change="getFiltreActivites2(plan.annee, index)">
+                    <option v-for="year in years" :key="year.id" :value="year.nom">{{ year.nom }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="w-full px-4 py-2">
+                <div>
+                  <label class="block py-2 text-xs md:text-sm font-semibold" for="">
+                    Source
+                    <span class="px-2 w-full text-lg font-black text-red-700">*</span>
+                  </label>
+                  <div class="flex justify-between space-x-1">
+                    <multiselect v-model="plan.type" :required="true" :preselect-first="false" label="nom" class="w-full" placeholder="Sélectionner la source du financement" :options="$store.state.sources" selectLabel="Appuyez sur Entrée pour sélectionner" deselectLabel="Appuyez sur Entrée pour supprimer" selectedLabel="Selectionné" track-by=""></multiselect>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" @click="removePlan(index)" class="mt-4 ml-4 text-red-600 text-sm underline">Supprimer ce suivi</button>
+          </div>
+
+          <button type="button" @click="addPlan" class="py-2 px-4 overflow-hidden flex space-x-2 items-center font-semibold text-white uppercase bg-primary focus:outline-none focus:shadow-outline mx-auto my-4">Ajouter un autre plan</button>
+
+          <div class="py-2 my-2 flex justify-center space-x-8">
+            <vbutton type="submit" :isloading="ajoutSuiviLoader" template="success"> Enregistrer </vbutton>
+            <!-- @close="close()" -->
+            <vbutton type="reset" template="danger"> annuler </vbutton>
+          </div>
+        </form>
+      </modal-top-right>
+    </div>
   </div>
 </template>
 
@@ -1224,13 +1322,24 @@ import BailleursService from "@/services/modules/bailleur.service.js";
 import JsonExcel from "vue-json-excel";
 import VueHtml2pdf from "vue-html2pdf";
 import TacheService from "@/services/modules/tache.service.js";
+// import Multiselect from "vue-multiselect";
+import ModalTopRight from "@/components/ModalTopRight";
+import Vbutton from "@/components/Vbutton";
+import SuiviFinancierService from "@/services/modules/suiviFinancier.service.js";
 
 import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 export default {
   props: ["ppm"],
-  components: { Multiselect, Vmodal, VueHtml2pdf, JsonExcel },
+  components: { Multiselect, Vmodal, VueHtml2pdf, JsonExcel, ModalTopRight, Vbutton, SuiviFinancierService },
   data() {
     return {
+      suiviActiviteId: "",
+      ajoutSuiviLoader: false,
+      loaderTab: [],
+      years: [],
+      superTableauActivites: [],
+      suiviFinancierss: [],
+      showModalSuiviFinancier: false,
       tabletoggle: [],
       etattoggle: true,
       graytoggle: true,
@@ -1367,6 +1476,7 @@ export default {
               sousComposante.activites.forEach((activite) => {
                 const bn = activite.budgetNational;
                 const pret = activite.pret;
+                const activiteId = activite.id;
                 let poids = activite.poids;
                 let poidsActuel = activite.poidsActuel;
                 let structureResponsable = activite.structureResponsable;
@@ -1471,7 +1581,7 @@ export default {
                   }
                 }
 
-                programme.push({ bailleur, nom: activite.nom, code: activite.code, poids, poidsActuel, isActivite: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total, structureResponsable, structureAssocie, planing });
+                programme.push({ bailleur, nom: activite.nom, activiteId, code: activite.code, poids, poidsActuel, isActivite: true, bn, pret, t1Pret, t1Bn, t2Pret, t2Bn, t3Pret, t3Bn, t4Bn, t4Pret, tBn, tPret, total, structureResponsable, structureAssocie, planing });
                 activite.taches.forEach((tache) => {
                   const planingt = {
                     janvier: "",
@@ -2226,6 +2336,87 @@ export default {
     },
   },
   methods: {
+    ...mapActions("suiviFinanciers", {
+      fetchSuiviFinanciers: "FETCH_LIST_SUIVIFINANCIER",
+      filter: "FILTRE_SUIVIFINANCIER",
+      saveSuiviFinancier: "STORE_SUIVIFINANCIER",
+      updateSuiviFinancier: "UPDATE_SUIVIFINANCIER",
+      deleteSuiviFinancier: "DESTROY_SUIVIFINANCIER",
+    }),
+    closeSuiviModal() {
+      this.showModalSuiviFinancier = false;
+    },
+    removePlan(index) {
+      this.suiviFinancierss.splice(index, 1);
+      // this.superTableauActivites.splice(index, 1);
+      this.loaderTab.splice(index, 1);
+    },
+    addPlan() {
+      const newItem = {
+        activiteId: this.suiviActiviteId,
+        trimestre: 1, // Trimestre actuel
+        annee: new Date().getFullYear(), // Set current year as default
+        consommer: 0,
+        type: "",
+        id: Date.now() + "-" + Math.random().toString(36).substr(2, 9),
+      };
+      // this.suiviFinancierPayload.id = Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+      this.suiviFinancierss.push(newItem);
+      // this.superTableauActivites.push(this.activites);
+      this.loaderTab.push(false);
+    },
+    sendForm2() {
+      this.suiviFinancierss.forEach((item) => {
+        // item.activiteId = item.activiteId.id;
+        // item.annee = item.annee.nom;
+        item.type = item.type.id;
+        // item.i
+      });
+
+      for (let index = 0; index < this.suiviFinancierss.length; index++) {
+        this.saveSuiviFinancier(this.suiviFinancierss[index]).then((response) => {
+          if (response.status === 200 || response.status === 201) {
+            if (this.suiviFinancierss.length - 1 === index) {
+              this.showModalSuiviFinancier = false;
+              this.$toast.success("Ajout de suivi financier réussie");
+
+              setTimeout(() => {
+                this.suiviFinancierss = [];
+
+                // this.suiviFinancierPayload = {
+                //   activiteId: null,
+                //   trimestre: 1, // Trimestre actuel
+                //   annee: new Date().getFullYear(), // Set current year as default
+                //   consommer: 0,
+                //   type: "",
+                // };
+              }, 500);
+            }
+          }
+        });
+      }
+    },
+    ouvrirModalSuiviFinancierActivite(item) {
+      this.suiviFinancierss = [];
+      this.suiviActiviteId = item.activiteId;
+
+      console.log("this.suiviActiviteId", this.suiviActiviteId);
+
+      const newItem = {
+        activiteId: item.activiteId,
+        trimestre: 1, // Trimestre actuel
+        annee: new Date().getFullYear(), // Set current year as default
+        consommer: 0,
+        type: "",
+        id: Date.now() + "-" + Math.random().toString(36).substr(2, 9),
+      };
+
+      // this.suiviFinancierPayload.trimestre = this.getCurrentQuarter();
+      this.suiviFinancierss.push(newItem);
+
+      this.loaderTab.push(false);
+      this.showModalSuiviFinancier = true;
+    },
     saveSuiviOld(id, data) {
       this.chargement = true;
       var form = {
@@ -2557,6 +2748,13 @@ export default {
         this.scopes = response.data.data;
       });
     }
+
+    var anneeActuelle = new Date().getFullYear() + 5;
+    let i = 0;
+    for (var annee = 2016; annee <= anneeActuelle; annee++) {
+      i++;
+      this.years.push({ id: i, nom: `${annee}` });
+    }
   },
 };
 </script>
@@ -2564,6 +2762,6 @@ export default {
 <style scoped>
 .perso {
   position: absolute;
-  left: 397px ; 
+  left: 497px;
 }
 </style>
