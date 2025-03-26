@@ -1,158 +1,98 @@
 <template>
-  <div class="bg-gray-100  grid lg:grid-cols-2 sm:grid-cols-1 relative">
-
+  <div class="bg-gray-100 grid lg:grid-cols-2 sm:grid-cols-1 relative">
+    <div v-if="typeAcceuil" class="absolute right-5 top-5">
+      <button type="submit" @click="modeVisiteurs" class="bg-red-500 text-white py-4 px-4 cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500">
+        <span class="text-sm font-semibold uppercase"> Passer en mode Visiteur</span>
+      </button>
+    </div>
     <!-- le formulaire de connexion -->
     <div class="flex justify-center items-center px-10 md:px-20 h-screen">
-      <div class="formulaire sm:max-w-md ">
-        <div class=" flex justify-center ">
-          <img width="180" height="180" src="../assets/images/login/logo-gouv.webp">
-          <img width="180" height="180" src="../assets/images/login/logo-sirat.webp">
+      <div class="formulaire sm:max-w-md">
+        <div class="flex justify-center">
+          <img width="180" height="180" src="../assets/images/login/logo-gouv.webp" />
+          <img width="180" height="180" src="../assets/images/login/logo-sirat.webp" />
         </div>
 
-        <h1 class="xl:text-2xl text-base text-center font-bold text-primary py-6 ">PROGRAMME D’ASSAINISSEMMENT PLUVIAL
-          DE COTONOU</h1>
-        <p class="text-sm font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte. </p>
-        <form @submit.prevent="save" action="">
+        <h1 class="xl:text-2xl text-base text-center font-bold text-primary py-6">PROGRAMME D’ASSAINISSEMMENT PLUVIAL DE COTONOU</h1>
 
+        <!-- <p v-if="typeAcceuil" class="text-sm font-bold text-center text-gray-700 py-6">Ou</p> -->
+
+        <p class="text-sm font-bold text-center text-gray-700 py-6">Connectez-vous à votre compte.</p>
+        <form @submit.prevent="save" action="">
           <div class="form-group my-3 relative">
-            <input v-model.trim='$v.login.$model' v-title id="email" title="Entrer votre email"
-              type="email"
-              class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300"
-              placeholder="Entrer votre email">
-            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor"
-                stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z">
-                </path>
-              </svg></span>
-            <div class="text-red-500 text-sm py-2 font-semibold" v-if='!$v.login.required && soumettre'>
-              Ce champ est obligatoire
-            </div>
-            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre'>
-              Email invalide
-            </div>
+            <input v-model.trim="$v.login.$model" v-title id="email" title="Entrer votre email" type="email" class="w-full bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email" />
+            <span class="text-red-500 absolute right-4 top-2"
+              ><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg
+            ></span>
+            <div class="text-red-500 text-sm py-2 font-semibold" v-if="!$v.login.required && soumettre">Ce champ est obligatoire</div>
+            <div class="text-red-500 text-sm py-2 font-semibold" v-if="!$v.login.email && soumettre">Email invalide</div>
           </div>
           <div class="form-group my-3 relative">
-            <input v-model.trim='$v.password.$model' title="Entrer votre mot de passe" v-title id="password"
-              :type="statePassword"
-              class="w-full bg-gray-100 outline-none border :placeholder-gray-500 py-3 px-4 text-sm font-semibold border-gray-300 "
-              placeholder="Entrer votre mot de passe">
-            <span @click="invisible" v-if="show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg
-                stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.8em"
-                width="1.6em" xmlns="http://www.w3.org/2000/svg">
+            <input v-model.trim="$v.password.$model" title="Entrer votre mot de passe" v-title id="password" :type="statePassword" class="w-full bg-gray-100 outline-none border :placeholder-gray-500 py-3 px-4 text-sm font-semibold border-gray-300" placeholder="Entrer votre mot de passe" />
+            <span @click="invisible" v-if="show" class="text-red-500 cursor-pointer absolute right-4 top-2"
+              ><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <clipPath>
                     <path fill="none" d="M124-288l388-672 388 672H124z" clip-rule="evenodd"></path>
                   </clipPath>
                 </defs>
-                <path
-                  d="M508 624a112 112 0 0 0 112-112c0-3.28-.15-6.53-.43-9.74L498.26 623.57c3.21.28 6.45.43 9.74.43zm370.72-458.44L836 122.88a8 8 0 0 0-11.31 0L715.37 232.23Q624.91 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.7 119.43 136.55 191.45L112.56 835a8 8 0 0 0 0 11.31L155.25 889a8 8 0 0 0 11.31 0l712.16-712.12a8 8 0 0 0 0-11.32zM332 512a176 176 0 0 1 258.88-155.28l-48.62 48.62a112.08 112.08 0 0 0-140.92 140.92l-48.62 48.62A175.09 175.09 0 0 1 332 512z">
-                </path>
-                <path
-                  d="M942.2 486.2Q889.4 375 816.51 304.85L672.37 449A176.08 176.08 0 0 1 445 676.37L322.74 798.63Q407.82 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5z">
-                </path>
-              </svg></span>
-            <span @click="invisible" v-if="!show" class="text-red-500 cursor-pointer absolute right-4 top-2"><svg
-                stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.8em"
-                width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M508 624a112 112 0 0 0 112-112c0-3.28-.15-6.53-.43-9.74L498.26 623.57c3.21.28 6.45.43 9.74.43zm370.72-458.44L836 122.88a8 8 0 0 0-11.31 0L715.37 232.23Q624.91 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.7 119.43 136.55 191.45L112.56 835a8 8 0 0 0 0 11.31L155.25 889a8 8 0 0 0 11.31 0l712.16-712.12a8 8 0 0 0 0-11.32zM332 512a176 176 0 0 1 258.88-155.28l-48.62 48.62a112.08 112.08 0 0 0-140.92 140.92l-48.62 48.62A175.09 175.09 0 0 1 332 512z"></path>
+                <path d="M942.2 486.2Q889.4 375 816.51 304.85L672.37 449A176.08 176.08 0 0 1 445 676.37L322.74 798.63Q407.82 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5z"></path></svg
+            ></span>
+            <span @click="invisible" v-if="!show" class="text-red-500 cursor-pointer absolute right-4 top-2"
+              ><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>
-                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z">
-                </path>
-              </svg></span>
-            <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.required && soumettre'>
-              Ce champ est obligatoire
-            </div>
-            <div class="text-red-500 text-sm   py-2 font-semibold " v-if='!$v.password.minLength && soumettre'>
-              mot de passe très court
-            </div>
-          </div>
-          <!--div v-if="isRobot" class="">
-            <g-recaptcha 
-            data-sitekey="6LdFrTAkAAAAAADsgeGs4SVod0NZl7_2RsE-MZQi" 
-            :data-validate="validate"
-            :data-callback="callback"
-            >
-              <p class="py-1 rounded-xl flex space-x-2 items-center ">
-                <label class="cursor-pointer" title="cliquer ici"  v-title for="">
-                  <input type="checkbox" class="border border-gray-500" name="captcha" id="validate" />
-                  Je ne suis pas un robot
-                </label>
-              </p>
-            </g-recaptcha>
-          </div!-->
-          <div class="py-2 my-4 flex justify-center space-x-8">
-            <button  key="humain" type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
-                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                    Se connecter
-                  </span>
-                  <span v-else class="flex justify-center items-center space-x-2">
-                    <span class=" px-4 font-semibold ">
-                      chargement ...
-                    </span>
-                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </span>
-            </button>
-            <!--button v-if="!isRobot" key="humain" type="submit" class="bg-primary text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
-                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                    Se connecter
-                  </span>
-                  <span v-else class="flex justify-center items-center space-x-2">
-                    <span class=" px-4 font-semibold ">
-                      chargement ...
-                    </span>
-                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </span>
-            </button!-->
-            <!--button v-else  key="robot" disabled class="bg-gray-300 text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">
-                  <span class="text-sm font-semibold uppercase" v-if="!chargement">
-                    Se connecter
-                  </span>
-                  <span v-else class="flex justify-center items-center space-x-2">
-                    <span class=" px-4 font-semibold ">
-                      chargement ...
-                    </span>
-                    <svg  xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </span>
-            </button!-->
-          
+                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path></svg
+            ></span>
+            <div class="text-red-500 text-sm py-2 font-semibold" v-if="!$v.password.required && soumettre">Ce champ est obligatoire</div>
+            <div class="text-red-500 text-sm py-2 font-semibold" v-if="!$v.password.minLength && soumettre">mot de passe très court</div>
           </div>
 
+          <div class="py-2 my-4 flex justify-center space-x-8">
+            <button key="humain" type="submit" class="bg-primary text-white py-4 cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500">
+              <span class="text-sm font-semibold uppercase" v-if="!chargement"> Se connecter </span>
+              <span v-else class="flex justify-center items-center space-x-2">
+                <span class="px-4 font-semibold"> chargement ... </span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-center animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <!-- <div class="flex justify-center mt-3" v-if="typeAcceuil">
+            <button title="Passer en mode visiteur" type="button" v-title class="text-md font-semibold text-red-500 cursor-pointer" @click="modeVisiteurs">Passer en mode visiteur</button>
+          </div> -->
+
           <div class="flex justify-center mt-3">
-            <router-link title="cliquer ici pour récupérer votre Mot de passe" v-title to="/changer-mots-de-passe"
-              class="text-md font-semibold text-primary">Mot de passe oublié ? </router-link>
+            <router-link title="cliquer ici pour récupérer votre Mot de passe" v-title to="/changer-mots-de-passe" class="text-md font-semibold text-primary">Mot de passe oublié ? </router-link>
           </div>
         </form>
 
         <div class="partner flex space-x-4 py-8 items-center">
           <div class="img">
-            <img src="../assets/images/login/partners/wb-logo.webp" alt="WB">
+            <img src="../assets/images/login/partners/wb-logo.webp" alt="WB" />
           </div>
           <div class="img">
-            <img src="../assets/images/login/partners/adf-logo.webp" alt="AFD">
+            <img src="../assets/images/login/partners/adf-logo.webp" alt="AFD" />
           </div>
           <div class="img">
-            <img src="../assets/images/login/partners/bad-logo.webp" alt="BAD">
+            <img src="../assets/images/login/partners/bad-logo.webp" alt="BAD" />
           </div>
           <div class="img">
-            <img src="../assets/images/login/partners/bei-logo.webp" alt="BEI">
+            <img src="../assets/images/login/partners/bei-logo.webp" alt="BEI" />
           </div>
           <div class="img">
-            <img src="../assets/images/login/partners/bid-logo.webp" alt="BID">
+            <img src="../assets/images/login/partners/bid-logo.webp" alt="BID" />
           </div>
           <div class="img">
-            <img src="../assets/images/login/partners/boad-logo.webp" alt="BOAD">
+            <img src="../assets/images/login/partners/boad-logo.webp" alt="BOAD" />
           </div>
         </div>
 
         <div>
-          <p class="text-md font-semibold text-center text-base text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC
-          </p>
+          <p class="text-md font-semibold text-center text-base text-gray-700 mb-8">&copy; 2022 Banque mondiale | PAPC</p>
         </div>
       </div>
     </div>
@@ -160,40 +100,28 @@
 
     <!-- l'image de connexion -->
     <div class="bg-img hidden lg:block">
-      <img src="../assets/images/login/login-illustration.svg" class="w-5/6 h-full object-contain" alt="">
+      <img src="../assets/images/login/login-illustration.svg" class="w-5/6 h-full object-contain" alt="" />
     </div>
 
     <!-- fin de l'image de connexion -->
-    <div v-if="isValidate" class=" absolute right-2 top-4">
-      <button @click="gotoValidate" v-if="true"
-        class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici
-        pour renvoyer le lien de validation</button>
+    <div v-if="isValidate" class="absolute right-2 top-4">
+      <button @click="gotoValidate" v-if="true" class="text-white bg-red-500 animation px-4 py-2 outline-none font-semibold text-center text-base">Cliquez-ici pour renvoyer le lien de validation</button>
     </div>
     <vmodal title="envoyé votre mail" v-if="showSend">
-      <div style="width:500px">
+      <div style="width: 500px">
         <form @submit="resentLink">
           <div class="form-group my-3 relative">
-            <input v-model.trim='$v.login.$model' type="email"
-              class="w-full  bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300"
-              placeholder="Entrer votre email">
-            <span class="text-red-500 absolute right-4 top-2"><svg stroke="currentColor" fill="currentColor"
-                stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z">
-                </path>
-              </svg></span>
-            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.required && soumettre'>
-              Ce champ est obligatoire
-            </div>
-            <div class="text-red-500 text-sm   py-2 font-semibold" v-if='!$v.login.email && soumettre'>
-              Email invalide
-            </div>
+            <input v-model.trim="$v.login.$model" type="email" class="w-full bg-gray-100 outline-none border py-3 px-4 :placeholder-gray-500 text-sm font-semibold border-gray-300" placeholder="Entrer votre email" />
+            <span class="text-red-500 absolute right-4 top-2"
+              ><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.8em" width="1.6em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z"></path></svg
+            ></span>
+            <div class="text-red-500 text-sm py-2 font-semibold" v-if="!$v.login.required && soumettre">Ce champ est obligatoire</div>
+            <div class="text-red-500 text-sm py-2 font-semibold" v-if="!$v.login.email && soumettre">Email invalide</div>
           </div>
           <div class="flex justify-center">
-            <button type="submit"
-              class="bg-primary  text-white py-4  cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500 ">envoyer</button>
+            <button type="submit" class="bg-primary text-white py-4 cursor-pointer text-center w-full hover:opacity-80 transition-all duration-500">envoyer</button>
           </div>
-
         </form>
       </div>
     </vmodal>
@@ -206,17 +134,15 @@
 </template>
 
 <script>
-import { required, minLength, numeric, email, sameAs } from 'vuelidate/lib/validators';
-import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
-import gRecaptcha from '@finpo/vue2-recaptcha-invisible';
-import Vmodal from '@/components/Vmodal'
-import axios from 'axios'
+import { required, minLength, numeric, email, sameAs } from "vuelidate/lib/validators";
+import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
+import gRecaptcha from "@finpo/vue2-recaptcha-invisible";
+import Vmodal from "@/components/Vmodal";
+import axios from "axios";
 import { API_BASE_URL } from "@/services/configs/environment.js";
 
-
-
 export default {
-  name: 'IndexPage',
+  name: "IndexPage",
   components: { Vmodal, gRecaptcha },
   data() {
     return {
@@ -229,69 +155,82 @@ export default {
       chargement: false,
       soumettre: false,
       isValidate: false,
-      showSend: false
-
-    }
+      showSend: false,
+    };
   },
+  beforeMount() {},
   computed: {
-
     //importation des variables du module auths
     ...mapState({
-      identifiant: state => state.auths.identifiant,
-      accountValidate: state => state.accountValidate,
-      loading: state => state.loading
-    })
+      identifiant: (state) => state.auths.identifiant,
+      accountValidate: (state) => state.accountValidate,
+      loading: (state) => state.loading,
+      typeAcceuil() {
+        if (localStorage.getItem("login")) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+    }),
   },
 
   methods: {
-
-    //Charger les fonctions de connexion au serveur 
+    //Charger les fonctions de connexion au serveur
     ...mapActions({
-      authentification: "auths/LOGIN"
+      authentification: "auths/LOGIN",
     }),
+    modeVisiteurs() {
+      if (localStorage.key("login")) localStorage.removeItem("login");
+      localStorage.setItem("visiteurs", true);
+      window.location.reload();
+      // this.$router.push("/dashboard/projets");
+    },
 
     gotoValidate() {
-      this.showSend = true
+      this.showSend = true;
     },
     resentLink() {
       this.soumettre = true;
       if (!this.$v.login.$invalid) {
-        this.$router.push({ name: 'resendLink', params: { identifiant: this.login } })
-        this.showSend = false
+        this.$router.push({ name: "resendLink", params: { identifiant: this.login } });
+        this.showSend = false;
       }
     },
     async save() {
+      localStorage.removeItem("visiteurs"); // Désactive le mode visiteur
+      localStorage.setItem("login", "true"); // Active le mode connecté
+
       this.soumettre = true;
       if (!this.$v.login.$invalid && !this.$v.password.$invalid) {
-        this.chargement = true
+        this.chargement = true;
         if (this.chargement === true) {
-          const identifiant = {}
-          identifiant.email = this.login
-          identifiant.password = this.password
-          const datas = await axios.get(`${this.base_url}/sanctum/csrf-cookie`)
+          const identifiant = {};
+          identifiant.email = this.login;
+          identifiant.password = this.password;
+          const datas = await axios.get(`${this.base_url}/sanctum/csrf-cookie`);
           if (datas.status == 204) {
-            await this.authentification(identifiant).then((response, status) => {
-              if (response.statut === "success" || response.status === 200) {
-                this.chargement = false
-                if (response.data.utilisateur.type == 'administrateur') {
-                  this.$toast.success("Connexion réussie")
-                  this.$router.push('/dashboard/programme')
-                } else {
-                  this.$toast.success("Connexion réussie")
-                  this.$router.push('/dashboard/projets')
+            await this.authentification(identifiant)
+              .then((response, status) => {
+                if (response.statut === "success" || response.status === 200) {
+                  this.chargement = false;
+                  if (response.data.utilisateur.type == "administrateur") {
+                    this.$toast.success("Connexion réussie");
+                    this.$router.push("/dashboard/programme");
+                  } else {
+                    this.$toast.success("Connexion réussie");
+                    this.$router.push("/dashboard/projets");
+                  }
                 }
-              }
-            }).catch((error) => {
-              this.chargement = false
-            })
-          }
-          else {
-            this.$toast.error("Connexion impossible reesayer !!!")
+              })
+              .catch((error) => {
+                this.chargement = false;
+              });
+          } else {
+            this.$toast.error("Connexion impossible reesayer !!!");
           }
         }
       }
-
-
     },
 
     validate() {
@@ -302,49 +241,58 @@ export default {
       // google recaptcha token , then you can pass to backend with your form data .
       if (token) {
         //alert(token);
-        this.$toast.success("Confirmer")
-        this.isRobot = false
+        this.$toast.success("Confirmer");
+        this.isRobot = false;
       } else {
         // if you use data-size show reCAPTCHA , maybe you will get empty token.
         //alert('please check you are not robot');
-        this.$toast.error("Verifier que vous n'est pas un robot  !!!")
+        this.$toast.error("Verifier que vous n'est pas un robot  !!!");
       }
     },
     invisible() {
-      this.statePassword = !this.show ? 'text' : 'password'
+      this.statePassword = !this.show ? "text" : "password";
       this.show = !this.show;
       //this.$toast.success('Profile saved',)
     },
   },
   mounted() {
-    this.isValidate = localStorage.getItem("activeCompte")
+    const isLoggedIn = localStorage.getItem("login");
 
+    if (isLoggedIn) {
+      if (localStorage.getItem("visiteurs")) {
+        localStorage.removeItem("visiteurs");
+      }
+    } else {
+      if (!localStorage.getItem("visiteurs")) {
+        localStorage.setItem("visiteurs", true);
+        this.$router.push("/dashboard/projets");
+      }
+    }
+    this.isValidate = localStorage.getItem("activeCompte");
   },
 
   validations: {
     login: {
       required,
-      email
+      email,
     },
 
     password: {
       required,
-      minLength: minLength(6)
+      minLength: minLength(6),
     },
-
   },
 
   watch: {
     loading: function (params) {
       //this.loading = params
-    }
-  }
-
-}
+    },
+  },
+};
 </script>
 <style scoped>
 .animation {
-  animation: vibration infinite .3s;
+  animation: vibration infinite 0.3s;
 }
 
 @keyframes vibration {

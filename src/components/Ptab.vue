@@ -365,11 +365,25 @@
 
               <tbody>
                 <tr v-for="pta in dataNew" :key="pta.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td class="border whitespace-nowrap dark:bg-gray-800 dark:border-gray-300 text-center">
+                  <td class="border whitespace-nowrap dark:bg-gray-800 dark:border-gray-300 text-center px-3 flex jsutify-evenly">
                     <!-- <button v-if="pta.isActivite" @click="ouvrirModalPlanDeDecaissementActivite(pta)" title="Ajouter un plan de décaissement" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2">
                       <DollarSignIcon class="w-4 h-4" />
                     </button> -->
-                    <button v-if="pta.isActivite" @click="ouvrirModalSuiviFinancierActivite(pta)" title="suivre" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2">Ajouter un suivi</button>
+                    <button v-if="pta.isActivite" @click="ouvrirModalSuiviFinancierActivite(pta)" title="Ajouter un plan de décaissement" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2 inline-block">
+                      <span class="w-2 h-2"
+                        ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: " class="text-sm">
+                          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                        </svg>
+                      </span>
+                      <span class="mx-1 md:mx-2 text-xs font-semibold">Décaissement</span>
+                    </button>
+                    <button v-if="pta.isActivite" @click="ouvrirModalSuiviFinancierActivite(pta)" title="Ajouter un suivi financier" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2">
+                      <span class="inline-block w-2 h-2"
+                        ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 1); transform: ; msfilter: ">
+                          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg
+                      ></span>
+                      <span class="mx-1 md:mx-2 text-xs font-semibold">Suivi</span>
+                    </button>
 
                     <!-- <button v-if="pta.isActivite" @click="voirSuiviActivite()" title="Voir les suivis" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-xs p-1 mr-2">
                       <EyeIcon class="w-4 h-4" />
@@ -1233,7 +1247,7 @@
       <modal-top-right title="Ajouter un suivi financier" v-on:close="closeSuiviModal">
         <!-- <pre>{{ suiviFinancierss }}</pre> -->
         <form @submit.prevent="sendForm2" id="vform">
-          <div v-for="(plan, index) in suiviFinancierss" :key="plan.id" class="col-span-12 border-b pb-4 mb-4">
+          <div v-for="(plan, index) in suiviFinancierss" :key="plan.id" class="col-span-12 border-b pb-4 my-4">
             <div :class="`grid grid-cols-1 gap-4`">
               <div class="w-full px-4 font-bold text-base mt-4">Suivi {{ index + 1 }}</div>
               <div class="w-full px-4 py-2">
@@ -2542,9 +2556,9 @@ export default {
     ...mapActions("revisionPtab", {
       fetchProgrammeScopes: "FETCH_PROGRAMME_SCOPES",
     }),
-    chargement(bool) {
-      this.$store.dispatch("SET_LOADER", bool);
-    },
+    // chargement(bool) {
+    //   this.$store.dispatch("SET_LOADER", bool);
+    // },
     active() {
       this.$store.dispatch("active");
     },
