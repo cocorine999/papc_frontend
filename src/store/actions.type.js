@@ -14,8 +14,8 @@ export const LOGIN = "LOGIN";
 
 export const FETCH_AUTHENTICATE_USER = "FETCH_AUTHENTICATE_USER";
 
-export const LOGOUT = "LOGOUT";
+export const LOGOUT = "LOGOUT";  
 
-
+export const LOGOUT_VISITEUR = "LOGOUT_VISITEUR";
 
 

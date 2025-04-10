@@ -541,8 +541,6 @@ export default {
       this.setSuiviFinancier({});
     },
     sendForm2() {
-      
-
       this.suiviFinancierss.forEach((item) => {
         item.activiteId = item.activiteId.id;
         // item.annee = item.annee.nom;
@@ -899,7 +897,6 @@ export default {
         });
     },
     getFiltreActivites2(years, index) {
-      alert("ok");
       this.loaderTab[index] = true;
 
       ProgrammeService.filtreActivites({ annee: years })

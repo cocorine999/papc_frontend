@@ -186,6 +186,11 @@ export default {
       window.location.reload();
       // this.$router.push("/dashboard/projets");
     },
+    modeConnecter() {
+      if (localStorage.key("visiteurs")) localStorage.removeItem("visiteurs");
+      localStorage.setItem("login", true);
+      window.location.reload();
+    },
 
     gotoValidate() {
       this.showSend = true;
@@ -214,13 +219,17 @@ export default {
               .then((response, status) => {
                 if (response.statut === "success" || response.status === 200) {
                   this.chargement = false;
-                  if (response.data.utilisateur.type == "administrateur") {
-                    this.$toast.success("Connexion réussie");
-                    this.$router.push("/dashboard/programme");
-                  } else {
-                    this.$toast.success("Connexion réussie");
-                    this.$router.push("/dashboard/projets");
-                  }
+                  this.$toast.success("Connexion réussie");
+                  window.location.reload();
+                  /* setTimeout(() => {
+                    if (response.data.utilisateur.type == "administrateur") {
+                      this.$toast.success("Connexion réussie");
+                      this.$router.push("/dashboard/programme");
+                    } else {
+                      this.$toast.success("Connexion réussie");
+                      this.$router.push("/dashboard/projets");
+                    }
+                  }, 100); */
                 }
               })
               .catch((error) => {

@@ -2,8 +2,10 @@ import { AUTH_TOKEN } from "@/services/configs/environment.js";
 
 export default {
   GET_AUTHENTICATE_USER: (state) => {
+    console.log("visiteurs", localStorage.getItem("visiteurs"));
     // Si c'est un visiteur, retourner une valeur spécifique
     if (localStorage.getItem("visiteurs")) {
+      // alert("A")
       return {
         id: "Pkdx4A6DyRLbeMj6lWNoZaQxXV510G3z0kJBA9Dgpv4q7kKnYmEP2drzwZYrzoK7",
         nom: "Visiteurs",
@@ -101,10 +103,25 @@ export default {
         ],
         photo: null,
       };
+    } else {
+      // Sinon, on regarde s'il y a un utilisateur authentifié
+      if (state.authenticateUser) {
+        return state.authenticateUser;
+      }
+
+      const storedUser = localStorage.getItem("authenticateUser");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        state.authenticateUser = parsedUser;
+        return state.authenticateUser;
+      }
+
+      // Si rien n'est trouvé, retourne null
+      return null;
     }
 
     // Vérifier si l'utilisateur est déjà authentifié dans le state
-    return state.authenticateUser ? state.authenticateUser : localStorage.getItem("authenticateUser") ? (JSON.parse(localStorage.getItem("authenticateUser")) !== undefined ? (state.authenticateUser = JSON.parse(localStorage.getItem("authenticateUser"))) : null) : null;
+    // return state.authenticateUser ? state.authenticateUser : localStorage.getItem("authenticateUser") ? (JSON.parse(localStorage.getItem("authenticateUser")) !== undefined ? (state.authenticateUser = JSON.parse(localStorage.getItem("authenticateUser"))) : null) : null;
   },
 
   GET_ACCESS_TOKEN: (state) => {

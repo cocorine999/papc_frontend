@@ -1,6 +1,5 @@
 export default {
   SET_AUTH_DATA(state, user) {
-
     localStorage.setItem("authenticateUser", JSON.stringify(user));
     state.authenticateUser = user;
   },
@@ -24,5 +23,7 @@ export default {
     state.access_token = null;
 
     state.authenticateUser = null;
+
+   
   },
 };

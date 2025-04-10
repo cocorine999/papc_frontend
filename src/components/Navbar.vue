@@ -63,6 +63,7 @@ import { mapState, mapGetters, mapActions } from "vuex";
 import getCigle from "../utils/get-cigle";
 import NotificationService from "@/services/modules/notification.service.js";
 import BackupService from "@/services/modules/backup.service.js";
+import { LOGOUT_VISITEUR } from "@/store/actions.type";
 
 export default {
   name: "Navbar",
@@ -130,7 +131,7 @@ export default {
     openNotif() {
       this.showNotification = true;
     },
-    ...mapActions("auths", { logout: "LOGOUT" }),
+    ...mapActions("auths", { logout: "LOGOUT", logoutVisiteur: "LOGOUT_VISITEUR" }),
 
     toggleSidebar() {
       this.$store.dispatch("toggleSidebar");
@@ -155,23 +156,18 @@ export default {
     connecter() {
       localStorage.clear();
       localStorage.setItem("login", true);
-      // window.location.reload();
-      this.$router.push("/");
-      // setTimeout(() => {
-      //
-      // }, 100);
 
-      // this.logout().then((response) => {
-      //   if (response.statut === "success" || response.status === 200) {
-      //     this.$toast.success("Déconnexion réussie");
-      //   } else {
-      //     this.$toast.error(response.message);
-      //   }
-      // });
+      this.$router.push("/");
+
+      this.logoutVisiteur();
+
+      this.$toast.success("Mode connexion activé");
     },
   },
 
   mounted() {
+
+   
     this.getNotification();
     this.getPermission();
     let nom = "";

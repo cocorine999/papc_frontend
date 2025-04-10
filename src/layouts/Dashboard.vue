@@ -5,27 +5,24 @@
     </modal-chat> -->
     <notification></notification>
     <div class="flex flex-wrap">
-
-      <div v-if="espace==undefined">
+      <div v-if="espace == undefined">
         <sidebar></sidebar>
       </div>
-      <div v-if="espace=='bailleur'">
+      <div v-if="espace == 'bailleur'">
         <sidebar-bailleur></sidebar-bailleur>
       </div>
-      <div v-if="espace=='mod'">
+      <div v-if="espace == 'mod'">
         <sidebar-mod></sidebar-mod>
       </div>
 
-      <div v-if="espace=='mo'">
+      <div v-if="espace == 'mo'">
         <sidebar-mo></sidebar-mo>
       </div>
 
-      <div class="w-full bg-gray-100 pl-0 lg:pl-64 min-h-screen " :class="sideBarOpen ? 'relative' : ''"
-        id="main-content">
-        
+      <div class="w-full bg-gray-100 pl-0 lg:pl-64 min-h-screen" :class="sideBarOpen ? 'relative' : ''" id="main-content">
         <navbar></navbar>
         <!-- <div class="m-2  flex justify-between items-center "> -->
-        <div class="w-full p-4">  
+        <div class="w-full p-4">
           <vue-element-loading :active="isActive" :is-full-screen="true">
             <img src="/img/loader/ZZ5H.gif" width="40%" />
           </vue-element-loading>
@@ -37,22 +34,21 @@
       </div>
     </div>
   </div>
-
 </template>
 <script>
-import Navbar from '@/components/Navbar'
-import Sidebar from '@/components/Sidebar'
-import SidebarBailleur from '@/components/SidebarBailleur'
-import SidebarMod from '@/components/SidebarMod'
-import SidebarMo from '@/components/SidebarMo'
-import VueElementLoading from 'vue-element-loading'
-import Chat from '@/components/Chat.vue'
-import ModalChat from '@/components/ModalChat'
-import Notification from '@/components/Notification'
-import { mapState, mapGetters, mapActions } from 'vuex'
+import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
+import SidebarBailleur from "@/components/SidebarBailleur";
+import SidebarMod from "@/components/SidebarMod";
+import SidebarMo from "@/components/SidebarMo";
+import VueElementLoading from "vue-element-loading";
+import Chat from "@/components/Chat.vue";
+import ModalChat from "@/components/ModalChat";
+import Notification from "@/components/Notification";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
-  props: ['espace'],
+  props: ["espace"],
   name: "Dashboard",
   components: {
     Navbar,
@@ -61,32 +57,32 @@ export default {
     SidebarMod,
     SidebarMo,
     VueElementLoading,
-    Notification
+    Notification,
   },
   data() {
     return {
-      currentRole: '',
+      currentRole: "",
       showCommentaire: false,
-    }
+    };
   },
   computed: {
-    ...mapState(['sideBarOpen', 'isActive']),
-    ...mapGetters('auths', { currentUser: 'GET_AUTHENTICATE_USER' })
+    ...mapState(["sideBarOpen", "isActive"]),
+    ...mapGetters("auths", { currentUser: "GET_AUTHENTICATE_USER" }),
   },
   methods: {
     sendMessage(data) {
-      alert(data + ' envoyé')
-    }
+      alert(data + " envoyé");
+    },
   },
   mounted() {
     if (this.currentUser != undefined) {
-      this.currentRole = this.currentUser.type
+      this.currentRole = this.currentUser.type;
     }
-  }
-}
+  },
+};
 </script>
 <style>
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 </style>

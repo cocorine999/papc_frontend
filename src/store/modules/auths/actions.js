@@ -1,6 +1,6 @@
 import { SET_ACCESS_TOKEN, SET_AUTH_DATA, RESET_AUTH_DATA } from "@/store/mutations.type";
 
-import { FETCH_AUTHENTICATE_USER, LOGIN, LOGOUT } from "@/store/actions.type";
+import { FETCH_AUTHENTICATE_USER, LOGIN, LOGOUT ,LOGOUT_VISITEUR } from "@/store/actions.type";
 
 import AuthService from "@/services/modules/auth.service";
 
@@ -22,7 +22,7 @@ export default {
 
     if (status === 200 || status === 201) {
       if (response.hasOwnProperty("utilisateur")) {
-        alert("ok");
+         
         commit(SET_AUTH_DATA, response.utilisateur);
       }
 
@@ -38,5 +38,11 @@ export default {
     if (status === 200 || status === 204) commit(RESET_AUTH_DATA);
 
     return { status };
+  },
+
+  async [LOGOUT_VISITEUR]({ commit }) {
+    commit(RESET_AUTH_DATA);
+
+    return true;
   },
 };
