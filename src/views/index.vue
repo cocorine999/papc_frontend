@@ -219,17 +219,19 @@ export default {
               .then((response, status) => {
                 if (response.statut === "success" || response.status === 200) {
                   this.chargement = false;
-                  this.$toast.success("Connexion réussie");
-                  window.location.reload();
-                  /* setTimeout(() => {
+                //  this.$toast.success("Connexion réussie");
+
+              //    setTimeout(() => {
                     if (response.data.utilisateur.type == "administrateur") {
                       this.$toast.success("Connexion réussie");
                       this.$router.push("/dashboard/programme");
+                      window.location.reload();
                     } else {
                       this.$toast.success("Connexion réussie");
                       this.$router.push("/dashboard/projets");
+                      window.location.reload();
                     }
-                  }, 100); */
+               //   }, 100);
                 }
               })
               .catch((error) => {
