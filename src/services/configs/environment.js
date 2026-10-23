@@ -1,6 +1,6 @@
 //const API_BASE_URL = "http://localhost:8000"
 
-const API_BASE_URL = "https://se-papc.sirat.bj:8001";
+const API_BASE_URL = "https://api.se-papc-sirat.corinebocoga.com";
 
 const AUTH_TOKEN = "996|VjKyDFy7v9BV6fsiuFiqbyMmEXc76r95rSkuCXpBIU7LwEVAjO3q69QHjcTCqDhGZ68VRA1WqLkLEWxgbVEbncqXAgr67ZHAGQKYkrOHwSHL2p0dDL2ayKPwPDygdjPZrZOO9aTSX1uRIN06i15QijjnrM6s6FLeVJCR3EZ2R0u8d5lK4iquOjVy0y5ShAmCxMdSgxOJ4ip0JtJILiqGZ9sgGteaPLGB8zUFpgUEJ9wlu2OOAgwKEqo9ZXBiR1Yv0";
 
